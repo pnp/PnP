@@ -1,0 +1,95 @@
+﻿<div class="container-fluid" ng-show="getResult">
+    <h1>Edit Site Information</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Audience Scope</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <p>Which best describes the scope of your site’s reach?</p>
+            <p ng-show="audienceScope != 'N/A'">
+                <b>{{audienceScope}}</b> -
+                <span>{{audienceScopeDescriptions[audienceScope]}}</span>
+            </p>
+        </div>
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+            <p>Current Audience Reach:</p>
+            <p>
+                <b>{{::audienceScope}}</b>
+            </p>
+            <p>Change Audience Reach:</p>
+            <div ng-repeat="(name,desc) in audienceScopeDescriptions">
+                <label>
+                    <input type="radio" name="AudienceScope"
+                           ng-model="audienceScope"
+                           ng-click="changeAudienceScope(name)"
+                           ng-value="name" /> {{name}}
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Expiration Date</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <p>If site reaches expiration date in one month or less than one month, you can extend expiration date here.</p>
+        </div>
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+            <p>Current Expiration Date:</p>
+            <p>
+                <b>{{expireDate | date:'yyyy-MM-dd'}} ({{expireDateTimezone}})</b>
+            </p>
+            <p ng-show="decommissioning && !canDecommission">
+                <label>
+                    <input type="checkbox" ng-model="extend" />
+                    Extend to: <b>{{extendDate | date:'yyyy-MM-dd'}} ({{expireDateTimezone}})</b>
+                </label>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Decommission Site</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <p>Check this option will decommission this site.</p>
+        </div>
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+            <p>
+                <label>
+                    <input type="checkbox"
+                           ng-model="decommissioning"
+                           ng-disabled="!canDecommission"
+                           ng-confirm-click="Are you sure you want to decommission this site?"
+                           confirm-condition="decommissioning"
+                           cancel-click="cancelDecommission()" />
+                    Decommission
+                </label>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <br />
+        <br />
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+        </div>
+        <div class="col-md-3">
+            <input type="button" value="OK" ng-click="submit()" />
+            <input type="button" value="Cancel" ng-click="cancel()"/>
+        </div>
+    </div>
+</div>
