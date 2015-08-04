@@ -1259,6 +1259,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
         
         private User[] additionalVisitorsField;
         
+        private Group[] additionalGroupsField;
+        
         /// <remarks/>
         [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
         public User[] AdditionalAdministrators {
@@ -1302,6 +1304,17 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
                 this.additionalVisitorsField = value;
             }
         }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
+        public Group[] AdditionalGroups {
+            get {
+                return this.additionalGroupsField;
+            }
+            set {
+                this.additionalGroupsField = value;
+            }
+        }
     }
     
     /// <remarks/>
@@ -1328,6 +1341,41 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml.V201505 {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.18020")]
+    [System.SerializableAttribute()]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    [System.Xml.Serialization.XmlTypeAttribute(Namespace="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema")]
+    public partial class Group {
+        
+        private User[] mEMBERSField;
+        
+        private string nameField;
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlArrayItemAttribute(IsNullable=false)]
+        public User[] mEMBERS {
+            get {
+                return this.mEMBERSField;
+            }
+            set {
+                this.mEMBERSField = value;
+            }
+        }
+        
+        /// <remarks/>
+        [System.Xml.Serialization.XmlAttributeAttribute()]
+        public string Name {
+            get {
+                return this.nameField;
+            }
+            set {
+                this.nameField = value;
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("xsd", "4.0.30319.33440")]
     [System.SerializableAttribute()]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]

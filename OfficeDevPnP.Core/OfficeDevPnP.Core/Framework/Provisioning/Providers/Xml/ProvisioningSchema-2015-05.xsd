@@ -221,6 +221,13 @@
                 </xsd:documentation>
               </xsd:annotation>
             </xsd:element>
+            <xsd:element name="AdditionalGroups" type="AdditionalGroupsList">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  List of additional Groups to create in the sites
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:element>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -481,6 +488,48 @@
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
+
+  </xsd:complexType>
+   <xsd:complexType name="AdditionalGroupsList">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        List of Additional Groups to be added to the site
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:sequence>
+      <xsd:element name="Group" type="Group" maxOccurs="unbounded" />
+    </xsd:sequence>
+
+  </xsd:complexType>
+
+  <xsd:complexType name="Group" >
+
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        The base abstract type for a Group element
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="mEMBERS"   type="pnp:UsersList" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            List of additional Visitors for the Site, optional collection of elements
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="Name" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          The Name of the Group, required attribute
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
+
+
+
 
   </xsd:complexType>
 

@@ -57,6 +57,18 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 user.Update();
                 web.Context.ExecuteQueryRetry();
             }
+            
+            foreach (var additionalGroup  in siteSecurity.AdditionalGroups)
+            {
+                var group = web.AddGroup(additionalGroup.Name, additionalGroup.Description, false,true);
+
+                foreach (var additionalGroupMember in additionalGroup.Members)
+                {
+                    var user = web.EnsureUser(additionalGroupMember.Name);
+                    group.Users.AddUser(user);
+                }
+                web.Context.ExecuteQueryRetry();
+            }
         }
 
         private static void AddUserToGroup(Web web, Group group, List<User> members)
@@ -79,7 +91,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 return template;
             }
-
+            
             var ownerGroup = web.AssociatedOwnerGroup;
             var memberGroup = web.AssociatedMemberGroup;
             var visitorGroup = web.AssociatedVisitorGroup;
