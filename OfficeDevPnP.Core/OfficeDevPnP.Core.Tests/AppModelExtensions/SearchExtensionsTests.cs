@@ -12,6 +12,17 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
     public class SearchExtensionsTests
     {
 
+        #region Test initialize and cleanup
+        [TestInitialize]
+        public void Initialize()
+        {
+            if (TestCommon.AppOnlyTesting())
+            {
+                Assert.Inconclusive("Search tests are not supported when testing using app-only");
+            }
+        }
+        #endregion
+
         [TestMethod]
         public void SetSiteCollectionSearchCenterUrlTest()
         {
@@ -27,6 +38,26 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 clientContext.Web.SetSiteCollectionSearchCenterUrl("");
                 url = clientContext.Web.GetSiteCollectionSearchCenterUrl();
                 Assert.AreEqual(url, "");
+            }
+        }
+
+        [TestMethod]
+        public void GetSearchConfigurationFromWebTest()
+        {
+            using (ClientContext clientContext = TestCommon.CreateClientContext())
+            {
+                var config = clientContext.Web.GetSearchConfiguration();
+                Assert.IsNotNull(config);
+            }
+        }
+
+        [TestMethod]
+        public void GetSearchConfigurationFromSiteTest()
+        {
+            using (ClientContext clientContext = TestCommon.CreateClientContext())
+            {
+                var config = clientContext.Site.GetSearchConfiguration();
+                Assert.IsNotNull(config);
             }
         }
     }

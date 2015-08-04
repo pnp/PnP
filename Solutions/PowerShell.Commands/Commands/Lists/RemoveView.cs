@@ -23,7 +23,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (List != null)
             {
-                var list = SelectedWeb.GetList(List);
+                var list = List.GetList(SelectedWeb);
 
                 if (list != null)
                 {

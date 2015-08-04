@@ -1,10 +1,10 @@
 #Set-SPOWebPartProperty
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-07-14*
 
 Sets a web part property
 ##Syntax
 ```powershell
-Set-SPOWebPartProperty -PageUrl <String> -Identity <GuidPipeBind> -Key <String> -Value <Object> [-Web <WebPipeBind>]
+Set-SPOWebPartProperty -PageUrl <String> -Identity <GuidPipeBind> -Key <String> -Value <PSObject> [-Web <WebPipeBind>]
 ```
 
 
@@ -14,6 +14,6 @@ Parameter|Type|Required|Description
 |Identity|GuidPipeBind|True||
 |Key|String|True||
 |PageUrl|String|True||
-|Value|Object|True||
+|Value|PSObject|True||
 |Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.|
-<!-- Ref: C8BF231DD6126AB661347F092AB65A55 -->
+<!-- Ref: 50472E8F973C8AB9327FE7F2D00DBF08 -->

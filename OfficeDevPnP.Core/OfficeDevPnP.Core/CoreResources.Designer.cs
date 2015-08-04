@@ -822,6 +822,15 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data Rows.
+        /// </summary>
+        internal static string Provisioning_ObjectHandlers_ListInstancesDataRows {
+            get {
+                return ResourceManager.GetString("Provisioning_ObjectHandlers_ListInstancesDataRows", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Pages.
         /// </summary>
         internal static string Provisioning_ObjectHandlers_Pages {
@@ -1215,6 +1224,15 @@ namespace OfficeDevPnP.Core {
         internal static string TimerJob_Authentication_RetrieveFromCredManFailed {
             get {
                 return ResourceManager.GetString("TimerJob_Authentication_RetrieveFromCredManFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tenant admin site set to {0}..
+        /// </summary>
+        internal static string TimerJob_Authentication_TenantAdmin {
+            get {
+                return ResourceManager.GetString("TimerJob_Authentication_TenantAdmin", resourceCulture);
             }
         }
         

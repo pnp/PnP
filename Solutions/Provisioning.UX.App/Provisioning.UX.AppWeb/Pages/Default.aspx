@@ -7,7 +7,7 @@
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title></title>
+    <title>Dashboard</title>
 
     <!-- CSS -->
     <%--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.css"/>--%>
@@ -17,12 +17,6 @@
     <link rel="stylesheet" href="../styles/toastr.css" />
     <link rel="stylesheet" href="../styles/app.css" /> 
     <link rel="stylesheet" href="../styles/peoplepickercontrol.css" />    
-    
-           
-
-    
-
-    
 </head>
 <body>    
     <div id="divSPChrome"></div>            
@@ -47,6 +41,7 @@
     <script src="../scripts/wizard/modules/common.js"></script>
     <script src="../scripts/wizard/modules/logger.js"></script>
     <script src="../scripts/wizard/modules/spinner.js"></script>
+    <script src="../scripts/wizard/modules/filter.js"></script>
 
     <!-- common.bootstrap Modules -->
     <script src="../scripts/bootstrap.dialog.js"></script>

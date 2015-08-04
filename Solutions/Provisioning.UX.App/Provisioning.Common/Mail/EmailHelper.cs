@@ -10,10 +10,6 @@ namespace Provisioning.Common.Mail
 {
     public class EmailHelper
     {
-        #region Variable
-        private static readonly EmailConfig _emailConfig = new EmailConfig();
-
-        #endregion
         #region Constructor
         public EmailHelper()
         {
@@ -29,8 +25,10 @@ namespace Provisioning.Common.Mail
         /// <param name="message"></param>
         public static void SendNewSiteSuccessEmail(SuccessEmailMessage message)
         {
+         
             try
             {
+                EmailConfig _emailConfig = new EmailConfig();
                 using (SmtpClient client = new SmtpClient())
                 {
                     using (MailMessage emailMessage = new MailMessage())
@@ -66,6 +64,7 @@ namespace Provisioning.Common.Mail
         {
             try
             {
+                EmailConfig _emailConfig = new EmailConfig();
                 using (SmtpClient client = new SmtpClient())
                 {
                     using (MailMessage emailMessage = new MailMessage())

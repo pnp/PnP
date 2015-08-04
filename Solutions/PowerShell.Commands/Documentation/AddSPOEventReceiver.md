@@ -1,5 +1,5 @@
 #Add-SPOEventReceiver
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-06-11*
 
 Adds a new event receiver
 ##Syntax

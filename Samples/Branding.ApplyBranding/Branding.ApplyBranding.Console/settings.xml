@@ -1,18 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<branding url="https://johandemo.sharepoint.com">
+<branding url="https://wfdev1.sharepoint.com">
   <sites>
     <site url="/sites/pub1" />
     <site url="/sites/pub2" />
   </sites>
   <files>
-    <file name="logo.png" path="Style Library" folder="gapps" />
-    <file name="default.css" path="Style Library" folder="gapps" />
+    <file name="logo.png" path="Style Library" folder="pnp" />
+    <file name="default.css" path="Style Library" folder="pnp" />
+    <file name="js\app.js" path="Style Library" folder="pnp" />
+    <file name="plugins\jquery\jquery-1.11.3.min.js" path="Style Library" folder="pnp" />
   </files>
   <masterpages>
-    <masterpage name="default.master" folder="gapps" />
+    <masterpage name="default.master" folder="pnp" />
   </masterpages>
   <pagelayouts>
-    <pagelayout name="ArticleLeft.aspx" folder="gapps" title="G-Apps Image on left" publishingAssociatedContentType=";#Article Page;#0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF3900242457EFB8B24247815D688C526CD44D;#" />
-    <pagelayout name="BlankWebPartPage.aspx" folder="gapps" title="G-Apps Blank Web Part page" publishingAssociatedContentType=";#Welcome Page;#0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF390064DEA0F50FC8C147B0B6EA0636C4A7D4;#" />
+    <pagelayout name="ArticleLeft.aspx" folder="pnp" title="Office Dev PnP Image on left" publishingAssociatedContentType=";#Article Page;#0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF3900242457EFB8B24247815D688C526CD44D;#" />
+    <pagelayout name="BlankWebPartPage.aspx" folder="pnp" title="Office Dev PnP Blank Web Part page" publishingAssociatedContentType=";#Welcome Page;#0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF390064DEA0F50FC8C147B0B6EA0636C4A7D4;#" />
   </pagelayouts>
 </branding>

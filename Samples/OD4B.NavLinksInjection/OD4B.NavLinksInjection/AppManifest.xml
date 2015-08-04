@@ -4,7 +4,7 @@
      Name="OD4BNavLinksInjection"
      ProductID="{222610d6-3001-4a89-9256-79bb856a91d6}"
      Version="1.0.0.1"
-     SharePointMinVersion="15.0.0.0"
+     SharePointMinVersion="16.0.0.0"
 >
   <Properties>
     <Title>Secondary Navigation</Title>

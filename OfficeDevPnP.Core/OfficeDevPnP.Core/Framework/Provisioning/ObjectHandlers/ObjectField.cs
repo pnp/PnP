@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Web.Services.Discovery;
 using System.Xml.Linq;
 using Microsoft.SharePoint.Client;
+using Microsoft.SharePoint.Client.Taxonomy;
 using OfficeDevPnP.Core.Enums;
-using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
-using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using OfficeDevPnP.Core.Utilities;
 using Field = OfficeDevPnP.Core.Framework.Provisioning.Model.Field;
 using SPField = Microsoft.SharePoint.Client.Field;
@@ -21,7 +18,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
         {
             get { return "Fields"; }
         }
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateApplyingInformation applyingInformation)
         {
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_Fields);
 
@@ -30,6 +27,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 return;
             }
+
 
             var existingFields = web.Fields;
 
@@ -40,28 +38,95 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             foreach (var field in fields)
             {
-                XElement fieldElement = XElement.Parse(field.SchemaXml.ToParsedString());
-                var fieldId = fieldElement.Attribute("ID").Value;
-
+                XElement templateFieldElement = XElement.Parse(field.SchemaXml.ToParsedString("~sitecollection", "~site"));
+                var fieldId = templateFieldElement.Attribute("ID").Value;
 
                 if (!existingFieldIds.Contains(Guid.Parse(fieldId)))
                 {
-                    var listIdentifier = fieldElement.Attribute("List") != null ? fieldElement.Attribute("List").Value : null;
-
-                    if (listIdentifier != null)
-                    {
-                        // Temporary remove list attribute from list
-                        fieldElement.Attribute("List").Remove();
-                    }
-
-                    var fieldXml = fieldElement.ToString();
-
-                    web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.DefaultValue);
+                    CreateField(web, templateFieldElement);
+                }
+                else
+                {
+                    UpdateField(web, fieldId, templateFieldElement);
                 }
             }
         }
 
-        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        private void UpdateField(Web web, string fieldId, XElement templateFieldElement)
+        {
+            var existingField = web.Fields.GetById(Guid.Parse(fieldId));
+            web.Context.Load(existingField, f => f.SchemaXml);
+            web.Context.ExecuteQueryRetry();
+
+            XElement existingFieldElement = XElement.Parse(existingField.SchemaXml);
+
+            XNodeEqualityComparer equalityComparer = new XNodeEqualityComparer();
+
+            if (equalityComparer.GetHashCode(existingFieldElement) != equalityComparer.GetHashCode(templateFieldElement)) // Is field different in template?
+            {
+                if (existingFieldElement.Attribute("Type").Value == templateFieldElement.Attribute("Type").Value) // Is existing field of the same type?
+                {
+                    var listIdentifier = templateFieldElement.Attribute("List") != null ? templateFieldElement.Attribute("List").Value : null;
+
+                    if (listIdentifier != null)
+                    {
+                        // Temporary remove list attribute from list
+                        templateFieldElement.Attribute("List").Remove();
+                    }
+
+                    foreach (var attribute in templateFieldElement.Attributes())
+                    {
+                        if (existingFieldElement.Attribute(attribute.Name) != null)
+                        {
+                            existingFieldElement.Attribute(attribute.Name).Value = attribute.Value;
+                        }
+                        else
+                        {
+                            existingFieldElement.Add(attribute);
+                        }
+                    }
+                    foreach (var element in templateFieldElement.Elements())
+                    {
+                        if (existingFieldElement.HasAttributes && existingFieldElement.Attribute(element.Name) != null)
+                        {
+                            existingFieldElement.Attribute(element.Name).Remove();
+                        }
+                        existingFieldElement.Add(element);
+                    }
+
+                    if (existingFieldElement.Attribute("Version") != null)
+                    {
+                        existingFieldElement.Attributes("Version").Remove();
+                    }
+                    existingField.SchemaXml = existingFieldElement.ToString();
+                    existingField.UpdateAndPushChanges(true);
+                    web.Context.ExecuteQueryRetry();
+                }
+                else
+                {
+                    var fieldName = existingFieldElement.Attribute("Name") != null ? existingFieldElement.Attribute("Name").Value : existingFieldElement.Attribute("StaticName").Value;
+                    WriteWarning(string.Format("Field {0} ({1}) exists but is of different type. Skipping field.", fieldName, fieldId), ProvisioningMessageType.Warning);
+                }
+            }
+        }
+
+        private static void CreateField(Web web, XElement templateFieldElement)
+        {
+            var listIdentifier = templateFieldElement.Attribute("List") != null ? templateFieldElement.Attribute("List").Value : null;
+
+            if (listIdentifier != null)
+            {
+                // Temporary remove list attribute from list
+                templateFieldElement.Attribute("List").Remove();
+            }
+
+            var fieldXml = templateFieldElement.ToString();
+
+            web.Fields.AddFieldAsXml(fieldXml, false, AddFieldOptions.AddFieldInternalNameHint);
+            web.Context.ExecuteQueryRetry();
+        }
+
+        public override ProvisioningTemplate ExtractObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
             // if this is a sub site then we're not creating field entities.
             if (web.IsSubSite())
@@ -71,9 +136,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
             var existingFields = web.Fields;
             web.Context.Load(web, w => w.ServerRelativeUrl);
-            web.Context.Load(existingFields, fs => fs.Include(f => f.Id, f => f.SchemaXml));
+            web.Context.Load(existingFields, fs => fs.Include(f => f.Id, f => f.SchemaXml, f => f.TypeAsString));
             web.Context.ExecuteQueryRetry();
 
+            var taxTextFieldsToRemove = new List<Guid>();
 
             foreach (var field in existingFields)
             {
@@ -98,7 +164,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                             fieldXml = element.ToString();
                         }
                     }
-
+                    // Check if the field is of type TaxonomyField
+                    if (field.TypeAsString.StartsWith("TaxonomyField"))
+                    {
+                        var taxField = (TaxonomyField)field;
+                        web.Context.Load(taxField, tf => tf.TextField, tf=>tf.Id);
+                        web.Context.ExecuteQueryRetry();
+                        taxTextFieldsToRemove.Add(taxField.TextField);
+                    }
                     // Check if we have version attribute. Remove if exists 
                     if (element.Attribute("Version") != null)
                     {
@@ -107,6 +180,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     }
                     template.SiteFields.Add(new Field() { SchemaXml = fieldXml });
                 }
+            }
+            // Remove hidden taxonomy text fields
+            foreach (var textFieldId in taxTextFieldsToRemove)
+            {
+                template.SiteFields.RemoveAll(f => Guid.Parse(f.SchemaXml.ElementAttributeValue("ID")).Equals(textFieldId));
             }
             // If a base template is specified then use that one to "cleanup" the generated template model
             if (creationInfo.BaseTemplate != null)
@@ -154,6 +232,15 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 _willExtract = true;
             }
             return _willExtract.Value;
+        }
+    }
+
+    internal static class XElementStringExtensions
+    {
+        public static string ElementAttributeValue(this string input, string attribute)
+        {
+            var element = XElement.Parse(input);
+            return element.Attribute(attribute) != null ? element.Attribute(attribute).Value : null;
         }
     }
 }

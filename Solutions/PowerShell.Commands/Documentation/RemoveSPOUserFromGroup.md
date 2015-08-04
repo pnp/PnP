@@ -1,17 +1,17 @@
 #Remove-SPOUserFromGroup
-*Topic automatically generated on: 2015-06-04*
+*Topic automatically generated on: 2015-07-22*
 
 Removes a user from a group
 ##Syntax
 ```powershell
-Remove-SPOUserFromGroup -LoginName <String> -GroupName <String> [-Web <WebPipeBind>]
+Remove-SPOUserFromGroup -LoginName <String> -Identity <GroupPipeBind> [-Web <WebPipeBind>]
 ```
 
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-|GroupName|String|True|A valid group name|
+|Identity|GroupPipeBind|True|A group object, an ID or a name of a group|
 |LoginName|String|True|A valid login name of a user|
 |Web|WebPipeBind|False|The web to apply the command to. Omit this parameter to use the current web.|
 ##Examples
@@ -19,4 +19,4 @@ Parameter|Type|Required|Description
 ###Example 1
     PS:> Remove-SPOUserFromGroup -LoginName user@company.com -GroupName 'Marketing Site Members'
 
-<!-- Ref: D5FE441138C38D12D6217BE656D5C4DF -->
+<!-- Ref: 31C6FF545C90EE57BAF1AA570E8DF456 -->

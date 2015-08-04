@@ -2,6 +2,7 @@
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Utilities;
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
@@ -16,7 +17,8 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
     {
 
         #region Constructor
-        protected XMLTemplateProvider() : base()
+        protected XMLTemplateProvider()
+            : base()
         {
 
         }
@@ -56,7 +58,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
                         // And convert it into a ProvisioningTemplate
                         provisioningTemplate = formatter.ToProvisioningTemplate(stream);
                     }
-                    catch(ApplicationException)
+                    catch (ApplicationException)
                     {
                         Log.Warning(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_Providers_XML_InvalidFileFormat, file);
                         continue;
@@ -101,6 +103,9 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
             // Get the XML document from a File Stream
             Stream stream = this.Connector.GetFileStream(uri);
+
+            //Resolve xml includes if any
+            stream = ResolveXIncludes(stream);
 
             // And convert it into a ProvisioningTemplate
             ProvisioningTemplate provisioningTemplate = formatter.ToProvisioningTemplate(stream, identifier);
@@ -157,11 +162,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
 
             this.Connector.DeleteFile(uri);
         }
-       
+
         #endregion
 
         #region Helper methods
-        
+
         private void SaveToConnector(ProvisioningTemplate template, string uri, ITemplateFormatter formatter)
         {
             if (String.IsNullOrEmpty(template.Id))
@@ -173,6 +178,55 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml
             {
                 this.Connector.SaveFileStream(uri, stream);
             }
+        }
+
+        private Stream ResolveXIncludes(Stream stream)
+        {
+            var res = stream;
+            XDocument xml = XDocument.Load(stream);
+
+            //find XInclude elements by XName
+            XName xiName = XName.Get("{http://www.w3.org/2001/XInclude}include");
+            var includes = xml.Descendants(xiName).ToList();
+
+            if (includes.Count > 0)
+            {
+                foreach (var xi in includes)
+                {
+                    Boolean includeResolved = false;
+
+                    // Resolve xInclude and replace
+                    String href = (String)xi.Attribute("href") ?? String.Empty; 
+
+                    // If there is the href attribute
+                    if (!String.IsNullOrEmpty(href))
+                    {
+                        Stream incStream = this.Connector.GetFileStream(href);
+
+                        // And if the referenced file can be loaded/resolved
+                        if (null != incStream)
+                        {
+                            // Replace the xi:include element with the target XML element
+                            var resolved = XElement.Load(incStream);
+                            xi.ReplaceWith(resolved);
+                            includeResolved = true;
+                        }
+                    }
+
+                    if (!includeResolved)
+                    {
+                        // Remove the xi:include element 
+                        // to avoid any processing failure
+                        xi.Remove();
+                    }
+                }
+
+                //save xml to a new stream
+                res = new MemoryStream();
+                xml.Save(res);
+            }
+            res.Seek(0, SeekOrigin.Begin);
+            return res;
         }
 
         #endregion

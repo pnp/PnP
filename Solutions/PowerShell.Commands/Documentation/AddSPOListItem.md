@@ -1,5 +1,5 @@
 #Add-SPOListItem
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-07-28*
 
 Adds an item to a list
 ##Syntax
@@ -18,10 +18,10 @@ Parameter|Type|Required|Description
 ##Examples
 
 ###Example 1
-    Add-SPOListItem -List "Demo List" -Values @{"Title" = "Test Title", "Category"="Test Category"}
+    Add-SPOListItem -List "Demo List" -Values @{"Title" = "Test Title"; "Category"="Test Category"}
 Adds a new list item to the "Demo List", and sets both the Title and Category fields with the specified values.
 
 ###Example 2
-    Add-SPOListItem -List "Demo List" -ContentType "Company" -Values @{"Title" = "Test Title", "Category"="Test Category"}
+    Add-SPOListItem -List "Demo List" -ContentType "Company" -Values @{"Title" = "Test Title"; "Category"="Test Category"}
 Adds a new list item to the "Demo List", sets the content type to "Company" and sets both the Title and Category fields with the specified values.
-<!-- Ref: 6AF8DE13861DC76138B490FB609DC7B7 -->
+<!-- Ref: 5385432995C5D45D413370889A82ED98 -->

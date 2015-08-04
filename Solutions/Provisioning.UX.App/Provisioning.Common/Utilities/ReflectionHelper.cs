@@ -12,10 +12,10 @@ namespace Provisioning.Common.Utilities
 {
     public class ReflectionHelper
     {
-        const string CONNECTIONSTRING_KEY = "ConnectionString";
-        const string CONTAINERSTRING_KEY = "Container";
-
+        private const string CONNECTIONSTRING_KEY = "ConnectionString";
+        private const string CONTAINERSTRING_KEY = "Container";
         private ConfigManager _configManager = new ConfigManager();
+
         /// <summary>
         /// Returns Connectors
         /// </summary>

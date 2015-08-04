@@ -1,5 +1,5 @@
 #Get-SPOAppInstance
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-06-11*
 
 Returns a SharePoint AddIn Instance
 ##Syntax

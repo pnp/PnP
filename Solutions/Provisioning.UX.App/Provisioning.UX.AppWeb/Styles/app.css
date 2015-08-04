@@ -337,3 +337,55 @@ a {
     float: left;
 }*/
 /*endregion Other bootstrap overrides*/
+
+/* Chrome Control Override
+-----------------------------------------------------------*/
+div#chromeControl_bottomheader
+{
+    height: 96px !important;
+}
+div#chromeControl_bottomheader_appicon
+{
+    padding: 24px 20px 24px 20px !important;
+}
+div#chromeControl_bottomheader_appicon img
+{
+    width: 180px !important;
+    max-height: 64px;
+}
+div#chromeControl_topheader_appicon img
+{
+    width: 45px !important;
+    max-height: 16px;
+}
+img#chromeControl_topheader_arrowimage {
+    display: none;
+}
+span#chromeControl_topheader_sitetitle
+{
+    color: #fff !important;
+    font-size: 12px;
+}
+
+
+.shortcut-message {
+  color: white;
+  vertical-align: middle;
+  background-color: #007aff;
+  padding: 5px;
+  border-radius: 5px;
+  margin-top: 15px;
+  position: relative;
+  cursor: pointer;
+
+}
+
+.confirm-error-message {
+    cursor: pointer;
+  background: #DC3C00;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  margin-top: 15px;
+  position: relative;
+}

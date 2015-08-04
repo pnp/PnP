@@ -27,14 +27,23 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
         [Parameter(Mandatory = false)]
         public SwitchParameter AutoAcceptRequestToJoinLeave;
 
-        [Parameter(Mandatory = false, DontShow=true)] // Not promoted to use anymore. Use Set-SPOGroup
+        [Parameter(Mandatory = false)]
+        public SwitchParameter AllowMembersEditMembership;
+
+        [Parameter(Mandatory = false)]
+        public SwitchParameter OnlyAllowMembersViewMembership;
+
+        [Parameter(Mandatory = false)]
+        public string RequestToJoinEmail;
+
+        [Parameter(Mandatory = false, DontShow = true)] // Not promoted to use anymore. Use Set-SPOGroup
         public AssociatedGroupType SetAssociatedGroup = AssociatedGroupType.None;
 
         protected override void ExecuteCmdlet()
         {
             var web = SelectedWeb;
 
-            var groupCI = new GroupCreationInformation {Title = Title, Description = Description};
+            var groupCI = new GroupCreationInformation { Title = Title, Description = Description };
 
             var group = web.SiteGroups.Add(groupCI);
 
@@ -53,12 +62,27 @@ namespace OfficeDevPnP.PowerShell.Commands.Principals
                 group.AutoAcceptRequestToJoinLeave = true;
                 dirty = true;
             }
+            if (AllowMembersEditMembership)
+            {
+                group.AllowMembersEditMembership = true;
+                dirty = true;
+            }
+            if (OnlyAllowMembersViewMembership)
+            {
+                group.OnlyAllowMembersViewMembership = true;
+                dirty = true;
+            }
+            if (!string.IsNullOrEmpty(RequestToJoinEmail))
+            {
+                group.RequestToJoinLeaveEmailSetting = RequestToJoinEmail;
+                dirty = true;
+            }
+
             if (dirty)
             {
                 group.Update();
                 ClientContext.ExecuteQueryRetry();
             }
-
 
             if (!string.IsNullOrEmpty(Owner))
             {

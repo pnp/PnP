@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema">
-  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.3.615.0, Culture=neutral, PublicKeyToken=null" />
+  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.4.815.0, Culture=neutral, PublicKeyToken=null" />
   <pnp:Templates ID="CONTAINER-SPECIALTEAM">
     <pnp:ProvisioningTemplate ID="SPECIALTEAM" Version="1">
       <pnp:SitePolicy>HBI</pnp:SitePolicy>
@@ -48,7 +48,7 @@
             <pnp:ContentTypeBinding ContentTypeID="0x01005D4F34E4BE7F4B6892AEBE088EDD215E" Default="true" />
           </pnp:ContentTypeBindings>
         </pnp:ListInstance>
-        <pnp:ListInstance Title="General Documents" Description="Project Documents are stored here" DocumentTemplate="" OnQuickLaunch="true" TemplateType="101" Url="Lists/GeneralDocuments" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="0">
+        <pnp:ListInstance Title="General Documents" Description="Project Documents are stored here" DocumentTemplate="" OnQuickLaunch="true" TemplateType="101" Url="Lists/GeneralDocuments" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="0" RemoveExistingContentTypes="true">
           <pnp:ContentTypeBindings>
             <pnp:ContentTypeBinding ContentTypeID="0x01005D4F34E4BE7F4B6892AEBE088EDD215E" Default="true" />
           </pnp:ContentTypeBindings>
@@ -69,11 +69,17 @@
       </pnp:Features>
       <pnp:CustomActions>
         <pnp:SiteCustomActions>
-          <pnp:CustomAction Name="CA_SITE_SETTINGS_SITECLASSIFICATION" Description="Site Classification Application" Group="SiteTasks" Location="Microsoft.SharePoint.SiteSettings" Title="Site Classification" Sequence="1000" Rights="31" Url="https://spmanaged.azurewebsites.net/pages/index.aspx?SPHostUrl={0}" />
-          <pnp:CustomAction Name="CA_STDMENU_SITECLASSIFICATION" Description="Site Classification Application" Group="SiteActions" Location="Microsoft.SharePoint.StandardMenu" Title="Site Classification" Sequence="1000" Rights="31" Url="https://spmanaged.azurewebsites.net/pages/index.aspx?SPHostUrl={0}" />
+          <pnp:CustomAction Name="CA_SITE_SETTINGS_SITECLASSIFICATION" Description="Site Classification Application" Group="SiteTasks" Location="Microsoft.SharePoint.SiteSettings" Title="Site Classification" Sequence="1000" Rights="31" Url="https://spmanaged.azurewebsites.net/pages/index.aspx?SPHostUrl={0}">
+            <pnp:CommandUIExtension />
+          </pnp:CustomAction>
+          <pnp:CustomAction Name="CA_STDMENU_SITECLASSIFICATION" Description="Site Classification Application" Group="SiteActions" Location="Microsoft.SharePoint.StandardMenu" Title="Site Classification" Sequence="1000" Rights="31" Url="https://spmanaged.azurewebsites.net/pages/index.aspx?SPHostUrl={0}">
+            <pnp:CommandUIExtension />
+          </pnp:CustomAction>
         </pnp:SiteCustomActions>
         <pnp:WebCustomActions>
-          <pnp:CustomAction Name="CA_SUBSITE_OVERRIDE" Description="Override new sub-site link" Group="SiteTasks" Location="Microsoft.SharePoint.SiteSettings" Title="SubSite Overide" Sequence="1000" Rights="31" Url="https://spmanaged.azurewebsites.net/pages/index.aspx?SPHostUrl={0}" />
+          <pnp:CustomAction Name="CA_SUBSITE_OVERRIDE" Description="Override new sub-site link" Group="SiteTasks" Location="Microsoft.SharePoint.SiteSettings" Title="SubSite Overide" Sequence="1000" Rights="31" Url="https://spmanaged.azurewebsites.net/pages/index.aspx?SPHostUrl={0}">
+            <pnp:CommandUIExtension />
+          </pnp:CustomAction>
         </pnp:WebCustomActions>
       </pnp:CustomActions>
       <pnp:Files>

@@ -288,5 +288,40 @@ namespace OfficeDevPnP.Core.Tests.Framework.Providers
         }
 
         #endregion
+
+        #region XInclude Tests
+
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void XMLResolveValidXInclude()
+        {
+            XMLTemplateProvider provider =
+                new XMLFileSystemTemplateProvider(
+                    String.Format(@"{0}\..\..\Resources",
+                    AppDomain.CurrentDomain.BaseDirectory),
+                    "Templates");
+
+            var result = provider.GetTemplate("ProvisioningTemplate-2015-05-Valid-XInclude-01.xml");
+
+            Assert.IsTrue(result.PropertyBagEntries.Count == 2);
+        }
+
+        [TestMethod]
+        [TestCategory(TEST_CATEGORY)]
+        public void XMLResolveInvalidXInclude()
+        {
+            XMLTemplateProvider provider =
+                new XMLFileSystemTemplateProvider(
+                    String.Format(@"{0}\..\..\Resources",
+                    AppDomain.CurrentDomain.BaseDirectory),
+                    "Templates");
+
+            var result = provider.GetTemplate("ProvisioningTemplate-2015-05-NOT-Valid-XInclude-01.xml");
+
+            Assert.IsTrue(result.PropertyBagEntries.Count == 0);
+        }
+
+        #endregion
+
     }
 }

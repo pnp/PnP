@@ -42,6 +42,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         /// Gets or sets if the field is Hidden
         /// </summary>
         public bool Hidden { get; set; }
+
         #endregion
 
         #region Constructors

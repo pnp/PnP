@@ -24,11 +24,22 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
 ",
      Remarks = "Applies a provisioning template in XML format to the current web.",
      SortOrder = 1)]
+    [CmdletExample(
+     Code = @"
+    PS:> Apply-SPOProvisioningTemplate -Path template.xml -ResourceFolder c:\provisioning\resources
+",
+     Remarks = "Applies a provisioning template in XML format to the current web. Any resources like files that are referenced in the template will be retrieved from the folder as specified with the ResourceFolder parameter.",
+     SortOrder = 2)]
     public class ApplyProvisioningTemplate : SPOWebCmdlet
     {
         [Parameter(Mandatory = true, Position = 0, ValueFromPipelineByPropertyName = true, ValueFromPipeline = true, HelpMessage = "Path to the xml file containing the provisioning template.")]
         public string Path;
 
+        [Parameter(Mandatory = false, HelpMessage = "Root folder where resources/files that are being referenced in the template are located. If not specified the same folder as where the provisioning template is located will be used.")]
+        public string ResourceFolder;
+
+        [Parameter(Mandatory = false, HelpMessage = "Specify this parameter if you want to overwrite and/or create properties that are known to be system entries (starting with vti_, dlc_, etc.)")]
+        public SwitchParameter OverwriteSystemPropertyBagValues;
 
         protected override void ExecuteCmdlet()
         {
@@ -41,6 +52,13 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
             {
                 Path = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, Path);
             }
+            if (!string.IsNullOrEmpty(ResourceFolder))
+            {
+                if (System.IO.Path.IsPathRooted(ResourceFolder))
+                {
+                    ResourceFolder = System.IO.Path.Combine(SessionState.Path.CurrentFileSystemLocation.Path, ResourceFolder);
+                }
+            }
 
             FileInfo fileInfo = new FileInfo(Path);
 
@@ -51,15 +69,34 @@ namespace OfficeDevPnP.PowerShell.Commands.Branding
 
             if (provisioningTemplate != null)
             {
-                var fileSystemConnector = new FileSystemConnector(fileInfo.DirectoryName, "");
+                FileSystemConnector fileSystemConnector = null;
+                if (string.IsNullOrEmpty(ResourceFolder))
+                {
+                    fileSystemConnector = new FileSystemConnector(fileInfo.DirectoryName, "");
+                }
+                else
+                {
+                    fileSystemConnector = new FileSystemConnector(ResourceFolder, "");
+                }
                 provisioningTemplate.Connector = fileSystemConnector;
 
+
                 var applyingInformation = new ProvisioningTemplateApplyingInformation();
+
                 applyingInformation.ProgressDelegate = (message, step, total) =>
                 {
                     WriteProgress(new ProgressRecord(0, string.Format("Applying template to {0}", SelectedWeb.Url), message) { PercentComplete = (100 / total) * step });
                 };
 
+                applyingInformation.MessageDelegate = (message, type) =>
+                {
+                    if (type == ProvisioningMessageType.Warning)
+                    {
+                        WriteWarning(message);
+                    }
+                };
+
+                applyingInformation.OverwriteSystemPropertyBagValues = OverwriteSystemPropertyBagValues;
                 SelectedWeb.ApplyProvisioningTemplate(provisioningTemplate, applyingInformation);
             }
         }

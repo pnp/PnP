@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema">
-  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.3.615.0, Culture=neutral, PublicKeyToken=null" />
+  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.4.815.0, Culture=neutral, PublicKeyToken=null" />
   <pnp:Templates ID="CONTAINER-OFFILE1template">
     <pnp:ProvisioningTemplate ID="OFFILE1template" Version="1">
       <pnp:PropertyBagEntries>
         <pnp:PropertyBagEntry Key="client_routerenforcerouting" Value="True" />
         <pnp:PropertyBagEntry Key="docid_enabled" Value="1" />
         <pnp:PropertyBagEntry Key="docid_msft_hier_siteprefix" Value="XXUW7SEWA4P7" />
-        <pnp:PropertyBagEntry Key="FollowLinkEnabled" Value="TRUE" />
+        <pnp:PropertyBagEntry Key="vti_customuploadpage" Value="/_layouts/15/UploadEx.aspx" />
         <pnp:PropertyBagEntry Key="vti_approvallevels" Value="Approved Rejected Pending\ Review" />
         <pnp:PropertyBagEntry Key="disabledhelpcollections" Value="WSSEndUser;#WSSCentralAdmin;#FastEndUser;#FastCentralAdmin;#MSSEndUser;#MSSCentralAdmin;#PPSDesignerEndUser;#SQLWSSAddIn" />
         <pnp:PropertyBagEntry Key="vti_defaultlanguage" Value="en-us" />
@@ -16,33 +16,39 @@
         <pnp:PropertyBagEntry Key="docid_diwi_ls" Value="1" />
         <pnp:PropertyBagEntry Key="_dlc_holds_lockhelditemsetting" Value="False" />
         <pnp:PropertyBagEntry Key="holdreportslistid" Value="9977012f-7ad6-4cd5-aa24-29a03dfb3756" />
+        <pnp:PropertyBagEntry Key="holdlistid" Value="d4f81bcf-64b5-42c0-860f-597d3e036311" />
         <pnp:PropertyBagEntry Key="taxonomyhiddenlist" Value="d317bc59-7ead-4be2-bfb9-1a8a5ffd32e5" />
+        <pnp:PropertyBagEntry Key="dlc_PolicyUpdateLastRun" Value="15/06/2015 2:18:49" />
         <pnp:PropertyBagEntry Key="vti_associategroups" Value="9;3;3;8;7" />
         <pnp:PropertyBagEntry Key="vti_categories" Value="Travel Expense\ Report Business Competition Goals/Objectives Ideas Miscellaneous Waiting VIP In\ Process Planning Schedule" />
         <pnp:PropertyBagEntry Key="enabledhelpcollections" Value="VGSEndUser" />
+        <pnp:PropertyBagEntry Key="docid_diwi_lf" Value="1" />
+        <pnp:PropertyBagEntry Key="profileschemaversion" Value="5" />
         <pnp:PropertyBagEntry Key="_holds_list_cache_" Value=";[local]/Lists/Holds" />
         <pnp:PropertyBagEntry Key="ecm_siterecordrestrictions" Value="BlockDelete" />
         <pnp:PropertyBagEntry Key="vti_associatemembergroup" Value="9" />
         <pnp:PropertyBagEntry Key="_routerautofoldersettings" Value="&lt;AutoFolder&gt;&lt;Properties&gt;&lt;Property Name=&quot;AutoFolderPropertyFormat&quot; Value=&quot;Submitted after %1&quot; /&gt;&lt;Property Name=&quot;AutoFolderEnabled&quot; Value=&quot;True&quot; /&gt;&lt;Property Name=&quot;MaxFolderItems&quot; Value=&quot;2500&quot; /&gt;&lt;/Properties&gt;&lt;/AutoFolder&gt;" />
         <pnp:PropertyBagEntry Key="__ScriptSafeInternalPages" Value="WopiFrame.aspx;videoembedplayer.aspx;" />
+        <pnp:PropertyBagEntry Key="dlc_ExpirationLastRun" Value="15/06/2015 3:31:34" />
         <pnp:PropertyBagEntry Key="vti_associateownergroup" Value="7" />
         <pnp:PropertyBagEntry Key="isholdenabled" Value="true" />
         <pnp:PropertyBagEntry Key="vti_createdassociategroups" Value="7;8;9" />
-        <pnp:PropertyBagEntry Key="holdlistid" Value="d4f81bcf-64b5-42c0-860f-597d3e036311" />
+        <pnp:PropertyBagEntry Key="sharepointhelpoverride" Value="SPOStandard" />
         <pnp:PropertyBagEntry Key="ecm_webhasiprenabled" Value="true" />
         <pnp:PropertyBagEntry Key="vti_extenderversion" Value="16.0.0.4021" />
-        <pnp:PropertyBagEntry Key="sharepointhelpoverride" Value="SPOStandard" />
+        <pnp:PropertyBagEntry Key="docid_customProvider_assembly" Value="Microsoft.Office.DocumentManagement, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
         <pnp:PropertyBagEntry Key="docid_settings_ui" Value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot;?&gt;&#xD;&#xA;&lt;DocIdUiSettings xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;&gt;&#xD;&#xA;  &lt;Prefix /&gt;&#xD;&#xA;  &lt;AssignmentEnabled&gt;true&lt;/AssignmentEnabled&gt;&#xD;&#xA;&lt;/DocIdUiSettings&gt;" />
         <pnp:PropertyBagEntry Key="_webnavigationsettings" Value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-16&quot; standalone=&quot;yes&quot;?&gt;&#xD;&#xA;&lt;WebNavigationSettings Version=&quot;1.1&quot;&gt;&#xD;&#xA;  &lt;SiteMapProviderSettings&gt;&#xD;&#xA;    &lt;SwitchableSiteMapProviderSettings Name=&quot;CurrentNavigationSwitchableProvider&quot; TargetProviderName=&quot;CurrentNavigationTaxonomyProvider&quot; /&gt;&#xD;&#xA;    &lt;TaxonomySiteMapProviderSettings Name=&quot;CurrentNavigationTaxonomyProvider&quot; TermStoreId=&quot;437b86fc-1258-45a9-85ea-87a29156ce3c&quot; TermSetId=&quot;6be9eb4d-06b9-419e-88c2-1dfd46e7fdc1&quot; /&gt;&#xD;&#xA;    &lt;SwitchableSiteMapProviderSettings Name=&quot;GlobalNavigationSwitchableProvider&quot; TargetProviderName=&quot;GlobalNavigationTaxonomyProvider&quot; /&gt;&#xD;&#xA;    &lt;TaxonomySiteMapProviderSettings Name=&quot;GlobalNavigationTaxonomyProvider&quot; TermStoreId=&quot;437b86fc-1258-45a9-85ea-87a29156ce3c&quot; TermSetId=&quot;6be9eb4d-06b9-419e-88c2-1dfd46e7fdc1&quot; /&gt;&#xD;&#xA;  &lt;/SiteMapProviderSettings&gt;&#xD;&#xA;  &lt;NewPageSettings AddNewPagesToNavigation=&quot;True&quot; CreateFriendlyUrlsForNewPages=&quot;True&quot; /&gt;&#xD;&#xA;&lt;/WebNavigationSettings&gt;&#xD;&#xA;" />
         <pnp:PropertyBagEntry Key="allowslistpolicy" Value="True" />
         <pnp:PropertyBagEntry Key="vti_associatevisitorgroup" Value="8" />
-        <pnp:PropertyBagEntry Key="vti_customuploadpage" Value="/_layouts/15/UploadEx.aspx" />
+        <pnp:PropertyBagEntry Key="docid_customProvider_class" Value="Microsoft.Office.DocumentManagement.Internal.OobProvider" />
         <pnp:PropertyBagEntry Key="SiteCollectionGroupId437b86fc-1258-45a9-85ea-87a29156ce3c" Value="96221f5f-06c3-40b8-953f-ea715cc11335" />
         <pnp:PropertyBagEntry Key="vti_filedialogpostprocessorid" Value="{f68e6d4e-383a-4c8d-ba4d-d2139f164281}" />
         <pnp:PropertyBagEntry Key="NavigationPropertiesSet" Value="True" />
         <pnp:PropertyBagEntry Key="metadatatimestamp" Value="437b86fc125845a985ea87a29156ce3c|2015-03-27T08:10:01.077Z" />
         <pnp:PropertyBagEntry Key="_routerversioning" Value="AppendUniqueSuffixes" />
         <pnp:PropertyBagEntry Key="_routersaveauditlogs" Value="True" />
+        <pnp:PropertyBagEntry Key="FollowLinkEnabled" Value="TRUE" />
       </pnp:PropertyBagEntries>
       <pnp:Security>
         <pnp:AdditionalOwners>
@@ -1398,7 +1404,7 @@
       <pnp:Lists>
         <pnp:ListInstance Title="Drop Off Library" Description="After their properties are filled out, files uploaded to this library are automatically moved to the correct library or folder according to rules created by the owner of this site." DocumentTemplate="{site}/DropOffLibrary/Forms/template.dotx" TemplateType="101" Url="DropOffLibrary" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" ContentTypesEnabled="true" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{B68749B2-CD57-4835-BC22-2400D9E1F662}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateoffile1/DropOffLibrary/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{B68749B2-CD57-4835-BC22-2400D9E1F662}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateoffile1/DropOffLibrary/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -1429,7 +1435,7 @@
             <pnp:ContentTypeBinding ContentTypeID="0x010100F8EF98760CBA4A94994F13BA881038FA" Default="true" />
           </pnp:ContentTypeBindings>
           <pnp:Views>
-            <View Name="{39F34533-9C27-4BB8-9606-A44251A8FD35}" MobileView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateoffile1/FormServerTemplates/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{39F34533-9C27-4BB8-9606-A44251A8FD35}" MobileView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateoffile1/FormServerTemplates/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -1446,7 +1452,7 @@
               <XslLink Default="TRUE">main.xsl</XslLink>
               <Toolbar Type="Standard" />
             </View>
-            <View Name="{3F596EED-FF44-47E1-9C6B-6763EFDC1985}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Forms" Url="/sites/templateoffile1/FormServerTemplates/Forms/All Forms.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{3F596EED-FF44-47E1-9C6B-6763EFDC1985}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Forms" Url="/sites/templateoffile1/FormServerTemplates/Forms/All Forms.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <GroupBy Collapse="FALSE">
                   <FieldRef Name="FormCategory" />
@@ -1489,7 +1495,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Record Library" Description="Upload finished documents to this library. Documents added to this library will automatically be declared as records." DocumentTemplate="" TemplateType="1302" Url="Records" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="da2e115b-07e4-49d9-bb2c-35e93bb9fca9" ContentTypesEnabled="true" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{F38E393F-B812-4723-B989-A8B678FB903F}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateoffile1/Records/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/rlibicon.png?rev=39">
+            <View Name="{F38E393F-B812-4723-B989-A8B678FB903F}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateoffile1/Records/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/rlibicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -1515,7 +1521,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Style Library" Description="Use the style library to store style sheets, such as CSS or XSL files. The style sheets in this gallery can be used by this site or any of its subsites." DocumentTemplate="" TemplateType="101" Url="Style Library" EnableVersioning="true" EnableMinorVersions="true" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{616D21F3-DE77-44EB-B2FA-A1DF25320C26}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateoffile1/Style Library/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=39">
+            <View Name="{616D21F3-DE77-44EB-B2FA-A1DF25320C26}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateoffile1/Style Library/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />

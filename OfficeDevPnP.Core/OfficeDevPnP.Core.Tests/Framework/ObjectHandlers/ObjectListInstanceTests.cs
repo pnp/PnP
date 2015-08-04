@@ -60,7 +60,11 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
             {
                 TokenParser.Initialize(ctx.Web, template);
 
-                new ObjectListInstance().ProvisionObjects(ctx.Web, template);
+                // Create the List
+                new ObjectListInstance().ProvisionObjects(ctx.Web, template, new ProvisioningTemplateApplyingInformation());
+
+                // Load DataRows
+                new ObjectListInstanceDataRows().ProvisionObjects(ctx.Web, template, new ProvisioningTemplateApplyingInformation());
 
                 var list = ctx.Web.GetListByUrl(listInstance.Url);
                 Assert.IsNotNull(list);
@@ -83,7 +87,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
                 var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) {BaseTemplate = ctx.Web.GetBaseTemplate()};
 
                 var template = new ProvisioningTemplate();
-                template = new ObjectListInstance().CreateEntities(ctx.Web, template, creationInfo);
+                template = new ObjectListInstance().ExtractObjects(ctx.Web, template, creationInfo);
 
                 Assert.IsTrue(template.Lists.Any());
             }

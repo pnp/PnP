@@ -1,5 +1,5 @@
 #Add-SPOFieldFromXml
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-06-11*
 
 Adds a field to a list or as a site column based upon a CAML/XML field definition
 ##Syntax

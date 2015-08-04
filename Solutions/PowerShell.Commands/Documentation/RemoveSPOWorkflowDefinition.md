@@ -1,5 +1,5 @@
 #Remove-SPOWorkflowDefinition
-*Topic automatically generated on: 2015-06-03*
+*Topic automatically generated on: 2015-06-11*
 
 Removes a workflow definition
 ##Syntax

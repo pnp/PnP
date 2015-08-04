@@ -21,13 +21,23 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             set { _reportProgress = value; }
         }
 
+        public ProvisioningMessagesDelegate MessagesDelegate { get; set; }
+
         public abstract bool WillProvision(Web web, ProvisioningTemplate template);
 
         public abstract bool WillExtract(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo);
 
-        public abstract void ProvisionObjects(Web web, ProvisioningTemplate template);
+        public abstract void ProvisionObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateApplyingInformation applyingInformation);
 
-        public abstract ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo);
+        public abstract ProvisioningTemplate ExtractObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo);
+
+        internal void WriteWarning(string message, ProvisioningMessageType messageType)
+        {
+            if (MessagesDelegate != null)
+            {
+                MessagesDelegate(message, messageType);
+            }
+        }
 
         protected string Tokenize(string url, string webUrl)
         {

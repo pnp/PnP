@@ -97,7 +97,7 @@ alert(""Hello!"");
             using (var ctx = TestCommon.CreateClientContext())
             {
                 TokenParser.Initialize(ctx.Web, template);
-                new ObjectPages().ProvisionObjects(ctx.Web, template);
+                new ObjectPages().ProvisionObjects(ctx.Web, template, new ProvisioningTemplateApplyingInformation());
 
                 ctx.Load(ctx.Web, w => w.ServerRelativeUrl);
                 ctx.ExecuteQueryRetry();
@@ -121,7 +121,7 @@ alert(""Hello!"");
                 var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) { BaseTemplate = ctx.Web.GetBaseTemplate() };
 
                 var template = new ProvisioningTemplate();
-                template = new ObjectPages().CreateEntities(ctx.Web, template, creationInfo);
+                template = new ObjectPages().ExtractObjects(ctx.Web, template, creationInfo);
 
                 Assert.IsInstanceOfType(template.Pages, typeof(List<Core.Framework.Provisioning.Model.Page>));
             }

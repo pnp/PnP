@@ -128,7 +128,7 @@ After reading this chapter you'll have a detailed understanding of how the timer
 ### Structure ###
 The PnP structure is rather simple: there's an abstract base class called `TimerJob` that will be the base class for your timer jobs. This base class contains the below public properties, methods and events:
 
-![](http://i.imgur.com/rbXcZQq.png)
+![](http://i.imgur.com/IO079mK.png)
 
 Most properties and methods will be explained in more detail in the coming chapters, for the ones which aren't you'll find a description below:
 
@@ -283,12 +283,14 @@ public SimpleJob() : base("SimpleJob")
 
 When the `TimerJobRun` event fires you receive a `TimerJobRunEventArgs`object which provides you with the information you need to easily write your timer job logic. Following attributes and methods are available in this class:
 
-![](http://i.imgur.com/OVSYF8b.png)
+![](http://i.imgur.com/CRFBdwS.png)
 
 Several of the properties and all of the methods are used in the optional state management feature which will be discussed in the next chapter. However the following properties will always be available in each and every event, regardless of the used configuration:
 - **Url** property: this holds the site the event is fired for. This can be the root site of the site collection, but it can also be a sub site in case site expanding was done
+- **ConfigurationData** property: when you construct the timer job you can optionally specify configuration data. This configuration data is passed along as part of the `TimerJobRunEventArgs` object
 - **WebClientContext** property: this property contains a `ClientContext` object for the site defined in the Url property. This is typically the `ClientContext` object that you would use in your timer job code
 - **SiteClientContext** property: When you have expanded sub sites your timer job logic might need to do something with the root site (e.g. add page lay-out to the master page gallery). To make that tasks easy you can use the SiteClientContext property as this contains a `ClientContext`object for the root site of the currently processed url
+- **TenantClientContext** property: this property contains a `ClientContext`object that was constructed using the tenant admin site url. If you want to use the `Tenant` API in your timer job `TimerJobRun` event handler then you can simply create a new `Tenant` object by using this TenantClientContext property
 
 All `ClientContext`objects do use the authentication information like setup in the **Authentication** chapter. If you've opted for user credentials please ensure that the used account has the needed permissions to operate against the specified sites. When using app-only is best to set tenant-scoped permissions to the app-only principal.
 

@@ -96,7 +96,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
             {
                 TokenParser.Initialize(ctx.Web, template);
 
-                new ObjectTermGroups().ProvisionObjects(ctx.Web, template);
+                new ObjectTermGroups().ProvisionObjects(ctx.Web, template, new ProvisioningTemplateApplyingInformation());
 
                 TaxonomySession session = TaxonomySession.GetTaxonomySession(ctx);
 
@@ -118,7 +118,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
                 var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) { BaseTemplate = ctx.Web.GetBaseTemplate() };
 
                 var template2 = new ProvisioningTemplate();
-                template2 = new ObjectTermGroups().CreateEntities(ctx.Web, template, creationInfo);
+                template2 = new ObjectTermGroups().ExtractObjects(ctx.Web, template, creationInfo);
 
                 Assert.IsTrue(template.TermGroups.Any());
                 Assert.IsInstanceOfType(template.TermGroups, typeof(List<TermGroup>));

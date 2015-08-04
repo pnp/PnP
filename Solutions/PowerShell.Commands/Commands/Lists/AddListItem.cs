@@ -10,11 +10,11 @@ namespace OfficeDevPnP.PowerShell.Commands
     [Cmdlet(VerbsCommon.Add, "SPOListItem")]
     [CmdletHelp("Adds an item to a list", Category = "Lists")]
     [CmdletExample(
-        Code = @"Add-SPOListItem -List ""Demo List"" -Values @{""Title"" = ""Test Title"", ""Category""=""Test Category""}", 
+        Code = @"Add-SPOListItem -List ""Demo List"" -Values @{""Title"" = ""Test Title""; ""Category""=""Test Category""}", 
         Remarks = @"Adds a new list item to the ""Demo List"", and sets both the Title and Category fields with the specified values.",
         SortOrder = 1)]
     [CmdletExample(
-        Code = @"Add-SPOListItem -List ""Demo List"" -ContentType ""Company"" -Values @{""Title"" = ""Test Title"", ""Category""=""Test Category""}", 
+        Code = @"Add-SPOListItem -List ""Demo List"" -ContentType ""Company"" -Values @{""Title"" = ""Test Title""; ""Category""=""Test Category""}", 
         Remarks = @"Adds a new list item to the ""Demo List"", sets the content type to ""Company"" and sets both the Title and Category fields with the specified values.",
         SortOrder = 2)]
     public class AddListItem : SPOWebCmdlet
@@ -33,7 +33,7 @@ namespace OfficeDevPnP.PowerShell.Commands
             List list = null;
             if (List != null)
             {
-                list = SelectedWeb.GetList(List);
+                list = List.GetList(SelectedWeb);
             }
             if (list != null)
             {

@@ -339,6 +339,7 @@ namespace Core.MMSSync
                                                                     termset => termset.Id,
                                                                     termset => termset.Description,
                                                                     termset => termset.Contact,
+                                                                    termset => termset.CustomSortOrder,
                                                                     termset => termset.CustomProperties,
                                                                     termset => termset.IsAvailableForTagging,
                                                                     termset => termset.IsOpenForTermCreation,
@@ -609,6 +610,7 @@ namespace Core.MMSSync
                                                                  term => term.Parent,
                                                                  term => term.IsAvailableForTagging,
                                                                  term => term.IsDeprecated,
+                                                                 term => term.CustomSortOrder,
                                                                  term => term.LocalCustomProperties,
                                                                  term => term.CustomProperties,
                                                                  term => term.Labels.Include(label => label.Value, label => label.Language, label => label.IsDefaultForLanguage),
@@ -905,6 +907,7 @@ namespace Core.MMSSync
                                               set => set.CustomProperties,
                                               set => set.IsAvailableForTagging,
                                               set => set.IsOpenForTermCreation,
+                                              set => set.CustomSortOrder,
                                               set => set.CustomProperties,
                                               set => set.Terms.Include(
                                                         term => term.Name,
@@ -988,6 +991,7 @@ namespace Core.MMSSync
                                                               term => term.IsAvailableForTagging,
                                                               term => term.LocalCustomProperties,
                                                               term => term.CustomProperties,
+                                                              term => term.CustomSortOrder,
                                                               term => term.Labels.Include(label => label.Value, label => label.Language, label => label.IsDefaultForLanguage),
                                                               term => term.TermSet, termset => termset.Id));
             sourceClientContext.ExecuteQuery();
@@ -1173,6 +1177,7 @@ namespace Core.MMSSync
             targetTermSet.Description = sourceTermset.Description;
             targetTermSet.IsAvailableForTagging = sourceTermset.IsAvailableForTagging;
             targetTermSet.Contact = sourceTermset.Contact;
+            targetTermSet.CustomSortOrder = sourceTermset.CustomSortOrder;
             // We're not allowing term creation as the target termset should stay in sync with the source
             targetTermSet.IsOpenForTermCreation = false;
 
@@ -1205,6 +1210,7 @@ namespace Core.MMSSync
         {
             targetTerm.Name = sourceTerm.Name;
             targetTerm.IsAvailableForTagging = sourceTerm.IsAvailableForTagging;
+            targetTerm.CustomSortOrder = sourceTerm.CustomSortOrder;
 
             // Process custom properties
             if (sourceTerm.LocalCustomProperties.Count > 0)

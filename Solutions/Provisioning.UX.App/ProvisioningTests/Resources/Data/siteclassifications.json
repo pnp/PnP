@@ -1,0 +1,22 @@
+﻿{   
+    "siteclassifications": [
+        {
+            "key": "Low Business Impact (LBI)",
+            "value": "LBI",
+            "displayOrder": 1,
+            "addAllAuthenticatedUsers":  true
+        },
+        {
+            "key": "Medium Business Impact (MBI)",
+            "value": "MBI",
+            "displayOrder": 2,
+             "addAllAuthenticatedUsers":  true
+        },
+        {
+            "key": "High Business Impact (HBI)",
+            "value": "HBI",
+            "displayOrder": 3,
+            "addAllAuthenticatedUsers":  false
+        }
+    ]
+}

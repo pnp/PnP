@@ -19,6 +19,7 @@ Core.TimerJobs.Samples | Bert Jansen (**Microsoft**)
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
+1.1  | June 23rd 2015 | Additional sample showing how to use the tenant API in a timer job
 1.0  | February 13th 2015 | Initial release
 
 ### Disclaimer ###
@@ -412,7 +413,41 @@ public class SiteCollectionScopedJob: TimerJob
 ## Timer job host implementation ##
 Identical to sample 1.
 
-# Sample 10: ChainingJob #
+# Sample 10: TenantAPIJob #
+## Goal ##
+This sample's purpose is to show you how the SharePoint Tenant API can be used in a timer job. 
+## Timer job implementation ##
+In the `TimerJobRun` event handler you can construct a `Tenant` class via providing it the correct `ClientContext` object via the `TimerJobRunEventArgs.TenantClientContext` property. Below code shows this:
+
+```C#
+public class TenantAPIJob: TimerJob
+{
+    public TenantAPIJob()
+        : base("TenantAPIJob", "1.0")
+    {
+        TimerJobRun += TenantAPIJob_TimerJobRun;
+    }
+
+    void TenantAPIJob_TimerJobRun(object sender, TimerJobRunEventArgs e)
+    {
+        Tenant t = new Tenant(e.TenantClientContext);
+        var sites = t.GetSiteProperties(0, true);
+        e.TenantClientContext.Load(sites);
+        e.TenantClientContext.ExecuteQueryRetry();
+
+        foreach(var site in sites)
+        {
+            Console.WriteLine(site.Template);
+        }
+
+    }
+}
+```
+
+## Timer job host implementation ##
+Identical to sample 3.
+
+# Sample 11: ChainingJob #
 ## Goal ##
 A more theoretical example, but still might be valuable...showing how you can call another timer job from an existig one.
 

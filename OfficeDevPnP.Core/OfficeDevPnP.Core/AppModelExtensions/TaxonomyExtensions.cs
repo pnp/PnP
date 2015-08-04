@@ -1665,7 +1665,7 @@ namespace Microsoft.SharePoint.Client
         {
             FieldCollection fields = web.Fields;
             web.Context.Load(fields, fc => fc.Include(f => f.Id, f => f.InternalName));
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             Field field = fields.FirstOrDefault(f => f.InternalName == internalName);
 
@@ -1673,7 +1673,7 @@ namespace Microsoft.SharePoint.Client
             {
                 field.DeleteObject();
                 web.Update();
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 CleanupTaxonomyHiddenField(web, web.Fields, new TaxonomyFieldCreationInformation() { Id = field.Id, InternalName = field.InternalName });
 

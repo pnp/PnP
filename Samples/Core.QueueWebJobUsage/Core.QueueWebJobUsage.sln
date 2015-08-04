@@ -1,20 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.QueueWebJobUsage", "Core.QueueWebJobUsage\Core.QueueWebJobUsage.csproj", "{3692D5F6-CEE3-4B83-B41F-EEFA4C51EAAD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.QueueWebJobUsageWeb", "Core.QueueWebJobUsageWeb\Core.QueueWebJobUsageWeb.csproj", "{6BF6B1A6-B695-432D-9C5C-06BBC633452F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{0FB68674-2E93-471D-831E-A5A18E66E617}"
 	ProjectSection(SolutionItems) = preProject
 		readme.md = readme.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.QueueWebJobUsage.Common", "Core.QueueWebJobUsage.Common\Core.QueueWebJobUsage.Common.csproj", "{34FA3ACE-DEB1-4E16-85A1-33D3CC008C8B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helper Project", "Helper Project", "{5700E885-C51B-4012-B760-62FAF97EE5B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.QueueWebJobUsage", "Core.QueueWebJobUsage\Core.QueueWebJobUsage.csproj", "{3692D5F6-CEE3-4B83-B41F-EEFA4C51EAAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.QueueWebJobUsageWeb", "Core.QueueWebJobUsageWeb\Core.QueueWebJobUsageWeb.csproj", "{6BF6B1A6-B695-432D-9C5C-06BBC633452F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.QueueWebJobUsage.Common", "Core.QueueWebJobUsage.Common\Core.QueueWebJobUsage.Common.csproj", "{34FA3ACE-DEB1-4E16-85A1-33D3CC008C8B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.QueueWebJobUsage.Console.SendMessage", "Core.QueueWebJobUsage.Console.SendMessage\Core.QueueWebJobUsage.Console.SendMessage.csproj", "{359AC5F5-7D1A-42E0-A1DF-D32327BF1B8F}"
 EndProject

@@ -1,7 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
-  <Module Name="PlaceholderModule">
-    <File Path="PlaceholderModule\Sample.txt" Url="PlaceholderModule/Sample.txt" ReplaceContent="TRUE" />
-    <File Path="PlaceholderModule\AppIcon.png" Url="PlaceholderModule/AppIcon.png" ReplaceContent="TRUE" />
-  </Module>
-</Elements>

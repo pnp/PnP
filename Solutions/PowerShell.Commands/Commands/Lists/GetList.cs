@@ -28,7 +28,7 @@ namespace OfficeDevPnP.PowerShell.Commands
         {
             if (Identity != null)
             {
-                var list = SelectedWeb.GetList(Identity);
+                var list = Identity.GetList(SelectedWeb);
                 WriteObject(list);
 
             }

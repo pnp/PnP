@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.SharePoint.Client;
+using System.Xml.Linq;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 {
@@ -14,7 +15,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
 
         #region Properties
         
-        public string CommandUIExtension { get; set; }
+        public System.Xml.Linq.XElement CommandUIExtension { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the custom action.
@@ -138,8 +139,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         }
 
         public bool Equals(CustomAction other)
-        {
-            return (this.CommandUIExtension == other.CommandUIExtension &&
+        { 
+            XNodeEqualityComparer xnec = new XNodeEqualityComparer();
+
+            return (
+                xnec.Equals(this.CommandUIExtension, other.CommandUIExtension) &&
                 this.Description == other.Description &&
                 this.Enabled == other.Enabled &&
                 this.Group == other.Group &&

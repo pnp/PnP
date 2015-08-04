@@ -684,4 +684,10 @@
   <data name="Provisioning_Providers_XML_InvalidFileFormat" xml:space="preserve">
     <value>Cannot process XML file {0}.</value>
   </data>
+  <data name="Provisioning_ObjectHandlers_ListInstancesDataRows" xml:space="preserve">
+    <value>Data Rows</value>
+  </data>
+  <data name="TimerJob_Authentication_TenantAdmin" xml:space="preserve">
+    <value>Tenant admin site set to {0}.</value>
+  </data>
 </root>

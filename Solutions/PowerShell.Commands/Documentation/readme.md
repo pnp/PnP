@@ -15,6 +15,7 @@ Cmdlet|Description
 Cmdlet|Description
 :-----|:----------
 **[Get&#8209;SPOAuthenticationRealm](GetSPOAuthenticationRealm.md)** |Gets the authentication realm for the current web
+**[Get&#8209;SPOAzureADManifestKeyCredentials](GetSPOAzureADManifestKeyCredentials.md)** |Creates the JSON snippet that is required for the manifest json file for Azure WebApplication / WebAPI apps
 **[Set&#8209;SPOConfiguration](SetSPOConfiguration.md)** |To be deprecated
 **[Get&#8209;SPOConfiguration](GetSPOConfiguration.md)** |To be deprecated
 **[Get&#8209;SPOContext](GetSPOContext.md)** |Returns a Client Side Object Model context
@@ -51,6 +52,13 @@ Cmdlet|Description
 **[Add&#8209;SPOContentTypeToList](AddSPOContentTypeToList.md)** |Adds a new content type to a list
 **[Set&#8209;SPODefaultContentTypeToList](SetSPODefaultContentTypeToList.md)** |Sets the default content type for a list
 **[Add&#8209;SPOFieldToContentType](AddSPOFieldToContentType.md)** |Adds an existing site column to a content type
+##Document Sets
+Cmdlet|Description
+:-----|:----------
+**[Remove&#8209;SPOContentTypeFromDocumentSet](RemoveSPOContentTypeFromDocumentSet.md)** |Removes a content type from a document set
+**[Add&#8209;SPOContentTypeToDocumentSet](AddSPOContentTypeToDocumentSet.md)** |Adds a content type to a document set
+**[Set&#8209;SPODocumentSetField](SetSPODocumentSetField.md)** |Sets a site column from the avaiable content types to a document set
+**[Get&#8209;SPODocumentSetTemplate](GetSPODocumentSetTemplate.md)** |Retrieves a document set template
 ##Event Receivers
 Cmdlet|Description
 :-----|:----------
@@ -81,9 +89,9 @@ Cmdlet|Description
 :-----|:----------
 **[Set&#8209;SPODefaultColumnValues](SetSPODefaultColumnValues.md)** |Sets default column values for a document library
 **[Remove&#8209;SPOList](RemoveSPOList.md)** |Deletes a list
-**[Set&#8209;SPOList](SetSPOList.md)** |Updates list settings
 **[Get&#8209;SPOList](GetSPOList.md)** |Returns a List object
 **[New&#8209;SPOList](NewSPOList.md)** |Creates a new list
+**[Set&#8209;SPOList](SetSPOList.md)** |Updates list settings
 **[Add&#8209;SPOListItem](AddSPOListItem.md)** |Adds an item to a list
 **[Get&#8209;SPOListItem](GetSPOListItem.md)** |Retrieves list items
 **[Set&#8209;SPOListPermission](SetSPOListPermission.md)** |Sets list permissions
@@ -94,12 +102,18 @@ Cmdlet|Description
 Cmdlet|Description
 :-----|:----------
 **[Add&#8209;SPOHtmlPublishingPageLayout](AddSPOHtmlPublishingPageLayout.md)** |Adds a HTML based publishing page layout
+**[Add&#8209;SPOMasterPage](AddSPOMasterPage.md)** |Adds a Masterpage
 **[Add&#8209;SPOPublishingPage](AddSPOPublishingPage.md)** |Adds a publishing page
 **[Add&#8209;SPOPublishingPageLayout](AddSPOPublishingPageLayout.md)** |Adds a publishing page layout
 **[Remove&#8209;SPOWikiPage](RemoveSPOWikiPage.md)** |Removes a wiki page
 **[Add&#8209;SPOWikiPage](AddSPOWikiPage.md)** |Adds a wiki page
 **[Get&#8209;SPOWikiPageContent](GetSPOWikiPageContent.md)** |Gets the contents/source of a wiki page
 **[Set&#8209;SPOWikiPageContent](SetSPOWikiPageContent.md)** |Sets the contents of a wikipage
+##Search
+Cmdlet|Description
+:-----|:----------
+**[Set&#8209;SPOSearchConfiguration](SetSPOSearchConfiguration.md)** |Returns the search configuration
+**[Get&#8209;SPOSearchConfiguration](GetSPOSearchConfiguration.md)** |Returns the search configuration
 ##Sites
 Cmdlet|Description
 :-----|:----------
@@ -123,15 +137,12 @@ Cmdlet|Description
 ##Tenant Administration
 Cmdlet|Description
 :-----|:----------
-**[Set&#8209;SPOTenantSite](SetSPOTenantSite.md)** |Office365 only: Uses the tenant API to set site information.
-**[Get&#8209;SPOTenantSite](GetSPOTenantSite.md)** |Office365 only: Uses the tenant API to retrieve site information. 
-**[Remove&#8209;SPOTenantSite](RemoveSPOTenantSite.md)** |Office365 only: Removes a site collection from the current tenant
 **[New&#8209;SPOTenantSite](NewSPOTenantSite.md)** |Creates a new site collection for the current tenant
 **[Get&#8209;SPOTimeZoneId](GetSPOTimeZoneId.md)** |Returns a time zone ID
-**[Get&#8209;SPOWebTemplates](GetSPOWebTemplates.md)** |Office365 only: Returns the available web templates.
 ##User and group management
 Cmdlet|Description
 :-----|:----------
+**[Remove&#8209;SPOGroup](RemoveSPOGroup.md)** |Removes a group.
 **[Set&#8209;SPOGroup](SetSPOGroup.md)** |Updates a group
 **[New&#8209;SPOGroup](NewSPOGroup.md)** |Adds a user to the build-in Site User Info List and returns a user object
 **[Get&#8209;SPOGroup](GetSPOGroup.md)** |Returns a specific group or all groups.
@@ -141,7 +152,6 @@ Cmdlet|Description
 ##User Profiles
 Cmdlet|Description
 :-----|:----------
-**[New&#8209;SPOPersonalSite](NewSPOPersonalSite.md)** |Office365 only: Creates a personal / OneDrive For Business site
 **[Get&#8209;SPOUserProfileProperty](GetSPOUserProfileProperty.md)** |Office365 only: Uses the tenant API to retrieve site information.  You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) with Connect-SPOnline in order to use this command.  
 ##Utilities
 Cmdlet|Description
@@ -168,6 +178,8 @@ Cmdlet|Description
 **[Add&#8209;SPOFolder](AddSPOFolder.md)** |Creates a folder within a parent folder
 **[Get&#8209;SPOHomePage](GetSPOHomePage.md)** |Returns the URL to the home page
 **[Set&#8209;SPOIndexedProperties](SetSPOIndexedProperties.md)** |Marks values of the propertybag to be indexed by search. Notice that this will overwrite the existing flags, e.g. only the properties you define with the cmdlet will be indexed.
+**[Remove&#8209;SPOIndexedProperty](RemoveSPOIndexedProperty.md)** |Removes a key from propertybag to be indexed by search. The key and it's value retain in the propertybag, however it will not be indexed anymore.
+**[Add&#8209;SPOIndexedProperty](AddSPOIndexedProperty.md)** |Marks the value of the propertybag key to be indexed by search.
 **[Get&#8209;SPOIndexedPropertyKeys](GetSPOIndexedPropertyKeys.md)** |Returns the keys of the property bag values that have been marked for indexing by search
 **[Get&#8209;SPOMasterPage](GetSPOMasterPage.md)** |Returns the URLS of the default Master Page and the custom Master Page.
 **[Get&#8209;SPOPropertyBag](GetSPOPropertyBag.md)** |Returns the property bag values.
@@ -175,6 +187,7 @@ Cmdlet|Description
 **[Set&#8209;SPOPropertyBagValue](SetSPOPropertyBagValue.md)** |Sets a property bag value
 **[Request&#8209;SPOReIndexWeb](RequestSPOReIndexWeb.md)** |Marks the web for full indexing during the next incremental crawl
 **[Get&#8209;SPOSubWebs](GetSPOSubWebs.md)** |Returns the subwebs
+**[Remove&#8209;SPOWeb](RemoveSPOWeb.md)** |Removes a subweb in the current web
 **[Get&#8209;SPOWeb](GetSPOWeb.md)** |Returns the current web object
 **[New&#8209;SPOWeb](NewSPOWeb.md)** |Creates a new subweb to the current web
 **[Set&#8209;SPOWeb](SetSPOWeb.md)** |Sets properties on a web

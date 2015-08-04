@@ -19,7 +19,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
        
 
-        public override void ProvisionObjects(Web web, ProvisioningTemplate template)
+        public override void ProvisionObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateApplyingInformation applyingInformation)
         {
 
             Log.Info(Constants.LOGGING_SOURCE_FRAMEWORK_PROVISIONING, CoreResources.Provisioning_ObjectHandlers_ComposedLooks);
@@ -88,7 +88,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
         }
 
-        public override ProvisioningTemplate CreateEntities(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
+        public override ProvisioningTemplate ExtractObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
             // Load object if not there
             bool executeQueryNeeded = false;
@@ -116,7 +116,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 #endif
             if (executeQueryNeeded)
             {
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
 
             // Information coming from the site
@@ -214,6 +214,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 template.ComposedLook = null;
             }
 
+            if (creationInfo != null && creationInfo.BaseTemplate != null)
+            {
+                template = CleanupEntities(template, creationInfo.BaseTemplate);
+            }
+
             return template;
         }
 
@@ -293,6 +298,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate)
         {
+            if (template.ComposedLook != null && baseTemplate.ComposedLook != null)
+            {
+                if (template.ComposedLook.Equals(baseTemplate.ComposedLook))
+                {
+                    template.ComposedLook = null;
+                }
+              
+            }
             return template;
         }
 

@@ -58,7 +58,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
 
             using (var ctx = TestCommon.CreateClientContext())
             {
-                new ObjectContentType().ProvisionObjects(ctx.Web, template);
+                new ObjectContentType().ProvisionObjects(ctx.Web, template, new ProvisioningTemplateApplyingInformation());
 
                 var ct = ctx.Web.GetContentTypeByName("Test Content Type");
 
@@ -78,7 +78,7 @@ namespace OfficeDevPnP.Core.Tests.Framework.ObjectHandlers
                 var creationInfo = new ProvisioningTemplateCreationInformation(ctx.Web) { BaseTemplate = ctx.Web.GetBaseTemplate() };
 
                 var template = new ProvisioningTemplate();
-                template = new ObjectContentType().CreateEntities(ctx.Web, template, creationInfo);
+                template = new ObjectContentType().ExtractObjects(ctx.Web, template, creationInfo);
 
                 Assert.IsTrue(template.ContentTypes.Any());
                 Assert.IsInstanceOfType(template.ContentTypes, typeof(List<ContentType>));

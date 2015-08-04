@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Provisioning.Common.Data.Templates;
+using System.Diagnostics;
 
 
 namespace Provisioning.Common
@@ -35,18 +36,20 @@ namespace Provisioning.Common
         #endregion
 
         #region ISiteProvisioning Members
-        public abstract void CreateSiteCollection(SiteRequestInformation siteRequest, Template template);
+        public abstract void CreateSiteCollection(SiteInformation siteRequest, Template template);
 
         public virtual bool IsTenantExternalSharingEnabled(string tenantUrl)
         {
+            Log.Info("AbstractSiteProvisioningService.IsTenantExternalSharingEnabled", "Entering IsTenantExternalSharingEnabled Url {0}", tenantUrl);
             var _returnResult = false;
             UsingContext(ctx =>
             {
+                Stopwatch _timespan = Stopwatch.StartNew();
                 Tenant _tenant = new Tenant(ctx);
                 ctx.Load(_tenant);
                 try
                 { 
-                    //IF calling SP ONPREM THIS WILL FAIL
+                    //IF CALLING SP ONPREM THIS WILL FAIL
                     ctx.ExecuteQuery();
                     //check sharing capabilities
                     if(_tenant.SharingCapability == SharingCapabilities.Disabled)
@@ -57,10 +60,13 @@ namespace Provisioning.Common
                     {
                         _returnResult = true;
                     }
-                                }
+                    _timespan.Stop();
+                    Log.TraceApi("SharePoint", "AbstractSiteProvisioningService.IsTenantExternalSharingEnabled", _timespan.Elapsed);
+
+                }
                 catch(Exception ex)
                 {
-                    Log.Warning("Provisioning.Common.AbstractSiteProvisioningService.IsTenantExternalSharingEnabled", 
+                    Log.Error("Provisioning.Common.AbstractSiteProvisioningService.IsTenantExternalSharingEnabled", 
                         PCResources.ExternalSharing_Enabled_Error_Message, 
                         tenantUrl, 
                         ex);
@@ -70,26 +76,36 @@ namespace Provisioning.Common
             return _returnResult;
         }
 
-        public abstract void SetExternalSharing(SiteRequestInformation siteInfo);
+        public abstract void SetExternalSharing(SiteInformation siteInfo);
 
         public virtual SitePolicyEntity GetAppliedSitePolicy()
         {
+            Log.Info("AbstractSiteProvisioningService.GetAppliedSitePolicy", "Entering GetAppliedSitePolicy");
             SitePolicyEntity _appliedSitePolicy = null;
             UsingContext(ctx =>
             {
+                Stopwatch _timespan = Stopwatch.StartNew();
                 var _web = ctx.Web;
                 _appliedSitePolicy = _web.GetAppliedSitePolicy();
-
+               
+                _timespan.Stop();
+                Log.TraceApi("SharePoint", "AbstractSiteProvisioningService.IsTenantExternalSharingEnabled", _timespan.Elapsed);
             });
             return _appliedSitePolicy;
         }
 
+
         public virtual void SetSitePolicy(string policyName)
         {
+            Log.Info("AbstractSiteProvisioningService.SetSitePolicy", "Entering SetSitePolicy Policy Name {0}", policyName);
             UsingContext(ctx =>
             {
+                Stopwatch _timespan = Stopwatch.StartNew();
                 var _web = ctx.Web;
                 bool _policyApplied = _web.ApplySitePolicy(policyName);
+                
+                _timespan.Stop();
+                Log.TraceApi("SharePoint", "AbstractSiteProvisioningService.SetSitePolicy", _timespan.Elapsed);
             });
         }
 
@@ -106,6 +122,7 @@ namespace Provisioning.Common
   
         public Web GetWebByUrl(string url)
         {
+            Log.Info("AbstractSiteProvisioningService.GetWebByUrl", "Entering GetWebByUrl Url {0}", url);
             Web _web = null;
             UsingContext(ctx =>
             {
@@ -124,6 +141,7 @@ namespace Provisioning.Common
         /// <returns></returns>
         public Guid? GetSiteGuidByUrl(string url)
         {
+            Log.Info("AbstractSiteProvisioningService.GetSiteGuidByUrl", "Entering GetSiteGuidByUrl Url {0}", url);
             Guid? _siteID = Guid.Empty;
             UsingContext(ctx =>
             {

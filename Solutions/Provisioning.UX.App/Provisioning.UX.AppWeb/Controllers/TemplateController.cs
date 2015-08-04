@@ -25,34 +25,28 @@ namespace Provisioning.UX.AppWeb.Controllers
         }
       
         /// <summary>
-        /// Returns a list of available site templates to create
+        /// Returns a list of available site templates that are available
         /// </summary>
         /// <returns></returns>
         [Route("api/provisioning/templates/getAvailableTemplates")]
         [WebAPIContextFilter]
         [HttpGet]
-        public TemplateResultResponse GetSiteTemplates()
+        public HttpResponseMessage GetSiteTemplates()
         {
-            var _returnResponse = new TemplateResultResponse();
-            _returnResponse.Success = false;
-
             try
             {
                 var _siteFactory = SiteTemplateFactory.GetInstance();
                 var _tm = _siteFactory.GetManager();
-                _returnResponse.Templates = _tm.GetAvailableTemplates();
-                _returnResponse.Success = true;
+                var _templates = _tm.GetAvailableTemplates();
+                return Request.CreateResponse((HttpStatusCode)200, _templates);
             }
             catch (Exception _ex)
             {
-                _returnResponse.ErrorMessage = _ex.Message;
-                Log.Error("TemplateController.GetSiteTemplates",
-                   "There was an error saving the Site Request. Error Message {0} Error Stack {1}",
-                   _ex.Message,
-                   _ex);
+                var _message = string.Format("There was an error processing the request. {0}", _ex.Message);
+                Log.Error("TemplateController.GetSiteTemplates", "There was an error processing the request. Exception: {0}", _ex);
+                HttpResponseMessage _response = Request.CreateResponse(HttpStatusCode.InternalServerError, _message);
+                throw new HttpResponseException(_response); 
             }
-
-            return _returnResponse;
         }
         #endregion
     }

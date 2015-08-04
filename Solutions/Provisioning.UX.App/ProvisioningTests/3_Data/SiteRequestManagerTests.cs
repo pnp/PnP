@@ -90,23 +90,22 @@ namespace ProvisioningTests._3_Data
             Assert.AreEqual(_expected.Url, _actual.Url);
         }
 
-        public SiteRequestInformation GetSiteRequestMock()
+        public SiteInformation GetSiteRequestMock()
         {
             var _owner = new SiteUser()
             {
-                Name = "frank@contoso.com"
+                Name = "frank@marascohome.com"
             };
             //Add addtional Users
             List<SiteUser> _additionalAdmins = new List<SiteUser>();
             SiteUser _admin1 = new SiteUser();
-            _admin1.Name = "user1@contoso.com";
+            _admin1.Name = "frank@marascohome.com";
             SiteUser _admin2 = new SiteUser();
-            //  _admin2.Email = "frank@microsoftacs.onmicrosoft.com";
-            _admin2.Name = "user2@contoso.com";
+            _admin2.Name = "frank@marascohome.com";
             _additionalAdmins.Add(_admin1);
             _additionalAdmins.Add(_admin2);
 
-            var _siteInfo = new SiteRequestInformation()
+            var _siteInfo = new SiteInformation()
             {
                 Title = "Test Title",
                 Description = "Test Description",
