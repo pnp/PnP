@@ -5,6 +5,7 @@ Below you can find a list of all the available cmdlets. Many commands provide bu
 Get-Help Connect-SPOnline -Detailed
 ```
 
+
 ##Apps
 Cmdlet|Description
 :-----|:----------
@@ -135,12 +136,8 @@ Cmdlet|Description
 ##Tenant Administration
 Cmdlet|Description
 :-----|:----------
-**[Set&#8209;SPOTenantSite](SetSPOTenantSite.md)** |Office365 only: Uses the tenant API to set site information.
-**[Get&#8209;SPOTenantSite](GetSPOTenantSite.md)** |Office365 only: Uses the tenant API to retrieve site information. 
-**[Remove&#8209;SPOTenantSite](RemoveSPOTenantSite.md)** |Office365 only: Removes a site collection from the current tenant
 **[New&#8209;SPOTenantSite](NewSPOTenantSite.md)** |Creates a new site collection for the current tenant
 **[Get&#8209;SPOTimeZoneId](GetSPOTimeZoneId.md)** |Returns a time zone ID
-**[Get&#8209;SPOWebTemplates](GetSPOWebTemplates.md)** |Office365 only: Returns the available web templates.
 ##User and group management
 Cmdlet|Description
 :-----|:----------
@@ -154,7 +151,6 @@ Cmdlet|Description
 ##User Profiles
 Cmdlet|Description
 :-----|:----------
-**[New&#8209;SPOPersonalSite](NewSPOPersonalSite.md)** |Office365 only: Creates a personal / OneDrive For Business site
 **[Get&#8209;SPOUserProfileProperty](GetSPOUserProfileProperty.md)** |Office365 only: Uses the tenant API to retrieve site information.  You must connect to the admin website (https://:<tenant>-admin.sharepoint.com) with Connect-SPOnline in order to use this command.  
 ##Utilities
 Cmdlet|Description

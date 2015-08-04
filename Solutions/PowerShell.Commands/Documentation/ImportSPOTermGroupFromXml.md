@@ -1,23 +1,23 @@
 #Import-SPOTermGroupFromXml
-*Topic automatically generated on: 2015-06-11*
+*Topic automatically generated on: 2015-08-04*
 
 Imports a taxonomy TermGroup from either the input or from an XML file.
 ##Syntax
 ```powershell
-Import-SPOTermGroupFromXml [-Path <String>]
+Import-SPOTermGroupFromXml [-Xml [<String>]]
 ```
-
+&nbsp;
 
 ```powershell
-Import-SPOTermGroupFromXml [-Xml <String>]
+Import-SPOTermGroupFromXml [-Path [<String>]]
 ```
-
+&nbsp;
 
 ##Parameters
 Parameter|Type|Required|Description
 ---------|----|--------|-----------
-|Path|String|False|The XML File to import the data from|
-|Xml|String|False|The XML to process|
+Path|String|False|The XML File to import the data from
+Xml|String|False|The XML to process
 ##Examples
 
 ###Example 1
@@ -27,4 +27,3 @@ Imports the XML based termgroup information located in the $xml variable
 ###Example 2
     PS:> Import-SPOTermGroupFromXml -Path input.xml
 Imports the XML file specified by the path.
-<!-- Ref: 8272C3B57473307FEC8D2F15B9E17095 -->

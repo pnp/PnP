@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.PowerShell.Commands", "Commands\OfficeDevPnP.PowerShell.Commands.csproj", "{1DDE6F0A-CA49-419A-9CE8-A6CA02F43CE0}"
 EndProject
@@ -14,10 +14,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.PowerShell.CmdletHelpAttributes", "HelpAttributes\OfficeDevPnP.PowerShell.CmdletHelpAttributes.csproj", "{FDD50BBD-AE78-4B10-9549-0566686719AB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.PowerShell.CmdletHelpGenerator", "CmdletHelpGenerator\OfficeDevPnP.PowerShell.CmdletHelpGenerator.csproj", "{B53C2D73-E46B-47E1-BB80-C2A363A53FB3}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{9572E4E7-9612-4E9A-A29D-5EDD8F4D91D1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.Core", "..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj", "{F2077977-8EBF-409D-BBF4-8EFB328928A8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{AB70588E-5972-4D9B-9342-C8CA3275F80A}"
 	ProjectSection(SolutionItems) = preProject
@@ -103,26 +99,6 @@ Global
 		{B53C2D73-E46B-47E1-BB80-C2A363A53FB3}.Release15|Mixed Platforms.ActiveCfg = Release15|Any CPU
 		{B53C2D73-E46B-47E1-BB80-C2A363A53FB3}.Release15|Mixed Platforms.Build.0 = Release15|Any CPU
 		{B53C2D73-E46B-47E1-BB80-C2A363A53FB3}.Release15|x86.ActiveCfg = Release15|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug15|Any CPU.ActiveCfg = Debug15|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug15|Any CPU.Build.0 = Debug15|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug15|Mixed Platforms.ActiveCfg = Debug15|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug15|Mixed Platforms.Build.0 = Debug15|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug15|x86.ActiveCfg = Debug15|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release|x86.ActiveCfg = Release|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release15|Any CPU.ActiveCfg = Release15|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release15|Any CPU.Build.0 = Release15|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release15|Mixed Platforms.ActiveCfg = Release15|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release15|Mixed Platforms.Build.0 = Release15|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release15|x86.ActiveCfg = Release15|Any CPU
 		{17C05F96-5D99-4367-AB05-7C07D2570F08}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{17C05F96-5D99-4367-AB05-7C07D2570F08}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{17C05F96-5D99-4367-AB05-7C07D2570F08}.Debug|x86.ActiveCfg = Debug|x86
@@ -145,8 +121,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8} = {9572E4E7-9612-4E9A-A29D-5EDD8F4D91D1}
 	EndGlobalSection
 EndGlobal
