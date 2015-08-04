@@ -134,7 +134,17 @@
         </pnp:ContentType>
       </pnp:ContentTypes>
       <pnp:Lists>
-        <pnp:ListInstance Title="Templates" Description="Repository for defining Site Templates" DocumentTemplate="" TemplateType="100" Url="Lists/Templates" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-de22-43b2-a848-c05709900100" ContentTypesEnabled="true" EnableFolderCreation="false">
+        <pnp:ListInstance Title="Templates" 
+                          Description="Repository for defining Site Templates" 
+                          DocumentTemplate="" 
+                          TemplateType="100" 
+                          Url="Lists/Templates" 
+                          MinorVersionLimit="0" 
+                          MaxVersionLimit="0" 
+                          TemplateFeatureID="00bfea71-de22-43b2-a848-c05709900100" 
+                          ContentTypesEnabled="true" 
+                          EnableFolderCreation="false"
+                          RemoveExistingContentTypes="true">
           <pnp:ContentTypeBindings>
             <pnp:ContentTypeBinding ContentTypeID="0x01005F743F288BED4D10815B9BF740850BC0" Default="true" />
           </pnp:ContentTypeBindings>
@@ -164,7 +174,17 @@
             </View>
           </pnp:Views>
         </pnp:ListInstance>
-        <pnp:ListInstance Title="Site Requests" Description="Repository for new Site Collection Requests" DocumentTemplate="" TemplateType="100" Url="Lists/SiteRequests" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-de22-43b2-a848-c05709900100" ContentTypesEnabled="true" EnableFolderCreation="false">
+        <pnp:ListInstance Title="Site Requests" 
+                          Description="Repository for new Site Collection Requests" 
+                          DocumentTemplate="" 
+                          TemplateType="100" 
+                          Url="Lists/SiteRequests" 
+                          MinorVersionLimit="0" 
+                          MaxVersionLimit="0" 
+                          TemplateFeatureID="00bfea71-de22-43b2-a848-c05709900100" 
+                          ContentTypesEnabled="true" 
+                          EnableFolderCreation="false" 
+                          RemoveExistingContentTypes="true">
           <pnp:ContentTypeBindings>
             <pnp:ContentTypeBinding ContentTypeID="0x01008AFD1A3CDDC04ECAAED455326AC126FC" Default="true" />
           </pnp:ContentTypeBindings>
