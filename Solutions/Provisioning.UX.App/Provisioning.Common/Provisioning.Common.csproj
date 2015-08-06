@@ -155,7 +155,7 @@
     <Compile Include="Utilities\ExceptionUtil.cs" />
     <Compile Include="Utilities\ListItemExtensions.cs" />
     <Compile Include="Utilities\Log.cs" />
-    <Compile Include="Utilities\ReflectionHelper.cs" />
+    <Compile Include="Utilities\ReflectionManager.cs" />
     <Compile Include="Utilities\StringExtensions.cs" />
     <Compile Include="Utilities\XmlSerializerManager.cs" />
   </ItemGroup>

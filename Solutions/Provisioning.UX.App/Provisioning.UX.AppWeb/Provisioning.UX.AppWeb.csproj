@@ -272,8 +272,6 @@
     <Compile Include="Models\SiteCheckResponse.cs" />
     <Compile Include="Models\SitePolicyResults.cs" />
     <Compile Include="Models\SiteRequest.cs" />
-    <Compile Include="Models\SiteRequestReponse.cs" />
-    <Compile Include="Models\SiteRequestsResponse.cs" />
     <Compile Include="Models\TemplateResultResponse.cs" />
     <Compile Include="Pages\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>

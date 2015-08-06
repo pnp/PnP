@@ -161,7 +161,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             catch(Exception _ex)
             {
                 var _message = string.Format("There was an error processing the request. {0}", _ex.Message);
-               Log.Error("SiteRequestController.GetOwnerRequestsByEmail", "There was an error processing the request. Exception: {0}", _ex);
+                Log.Error("SiteRequestController.GetOwnerRequestsByEmail", "There was an error processing the request. Exception: {0}", _ex);
                 HttpResponseMessage _response = Request.CreateResponse(HttpStatusCode.InternalServerError, _message);
                 throw new HttpResponseException(_response); 
             }

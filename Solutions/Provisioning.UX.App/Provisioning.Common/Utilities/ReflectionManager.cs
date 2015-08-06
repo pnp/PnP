@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Provisioning.Common.Utilities
 {
-    public class ReflectionHelper
+    public class ReflectionManager
     {
         private const string CONNECTIONSTRING_KEY = "ConnectionString";
         private const string CONTAINERSTRING_KEY = "Container";
@@ -37,7 +37,7 @@ namespace Provisioning.Common.Utilities
             }
             catch (Exception _ex)
             {
-                Log.Error("Provisioning.Common.SiteProvisioningManager", PCResources.FileConnectorBase_Exception, _ex);
+                Log.Error("ReflectionManager", PCResources.FileConnectorBase_Exception, _ex);
                 throw;
             }
         }
@@ -67,7 +67,7 @@ namespace Provisioning.Common.Utilities
             }
             catch (Exception _ex)
             {
-                Log.Error("Provisioning.Common.SiteProvisioningManager", PCResources.FileConnectorBase_Exception, _ex);
+                Log.Error("ReflectionManager", PCResources.FileConnectorBase_Exception, _ex);
                 throw;
             }
         }
