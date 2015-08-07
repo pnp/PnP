@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema">
+  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.2.515.0, Culture=neutral, PublicKeyToken=null" />
+  <pnp:Templates ID="CONTAINER-TEMPLATE-1A7D2ED39C2547498DF29F1940EA2D28">
+    <pnp:ProvisioningTemplate ID="TEMPLATE-1A7D2ED39C2547498DF29F1940EA2D28" Version="1">
+      <pnp:Providers>
+        <pnp:Provider Enabled="true" HandlerType="Provisioning.Framework.Extensions.NavigationHandler, Provisioning.Framework.Extensions">
+          <pnp:Configuration>
+            <pnpx:Navigations xmlns:pnpx="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema/Extentions/Navigation">
+              <!--Top navigation-->
+              <pnpx:Navigation Type="Structural" RootNodeId="1002">
+                <pnpx:NavigationNode Title="Home" Url="~SiteCollection"/>
+                <pnpx:NavigationNode Title="Documents" Url="~SiteCollection/Shared%20Documents"/>
+              </pnpx:Navigation>
+              <!--Search navigation-->
+              <pnpx:Navigation Type="Structural" RootNodeId="1040">
+                <pnpx:NavigationNode Title="..." Url="/search/Pages/results.aspx" IsExternal="true"/>
+              </pnpx:Navigation>
+            </pnpx:Navigations>
+          </pnp:Configuration>
+        </pnp:Provider>
+      </pnp:Providers>
+    </pnp:ProvisioningTemplate>
+  </pnp:Templates>
+</pnp:Provisioning>

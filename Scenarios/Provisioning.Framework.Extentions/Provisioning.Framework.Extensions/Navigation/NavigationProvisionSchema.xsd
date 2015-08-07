@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="WebPartProvision"
+    targetNamespace="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema/Extentions/Navigation"
+    elementFormDefault="qualified"
+    xmlns="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema/Extentions/Navigation"
+    xmlns:mstns="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema/Extentions/Navigation"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  
+  <xs:element name="Navigations" type="NavigationList">
+  </xs:element>
+
+  <xs:complexType name="NavigationList">
+    <xs:sequence>
+      <xs:element name="Navigation" type="mstns:NavigationConfiguration" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="NavigationConfiguration">
+    <xs:choice>
+      <xs:sequence>
+        <xs:element name="NavigationNode" type="mstns:NavigationNode" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+    </xs:choice>
+    <xs:attribute type="xs:int" name="RootNodeId"/>
+    <xs:attribute type="xs:string" name="SiteMapProvider"/>
+    <xs:attribute type="mstns:NavigationType" name="Type" use="required"/>
+  </xs:complexType>
+
+  <xs:simpleType name="NavigationType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Structural"/>
+      <xs:enumeration value="Taxonomy"/>
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:complexType name="NavigationNode">
+    <xs:attribute type="xs:string" name="Title"/>
+    <xs:attribute type="xs:string" name="Url"/>
+    <xs:attribute type="xs:boolean" name="IsExternal"/>
+  </xs:complexType>
+
+</xs:schema>
