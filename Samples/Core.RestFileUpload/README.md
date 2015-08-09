@@ -2,6 +2,13 @@
 
 This sample demonstrate how to upload files to SharePoint using REST APIs.
 
+Despite the upload methods described in [Large Files Upload](https://github.com/OfficeDev/PnP/tree/dev/Samples/Core.LargeFileUpload) link, the best approach for large files upload inside an add-in is to use SharePoint REST APIs.
+
+Using the REST approach, you do not need to slice your file into pieces and can send a file up to 2GB.
+
+This method is in compliance with SharePoint Online.
+
+
 ## Console Application
 
 ### NuGet Packages
