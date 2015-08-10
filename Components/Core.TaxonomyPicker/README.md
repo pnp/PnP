@@ -6,7 +6,6 @@ This sample shows an implementation of a SharePoint Taxonomy Picker control that
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
 -  Office 365 Dedicated (D)
--  SharePoint 2013 on-premises
 
 ### Prerequisites ###
 It's important that the provider hosted add-in that's running the taxonomy picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
