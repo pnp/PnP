@@ -15,12 +15,13 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
     [TestClass()]
     public class TenantExtensionsTests
     {
-        private string sitecollectionName = "TestPnPSC_123456789";
+        private string sitecollectionName = "TestPnPSC_123456789_";
 
         #region Test initialize and cleanup
         [TestInitialize()]
         public void Initialize()
         {
+            sitecollectionName = sitecollectionName + (new Random().Next(0, 9)).ToString();
             using (var tenantContext = TestCommon.CreateTenantClientContext())
             {
                 //Ensure nothing was left behind before we run our tests

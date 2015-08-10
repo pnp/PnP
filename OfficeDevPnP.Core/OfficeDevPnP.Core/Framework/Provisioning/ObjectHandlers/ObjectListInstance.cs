@@ -464,10 +464,16 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     existingList.ContentTypesEnabled = templateList.ContentTypesEnabled;
                     isDirty = true;
                 }
-                if (templateList.EnableAttachments != existingList.EnableAttachments)
+                if (existingList.BaseTemplate != (int)ListTemplateType.Survey && existingList.BaseTemplate != (int)ListTemplateType.DocumentLibrary)
                 {
-                    existingList.EnableAttachments = templateList.EnableAttachments;
-                    isDirty = true;
+                    // https://msdn.microsoft.com/EN-US/library/microsoft.sharepoint.splist.enableattachments.aspx
+                    // The EnableAttachments property does not apply to any list that has a base type of Survey or DocumentLibrary.
+                    // If you set this property to true for either type of list, it throws an SPException.
+                    if (templateList.EnableAttachments != existingList.EnableAttachments)
+                    {
+                        existingList.EnableAttachments = templateList.EnableAttachments;
+                        isDirty = true;
+                    }
                 }
                 if (existingList.BaseTemplate != (int)ListTemplateType.DiscussionBoard)
                 {
@@ -741,7 +747,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                         f => f.Required)));
 
             web.Context.ExecuteQueryRetry();
-            foreach (var item in lists.Where(l => l.Hidden == false))
+            foreach (var item in lists.AsEnumerable().Where(l => l.Hidden == false))
             {
                 ListInstance baseTemplateList = null;
                 if (creationInfo.BaseTemplate != null)
@@ -809,7 +815,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                     count++;
                 }
 
-                foreach (var view in item.Views.Where(view => !view.Hidden))
+                foreach (var view in item.Views.AsEnumerable().Where(view => !view.Hidden))
                 {
                     var schemaElement = XElement.Parse(view.ListViewXml);
 
@@ -835,7 +841,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 web.Context.Load(siteColumns, scs => scs.Include(sc => sc.Id));
                 web.Context.ExecuteQueryRetry();
 
-                foreach (var field in item.Fields.Where(field => !field.Hidden))
+                foreach (var field in item.Fields.AsEnumerable().Where(field => !field.Hidden))
                 {
                     if (siteColumns.FirstOrDefault(sc => sc.Id == field.Id) != null)
                     {

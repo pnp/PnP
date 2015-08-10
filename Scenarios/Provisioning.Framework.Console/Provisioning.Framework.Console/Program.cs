@@ -1,109 +1,144 @@
 ﻿using Microsoft.SharePoint.Client;
+using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Security;
+using System.Threading;
 
 namespace Provisioning.Framework
 {
     class Program
     {
+        /// <summary>
+        /// Main routine
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
-            bool interactiveLogin = true;
-            string templateSiteUrl = "https://bertonline.sharepoint.com/sites/provdemoget";
-            string targetSiteUrl = "https://bertonline.sharepoint.com/sites/provdemoapply";
-            // Office 365: username@tenant.onmicrosoft.com
-            // OnPrem: DOMAIN\Username
-            string loginId = "bert.jansen@bertonline.onmicrosoft.com";
+            ConsoleColor defaultForeground = Console.ForegroundColor;
 
-            // Get pwd from environment variable, so that we do to need to show that.
-            string pwd = "";
-            if (interactiveLogin)
+            // Collect information 
+            string templateWebUrl = GetInput("Enter the URL of the template site: ", false, defaultForeground);
+            string targetWebUrl = GetInput("Enter the URL of the target site: ", false, defaultForeground);
+            string userName = GetInput("Enter your user name:", false, defaultForeground);
+            string pwdS = GetInput("Enter your password:", true, defaultForeground);
+            SecureString pwd = new SecureString();
+            foreach (char c in pwdS.ToCharArray()) pwd.AppendChar(c);
+
+            // Get the template from existing site and serialize that (not really needed)
+            ProvisioningTemplate template = GetProvisioningTemplate(defaultForeground, templateWebUrl, userName, pwd);
+            // Apply template to new site from 
+            ApplyProvisioningTemplate(defaultForeground, targetWebUrl, userName, pwd, template);
+
+            // Pause
+            Console.ReadLine();
+        }
+
+        private static ProvisioningTemplate GetProvisioningTemplate(ConsoleColor defaultForeground, string webUrl, string userName, SecureString pwd)
+        {
+            using (var ctx = new ClientContext(webUrl))
             {
-                pwd = GetInput("Password", true);
-            }
-            else
-            {
-                pwd = Environment.GetEnvironmentVariable("MSOPWD", EnvironmentVariableTarget.User);
-            }
+                // ctx.Credentials = new NetworkCredentials(userName, pwd);
+                ctx.Credentials = new SharePointOnlineCredentials(userName, pwd);
+                ctx.RequestTimeout = Timeout.Infinite;
 
-            if (string.IsNullOrEmpty(pwd))
-            {
-                Console.WriteLine("MSOPWD user environment variable empty or no password was specified, cannot continue. Press any key to abort.");
-                Console.ReadKey();
-                return;
-            }
+                // Just to output the site details
+                Web web = ctx.Web;
+                ctx.Load(web, w => w.Title);
+                ctx.ExecuteQueryRetry();
 
-            // Template 
-            ProvisioningTemplate template;
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Your site title is:" + ctx.Web.Title);
+                Console.ForegroundColor = defaultForeground;
 
-            // Get access to source site
-            using (var ctx = new ClientContext(templateSiteUrl))
-            {
-                //Provide count and pwd for connecting to the source
-                ctx.Credentials = GetCredentials(targetSiteUrl, loginId, pwd);
+                ProvisioningTemplateCreationInformation ptci
+                        = new ProvisioningTemplateCreationInformation(ctx.Web);
 
-                ProvisioningTemplateCreationInformation ptc = new ProvisioningTemplateCreationInformation(ctx.Web);
-                ptc.ProgressDelegate = (message, step, total) => 
+                // Create FileSystemConnector, so that we can store composed files temporarely somewhere 
+                ptci.FileConnector = new FileSystemConnector(@"c:\temp\pnpprovisioningdemo", "");
+                ptci.PersistComposedLookFiles = true;
+                ptci.ProgressDelegate = delegate (String message, Int32 progress, Int32 total)
                 {
-                    Console.WriteLine(string.Format("Getting template - Step {0}/{1} : {2} ", step, total, message)); 
-                }; 
+                    // Only to output progress for console UI
+                    Console.WriteLine("{0:00}/{1:00} - {2}", progress, total, message);
+                };
 
-                // Get template from existing site
-                template = ctx.Web.GetProvisioningTemplate(ptc);
-            }
+                // Execute actual extraction of the tepmplate
+                ProvisioningTemplate template = ctx.Web.GetProvisioningTemplate(ptci);
 
-            // Save template using XML provider
-            XMLFileSystemTemplateProvider provider = new XMLFileSystemTemplateProvider(@"c:\temp\pnpprovisioningdemo", "");
-            string templateName = "template.xml";
-            provider.SaveAs(template, templateName);
+                // We can also serialize this template for future usage if we want, not really needed
+                XMLTemplateProvider provider =
+                        new XMLFileSystemTemplateProvider(@"c:\temp\pnpprovisioningdemo", "");
+                provider.SaveAs(template, "PnPProvisioningDemo.xml");
 
-            // Load the saved model again
-            ProvisioningTemplate p2 = provider.GetTemplate(templateName);
-
-            // Get the available, valid templates
-            var templates = provider.GetTemplates();
-            foreach (var template1 in templates)
-            {
-                Console.WriteLine("Found template with ID {0}", template1.Id);
-            }
-
-            // Get access to target site and apply template
-            using (var ctx = new ClientContext(targetSiteUrl))
-            {
-                //Provide count and pwd for connecting to the source               
-                ctx.Credentials = GetCredentials(targetSiteUrl, loginId, pwd);
-
-                ProvisioningTemplateApplyingInformation pta = new ProvisioningTemplateApplyingInformation();
-                pta.ProgressDelegate = (message, step, total) =>
-                {
-                    Console.WriteLine(string.Format("Applying template - Step {0}/{1} : {2} ", step, total, message));
-                }; 
-
-                // Apply template to existing site
-                ctx.Web.ApplyProvisioningTemplate(template, pta);
+                return template;
             }
         }
 
-        private static string GetInput(string label, bool isPassword)
+        private static void ApplyProvisioningTemplate(ConsoleColor defaultForeground, string webUrl, string userName, SecureString pwd, ProvisioningTemplate template)
         {
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.Write("{0} : ", label);
-            Console.ForegroundColor = ConsoleColor.Gray;
+            using (var ctx = new ClientContext(webUrl))
+            {
+                // ctx.Credentials = new NetworkCredentials(userName, pwd);
+                ctx.Credentials = new SharePointOnlineCredentials(userName, pwd);
+                ctx.RequestTimeout = Timeout.Infinite;
 
-            string strPwd = "";
+                // Just to output the site details
+                Web web = ctx.Web;
+                ctx.Load(web, w => w.Title);
+                ctx.ExecuteQueryRetry();
+
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine("Your site title is:" + ctx.Web.Title);
+                Console.ForegroundColor = defaultForeground;
+
+                // We could potentially also upload the template from file system, but we at least need this for branding file
+                //XMLTemplateProvider provider =
+                //       new XMLFileSystemTemplateProvider(@"c:\temp\pnpprovisioningdemo", "");
+                //template = provider.GetTemplate("PnPProvisioningDemo.xml");
+
+                ProvisioningTemplateApplyingInformation ptai
+                        = new ProvisioningTemplateApplyingInformation();
+                ptai.ProgressDelegate = delegate (String message, Int32 progress, Int32 total)
+                {
+                    Console.WriteLine("{0:00}/{1:00} - {2}", progress, total, message);
+                };
+
+                // Associate file connector for assets
+                FileSystemConnector connector = new FileSystemConnector(@"c:\temp\pnpprovisioningdemo", "");
+                template.Connector = connector;
+
+                // Since template is actual object, we can modify this using code as needed
+                template.Lists.Add(new ListInstance()
+                {
+                    Title = "PnP Sample Contacts",
+                    Url = "lists/PnPContacts",
+                    TemplateType = (Int32)ListTemplateType.Contacts,
+                    EnableAttachments = true
+                });
+
+                web.ApplyProvisioningTemplate(template, ptai);
+            }
+        }
+
+        private static string GetInput(string label, bool isPassword, ConsoleColor defaultForeground)
+        {
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("{0} : ", label);
+            Console.ForegroundColor = defaultForeground;
+
+            string value = "";
 
             for (ConsoleKeyInfo keyInfo = Console.ReadKey(true); keyInfo.Key != ConsoleKey.Enter; keyInfo = Console.ReadKey(true))
             {
                 if (keyInfo.Key == ConsoleKey.Backspace)
                 {
-                    if (strPwd.Length > 0)
+                    if (value.Length > 0)
                     {
-                        strPwd = strPwd.Remove(strPwd.Length - 1);
+                        value = value.Remove(value.Length - 1);
                         Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
                         Console.Write(" ");
                         Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
@@ -119,27 +154,14 @@ namespace Provisioning.Framework
                     {
                         Console.Write(keyInfo.KeyChar);
                     }
-                    strPwd += keyInfo.KeyChar;
+                    value += keyInfo.KeyChar;
 
                 }
 
             }
             Console.WriteLine("");
 
-            return strPwd;
-        }
-
-        private static ICredentials GetCredentials(string siteUrl, string loginId, string pwd)
-        {
-            var passWord = new SecureString();
-            foreach (char c in pwd.ToCharArray()) passWord.AppendChar(c);
-
-            if (siteUrl.ToLower().Contains("sharepoint.com"))
-            {
-                return new SharePointOnlineCredentials(loginId, passWord);
-            }
-
-            return new NetworkCredential(loginId, passWord);
+            return value;
         }
     }
 }

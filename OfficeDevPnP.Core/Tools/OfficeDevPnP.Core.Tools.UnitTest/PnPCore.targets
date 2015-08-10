@@ -74,6 +74,7 @@
     <Message Text="=================================================================================" />
     <Message Text="Build the PnP solution using configuration $(PnPBuildConfiguration)" />
     <Message Text="=================================================================================" />
+    <Exec Command="$(ConfigurationPath)\nuget.exe restore $(PnPRepo)\OfficeDevPnP.Core\OfficeDevPnP.Core.sln" />
     <MSBuild Projects="$(PnPRepo)\OfficeDevPnP.Core\OfficeDevPnP.Core.sln" Properties="Configuration=$(PnPBuildConfiguration)"/>  
     
     <!-- Run unit tests -->
@@ -81,7 +82,7 @@
     <Message Text="Run the PnP unit tests" />
     <Message Text="=================================================================================" />
     <!-- /Tests:DeserializeListIsNotFixedSizeTest,DeserializeListTest,CanSerializeDomainObjectWithJsonFormatter -->
-    <Exec Command="&quot;$(VSTestExe)&quot; &quot;$(PnPRepo)\OfficeDevPnP.Core\OfficeDevPnP.Core.Tests\bin\$(PnPBuildConfiguration)\OfficeDevPnP.Core.Tests.dll&quot; /Tests:DeserializeListIsNotFixedSizeTest,DeserializeListTest,CanSerializeDomainObjectWithJsonFormatter /Logger:MDLogger;PnPConfigurationToTest=$(PnPConfigurationToTest);PnPBranch=$(PnPBranch);PnPBuildConfiguration=$(PnPBuildConfiguration);MDPath=$(TestResultsPath)" IgnoreExitCode="true" />    
+    <Exec Command="&quot;$(VSTestExe)&quot; &quot;$(PnPRepo)\OfficeDevPnP.Core\OfficeDevPnP.Core.Tests\bin\$(PnPBuildConfiguration)\OfficeDevPnP.Core.Tests.dll&quot; /Logger:MDLogger;PnPConfigurationToTest=$(PnPConfigurationToTest);PnPBranch=$(PnPBranch);PnPBuildConfiguration=$(PnPBuildConfiguration);MDPath=$(TestResultsPath)" IgnoreExitCode="true" />    
 
   </Target>
 
@@ -111,6 +112,7 @@
     <!-- Commit the files to git -->
     <Exec Command="$(Git) add OfficeDevPnP.Core\UnitTestResults\*.*" />
     <Exec Command="$(Git) commit OfficeDevPnP.Core\UnitTestResults --only --message=&quot;PnP Automated unit test results commit&quot;" />
+    <Exec Command="$(Git) pull" />
     <Exec Command="$(Git) push origin" />
   
   </Target>

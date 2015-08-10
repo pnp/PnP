@@ -39,7 +39,7 @@
     <TenantUrl>https://bertonline-admin.sharepoint.com</TenantUrl>
     <TestSiteUrl>https://bertonline.sharepoint.com/sites/dev4</TestSiteUrl>
     <CredentialManagerLabel>bertonline</CredentialManagerLabel>
-    <User></User>
+    <User>bert.jansen@bertonline.onmicrosoft.com</User>
     <Domain></Domain>
     <Password></Password>
     <Realm></Realm>
