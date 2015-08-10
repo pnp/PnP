@@ -25,11 +25,12 @@ namespace Core.ListViewThreshold
 
     public static partial class CamlQueryExtensions
     {
-        private const string VIEW_QUERY = "<View><RowLimit>{0}</RowLimit></View>";
+        private const string VIEW_QUERY = "<View></View>";
         private const string VIEW_XPATH = "/View";
         private const string QUERY_XPATH = "/View/Query";
         private const string ROWLIMIT_XPATH = "/View/RowLimit";
         private const string VIEWFIELDS_XPATH = "/View/ViewFields";
+        private const string QUERY_OPTIONS_XPATH = "/View/Query/QueryOptions";
         private const string QUERY_THROTTLE_MODE = "<QueryThrottleMode>{0}</QueryThrottleMode>";
         private const string ORDER_BY_NVPFIELD = "<OrderBy UseIndexForOrderBy='TRUE' Override='TRUE' />";
         private const string ORDER_BY_ID = "<OrderBy Override='TRUE'><FieldRef Name='ID' /></OrderBy>";
@@ -46,13 +47,15 @@ namespace Core.ListViewThreshold
         {
             //if Query ViewXml is Empty then create View root Node
             if (string.IsNullOrEmpty(camlQuery.ViewXml))
-                camlQuery.ViewXml = string.Format(VIEW_QUERY, DefaultMaxItemsPerThrottledOperation.ToString());
+                camlQuery.ViewXml = VIEW_QUERY;
 
             //Load ViewXml
             XmlDocument xmlDoc = LoadViewXml(camlQuery.ViewXml);
 
             //Add scope attribute to root element
-            CreateScopeAttributeWithValue(xmlDoc, GetXmlNodeByXPath(VIEW_XPATH, xmlDoc), scope.ToString());
+            XmlElement viewNode =(XmlElement)GetXmlNodeByXPath(VIEW_XPATH, xmlDoc);
+            if (viewNode != null)
+                viewNode.SetAttribute("Scope", scope.ToString());
 
             //Update ViewXml
             UpdateCamlQuery(camlQuery, xmlDoc);
@@ -67,7 +70,7 @@ namespace Core.ListViewThreshold
         {
             //if Query ViewXml is Empty then create View root Node
             if (string.IsNullOrEmpty(camlQuery.ViewXml))
-                camlQuery.ViewXml = string.Format(VIEW_QUERY, DefaultMaxItemsPerThrottledOperation.ToString());
+                camlQuery.ViewXml = VIEW_QUERY;
 
             if (string.IsNullOrEmpty(queryXml)) return;
 
@@ -103,7 +106,7 @@ namespace Core.ListViewThreshold
         {
             //if Query ViewXml is Empty then create View root Node
             if (string.IsNullOrEmpty(camlQuery.ViewXml))
-                camlQuery.ViewXml = string.Format(VIEW_QUERY, DefaultMaxItemsPerThrottledOperation.ToString());
+                camlQuery.ViewXml = VIEW_QUERY;
 
             if (string.IsNullOrEmpty(viewFieldsXml)) return;
 
@@ -129,7 +132,7 @@ namespace Core.ListViewThreshold
         {
             //if Query ViewXml is Empty then create View root Node
             if (string.IsNullOrEmpty(camlQuery.ViewXml))
-                camlQuery.ViewXml = string.Format(VIEW_QUERY, DefaultMaxItemsPerThrottledOperation.ToString());
+                camlQuery.ViewXml = VIEW_QUERY;
 
             //Load ViewXml
             XmlDocument xmlDoc = LoadViewXml(camlQuery.ViewXml);
@@ -152,7 +155,7 @@ namespace Core.ListViewThreshold
         {
             //if Query ViewXml is Empty then create View root Node
             if (string.IsNullOrEmpty(camlQuery.ViewXml))
-                camlQuery.ViewXml = string.Format(VIEW_QUERY, DefaultMaxItemsPerThrottledOperation.ToString());
+                camlQuery.ViewXml = VIEW_QUERY;
 
             //Load ViewXml
             XmlDocument xmlDoc = LoadViewXml(camlQuery.ViewXml);
@@ -193,7 +196,7 @@ namespace Core.ListViewThreshold
         {
             //if Query ViewXml is Empty then create View root Node
             if (string.IsNullOrEmpty(camlQuery.ViewXml))
-                camlQuery.ViewXml = string.Format(VIEW_QUERY, DefaultMaxItemsPerThrottledOperation.ToString());
+                camlQuery.ViewXml = VIEW_QUERY;
 
             //Load ViewXml
             XmlDocument xmlDoc = LoadViewXml(camlQuery.ViewXml);
@@ -227,13 +230,15 @@ namespace Core.ListViewThreshold
         {
             //if Query ViewXml is Empty then create View root Node
             if (string.IsNullOrEmpty(camlQuery.ViewXml))
-                camlQuery.ViewXml = string.Format(VIEW_QUERY, DefaultMaxItemsPerThrottledOperation.ToString());
+                camlQuery.ViewXml = VIEW_QUERY;
 
             //Load ViewXml
             XmlDocument xmlDoc = LoadViewXml(camlQuery.ViewXml);
 
             //Set Rowlimit
-            GetOrCreateXmlNodeByXPath(ROWLIMIT_XPATH, "RowLimit", rowLimit.ToString(), xmlDoc);
+            XmlNode rowNode = GetOrCreateXmlNodeByXPath(ROWLIMIT_XPATH, "RowLimit", rowLimit.ToString(), xmlDoc);
+
+            xmlDoc.DocumentElement.InsertAfter(rowNode, GetXmlNodeByXPath(VIEW_XPATH, xmlDoc).LastChild);
 
             //Update viewXml
             UpdateCamlQuery(camlQuery, xmlDoc);
@@ -248,13 +253,15 @@ namespace Core.ListViewThreshold
         {
             //if Query ViewXml is Empty then create View root Node
             if (string.IsNullOrEmpty(camlQuery.ViewXml))
-                camlQuery.ViewXml = string.Format(VIEW_QUERY, DefaultMaxItemsPerThrottledOperation.ToString());
+                camlQuery.ViewXml = VIEW_QUERY;
 
             //Load ViewXml
             XmlDocument xmlDoc = LoadViewXml(camlQuery.ViewXml);
 
             //Get or Create RowLimit node from ViewXml
-            OverrideQueryThrottleMode(xmlDoc, GetXmlNodeByXPath(VIEW_XPATH, xmlDoc), queryThrottleMode);
+            string value = string.Format(QUERY_THROTTLE_MODE, queryThrottleMode);
+            XmlNode queryOptionNode = GetOrCreateXmlNodeByXPath(QUERY_OPTIONS_XPATH, "QueryOptions", value, xmlDoc);
+            xmlDoc.DocumentElement.InsertAfter(queryOptionNode, GetXmlNodeByXPath(VIEW_XPATH, xmlDoc).LastChild);
 
             //Update viewXml
             UpdateCamlQuery(camlQuery, xmlDoc);
@@ -290,27 +297,6 @@ namespace Core.ListViewThreshold
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="xmlDoc"></param>
-        /// <returns></returns>
-        private static XmlNode GetOrCreateRowLimitNode(XmlDocument xmlDoc)
-        {
-            XmlNode node = xmlDoc.DocumentElement.SelectSingleNode(ROWLIMIT_XPATH);
-            if (node == null)
-            {
-                //Create node
-                node = xmlDoc.CreateNode("element", "RowLimit", "");
-                node.InnerText = DefaultMaxItemsPerThrottledOperation.ToString();
-
-                XmlNode viewNode = GetXmlNodeByXPath(VIEW_XPATH, xmlDoc);
-                viewNode.InsertBefore(node, viewNode.LastChild);
-            }
-
-            return node;
-        }
-
-        /// <summary>
         /// This Method will create specified node if it doesn't exists, else return XmlNode
         /// </summary>
         /// <param name="path">XPath to find the Node in Xml Document</param>
@@ -324,7 +310,7 @@ namespace Core.ListViewThreshold
             if (node == null)
             {
                 //Create node
-                node = xmlDoc.CreateNode("element", name, "");
+                node = xmlDoc.CreateNode(XmlNodeType.Element, name, "");
                 node.InnerXml = value;
 
             }
@@ -335,50 +321,13 @@ namespace Core.ListViewThreshold
         }
 
         /// <summary>
-        /// This mehtod will create Scope attribute for Query
-        /// </summary>
-        /// <param name="xmlDoc">View Xml as Xml document</param>
-        /// <param name="node">View root Node</param>
-        /// <param name="value">Scope value</param>
-        private static void CreateScopeAttributeWithValue(XmlDocument xmlDoc, XmlNode node, string value)
-        {
-            if (node.Attributes.GetNamedItem("Scope") == null)
-            {
-                //Create scope Attribute
-                XmlAttribute attribute = xmlDoc.CreateAttribute("Scope");
-                attribute.Value = value;
-                node.Attributes.Append(attribute);
-            }
-            else
-            {
-                node.Attributes.GetNamedItem("Scope").Value = value;
-            }
-
-        }
-
-        /// <summary>
         /// This method will insert the fieldml into query
         /// </summary>
         /// <param name="node">xml node</param>
         /// <param name="fieldXml">order field as xml</param>
         private static void OverrideOrderByField(XmlNode node, string fieldXml)
         {
-            node.InnerXml = node.InnerXml + fieldXml;
-        }
-
-        /// <summary>
-        /// This method will override the QueryThrottle mode in QueryOptions of CamlQuery
-        /// </summary>
-        /// <param name="xmlDoc">Xml Document</param>
-        /// <param name="node">Xml Node</param>
-        /// <param name="queryThrottleMode">QueryThrottle Mode option</param>
-        private static void OverrideQueryThrottleMode(XmlDocument xmlDoc, XmlNode node, QueryThrottleMode queryThrottleMode)
-        {
-            //Create QueryOptions node
-            XmlNode queryThrottleNode = xmlDoc.CreateNode("element", "QueryOptions", "");
-            queryThrottleNode.InnerXml = string.Format(QUERY_THROTTLE_MODE, queryThrottleMode);
-            xmlDoc.DocumentElement.InsertAfter(queryThrottleNode, node.LastChild);
-
+            node.InnerXml = string.Format("{0}{1}", node.InnerXml, fieldXml);
         }
 
         /// <summary>

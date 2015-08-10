@@ -1,9 +1,11 @@
 ﻿using Microsoft.SharePoint.Client;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Core.ListViewThreshold
 {
@@ -75,6 +77,11 @@ namespace Core.ListViewThreshold
             }
         }
 
+        /// <summary>
+        /// This method will ensure the field will be indexed 
+        /// </summary>
+        /// <param name="listName">Listname</param>
+        /// <param name="fieldName">FieldName</param>
         public void EnsureFieldIndexed(string listName, string fieldName)
         {
             List list = _context.Web.Lists.GetByTitle(listName);
@@ -84,6 +91,13 @@ namespace Core.ListViewThreshold
             _context.ExecuteQuery();
         }
 
+        /// <summary>
+        /// Process ListItems batch by batch
+        /// </summary>
+        /// <param name="listName">ListName</param>
+        /// <param name="camlQuery">CamlQuery</param>
+        /// <param name="itemsProcessor">itemprocessor delegate</param>
+        /// <param name="errorCallout">error delegate</param>
         public void ProcessListItems(string listName, CamlQuery camlQuery, ItemsProcessor itemsProcessor, ItemsProcessorErrorCallout errorCallout)
         {
             List list = _context.Web.Lists.GetByTitle(listName);
@@ -136,6 +150,13 @@ namespace Core.ListViewThreshold
 
         }
 
+        /// <summary>
+        /// Process ListItem one by one
+        /// </summary>
+        /// <param name="listName">ListName</param>
+        /// <param name="camlQuery">CamlQuery</param>
+        /// <param name="itemProcessor">itemprocessor delegate</param>
+        /// <param name="errorCallout">error delegate</param>
         public void ProcessListItem(string listName, CamlQuery camlQuery, ItemProcessor itemProcessor, ItemProcessorErrorCallout errorCallout)
         {
             List list = _context.Web.Lists.GetByTitle(listName);
@@ -193,5 +214,45 @@ namespace Core.ListViewThreshold
             }
 
         }
+
+        /// <summary>
+        /// This method will verify the viewXml for QueryThrottleMode to avoid exception
+        /// </summary>
+        /// <param name="camlQuery">CamlQuery</param>
+        /// <returns>CamlQuery</returns>
+        private CamlQuery VerifyQueryThrottleMode(CamlQuery camlQuery)
+        {
+            //Check for QueryThrottle Mode
+            camlQuery.ViewXml = LoadAndVerifyXml(camlQuery.ViewXml);
+            return camlQuery;
+        }
+
+        /// <summary>
+        /// This method will load viewxml string into Xml Document and look for QueryThrottle Mode
+        /// </summary>
+        /// <param name="xml">string as xml format</param>
+        /// <returns>string</returns>
+        private string LoadAndVerifyXml(string xml)
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            using (XmlTextReader xmlTextReader = new XmlTextReader(new StringReader(xml)))
+            {
+                xmlTextReader.DtdProcessing = DtdProcessing.Prohibit;
+                xmlDoc.Load(xmlTextReader);
+            }
+
+            XmlNode node = xmlDoc.SelectSingleNode("/View/QueryOptions/QueryThrottleMode");
+            if (node == null)
+            {
+                XmlNode viewNode = xmlDoc.SelectSingleNode("/View");
+                //Create QueryOptions node
+                XmlNode queryThrottleNode = xmlDoc.CreateNode(XmlNodeType.Element, "QueryOptions", "");
+                queryThrottleNode.InnerXml = overrideQueryThrottleMode;
+                xmlDoc.DocumentElement.InsertAfter(queryThrottleNode, viewNode.LastChild);
+            }
+
+            return xmlDoc.InnerXml;
+        }
+
     }
 }
