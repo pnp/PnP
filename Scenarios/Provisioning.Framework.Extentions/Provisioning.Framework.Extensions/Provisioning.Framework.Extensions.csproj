@@ -123,6 +123,11 @@
     <Compile Include="Navigation\NavigationProvisionSchema.cs">
       <DependentUpon>NavigationProvisionSchema.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Security\DefaultPermissionLevels.cs" />
+    <Compile Include="Security\SecurityProvisionSchema.cs">
+      <DependentUpon>SecurityProvisionSchema.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Security\SecurityHandler.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -132,6 +137,10 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Security\compile_xsd.bat" />
+    <None Include="Security\SecurityProvisionSchema.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="sitetemplate.xml">

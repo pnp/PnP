@@ -4,7 +4,7 @@
   <pnp:Templates ID="CONTAINER-TEMPLATE-1A7D2ED39C2547498DF29F1940EA2D28">
     <pnp:ProvisioningTemplate ID="TEMPLATE-1A7D2ED39C2547498DF29F1940EA2D28" Version="1">
       <pnp:Providers>
-        <pnp:Provider Enabled="true" HandlerType="Provisioning.Framework.Extensions.NavigationHandler, Provisioning.Framework.Extensions">
+        <pnp:Provider Enabled="false" HandlerType="Provisioning.Framework.Extensions.NavigationHandler, Provisioning.Framework.Extensions">
           <pnp:Configuration>
             <pnpx:Navigations xmlns:pnpx="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema/Extentions/Navigation">
               <!--Top navigation-->
@@ -17,6 +17,40 @@
                 <pnpx:NavigationNode Title="..." Url="/search/Pages/results.aspx" IsExternal="true"/>
               </pnpx:Navigation>
             </pnpx:Navigations>
+          </pnp:Configuration>
+        </pnp:Provider>
+        <pnp:Provider Enabled="true" HandlerType="Provisioning.Framework.Extensions.SecurityHandler, Provisioning.Framework.Extensions">
+          <pnp:Configuration>
+            <pnpx:Security xmlns:pnpx="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema/Extentions/Security">
+              <pnpx:PermissionLevels>
+                <pnpx:PermissionLevel Title="Restricted Read" Description="Can view pages and documents. No access to system pages">
+                  <pnpx:Permissions>
+                    <pnpx:BasePermission>ViewPages</pnpx:BasePermission>
+                    <pnpx:BasePermission>Open</pnpx:BasePermission>
+                    <pnpx:BasePermission>ViewListItems</pnpx:BasePermission>
+                    <pnpx:BasePermission>OpenItems</pnpx:BasePermission>
+                  </pnpx:Permissions>
+                </pnpx:PermissionLevel>
+              </pnpx:PermissionLevels>
+              <pnpx:Groups>
+                <pnpx:Group Title="Site Owners" PermissionLevel="FullControl" Description="Members of this group have full control"/>
+                <pnpx:Group Title="Finance Department" PermissionLevel="Restricted Read" Description="Members of this group have special permissions">
+                </pnpx:Group>
+              </pnpx:Groups>
+              <pnpx:PermissionScopes>
+                <pnpx:ListScope Title="Documents" CopyRoleAssignments="false" ClearSubscopes="false">
+                  <pnpx:Permissions>
+                    <pnpx:Permission Principal="Site Owners" PermissionLevel="FullControl"/>
+                    <pnpx:Permission Principal="Finance Department" PermissionLevel="Read"/>
+                  </pnpx:Permissions>
+                  <pnpx:FolderScope RelativeUrl="FinancialDocuments" CopyRoleAssignments="false">
+                    <pnpx:Permissions>
+                      <pnpx:Permission PermissionLevel="Finance" Principal="Finance Department"/>
+                    </pnpx:Permissions>
+                  </pnpx:FolderScope>
+                </pnpx:ListScope>
+              </pnpx:PermissionScopes>
+            </pnpx:Security>
           </pnp:Configuration>
         </pnp:Provider>
       </pnp:Providers>
