@@ -118,6 +118,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Folders\FolderHandler.cs" />
+    <Compile Include="Folders\FolderProvisionSchema.cs">
+      <DependentUpon>FolderProvisionSchema.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Helpers\XmlHelper.cs" />
     <Compile Include="Navigation\NavigationHandler.cs" />
     <Compile Include="Navigation\NavigationProvisionSchema.cs">
@@ -132,6 +136,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Folders\compile_xsd.bat" />
+    <None Include="Folders\FolderProvisionSchema.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Navigation\compile_xsd.bat" />
     <None Include="Navigation\NavigationProvisionSchema.xsd">
       <SubType>Designer</SubType>
@@ -147,7 +155,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="WikiContent\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

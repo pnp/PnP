@@ -19,6 +19,13 @@
             </pnpx:Navigations>
           </pnp:Configuration>
         </pnp:Provider>
+        <pnp:Provider Enabled="true" HandlerType="Provisioning.Framework.Extensions.FolderHandler, Provisioning.Framework.Extensions">
+          <pnp:Configuration>
+            <pnpx:Folders xmlns:pnpx="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema/Extentions/Folder">
+              <pnpx:Folder List="Documents" Path="FinancialDocuments"/>
+            </pnpx:Folders>
+          </pnp:Configuration>
+        </pnp:Provider>
         <pnp:Provider Enabled="true" HandlerType="Provisioning.Framework.Extensions.SecurityHandler, Provisioning.Framework.Extensions">
           <pnp:Configuration>
             <pnpx:Security xmlns:pnpx="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema/Extentions/Security">
@@ -45,7 +52,7 @@
                   </pnpx:Permissions>
                   <pnpx:FolderScope RelativeUrl="FinancialDocuments" CopyRoleAssignments="false">
                     <pnpx:Permissions>
-                      <pnpx:Permission PermissionLevel="Finance" Principal="Finance Department"/>
+                      <pnpx:Permission PermissionLevel="FullControl" Principal="Finance Department"/>
                     </pnpx:Permissions>
                   </pnpx:FolderScope>
                 </pnpx:ListScope>

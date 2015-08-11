@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="WebPartProvision"
+    targetNamespace="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema/Extentions/Folder"
+    elementFormDefault="qualified"
+    xmlns="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema/Extentions/Folder"
+    xmlns:mstns="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema/Extentions/Folder"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  
+  <xs:element name="Folders" type="FolderList">
+  </xs:element>
+
+  <xs:complexType name="FolderList">
+    <xs:sequence>
+      <xs:element name="Folder" type="mstns:Folder" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Folder">
+    <xs:attribute type="xs:string" name="List"/>
+    <xs:attribute type="xs:string" name="Path"/>
+  </xs:complexType>
+
+</xs:schema>

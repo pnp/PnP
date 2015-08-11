@@ -57,7 +57,7 @@ namespace Provisioning.Framework.Extensions
                         {
                             var principal = ResolvePrincipal(ctx, permission.Principal);
                             targetFolder.BreakRoleInheritance(folder.CopyRoleAssignments, folder.ClearSubscopes);
-                            AssignPermissionLevel(ctx, targetFolder, principal, permission.ToString());
+                            AssignPermissionLevel(ctx, targetFolder, principal, permission.PermissionLevel);
                         }
                     }
                 }

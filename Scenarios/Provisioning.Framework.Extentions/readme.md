@@ -116,9 +116,18 @@ List and folders level permissions:
 	</pnpx:Configuration>
 </pnp:Provider>
 
+# List folders #
+Folders\FolderHandler implements extensibility provider for creating list folders
+Security\FolderProvisionSchema.xsd - xml schema for extensibility provider, use compile_xsd.bat to generate C# classes based on schema
+
+Folder creation xml snippet:
+<pnp:Provider Enabled="true" HandlerType="Provisioning.Framework.Extensions.FolderHandler, Provisioning.Framework.Extensions">
+	<pnp:Configuration>
+		<pnpx:Folders xmlns:pnpx="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema/Extentions/Folder">
+			<pnpx:Folder List="Documents" Path="FinancialDocuments"/>
+		</pnpx:Folders>
+    </pnp:Configuration>
+</pnp:Provider>
+
 # Site template #
 sitetemplate.xml contains sample data for extensibility providers
-
-
-
-
