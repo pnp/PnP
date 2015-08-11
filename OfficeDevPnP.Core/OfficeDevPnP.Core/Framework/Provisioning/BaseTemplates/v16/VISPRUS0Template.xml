@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema">
-  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.4.815.0, Culture=neutral, PublicKeyToken=null" />
+  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.5.915.0, Culture=neutral, PublicKeyToken=null" />
   <pnp:Templates ID="CONTAINER-VISPRUS0template">
     <pnp:ProvisioningTemplate ID="VISPRUS0template" Version="1">
       <pnp:PropertyBagEntries>
@@ -10,19 +10,16 @@
         <pnp:PropertyBagEntry Key="vti_associateownergroup" Value="6" />
         <pnp:PropertyBagEntry Key="enabledhelpcollections" Value="VGSEndUser" />
         <pnp:PropertyBagEntry Key="vti_defaultlanguage" Value="en-us" />
-        <pnp:PropertyBagEntry Key="taxonomyhiddenlist" Value="50df4172-65c9-400f-a181-bb59cc8ce5d6" />
+        <pnp:PropertyBagEntry Key="taxonomyhiddenlist" Value="472c788f-fe26-43fb-8cf8-5ed6e2c8727f" />
         <pnp:PropertyBagEntry Key="sharepointhelpoverride" Value="SPOStandard" />
         <pnp:PropertyBagEntry Key="disabledhelpcollections" Value="WSSEndUser;#WSSCentralAdmin;#FastEndUser;#FastCentralAdmin;#MSSEndUser;#MSSCentralAdmin;#PPSDesignerEndUser;#SQLWSSAddIn" />
-        <pnp:PropertyBagEntry Key="dlc_ExpirationLastRun" Value="15/06/2015 3:31:35" />
-        <pnp:PropertyBagEntry Key="profileschemaversion" Value="5" />
         <pnp:PropertyBagEntry Key="vti_associatemembergroup" Value="8" />
         <pnp:PropertyBagEntry Key="vti_associategroups" Value="8;3;3;7;6" />
         <pnp:PropertyBagEntry Key="vti_associatevisitorgroup" Value="7" />
-        <pnp:PropertyBagEntry Key="vti_extenderversion" Value="16.0.0.4021" />
-        <pnp:PropertyBagEntry Key="metadatatimestamp" Value="437b86fc125845a985ea87a29156ce3c|2015-03-27T08:10:01.077Z" />
+        <pnp:PropertyBagEntry Key="vti_extenderversion" Value="16.0.0.4316" />
+        <pnp:PropertyBagEntry Key="metadatatimestamp" Value="2371ca8974d744548103112427be1bb1|2015-06-01T14:24:54.52Z" />
         <pnp:PropertyBagEntry Key="vti_filedialogpostprocessorid" Value="{f68e6d4e-383a-4c8d-ba4d-d2139f164281}" />
         <pnp:PropertyBagEntry Key="vti_createdassociategroups" Value="6;7;8" />
-        <pnp:PropertyBagEntry Key="dlc_PolicyUpdateLastRun" Value="15/06/2015 2:18:51" />
         <pnp:PropertyBagEntry Key="vti_approvallevels" Value="Approved Rejected Pending\ Review" />
       </pnp:PropertyBagEntries>
       <pnp:Security>
@@ -38,12 +35,12 @@
           </FieldRefs>
         </Field>
         <Field ID="{1F30D200-0D4E-4C8A-A7EB-2E49815BF2BE}" DisplayName="Instance Id" Name="WF4InstanceId" Type="Text" Group="_Hidden" Hidden="TRUE" Sealed="TRUE" Indexed="TRUE" />
-        <Field Type="TaxonomyFieldTypeMulti" DisplayName="Enterprise Keywords" StaticName="TaxKeyword" Name="TaxKeyword" ID="{23f27201-bee3-471e-b2e7-b64fd8b7ca38}" ShowInViewForms="TRUE" DefaultListField="TRUE" List="Lists/TaxonomyHiddenList" WebId="f2982dbe-54b6-40df-b98f-8810bef93ad4" Required="FALSE" Hidden="FALSE" CanToggleHidden="TRUE" ShowField="Term1033" SourceID="{f2982dbe-54b6-40df-b98f-8810bef93ad4}" Mult="TRUE" Sortable="FALSE" Group="Enterprise Keywords Group" Description="Enterprise Keywords are shared with other users and applications to allow for ease of search and filtering, as well as metadata consistency and reuse" AllowDeletion="TRUE" Sealed="TRUE">
+        <Field Type="TaxonomyFieldTypeMulti" DisplayName="Enterprise Keywords" StaticName="TaxKeyword" Name="TaxKeyword" ID="{23f27201-bee3-471e-b2e7-b64fd8b7ca38}" ShowInViewForms="TRUE" DefaultListField="TRUE" List="Lists/TaxonomyHiddenList" WebId="203e7527-cb18-4b8f-a70f-23adec8d5964" Required="FALSE" Hidden="FALSE" CanToggleHidden="TRUE" ShowField="Term1033" SourceID="{203e7527-cb18-4b8f-a70f-23adec8d5964}" Mult="TRUE" Sortable="FALSE" Group="Enterprise Keywords Group" Description="Enterprise Keywords are shared with other users and applications to allow for ease of search and filtering, as well as metadata consistency and reuse" AllowDeletion="TRUE" Sealed="TRUE">
           <Customization>
             <ArrayOfProperty>
               <Property>
                 <Name>SspId</Name>
-                <Value xmlns:q1="http://www.w3.org/2001/XMLSchema" p4:type="q1:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">437b86fc-1258-45a9-85ea-87a29156ce3c</Value>
+                <Value xmlns:q1="http://www.w3.org/2001/XMLSchema" p4:type="q1:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">2371ca89-74d7-4454-8103-112427be1bb1</Value>
               </Property>
               <Property>
                 <Name>GroupId</Name>
@@ -335,7 +332,6 @@
             <FieldRef Name="MemberLookup" />
           </FieldRefs>
         </Field>
-        <Field Type="Note" DisplayName="TaxKeywordTaxHTField" StaticName="TaxKeywordTaxHTField" Name="TaxKeywordTaxHTField" ID="{1390a86a-23da-45f0-8efe-ef36edadfb39}" ShowInViewForms="FALSE" Required="FALSE" Hidden="TRUE" CanToggleHidden="TRUE" SourceID="{f2982dbe-54b6-40df-b98f-8810bef93ad4}" />
         <Field ID="{4181B96A-3125-4f75-B823-3A4D675C6B19}" Name="GoalCell" StaticName="GoalCell" Description="Address or name of the cell for the goal" Group="Status Indicators" Type="Text" DisplayName="Goal Cell" SourceID="http://schemas.microsoft.com/sharepoint/v3" />
         <Field ID="{B0BD6F6D-ED80-4ff8-8BE0-EF9238A16835}" Name="ReportLinkFilename" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="ReportLinkFilename" Group="_Hidden" ReadOnly="TRUE" Type="Computed" DisplayName="Name" Filterable="FALSE" ClassInfo="Menu" AuthoringInfo="(link to report with edit menu)">
           <FieldRefs>
@@ -518,7 +514,7 @@
         <Field ID="{4EF69CA4-4179-4d27-9E6C-F9544D45DFDC}" DisplayName="Show in Catalog" Type="Boolean" Required="FALSE" Name="ShowInCatalog" RowOrdinal="0" Group="_Hidden">
           <Default>TRUE</Default>
         </Field>
-        <Field ID="{d340fca5-f503-4baa-bae9-90f1447ebff6}" Name="SMLastModifiedDate" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="SMLastModifiedDate" Group="_Hidden" ColName="LastModifiedDate" RowOrdinal="0" ReadOnly="TRUE" Type="Lookup" List="StorageMetrics" ShowField="SMLastModifiedDate" JoinColName="Id" DisplayName="Last Modified Date" />
+        <Field ID="{d340fca5-f503-4baa-bae9-90f1447ebff6}" Name="SMLastModifiedDate" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="SMLastModifiedDate" Group="_Hidden" ColName="LastModifiedDate" RowOrdinal="0" ReadOnly="TRUE" Type="Lookup" List="Docs" ListInternal="StorageMetrics" ShowField="SMLastModifiedDate" JoinColName="Id" DisplayName="Last Modified Date" />
         <Field ID="{539458A6-152C-460f-A915-53722C6EB4A6}" Name="LastPostDate" DisplayName="Last Post Date" Type="DateTime" SourceID="http://schemas.microsoft.com/sharepoint.v3" DisplaceOnUpgrade="TRUE" ReadOnly="TRUE" Hidden="FALSE" Sealed="FALSE" AllowDeletion="FALSE" />
         <Field ID="{D8921DA7-C09B-4a06-B644-DFFEBF73C736}" Name="ReportCategory" StaticName="ReportCategory" Description="Category of the report" DisplayName="Report Category" Group="Reports" Type="Choice" SourceID="http://schemas.microsoft.com/sharepoint/v3">
           <CHOICES>
@@ -541,7 +537,7 @@
         <Field ID="{FF4470AE-85D6-49ab-A501-E5772848F6C8}" Name="RoutingConditionProperties" StaticName="RoutingConditionProperties" SourceID="http://schemas.microsoft.com/sharepoint/v3" Group="Document and Record Management Columns" DisplayName="Properties used in Conditions" Type="Note" Required="TRUE" CanToggleHidden="TRUE" Sealed="TRUE" RichText="FALSE" />
         <Field ID="{7BA87DAE-E90B-431b-8A02-8FC26E453880}" Name="RoutingRuleName" StaticName="RoutingRuleName" SourceID="http://schemas.microsoft.com/sharepoint/v3" Group="Document and Record Management Columns" DisplayName="Rule Name" Type="Text" Required="TRUE" CanToggleHidden="TRUE" Sealed="TRUE" MaxLength="255" />
         <Field ID="{2C7DB8AF-02B0-4177-B77F-15C942C08427}" Name="ViewGuid" StaticName="ViewGuid" Description="Guid of the view" Group="Status Indicators" Type="Text" DisplayName="View Guid" SourceID="http://schemas.microsoft.com/sharepoint/v3" />
-        <Field ID="{4df6bfaf-f887-424e-8ea3-fd050113e7a9}" Name="SMTotalSize" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="SMTotalSize" Group="_Hidden" ColName="TotalSize" RowOrdinal="0" ReadOnly="TRUE" Type="Lookup" List="StorageMetrics" ShowField="SMTotalSize" JoinColName="Id" DisplayName="Total Size" />
+        <Field ID="{4df6bfaf-f887-424e-8ea3-fd050113e7a9}" Name="SMTotalSize" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="SMTotalSize" Group="_Hidden" ColName="TotalSize" RowOrdinal="0" ReadOnly="TRUE" Type="Lookup" List="Docs" ListInternal="StorageMetrics" ShowField="SMTotalSize" JoinColName="Id" DisplayName="Total Size" />
         <Field ID="{DB364CB0-8C0C-46e7-A996-684E1F2CAEB2}" Name="ReportName" StaticName="ReportName" Group="_Hidden" ReadOnly="TRUE" Type="Computed" DisplayName="Name" AuthoringInfo="(the name of a snapshot's parent)" Filterable="FALSE" Sortable="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3">
           <FieldRefs>
             <FieldRef Name="ParentId" />
@@ -700,7 +696,7 @@
         <Field ID="{B4BA57C8-AB73-49fa-B6AF-A4F824D84C14}" DisplayName="WSEventType" Name="WSEventType" Type="Text" Sealed="TRUE" Group="_Hidden" />
         <Field ID="{66B691CF-07A3-4CA6-AC6D-27FA969C8569}" DisplayName="Form Name" Type="Text" Required="FALSE" Name="FormName" RowOrdinal="0" Group="_Hidden" />
         <Field ID="{592102D3-4BCE-4640-A49E-B6F23D480B7D}" Name="RoutingContentType" StaticName="RoutingContentType" SourceID="http://schemas.microsoft.com/sharepoint/v3" Group="Document and Record Management Columns" DisplayName="Submission Content Type" Type="Text" Required="TRUE" CanToggleHidden="TRUE" Sealed="TRUE" MaxLength="255" />
-        <Field Type="LookupMulti" DisplayName="Taxonomy Catch All Column1" StaticName="TaxCatchAllLabel" Name="TaxCatchAllLabel" ID="{8f6b6dd8-9357-4019-8172-966fcd502ed2}" ShowInViewForms="FALSE" List="Lists/TaxonomyHiddenList" WebId="f2982dbe-54b6-40df-b98f-8810bef93ad4" Required="FALSE" Hidden="TRUE" CanToggleHidden="TRUE" ShowField="CatchAllDataLabel" FieldRef="{F3B0ADF9-C1A2-4b02-920D-943FBA4B3611}" SourceID="{f2982dbe-54b6-40df-b98f-8810bef93ad4}" ReadOnly="TRUE" Mult="TRUE" Sortable="FALSE" AllowDeletion="TRUE" Sealed="TRUE" />
+        <Field Type="LookupMulti" DisplayName="Taxonomy Catch All Column1" StaticName="TaxCatchAllLabel" Name="TaxCatchAllLabel" ID="{8f6b6dd8-9357-4019-8172-966fcd502ed2}" ShowInViewForms="FALSE" List="Lists/TaxonomyHiddenList" WebId="203e7527-cb18-4b8f-a70f-23adec8d5964" Required="FALSE" Hidden="TRUE" CanToggleHidden="TRUE" ShowField="CatchAllDataLabel" FieldRef="{F3B0ADF9-C1A2-4b02-920D-943FBA4B3611}" SourceID="{203e7527-cb18-4b8f-a70f-23adec8d5964}" ReadOnly="TRUE" Mult="TRUE" Sortable="FALSE" AllowDeletion="TRUE" Sealed="TRUE" />
         <Field ID="{2E8881DA-0332-4ad9-A565-45B5B8B2702F}" Name="ReportOwner" StaticName="ReportOwner" Description="Owner of this document" List="UserInfo" DisplayName="Owner" Group="Reports" Type="User" SourceID="http://schemas.microsoft.com/sharepoint/v3" />
         <Field ID="{291AACDA-4CFB-4d59-968B-5E2EA0C9EAB7}" Name="KPI" StaticName="KPI" Description="Name of Microsoft SQL Server 2005 Analysis Services KPI" Group="Status Indicators" Type="Text" DisplayName="Indicator" SourceID="http://schemas.microsoft.com/sharepoint/v3" />
         <Field ID="{C42AB4DD-EB3A-4DF5-9C80-0BD400520C15}" Name="AuthorMemberStatusIntLookup" SourceID="http://schemas.microsoft.com/sharepoint/v3" DisplaceOnUpgrade="TRUE" Group="_Hidden" Type="Lookup" List="" Mult="FALSE" DisplayName="Author's membership status" Hidden="TRUE" AllowDeletion="FALSE" Sealed="TRUE">
@@ -762,7 +758,7 @@
         </Field>
         <Field ID="{186175F6-E318-4e9a-B5F7-4F7C751585A0}" Name="RoutingAliases" StaticName="RoutingAliases" SourceID="http://schemas.microsoft.com/sharepoint/v3" Group="Document and Record Management Columns" DisplayName="Aliases" Type="Text" Required="TRUE" CanToggleHidden="TRUE" Sealed="TRUE" MaxLength="255" />
         <Field ID="{10A4D7F7-AB3A-426f-B5CC-AB1EB03A94F4}" Name="RoutingTargetPath" StaticName="RoutingTargetPath" SourceID="http://schemas.microsoft.com/sharepoint/v3" Group="Document and Record Management Columns" DisplayName="Target Path" Type="Text" Required="TRUE" CanToggleHidden="TRUE" Sealed="TRUE" MaxLength="255" />
-        <Field Type="LookupMulti" DisplayName="Taxonomy Catch All Column" StaticName="TaxCatchAll" Name="TaxCatchAll" ID="{f3b0adf9-c1a2-4b02-920d-943fba4b3611}" ShowInViewForms="FALSE" List="Lists/TaxonomyHiddenList" WebId="f2982dbe-54b6-40df-b98f-8810bef93ad4" Required="FALSE" Hidden="TRUE" CanToggleHidden="TRUE" ShowField="CatchAllData" SourceID="{f2982dbe-54b6-40df-b98f-8810bef93ad4}" Mult="TRUE" Sortable="FALSE" AllowDeletion="TRUE" Sealed="TRUE" />
+        <Field Type="LookupMulti" DisplayName="Taxonomy Catch All Column" StaticName="TaxCatchAll" Name="TaxCatchAll" ID="{f3b0adf9-c1a2-4b02-920d-943fba4b3611}" ShowInViewForms="FALSE" List="Lists/TaxonomyHiddenList" WebId="203e7527-cb18-4b8f-a70f-23adec8d5964" Required="FALSE" Hidden="TRUE" CanToggleHidden="TRUE" ShowField="CatchAllData" SourceID="{203e7527-cb18-4b8f-a70f-23adec8d5964}" Mult="TRUE" Sortable="FALSE" AllowDeletion="TRUE" Sealed="TRUE" />
         <Field ID="{CD4DF6FB-0DA8-4ac9-B551-ED4FA6CD88FD}" Name="AbuseReportsReporterLookup" SourceID="http://schemas.microsoft.com/sharepoint/v3" DisplaceOnUpgrade="TRUE" Group="_Hidden" Type="Lookup" List="" Mult="TRUE" DisplayName="Reporter Lookup" ReadOnly="TRUE" Hidden="TRUE" AllowDeletion="FALSE" Sealed="TRUE">
           <FieldRefs>
             <FieldRef Name="AbuseReportsLookup" />
@@ -2554,7 +2550,7 @@
             <pnp:ContentTypeBinding ContentTypeID="0x010100F8EF98760CBA4A94994F13BA881038FA" Default="true" />
           </pnp:ContentTypeBindings>
           <pnp:Views>
-            <View Name="{EBDBEA28-F0C9-4B4C-BDBA-9957067BBD40}" MobileView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatevisprus0/FormServerTemplates/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
+            <View Name="{5C5DD35E-4CBC-4D07-901C-A6DD96C2AB24}" MobileView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateVISPRUS0/FormServerTemplates/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -2568,10 +2564,8 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{255C0E69-1C91-447F-AF54-BFDEC4DA18BC}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Forms" Url="/sites/templatevisprus0/FormServerTemplates/Forms/All Forms.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
+            <View Name="{D8CFC5F0-111D-4155-990D-4478FACC8BF2}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Forms" Url="/sites/templateVISPRUS0/FormServerTemplates/Forms/All Forms.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <GroupBy Collapse="FALSE">
                   <FieldRef Name="FormCategory" />
@@ -2594,8 +2588,6 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
           </pnp:Views>
           <pnp:FieldRefs>
@@ -2620,7 +2612,7 @@
             <pnp:ContentTypeBinding ContentTypeID="0x0101002D23E33B11A6430088E218F6806E9E43" />
           </pnp:ContentTypeBindings>
           <pnp:Views>
-            <View Name="{8DFECF36-8674-46E1-BB55-4ADF8583CA2F}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatevisprus0/Processes/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dclicon.png?rev=40">
+            <View Name="{CABA3E37-43DF-4352-ABAC-78B83DD382A7}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateVISPRUS0/Processes/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dclicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="LinkFilename" />
@@ -2638,10 +2630,8 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{675F93E1-46F2-4D30-AEC2-62D77C87F4F4}" MobileView="TRUE" Type="HTML" DisplayName="My Processes" Url="/sites/templatevisprus0/Processes/Forms/MyItems.aspx" Level="1" BaseViewID="11" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dclicon.png?rev=40">
+            <View Name="{CBBCC076-EADC-4EAF-9BE9-D08E7AB4252A}" MobileView="TRUE" Type="HTML" DisplayName="My Processes" Url="/sites/templateVISPRUS0/Processes/Forms/MyItems.aspx" Level="1" BaseViewID="11" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dclicon.png?rev=40">
               <Query>
                 <Where>
                   <Eq>
@@ -2667,10 +2657,8 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{29047C24-8923-4A80-A9D0-AC6657C890BC}" MobileView="TRUE" Type="HTML" DisplayName="Approved Processes" Url="/sites/templatevisprus0/Processes/Forms/PublishedItems.aspx" Level="1" BaseViewID="12" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dclicon.png?rev=40">
+            <View Name="{A96FFD06-FF8E-435E-B957-840815D2A790}" MobileView="TRUE" Type="HTML" DisplayName="Approved Processes" Url="/sites/templateVISPRUS0/Processes/Forms/PublishedItems.aspx" Level="1" BaseViewID="12" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dclicon.png?rev=40">
               <Query>
                 <Where>
                   <Eq>
@@ -2694,10 +2682,8 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{1CB8414D-B64F-400F-9F32-3B0F441CDC69}" MobileView="TRUE" Type="HTML" DisplayName="Invalid Processes" Url="/sites/templatevisprus0/Processes/Forms/InvalidItems.aspx" Level="1" BaseViewID="13" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dclicon.png?rev=40">
+            <View Name="{1CCBFE07-617C-4025-B759-9D2A42884C47}" MobileView="TRUE" Type="HTML" DisplayName="Invalid Processes" Url="/sites/templateVISPRUS0/Processes/Forms/InvalidItems.aspx" Level="1" BaseViewID="13" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dclicon.png?rev=40">
               <Query>
                 <Where>
                   <Or>
@@ -2732,10 +2718,8 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{A5687FAA-BBDC-4C03-ABBF-3C055A0F2004}" Type="HTML" TabularView="FALSE" Scope="RecursiveAll" ModerationType="Contributor" DisplayName="My submissions" Url="/sites/templatevisprus0/Processes/Forms/my-sub.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dclicon.png?rev=40">
+            <View Name="{F063FD4E-9EAA-419B-BF7E-A6F1A34BBA85}" Type="HTML" TabularView="FALSE" Scope="RecursiveAll" ModerationType="Contributor" DisplayName="My submissions" Url="/sites/templateVISPRUS0/Processes/Forms/my-sub.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dclicon.png?rev=40">
               <Query>
                 <GroupBy>
                   <FieldRef Name="_ModerationStatus" Ascending="FALSE" />
@@ -2751,10 +2735,8 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{A5D4BC2C-2E4E-44A0-B50D-C2A10E9FA7B5}" Type="HTML" TabularView="FALSE" Scope="RecursiveAll" ModerationType="Moderator" DisplayName="Approve/reject Items" Url="/sites/templatevisprus0/Processes/Forms/mod-view.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dclicon.png?rev=40">
+            <View Name="{9F26C520-C45D-41E1-B3FB-E3D45C6FCBE4}" Type="HTML" TabularView="FALSE" Scope="RecursiveAll" ModerationType="Moderator" DisplayName="Approve/reject Items" Url="/sites/templateVISPRUS0/Processes/Forms/mod-view.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dclicon.png?rev=40">
               <Query>
                 <GroupBy>
                   <FieldRef Name="_ModerationStatus" Ascending="FALSE" />
@@ -2771,8 +2753,6 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
           </pnp:Views>
           <pnp:Fields>
@@ -2784,7 +2764,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Style Library" Description="Use the style library to store style sheets, such as CSS or XSL files. The style sheets in this gallery can be used by this site or any of its subsites." DocumentTemplate="" TemplateType="101" Url="Style Library" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{AEFC9E08-A0A1-4A9B-B63A-48D1771FD765}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templatevisprus0/Style Library/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
+            <View Name="{834F5A70-478C-40AF-B069-CB720AF62AD4}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateVISPRUS0/Style Library/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -2798,8 +2778,6 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
           </pnp:Views>
           <pnp:FieldRefs>
