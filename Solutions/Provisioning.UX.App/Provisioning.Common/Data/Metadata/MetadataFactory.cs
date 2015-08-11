@@ -31,7 +31,7 @@ namespace Provisioning.Common.Data.Metadata
         #endregion
 
         /// <summary>
-        /// Returns an <see cref="Provisioning.Common.Data.ISiteRequestFactory"/> interface for working with the SiteRequest Repository
+        /// Returns an <see cref="Provisioning.Common.Data.Metadata.IMetadataFactory"/> interface for working with the Metadata Repository
         /// </summary>
         public static IMetadataFactory GetInstance()
         {
@@ -61,7 +61,7 @@ namespace Provisioning.Common.Data.Metadata
             }
             catch (Exception _ex)
             {
-                throw new DataStoreException("Exception Occured while Creating Instance", _ex);
+                throw new DataStoreException("Exception occured while creating instance", _ex);
             }
          
         }

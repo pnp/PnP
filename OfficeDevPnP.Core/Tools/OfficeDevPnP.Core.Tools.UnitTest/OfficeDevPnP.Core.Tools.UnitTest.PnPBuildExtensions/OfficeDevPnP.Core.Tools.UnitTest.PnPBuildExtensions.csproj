@@ -60,6 +60,9 @@
     <Content Include="mastertestconfiguration sample.xml">
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="nuget.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="MDTestResultTemplate.md" />
@@ -68,6 +71,11 @@
     <EmbeddedResource Include="MDTestSummaryTemplate.md">
       <SubType>Component</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="msbuildrun.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

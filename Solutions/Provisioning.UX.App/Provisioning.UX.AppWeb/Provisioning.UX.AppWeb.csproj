@@ -144,6 +144,7 @@
     <Content Include="Pages\Shell.html" />
     <Content Include="Scripts\bootstrap.dialog.js" />
     <Content Include="Scripts\wizard\controllers\shell.js" />
+    <Content Include="Scripts\wizard\modules\filter.js" />
     <Content Include="Styles\toastr.css" />
     <Content Include="Styles\toastr.min.css" />
     <Content Include="images\HBI.png" />

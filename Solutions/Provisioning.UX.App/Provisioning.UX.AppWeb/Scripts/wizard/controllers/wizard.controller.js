@@ -85,7 +85,7 @@
             var executor = new SP.RequestExecutor($scope.spAppWebUrl);
             executor.executeAsync(
                    {
-                       url: $scope.spAppWebUrl + "/_api/web/currentuser",
+                       url: $scope.spAppWebUrl + "/_api/SP.AppContextSite(@t)/web/currentUser?@t='" + $scope.spHostWebUrl + "'",
                        method: "GET",
                        headers:
                        {

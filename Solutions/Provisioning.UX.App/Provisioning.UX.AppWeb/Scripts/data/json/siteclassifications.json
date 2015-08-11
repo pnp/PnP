@@ -10,7 +10,7 @@
             "key": "Medium Business Impact (MBI)",
             "value": "MBI",
             "displayOrder": 2,
-             "addAllAuthenticatedUsers":  true
+            "addAllAuthenticatedUsers":  true
         },
         {
             "key": "High Business Impact (HBI)",

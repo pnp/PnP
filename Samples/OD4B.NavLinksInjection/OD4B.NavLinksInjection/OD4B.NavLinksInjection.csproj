@@ -10,11 +10,11 @@
     <RootNamespace>OD4B.NavLinksInjection</RootNamespace>
     <AssemblyName>OD4B.NavLinksInjection</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetOfficeVersion>16.0</TargetOfficeVersion>
+    <TargetOfficeVersion>16.1</TargetOfficeVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
-    <MinimumOfficeToolsVersion>12.1</MinimumOfficeToolsVersion>
+    <MinimumOfficeToolsVersion>12.2</MinimumOfficeToolsVersion>
     <IncludeAssemblyInPackage>False</IncludeAssemblyInPackage>
     <ProjectMode>SharePointApp</ProjectMode>
     <AppFeaturePartId>{4723d832-3403-46ea-b867-fcedd1ded320}</AppFeaturePartId>
@@ -23,6 +23,11 @@
     <CspkgPartId>{1273c29d-3b74-4fda-ad20-af9e62df3e6c}</CspkgPartId>
     <SqlPackagePartId>{e1a9a2dc-afdb-4488-bdd8-83849b64d6bc}</SqlPackagePartId>
     <ActivePublishProfile>pnpdev - Web Deploy</ActivePublishProfile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>12.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

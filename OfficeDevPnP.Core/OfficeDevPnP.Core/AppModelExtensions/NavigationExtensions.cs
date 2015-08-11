@@ -194,7 +194,7 @@ namespace Microsoft.SharePoint.Client
             {
                 webNav.CurrentNavigation.Source = Publishing.Navigation.StandardNavigationSource.TaxonomyProvider;
             }
-            webNav.Update(taxonomySession);            
+            webNav.Update(taxonomySession);
             web.Context.ExecuteQueryRetry();
 
             //Read all the properties of the web again after the above update
@@ -309,9 +309,9 @@ namespace Microsoft.SharePoint.Client
             bool activated = false;
 
             if (bool.TryParse(props.GetPropertyAsString(PublishingFeatureActivated), out activated))
-            { 
+            {
             }
-            
+
             return activated;
         }
 
@@ -358,7 +358,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="parentNodeTitle">if string.Empty, then will add this node as top level node</param>
         /// <param name="navigationType">the type of navigation, quick launch, top navigation or search navigation</param>
         /// <param name="isExternal">true if the link is an external link</param>
-   
+
         public static void AddNavigationNode(this Web web, string nodeTitle, Uri nodeUri, string parentNodeTitle, NavigationType navigationType, bool isExternal = false)
         {
             web.Context.Load(web, w => w.Navigation.QuickLaunch, w => w.Navigation.TopNavigationBar);
@@ -390,7 +390,18 @@ namespace Microsoft.SharePoint.Client
                 else if (navigationType == NavigationType.TopNavigationBar)
                 {
                     var topLink = web.Navigation.TopNavigationBar;
-                    topLink.Add(node);
+                    if (!string.IsNullOrEmpty(parentNodeTitle))
+                    {
+                        var parentNode = topLink.FirstOrDefault(n => n.Title == parentNodeTitle);
+                        if (parentNode != null)
+                        {
+                            parentNode.Children.Add(node);
+                        }
+                    }
+                    else
+                    {
+                        topLink.Add(node);
+                    }
                 }
                 else if (navigationType == NavigationType.SearchNav)
                 {
@@ -443,7 +454,22 @@ namespace Microsoft.SharePoint.Client
                 else if (navigationType == NavigationType.TopNavigationBar)
                 {
                     var topLink = web.Navigation.TopNavigationBar;
-                    deleteNode = topLink.SingleOrDefault(n => n.Title == nodeTitle);
+                    if(string.IsNullOrEmpty(parentNodeTitle))
+                    {
+                        deleteNode = topLink.SingleOrDefault(n => n.Title == nodeTitle);
+                    } else
+                    {
+                        foreach(var nodeInfo in topLink)
+                        {
+                            if(nodeInfo.Title != parentNodeTitle)
+                            {
+                                continue;
+                            }
+                            web.Context.Load(nodeInfo.Children);
+                            web.Context.ExecuteQueryRetry();
+                            deleteNode = nodeInfo.Children.SingleOrDefault(n => n.Title == nodeTitle);
+                        }
+                    }
                 }
                 else if (navigationType == NavigationType.SearchNav)
                 {

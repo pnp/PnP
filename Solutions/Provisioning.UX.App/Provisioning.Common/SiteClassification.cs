@@ -12,12 +12,11 @@ namespace Provisioning.Common
     /// </summary>
     public class SiteClassification
     {
-
         /// <summary>
         /// Gets or Sets the Key of the Policy
         /// </summary>
         [JsonProperty(PropertyName = "id")]
-        public string Id { get; internal set; }
+        public int Id { get; internal set; }
 
         /// <summary>
         /// Gets or Sets the Key of the Policy
@@ -36,7 +35,13 @@ namespace Provisioning.Common
         /// </summary>
         [JsonProperty(PropertyName = "displayOrder")]
         public int DisplayOrder { get; set; }
-        
+
+        /// <summary>
+        /// Gets or sets the Expiration in Months
+        /// </summary>
+        [JsonProperty(PropertyName = "expirateMonths")]
+        public int ExpirationMonths { get; set; }
+
         /// <summary>
         /// Gets or sets if AllAuthenticated users should be added to the site during provisioning
         /// </summary>
@@ -44,7 +49,7 @@ namespace Provisioning.Common
         public bool AddAllAuthenticatedUsers { get; set; }
 
         /// <summary>
-        /// Gets or sets if AllAuthenticated users should be added to the site during provisioning
+        /// Gets or sets if the classification entry is enabled or disabled
         /// </summary>
         [JsonProperty(PropertyName = "enabled")]
         public bool Enabled { get; set; }

@@ -1,0 +1,113 @@
+﻿body {
+    padding-bottom: 20px;
+    overflow: auto !important;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+#spChrome {
+    /* allow for scroll bar */
+    margin-right: 10px;
+}
+
+
+/* Begin People Picker Styles */
+
+.sp-peoplepicker-editDiv {
+    overflow: hidden;
+}
+
+span.sp-peoplepicker-chosen {
+    margin-right: 10px;
+}
+
+span.sp-peoplepicker-removeChosen {
+    margin-left: 3px;
+    cursor: pointer;
+}
+
+li.sp-peoplepicker-foundItem {
+    cursor: pointer;
+}
+
+li.sp-peoplepicker-foundItem:hover {
+    background-color:#f5f5f5;
+}
+
+ul.sp-peoplepicker-dropdown li {
+    padding: 4px;
+}
+
+/* maintain small divider line from bootstrap */
+ul.sp-peoplepicker-dropdown li.divider {
+    padding: 0px !important;
+}
+
+/* Begin Document Picker Styles */
+
+ul.sp-docpicker-dropdown {
+    padding: 5px;
+    list-style: none !important;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+ul.sp-docpicker-dropdown .glyphicon {
+    margin-right: 2px;
+}
+
+span.spdocpicker-removeChosen > span.glyphicon {
+    margin-left: 2px;
+}
+
+ul.sp-documentpicker-childul {
+    list-style: none;
+    margin: 0px;
+    white-space: nowrap;
+    padding: 0px;
+}
+
+li[sp-docpicker-nodeType] {
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 2px;
+    margin-left: 5px;
+}
+
+li[sp-docpicker-nodeType="web"] {
+}
+
+li[sp-docpicker-nodeType="list"] {
+}
+
+li[sp-docpicker-nodeType="folder"] {
+}
+
+    li[sp-docpicker-nodeType="folder"] > span.badge {
+        margin-left: 3px;
+    }
+
+li[sp-docpicker-nodeType="file"] {
+}
+
+    li[sp-docpicker-nodeType="file"]:hover {
+        background-color: #CECECE;
+    }
+
+    li[sp-docpicker-nodeType="file"].selected {
+        background-color: yellow;
+        border-radius: 2px;
+    }

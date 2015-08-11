@@ -4,235 +4,113 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title></title>
-     <script src="//ajax.aspnetcdn.com/ajax/4.0/1/MicrosoftAjax.js" type="text/javascript"></script>
+     <link href="../../Styles/site.css" rel="stylesheet" type="text/css" />
      <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.1.min.js" type="text/javascript" ></script>      
      <script src="../../Scripts/chromeloader.js?rev=1" type="text/javascript"></script>
 </head>
 <body>
-   <div id="divSPChrome"></div>    
+    <form id="form1" runat="server">
+        <div id="divSPChrome"></div>   
         <div class="page">
-        <section id ="main">
             <script type="text/javascript">
                 $(function () {
-                    $('#edit_button').click(function () {
-                        $.ajax({
-                            success: function () {
-                            }
-                        });
-                    });
                     $('#cancel_button').click(function () {
                         window.location = $('#Url').val();
                     });
                 });
             </script>
-            <div id="loading_dialog" title="Saving..." style="display:none;">
-                <p>
-                    <img src="../../images/spinningwheel.gif" width='20' height='20' alt="" style="position:relative; top:5px; right:5px; " />
-                    <span style="color: #696969;">Please wait while your changes are processed. </span>
-                </p>
-             </div>
-            <form id="form" runat="server">
-                <fieldset>
-                    <legend>Site Information</legend>
-                    <script type="text/javascript">
-                        $(function () {
-                            $('input[name=AudienceScope]').click(function () {
-                                var selected = $(this).val();
-                                Hide('.AS_group');
-                                Show('#AS_' + selected);
-                            });
-                            $('#TargetedAudienceTable').addClass('TargetedAudienceTable');
-                        });
-
-                        function RevertAudienceScope() {
-                            Check('#AudienceScope_' + 'Team');
-                            $('#AudienceScope_' + 'Team').click();
-                        }
-                    </script>
-                   
-                    <table id="SitePropertiesTable" width="100%">
+        <asp:ScriptManager ID="scriptManager" runat="server" EnableCdn="True" />
+        <asp:UpdateProgress ID="progress" runat="server" AssociatedUpdatePanelID="mainPanel" DynamicLayout="true">
+            <ProgressTemplate>
+                <div id="divWaitingPanel" style="position: absolute; z-index: 3; background: rgb(255, 255, 255); width: 100%; bottom: 0px; top: 0px;">
+                    <div style="top: 40%; position: absolute; left: 50%; margin-left: -150px;">
+                        <img alt="Working on it" src="data:image/gif;base64,R0lGODlhEAAQAIAAAFLOQv///yH/C05FVFNDQVBFMi4wAwEAAAAh+QQFCgABACwJAAIAAgACAAACAoRRACH5BAUKAAEALAwABQACAAIAAAIChFEAIfkEBQoAAQAsDAAJAAIAAgAAAgKEUQAh+QQFCgABACwJAAwAAgACAAACAoRRACH5BAUKAAEALAUADAACAAIAAAIChFEAIfkEBQoAAQAsAgAJAAIAAgAAAgKEUQAh+QQFCgABACwCAAUAAgACAAACAoRRACH5BAkKAAEALAIAAgAMAAwAAAINjAFne8kPo5y02ouzLQAh+QQJCgABACwCAAIADAAMAAACF4wBphvID1uCyNEZM7Ov4v1p0hGOZlAAACH5BAkKAAEALAIAAgAMAAwAAAIUjAGmG8gPW4qS2rscRPp1rH3H1BUAIfkECQoAAQAsAgACAAkADAAAAhGMAaaX64peiLJa6rCVFHdQAAAh+QQJCgABACwCAAIABQAMAAACDYwBFqiX3mJjUM63QAEAIfkECQoAAQAsAgACAAUACQAAAgqMARaol95iY9AUACH5BAkKAAEALAIAAgAFAAUAAAIHjAEWqJeuCgAh+QQJCgABACwFAAIAAgACAAACAoRRADs=" style="width: 32px; height: 32px;" />
+                        <span class="ms-accentText" style="font-size: 36px;">&nbsp;Working on it...</span>
+                    </div>
+                </div>
+            </ProgressTemplate>
+        </asp:UpdateProgress> 
+        <asp:UpdatePanel ID="mainPanel" runat="server">
+            <ContentTemplate>
+                    <fieldset>
+                    <legend>New Site</legend>
+                    <table id="SiteInfoTable" width="100%">
                         <tbody>
                             <tr>
-                              <td valign="top">
+                                <!-- Title and Description -->
+                                <td valign="top">
                                 <div class="editor-label">
                                     <div class='O15_editor_label_head'>
-                                        <p>Site Properties</p>
-                                    </div>
-                                    <div class="O15_editor_label_body">
-                                        <p>Learn more about  <a href="http://INSERTYOURPOLICY" target="_blank">site classification</a>.</p>
-                                        <p>All Sites must have the following Site metadata applied.</p>
+                                        <p>Title and Description</p>
                                     </div>
                                 </div>
-                              </td>
-                              <td valign="top" class="right-column">
+                                </td>
+                                <td valign="top" class="right-column">
                                 <div class="editor-field O15_editor_field_head">
-                                    <p>Current Site Division:</p>
-                                    <b>&nbsp&nbsp&nbsp<asp:Label ID="lblDivision" runat="server" Visible="true"></asp:Label></b>
-                                    <p>
-                                        <span>Division</span>
-                                    </p>
-                                    <script type="text/javascript" charset="utf-8">
-                                        $(document).ready(function () {
-                                            $.ajax({
-                                                url: "../../Scripts/data/json/divisions.json",
-                                                data: {},
-                                                dataType: "json",
-                                                contentType: "application/json; charset=utf-8",
-                                                success: function (data) {
-                                                    var jsdata = data.divisions;
-                                                    $.each(jsdata, function (key, value) {
-                                                        $('#<%=selectDivision.ClientID%>').append($("<option></option>").val(value.key).html(value.value));
-                                                    });
-                                                },
-                                                error: function (data) {
-                                                    alert("../../Scripts/data/json/divisions.json not found!");
-                                                }
-                                            });
-                                        });
-                                    </script>
-                                    <select id="selectDivision" runat="server" style="width: 230px; margin-left: 13px;"></select>
+                                    <p>Title:</p>
+                                    <input id="siteTitle" type="text" name="txtTitle" runat="server" required/>
+                                    <br />
+                                    <p>Description:</p>
+                                    <textarea id="siteDescription" rows="5" cols="35" title="Description" name="Description" runat="server"></textarea>
                                 </div>
-                               </td>
-                            </tr>
+                                </td>
+                                </tr>
                             <tr>
-                              <td valign="top">
-                                <div class="editor-label">
-                                    <div class='O15_editor_label_head'>   </div>
-                                    <div class="O15_editor_label_body">   </div>
-                                </div>
-                              </td>
-                              <td valign="top" class="right-column">
-                                <div class="editor-field O15_editor_field_head">
-                                    <p>Current Site Function:</p>
-                                    <b>&nbsp&nbsp&nbsp<asp:Label ID="lblFunction" runat="server" Visible="true"></asp:Label></b>
-                                    <p>
-                                        <span>Function</span>
-                                    </p>
-                                    <script type="text/javascript" charset="utf-8">
-                                        $(document).ready(function () {
-                                            $.ajax({
-                                                url: "../../Scripts/data/json/functions.json",
-                                                data: {},
-                                                dataType: "json",
-                                                contentType: "application/json; charset=utf-8",
-                                                success: function (data) {
-                                                    var jsdata = data.functions;
-                                                    $.each(jsdata, function (key, value) {
-                                                        $('#<%=selectFunction.ClientID%>').append($("<option></option>").val(value.key).html(value.value));
-                                                    });
-                                                },
-                                                error: function (data) {
-                                                    alert("../../Scripts/data/json/functions.json not found!");
-                                                }
-                                            });
-                                        });
-                                    </script>
-                                    <select id="selectFunction" runat="server" style="width: 230px; margin-left: 13px;"></select>
-                                </div>
-                               </td>
-                            </tr>
-                            <tr>
-                              <td valign="top">
-                                <div class="editor-label">
-                                    <div class='O15_editor_label_head'>   </div>
-                                    <div class="O15_editor_label_body">   </div>
-                                </div>
-                              </td>
-                              <td valign="top" class="right-column">
-                                <div class="editor-field O15_editor_field_head">
-                                    <p>Current Site Region:</p>
-                                    <b>&nbsp&nbsp&nbsp<asp:Label ID="lblRegion" runat="server" Visible="true"></asp:Label></b>
-                                    <p>
-                                        <span>Region</span>
-                                    </p>
-                                    <script type="text/javascript" charset="utf-8">
-                                        $(document).ready(function () {
-                                            $.ajax({
-                                                url: "../../Scripts/data/json/regions.json",
-                                                data: {},
-                                                dataType: "json",
-                                                contentType: "application/json; charset=utf-8",
-                                                success: function (data) {
-                                                    var jsdata = data.regions;
-                                                    $.each(jsdata, function (key, value) {
-                                                        $('#<%=selectRegions.ClientID%>').append($("<option></option>").val(value.key).html(value.value));
-                                                    });
-                                                },
-                                                error: function (data) {
-                                                    alert("../../Scripts/data/json/regions.json not found!");
-                                                }
-                                            });
-                                        });
-                                    </script>
-                                    <select id="selectRegions" runat="server" style="width: 230px; margin-left: 13px;"></select>
-                                </div>
-                               </td>
-                            </tr>
-                       </tbody>
-                    </table>
-
-                    <table id="RiskClassificationTable" width="100%">
-                        <tbody>
-                            <tr>
-                              <td valign="top">
-                                <div class="editor-label">
-                                    <div class='O15_editor_label_head'>
-                                        <p>Security Classification</p>
-                                    </div>
-                                    <div class="O15_editor_label_body">
-                                        <p>Learn more about  <a href="http://INSERTYOURPOLICY" target="_blank">protecting your documents</a>.</p><p>
-                                            <div class="ms-status-yellow" id="pageStatusBar" aria-live="polite" aria-relevant="all" style="display: block;">
-                                                All sites must have a security classification
-                                             </div>
-                                    </div>
-                                </div>
-                              </td>
-                              <td valign="top" class="right-column">
-                                <div class="editor-field O15_editor_field_head">
-                                    <p>Current Site Classification:</p>
-                                    <b>&nbsp&nbsp&nbsp<asp:Label ID="lblSitePolicy" runat="server" Visible="true"></asp:Label></b>
-                                    <p>
-                                        <span>How sensitive is your site?</span>
-                                    </p>
-                                    <select name="BusinessImpact" id="BusinessImpact" runat="server" style="width: 230px; margin-left: 13px;" data-val-required="The BusinessImpact field is required." data-val-length-max="128" data-val-length="Security Classification must be a string with a maximum length of 128." data-val="true">
-                                    </select>
-                                </div>
-                               </td>
-                             </tr>
-                       </tbody>
-                    </table>
-
-                    <table id="ExpirationDateTable" width="100%">
-                        <tbody>
-                        <tr>
-                            <td valign="Top">
-                                <div class="editor-label">
-                                    <div class="O15_editor_label_head"><p>Expiration Date</p></div>
-                                    <div class="O15_editor_label_body"><p>If your site reaches the expiration date in one month or less than one month, you may extend your site deletion.</p></div>
-                                </div>
-                            </td>
-                            <td class="right-column">
-                                <div class="editor-field O15_editor_field_head">
-                                     <p>Current Expiration Date:</p>
-                                        <div class="ExpirationDateFilterClass" id="expirationDateOneYear" style="display: block;">
-                                         &nbsp;&nbsp; <b><asp:Label ID="lblExpirationDate" runat="server" Visible="true"></asp:Label></b>
+                                <!-- Web Site Address -->
+                                <td valign="top">
+                                    <div class="editor-label">
+                                        <div class="O15_editor_label_head">
+                                            <p>
+                                                Web Site Address</p>
                                         </div>
-                                 </div>
-                            </td>
-                        </tr>
+                                    </div>
+                                </td>
+                                <td class="right-column" valign="top">
+                                    <div class="editor-field O15_editor_field_head">
+                                        <p>URL name:</p>
+                                        <div>
+                                            <table>
+                                                <tr>
+                                                    <td><label id="labelHostURL" runat="server"></label></td>
+                                                    <td><input id="txtSiteUrl" type="text" name="txtTitle" runat="server" required/></td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                        <br />
+                                    </div>
+                                </td>
+                            <tr>
+                                <!-- Template -->
+                                <td valign="top">
+                                    <div class="editor-label">
+                                        <div class="O15_editor_label_head">
+                                            <p>Template Selection</p>
+                                        </div>
+                                    </div>
+                                </td>
+                                   <td class="right-column" valign="top">
+                                    <div class="editor-field O15_editor_field_head">
+                                        <p>Site Template:</p>
+                                        <select id="selectSiteTeamplate" runat="server" name="SiteTemplateType" title="Site Template">
+                                        </select>
+                                    </div>
+                                </td>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <input id="Url" name="Url" type="hidden" value="" runat="server"/>
                     <p style="float: right">
-                        <asp:Button runat="server" ID="submit_button" Text="OK" OnClick="Submit_Click" />
+                        <asp:Button runat="server" ID="create_button" OnClick="Submit_Click" Text="Create" />
                         <input type="button" id="cancel_button" value="Cancel" />
                     </p>
                     <div class="clear"></div>
-                </fieldset>
-            </form>
-        </section>
-    </div>  
-    <div id="MicrosoftOnlineRequired">
+                    </fieldset>
+                </ContentTemplate>
+        </asp:UpdatePanel>
+        </div>
+    </form>
+   <div id="MicrosoftOnlineRequired">
         <div style="float:left">
             <img style="position:relative;top:4px;"  src="../../images/MicrosoftLogo.png" alt="©2015 Microsoft Corporation"/>
             <span id="copyright">©2015 Contoso Corporation</span>&nbsp;&nbsp;&nbsp;
