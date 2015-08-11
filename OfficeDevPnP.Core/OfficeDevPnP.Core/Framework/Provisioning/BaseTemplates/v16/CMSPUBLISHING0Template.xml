@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema">
-  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.4.815.0, Culture=neutral, PublicKeyToken=null" />
+  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.5.915.0, Culture=neutral, PublicKeyToken=null" />
   <pnp:Templates ID="CONTAINER-CMSPUBLISHING0template">
     <pnp:ProvisioningTemplate ID="CMSPUBLISHING0template" Version="1">
       <pnp:PropertyBagEntries>
@@ -11,19 +11,19 @@
         <pnp:PropertyBagEntry Key="__PageLayouts" Value="__inherit" />
         <pnp:PropertyBagEntry Key="__InheritWebTemplates" Value="True" />
         <pnp:PropertyBagEntry Key="SaveSiteAsTemplateEnabled" Value="false" />
-        <pnp:PropertyBagEntry Key="__DefaultPageLayout" Value="&lt;layout guid=&quot;e9178837-1de1-41f4-b8ed-c93f72e6a11e&quot; url=&quot;_catalogs/masterpage/PageFromDocLayout.aspx&quot; /&gt;" />
-        <pnp:PropertyBagEntry Key="__DocumentsListId" Value="21018fe7-9e7c-4121-9c8c-e6d8c481b3ea" />
+        <pnp:PropertyBagEntry Key="__DefaultPageLayout" Value="&lt;layout guid=&quot;53856955-c818-45b8-a64f-aa4ce22d6b2e&quot; url=&quot;_catalogs/masterpage/PageFromDocLayout.aspx&quot; /&gt;" />
+        <pnp:PropertyBagEntry Key="__DocumentsListId" Value="576fb0af-065a-4d74-86f5-9aa9a673e42f" />
         <pnp:PropertyBagEntry Key="vti_associategroups" Value="5;4;3;6;7;8;9;10;11;16" />
         <pnp:PropertyBagEntry Key="vti_categories" Value="Travel Expense\ Report Business Competition Goals/Objectives Ideas Miscellaneous Waiting VIP In\ Process Planning Schedule" />
-        <pnp:PropertyBagEntry Key="__PagesListId" Value="2950ee71-ae63-4718-bba4-66a47c7a2063" />
+        <pnp:PropertyBagEntry Key="__PagesListId" Value="025252e2-0fea-4e41-b430-a87318b3df5f" />
         <pnp:PropertyBagEntry Key="__InheritsThemedCssFolderUrl" Value="True" />
         <pnp:PropertyBagEntry Key="__NavigationShowSiblings" Value="True" />
         <pnp:PropertyBagEntry Key="vti_associatemembergroup" Value="5" />
-        <pnp:PropertyBagEntry Key="__ImagesListId" Value="2cc4ed0a-263d-413e-88c4-059c36e5835d" />
+        <pnp:PropertyBagEntry Key="__ImagesListId" Value="822ca527-a7fe-49c8-b1af-cc05f6c915f9" />
         <pnp:PropertyBagEntry Key="__InheritsCustomMasterUrl" Value="True" />
         <pnp:PropertyBagEntry Key="__NewPageUrlToken" Value="__inherit" />
         <pnp:PropertyBagEntry Key="__GlobalNavigationIncludeTypes" Value="3" />
-        <pnp:PropertyBagEntry Key="vti_extenderversion" Value="16.0.0.4021" />
+        <pnp:PropertyBagEntry Key="vti_extenderversion" Value="16.0.0.4316" />
         <pnp:PropertyBagEntry Key="vti_defaultlanguage" Value="en-us" />
         <pnp:PropertyBagEntry Key="__pageslistname" Value="Pages" />
         <pnp:PropertyBagEntry Key="__WebTemplates" Value="&lt;webtemplates&gt;&lt;lcid id=&quot;all&quot;&gt;&lt;webtemplate name=&quot;CMSPUBLISHING#0&quot; /&gt;&lt;webtemplate name=&quot;BLANKINTERNET#2&quot; /&gt;&lt;webtemplate name=&quot;ENTERWIKI#0&quot; /&gt;&lt;webtemplate name=&quot;SRCHCEN#0&quot; /&gt;&lt;/lcid&gt;&lt;/webtemplates&gt;" />
@@ -40,7 +40,7 @@
       <pnp:Lists>
         <pnp:ListInstance Title="Documents" Description="This system library was created by the Publishing feature to store documents that are used on pages in this site." DocumentTemplate="{site}/Documents/Forms/template.dotx" TemplateType="101" Url="Documents" EnableVersioning="true" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{12D46F1F-CB99-4CD6-AC75-5DB1F2AE9336}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/Documents/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
+            <View Name="{7AC3A756-5F13-458E-B152-750D576744F3}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateBLANKINTERNETCONTAINER0/templateCMSPUBLISHING0/Documents/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -55,8 +55,6 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
           </pnp:Views>
           <pnp:Fields>
@@ -879,7 +877,7 @@
             <pnp:ContentTypeBinding ContentTypeID="0x0120D520A808" />
           </pnp:ContentTypeBindings>
           <pnp:Views>
-            <View Name="{074AA4F8-B033-495C-9D24-AEEB0EBA2D82}" Type="HTML" DisplayName="All Assets" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/PublishingImages/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
+            <View Name="{4F5A6CE1-6516-46F2-8FAD-49C54E2869D4}" Type="HTML" DisplayName="All Assets" Url="/sites/templateBLANKINTERNETCONTAINER0/templateCMSPUBLISHING0/PublishingImages/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="LinkFilename" />
@@ -911,10 +909,8 @@
               </ViewFields>
               <RowLimit Paged="TRUE">20</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{2E1AB854-B9D3-4DAD-97C1-C22566C8AA74}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="Thumbnails" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/PublishingImages/Forms/Thumbnails.aspx" Level="1" BaseViewID="40" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
+            <View Name="{0F184690-82BE-4B00-9289-BB455E8BD064}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="Thumbnails" Url="/sites/templateBLANKINTERNETCONTAINER0/templateCMSPUBLISHING0/PublishingImages/Forms/Thumbnails.aspx" Level="1" BaseViewID="40" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="LinkFilename" />
@@ -951,13 +947,11 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js|SP.UI.TileView.js|SP.UI.AssetLibrary.js|callout.js</JSLink>
-              <XslLink>AssetPicker.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
           </pnp:Views>
           <pnp:Fields>
             <Field ID="{8553196d-ec8d-4564-9861-3dbe931050c8}" ShowInFileDlg="FALSE" ShowInVersionHistory="FALSE" Type="File" Name="FileLeafRef" DisplayName="Name" AuthoringInfo="(for use in forms)" List="Docs" FieldRef="ID" ShowField="LeafName" JoinColName="DoclibRowId" JoinRowOrdinal="0" JoinType="INNER" Required="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="FileLeafRef" FromBaseType="TRUE" />
-            <Field ID="{8c0d0aac-9b76-4951-927a-2490abe13c0b}" Type="Computed" Name="PreviewOnForm" DisplaceOnUpgrade="TRUE" ShowInNewForm="FALSE" ShowInDisplayForm="FALSE" ShowInEditForm="FALSE" ShowInFileDlg="FALSE" DisplayName="Preview" Sealed="TRUE" Sortable="FALSE" Filterable="FALSE" StaticName="PreviewOnForm" SourceID="{2CC4ED0A-263D-413E-88C4-059C36E5835D}">
+            <Field ID="{8c0d0aac-9b76-4951-927a-2490abe13c0b}" Type="Computed" Name="PreviewOnForm" DisplaceOnUpgrade="TRUE" ShowInNewForm="FALSE" ShowInDisplayForm="FALSE" ShowInEditForm="FALSE" ShowInFileDlg="FALSE" DisplayName="Preview" Sealed="TRUE" Sortable="FALSE" Filterable="FALSE" StaticName="PreviewOnForm" SourceID="{822CA527-A7FE-49C8-B1AF-CC05F6C915F9}">
               <FieldRefs>
                 <FieldRef Name="FileLeafRef" />
                 <FieldRef Name="FileDirRef" />
@@ -992,7 +986,7 @@
                 <HTML><![CDATA[' onerror="this.style.display='none';"></a>]]></HTML>
               </DisplayPattern>
             </Field>
-            <Field ID="{9941082a-4160-46a1-a5b2-03394bfdf7ee}" Type="Computed" Name="ThumbnailOnForm" Group="_Hidden" ShowInNewForm="FALSE" ShowInEditForm="FALSE" ShowInFileDlg="FALSE" DisplayName="Thumbnail Preview" Sealed="TRUE" Sortable="FALSE" StaticName="ThumbnailOnForm" SourceID="{2CC4ED0A-263D-413E-88C4-059C36E5835D}">
+            <Field ID="{9941082a-4160-46a1-a5b2-03394bfdf7ee}" Type="Computed" Name="ThumbnailOnForm" Group="_Hidden" ShowInNewForm="FALSE" ShowInEditForm="FALSE" ShowInFileDlg="FALSE" DisplayName="Thumbnail Preview" Sealed="TRUE" Sortable="FALSE" StaticName="ThumbnailOnForm" SourceID="{822CA527-A7FE-49C8-B1AF-CC05F6C915F9}">
               <FieldRefs>
                 <FieldRef Name="EncodedAbsThumbnailUrl" />
                 <FieldRef Name="FileLeafRef" />
@@ -1054,8 +1048,8 @@
                 <HTML><![CDATA[</a>]]></HTML>
               </DisplayPattern>
             </Field>
-            <Field ID="{246d0907-637c-46b7-9aa0-0bb914daa832}" Name="_Author" Group="Core Document Columns" Type="Text" DisplayName="Author" StaticName="_Author" Description="The primary author" Sealed="TRUE" AllowDeletion="TRUE" ShowInFileDlg="FALSE" ColName="nvarchar7" SourceID="{2CC4ED0A-263D-413E-88C4-059C36E5835D}" />
-            <Field ID="{c53a03f3-f930-4ef2-b166-e0f2210c13c0}" Type="Computed" Name="FileType" DisplayName="File Type" ShowInNewForm="FALSE" ShowInFileDlg="FALSE" ShowInEditForm="FALSE" Filterable="TRUE" Sortable="TRUE" AuthoringInfo="(File extension)" StaticName="FileType" SourceID="{2CC4ED0A-263D-413E-88C4-059C36E5835D}">
+            <Field ID="{246d0907-637c-46b7-9aa0-0bb914daa832}" Name="_Author" Group="Core Document Columns" Type="Text" DisplayName="Author" StaticName="_Author" Description="The primary author" Sealed="TRUE" AllowDeletion="TRUE" ShowInFileDlg="FALSE" ColName="nvarchar7" SourceID="{822CA527-A7FE-49C8-B1AF-CC05F6C915F9}" />
+            <Field ID="{c53a03f3-f930-4ef2-b166-e0f2210c13c0}" Type="Computed" Name="FileType" DisplayName="File Type" ShowInNewForm="FALSE" ShowInFileDlg="FALSE" ShowInEditForm="FALSE" Filterable="TRUE" Sortable="TRUE" AuthoringInfo="(File extension)" StaticName="FileType" SourceID="{822CA527-A7FE-49C8-B1AF-CC05F6C915F9}">
               <FieldRefs>
                 <FieldRef Name="File_x0020_Type" />
               </FieldRefs>
@@ -1063,7 +1057,7 @@
                 <Column Name="File_x0020_Type" HTMLEncode="TRUE" />
               </DisplayPattern>
             </Field>
-            <Field ID="{922551b8-c7e0-46a6-b7e3-3cf02917f68a}" Type="Computed" Name="ImageSize" DisplayName="Picture Size" ShowInNewForm="FALSE" ShowInFileDlg="FALSE" ShowInEditForm="FALSE" Filterable="FALSE" Sortable="FALSE" StaticName="ImageSize" SourceID="{2CC4ED0A-263D-413E-88C4-059C36E5835D}">
+            <Field ID="{922551b8-c7e0-46a6-b7e3-3cf02917f68a}" Type="Computed" Name="ImageSize" DisplayName="Picture Size" ShowInNewForm="FALSE" ShowInFileDlg="FALSE" ShowInEditForm="FALSE" Filterable="FALSE" Sortable="FALSE" StaticName="ImageSize" SourceID="{822CA527-A7FE-49C8-B1AF-CC05F6C915F9}">
               <FieldRefs>
                 <FieldRef Name="ImageWidth" />
                 <FieldRef Name="ImageHeight" />
@@ -1105,12 +1099,12 @@
                 </IfEqual>
               </DisplayPattern>
             </Field>
-            <Field ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Type="Text" Name="Title" ShowInNewForm="FALSE" ShowInFileDlg="FALSE" DisplayName="Title" Sealed="TRUE" ColName="nvarchar8" StaticName="Title" SourceID="{2CC4ED0A-263D-413E-88C4-059C36E5835D}" />
-            <Field ID="{7e68a0f9-af76-404c-9613-6f82bc6dc28c}" ReadOnly="TRUE" Type="Integer" Name="ImageWidth" DisplayName="Width" ColName="int1" StaticName="ImageWidth" SourceID="{2CC4ED0A-263D-413E-88C4-059C36E5835D}" />
-            <Field ID="{1944c034-d61b-42af-aa84-647f2e74ca70}" ReadOnly="TRUE" Type="Integer" Name="ImageHeight" DisplayName="Height" ColName="int2" StaticName="ImageHeight" SourceID="{2CC4ED0A-263D-413E-88C4-059C36E5835D}" />
-            <Field ID="{a5d2f824-bc53-422e-87fd-765939d863a5}" Type="DateTime" ShowInNewForm="FALSE" ShowInFileDlg="FALSE" Name="ImageCreateDate" DisplayName="Date Picture Taken" Format="DateTime" Sealed="TRUE" ColName="datetime1" StaticName="ImageCreateDate" SourceID="{2CC4ED0A-263D-413E-88C4-059C36E5835D}" />
-            <Field ID="{52578fc3-1f01-4f4d-b016-94ccbcf428cf}" Name="_Comments" StaticName="_Comments" Type="Note" DisplayName="Comments" Sortable="FALSE" Description="A summary of this asset" Sealed="TRUE" UnlimitedLengthInDocumentLibrary="TRUE" AllowDeletion="TRUE" ShowInFileDlg="FALSE" ColName="ntext2" SourceID="{2CC4ED0A-263D-413E-88C4-059C36E5835D}" />
-            <Field ID="{76d1cc87-56de-432c-8a2a-16e5ba5331b3}" ReadOnly="TRUE" Type="Computed" Name="NameOrTitle" ClassInfo="Menu" DisplayName="Name" DisplayNameSrcField="FileLeafRef" Filterable="FALSE" AuthoringInfo="(linked to display items)" CalloutMenu="TRUE" StaticName="NameOrTitle" SourceID="{2CC4ED0A-263D-413E-88C4-059C36E5835D}">
+            <Field ID="{fa564e0f-0c70-4ab9-b863-0177e6ddd247}" Type="Text" Name="Title" ShowInNewForm="FALSE" ShowInFileDlg="FALSE" DisplayName="Title" Sealed="TRUE" ColName="nvarchar8" StaticName="Title" SourceID="{822CA527-A7FE-49C8-B1AF-CC05F6C915F9}" />
+            <Field ID="{7e68a0f9-af76-404c-9613-6f82bc6dc28c}" ReadOnly="TRUE" Type="Integer" Name="ImageWidth" DisplayName="Width" ColName="int1" StaticName="ImageWidth" SourceID="{822CA527-A7FE-49C8-B1AF-CC05F6C915F9}" />
+            <Field ID="{1944c034-d61b-42af-aa84-647f2e74ca70}" ReadOnly="TRUE" Type="Integer" Name="ImageHeight" DisplayName="Height" ColName="int2" StaticName="ImageHeight" SourceID="{822CA527-A7FE-49C8-B1AF-CC05F6C915F9}" />
+            <Field ID="{a5d2f824-bc53-422e-87fd-765939d863a5}" Type="DateTime" ShowInNewForm="FALSE" ShowInFileDlg="FALSE" Name="ImageCreateDate" DisplayName="Date Picture Taken" Format="DateTime" Sealed="TRUE" ColName="datetime1" StaticName="ImageCreateDate" SourceID="{822CA527-A7FE-49C8-B1AF-CC05F6C915F9}" />
+            <Field ID="{52578fc3-1f01-4f4d-b016-94ccbcf428cf}" Name="_Comments" StaticName="_Comments" Type="Note" DisplayName="Comments" Sortable="FALSE" Description="A summary of this asset" Sealed="TRUE" UnlimitedLengthInDocumentLibrary="TRUE" AllowDeletion="TRUE" ShowInFileDlg="FALSE" ColName="ntext2" SourceID="{822CA527-A7FE-49C8-B1AF-CC05F6C915F9}" />
+            <Field ID="{76d1cc87-56de-432c-8a2a-16e5ba5331b3}" ReadOnly="TRUE" Type="Computed" Name="NameOrTitle" ClassInfo="Menu" DisplayName="Name" DisplayNameSrcField="FileLeafRef" Filterable="FALSE" AuthoringInfo="(linked to display items)" CalloutMenu="TRUE" StaticName="NameOrTitle" SourceID="{822CA527-A7FE-49C8-B1AF-CC05F6C915F9}">
               <FieldRefs>
                 <FieldRef Name="FileLeafRef" />
                 <FieldRef Name="FileDirRef" />
@@ -1262,9 +1256,9 @@
                     ]]></HTML>
               </DisplayPattern>
             </Field>
-            <Field ID="{b66e9b50-a28e-469b-b1a0-af0e45486874}" Type="Note" Name="Keywords" ShowInNewForm="FALSE" ShowInFileDlg="FALSE" DisplayName="Keywords" Sealed="TRUE" Sortable="FALSE" UnlimitedLengthInDocumentLibrary="TRUE" Description="For example: scenery, mountains, trees, nature" ColName="ntext3" StaticName="Keywords" SourceID="{2CC4ED0A-263D-413E-88C4-059C36E5835D}" />
+            <Field ID="{b66e9b50-a28e-469b-b1a0-af0e45486874}" Type="Note" Name="Keywords" ShowInNewForm="FALSE" ShowInFileDlg="FALSE" DisplayName="Keywords" Sealed="TRUE" Sortable="FALSE" UnlimitedLengthInDocumentLibrary="TRUE" Description="For example: scenery, mountains, trees, nature" ColName="ntext3" StaticName="Keywords" SourceID="{822CA527-A7FE-49C8-B1AF-CC05F6C915F9}" />
             <Field ID="{f08ab41d-9a03-49ae-9413-6cd284a15625}" Type="Text" Group="Core Document Columns" Name="wic_System_Copyright" DisplayName="Copyright" SourceID="http://schemas.microsoft.com/sharepoint/v3/fields" StaticName="wic_System_Copyright" ColName="nvarchar9" />
-            <Field ID="{f39d44af-d3f3-4ae6-b43f-ac7330b5e9bd}" Name="AlternateThumbnailUrl" DisplayName="Preview Image URL" Group="Core Image Columns" Description="Link to the image that will be shown as the preview for this asset" Type="URL" Format="Image" Sealed="TRUE" ShowInDisplayForm="FALSE" ColName="nvarchar10" ColName2="nvarchar11" StaticName="AlternateThumbnailUrl" SourceID="{2CC4ED0A-263D-413E-88C4-059C36E5835D}" />
+            <Field ID="{f39d44af-d3f3-4ae6-b43f-ac7330b5e9bd}" Name="AlternateThumbnailUrl" DisplayName="Preview Image URL" Group="Core Image Columns" Description="Link to the image that will be shown as the preview for this asset" Type="URL" Format="Image" Sealed="TRUE" ShowInDisplayForm="FALSE" ColName="nvarchar10" ColName2="nvarchar11" StaticName="AlternateThumbnailUrl" SourceID="{822CA527-A7FE-49C8-B1AF-CC05F6C915F9}" />
             <Field ID="{de38f937-8578-435e-8cd3-50be3ea59253}" Name="MediaLengthInSeconds" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="MediaLengthInSeconds" Group="_Hidden" Type="Integer" DisplayName="Length (seconds)" ShowInNewForm="FALSE" ShowInEditForm="FALSE" ColName="int3" />
             <Field ID="{59cd571e-e2d9-485d-bb5d-e70d12f8d0b7}" Name="VideoWidthInPixels" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="VideoWidthInPixels" Group="_Hidden" Type="Integer" DisplayName="Frame Width" ShowInNewForm="TRUE" ShowInEditForm="TRUE" ColName="int4" />
             <Field ID="{84cd09bd-85a9-461f-86e3-4c3c1738ad6b}" Name="VideoHeightInPixels" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="VideoHeightInPixels" Group="_Hidden" Type="Integer" DisplayName="Frame Height" ShowInNewForm="TRUE" ShowInEditForm="TRUE" ColName="int5" />
@@ -2095,7 +2089,7 @@
             <pnp:ContentTypeBinding ContentTypeID="0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF390064DEA0F50FC8C147B0B6EA0636C4A7D4" />
           </pnp:ContentTypeBindings>
           <pnp:Views>
-            <View Name="{FF0C03AD-A801-4A2C-AB5B-4FC3F80B3249}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/Pages/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
+            <View Name="{15B6E484-9B28-4DEB-AB53-FAA754EC10C0}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateBLANKINTERNETCONTAINER0/templateCMSPUBLISHING0/Pages/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -2112,8 +2106,6 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
           </pnp:Views>
           <pnp:Fields>
@@ -2950,7 +2942,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Workflow Tasks" Description="This system library was created by the Publishing feature to store workflow tasks that are created in this site." DocumentTemplate="" TemplateType="107" Url="WorkflowTasks" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-a83e-497e-9ba0-7a5c597d0107" ContentTypesEnabled="true" EnableFolderCreation="false">
           <pnp:Views>
-            <View Name="{2AD9D9E4-4837-440D-BCE1-68409D18E1A8}" DefaultView="TRUE" MobileView="TRUE" Type="HTML" DisplayName="All Tasks" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/WorkflowTasks/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
+            <View Name="{EF492C48-BD9E-4001-90FB-86F21B42DC04}" DefaultView="TRUE" MobileView="TRUE" Type="HTML" DisplayName="All Tasks" Url="/sites/templateBLANKINTERNETCONTAINER0/templateCMSPUBLISHING0/WorkflowTasks/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="ID" />
@@ -2968,10 +2960,8 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{1626D5D5-1245-4C6E-AF66-A88DDA8E15A6}" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="My Tasks" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/WorkflowTasks/MyItems.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
+            <View Name="{EDE0063D-E36D-44E3-8F88-861B54732FEE}" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="My Tasks" Url="/sites/templateBLANKINTERNETCONTAINER0/templateCMSPUBLISHING0/WorkflowTasks/MyItems.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <Where>
                   <Eq>
@@ -2995,10 +2985,8 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{3EDF2BAF-FA52-4362-950D-029D57C1033C}" Type="HTML" DisplayName="Due Today" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/WorkflowTasks/duetoday.aspx" Level="1" BaseViewID="3" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
+            <View Name="{06992451-9938-42B4-9283-813A8CFE1845}" Type="HTML" DisplayName="Due Today" Url="/sites/templateBLANKINTERNETCONTAINER0/templateCMSPUBLISHING0/WorkflowTasks/duetoday.aspx" Level="1" BaseViewID="3" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <Where>
                   <Eq>
@@ -3022,10 +3010,8 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{EA1268A0-7BB2-4E4C-90C2-5F15F342B426}" Type="HTML" DisplayName="Active Tasks" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/WorkflowTasks/active.aspx" Level="1" BaseViewID="4" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
+            <View Name="{4B56EF7D-0430-45D1-9762-F515D2D1CD42}" Type="HTML" DisplayName="Active Tasks" Url="/sites/templateBLANKINTERNETCONTAINER0/templateCMSPUBLISHING0/WorkflowTasks/active.aspx" Level="1" BaseViewID="4" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <Where>
                   <Neq>
@@ -3048,10 +3034,8 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{BE3DB7A9-0DAC-4C4C-8EEC-3432FFBE37D0}" Type="HTML" DisplayName="By Assigned To" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/WorkflowTasks/byowner.aspx" Level="1" BaseViewID="5" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
+            <View Name="{ABE43560-513D-4EDD-A6BE-8DB167F5E014}" Type="HTML" DisplayName="By Assigned To" Url="/sites/templateBLANKINTERNETCONTAINER0/templateCMSPUBLISHING0/WorkflowTasks/byowner.aspx" Level="1" BaseViewID="5" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <OrderBy>
                   <FieldRef Name="AssignedTo" />
@@ -3069,10 +3053,8 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{8C63FAA4-571F-4414-86D2-1FCE96CFF297}" Type="HTML" DisplayName="By My Groups" Url="/sites/templateblankinternetcontainer0/templateCMSPUBLISHING0/WorkflowTasks/MyGrTsks.aspx" Level="1" BaseViewID="8" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
+            <View Name="{CF62E6CC-B989-48E6-9451-3FB56702ECB0}" Type="HTML" DisplayName="By My Groups" Url="/sites/templateBLANKINTERNETCONTAINER0/templateCMSPUBLISHING0/WorkflowTasks/MyGrTsks.aspx" Level="1" BaseViewID="8" ContentTypeID="0x" ImageUrl="/_layouts/15/images/issues.png?rev=40">
               <Query>
                 <Where>
                   <Membership Type="CurrentUserGroups">
@@ -3098,8 +3080,6 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
           </pnp:Views>
           <pnp:Fields>
