@@ -1,23 +1,21 @@
 <?xml version="1.0"?>
 <pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema">
-  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.3.615.0, Culture=neutral, PublicKeyToken=null" />
+  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.5.915.0, Culture=neutral, PublicKeyToken=null" />
   <pnp:Templates ID="CONTAINER-BLOG0template">
     <pnp:ProvisioningTemplate ID="BLOG0template" Version="1">
       <pnp:PropertyBagEntries>
-        <pnp:PropertyBagEntry Key="vti_customuploadpage" Value="/_layouts/15/UploadEx.aspx" />
-        <pnp:PropertyBagEntry Key="FollowLinkEnabled" Value="TRUE" />
-        <pnp:PropertyBagEntry Key="enabledhelpcollections" Value="VGSEndUser;#FastEndUser" />
-        <pnp:PropertyBagEntry Key="vti_defaultlanguage" Value="en-us" />
-        <pnp:PropertyBagEntry Key="taxonomyhiddenlist" Value="c3932b68-a29c-4fe8-9d47-347a12a7d1e4" />
-        <pnp:PropertyBagEntry Key="disabledhelpcollections" Value="" />
-        <pnp:PropertyBagEntry Key="profileschemaversion" Value="1" />
-        <pnp:PropertyBagEntry Key="vti_associategroups" Value="4;4" />
-        <pnp:PropertyBagEntry Key="vti_extenderversion" Value="15.0.0.4711" />
-        <pnp:PropertyBagEntry Key="vti_approvallevels" Value="Approved Rejected Pending\ Review" />
-        <pnp:PropertyBagEntry Key="metadatatimestamp" Value="84890615ec4e4d3b8eeba3c71e20e784|2015-03-27T12:35:09.86Z" />
-        <pnp:PropertyBagEntry Key="__ScriptSafeInternalPages" Value="WopiFrame.aspx;videoembedplayer.aspx;" />
         <pnp:PropertyBagEntry Key="vti_categories" Value="Travel Expense\ Report Business Competition Goals/Objectives Ideas Miscellaneous Waiting VIP In\ Process Planning Schedule" />
+        <pnp:PropertyBagEntry Key="vti_extenderversion" Value="15.0.0.4569" />
+        <pnp:PropertyBagEntry Key="taxonomyhiddenlist" Value="9e9b1f70-9012-4b67-8f0a-cf16ca3a7f07" />
+        <pnp:PropertyBagEntry Key="vti_approvallevels" Value="Approved Rejected Pending\ Review" />
+        <pnp:PropertyBagEntry Key="FollowLinkEnabled" Value="TRUE" />
+        <pnp:PropertyBagEntry Key="vti_customuploadpage" Value="/_layouts/15/UploadEx.aspx" />
         <pnp:PropertyBagEntry Key="allowslistpolicy" Value="True" />
+        <pnp:PropertyBagEntry Key="vti_associategroups" Value="4;4" />
+        <pnp:PropertyBagEntry Key="__ScriptSafeInternalPages" Value="WopiFrame.aspx;videoembedplayer.aspx;" />
+        <pnp:PropertyBagEntry Key="vti_defaultlanguage" Value="en-us" />
+        <pnp:PropertyBagEntry Key="disabledhelpcollections" Value="" />
+        <pnp:PropertyBagEntry Key="enabledhelpcollections" Value="VGSEndUser;#FastEndUser" />
       </pnp:PropertyBagEntries>
       <pnp:Security />
       <pnp:SiteFields>
@@ -28,12 +26,12 @@
           </FieldRefs>
         </Field>
         <Field ID="{1F30D200-0D4E-4C8A-A7EB-2E49815BF2BE}" DisplayName="Instance Id" Name="WF4InstanceId" Type="Text" Group="_Hidden" Hidden="TRUE" Sealed="TRUE" Indexed="TRUE" />
-        <Field Type="TaxonomyFieldTypeMulti" DisplayName="Enterprise Keywords" StaticName="TaxKeyword" Name="TaxKeyword" ID="{23f27201-bee3-471e-b2e7-b64fd8b7ca38}" ShowInViewForms="TRUE" DefaultListField="TRUE" List="Lists/TaxonomyHiddenList" WebId="3da4b2e0-df4b-46bb-8cc0-4e0b94caeae7" Required="FALSE" Hidden="FALSE" CanToggleHidden="TRUE" ShowField="Term1033" SourceID="{3da4b2e0-df4b-46bb-8cc0-4e0b94caeae7}" Mult="TRUE" Sortable="FALSE" Group="Enterprise Keywords Group" Description="Enterprise Keywords are shared with other users and applications to allow for ease of search and filtering, as well as metadata consistency and reuse" AllowDeletion="TRUE" Sealed="TRUE">
+        <Field Type="TaxonomyFieldTypeMulti" DisplayName="Enterprise Keywords" StaticName="TaxKeyword" Name="TaxKeyword" ID="{23f27201-bee3-471e-b2e7-b64fd8b7ca38}" ShowInViewForms="TRUE" DefaultListField="TRUE" List="Lists/TaxonomyHiddenList" WebId="32c28163-952c-4b2b-b216-b7dcf25dea44" Required="FALSE" Hidden="FALSE" CanToggleHidden="TRUE" ShowField="Term1033" SourceID="{32c28163-952c-4b2b-b216-b7dcf25dea44}" Mult="TRUE" Sortable="FALSE" Group="Enterprise Keywords Group" Description="Enterprise Keywords are shared with other users and applications to allow for ease of search and filtering, as well as metadata consistency and reuse" AllowDeletion="TRUE" Sealed="TRUE">
           <Customization>
             <ArrayOfProperty>
               <Property>
                 <Name>SspId</Name>
-                <Value xmlns:q1="http://www.w3.org/2001/XMLSchema" p4:type="q1:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">84890615-ec4e-4d3b-8eeb-a3c71e20e784</Value>
+                <Value xmlns:q1="http://www.w3.org/2001/XMLSchema" p4:type="q1:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">00000000-0000-0000-0000-000000000000</Value>
               </Property>
               <Property>
                 <Name>GroupId</Name>
@@ -338,7 +336,6 @@
             <FieldRef Name="MemberLookup" />
           </FieldRefs>
         </Field>
-        <Field Type="Note" DisplayName="TaxKeywordTaxHTField" StaticName="TaxKeywordTaxHTField" Name="TaxKeywordTaxHTField" ID="{1390a86a-23da-45f0-8efe-ef36edadfb39}" ShowInViewForms="FALSE" Required="FALSE" Hidden="TRUE" CanToggleHidden="TRUE" SourceID="{3da4b2e0-df4b-46bb-8cc0-4e0b94caeae7}" />
         <Field ID="{4181B96A-3125-4f75-B823-3A4D675C6B19}" Name="GoalCell" StaticName="GoalCell" Description="Address or name of the cell for the goal" Group="Status Indicators" Type="Text" DisplayName="Goal Cell" SourceID="http://schemas.microsoft.com/sharepoint/v3" />
         <Field ID="{B0BD6F6D-ED80-4ff8-8BE0-EF9238A16835}" Name="ReportLinkFilename" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="ReportLinkFilename" Group="_Hidden" ReadOnly="TRUE" Type="Computed" DisplayName="Name" Filterable="FALSE" ClassInfo="Menu" AuthoringInfo="(link to report with edit menu)">
           <FieldRefs>
@@ -723,7 +720,7 @@
         <Field ID="{66B691CF-07A3-4CA6-AC6D-27FA969C8569}" DisplayName="Form Name" Type="Text" Required="FALSE" Name="FormName" RowOrdinal="0" Group="_Hidden" />
         <Field ID="{1C2CC9D2-3C9F-4a46-8088-17287D608270}" SourceID="http://schemas.microsoft.com/sharepoint/v3" Name="VideoSetExternalLink" DisplayName="External Link" StaticName="VideoSetExternalLink" Group="_Hidden" Type="URL" Hidden="TRUE" ShowInEditForm="TRUE" />
         <Field ID="{592102D3-4BCE-4640-A49E-B6F23D480B7D}" Name="RoutingContentType" StaticName="RoutingContentType" SourceID="http://schemas.microsoft.com/sharepoint/v3" Group="Document and Record Management Columns" DisplayName="Submission Content Type" Type="Text" Required="TRUE" CanToggleHidden="TRUE" Sealed="TRUE" MaxLength="255" />
-        <Field Type="LookupMulti" DisplayName="Taxonomy Catch All Column1" StaticName="TaxCatchAllLabel" Name="TaxCatchAllLabel" ID="{8f6b6dd8-9357-4019-8172-966fcd502ed2}" ShowInViewForms="FALSE" List="Lists/TaxonomyHiddenList" WebId="3da4b2e0-df4b-46bb-8cc0-4e0b94caeae7" Required="FALSE" Hidden="TRUE" CanToggleHidden="TRUE" ShowField="CatchAllDataLabel" FieldRef="{F3B0ADF9-C1A2-4b02-920D-943FBA4B3611}" SourceID="{3da4b2e0-df4b-46bb-8cc0-4e0b94caeae7}" ReadOnly="TRUE" Mult="TRUE" Sortable="FALSE" AllowDeletion="TRUE" Sealed="TRUE" />
+        <Field Type="LookupMulti" DisplayName="Taxonomy Catch All Column1" StaticName="TaxCatchAllLabel" Name="TaxCatchAllLabel" ID="{8f6b6dd8-9357-4019-8172-966fcd502ed2}" ShowInViewForms="FALSE" List="Lists/TaxonomyHiddenList" WebId="32c28163-952c-4b2b-b216-b7dcf25dea44" Required="FALSE" Hidden="TRUE" CanToggleHidden="TRUE" ShowField="CatchAllDataLabel" FieldRef="{F3B0ADF9-C1A2-4b02-920D-943FBA4B3611}" SourceID="{32c28163-952c-4b2b-b216-b7dcf25dea44}" ReadOnly="TRUE" Mult="TRUE" Sortable="FALSE" AllowDeletion="TRUE" Sealed="TRUE" />
         <Field ID="{2E8881DA-0332-4ad9-A565-45B5B8B2702F}" Name="ReportOwner" StaticName="ReportOwner" Description="Owner of this document" List="UserInfo" DisplayName="Owner" Group="Reports" Type="User" SourceID="http://schemas.microsoft.com/sharepoint/v3" />
         <Field ID="{291AACDA-4CFB-4d59-968B-5E2EA0C9EAB7}" Name="KPI" StaticName="KPI" Description="Name of Microsoft SQL Server 2005 Analysis Services KPI" Group="Status Indicators" Type="Text" DisplayName="Indicator" SourceID="http://schemas.microsoft.com/sharepoint/v3" />
         <Field ID="{C42AB4DD-EB3A-4DF5-9C80-0BD400520C15}" Name="AuthorMemberStatusIntLookup" SourceID="http://schemas.microsoft.com/sharepoint/v3" DisplaceOnUpgrade="TRUE" Group="_Hidden" Type="Lookup" List="" Mult="FALSE" DisplayName="Author's membership status" Hidden="TRUE" AllowDeletion="FALSE" Sealed="TRUE">
@@ -790,7 +787,7 @@
         </Field>
         <Field ID="{186175F6-E318-4e9a-B5F7-4F7C751585A0}" Name="RoutingAliases" StaticName="RoutingAliases" SourceID="http://schemas.microsoft.com/sharepoint/v3" Group="Document and Record Management Columns" DisplayName="Aliases" Type="Text" Required="TRUE" CanToggleHidden="TRUE" Sealed="TRUE" MaxLength="255" />
         <Field ID="{10A4D7F7-AB3A-426f-B5CC-AB1EB03A94F4}" Name="RoutingTargetPath" StaticName="RoutingTargetPath" SourceID="http://schemas.microsoft.com/sharepoint/v3" Group="Document and Record Management Columns" DisplayName="Target Path" Type="Text" Required="TRUE" CanToggleHidden="TRUE" Sealed="TRUE" MaxLength="255" />
-        <Field Type="LookupMulti" DisplayName="Taxonomy Catch All Column" StaticName="TaxCatchAll" Name="TaxCatchAll" ID="{f3b0adf9-c1a2-4b02-920d-943fba4b3611}" ShowInViewForms="FALSE" List="Lists/TaxonomyHiddenList" WebId="3da4b2e0-df4b-46bb-8cc0-4e0b94caeae7" Required="FALSE" Hidden="TRUE" CanToggleHidden="TRUE" ShowField="CatchAllData" SourceID="{3da4b2e0-df4b-46bb-8cc0-4e0b94caeae7}" Mult="TRUE" Sortable="FALSE" AllowDeletion="TRUE" Sealed="TRUE" />
+        <Field Type="LookupMulti" DisplayName="Taxonomy Catch All Column" StaticName="TaxCatchAll" Name="TaxCatchAll" ID="{f3b0adf9-c1a2-4b02-920d-943fba4b3611}" ShowInViewForms="FALSE" List="Lists/TaxonomyHiddenList" WebId="32c28163-952c-4b2b-b216-b7dcf25dea44" Required="FALSE" Hidden="TRUE" CanToggleHidden="TRUE" ShowField="CatchAllData" SourceID="{32c28163-952c-4b2b-b216-b7dcf25dea44}" Mult="TRUE" Sortable="FALSE" AllowDeletion="TRUE" Sealed="TRUE" />
         <Field ID="{434F51FB-FFD2-4A0E-A03B-CA3131AC67BA}" Name="Ratings" StaticName="Ratings" DisplayName="User ratings" Description="User ratings for the item" Group="_Hidden" Type="Note" Hidden="TRUE" ForcePromoteDemote="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" />
         <Field ID="{CD4DF6FB-0DA8-4ac9-B551-ED4FA6CD88FD}" Name="AbuseReportsReporterLookup" SourceID="http://schemas.microsoft.com/sharepoint/v3" DisplaceOnUpgrade="TRUE" Group="_Hidden" Type="Lookup" List="" Mult="TRUE" DisplayName="Reporter Lookup" ReadOnly="TRUE" Hidden="TRUE" AllowDeletion="FALSE" Sealed="TRUE">
           <FieldRefs>
@@ -1340,17 +1337,15 @@
       <pnp:Lists>
         <pnp:ListInstance Title="Categories" Description="Use the Categories list to define the categories available for posts." DocumentTemplate="" TemplateType="303" Url="Lists/Categories" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="faf00902-6bab-4583-bd02-84db191801d8" EnableAttachments="false" EnableFolderCreation="false">
           <pnp:Views>
-            <View Name="{10412E84-5AA1-4D53-AE17-F6F84882E34B}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Categories" Url="/sites/templateblog0/Lists/Categories/AllCategories.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/categories.png?rev=23">
+            <View Name="{403DEC69-16B9-45E1-86F4-D240B1DE767F}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Categories" Url="/sites/templateBLOG0/Lists/Categories/AllCategories.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/categories.png?rev=23">
               <ViewFields>
                 <FieldRef Name="LinkTitle" />
                 <FieldRef Name="Edit" />
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink>main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{931A17EF-89F7-4A6C-9BA6-18C2D43CD688}" Type="HTML" DisplayName="My Categories" Url="/sites/templateblog0/Lists/Categories/MyCategories.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ImageUrl="/_layouts/15/images/categories.png?rev=23">
+            <View Name="{ED0F616A-2F01-4C20-95F3-151592FB5B72}" Type="HTML" DisplayName="My Categories" Url="/sites/templateBLOG0/Lists/Categories/MyCategories.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ImageUrl="/_layouts/15/images/categories.png?rev=23">
               <Query>
                 <Where>
                   <Eq>
@@ -1367,14 +1362,12 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink>main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
           </pnp:Views>
         </pnp:ListInstance>
         <pnp:ListInstance Title="Comments" Description="The Comments list stores comments that have been made on posts." DocumentTemplate="" TemplateType="302" Url="Lists/Comments" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="faf00902-6bab-4583-bd02-84db191801d8" EnableAttachments="false" EnableFolderCreation="false">
           <pnp:Views>
-            <View Name="{7983969A-58F1-4ED9-98CE-5585738F1A49}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Comments" Url="/sites/templateblog0/Lists/Comments/AllComments.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/comments.png?rev=23">
+            <View Name="{2FACCF51-2D62-4CCE-87AA-74B90D4D6702}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Comments" Url="/sites/templateBLOG0/Lists/Comments/AllComments.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/comments.png?rev=23">
               <Query>
                 <OrderBy>
                   <FieldRef Name="ID" Ascending="FALSE" />
@@ -1388,10 +1381,8 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink>main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{9412C53D-C193-4A4C-BAC2-6197A5045EEC}" Type="HTML" DisplayName="My Comments" Url="/sites/templateblog0/Lists/Comments/MyComments.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ImageUrl="/_layouts/15/images/comments.png?rev=23">
+            <View Name="{4C68CF01-0CE6-4824-91F5-544E3A75CCD9}" Type="HTML" DisplayName="My Comments" Url="/sites/templateBLOG0/Lists/Comments/MyComments.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ImageUrl="/_layouts/15/images/comments.png?rev=23">
               <Query>
                 <Where>
                   <Eq>
@@ -1410,10 +1401,8 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink>main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{81FC0630-CDD7-4CB4-A0A9-B8FDC9562040}" Type="HTML" DisplayName="By Author" Url="/sites/templateblog0/Lists/Comments/ByAuthor.aspx" Level="1" BaseViewID="3" ContentTypeID="0x" ImageUrl="/_layouts/15/images/comments.png?rev=23">
+            <View Name="{D6F42F8F-16AA-4D5C-9B5B-0A41925A4D23}" Type="HTML" DisplayName="By Author" Url="/sites/templateBLOG0/Lists/Comments/ByAuthor.aspx" Level="1" BaseViewID="3" ContentTypeID="0x" ImageUrl="/_layouts/15/images/comments.png?rev=23">
               <Query>
                 <GroupBy Collapse="FALSE">
                   <FieldRef Name="Author" />
@@ -1429,13 +1418,11 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink>main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
           </pnp:Views>
           <pnp:Fields>
-            <Field Name="PostTitle" Type="Lookup" Required="TRUE" DisplayName="Post Title" List="{E1AD9A75-B414-40FD-BD48-65AA78EAC2E2}" ShowField="Title" ID="{a131e489-d3d6-4f0c-a152-a3beb89f12be}" Indexed="TRUE" Sealed="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="PostTitle" ColName="int1" RowOrdinal="0" />
-            <Field Name="PostID" Type="Lookup" ReadOnly="TRUE" DisplayName="Post Id" List="{E1AD9A75-B414-40FD-BD48-65AA78EAC2E2}" FieldRef="PostTitle" ShowField="ID" ID="{b63172be-d3d6-3f8e-854a-74ef89972eea}" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="PostID" />
+            <Field Name="PostTitle" Type="Lookup" Required="TRUE" DisplayName="Post Title" List="{A78FAD71-3B1E-4054-94AB-3ECFD706631C}" ShowField="Title" ID="{a131e489-d3d6-4f0c-a152-a3beb89f12be}" Indexed="TRUE" Sealed="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="PostTitle" ColName="int1" RowOrdinal="0" />
+            <Field Name="PostID" Type="Lookup" ReadOnly="TRUE" DisplayName="Post Id" List="{A78FAD71-3B1E-4054-94AB-3ECFD706631C}" FieldRef="PostTitle" ShowField="ID" ID="{b63172be-d3d6-3f8e-854a-74ef89972eea}" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="PostID" />
           </pnp:Fields>
           <pnp:FieldRefs>
             <pnp:FieldRef ID="7662cd2c-f069-4dba-9e35-082cf976e170" Name="Body" Required="true" DisplayName="Body" />
@@ -1446,7 +1433,7 @@
             <pnp:ContentTypeBinding ContentTypeID="0x010100F8EF98760CBA4A94994F13BA881038FA" Default="true" />
           </pnp:ContentTypeBindings>
           <pnp:Views>
-            <View Name="{B0CB0D5B-AFF9-46CE-B662-264D775B8BBA}" MobileView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateblog0/FormServerTemplates/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=23">
+            <View Name="{BA39470E-DC43-405C-99DE-809397107172}" MobileView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateBLOG0/FormServerTemplates/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=23">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -1460,10 +1447,8 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{96E6A3F6-F50A-4F87-BF67-175EA9615F7F}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Forms" Url="/sites/templateblog0/FormServerTemplates/Forms/All Forms.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=23">
+            <View Name="{7A8C3D4D-5189-4A87-8455-67B299767FB5}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Forms" Url="/sites/templateBLOG0/FormServerTemplates/Forms/All Forms.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=23">
               <Query>
                 <GroupBy Collapse="FALSE">
                   <FieldRef Name="FormCategory" />
@@ -1486,8 +1471,6 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
           </pnp:Views>
           <pnp:FieldRefs>
@@ -1504,7 +1487,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Photos" Description="Share a picture with the team by adding it to this picture library." DocumentTemplate="" TemplateType="109" Url="Lists/Photos" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-52d4-45b3-b544-b1c71b620109" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{AE56E9E2-888E-4905-9E56-74A3D385F055}" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Pictures" Url="/sites/templateblog0/Lists/Photos/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/plicon.png?rev=23">
+            <View Name="{4986C8F1-DCFE-4CD5-B195-FA31C453B2A1}" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Pictures" Url="/sites/templateBLOG0/Lists/Photos/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/plicon.png?rev=23">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -1521,10 +1504,8 @@
               </ViewFields>
               <RowLimit Paged="TRUE">40</RowLimit>
               <JSLink>clienttemplates.js|callout.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{EC0BA060-AE1B-4AED-90B0-0C678E089C31}" DefaultView="TRUE" Type="HTML" DisplayName="Thumbnails" Url="/sites/templateblog0/Lists/Photos/Forms/Thumbnails.aspx" Level="1" BaseViewID="6" ContentTypeID="0x" ImageUrl="/_layouts/15/images/plicon.png?rev=23">
+            <View Name="{ADAA43DE-58F9-4D45-8004-B96961FACF68}" DefaultView="TRUE" Type="HTML" DisplayName="Thumbnails" Url="/sites/templateBLOG0/Lists/Photos/Forms/Thumbnails.aspx" Level="1" BaseViewID="6" ContentTypeID="0x" ImageUrl="/_layouts/15/images/plicon.png?rev=23">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -1547,10 +1528,8 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>SP.UI.TileView.js|callout.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{22AA85FD-30A6-4A72-AA4D-64C75527B587}" Type="HTML" TabularView="FALSE" DisplayName="Slides" Url="/sites/templateblog0/Lists/Photos/Forms/SinglePict.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ImageUrl="/_layouts/15/images/plicon.png?rev=23">
+            <View Name="{45EE4270-E201-4ECD-8D8A-E40532A1A513}" Type="HTML" TabularView="FALSE" DisplayName="Slides" Url="/sites/templateBLOG0/Lists/Photos/Forms/SinglePict.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ImageUrl="/_layouts/15/images/plicon.png?rev=23">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -1564,7 +1543,6 @@
               </ViewFields>
               <RowLimit Paged="TRUE">1</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <Toolbar Type="None" />
             </View>
           </pnp:Views>
           <pnp:FieldRefs>
@@ -1588,7 +1566,7 @@
             <pnp:ContentTypeBinding ContentTypeID="0x0110" Default="true" />
           </pnp:ContentTypeBindings>
           <pnp:Views>
-            <View Name="{FE93B52A-C3A8-41F9-8468-CFE533D19AF7}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Posts" Url="/sites/templateblog0/Lists/Posts/AllPosts.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/posts.png?rev=23">
+            <View Name="{D1321827-4489-4C1E-93FD-E2DC571FFBDF}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Posts" Url="/sites/templateBLOG0/Lists/Posts/AllPosts.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/posts.png?rev=23">
               <Query>
                 <OrderBy>
                   <FieldRef Name="PublishedDate" Ascending="FALSE" />
@@ -1607,10 +1585,8 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink>main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{5C7AD543-86AB-4F2D-8AFF-5923C1BF78A0}" Type="HTML" DisplayName="My Posts" Url="/sites/templateblog0/Lists/Posts/MyPosts.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ImageUrl="/_layouts/15/images/posts.png?rev=23">
+            <View Name="{228D0D4F-C81C-4D90-BFF9-159890230C53}" Type="HTML" DisplayName="My Posts" Url="/sites/templateBLOG0/Lists/Posts/MyPosts.aspx" Level="1" BaseViewID="2" ContentTypeID="0x" ImageUrl="/_layouts/15/images/posts.png?rev=23">
               <Query>
                 <OrderBy>
                   <FieldRef Name="PublishedDate" Ascending="FALSE" />
@@ -1637,10 +1613,8 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink>main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{8D1CB92D-9152-4BB2-94D6-3C99D62C09C4}" Type="HTML" DisplayName="By Author" Url="/sites/templateblog0/Lists/Posts/ByAuthor.aspx" Level="1" BaseViewID="4" ContentTypeID="0x" ImageUrl="/_layouts/15/images/posts.png?rev=23">
+            <View Name="{A824D275-B2E9-4A86-84A1-1C4CAE390E76}" Type="HTML" DisplayName="By Author" Url="/sites/templateBLOG0/Lists/Posts/ByAuthor.aspx" Level="1" BaseViewID="4" ContentTypeID="0x" ImageUrl="/_layouts/15/images/posts.png?rev=23">
               <Query>
                 <GroupBy Collapse="FALSE">
                   <FieldRef Name="Author" />
@@ -1661,10 +1635,8 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink>main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{CCCCBF5B-AA23-4EAF-92B9-CB5EB7EDE372}" Type="CALENDAR" RecurrenceRowset="TRUE" DisplayName="Calendar" Url="/sites/templateblog0/Lists/Posts/Calendar.aspx" Level="1" BaseViewID="5" ContentTypeID="0x" ImageUrl="/_layouts/15/images/posts.png?rev=23">
+            <View Name="{BD2BD190-97E9-44F8-8CF7-812159C8E901}" Type="CALENDAR" RecurrenceRowset="TRUE" DisplayName="Calendar" Url="/sites/templateBLOG0/Lists/Posts/Calendar.aspx" Level="1" BaseViewID="5" ContentTypeID="0x" ImageUrl="/_layouts/15/images/posts.png?rev=23">
               <Query>
                 <Where>
                   <And>
@@ -1690,10 +1662,8 @@
                 <FieldRef Name="LikedBy" Explicit="TRUE" />
               </ViewFields>
               <RowLimit>2147483647</RowLimit>
-              <XslLink>main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
-            <View Name="{C2D668A7-A69F-4D21-B3E9-0994B70F41C5}" Type="HTML" DisplayName="Archive" Url="/sites/templateblog0/Lists/Posts/Archive.aspx" Level="1" BaseViewID="6" ContentTypeID="0x" ImageUrl="/_layouts/15/images/posts.png?rev=23">
+            <View Name="{D130DE21-27DD-4ECB-BE72-D4A3F7FBD36E}" Type="HTML" DisplayName="Archive" Url="/sites/templateBLOG0/Lists/Posts/Archive.aspx" Level="1" BaseViewID="6" ContentTypeID="0x" ImageUrl="/_layouts/15/images/posts.png?rev=23">
               <Query>
                 <OrderBy>
                   <FieldRef Name="PublishedDate" Ascending="FALSE" />
@@ -1717,12 +1687,10 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink>main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
           </pnp:Views>
           <pnp:Fields>
-            <Field Name="NumComments" ReadOnly="TRUE" Type="Lookup" DisplayName="# Comments" CountRelated="TRUE" List="{BEC2AA50-48B7-4F63-BDCB-0CEAEFD43FC4}" ShowField="PostTitle" ID="{e136aa19-e8d1-1b3c-a32c-aba3e58a971b}" Sealed="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="NumComments" ColName="int1" RowOrdinal="0" />
+            <Field Name="NumComments" ReadOnly="TRUE" Type="Lookup" DisplayName="# Comments" CountRelated="TRUE" List="{663C8772-930B-40C7-8191-3610803C95A7}" ShowField="PostTitle" ID="{e136aa19-e8d1-1b3c-a32c-aba3e58a971b}" Sealed="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="NumComments" ColName="int1" RowOrdinal="0" />
             <Field Name="Permalink" ID="{a194bd80-24e6-e71b-b235-3a283b9f1e71}" Type="Computed" ReadOnly="TRUE" DisplayName="Permalink" Sortable="FALSE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="Permalink">
               <FieldRefs>
                 <FieldRef Name="ID" />
@@ -1821,7 +1789,7 @@
         </pnp:ListInstance>
         <pnp:ListInstance Title="Style Library" Description="Use the style library to store style sheets, such as CSS or XSL files. The style sheets in this gallery can be used by this site or any of its subsites." DocumentTemplate="" TemplateType="101" Url="Style Library" EnableVersioning="true" EnableMinorVersions="true" MinorVersionLimit="0" MaxVersionLimit="0" TemplateFeatureID="00bfea71-e717-4e80-aa17-d0c71b360101" EnableAttachments="false">
           <pnp:Views>
-            <View Name="{1EF34265-F7EE-4F2E-A93B-6524538F84B0}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateblog0/Style Library/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=23">
+            <View Name="{B2C57C23-7EDE-47C2-8899-165AE88A5349}" DefaultView="TRUE" MobileView="TRUE" MobileDefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="/sites/templateBLOG0/Style Library/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=23">
               <Query>
                 <OrderBy>
                   <FieldRef Name="FileLeafRef" />
@@ -1836,8 +1804,6 @@
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
-              <XslLink Default="TRUE">main.xsl</XslLink>
-              <Toolbar Type="Standard" />
             </View>
           </pnp:Views>
           <pnp:FieldRefs>
@@ -1902,6 +1868,7 @@
           <pnp:Feature ID="a7a2793e-67cd-4dc1-9fd0-43f61581207a" />
           <pnp:Feature ID="00bfea71-eb8a-40b1-80c7-506be7590102" />
           <pnp:Feature ID="00bfea71-3a1d-41d3-a0ee-651d11570120" />
+          <pnp:Feature ID="8c6f9096-388d-4eed-96ff-698b3ec46fc4" />
           <pnp:Feature ID="00bfea71-513d-4ca0-96c2-6a47775c0119" />
           <pnp:Feature ID="00bfea71-2062-426c-90bf-714c59600103" />
           <pnp:Feature ID="f41cc668-37e5-4743-b4a8-74d1db3fd8a4" />
