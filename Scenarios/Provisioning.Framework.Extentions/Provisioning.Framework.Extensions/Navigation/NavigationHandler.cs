@@ -7,6 +7,7 @@ using Microsoft.SharePoint.Client.Publishing.Navigation;
 using Microsoft.SharePoint.Client.Taxonomy;
 using SP = Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
+using System.Web;
 
 namespace Provisioning.Framework.Extensions
 {
@@ -33,28 +34,74 @@ namespace Provisioning.Framework.Extensions
 
         private void ProvisionStructuralNavigation(ClientContext ctx, NavigationProvisionSchema.NavigationConfiguration config)
         {
-            var navRoot = ctx.Web.Navigation.GetNodeById(config.RootNodeId);
-            var navNodes = navRoot.Children;
-            ctx.Load(navNodes);
-            ctx.ExecuteQuery();
-
-            //delete existing nodes
-            navNodes.ToList().ForEach(node => node.DeleteObject());
-
-            //add nodes from config
-            foreach (var item in config.Items)
+            if (config.Items != null && config.Items.Length > 0)
             {
-                navNodes.Add(new NavigationNodeCreationInformation
+                var navRoot = ctx.Web.Navigation.GetNodeById(config.RootNodeId);
+                var navNodes = navRoot.Children;
+                ctx.Load(navNodes);
+                ctx.ExecuteQuery();
+
+                //resolve node URls
+                foreach (var node in config.Items)
                 {
-                    Title = item.Title,
-                    Url = item.Url.ToParsedString(),
-                    IsExternal = item.IsExternal,
-                    AsLastNode = true
-                });
+                    node.Url = ResolveNodeUrl(node.Url);
+                }
+
+                //exclude existing nodes
+                var existingNodes = navNodes.ToList();
+                var newNodes = config.Items.Where(n => existingNodes.Find(e => AreEqualNodes(e, n)) == null);
+                if (newNodes.Count() > 0)
+                {
+                    //add nodes from config
+                    foreach (var item in newNodes)
+                    {
+                        navNodes.Add(new NavigationNodeCreationInformation
+                        {
+                            Title = item.Title,
+                            Url = item.Url,
+                            IsExternal = item.IsExternal,
+                            AsLastNode = true
+                        });
+                    }
+                    ctx.ExecuteQuery();
+                }
             }
-            ctx.ExecuteQuery();
         }
 
+        private string ResolveNodeUrl(string tokenizedUrl)
+        {
+            string res = tokenizedUrl;
+            if (!string.IsNullOrEmpty(res))
+            {
+                res = res.ToParsedString();
+                if (res == string.Empty)
+                {
+                    res = "/";
+                }
+            }
+            return res;
+        }
+
+        private bool AreEqualUrls(string urlA, string urlB)
+        {
+            bool res = false;
+            if (!string.IsNullOrEmpty(urlA) && !string.IsNullOrEmpty(urlB))
+            {
+                Uri uriA = new Uri(HttpUtility.UrlDecode(urlA), UriKind.RelativeOrAbsolute);
+                Uri uriB = new Uri(HttpUtility.UrlDecode(urlB), UriKind.RelativeOrAbsolute);
+                res = Uri.Equals(uriA, uriB);
+            }
+            else
+            {
+                res = urlA == urlB;
+            }
+            return res;
+        }
+
+        private bool AreEqualNodes(NavigationNode nodeA, NavigationProvisionSchema.NavigationNode nodeB)
+        {
+            return string.Equals(nodeA.Title, nodeB.Title) && AreEqualUrls(nodeA.Url, nodeB.Url);
+        }
 
         // TODO : parameter validation
         private void ProvisionManagedNavigation(ClientContext ctx, NavigationProvisionSchema.NavigationConfiguration config)

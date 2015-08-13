@@ -32,7 +32,7 @@ Version  | Date | Comments
 Navigation\NavigationHandler implements extensibility provider for provisioning structural and taxonomy navigation
 Navigation\NavigationProvisionSchema.xsd - xml schema for extensibility provider, use compile_xsd.bat to generate C# classes based on schema
 
-Current version supports only top level navigation nodes. For structural navigation existing all nodes are deleted before provisioning new nodes
+Current version supports only top level navigation nodes.
 
 Structural navigation xml snippet
 <pnp:Provider Enabled="true" HandlerType="Provisioning.Framework.Extensions.NavigationHandler, Provisioning.Framework.Extensions">
