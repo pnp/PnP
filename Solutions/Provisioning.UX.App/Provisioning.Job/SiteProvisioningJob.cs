@@ -89,7 +89,7 @@ namespace Provisioning.Job
                 }
                 catch(ProvisioningTemplateException _pte)
                 {
-                    _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Exception, _pte.Message);
+                    _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.CompleteWithErrors, _pte.Message);
                 }
                 catch(Exception _ex)
                 {
