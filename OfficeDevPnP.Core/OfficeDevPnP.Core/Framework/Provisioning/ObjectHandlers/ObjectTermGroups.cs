@@ -48,24 +48,36 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 TermGroup group = termStore.Groups.FirstOrDefault(g => g.Id == modelTermGroup.Id);
                 if (group == null)
                 {
-                    group = termStore.Groups.FirstOrDefault(g => g.Name == modelTermGroup.Name);
-
-                    if (group == null)
+                    if (modelTermGroup.Name == "Site Collection")
                     {
-                        if (modelTermGroup.Id == Guid.Empty)
-                        {
-                            modelTermGroup.Id = Guid.NewGuid();
-                        }
-                        group = termStore.CreateGroup(modelTermGroup.Name.ToParsedString(), modelTermGroup.Id);
-
-                        group.Description = modelTermGroup.Description;
-
-                        termStore.CommitAll();
-                        web.Context.Load(group);
+                        var site = (web.Context as ClientContext).Site;
+                        group = termStore.GetSiteCollectionGroup(site, true);
+                        web.Context.Load(group, g => g.Name, g => g.Id, g => g.TermSets.Include(
+                            tset => tset.Name,
+                            tset => tset.Id));
                         web.Context.ExecuteQueryRetry();
+                    }
+                    else
+                    {
+                        group = termStore.Groups.FirstOrDefault(g => g.Name == modelTermGroup.Name);
 
-                        newGroup = true;
+                        if (group == null)
+                        {
+                            if (modelTermGroup.Id == Guid.Empty)
+                            {
+                                modelTermGroup.Id = Guid.NewGuid();
+                            }
+                            group = termStore.CreateGroup(modelTermGroup.Name.ToParsedString(), modelTermGroup.Id);
 
+                            group.Description = modelTermGroup.Description;
+
+                            termStore.CommitAll();
+                            web.Context.Load(group);
+                            web.Context.ExecuteQueryRetry();
+
+                            newGroup = true;
+
+                        }
                     }
                 }
 
