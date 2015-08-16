@@ -1,4 +1,4 @@
-# PnP Unit Test report for OnPremAppOnly on Thursday, July 9, 2015 #
+# PnP Unit Test report for OnPremCred on Sunday, August 16, 2015 #
 This page is showing the results of the PnP unit test run.
 
 ## Test configuration ##
@@ -6,9 +6,9 @@ This report contains the unit test results from the following run:
 
 Parameter | Value
 ----------|------
-PnP Unit Test configuration | OnPremAppOnly
-Test run date | Thursday, July 9, 2015
-Test run time | 9:19 PM
+PnP Unit Test configuration | OnPremCred
+Test run date | Sunday, August 16, 2015
+Test run time | 9:00 PM
 PnP branch | dev
 Visual Studio build configuration | debug15
 
@@ -18,10 +18,10 @@ During this test run 241 tests have been executed with following outcome:
 Parameter | Value
 ----------|------
 Executed tests | 241
-Elapsed time | 0h 16m 6s
-Passed tests | 188
-Failed tests | **10**
-Skipped tests | 43
+Elapsed time | 0h 18m 14s
+Passed tests | 224
+Failed tests | **0**
+Skipped tests | 17
 Was canceled | False
 Was aborted | False
 Error | 
@@ -36,25 +36,6 @@ Error |
 <td><b>Duration</b></td>
 <td><b>Message</b></td>
 </tr>
-<tr><td>Tests.AppModelExtensions.SearchExtensionsTests.GetSearchConfigurationFromWebTest</td><td>Failed</td><td>0h 0m 0s</td><td>Test method OfficeDevPnP.Core.Tests.AppModelExtensions.SearchExtensionsTests.GetSearchConfigurationFromWebTest threw exception: 
-Microsoft.SharePoint.Client.ServerException: The server was unable to process the request due to an internal error.  For more information about the error, either turn on IncludeExceptionDetailInFaults (either from ServiceBehaviorAttribute or from the <serviceDebug> configuration behavior) on the server in order to send the exception information back to the client, or turn on tracing as per the Microsoft .NET Framework SDK documentation and inspect the server trace logs.</td></tr>
-<tr><td>Tests.AppModelExtensions.SearchExtensionsTests.GetSearchConfigurationFromSiteTest</td><td>Failed</td><td>0h 0m 0s</td><td>Test method OfficeDevPnP.Core.Tests.AppModelExtensions.SearchExtensionsTests.GetSearchConfigurationFromSiteTest threw exception: 
-Microsoft.SharePoint.Client.ServerException: The server was unable to process the request due to an internal error.  For more information about the error, either turn on IncludeExceptionDetailInFaults (either from ServiceBehaviorAttribute or from the <serviceDebug> configuration behavior) on the server in order to send the exception information back to the client, or turn on tracing as per the Microsoft .NET Framework SDK documentation and inspect the server trace logs.</td></tr>
-<tr><td>Tests.Framework.ObjectHandlers.ObjectComposedLookTests.CanCreateComposedLooks</td><td>Failed</td><td>0h 0m 0s</td><td>Test method OfficeDevPnP.Core.Tests.Framework.ObjectHandlers.ObjectComposedLookTests.CanCreateComposedLooks threw exception: 
-System.NullReferenceException: Object reference not set to an instance of an object.</td></tr>
-<tr><td>Tests.Framework.ObjectHandlers.ObjectListInstanceTests.CanProvisionObjects</td><td>Failed</td><td>0h 0m 1s</td><td>Assert.IsTrue failed. </td></tr>
-<tr><td>Tests.Framework.ObjectHandlers.ObjectListInstanceTests.CanCreateEntities</td><td>Failed</td><td>0h 0m 4s</td><td>Test method OfficeDevPnP.Core.Tests.Framework.ObjectHandlers.ObjectListInstanceTests.CanCreateEntities threw exception: 
-System.NotSupportedException: Specified method is not supported.</td></tr>
-<tr><td>Tests.Framework.ProvisioningTemplates.DomainModelTests.CanSerializeToXml</td><td>Failed</td><td>0h 0m 6s</td><td>Test method OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates.DomainModelTests.CanSerializeToXml threw exception: 
-System.NotSupportedException: Specified method is not supported.</td></tr>
-<tr><td>Tests.Framework.ProvisioningTemplates.DomainModelTests.CanSerializeDomainObjectWithJsonFormatter</td><td>Failed</td><td>0h 0m 0s</td><td>Test method OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates.DomainModelTests.CanSerializeDomainObjectWithJsonFormatter threw exception: 
-Newtonsoft.Json.JsonSerializationException: XmlNodeConverter can only convert JSON that begins with an object.</td></tr>
-<tr><td>Tests.Framework.ProvisioningTemplates.DomainModelTests.CanHandleDomainObjectWithJsonFormatter</td><td>Failed</td><td>0h 0m 0s</td><td>Test method OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates.DomainModelTests.CanHandleDomainObjectWithJsonFormatter threw exception: 
-Newtonsoft.Json.JsonSerializationException: XmlNodeConverter can only convert JSON that begins with an object.</td></tr>
-<tr><td>Tests.Framework.ProvisioningTemplates.DomainModelTests.GetRemoteTemplateTest</td><td>Failed</td><td>0h 0m 6s</td><td>Test method OfficeDevPnP.Core.Tests.Framework.ProvisioningTemplates.DomainModelTests.GetRemoteTemplateTest threw exception: 
-System.NotSupportedException: Specified method is not supported.</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.WebExtensionsTests.GetProvisioningTemplateTest</td><td>Failed</td><td>0h 0m 7s</td><td>Test method Microsoft.SharePoint.Client.Tests.WebExtensionsTests.GetProvisioningTemplateTest threw exception: 
-System.NotSupportedException: Specified method is not supported.</td></tr>
 
 </table>
 
@@ -67,31 +48,6 @@ System.NotSupportedException: Specified method is not supported.</td></tr>
 <td><b>Duration</b></td>
 <td><b>Message</b></td>
 </tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.ListExtensionsTests.SetDefaultColumnValuesTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.CreateTaxonomyFieldTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.CreateTaxonomyFieldMultiValueTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.SetTaxonomyFieldValueTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.CreateTaxonomyFieldLinkedToTermSetTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.CreateTaxonomyFieldLinkedToTermTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.GetTaxonomySessionTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.GetDefaultKeywordsTermStoreTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.GetDefaultSiteCollectionTermStoreTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.GetTermSetsByNameTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.GetTermGroupByNameTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.GetTermGroupByIdTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.GetTermByNameTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.GetTaxonomyItemByPathTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.AddTermToTermsetTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.AddTermToTermsetWithTermIdTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.ImportTermsTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.ImportTermsToTermStoreTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.ImportTermSetSampleShouldCreateSetTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.ImportTermSetShouldUpdateSetTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.ImportTermSetShouldUpdateByGuidTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.ExportTermSetTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.ExportTermSetFromTermstoreTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.ExportAllTermsTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
-<tr><td>Tests.AppModelExtensions.FileFolderExtensionsTests.UploadFileWebDavTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Tests involving webdav are not supported when testing using app-only</td></tr>
 <tr><td>Tests.Framework.Connectors.ConnectorAzureTests.AzureConnectorGetFile1Test</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. No Azure Storage Key defined in App.Config, so can't test</td></tr>
 <tr><td>Tests.Framework.Connectors.ConnectorAzureTests.AzureConnectorGetFile2Test</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. No Azure Storage Key defined in App.Config, so can't test</td></tr>
 <tr><td>Tests.Framework.Connectors.ConnectorAzureTests.AzureConnectorGetFiles1Test</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. No Azure Storage Key defined in App.Config, so can't test</td></tr>
@@ -103,7 +59,6 @@ System.NotSupportedException: Specified method is not supported.</td></tr>
 <tr><td>Tests.Framework.Connectors.ConnectorAzureTests.AzureConnectorSaveStream3Test</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. No Azure Storage Key defined in App.Config, so can't test</td></tr>
 <tr><td>Tests.Framework.Connectors.ConnectorAzureTests.AzureConnectorDelete1Test</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. No Azure Storage Key defined in App.Config, so can't test</td></tr>
 <tr><td>Tests.Framework.Connectors.ConnectorAzureTests.AzureConnectorDelete2Test</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. No Azure Storage Key defined in App.Config, so can't test</td></tr>
-<tr><td>Tests.Framework.ObjectHandlers.ObjectTermGroupsTests.CanProvisionObjects</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. Taxonomy tests are not supported when testing using app-only</td></tr>
 <tr><td>Tests.Framework.Providers.BaseTemplateTests.DumpBaseTemplates</td><td>Skipped</td><td>0h 0m 0s</td><td></td></tr>
 <tr><td>Tests.Framework.Providers.XMLProvidersTests.XMLAzureStorageGetTemplatesTest</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. No Azure Storage Key defined in App.Config, so can't test</td></tr>
 <tr><td>Tests.Framework.Providers.XMLProvidersTests.XMLAzureStorageGetTemplate1Test</td><td>Skipped</td><td>0h 0m 0s</td><td>Assert.Inconclusive failed. No Azure Storage Key defined in App.Config, so can't test</td></tr>
@@ -121,40 +76,40 @@ System.NotSupportedException: Specified method is not supported.</td></tr>
 <td><b>Test outcome</b></td>
 <td><b>Duration</b></td>
 </tr>
-<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.CanUploadHtmlPageLayoutAndConvertItToAspxVersionTest</td><td>Passed</td><td>0h 0m 45s</td></tr>
-<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.CanUploadPageLayoutTest</td><td>Passed</td><td>0h 0m 43s</td></tr>
-<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.CanUploadPageLayoutWithPathTest</td><td>Passed</td><td>0h 0m 43s</td></tr>
+<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.CanUploadHtmlPageLayoutAndConvertItToAspxVersionTest</td><td>Passed</td><td>0h 1m 6s</td></tr>
+<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.CanUploadPageLayoutTest</td><td>Passed</td><td>0h 0m 42s</td></tr>
+<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.CanUploadPageLayoutWithPathTest</td><td>Passed</td><td>0h 0m 41s</td></tr>
 <tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.AllowAllPageLayoutsTest</td><td>Passed</td><td>0h 0m 40s</td></tr>
-<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.DeployThemeAndCreateComposedLookTest</td><td>Passed</td><td>0h 0m 41s</td></tr>
+<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.DeployThemeAndCreateComposedLookTest</td><td>Passed</td><td>0h 0m 40s</td></tr>
 <tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.ComposedLookExistsTest</td><td>Passed</td><td>0h 0m 39s</td></tr>
-<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.GetCurrentComposedLookTest</td><td>Passed</td><td>0h 0m 51s</td></tr>
-<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.CreateComposedLookShouldWorkTest</td><td>Passed</td><td>0h 0m 42s</td></tr>
-<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.CreateComposedLookByNameShouldWorkTest</td><td>Passed</td><td>0h 0m 41s</td></tr>
-<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.SetComposedLookInheritsTest</td><td>Passed</td><td>0h 1m 3s</td></tr>
-<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.SetComposedLookResetInheritanceTest</td><td>Passed</td><td>0h 1m 19s</td></tr>
-<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.SeattleMasterPageIsUnchangedTest</td><td>Passed</td><td>0h 0m 40s</td></tr>
-<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.IsSubsiteTest</td><td>Passed</td><td>0h 0m 40s</td></tr>
+<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.GetCurrentComposedLookTest</td><td>Passed</td><td>0h 0m 50s</td></tr>
+<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.CreateComposedLookShouldWorkTest</td><td>Passed</td><td>0h 0m 39s</td></tr>
+<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.CreateComposedLookByNameShouldWorkTest</td><td>Passed</td><td>0h 0m 39s</td></tr>
+<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.SetComposedLookInheritsTest</td><td>Passed</td><td>0h 0m 59s</td></tr>
+<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.SetComposedLookResetInheritanceTest</td><td>Passed</td><td>0h 1m 18s</td></tr>
+<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.SeattleMasterPageIsUnchangedTest</td><td>Passed</td><td>0h 0m 39s</td></tr>
+<tr><td>Tests.AppModelExtensions.BrandingExtensionsTests.IsSubsiteTest</td><td>Passed</td><td>0h 0m 39s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.FeatureExtensionsTests.ActivateSiteFeatureTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.FeatureExtensionsTests.ActivateWebFeatureTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.FeatureExtensionsTests.DeactivateSiteFeatureTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.FeatureExtensionsTests.DeactivateWebFeatureTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.FeatureExtensionsTests.DeactivateWebFeatureTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.FeatureExtensionsTests.IsSiteFeatureActiveTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.FeatureExtensionsTests.IsWebFeatureActiveTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.CreateFieldTest</td><td>Passed</td><td>0h 0m 3s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.CanAddContentTypeToListByName</td><td>Passed</td><td>0h 0m 3s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.CanRemoveContentTypeFromListByName</td><td>Passed</td><td>0h 0m 4s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.CanRemoveContentTypeFromListById</td><td>Passed</td><td>0h 0m 5s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.CreateExistingFieldTest</td><td>Passed</td><td>0h 0m 3s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.CreateExistingFieldTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.GetContentTypeByIdTest</td><td>Passed</td><td>0h 0m 3s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.RemoveFieldByInternalNameThrowsOnNoMatchTest</td><td>Passed</td><td>0h 0m 3s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.RemoveFieldByInternalNameThrowsOnNoMatchTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.CreateFieldFromXmlTest</td><td>Passed</td><td>0h 0m 3s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.ContentTypeExistsByNameTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.ContentTypeExistsByIdTest</td><td>Passed</td><td>0h 0m 4s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.ContentTypeExistsByNameInSubWebTest</td><td>Passed</td><td>0h 0m 7s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.ContentTypeExistsByIdTest</td><td>Passed</td><td>0h 0m 3s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.ContentTypeExistsByNameInSubWebTest</td><td>Passed</td><td>0h 0m 9s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.ContentTypeExistsByIdInSubWebTest</td><td>Passed</td><td>0h 0m 8s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.ContentTypeExistsByNameSearchInSiteHierarchyTest</td><td>Passed</td><td>0h 0m 5s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.ContentTypeExistsByIdSearchInSiteHierarchyTest</td><td>Passed</td><td>0h 0m 4s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.AddFieldToContentTypeTest</td><td>Passed</td><td>0h 0m 4s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.ContentTypeExistsByNameSearchInSiteHierarchyTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.ContentTypeExistsByIdSearchInSiteHierarchyTest</td><td>Passed</td><td>0h 0m 3s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.AddFieldToContentTypeTest</td><td>Passed</td><td>0h 0m 3s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.AddFieldToContentTypeMakeRequiredTest</td><td>Passed</td><td>0h 0m 4s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.SetDefaultContentTypeToListTest</td><td>Passed</td><td>0h 0m 5s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.FieldAndContentTypeExtensionsTests.ReorderContentTypesTest</td><td>Passed</td><td>0h 0m 6s</td></tr>
@@ -167,34 +122,61 @@ System.NotSupportedException: Specified method is not supported.</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.JavaScriptExtensionsTests.DeleteJsLinkFromSiteTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.JavaScriptExtensionsTests.AddJsBlockToWebTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.JavaScriptExtensionsTests.AddJsBlockToSiteTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.ListExtensionsTests.CreateListTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.ListExtensionsTests.CreateListTest</td><td>Passed</td><td>0h 0m 3s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.ListExtensionsTests.SetDefaultColumnValuesTest</td><td>Passed</td><td>0h 0m 3s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.ListRatingExtensionTest.EnableRatingExperienceTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.ListRatingExtensionTest.EnableLikesExperienceTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
-<tr><td>Tests.AppModelExtensions.SearchExtensionsTests.SetSiteCollectionSearchCenterUrlTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.SecurityExtensionsTests.GetAdministratorsTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.SecurityExtensionsTests.AddAdministratorsTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.SecurityExtensionsTests.AddGroupTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.SecurityExtensionsTests.GroupExistsTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.SecurityExtensionsTests.AddPermissionLevelToGroupTest</td><td>Passed</td><td>0h 0m 3s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.SecurityExtensionsTests.AddPermissionLevelByRoleDefToGroupTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.SecurityExtensionsTests.AddPermissionLevelToUserTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.SecurityExtensionsTests.AddPermissionLevelToUserTestByRoleDefTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.SecurityExtensionsTests.AddReaderAccessToEveryoneTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Tests.AppModelExtensions.SearchExtensionsTests.SetSiteCollectionSearchCenterUrlTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
+<tr><td>Tests.AppModelExtensions.SearchExtensionsTests.GetSearchConfigurationFromWebTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Tests.AppModelExtensions.SearchExtensionsTests.GetSearchConfigurationFromSiteTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.SecurityExtensionsTests.GetAdministratorsTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.SecurityExtensionsTests.AddAdministratorsTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.SecurityExtensionsTests.AddGroupTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.SecurityExtensionsTests.GroupExistsTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.SecurityExtensionsTests.AddPermissionLevelToGroupTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.SecurityExtensionsTests.AddPermissionLevelByRoleDefToGroupTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.SecurityExtensionsTests.AddPermissionLevelToUserTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.SecurityExtensionsTests.AddPermissionLevelToUserTestByRoleDefTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.SecurityExtensionsTests.AddReaderAccessToEveryoneTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.AppModelExtensions.StructuralNavigationExtensionsTests.GetNavigationSettingsTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.AppModelExtensions.StructuralNavigationExtensionsTests.UpdateNavigationSettingsTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
-<tr><td>Tests.AppModelExtensions.StructuralNavigationExtensionsTests.UpdateNavigationSettings2Test</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Tests.AppModelExtensions.StructuralNavigationExtensionsTests.UpdateNavigationSettings2Test</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.CreateTaxonomyFieldTest</td><td>Passed</td><td>0h 0m 3s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.CreateTaxonomyFieldMultiValueTest</td><td>Passed</td><td>0h 0m 3s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.SetTaxonomyFieldValueTest</td><td>Passed</td><td>0h 0m 3s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.CreateTaxonomyFieldLinkedToTermSetTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.CreateTaxonomyFieldLinkedToTermTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.GetTaxonomySessionTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.GetDefaultKeywordsTermStoreTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.GetDefaultSiteCollectionTermStoreTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.GetTermSetsByNameTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.GetTermGroupByNameTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.GetTermGroupByIdTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.GetTermByNameTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.GetTaxonomyItemByPathTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.AddTermToTermsetTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.AddTermToTermsetWithTermIdTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.ImportTermsTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.ImportTermsToTermStoreTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.ImportTermSetSampleShouldCreateSetTest</td><td>Passed</td><td>0h 0m 5s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.ImportTermSetShouldUpdateSetTest</td><td>Passed</td><td>0h 0m 3s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.ImportTermSetShouldUpdateByGuidTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.ExportTermSetTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.ExportTermSetFromTermstoreTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.TaxonomyExtensionsTests.ExportAllTermsTest</td><td>Passed</td><td>0h 0m 38s</td></tr>
 <tr><td>Tests.AppModelExtensions.FileFolderExtensionsTests.CheckOutFileTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Tests.AppModelExtensions.FileFolderExtensionsTests.CheckInFileTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Tests.AppModelExtensions.FileFolderExtensionsTests.UploadFileTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Tests.AppModelExtensions.FileFolderExtensionsTests.VerifyIfUploadRequiredTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Tests.AppModelExtensions.FileFolderExtensionsTests.CheckInFileTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Tests.AppModelExtensions.FileFolderExtensionsTests.UploadFileTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Tests.AppModelExtensions.FileFolderExtensionsTests.UploadFileWebDavTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Tests.AppModelExtensions.FileFolderExtensionsTests.VerifyIfUploadRequiredTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.AppModelExtensions.FileFolderExtensionsTests.SetFilePropertiesTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Tests.AppModelExtensions.FileFolderExtensionsTests.GetFileTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Tests.AppModelExtensions.FileFolderExtensionsTests.EnsureSiteFolderTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Tests.AppModelExtensions.FileFolderExtensionsTests.EnsureLibraryFolderTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Tests.AppModelExtensions.FileFolderExtensionsTests.GetFileTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Tests.AppModelExtensions.FileFolderExtensionsTests.EnsureSiteFolderTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Tests.AppModelExtensions.FileFolderExtensionsTests.EnsureLibraryFolderTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.AppModelExtensions.FileFolderExtensionsTests.EnsureLibraryFolderRecursiveTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Tests.AppModelExtensions.Tenant15ExtensionsTests.CreateDeleteSiteCollectionTest</td><td>Passed</td><td>0h 0m 31s</td></tr>
+<tr><td>Tests.AppModelExtensions.Tenant15ExtensionsTests.CreateDeleteSiteCollectionTest</td><td>Passed</td><td>0h 0m 30s</td></tr>
 <tr><td>Tests.AppModelExtensions.NavigationExtensionsTests.AddTopNavigationNodeTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
-<tr><td>Tests.AppModelExtensions.NavigationExtensionsTests.AddQuickLaunchNodeTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
+<tr><td>Tests.AppModelExtensions.NavigationExtensionsTests.AddQuickLaunchNodeTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.AppModelExtensions.NavigationExtensionsTests.AddSearchNavigationNodeTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.AppModelExtensions.NavigationExtensionsTests.DeleteTopNavigationNodeTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.AppModelExtensions.NavigationExtensionsTests.DeleteQuickLaunchNodeTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
@@ -219,7 +201,7 @@ System.NotSupportedException: Specified method is not supported.</td></tr>
 <tr><td>Tests.Framework.Connectors.ConnectorSharePointTests.SharePointConnectorGetFileBytes1Test</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.Framework.Connectors.ConnectorSharePointTests.SharePointConnectorGetFileBytes2Test</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.Framework.Connectors.ConnectorSharePointTests.SharePointConnectorSaveStream1Test</td><td>Passed</td><td>0h 0m 0s</td></tr>
-<tr><td>Tests.Framework.Connectors.ConnectorSharePointTests.SharePointConnectorSaveStream2Test</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Tests.Framework.Connectors.ConnectorSharePointTests.SharePointConnectorSaveStream2Test</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.Framework.Connectors.ConnectorSharePointTests.SharePointConnectorSaveStream3Test</td><td>Passed</td><td>0h 0m 1s</td></tr>
 <tr><td>Tests.Framework.Connectors.ConnectorSharePointTests.SharePointConnectorDelete1Test</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.Framework.Connectors.ConnectorSharePointTests.SharePointConnectorDelete2Test</td><td>Passed</td><td>0h 0m 1s</td></tr>
@@ -228,22 +210,26 @@ System.NotSupportedException: Specified method is not supported.</td></tr>
 <tr><td>Tests.Framework.ExtensibilityCallOut.ExtensibilityTests.ProviderAssemblyMissingThrowsAgrumentException</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.Framework.ExtensibilityCallOut.ExtensibilityTests.ProviderTypeNameMissingThrowsAgrumentException</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.Framework.ExtensibilityCallOut.ExtensibilityTests.ProviderClientCtxIsNullThrowsAgrumentNullException</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Tests.Framework.ObjectHandlers.ObjectComposedLookTests.CanCreateComposedLooks</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Tests.Framework.ObjectHandlers.ObjectTermGroupsTests.CanProvisionObjects</td><td>Passed</td><td>0h 0m 1s</td></tr>
 <tr><td>Tests.Framework.ObjectHandlers.ObjectPagesTests.CanProvisionObjects</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Tests.Framework.ObjectHandlers.ObjectPagesTests.CanCreateEntities</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Tests.Framework.ObjectHandlers.ObjectPagesTests.CanCreateEntities</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.Framework.ObjectHandlers.ObjectSiteSecurityTests.CanProvisionObjects</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Tests.Framework.ObjectHandlers.ObjectSiteSecurityTests.CanCreateEntities</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Tests.Framework.ObjectHandlers.ObjectPropertyBagEntryTests.CanProvisionObjects</td><td>Passed</td><td>0h 0m 3s</td></tr>
+<tr><td>Tests.Framework.ObjectHandlers.ObjectSiteSecurityTests.CanCreateEntities</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Tests.Framework.ObjectHandlers.ObjectPropertyBagEntryTests.CanProvisionObjects</td><td>Passed</td><td>0h 0m 5s</td></tr>
 <tr><td>Tests.Framework.ObjectHandlers.ObjectPropertyBagEntryTests.CanCreateEntities</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Tests.Framework.ObjectHandlers.ObjectListInstanceTests.CanProvisionObjects</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Tests.Framework.ObjectHandlers.ObjectListInstanceTests.CanCreateEntities</td><td>Passed</td><td>0h 0m 16s</td></tr>
 <tr><td>Tests.Framework.ObjectHandlers.ObjectFilesTests.CanProvisionObjects</td><td>Passed</td><td>0h 0m 1s</td></tr>
 <tr><td>Tests.Framework.ObjectHandlers.ObjectFilesTests.CanCreateEntities</td><td>Passed</td><td>0h 0m 0s</td></tr>
-<tr><td>Tests.Framework.ObjectHandlers.ObjectFeaturesTests.CanProvisionObjects</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Tests.Framework.ObjectHandlers.ObjectFeaturesTests.CanProvisionObjects</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.Framework.ObjectHandlers.ObjectFeaturesTests.CanCreateEntities</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.Framework.ObjectHandlers.ObjectCustomActionsTests.CanProvisionObjects</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.Framework.ObjectHandlers.ObjectCustomActionsTests.CanCreateEntities</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.Framework.ObjectHandlers.ObjectFieldTests.CanProvisionObjects</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Tests.Framework.ObjectHandlers.ObjectFieldTests.CanCreateEntities</td><td>Passed</td><td>0h 0m 2s</td></tr>
+<tr><td>Tests.Framework.ObjectHandlers.ObjectFieldTests.CanCreateEntities</td><td>Passed</td><td>0h 0m 1s</td></tr>
 <tr><td>Tests.Framework.ObjectHandlers.ObjectContentTypeTests.CanProvisionObjects</td><td>Passed</td><td>0h 0m 2s</td></tr>
-<tr><td>Tests.Framework.ObjectHandlers.ObjectContentTypeTests.CanCreateEntities</td><td>Passed</td><td>0h 0m 2s</td></tr>
+<tr><td>Tests.Framework.ObjectHandlers.ObjectContentTypeTests.CanCreateEntities</td><td>Passed</td><td>0h 0m 1s</td></tr>
 <tr><td>Tests.Framework.ObjectHandlers.TokenParserTests.ParseTests</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.Framework.Providers.BaseTemplateTests.GetBaseTemplateForCurrentSiteTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.Framework.Providers.XMLProvidersTests.XMLFileSystemGetTemplatesTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
@@ -268,6 +254,7 @@ System.NotSupportedException: Specified method is not supported.</td></tr>
 <tr><td>Tests.Framework.ProvisioningTemplates.DomainModelTests.CanGetFeatures</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.Framework.ProvisioningTemplates.DomainModelTests.CanGetCustomActions</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.Framework.ProvisioningTemplates.DomainModelTests.CanSerializeToJSon</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Tests.Framework.ProvisioningTemplates.DomainModelTests.CanSerializeToXml</td><td>Passed</td><td>0h 0m 19s</td></tr>
 <tr><td>Tests.Framework.ProvisioningTemplates.DomainModelTests.ValidateFullProvisioningSchema5</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.Framework.ProvisioningTemplates.DomainModelTests.ValidateSharePointProvisioningSchema6</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.Framework.ProvisioningTemplates.DomainModelTests.CanDeserializeXMLToDomainObject5</td><td>Passed</td><td>0h 0m 0s</td></tr>
@@ -275,7 +262,10 @@ System.NotSupportedException: Specified method is not supported.</td></tr>
 <tr><td>Tests.Framework.ProvisioningTemplates.DomainModelTests.CanSerializeDomainObjectToXML6</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.Framework.ProvisioningTemplates.DomainModelTests.CanSerializeDomainObjectToXML5ByIdentifier</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.Framework.ProvisioningTemplates.DomainModelTests.CanSerializeDomainObjectToXML5ByFileLink</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Tests.Framework.ProvisioningTemplates.DomainModelTests.CanSerializeDomainObjectWithJsonFormatter</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Tests.Framework.ProvisioningTemplates.DomainModelTests.CanHandleDomainObjectWithJsonFormatter</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.Framework.ProvisioningTemplates.DomainModelTests.AreTemplatesEqual</td><td>Passed</td><td>0h 0m 0s</td></tr>
+<tr><td>Tests.Framework.ProvisioningTemplates.DomainModelTests.GetRemoteTemplateTest</td><td>Passed</td><td>0h 0m 19s</td></tr>
 <tr><td>Utilities.Tests.JsonUtilityTests.SerializeTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Utilities.Tests.JsonUtilityTests.DeserializeTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Utilities.Tests.JsonUtilityTests.DeserializeListTest</td><td>Passed</td><td>0h 0m 0s</td></tr>
@@ -289,16 +279,17 @@ System.NotSupportedException: Specified method is not supported.</td></tr>
 <tr><td>Tests.AppModelExtensions.UrlUtilityTests.ContainsInvalidUrlCharsReturnsTrueForInvalidString</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.AppModelExtensions.UrlUtilityTests.StripInvalidUrlCharsReturnsStrippedString</td><td>Passed</td><td>0h 0m 0s</td></tr>
 <tr><td>Tests.AppModelExtensions.UrlUtilityTests.ReplaceInvalidUrlCharsReturnsStrippedString</td><td>Passed</td><td>0h 0m 0s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.WebExtensionsTests.SetPropertyBagValueIntTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.WebExtensionsTests.SetPropertyBagValueIntTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.WebExtensionsTests.SetPropertyBagValueStringTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.WebExtensionsTests.SetPropertyBagValueMultipleRunsTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.WebExtensionsTests.RemovePropertyBagValueTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.WebExtensionsTests.GetPropertyBagValueIntTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.WebExtensionsTests.GetPropertyBagValueStringTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.WebExtensionsTests.RemovePropertyBagValueTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.WebExtensionsTests.GetPropertyBagValueIntTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.WebExtensionsTests.GetPropertyBagValueStringTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.WebExtensionsTests.PropertyBagContainsKeyTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.WebExtensionsTests.GetIndexedPropertyBagKeysTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.WebExtensionsTests.GetIndexedPropertyBagKeysTest</td><td>Passed</td><td>0h 0m 3s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.WebExtensionsTests.AddIndexedPropertyBagKeyTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
-<tr><td>Microsoft.SharePoint.Client.Tests.WebExtensionsTests.RemoveIndexedPropertyBagKeyTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.WebExtensionsTests.RemoveIndexedPropertyBagKeyTest</td><td>Passed</td><td>0h 0m 2s</td></tr>
+<tr><td>Microsoft.SharePoint.Client.Tests.WebExtensionsTests.GetProvisioningTemplateTest</td><td>Passed</td><td>0h 0m 20s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.WebExtensionsTests.GetAppInstancesTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
 <tr><td>Microsoft.SharePoint.Client.Tests.WebExtensionsTests.RemoveAppInstanceByTitleTest</td><td>Passed</td><td>0h 0m 1s</td></tr>
 <tr><td>Tests.AppModelExtensions.PageExtensionsTests.CanAddLayoutToWikiPageTest</td><td>Passed</td><td>0h 0m 4s</td></tr>
@@ -307,7 +298,7 @@ System.NotSupportedException: Specified method is not supported.</td></tr>
 <tr><td>Tests.AppModelExtensions.PageExtensionsTests.CanCreatePublishingPageTest</td><td>Passed</td><td>0h 0m 13s</td></tr>
 <tr><td>Tests.AppModelExtensions.PageExtensionsTests.PublishingPageWithInvalidCharsIsCorrectlyCreatedTest</td><td>Passed</td><td>0h 0m 13s</td></tr>
 <tr><td>Tests.AppModelExtensions.PageExtensionsTests.CanCreatePublishedPublishingPageWhenModerationIsEnabledTest</td><td>Passed</td><td>0h 0m 13s</td></tr>
-<tr><td>Tests.AppModelExtensions.PageExtensionsTests.CanCreatePublishedPublishingPageWhenModerationIsDisabledTest</td><td>Passed</td><td>0h 0m 14s</td></tr>
+<tr><td>Tests.AppModelExtensions.PageExtensionsTests.CanCreatePublishedPublishingPageWhenModerationIsDisabledTest</td><td>Passed</td><td>0h 0m 13s</td></tr>
 <tr><td>Tests.AppModelExtensions.PageExtensionsTests.CreatedPublishingPagesSetsTitleCorrectlyTest</td><td>Passed</td><td>0h 0m 15s</td></tr>
 
 </table>
