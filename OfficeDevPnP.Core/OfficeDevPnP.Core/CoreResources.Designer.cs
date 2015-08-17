@@ -269,6 +269,24 @@ namespace OfficeDevPnP.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Binding document template {0} to content type {1} at {2}..
+        /// </summary>
+        internal static string FieldAndContentTypeExtensions_BindDocumentTemplateToContentType {
+            get {
+                return ResourceManager.GetString("FieldAndContentTypeExtensions_BindDocumentTemplateToContentType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Binding workflow association {0} to content type {1}..
+        /// </summary>
+        internal static string FieldAndContentTypeExtensions_BindWorkflowAssociationToContentType {
+            get {
+                return ResourceManager.GetString("FieldAndContentTypeExtensions_BindWorkflowAssociationToContentType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Content type &apos;{0}&apos; ({1}) already exists; no changes made..
         /// </summary>
         internal static string FieldAndContentTypeExtensions_ContentType01AlreadyExists {
@@ -319,6 +337,15 @@ namespace OfficeDevPnP.Core {
         internal static string FieldAndContentTypeExtensions_Field01AlreadyExists {
             get {
                 return ResourceManager.GetString("FieldAndContentTypeExtensions_Field01AlreadyExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Workflow association contains no elements for content type {0}. Possibly &apos;Workflows&apos; site collection feature is not active..
+        /// </summary>
+        internal static string FieldAndContentTypeExtensions_WorkflowAssociationHasNoElements {
+            get {
+                return ResourceManager.GetString("FieldAndContentTypeExtensions_WorkflowAssociationHasNoElements", resourceCulture);
             }
         }
         

@@ -443,6 +443,24 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
+        /// Ensures list on web.
+        /// Returns the list if found on web, else create and return new list instance.
+        /// </summary>
+        /// <param name="web">Site to be processed - can be root web or sub site</param>
+        /// <param name="listCreationInformation">List creation information</param>
+        /// <returns>SharePoint list</returns>
+        public static List EnsureList(this Web web, ListCreationInformation listCreationInformation)
+        {
+            var list = web.GetListByUrl(listCreationInformation.Url);
+            if (list != null)
+            {
+                return list;
+            }
+
+            return web.CreateList((ListTemplateType)listCreationInformation.TemplateType, listCreationInformation.Title, false, true, listCreationInformation.Url, false);
+        }
+
+        /// <summary>
         /// Enable/disable versioning on a list
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
