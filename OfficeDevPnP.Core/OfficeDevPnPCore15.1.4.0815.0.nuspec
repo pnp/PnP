@@ -50,7 +50,7 @@
         </frameworkAssemblies>
     </metadata>
     <files>
-        <file src="lib\net45\Microsoft.Online.SharePoint.Client.Tenant.dll" target="lib\net45\Microsoft.Online.SharePoint.Client.Tenant.dll" />
+        <file src="OfficeDevPnP.Core\bin\Release15\Microsoft.Online.SharePoint.Client.Tenant.dll" target="lib\net45\Microsoft.Online.SharePoint.Client.Tenant.dll" />
         <file src="OfficeDevPnP.Core\bin\Release15\OfficeDevPnP.Core.dll" target="lib\net45\OfficeDevPnP.Core.dll" />
     </files>
 </package>
