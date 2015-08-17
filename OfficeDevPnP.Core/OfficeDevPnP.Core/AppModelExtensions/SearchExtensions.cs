@@ -110,7 +110,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="searchConfiguration"></param>
         public static void SetSearchConfiguration(this Site site, string searchConfiguration)
         {
-            SetSearchConfigurationImplementation(site.Context, SearchObjectLevel.SPWeb, searchConfiguration);
+            SetSearchConfigurationImplementation(site.Context, SearchObjectLevel.SPSite, searchConfiguration);
         }
 
 
