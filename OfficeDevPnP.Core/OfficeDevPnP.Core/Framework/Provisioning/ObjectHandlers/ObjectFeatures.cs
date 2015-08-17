@@ -4,7 +4,6 @@ using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using Feature = OfficeDevPnP.Core.Framework.Provisioning.Model.Feature;
 using System;
 using System.Linq;
-using OfficeDevPnP.Core.Framework.ObjectHandlers;
 using OfficeDevPnP.Core.Utilities;
 
 namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
@@ -26,11 +25,11 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             if (!web.IsSubSite())
             {
                 var siteFeatures = template.Features.SiteFeatures;
-                ProvisionFeaturesImplementation<Site>(context.Site, siteFeatures);
+                ProvisionFeaturesImplementation(context.Site, siteFeatures);
             }
 
             var webFeatures = template.Features.WebFeatures;
-            ProvisionFeaturesImplementation<Web>(web, webFeatures);
+            ProvisionFeaturesImplementation(web, webFeatures);
         }
 
         private static void ProvisionFeaturesImplementation<T>(T parent, List<Feature> features)
@@ -90,7 +89,6 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             }
         }
 
-
         public override ProvisioningTemplate ExtractObjects(Web web, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInfo)
         {
             var context = web.Context as ClientContext;
@@ -133,55 +131,40 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
         private ProvisioningTemplate CleanupEntities(ProvisioningTemplate template, ProvisioningTemplate baseTemplate, bool isSubSite)
         {
-            List<Guid> featuresToExclude = new List<Guid>();
-            // Seems to be an feature left over on some older online sites...
-            featuresToExclude.Add(Guid.Parse("d70044a4-9f71-4a3f-9998-e7238c11ce1a"));
-
             if (!isSubSite)
             {
-                foreach (var feature in baseTemplate.Features.SiteFeatures)
-                {
-                    int index = template.Features.SiteFeatures.FindIndex(f => f.Id.Equals(feature.Id));
-
-                    if (index > -1)
-                    {
-                        template.Features.SiteFeatures.RemoveAt(index);
-                    }
-                }
-
-                foreach (var feature in featuresToExclude)
-                {
-                    int index = template.Features.SiteFeatures.FindIndex(f => f.Id.Equals(feature));
-
-                    if (index > -1)
-                    {
-                        template.Features.SiteFeatures.RemoveAt(index);
-                    }
-                }
-
+                var cleanSiteFeatures = GetCleanFeatures(template.Features.SiteFeatures, baseTemplate.Features.SiteFeatures);
+                template.Features.SiteFeatures.Clear();
+                cleanSiteFeatures.ForEach(x => template.Features.SiteFeatures.Add(x));
             }
 
-            foreach (var feature in baseTemplate.Features.WebFeatures)
-            {
-                int index = template.Features.WebFeatures.FindIndex(f => f.Id.Equals(feature.Id));
-
-                if (index > -1)
-                {
-                    template.Features.WebFeatures.RemoveAt(index);
-                }
-            }
-
-            foreach (var feature in featuresToExclude)
-            {
-                int index = template.Features.WebFeatures.FindIndex(f => f.Id.Equals(feature));
-
-                if (index > -1)
-                {
-                    template.Features.WebFeatures.RemoveAt(index);
-                }
-            }
+            var cleanWebFeatures = GetCleanFeatures(template.Features.WebFeatures, baseTemplate.Features.WebFeatures);
+            template.Features.WebFeatures.Clear();
+            cleanWebFeatures.ForEach(x => template.Features.WebFeatures.Add(x));
 
             return template;
+        }
+
+        private List<Feature> GetCleanFeatures(List<Feature> templateFeatures, List<Feature> baseFeatures)
+        {
+            // Seems to be an feature left over on some older online sites...
+            var featuresToExclude = new List<Guid> { Guid.Parse("d70044a4-9f71-4a3f-9998-e7238c11ce1a") };
+
+            var activatedFeatures = templateFeatures
+                    .Where(x => !x.Deactivate && !featuresToExclude.Any(y => y == x.Id))
+                    .ToList();
+
+            var duplicatedFeatures = activatedFeatures
+                .Where(x => baseFeatures.Any(y => y.Id == x.Id && !y.Deactivate));
+
+            var deactivatedFeatures = baseFeatures
+                .Where(x => !templateFeatures.Any(y => y.Id == x.Id && !y.Deactivate))
+                .Select(x => new Feature {Id = x.Id, Deactivate = true});
+
+            return activatedFeatures
+                .Concat(deactivatedFeatures)
+                .Except(duplicatedFeatures)
+                .ToList();
         }
 
 
