@@ -1,6 +1,6 @@
 # PnP Governance - SharePoint Online governance reference implementation #
 
-*Draft version of the solution in progress to get moved to official PnP repository.*
+*In progress version of the solution*
 
 ### Summary ###
 Once [self-service site provisioning](https://github.com/OfficeDev/PnP/tree/master/Solutions/Provisioning.UX.App) is enabled in your SharePoint Online tenant, this solution could further help to enforce customized SharePoint governance policies and site lifecycle management policies of your organization. This process would benefit your SPO tenant in the ways below:
@@ -31,6 +31,7 @@ Version  | Date | Comments
 ---------| -----| --------
 0.1  | June 17th 2015 | Initial draft
 0.5  | June 29th 2015 | Add notes for required UX components
+0.6  | August 13th 2015 | Updated NuGet Packages added PNP Core NuGet Package 
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
