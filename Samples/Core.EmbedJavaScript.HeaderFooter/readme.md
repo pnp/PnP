@@ -4,6 +4,8 @@
 The Core.EmbedJavaScript.HeaderFooter sample provides a provision page to include a custom **Header and Footer**.
 The **Header and Footer** sample includes **custom Global Breadcrumbs (SharePoint or JSON Data)** and **custom Global Ribbons** that are acessible in all sites and subsites associated to Site Collection. The **Custom Breadcrumb is able to Navigate betweeen all Site Collection Sites and sub folders where user is located**, the **Site Collection Navigation is an custom Breadcrumb stored in PropertyBag base in JSON Data**. The Breadcrumb & Ribbon is available in all SharePoint Pages using an Scriptlink file stored in Site Collection, both features keep Minimal Download Strategy "MDS" enable.
 
+***Notice**. Techniques shown in this sample do require full permission to web or site collection level, so this is not a suitable model for apps designed to be distributed from the SharePoint store.*
+
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
 -  Office 365 Dedicated (D)

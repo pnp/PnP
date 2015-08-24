@@ -5,6 +5,8 @@ In some parts of the world it's important to have week numbers on calendar views
 activated on the date picker. There is however no built in function for displaying week numbers in a calendar's monthly view. 
 This sample embeds some JavaScript code that adds week numbers. The code works both with minimum download strategy turned on and off.
 
+***Notice**. Techniques shown in this sample do require full permission to web or site collection level, so this is not a suitable model for apps designed to be distributed from the SharePoint store.*
+
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
 -  Office 365 Dedicated (D)

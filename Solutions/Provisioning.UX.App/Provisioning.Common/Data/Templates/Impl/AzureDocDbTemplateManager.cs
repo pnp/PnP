@@ -139,7 +139,7 @@ namespace Provisioning.Common.Data.Templates.Impl.AzureDocDbRequestManager
         {
             try
             {
-                ReflectionHelper _reflectionHelper = new ReflectionHelper();
+                ReflectionManager _reflectionHelper = new ReflectionManager();
                 var _provider = _reflectionHelper.GetTemplateProvider(ModuleKeys.PROVISIONINGPROVIDER_KEY);
                 var _pt = _provider.GetTemplate(name);
                 return _pt;

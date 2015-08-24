@@ -10,6 +10,7 @@ using Provisioning.Common.Authentication;
 using Provisioning.Common.Data.Templates;
 using Provisioning.Common.Configuration;
 using Provisioning.Common.Utilities;
+using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 
 namespace Provisioning.Common
 {
@@ -67,11 +68,17 @@ namespace Provisioning.Common
                 var _web = _siteprovisioningService.GetWebByUrl(siteRequest.Url);
                 provisioningTemplate.Connector = this.GetProvisioningConnector();
                 provisioningTemplate = new TemplateConversion().HandleProvisioningTemplate(provisioningTemplate, siteRequest);
+
+                ProvisioningTemplateApplyingInformation _pta = new ProvisioningTemplateApplyingInformation();
+                _pta.ProgressDelegate = (message, step, total) =>
+                {
+                    Log.Info("SiteProvisioningManager.ApplyProvisioningTemplate", "Applying Provisioning template - Step {0}/{1} : {2} ", step, total, message);
+                }; 
                 _web.ApplyProvisioningTemplate(provisioningTemplate);
             }
             catch(Exception _ex)
             {
-                var _message =string.Format("Error Occured when applying the template: {0}", _ex.Message);
+                var _message =string.Format("Error Occured when applying the template: {0} to site: {1}", _ex.Message, siteRequest.Url);
                 throw new ProvisioningTemplateException(_message, _ex);
             }
         }
@@ -81,7 +88,7 @@ namespace Provisioning.Common
         /// <returns></returns>
         private FileConnectorBase GetProvisioningConnector()
         {
-            ReflectionHelper _helper = new ReflectionHelper();
+            ReflectionManager _helper = new ReflectionManager();
             FileConnectorBase _connectorInstance =  _helper.GetProvisioningConnector(ModuleKeys.PROVISIONINGCONNECTORS_KEY);
             return _connectorInstance;
         }
