@@ -15,5 +15,7 @@ PnP has been going through some refactoring, so some of the components and areas
 - [PnP Office 365 API](http://aka.ms/officedevpnpoffice365api) GitHub repository
 - [PnP Office-Addins](http://aka.ms/officedevpnpofficeaddins) GitHub repository
 
+***Notice**. There are different kind of techniques shown in the PnP guidance for apps/add-ins targetted to store and also for apps targeted to be deployed or created more as enterprise developmented apps/add-ins. Any app/add-in which requires higher than **Manage** permission to the host web cannot be distributed using SharePoint store.*
+
 ## "Sharing is caring" ##
 
