@@ -1,4 +1,4 @@
-# Branding OneDrive for Business with an App for SharePoint #
+# Branding OneDrive for Business with an add-in for SharePoint #
 
 ### Summary ###
 This scenario shows the pattern on how to access end user’s own OneDrive for Business and to apply custom branding to it automatically. Getting access to the personal my site will happen using Social CSOM which provides read access to user profile properties and also access to the Site object of the personal OneDrive for Business.
@@ -6,7 +6,7 @@ Actual branding is applied by uploading custom theme to the Site by using file u
 
 In general it’s recommended to perform my site branding using themes and to avoid custom master page usage. If you’d start using custom master pages, you would have to ensure that any new changes on the oob master pages are reflected on custom master pages as well. On top of the themes, you can also inject custom CSS to the site to modify layout slightly without the need of changing actual master page. These would be preferred options with the branding.
 
-Actual branding is applied from app part, which can be placed anywhere in the tenant, since it operates cross the site collections as needed. End user will only see gif animation indicating operations when app part is accessing the personal OneDrive for Business site. Typical locations for this customizer would be following locations.
+Actual branding is applied from add-in part, which can be placed anywhere in the tenant, since it operates cross the site collections as needed. End user will only see gif animation indicating operations when add-in part is accessing the personal OneDrive for Business site. Typical locations for this customizer would be following locations.
 - Intranet front page – When users arrive to Intranet, branding in OneDrive for Business is checked and applied if needed
 - Public side of the my site – for example on the news feed page
 Code also stores the version of the used branding, so that changes are only applied as needed, which will avoid performance issues with constantly deploying files without clear advantages.
@@ -96,95 +96,220 @@ clientContext.ExecuteQuery();
 This scenario shows how to deploy and apply custom theme to site.
 
 ## DEPLOYING THEME ##
-Deploying of the theme can be achieve just by deploying theme files to right locations in the site using FileCreationInformation object. In this example case, we deploy three different files, which are then applied as “theme” to the site. You could actually deploy these files anywhere in the site, but for consistency sake, they are added to the same location as the oob files using following pattern.
-Individual files are handled one-by-one by calling same method.
+Deploying of the theme can be achieve just by deploying theme files to right locations in the site using UploadThemeFile extension method. In this example case, we deploy three different files, which are then applied as “theme” to the site. You could actually deploy these files anywhere in the site, but for consistency sake, they are added to the same location as the oob files using following pattern.
+Individual files are handled one-by-one by calling same extension method.
 
 ```C#
 // Deploy files one by one to proper location
-DeployFileToThemeFolderSite(clientContext, web, "DeploymentFiles/Theme/Contoso.spcolor");
-DeployFileToThemeFolderSite(clientContext, web, "DeploymentFiles/Theme/Contoso.spfont");
-DeployFileToThemeFolderSite(clientContext, web, "DeploymentFiles/Theme/contosobg.jpg");
+var colorFile = rootWeb.UploadThemeFile(HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCTheme.spcolor")));
+var backgroundFile = rootWeb.UploadThemeFile(HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCbg.jpg")));
 ```
 
 Actual deployment is done in the method as follows.
 ```C#
-private void DeployFileToThemeFolderSite(ClientContext clientContext, Web web, string sourceAddress)
+rootWeb.CreateComposedLookByUrl("SPC", colorFile.ServerRelativeUrl, null, backgroundFile.ServerRelativeUrl, string.Empty);
+```
+
+The code for CreateComposedLookByUrl is the following:
+
+```C#
+public static void CreateComposedLookByUrl(this Web web, string lookName, string paletteServerRelativeUrl, string fontServerRelativeUrl, string backgroundServerRelativeUrl, string masterServerRelativeUrl, int displayOrder = 1, bool replaceContent = true)
 {
-    // Get the path to the file which we are about to deploy
-    string file = HostingEnvironment.MapPath(string.Format("~/{0}", sourceAddress));
-    
-    List themesList = web.GetCatalog(123);
-    // get the theme list
-    clientContext.Load(themesList);
-    clientContext.ExecuteQuery();
-    Folder rootfolder = themesList.RootFolder;
-    clientContext.Load(rootfolder);
-    clientContext.Load(rootfolder.Folders);
-    clientContext.ExecuteQuery();
-    Folder folder15 = rootfolder;
-    foreach (Folder folder in rootfolder.Folders)
+    Utility.EnsureWeb(web.Context, web, "ServerRelativeUrl");
+    var composedLooksList = web.GetCatalog((int)ListTemplateType.DesignCatalog);
+
+    // Check for existing, by name
+    CamlQuery query = new CamlQuery();
+    query.ViewXml = string.Format(CAML_QUERY_FIND_BY_FILENAME, lookName);
+    var existingCollection = composedLooksList.GetItems(query);
+    web.Context.Load(existingCollection);
+    web.Context.ExecuteQueryRetry();
+    ListItem item = existingCollection.FirstOrDefault();
+
+    if (item == null)
     {
-	    if (folder.Name == "15")
-	    {
-		    folder15 = folder;
-		    break;
-	    }
+        Log.Info(Constants.LOGGING_SOURCE, CoreResources.BrandingExtension_CreateComposedLook, lookName, web.ServerRelativeUrl);
+        ListItemCreationInformation itemInfo = new ListItemCreationInformation();
+        item = composedLooksList.AddItem(itemInfo);
+        item["Name"] = lookName;
+        item["Title"] = lookName;
     }
-    
-    // Use CSOM to uplaod the file in
-    FileCreationInformation newFile = new FileCreationInformation();
-    newFile.Content = System.IO.File.ReadAllBytes(file);
-    newFile.Url = folder15.ServerRelativeUrl + "/" + Path.GetFileName(sourceAddress);
-    newFile.Overwrite = true;
-    Microsoft.SharePoint.Client.File uploadFile = folder15.Files.Add(newFile);
-    clientContext.Load(uploadFile);
-    clientContext.ExecuteQuery();
+    else
+    {
+        if (!replaceContent)
+        {
+            throw new Exception("Composed look already exists, replace contents needs to be specified.");
+        }
+        Log.Info(Constants.LOGGING_SOURCE, CoreResources.BrandingExtension_UpdateComposedLook, lookName, web.ServerRelativeUrl);
+    }
+
+    if (!string.IsNullOrEmpty(paletteServerRelativeUrl))
+    {
+        item["ThemeUrl"] = paletteServerRelativeUrl;
+    }
+    if (!string.IsNullOrEmpty(fontServerRelativeUrl))
+    {
+        item["FontSchemeUrl"] = fontServerRelativeUrl;
+    }
+    if (!string.IsNullOrEmpty(backgroundServerRelativeUrl))
+    {
+        item["ImageUrl"] = backgroundServerRelativeUrl;
+    }
+    // we use seattle master if anything else is not set
+    if (string.IsNullOrEmpty(masterServerRelativeUrl))
+    {
+        item["MasterPageUrl"] = UrlUtility.Combine(web.ServerRelativeUrl, Constants.MASTERPAGE_SEATTLE);
+    }
+    else
+    {
+        item["MasterPageUrl"] = masterServerRelativeUrl;
+    }
+
+    item["DisplayOrder"] = displayOrder;
+    item.Update();
+    web.Context.ExecuteQueryRetry();
 }
 ```
 
-Code adds also new theme option to the theme item list, which would not actually be needed and it not visible in the my sites, but you can use the same pattern when deploying theme to team sites and this would result new option in theme selection.
+Code adds also new composed look option to the composed looks list, which would not actually be needed and it not visible in the my sites, but you can use the same pattern when deploying theme to team sites and this would result new option in composed look selection.
 
 ```C#
-private void AddNewThemeOptionToSite(ClientContext clientContext, Web web)
+public static void CreateComposedLookByUrl(this Web web, string lookName, string paletteServerRelativeUrl, string fontServerRelativeUrl, string backgroundServerRelativeUrl, string masterServerRelativeUrl, int displayOrder = 1, bool replaceContent = true)
 {
-    // Let's get instance to the composite look gallery
-    List themesOverviewList = web.GetCatalog(124);
-    clientContext.Load(themesOverviewList);
-    clientContext.ExecuteQuery();
-    // Is the item already in the list?
-    if (!ContosoThemeEntryExists(clientContext, web, themesOverviewList))
+    Utility.EnsureWeb(web.Context, web, "ServerRelativeUrl");
+    var composedLooksList = web.GetCatalog((int)ListTemplateType.DesignCatalog);
+
+    // Check for existing, by name
+    CamlQuery query = new CamlQuery();
+    query.ViewXml = string.Format(CAML_QUERY_FIND_BY_FILENAME, lookName);
+    var existingCollection = composedLooksList.GetItems(query);
+    web.Context.Load(existingCollection);
+    web.Context.ExecuteQueryRetry();
+    ListItem item = existingCollection.FirstOrDefault();
+
+    if (item == null)
     {
-	    // Let's create new theme entry. Notice that theme selection is not available from UI in personal sites, so this is just for consistency sake
-	    ListItemCreationInformation itemInfo = new ListItemCreationInformation();
-	    Microsoft.SharePoint.Client.ListItem item = themesOverviewList.AddItem(itemInfo);
-	    item["Name"] = "Contoso";
-	    item["Title"] = "Contoso";
-	    item["ThemeUrl"] = URLCombine(web.ServerRelativeUrl, "/_catalogs/theme/15/contoso.spcolor"); ;
-	    item["FontSchemeUrl"] = URLCombine(web.ServerRelativeUrl, "/_catalogs/theme/15/contoso.spfont"); ;
-	    item["ImageUrl"] = URLCombine(web.ServerRelativeUrl, "/_catalogs/theme/15/contosobg.jpg");
-	    // Notice that we use oob master, but just as well you vould upload and use custom one
-	    item["MasterPageUrl"] = URLCombine(web.ServerRelativeUrl, "/_catalogs/masterpage/seattle.master");
-	    item["DisplayOrder"] = 0;
-	    item.Update();
-	    clientContext.ExecuteQuery();
+        Log.Info(Constants.LOGGING_SOURCE, CoreResources.BrandingExtension_CreateComposedLook, lookName, web.ServerRelativeUrl);
+        ListItemCreationInformation itemInfo = new ListItemCreationInformation();
+        item = composedLooksList.AddItem(itemInfo);
+        item["Name"] = lookName;
+        item["Title"] = lookName;
+    }
+    else
+    {
+        if (!replaceContent)
+        {
+            throw new Exception("Composed look already exists, replace contents needs to be specified.");
+        }
+        Log.Info(Constants.LOGGING_SOURCE, CoreResources.BrandingExtension_UpdateComposedLook, lookName, web.ServerRelativeUrl);
     }
 
+    if (!string.IsNullOrEmpty(paletteServerRelativeUrl))
+    {
+        item["ThemeUrl"] = paletteServerRelativeUrl;
+    }
+    if (!string.IsNullOrEmpty(fontServerRelativeUrl))
+    {
+        item["FontSchemeUrl"] = fontServerRelativeUrl;
+    }
+    if (!string.IsNullOrEmpty(backgroundServerRelativeUrl))
+    {
+        item["ImageUrl"] = backgroundServerRelativeUrl;
+    }
+    // we use seattle master if anything else is not set
+    if (string.IsNullOrEmpty(masterServerRelativeUrl))
+    {
+        item["MasterPageUrl"] = UrlUtility.Combine(web.ServerRelativeUrl, Constants.MASTERPAGE_SEATTLE);
+    }
+    else
+    {
+        item["MasterPageUrl"] = masterServerRelativeUrl;
+    }
+
+    item["DisplayOrder"] = displayOrder;
+    item.Update();
+    web.Context.ExecuteQueryRetry();
 }
 ```
 
 ##  APPLYING THEME ##
-Actual applying of the theme is done with single line of code as long as the URLs to the file are properly created.
-    
+Actual applying of the theme is done with the SetComposedLookByUrl PnP Core extension method:
 ```C#
-//Set the properties for applying custom theme which was just uploaded
-string spColorURL = URLCombine(rootWeb.ServerRelativeUrl, "/_catalogs/theme/15/contoso.spcolor");
-string spFontURL = URLCombine(rootWeb.ServerRelativeUrl, "/_catalogs/theme/15/contoso.spfont");
-string backGroundImage = URLCombine(rootWeb.ServerRelativeUrl, "/_catalogs/theme/15/contosobg.jpg");
+// Setting the Contoos theme to host web
+rootWeb.SetComposedLookByUrl("SPC");
+```
 
-// Use the Red theme for demonstration
-rootWeb.ApplyTheme(spColorURL,
-    spFontURL,
-    backGroundImage,
-    false);
-clientContext.ExecuteQuery();
+The code for SetComposedLookByUrl is the following:
+```C#
+ public static void SetComposedLookByUrl(this Web web, string lookName, string paletteServerRelativeUrl = null, string fontServerRelativeUrl = null, string backgroundServerRelativeUrl = null, string masterServerRelativeUrl = null, bool resetSubsitesToInherit = false, bool updateRootOnly = true)
+ {
+     var paletteUrl = default(string);
+     var fontUrl = default(string);
+     var backgroundUrl = default(string);
+     var masterUrl = default(string);
+
+     if (!string.IsNullOrWhiteSpace(lookName))
+     {
+         var composedLooksList = web.GetCatalog((int)ListTemplateType.DesignCatalog);
+
+         // Check for existing, by name
+         CamlQuery query = new CamlQuery();
+         query.ViewXml = string.Format(CAML_QUERY_FIND_BY_FILENAME, lookName);
+         var existingCollection = composedLooksList.GetItems(query);
+         web.Context.Load(existingCollection);
+         web.Context.ExecuteQueryRetry();
+         var item = existingCollection.FirstOrDefault();
+
+         if (item != null)
+         {
+             var lookPaletteUrl = item["ThemeUrl"] as FieldUrlValue;
+             if (lookPaletteUrl != null)
+             {
+                 paletteUrl = new Uri(lookPaletteUrl.Url).AbsolutePath;
+             }
+             var lookFontUrl = item["FontSchemeUrl"] as FieldUrlValue;
+             if (lookFontUrl != null)
+             {
+                 fontUrl = new Uri(lookFontUrl.Url).AbsolutePath;
+             }
+             var lookBackgroundUrl = item["ImageUrl"] as FieldUrlValue;
+             if (lookBackgroundUrl != null)
+             {
+                 backgroundUrl = new Uri(lookBackgroundUrl.Url).AbsolutePath;
+             }
+             var lookMasterUrl = item["MasterPageUrl"] as FieldUrlValue;
+             if (lookMasterUrl != null)
+             {
+                 masterUrl = new Uri(lookMasterUrl.Url).AbsolutePath;
+             }
+         }
+         else
+         {
+             Log.Error(Constants.LOGGING_SOURCE, CoreResources.BrandingExtension_ComposedLookMissing, lookName);
+             throw new Exception(string.Format("Composed look '{0}' can not be found; pass null or empty to set look directly (not based on an existing entry)", lookName));
+         }
+     }
+
+     if (!string.IsNullOrEmpty(paletteServerRelativeUrl))
+     {
+         paletteUrl = paletteServerRelativeUrl;
+     }
+     if (!string.IsNullOrEmpty(fontServerRelativeUrl))
+     {
+         fontUrl = fontServerRelativeUrl;
+     }
+     if (!string.IsNullOrEmpty(backgroundServerRelativeUrl))
+     {
+         backgroundUrl = backgroundServerRelativeUrl;
+     }
+     if (!string.IsNullOrEmpty(masterServerRelativeUrl))
+     {
+         masterUrl = masterServerRelativeUrl;
+     }
+
+     web.SetMasterPageByUrl(masterUrl, resetSubsitesToInherit, updateRootOnly);
+     web.SetCustomMasterPageByUrl(masterUrl, resetSubsitesToInherit, updateRootOnly);
+     web.SetThemeByUrl(paletteUrl, fontUrl, backgroundUrl, resetSubsitesToInherit, updateRootOnly);
+ }
+
 ```

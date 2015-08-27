@@ -55,7 +55,7 @@
 
         // HTML encoder
         PeoplePicker.prototype.HtmlEncode = function(html) {
-            return document.createElement('a').appendChild(document.createTextNode(html)).parentNode.innerHTML;
+            return document.createElement('a').appendChild(document.createTextNode(html)).parentNode.innerHTML.ReplaceAll("'", "&apos;", true);
         }
 
         // HTML decoder

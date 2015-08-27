@@ -1,0 +1,5 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<sites>
+  <site url="https://<Office 365 domain>.sharepoint.com/sites/batchtestsite" />
+
+</sites>

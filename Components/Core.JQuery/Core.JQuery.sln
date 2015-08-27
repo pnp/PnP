@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.JQuery", "Core.JQuery\Core.JQuery.csproj", "{A1141440-0291-4408-B5C6-E118949E21DE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.JQueryWeb", "Core.JQueryWeb\Core.JQueryWeb.csproj", "{A08DFC32-3119-4C63-BFA2-E7AF167AFCCF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1141440-0291-4408-B5C6-E118949E21DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1141440-0291-4408-B5C6-E118949E21DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1141440-0291-4408-B5C6-E118949E21DE}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{A1141440-0291-4408-B5C6-E118949E21DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1141440-0291-4408-B5C6-E118949E21DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1141440-0291-4408-B5C6-E118949E21DE}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{A08DFC32-3119-4C63-BFA2-E7AF167AFCCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A08DFC32-3119-4C63-BFA2-E7AF167AFCCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A08DFC32-3119-4C63-BFA2-E7AF167AFCCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A08DFC32-3119-4C63-BFA2-E7AF167AFCCF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

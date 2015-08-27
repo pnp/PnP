@@ -1,10 +1,6 @@
-﻿using Microsoft.SharePoint.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.SharePoint.Client;
 
 namespace OfficeDevPnP.Core.Utilities
 {
@@ -23,7 +19,7 @@ namespace OfficeDevPnP.Core.Utilities
             {
                 // get instances to root web, since we are processing currently sub site 
                 cc.Load(site);
-                cc.ExecuteQuery();
+                cc.ExecuteQueryRetry();
             }
             return site;
         }
@@ -41,7 +37,7 @@ namespace OfficeDevPnP.Core.Utilities
             {
                 // get instances to root web, since we are processing currently sub site 
                 cc.Load(web);
-                cc.ExecuteQuery();
+                cc.ExecuteQueryRetry();
             }
             return web;
         }
@@ -56,7 +52,7 @@ namespace OfficeDevPnP.Core.Utilities
             int value = 0;
             Uri baseUri = new Uri(url);
             Uri checkUri = new Uri(baseUri, "_layouts/15/blank.htm");
-            WebRequest webRequest = HttpWebRequest.Create(checkUri);
+            WebRequest webRequest = WebRequest.Create(checkUri);
             webRequest.Method = "HEAD";
             webRequest.UseDefaultCredentials = true;
             using (WebResponse webResponse = webRequest.GetResponse())

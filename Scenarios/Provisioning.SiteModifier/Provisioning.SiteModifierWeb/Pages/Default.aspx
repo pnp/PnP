@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Site Modifyer</title>
+    <title>Site Modifier</title>
     <script type="text/javascript" src="../Scripts/jquery-1.9.1.js"></script>
     <script type="text/javascript" src="../Scripts/app.js"></script>
 </head>
@@ -28,6 +28,7 @@
         <br />
         <asp:Button runat="server" ID="btnSubmit" Text="Apply changes" OnClick="btnSubmit_Click"/>
         <asp:Button runat="server" ID="btnRemove" Text="Remove changes" OnClick="btnRemove_Click" />  
+        <br /><br />
          <asp:Label ID="lblStatus" runat="server" />
         <br />
     </div>

@@ -40,7 +40,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
             file = folder.Files.Add(fci);
             clientContext.Load(file);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
         }
 
         [TestCleanup()]
@@ -50,12 +50,12 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             if (ensureSiteFolderTest != null)
             {
                 ensureSiteFolderTest.DeleteObject();
-                ensureSiteFolderTest.Context.ExecuteQuery();
+                ensureSiteFolderTest.Context.ExecuteQueryRetry();
             }
 
             //Remove test library - will also remove folders created in the library
             documentLibrary.DeleteObject();
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
             clientContext.Dispose();
         }
         #endregion
@@ -72,11 +72,14 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
             clientContext.Load(newFile, f => f.CheckOutType);
 
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             Assert.AreNotEqual(newFile.CheckOutType, CheckOutType.None);
             Assert.AreEqual(newFile.CheckOutType, CheckOutType.Online);
 
+            // Check behavior when file does not exist...should not throw an error
+            clientContext.Web.CheckInFile(file.ServerRelativeUrl + "12345678", checkInType, commentText);
+            clientContext.Web.CheckOutFile(file.ServerRelativeUrl + "12345678");
         }
 
         [TestMethod()]
@@ -91,7 +94,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
             clientContext.Load(newFile, f => f.CheckInComment, f => f.Level);
 
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
 
             Assert.AreEqual(newFile.CheckInComment, commentText);
             Assert.AreEqual(newFile.Level, FileLevel.Published);
@@ -110,6 +113,11 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         [TestMethod]
         public void UploadFileWebDavTest()
         {
+            if (TestCommon.AppOnlyTesting())
+            {
+                Assert.Inconclusive("Tests involving webdav are not supported when testing using app-only");
+            }
+
             var fileNameExpected = "TestFile1.png";
             var file = folder.UploadFileWebDav(fileNameExpected, TestFilePath1, true);
 
@@ -145,7 +153,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             file.SetFileProperties(properties);
 
             file.Context.Load(file.ListItemAllFields);
-            file.Context.ExecuteQuery();
+            file.Context.ExecuteQueryRetry();
 
             var actualTitle = file.ListItemAllFields["Title"];
             Assert.AreEqual(expectedTitle, actualTitle);
@@ -175,7 +183,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             clientContext.Web.EnsureFolder(folderName);
 
             clientContext.Load(clientContext.Web.Folders);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
             ensureSiteFolderTest = null;
             foreach (Folder existingFolder in clientContext.Web.Folders)
             {
@@ -195,11 +203,11 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             string folderName = "test_1";
 
             clientContext.Load(documentLibrary.RootFolder);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
             documentLibrary.RootFolder.EnsureFolder(folderName);
 
             clientContext.Load(documentLibrary.RootFolder);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
             ensureLibraryFolderTest = null;
             foreach (Folder existingFolder in documentLibrary.RootFolder.Folders)
             {
@@ -219,7 +227,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             string folderName = "test_2/test_22/test_222";
 
             clientContext.Load(documentLibrary.RootFolder);
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
             clientContext.Web.EnsureFolder(documentLibrary.RootFolder, folderName);
 
             Folder testFolder = clientContext.Web.GetFolderByServerRelativeUrl(String.Format("{0}/{1}", DocumentLibraryName, folderName));
@@ -227,7 +235,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 
             clientContext.Load(testFolder);
             Utility.EnsureWeb(clientContext.Web.Context, clientContext.Web, "ServerRelativeUrl");
-            clientContext.ExecuteQuery();
+            clientContext.ExecuteQueryRetry();
             Assert.AreEqual(testFolder.ServerRelativeUrl, String.Format("{0}/{1}/{2}",clientContext.Web.ServerRelativeUrl, DocumentLibraryName, folderName));
         }
         #endregion

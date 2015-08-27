@@ -20,11 +20,27 @@ namespace Microsoft.SharePoint.Client.Tests
         public void Initialize()
         {
 
-            #if !CLIENTSDKV15
+#if !CLIENTSDKV15
             _userLogin = ConfigurationManager.AppSettings["SPOUserName"];
-            #else
+            if (TestCommon.AppOnlyTesting())
+            {
+                using (var clientContext = TestCommon.CreateClientContext())
+                {
+                    List<UserEntity> admins = clientContext.Web.GetAdministrators();
+                    _userLogin = admins[0].LoginName.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries)[2];
+                }
+            }
+#else
             _userLogin = String.Format(@"{0}\{1}", ConfigurationManager.AppSettings["OnPremDomain"], ConfigurationManager.AppSettings["OnPremUserName"]);            
-            #endif
+            if (TestCommon.AppOnlyTesting())
+            {
+                using (var clientContext = TestCommon.CreateClientContext())
+                {
+                    List<UserEntity> admins = clientContext.Web.GetAdministrators();
+                    _userLogin = admins[0].LoginName.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries)[1];
+                }
+            }
+#endif
 
             using (ClientContext clientContext = TestCommon.CreateClientContext())
             {
@@ -111,6 +127,20 @@ namespace Microsoft.SharePoint.Client.Tests
                 }
             }
         }
+
+        [TestMethod]
+        public void GroupExistsTest()
+        {
+            using (ClientContext clientContext = TestCommon.CreateClientContext())
+            {
+                bool groupExists = clientContext.Web.GroupExists(_testGroupName);
+                Assert.IsTrue(groupExists);
+
+                groupExists = clientContext.Web.GroupExists(_testGroupName + "987654321654367");
+                Assert.IsFalse(groupExists);
+            }
+        }
+
         #endregion
 
         #region Permission level tests
@@ -124,7 +154,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 //Get Group
                 Group group = clientContext.Web.SiteGroups.GetByName(_testGroupName);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 //Assert
                 Assert.IsTrue(CheckPermissionOnPrinciple(clientContext.Web, group, RoleType.Contributor));
@@ -141,7 +171,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 //Get Group
                 Group group = clientContext.Web.SiteGroups.GetByName(_testGroupName);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 //Assert 
                 Assert.IsTrue(CheckPermissionOnPrinciple(clientContext.Web, group, "Approve"));
@@ -165,7 +195,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 //Get User
                 User user = web.EnsureUser(_userLogin);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 //Assert
                 Assert.IsTrue(CheckPermissionOnPrinciple(web, user, roleType));
@@ -190,7 +220,7 @@ namespace Microsoft.SharePoint.Client.Tests
 
                 //Get User
                 User user = web.EnsureUser(_userLogin);
-                clientContext.ExecuteQuery();
+                clientContext.ExecuteQueryRetry();
 
                 //Assert
                 Assert.IsTrue(CheckPermissionOnPrinciple(web, user, "Approve"));
@@ -225,7 +255,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 {
                     clientContext.Web.AssociatedVisitorGroup.Users.Remove(existingUser);
                     clientContext.Web.AssociatedVisitorGroup.Update();
-                    clientContext.ExecuteQuery();
+                    clientContext.ExecuteQueryRetry();
                 }
             }
         }
@@ -251,7 +281,7 @@ namespace Microsoft.SharePoint.Client.Tests
                 {
                     clientContext.Web.AssociatedVisitorGroup.Users.Remove(existingUser);
                     clientContext.Web.AssociatedVisitorGroup.Update();
-                    clientContext.ExecuteQuery();
+                    clientContext.ExecuteQueryRetry();
                 }
             }
         }
@@ -264,7 +294,7 @@ namespace Microsoft.SharePoint.Client.Tests
             RoleDefinitionBindingCollection roleDefinitionBindingCollection =
                 web.RoleAssignments.GetByPrincipal(principle).RoleDefinitionBindings;
             web.Context.Load(roleDefinitionBindingCollection);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             //Check if assigned role is found
             bool roleExists = false;
@@ -285,7 +315,7 @@ namespace Microsoft.SharePoint.Client.Tests
             RoleDefinitionBindingCollection roleDefinitionBindingCollection =
                 web.RoleAssignments.GetByPrincipal(principle).RoleDefinitionBindings;
             web.Context.Load(roleDefinitionBindingCollection);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             //Check if assigned role is found
             bool roleExists = false;

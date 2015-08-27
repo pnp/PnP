@@ -55,12 +55,30 @@ To create the fields and content types the below code leverages OfficeDevPnP.Cor
 //Check the fields
 if (!ctx.Web.FieldExistsById(FLD_CLASSIFICATION_ID))
 {
-	ctx.Web.CreateTaxonomyField(FLD_CLASSIFICATION_ID,
-                            FLD_CLASSIFICATION_INTERNAL_NAME,
-                            FLD_CLASSIFICATION_DISPLAY_NAME,
-                            FIELDS_GROUP_NAME,
-                            TAXONOMY_GROUP,
-                            TAXONOMY_TERMSET_CLASSIFICATION_NAME);
+    TermStore termStore = GetDefaultTermStore(ctx.Web);
+
+    if (termStore == null)
+    {
+        throw new NullReferenceException("The default term store is not available.");
+    }
+
+    // get the term group and term set
+    TermGroup termGroup = termStore.Groups.GetByName(TAXONOMY_GROUP);
+    TermSet termSet = termGroup.TermSets.GetByName(TAXONOMY_TERMSET_CLASSIFICATION_NAME);
+    ctx.Load(termStore);
+    ctx.Load(termSet);
+    ctx.ExecuteQuery();
+
+    TaxonomyFieldCreationInformation fldCreate = new TaxonomyFieldCreationInformation()
+    {
+        Id = FLD_CLASSIFICATION_ID,
+        InternalName = FLD_CLASSIFICATION_INTERNAL_NAME,
+        DisplayName = FLD_CLASSIFICATION_DISPLAY_NAME,
+        Group = FIELDS_GROUP_NAME,
+        TaxonomyItem = termSet,                    
+    };
+    ctx.Web.CreateTaxonomyField(fldCreate);
+
 }
 
 //check the content type
@@ -302,7 +320,7 @@ While your testing the two scenarios, you will noticed that the ItemAdding imple
 -  Microsoft.SharePoint.Client.Runtime
 -  Microsoft.SharePoint.Client.Taxonomy
 -  Microsoft.SharePoint.Client.UserProfiles
--  [Setting up provider hosted app to Windows Azure for Office365 tenant](http://blogs.msdn.com/b/vesku/archive/2013/11/25/setting-up-provider-hosted-app-to-windows-azure-for-office365-tenant.aspx)
+-  [Setting up provider hosted add-in to Windows Azure for Office365 tenant](http://blogs.msdn.com/b/vesku/archive/2013/11/25/setting-up-provider-hosted-app-to-windows-azure-for-office365-tenant.aspx)
 
 
 

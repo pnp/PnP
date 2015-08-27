@@ -1,7 +1,7 @@
 # Data storage models for Apps #
 
 ### Summary ###
-This provider-hosted sample application for SharePoint demonstrates the differences, advantages, and disadvantages between different data storage patterns associated with the App Model and how they are built.  It also illustrates limitations associated with certain data storage components that should be considered when deciding which data storage components to use when building with the App Model.
+This provider-hosted sample application for SharePoint demonstrates the differences, advantages, and disadvantages between different data storage patterns associated with the Add-In Model and how they are built.  It also illustrates limitations associated with certain data storage components that should be considered when deciding which data storage components to use when building with the Add-In Model.
 
 The purpose of this sample is to show the advantages and disadvantages of using different types of storage models to hold information. There are 6 different scenarios in this sample.  Each scenario is supported with specialized information.  The diagram in the first section in this document illustrates the different data storage models associated with these scenarios.
 
@@ -167,8 +167,8 @@ AT THE BOTTOM OF THE NAVIGATION **PANE**, CLICK **NEW**.
  
 ![](http://i.imgur.com/SDf5xCs.png)
 
-# Installing the App #
-Now that all of the prerequsites are completed the SharePoint app may be deployed.
+# Installing the Add-In #
+Now that all of the prerequsites are completed the SharePoint add-in may be deployed.
 
 1.Return to the **Core.DataStorageModels** solution in Visual Studio 2013.
 2.In the Solution Explorer, select the **Core.DataStorageModelsWeb** project.
@@ -182,34 +182,34 @@ Now that all of the prerequsites are completed the SharePoint app may be deploye
 
 ![](http://i.imgur.com/Yi7FZNJ.png)
 
-7.After app installation, a new page will be displayed.  This page describes how to deploy, explore, and interact with the sample.  It is pictured below.
+7.After add-in installation, a new page will be displayed.  This page describes how to deploy, explore, and interact with the sample.  It is pictured below.
 
 ![](http://i.imgur.com/oTGv5Dg.png)
  
-# Deploying Components To The Host and App Webs #
+# Deploying Components To The Host and Add-In Webs #
 1.Click the **Deploy** button to deploy all of the SharePoint components in the sample.  Success messages are displayed once the tasks are completed.
 
 ![](http://i.imgur.com/crS407Q.png)
  
-The Explore the Sample section on landing page in the SharePoint app includes high level documentation which describes the components in the sample.  The following documentation provides additional details and instructions which describe and illustrate how to interact with the data storage model scenarios in the app.
+The Explore the Sample section on landing page in the SharePoint add-in includes high level documentation which describes the components in the sample.  The following documentation provides additional details and instructions which describe and illustrate how to interact with the data storage model scenarios in the add-in.
 
 # Customer Dashboard #
 The Customer Dashboard scenario uses JQuery AJAX to invoke the NorthWind OData Service to return a customer’s information.
 
 The advantages of using this method of data storage and delivery include all the typical advantages of a service oriented architecture.  For more information about SOA and it’s benefits see the following MSDN article: [http://msdn.microsoft.com/en-us/library/bb833022.aspx](http://msdn.microsoft.com/en-us/library/bb833022.aspx)
 
-Specifically related to the App Model, the advantages of using this method of data storage and delivery include:
+Specifically related to the Add-In Model, the advantages of using this method of data storage and delivery include:
 
 **1.Design**
-a.	A single service may be used by more than one SharePoint app.
-b.	Services may be updated independently of SharePoint apps.  This allows developers to update business logic without redeploying the SharePoint app.
+a.	A single service may be used by more than one SharePoint add-in.
+b.	Services may be updated independently of SharePoint add-ins.  This allows developers to update business logic without redeploying the SharePoint add-in.
 
 **2.Performance**
 a.	Service performance is not affected by SharePoint and hosting services in an environment such as Microsoft Azure allows services to scale easily to ensure good performance.
 
 **3.Backup/Restore**
 a.	Services may be backed up and restored seperately from a SharePoint infrastructure.
-b.	Services which do not access SharePoint data are not affected when a SharePoint app is uninstalled unless the SharePoint App has code added to it which explicitly interacts with the service or the data it accesses.
+b.	Services which do not access SharePoint data are not affected when a SharePoint add-in is uninstalled unless the SharePoint Add-In has code added to it which explicitly interacts with the service or the data it accesses.
 
 1.To access customer details, click the **Customer Dashboard** link in the left menu.
 2.Select a **Customer** in the drop down menu.  
@@ -251,15 +251,15 @@ The advantages of using this method of data storage and delivery include:
 **Design**
 - The database scenario can utilize many-to-many relationships.
 - Tooling is available for database design.
-- A single database may be used by more than one SharePoint app.
-- Database may be updated independently of SharePoint apps as long as the schema changes do not affect the SharePoint app.  This allows developers to update data stores without redeploying the SharePoint app.
+- A single database may be used by more than one SharePoint add-in.
+- Database may be updated independently of SharePoint apps as long as the schema changes do not affect the SharePoint add-in.  This allows developers to update data stores without redeploying the SharePoint add-in.
 
 **Performance**
 - Databases typically offer better performance when executing queries that involve many joins and other operations such as calculations when compared to SharePoint lists.
 
 **Backup/Restore**
 - The SQL database allows for backup and restore functionality, making it easier to roll back the data if necessary.
-- External databases are not affected when a SharePoint app is uninstalled unless the SharePoint App has code added to it which explicitly interacts with database it accesses.
+- External databases are not affected when a SharePoint add-in is uninstalled unless the SharePoint add-ins has code added to it which explicitly interacts with database it accesses.
 
 **Import/Export**
 - The SQL database allows for importing and exporting the data and columns, which enables administrators to easily move and manage the database.
@@ -297,15 +297,15 @@ The CSR survey scenario allows a customer service representative to see their ra
 The advantages of using this method of data storage and delivery include:
 
 **Design**
-- Azure Storage Tables may be used by more than one SharePoint app.
-- Azure Storage Tables may be updated independently of SharePoint apps as long as the schema changes do not affect the SharePoint app.  This allows developers to update data stores without redeploying the SharePoint app.
+- Azure Storage Tables may be used by more than one SharePoint add-in.
+- Azure Storage Tables may be updated independently of SharePoint add-ins as long as the schema changes do not affect the SharePoint add-in.  This allows developers to update data stores without redeploying the SharePoint add-in.
 
 **Performance**
 - Azure Storage Table performance is not affected by SharePoint and scales easily to ensure good performance.
 
 **Backup/Restore**
 - Azure Storage Tables may be backed up and restored seperately from a SharePoint infrastructure.
-- Azure Storage Tables are not affected when a SharePoint app is uninstalled unless the SharePoint App has code added to it which explicitly interacts with Azure Storage Tables it accesses.
+- Azure Storage Tables are not affected when a SharePoint add-in is uninstalled unless the SharePoint add-in has code added to it which explicitly interacts with Azure Storage Tables it accesses.
 
 1.To see the CSR Rating, click the My CSR Info link in the left menu.
 2.The MVC controller calls the SurveyRatingsService.cs class which uses the Azure Table Storage API to retrieve the information from the Azure Table Storage.
@@ -386,25 +386,25 @@ private float AddSurveyRatings(string userName)
 ```
 
 # Notes Scenario #
-The Notes list scenario is engineered to reflect how lists perform in a SharePoint App Web.  The Notes list is created in the App Web with a Title and Description field.  Using the SharePoint REST API, the Notes list is queried and returns all the notes based on a Customer ID.
+The Notes list scenario is engineered to reflect how lists perform in a SharePoint Add-In Web.  The Notes list is created in the Add-In Web with a Title and Description field.  Using the SharePoint REST API, the Notes list is queried and returns all the notes based on a Customer ID.
 
-Using lists in the App Web has some advantages over other storage solutions.
+Using lists in the Add-In Web has some advantages over other storage solutions.
 - Data can be queried with simple object model calls like the SharePoint REST API.  
 
 However, there are disadvantages as well.
 
 **Design**
-- Making an update to a SharePoint list in the App Web requires making an update to the SharePoint app.
+- Making an update to a SharePoint list in the Add-In Web requires making an update to the SharePoint add-in.
 - Data is not searchable with the SharePoint Search Service.
-- Data and query limits exist on lists in an App Web.  
+- Data and query limits exist on lists in an Add-In Web.  
 -- These limits may make this choice of a data storage model an option which does not fit every business scenario.  You should carefully consider how much data you need to store and query before choosing the proper data storage model. This sample illustrates and provides more details about this concept.  It is described in subsequent sections in this document.
 
 **Performance**
 -Databases typically offer better performance when executing queries that involve many joins and other operations such as calculations when compared to SharePoint lists.
 
 **Backup/Restore**
-- Backing up and restoring data in a SharePoint list in an App Web is not as straightforward as in a database.
-- Data in a SharePoint list in an App Web is deleted when a SharePoint app is uninstalled unless the SharePoint App has code added to it which explicitly backs up the data when the app is uninstalled.
+- Backing up and restoring data in a SharePoint list in an Add-In Web is not as straightforward as in a database.
+- Data in a SharePoint list in an Add-In Web is deleted when a SharePoint add-in is uninstalled unless the SharePoint add-in has code added to it which explicitly backs up the data when the add-in is uninstalled.
 
 ## NOTES LIST OBJECT MODEL CALLS ##
 1.To access the Notes for a customer, expand the Customer Dashboard by clicking the arrow and select **Notes**.  
@@ -412,8 +412,8 @@ However, there are disadvantages as well.
 ![](http://i.imgur.com/pXBWQI1.png)
  
 2.Select a **customer** in the drop down list to access notes for the customer.  Initially, none exist.
-3.Enter some text in the Notes text area and click **Add** to save the note to the Notes list in the App Web.
-4.Click the **View Notes List in App Web** link to see the out of the box view of the Notes list.  This is helpful for comparing the data in the Notes page with the data in the Notes list in the App Web.
+3.Enter some text in the Notes text area and click **Add** to save the note to the Notes list in the add-in Web.
+4.Click the **View Notes List in add-in Web** link to see the out of the box view of the Notes list.  This is helpful for comparing the data in the Notes page with the data in the Notes list in the add-in Web.
 
 ### CODE ###
 This page is an MCV view defined in the CustomerDashboard\Notes.cshmtl file.  The calls to the SharePoint REST API are written in JavaScript and are located in the Scripts/*CustomerDashboard.js* file.  The functions the Notes scenario uses require the *SP.RequestExecutor* function to execute the cross domain request.
@@ -467,10 +467,10 @@ function addNoteToList(note, customerID) {
 
 ## List Query Thresholds ##
 
-To demonstrate the data limits associated with list storage in the App Web you can load enough data to exceed the list query threshold limit.  To do this, follow these steps.
+To demonstrate the data limits associated with list storage in the add-in Web you can load enough data to exceed the list query threshold limit.  To do this, follow these steps.
 
 1.In the left menu, click **Sample Home Page**.
-2.In the **List Query Thresholds** section, click the **Add list items to the Notes list** in the App Web button.
+2.In the **List Query Thresholds** section, click the **Add list items to the Notes list** in the add-in Web button.
  
 ![](http://i.imgur.com/qfmXz3i.png)
 
@@ -488,13 +488,13 @@ When the list has 5000 or more items in it the following status message is displ
 
 ![](http://i.imgur.com/fziAYmt.png)
 
-6.Click the View Notes List in App Web link, page through the list to see the Notes list has 5000 rows (or more if you added list items via the Add button on the Notes page).  Although the SharePoint List Views can accommodate browsing this much data, the REST API fails due to the list query throttle threshold.
+6.Click the View Notes List in Add-In Web link, page through the list to see the Notes list has 5000 rows (or more if you added list items via the Add button on the Notes page).  Although the SharePoint List Views can accommodate browsing this much data, the REST API fails due to the list query throttle threshold.
 
 ## DATA STORAGE LIMITS ##
 
 To demonstrate the data limits associated with list storage you can load enough data to exceed the data storage limit.  To do this, follow these steps.
 1.In the left menu, click Sample Home Page.
-2.In the Data Threshold section, click the Fill the App Web Notes list with 1GB of data button.
+2.In the Data Threshold section, click the Fill the Add-In Web Notes list with 1GB of data button.
 
 ![](http://i.imgur.com/vW6RTMC.png)
 
@@ -512,13 +512,13 @@ To demonstrate the data limits associated with list storage you can load enough 
 *Note:* Recall when you created the site collection, you gave the site collection 1300 MB of storage space.  Once the 1300 MB of storage space is exceeded the data threshold limit is enforced.
 
 6.After the data threshold has been exceeded, click the **back button** in the web browser, then click the **Notes link** in the left menu.  
-7.Click the **View Notes List In App Web** link.
+7.Click the **View Notes List In Add-In Web** link.
 8.When the page loads you will see the following error at the top of the page.  
 
 ![](http://i.imgur.com/g3uNNFf.png)
 
 # Support Cases Scenario #
-The Support Cases scenario displays support cases for a customer.  The data is stored in a SharePoint list in the Host Web and utilizes two different patterns to access and interact with the data.  The first pattern includes the SharePoint Search Service and the Content By Search Web Part with a custom Display Template applied.  The second pattern includes an App Part (Client Web Part) that displays an MVC view which uses the SP.RequestExecutor to call the SharePoint REST API.  Both patterns are illustrated here to demonstrate how data stored in a SharePoint list in the Host Web is accessible via these two commonly used patterns.
+The Support Cases scenario displays support cases for a customer.  The data is stored in a SharePoint list in the Host Web and utilizes two different patterns to access and interact with the data.  The first pattern includes the SharePoint Search Service and the Content By Search Web Part with a custom Display Template applied.  The second pattern includes an Add-In Part (Client Web Part) that displays an MVC view which uses the SP.RequestExecutor to call the SharePoint REST API.  Both patterns are illustrated here to demonstrate how data stored in a SharePoint list in the Host Web is accessible via these two commonly used patterns.
 
 The advantages of using this method of data storage and delivery include:
 
@@ -527,13 +527,13 @@ Using lists in the Host Web has some advantages over other storage solutions.
 **Design**
 - Data can be queried with simple object model calls like the SharePoint REST API.  
 - Data is searchable with the SharePoint Search Service.
-- Making an update to a SharePoint list in the Host Web does not require making an update to the SharePoint app as long as the changes do not affect the SharePoint app.
+- Making an update to a SharePoint list in the Host Web does not require making an update to the SharePoint add-in as long as the changes do not affect the SharePoint add-in.
 
 For example: 
-- Adding a view to a list in the host web will not break a SharePoint app that uses the list.
+- Adding a view to a list in the host web will not break a SharePoint add-in that uses the list.
 
 **Backup/Restore**
-- Data in a SharePoint list in a Host Web is not deleted when a SharePoint app is uninstalled unless the SharePoint App has code added to it which explicitly deletes the data when the app is uninstalled.
+- Data in a SharePoint list in a Host Web is not deleted when a SharePoint add-in is uninstalled unless the SharePoint add-in has code added to it which explicitly deletes the data when the add-in is uninstalled.
 
 However, there are disadvantages as well.
 
@@ -551,7 +551,7 @@ Backing up and restoring data in a SharePoint list in an Host Web is not as stra
 
 ![](http://i.imgur.com/8tXWYRI.png)
 
-2.Select a customer in the drop down menu to see the Support Cases displayed in a Content By Search Web Part and an App Part.
+2.Select a customer in the drop down menu to see the Support Cases displayed in a Content By Search Web Part and an Add-In Part.
 
 ![](http://i.imgur.com/gbZxyoh.png)
  
@@ -559,7 +559,7 @@ Backing up and restoring data in a SharePoint list in an Host Web is not as stra
 
 ### CODE ###
 
-This App Part displays an MCV view defined in the SupportCaseAppPart\Index.cshtml file.  The MVC view uses the SharePoint REST API to access the Support Cases list in the Host Web and returns the results to the MVC view.
+This Add-In Part displays an MCV view defined in the SupportCaseAppPart\Index.cshtml file.  The MVC view uses the SharePoint REST API to access the Support Cases list in the Host Web and returns the results to the MVC view.
 
 ```C#
 function execCrossDomainRequest() {
@@ -624,15 +624,15 @@ The Call Queue scenario lists callers in the support queue and simulates taking 
 The advantages of using this method of data storage and delivery include:
 
 **Design**
-- Azure Storage Queues may be used by more than one SharePoint app.
-- Azure Storage Queues may be updated independently of SharePoint.  This allows developers to update data stores without redeploying the SharePoint app.
+- Azure Storage Queues may be used by more than one SharePoint add-in.
+- Azure Storage Queues may be updated independently of SharePoint.  This allows developers to update data stores without redeploying the SharePoint add-in.
 
 **Performance**
 - Azure Storage Queue performance is not affected by SharePoint and scales easily to ensure good performance.
 
 **Backup/Restore**
 - Azure Storage Queues may be backed up and restored seperately from a SharePoint infrastructure.
-- Azure Storage Queues are not affected when a SharePoint app is uninstalled unless the SharePoint App has code added to it which explicitly interacts with Azure Storage Queues it accesses.
+- Azure Storage Queues are not affected when a SharePoint add-in is uninstalled unless the SharePoint add-in has code added to it which explicitly interacts with Azure Storage Queues it accesses.
 
 1.To see the call queue, click **Call Queue** in the left menu.
 2.To simulate calls being added to the call queue, click the **Simulate Calls** button.

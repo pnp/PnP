@@ -1,0 +1,65 @@
+﻿/* Accordion */
+.accordion {
+    line-height: normal;
+}
+
+.accordion .accordion-item {
+    border-bottom: 1px solid #d2d2d2;
+}
+
+.accordion .accordion-item .open{
+    display: block;
+}
+
+.accordion .accordion-item-container {
+    display: none;
+    margin-bottom: 10px;
+}
+
+.accordion .accordion-item-link {
+    position: relative;
+    display: block;
+    padding: 12px 0;
+}
+
+.accordion .accordion-item-link .accordion-item-image {
+    position: absolute;
+    height: 27px;
+    width: 27px;
+    display: inline-block;
+    vertical-align: bottom;
+    border: 1px solid transparent;
+    overflow: hidden;
+    left: 0;
+    top: 50%;
+    margin-top: -13.5px;
+}
+
+    .accordion .accordion-item-link .accordion-item-image:before {
+        display: inline-block;
+        content: url("accordion_sprite.png");
+        margin: 0;
+    }
+
+.accordion .accordion-item-link:hover {
+    text-decoration: none;
+    background-color: #e6e6e6;
+}
+
+.accordion .accordion-item-link:hover .accordion-item-image:before {
+    margin-top: -37px;
+}
+
+.accordion .accordion-item-link .accordion-item-title {
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 37px;
+}
+
+.accordion .selected > .accordion-item-link .accordion-item-image:before {
+    margin-top: -74px;
+}
+
+.accordion .selected > .accordion-item-link:hover .accordion-item-image:before {
+    margin-top: -111px;
+}

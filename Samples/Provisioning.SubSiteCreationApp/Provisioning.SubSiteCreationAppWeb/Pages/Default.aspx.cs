@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Hosting;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -67,7 +68,7 @@ namespace Contoso.Provisioning.SubSiteCreationAppWeb
                 Web newWeb = CreateSubSite(ctx, ctx.Web, txtUrl.Text, listSites.SelectedValue, txtTitle.Text, txtDescription.Text);
                 // Redirect to just created site
                 Response.Redirect(newWeb.Url);
-              
+
             }
         }
 
@@ -93,8 +94,21 @@ namespace Contoso.Provisioning.SubSiteCreationAppWeb
             // Add sub site link override
             new LabHelper().AddJsLink(ctx, newWeb, this.Request);
 
-            // Set oob theme to the just created site
-            new LabHelper().SetThemeBasedOnName(ctx, newWeb, hostWeb, "Orange");
+            // Let's first upload the custom theme to host web
+            new LabHelper().DeployThemeToWeb(hostWeb, "MyCustomTheme",
+                            HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/custom.spcolor")),
+                            string.Empty,
+                            HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/custombg.jpg")),
+                            string.Empty);
+
+            // Setting the Custom theme to host web
+            new LabHelper().SetThemeBasedOnName(ctx, newWeb, hostWeb, "MyCustomTheme");
+
+            // Set logo to the site
+
+            // Get the path to the file which we are about to deploy
+            new LabHelper().UploadAndSetLogoToSite(ctx.Web, System.Web.Hosting.HostingEnvironment.MapPath(
+                                                            string.Format("~/{0}", "resources/pnp.png")));
 
             // All done, let's return the newly created site
             return newWeb;
@@ -105,6 +119,6 @@ namespace Contoso.Provisioning.SubSiteCreationAppWeb
             Response.Redirect(Page.Request["SPHostUrl"]);
         }
 
- 
+
     }
 }

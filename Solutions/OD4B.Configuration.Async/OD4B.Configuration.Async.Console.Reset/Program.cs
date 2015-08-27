@@ -27,7 +27,7 @@ namespace OD4B.Configuration.Async.Console.Reset
             {
                 // Uncomment the one you need for testing/reset
                 // Apply(ctx, url);
-                Reset(ctx);
+                 Reset(ctx);
             }
         }
 

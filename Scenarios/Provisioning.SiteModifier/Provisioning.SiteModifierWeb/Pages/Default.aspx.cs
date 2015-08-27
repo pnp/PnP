@@ -114,7 +114,7 @@ namespace Provisioning.SiteModifierWeb
             using (var ctx = spContext.CreateUserClientContextForSPHost())
             {
                 DeleteJsLink(ctx);
-                lblStatus.Text = string.Format("Modify Site link has been added to the Site Actions meny of <a href='{0}'>host web</a>.", spContext.SPHostUrl.ToString());
+                lblStatus.Text = string.Format("Modify Site link has been removed from the Site Actions menu of <a href='{0}'>host web</a>.", spContext.SPHostUrl.ToString());
             }
         }
 

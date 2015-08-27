@@ -19,7 +19,7 @@ namespace Core.Throttling
 
             using (var ctx = new ClientContext(serverUrl))
             {
-                //Provide acocunt and pwd for connecting to the source
+                //Provide account and pwd for connecting to the source
                 var passWord = new SecureString();
                 foreach (char c in password.ToCharArray()) passWord.AppendChar(c);
                 ctx.Credentials = new SharePointOnlineCredentials(login, passWord);
@@ -35,7 +35,7 @@ namespace Core.Throttling
                         ctx.Load(folder);
                         folder = folder.Folders.Add(DateTime.Now.Ticks.ToString());
                         // Extension method for executing query with throttling checks
-                        ctx.ExecuteQueryWithExponentialRetry(5, 30000); //5 retries, with a base delay of 10 secs.
+                        ctx.ExecuteQueryWithIncrementalRetry(5, 30000); //5 retries, with a base delay of 30 seconds.
                         // Status indication for execution.
                         Console.WriteLine("CSOM request successful.");
                         // For loop handling.

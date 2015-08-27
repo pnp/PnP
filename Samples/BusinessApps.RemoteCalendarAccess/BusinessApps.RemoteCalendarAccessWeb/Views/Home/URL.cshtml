@@ -1,0 +1,11 @@
+﻿@model BusinessApps.RemoteCalendarAccess.Models.ICSURLViewModel
+
+@{
+    ViewBag.Title = "URL";
+}
+
+<h4>Please use the following address to access this calendar from other applications.</h4>
+
+<div>
+    <a href="@Model.URL">@Html.DisplayFor(model => model.URL)</a>
+</div>

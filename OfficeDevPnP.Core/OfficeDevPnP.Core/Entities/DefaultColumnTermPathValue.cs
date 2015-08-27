@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace OfficeDevPnP.Core.Entities
 {
@@ -26,6 +22,9 @@ namespace OfficeDevPnP.Core.Entities
         /// </summary>
         public IList<string> TermPaths { get; private set; }
 
+        /// <summary>
+        /// ctor
+        /// </summary>
         public DefaultColumnTermPathValue()
         {
             TermPaths = new List<string>();

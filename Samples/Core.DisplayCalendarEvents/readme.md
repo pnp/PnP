@@ -29,17 +29,17 @@ Version  | Date | Comments
 # Introduction #
 ![](http://i.imgur.com/yHSpcgb.png)
 
-Imagine you are tasked with creating an app that displays calendars from SharePoint.
-At first this app seems rather straight forward.  As with most apps the logic would be similar to the following:
+Imagine you are tasked with creating an add-in that displays calendars from SharePoint.
+At first this add-in seems rather straight forward.  As with most apps the logic would be similar to the following:
 
 1.	Request calendar list items 
 2.	Convert list items to event objects for UI component
 3.	Bind event objects to calendar component which will handle rendering etc.
 
-As it turns out Steps 1 and 2 have significant challenges to overcome and the design of the app quickly becomes so complex you would be inclined to give up. However, if SharePoint has taught us anything, it's that broken API's and inconsistent behavior can be overcome, sometimes we just need a bigger hammer.
+As it turns out Steps 1 and 2 have significant challenges to overcome and the design of the add-in quickly becomes so complex you would be inclined to give up. However, if SharePoint has taught us anything, it's that broken API's and inconsistent behavior can be overcome, sometimes we just need a bigger hammer.
 
 ## Step 1 Problem ##
-The task for step 1 is to retrieve all the data needed for the app from SharePoint. After opening up Fiddler and testing a few requests you would notice we are missing the data required to show repeating events.
+The task for step 1 is to retrieve all the data needed for the add-in from SharePoint. After opening up Fiddler and testing a few requests you would notice we are missing the data required to show repeating events.
 
 Sample Url: `https://https://<subdomain>.sharepoint.com/site/<sitename>/_api/web/lists/getbytitle(‘Calendar’)/items`
 

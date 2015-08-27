@@ -28,6 +28,8 @@ The purpose of this scenario is to demonstrate how to add a ribbon command to th
 
 _NOTE: It is easiest to build the CommandUIExtension by creating a SharePoint Elements.xml file and create a CustomAction element with ribbon XML to follow._
 
+![](http://i.imgur.com/QLPFxHY.png)
+
 
 ## Adding the Ribbon ##
 The following describes how the XML is loaded into the CommandUIExtension and a new custom action is created or updated.

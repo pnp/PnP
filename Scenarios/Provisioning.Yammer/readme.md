@@ -11,7 +11,7 @@ This sample shows how provision sites with Yammer feed associated as the default
 *Since integration to the Yammer feeds actually happens with browser, this does work in the on-premises if the browsers have Internet connectivity.*
 
 ### Prerequisites ###
-You will have to create Yammer access token for the app for your Yammer network. Additional details and link to get this done below in this document.
+You will have to create Yammer access token for the add-in for your Yammer network. Additional details and link to get this done below in this document.
 
 ### Solution ###
 Solution | Author(s)
@@ -32,11 +32,11 @@ Version  | Date | Comments
 # Create sub site and replace default news feed with Yammer Feed #
 This sample shows how to use the newly added Yammer capabilities in the core component to create new Yammer group as part of site provisioning and to associate that as the discussion feed for the newly created collaborations site. 
 
-To be able to use the sample, follow guidance for this URL to register access token for your Yammer app. This access token in updated to the web.config of the provider hosted app.
+To be able to use the sample, follow guidance for this URL to register access token for your Yammer add-in. This access token in updated to the web.config of the provider hosted add-in.
 
 - Get the access token from here: [https://developer.yammer.com/authentication](https://developer.yammer.com/authentication)
 
-Update access token to the web.config of the provider hosted app for the key called YammerAccessToken.
+Update access token to the web.config of the provider hosted add-in for the key called YammerAccessToken.
 ```XML
 <!-- Details on how to get your access token - check following https://developer.yammer.com/authentication -->
 <add key="YammerAccessToken" value="PutYourOwnYammerKeyHere" />
@@ -66,33 +66,34 @@ This example creates new Yammer group for each of the team site. We could actual
 
 ![](http://i.imgur.com/FwMqzxY.png)
 
-Notice also that since this configuration is dynamically applied during provisioning time, there’s no impact on removing the provisioning app away from the SharePoint side.
+Notice also that since this configuration is dynamically applied during provisioning time, there’s no impact on removing the provisioning add-in away from the SharePoint side.
 
 # Used Core component extensions #
 
 Actual provisioning logic and site modifications are using [PnP Core component](https://github.com/OfficeDev/PnP/tree/master/OfficeDevPnP.Core) extension methods. As you can see we can perform the required actions with only few lines of code due the encapsulated reusable methods from the core component.
 
 ```C#
-public void CreateSubSite(Web hostWeb, string url, string template, 
-                          string title, string description, string yammerGroupName)
+public void CreateSubSite(Web hostWeb, string url, string template,
+                            string title, string description, string feedType, string yammerGroupName)
 {
     // Create new sub site
-    Web newWeb = hostWeb.CreateSite(title, url, description, template, 1033);
+    Web newWeb = hostWeb.CreateWeb(title, url, description, template, 1033);
 
-    // Set theme for the site
-    newWeb.SetThemeToSubWeb(hostWeb, "Orange");
-
-    //Remove the "NewsFeed" web part
+    //Remove the out of the box "NewsFeed" web part
     newWeb.DeleteWebPart("SitePages", "Site feed", "home.aspx");
 
-    // Get Yammer Group - Creates if does not exist
-    YammerGroup group = 
-        YammerUtility.CreateYammerGroup(yammerGroupName, true, ConfigurationManager.AppSettings["YammerAccessToken"]);
+    // Let's first get the details on the Yammer network using the access token
+    WebPartEntity wpYammer;
+    YammerUser user = YammerUtility.GetYammerUser(ConfigurationManager.AppSettings["YammerAccessToken"]);
 
-    // Get Yammer web part
-    WebPartEntity wpYammer = YammerUtility.GetYammerGroupDiscussionPart(group.network_name, group.id, false, false);
+    // Created Yammer web part with needed configuration
+    wpYammer = CreateYammerWebPart(feedType, user, yammerGroupName, title);
+
     // Add Yammer web part to the page
     newWeb.AddWebPartToWikiPage("SitePages", wpYammer, "home.aspx", 2, 1, false);
+
+    // Add theme to the site and apply that
+    ApplyThemeToSite(hostWeb, newWeb);
 }
 ```
 

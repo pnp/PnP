@@ -1,19 +1,17 @@
-﻿using Microsoft.Online.SharePoint.TenantAdministration;
-using Microsoft.Online.SharePoint.TenantManagement;
-using Microsoft.SharePoint.Client;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
+using System.Text;
 using Microsoft.SharePoint.Client.Publishing;
 using Microsoft.SharePoint.Client.Search.Query;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
 using OfficeDevPnP.Core.Utilities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
+using OfficeDevPnP.Core.Framework.Provisioning.Model;
+using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 
 namespace Microsoft.SharePoint.Client
 {
@@ -56,13 +54,12 @@ namespace Microsoft.SharePoint.Client
         /// <param name="inheritNavigation">Specifies whether the site inherits navigation.</param>
         public static Web CreateWeb(this Web parentWeb, string title, string leafUrl, string description, string template, int language, bool inheritPermissions = true, bool inheritNavigation = true)
         {
-            // TODO: Check for any other illegal characters in SharePoint
-            if (leafUrl.Contains('/') || leafUrl.Contains('\\'))
+            if (leafUrl.ContainsInvalidUrlChars())
             {
                 throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
             }
 
-            LoggingUtility.Internal.TraceInformation((int)EventId.CreateWeb, CoreResources.WebExtensions_CreateWeb, leafUrl, template);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.WebExtensions_CreateWeb, leafUrl, template);
             WebCreationInformation creationInfo = new WebCreationInformation()
             {
                 Url = leafUrl,
@@ -77,7 +74,7 @@ namespace Microsoft.SharePoint.Client
             newWeb.Navigation.UseShared = inheritNavigation;
             newWeb.Update();
 
-            parentWeb.Context.ExecuteQuery();
+            parentWeb.Context.ExecuteQueryRetry();
 
             return newWeb;
         }
@@ -90,8 +87,7 @@ namespace Microsoft.SharePoint.Client
         /// <returns>true if the web was deleted; otherwise false if nothing was done</returns>
         public static bool DeleteWeb(this Web parentWeb, string leafUrl)
         {
-            // TODO: Check for any other illegal characters in SharePoint
-            if (leafUrl.Contains('/') || leafUrl.Contains('\\'))
+            if (leafUrl.ContainsInvalidUrlChars())
             {
                 throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
             }
@@ -103,18 +99,18 @@ namespace Microsoft.SharePoint.Client
             // NOTE: Predicate does not take into account a required case-insensitive comparison
             //var results = parentWeb.Context.LoadQuery<Web>(webs.Where(item => item.ServerRelativeUrl == serverRelativeUrl));
             parentWeb.Context.Load(webs, wc => wc.Include(w => w.ServerRelativeUrl));
-            parentWeb.Context.ExecuteQuery();
+            parentWeb.Context.ExecuteQueryRetry();
             var existingWeb = webs.FirstOrDefault(item => string.Equals(item.ServerRelativeUrl, serverRelativeUrl, StringComparison.OrdinalIgnoreCase));
             if (existingWeb != null)
             {
-                LoggingUtility.Internal.TraceInformation((int)EventId.DeleteWeb, CoreResources.WebExtensions_DeleteWeb, serverRelativeUrl);
+                Log.Info(Constants.LOGGING_SOURCE, CoreResources.WebExtensions_DeleteWeb, serverRelativeUrl);
                 existingWeb.DeleteObject();
-                parentWeb.Context.ExecuteQuery();
+                parentWeb.Context.ExecuteQueryRetry();
                 deleted = true;
             }
             else
             {
-                LoggingUtility.Internal.TraceVerbose("Delete requested but web '{0}' not found, nothing to do.", serverRelativeUrl);
+                Log.Debug(Constants.LOGGING_SOURCE, "Delete requested but web '{0}' not found, nothing to do.", serverRelativeUrl);
             }
             return deleted;
         }
@@ -135,7 +131,7 @@ namespace Microsoft.SharePoint.Client
         {
             var siteContext = site.Context;
             siteContext.Load(site, s => s.Url);
-            siteContext.ExecuteQuery();
+            siteContext.ExecuteQueryRetry();
             var queue = new Queue<string>();
             queue.Enqueue(site.Url);
             while (queue.Count > 0)
@@ -144,7 +140,7 @@ namespace Microsoft.SharePoint.Client
                 using (var webContext = siteContext.Clone(currentUrl))
                 {
                     webContext.Load(webContext.Web, web => web.Webs);
-                    webContext.ExecuteQuery();
+                    webContext.ExecuteQueryRetry();
                     foreach (var subWeb in webContext.Web.Webs)
                     {
                         queue.Enqueue(subWeb.Url);
@@ -167,8 +163,7 @@ namespace Microsoft.SharePoint.Client
         /// </remarks>
         public static Web GetWeb(this Web parentWeb, string leafUrl)
         {
-            // TODO: Check for any other illegal characters in SharePoint
-            if (leafUrl.Contains('/') || leafUrl.Contains('\\'))
+            if (leafUrl.ContainsInvalidUrlChars())
             {
                 throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
             }
@@ -179,7 +174,7 @@ namespace Microsoft.SharePoint.Client
             // NOTE: Predicate does not take into account a required case-insensitive comparison
             //var results = parentWeb.Context.LoadQuery<Web>(webs.Where(item => item.ServerRelativeUrl == serverRelativeUrl));
             parentWeb.Context.Load(webs, wc => wc.Include(w => w.ServerRelativeUrl));
-            parentWeb.Context.ExecuteQuery();
+            parentWeb.Context.ExecuteQueryRetry();
             var childWeb = webs.FirstOrDefault(item => string.Equals(item.ServerRelativeUrl, serverRelativeUrl, StringComparison.OrdinalIgnoreCase));
             return childWeb;
         }
@@ -192,8 +187,7 @@ namespace Microsoft.SharePoint.Client
         /// <returns>true if the Web (site) exists; otherwise false</returns>
         public static bool WebExists(this Web parentWeb, string leafUrl)
         {
-            // TODO: Check for any other illegal characters in SharePoint
-            if (leafUrl.Contains('/') || leafUrl.Contains('\\'))
+            if (leafUrl.ContainsInvalidUrlChars())
             {
                 throw new ArgumentException("The argument must be a single web URL and cannot contain path characters.", "leafUrl");
             }
@@ -204,7 +198,7 @@ namespace Microsoft.SharePoint.Client
             // NOTE: Predicate does not take into account a required case-insensitive comparison
             //var results = parentWeb.Context.LoadQuery<Web>(webs.Where(item => item.ServerRelativeUrl == serverRelativeUrl));
             parentWeb.Context.Load(webs, wc => wc.Include(w => w.ServerRelativeUrl));
-            parentWeb.Context.ExecuteQuery();
+            parentWeb.Context.ExecuteQueryRetry();
             var exists = webs.Any(item => string.Equals(item.ServerRelativeUrl, serverRelativeUrl, StringComparison.OrdinalIgnoreCase));
             return exists;
         }
@@ -223,15 +217,13 @@ namespace Microsoft.SharePoint.Client
                 using (ClientContext testContext = context.Clone(webFullUrl))
                 {
                     testContext.Load(testContext.Web, w => w.Title);
-                    testContext.ExecuteQuery();
+                    testContext.ExecuteQueryRetry();
                     exists = true;
                 }
             }
             catch (Exception ex)
             {
-                if (ex is Microsoft.SharePoint.Client.ServerException &&
-                    (ex.Message.IndexOf("Unable to access site") != -1 ||
-                     ex.Message.IndexOf("Cannot get site") != -1))
+                if (IsUnableToAccessSiteException(ex) || IsCannotGetSiteException(ex))
                 {
                     // Site exists, but you don't have access .. not sure if this is really valid
                     // (I guess if checking if URL is already taken, e.g. want to create a new site
@@ -242,6 +234,88 @@ namespace Microsoft.SharePoint.Client
             return exists;
         }
 
+        /// <summary>
+        /// Checks if the current web is a sub site or not
+        /// </summary>
+        /// <param name="web">Web to check</param>
+        /// <returns>True is sub site, false otherwise</returns>
+        public static bool IsSubSite(this Web web)
+        {
+            bool executeQueryNeeded = false;
+            Site site = (web.Context as ClientContext).Site;
+
+            if (!web.IsObjectPropertyInstantiated("Url"))
+            {
+                web.Context.Load(web);
+                executeQueryNeeded = true;
+            }
+
+            if (!site.IsObjectPropertyInstantiated("Url"))
+            {
+                web.Context.Load(site);
+                executeQueryNeeded = true;
+            }
+
+            if (executeQueryNeeded)
+            {
+                web.Context.ExecuteQueryRetry();
+            }
+
+            if (web.Url.Equals(site.Url, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public static bool IsPublishingWeb(this Web web)
+        {
+            var featureActivated = GetPropertyBagValueInternal(web, "__PublishingFeatureActivated");
+
+            return featureActivated != null && bool.Parse(featureActivated.ToString());
+        }
+
+
+        private static bool IsCannotGetSiteException(Exception ex)
+        {
+            if (ex is ServerException)
+            {
+                if (((ServerException)ex).ServerErrorCode == -1 && ((ServerException)ex).ServerErrorTypeName.Equals("Microsoft.Online.SharePoint.Common.SpoNoSiteException", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private static bool IsUnableToAccessSiteException(Exception ex)
+        {
+            if (ex is ServerException)
+            {
+                if (((ServerException)ex).ServerErrorCode == -2147024809 && ((ServerException)ex).ServerErrorTypeName.Equals("System.ArgumentException", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
         #endregion
 
         #region Apps and sandbox solutions
@@ -255,7 +329,7 @@ namespace Microsoft.SharePoint.Client
         {
             var instances = AppCatalog.GetAppInstances(web.Context, web);
             web.Context.Load(instances);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             return instances;
         }
@@ -272,20 +346,20 @@ namespace Microsoft.SharePoint.Client
             bool removed = false;
             var instances = AppCatalog.GetAppInstances(web.Context, web);
             web.Context.Load(instances);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             foreach (var app in instances)
             {
                 if (string.Equals(app.Title, appTitle, StringComparison.OrdinalIgnoreCase))
                 {
                     removed = true;
-                    LoggingUtility.Internal.TraceInformation((int)EventId.RemoveAppInstance, CoreResources.WebExtensions_RemoveAppInstance, appTitle, app.Id);
+                    Log.Info(Constants.LOGGING_SOURCE, CoreResources.WebExtensions_RemoveAppInstance, appTitle, app.Id);
                     app.Uninstall();
-                    web.Context.ExecuteQuery();
+                    web.Context.ExecuteQueryRetry();
                 }
             }
             if (!removed)
             {
-                LoggingUtility.Internal.TraceVerbose("Requested to remove app '{0}', but no instances found; nothing to remove.", appTitle);
+                Log.Debug(Constants.LOGGING_SOURCE, "Requested to remove app '{0}', but no instances found; nothing to remove.", appTitle);
             }
             return removed;
         }
@@ -301,12 +375,16 @@ namespace Microsoft.SharePoint.Client
         public static void InstallSolution(this Site site, Guid packageGuid, string sourceFilePath, int majorVersion = 1, int minorVersion = 0)
         {
             string fileName = Path.GetFileName(sourceFilePath);
-            LoggingUtility.Internal.TraceInformation((int)EventId.InstallSolution, CoreResources.WebExtensions_InstallSolution, fileName, site.Context.Url);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.WebExtensions_InstallSolution, fileName, site.Context.Url);
 
             var rootWeb = site.RootWeb;
-            var solutionGallery = rootWeb.GetCatalog((int)ListTemplateType.SolutionCatalog);
             var sourceFileName = Path.GetFileName(sourceFilePath);
-            rootWeb.RootFolder.UploadFile(sourceFileName, sourceFilePath, true);
+
+            var rootFolder = rootWeb.RootFolder;
+            rootWeb.Context.Load(rootFolder, f => f.ServerRelativeUrl);
+            rootWeb.Context.ExecuteQueryRetry();
+
+            rootFolder.UploadFile(sourceFileName, sourceFilePath, true);
 
             var packageInfo = new DesignPackageInfo()
             {
@@ -316,38 +394,24 @@ namespace Microsoft.SharePoint.Client
                 MinorVersion = minorVersion,
             };
 
-            LoggingUtility.Internal.TraceVerbose("Uninstalling package '{0}'", packageInfo.PackageName);
+            Log.Debug(Constants.LOGGING_SOURCE, "Uninstalling package '{0}'", packageInfo.PackageName);
             DesignPackage.UnInstall(site.Context, site, packageInfo);
-            try
-            {
-                site.Context.ExecuteQuery();
-            }
-            catch (ServerException ex)
-            {
-                // The execute query fails is the package does not already exist; would be better if we could test beforehand
-                if (ex.Message.StartsWith("Invalid field name. {33e33eca-7712-4f3d-ab83-6848789fc9b6}", StringComparison.OrdinalIgnoreCase))
-                {
-                    LoggingUtility.Internal.TraceVerbose("Package '{0}' does not exist to uninstall, server returned error.", packageInfo.PackageName);
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            site.Context.ExecuteQueryRetry();
+
 
             var packageServerRelativeUrl = UrlUtility.Combine(rootWeb.RootFolder.ServerRelativeUrl, fileName);
-            LoggingUtility.Internal.TraceVerbose("Installing package '{0}'", packageInfo.PackageName);
+            Log.Debug(Constants.LOGGING_SOURCE, "Installing package '{0}'", packageInfo.PackageName);
 
             // NOTE: The lines below (in OfficeDev PnP) wipe/clear all items in the composed looks aka design catalog (_catalogs/design, list template 124).
             // The solution package should be loaded into the solutions catalog (_catalogs/solutions, list template 121).
 
             DesignPackage.Install(site.Context, site, packageInfo, packageServerRelativeUrl);
-            site.Context.ExecuteQuery();
+            site.Context.ExecuteQueryRetry();
 
             // Remove package from rootfolder
-            var uploadedSolutionFile = rootWeb.RootFolder.Files.GetByUrl(fileName);
+            var uploadedSolutionFile = rootFolder.Files.GetByUrl(fileName);
             uploadedSolutionFile.DeleteObject();
-            site.Context.ExecuteQuery();
+            site.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -360,7 +424,7 @@ namespace Microsoft.SharePoint.Client
         /// <param name="minorVersion">Optional minor version of the solution, defaults to 0</param>
         public static void UninstallSolution(this Site site, Guid packageGuid, string fileName, int majorVersion = 1, int minorVersion = 0)
         {
-            LoggingUtility.Internal.TraceInformation((int)EventId.UninstallSolution, CoreResources.WebExtensions_UninstallSolution, packageGuid);
+            Log.Info(Constants.LOGGING_SOURCE, CoreResources.WebExtensions_UninstallSolution, packageGuid);
 
             var rootWeb = site.RootWeb;
             var solutionGallery = rootWeb.GetCatalog((int)ListTemplateType.SolutionCatalog);
@@ -376,7 +440,7 @@ namespace Microsoft.SharePoint.Client
 
             var solutions = solutionGallery.GetItems(camlQuery);
             site.Context.Load(solutions);
-            site.Context.ExecuteQuery();
+            site.Context.ExecuteQueryRetry();
 
             if (solutions.AreItemsAvailable)
             {
@@ -390,17 +454,7 @@ namespace Microsoft.SharePoint.Client
                 };
 
                 DesignPackage.UnInstall(site.Context, site, packageInfo);
-                try
-                {
-                    site.Context.ExecuteQuery();
-                }
-                catch (ServerException ex)
-                {
-                    if (ex.Message.StartsWith("Invalid field name. {33e33eca-7712-4f3d-ab83-6848789fc9b6}", StringComparison.OrdinalIgnoreCase))
-                    {
-                        LoggingUtility.Internal.TraceVerbose("Package '{0}' does not exist to uninstall, server returned error.", packageInfo.PackageName);
-                    }
-                }
+                site.Context.ExecuteQueryRetry();
             }
         }
 
@@ -412,11 +466,11 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <returns>All my site site collections</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2241:Provide correct arguments to formatting methods",
+        [SuppressMessage("Microsoft.Usage", "CA2241:Provide correct arguments to formatting methods",
             Justification = "Search Query code")]
         public static List<SiteEntity> MySiteSearch(this Web web)
         {
-            string keywordQuery = String.Format("contentclass:\"STS_Site\" AND WebTemplate:SPSPERS", web.Context.Url);
+            const string keywordQuery = "contentclass:\"STS_Site\" AND WebTemplate:SPSPERS";
             return web.SiteSearch(keywordQuery);
         }
 
@@ -442,7 +496,7 @@ namespace Microsoft.SharePoint.Client
         {
             try
             {
-                LoggingUtility.Internal.TraceVerbose("Site search '{0}'", keywordQueryValue);
+                Log.Debug(Constants.LOGGING_SOURCE, "Site search '{0}'", keywordQueryValue);
 
                 List<SiteEntity> sites = new List<SiteEntity>();
 
@@ -472,7 +526,7 @@ namespace Microsoft.SharePoint.Client
             }
             catch (Exception ex)
             {
-                LoggingUtility.Internal.TraceError((int)EventId.SiteSearchUnhandledException, ex, CoreResources.WebExtensions_SiteSearchUnhandledException);
+                Log.Error(Constants.LOGGING_SOURCE, CoreResources.WebExtensions_SiteSearchUnhandledException, ex.Message);
                 // rethrow does lose one line of stack trace, but we want to log the error at the component boundary
                 throw;
             }
@@ -494,7 +548,7 @@ namespace Microsoft.SharePoint.Client
         /// Returns all site collection that match with the provided title
         /// </summary>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
-        /// <param name="siteUrl">Base URL for which sites can be returned</param>
+        /// <param name="siteTitle">Title of the site to search for</param>
         /// <returns>All found site collections</returns>
         public static List<SiteEntity> SiteSearchScopedByTitle(this Web web, string siteTitle)
         {
@@ -525,8 +579,12 @@ namespace Microsoft.SharePoint.Client
             keywordQuery.SelectProperties.Add("WebTemplate");
             keywordQuery.SortList.Add("SPSiteUrl", SortDirection.Ascending);
             SearchExecutor searchExec = new SearchExecutor(web.Context);
+
+            // Important to avoid trimming "similar" site collections
+            keywordQuery.TrimDuplicates = false;
+
             ClientResult<ResultTableCollection> results = searchExec.ExecuteQuery(keywordQuery);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             if (results != null)
             {
@@ -595,13 +653,13 @@ namespace Microsoft.SharePoint.Client
             {
                 // Load the web properties
                 web.Context.Load(props);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 props[key] = value;
             }
 
             web.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 
         /// <summary>
@@ -629,15 +687,17 @@ namespace Microsoft.SharePoint.Client
 
             web.Update();
 
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (checkIndexed)
                 RemoveIndexedPropertyBagKey(web, key); // Will only remove it if it exists as an indexed property
         }
+
         /// <summary>
         /// Get int typed property bag value. If does not contain, returns default value.
         /// </summary>
         /// <param name="web">Web to read the property bag value from</param>
         /// <param name="key">Key of the property bag entry to return</param>
+        /// <param name="defaultValue"></param>
         /// <returns>Value of the property bag entry as integer</returns>
         public static int? GetPropertyBagValueInt(this Web web, string key, int defaultValue)
         {
@@ -657,6 +717,7 @@ namespace Microsoft.SharePoint.Client
         /// </summary>
         /// <param name="web">Web to read the property bag value from</param>
         /// <param name="key">Key of the property bag entry to return</param>
+        /// <param name="defaultValue"></param>
         /// <returns>Value of the property bag entry as string</returns>
         public static string GetPropertyBagValueString(this Web web, string key, string defaultValue)
         {
@@ -681,7 +742,7 @@ namespace Microsoft.SharePoint.Client
         {
             var props = web.AllProperties;
             web.Context.Load(props);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (props.FieldValues.ContainsKey(key))
             {
                 return props.FieldValues[key];
@@ -691,6 +752,7 @@ namespace Microsoft.SharePoint.Client
                 return null;
             }
         }
+        
 
         /// <summary>
         /// Checks if the given property bag entry exists
@@ -702,7 +764,7 @@ namespace Microsoft.SharePoint.Client
         {
             var props = web.AllProperties;
             web.Context.Load(props);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (props.FieldValues.ContainsKey(key))
             {
                 return true;
@@ -850,14 +912,14 @@ namespace Microsoft.SharePoint.Client
                         where receiver.ReceiverName == name
                         select receiver;
             web.Context.LoadQuery(query);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
 
             var receiverExists = query.Any();
             if (receiverExists && force)
             {
                 var receiver = query.FirstOrDefault();
                 receiver.DeleteObject();
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
                 receiverExists = false;
             }
             EventReceiverDefinition def = null;
@@ -872,7 +934,7 @@ namespace Microsoft.SharePoint.Client
                 receiver.Synchronization = synchronization;
                 def = web.EventReceivers.Add(receiver);
                 web.Context.Load(def);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
             }
             return def;
         }
@@ -880,7 +942,7 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Returns an event receiver definition
         /// </summary>
-        /// <param name="list"></param>
+        /// <param name="web">Web to process</param>
         /// <param name="id"></param>
         /// <returns></returns>
         public static EventReceiverDefinition GetEventReceiverById(this Web web, Guid id)
@@ -892,7 +954,7 @@ namespace Microsoft.SharePoint.Client
                         select receiver;
 
             receivers = web.Context.LoadQuery(query);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (receivers.Any())
             {
                 return receivers.FirstOrDefault();
@@ -906,8 +968,8 @@ namespace Microsoft.SharePoint.Client
         /// <summary>
         /// Returns an event receiver definition
         /// </summary>
+        /// <param name="web"></param>
         /// <param name="name"></param>
-        /// <param name="id"></param>
         /// <returns></returns>
         public static EventReceiverDefinition GetEventReceiverByName(this Web web, string name)
         {
@@ -918,7 +980,7 @@ namespace Microsoft.SharePoint.Client
                         select receiver;
 
             receivers = web.Context.LoadQuery(query);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             if (receivers.Any())
             {
                 return receivers.FirstOrDefault();
@@ -939,7 +1001,7 @@ namespace Microsoft.SharePoint.Client
         /// <example>
         ///     web.SetLocalizationForSiteLabels("fi-fi", "Name of the site in Finnish", "Description in Finnish");
         /// </example>
-        /// <seealso cref="http://blogs.msdn.com/b/vesku/archive/2014/03/20/office365-multilingual-content-types-site-columns-and-site-other-elements.aspx"/>
+        /// <see href="http://blogs.msdn.com/b/vesku/archive/2014/03/20/office365-multilingual-content-types-site-columns-and-site-other-elements.aspx"/>
         /// <param name="web">Site to be processed - can be root web or sub site</param>
         /// <param name="cultureName">Culture name like en-us or fi-fi</param>
         /// <param name="titleResource">Localized Title string</param>
@@ -952,10 +1014,80 @@ namespace Microsoft.SharePoint.Client
             web.TitleResource.SetValueForUICulture(cultureName, titleResource);
             web.DescriptionResource.SetValueForUICulture(cultureName, descriptionResource);
             web.Update();
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
         }
 #endif
         #endregion
 
+        #region TemplateHandling
+
+        /// <summary>
+        /// Can be used to apply custom remote provisioning template on top of existing site. 
+        /// </summary>
+        /// <param name="web"></param>
+        /// <param name="template">ProvisioningTemplate with the settings to be applied</param>
+        /// <param name="applyingInformation">Specified additional settings and or properties</param>
+        public static void ApplyProvisioningTemplate(this Web web, ProvisioningTemplate template, ProvisioningTemplateApplyingInformation applyingInformation = null)
+        {
+            // Call actual handler
+            new SiteToTemplateConversion().ApplyRemoteTemplate(web, template, applyingInformation);
+        }
+
+        /// <summary>
+        /// Can be used to extract custom provisioning template from existing site. The extracted template
+        /// will be compared with the default base template.
+        /// </summary>
+        /// <param name="web">Web to get template from</param>
+        /// <returns>ProvisioningTemplate object with generated values from existing site</returns>
+        public static ProvisioningTemplate GetProvisioningTemplate(this Web web)
+        {
+            ProvisioningTemplateCreationInformation creationInfo = new ProvisioningTemplateCreationInformation(web);
+            // Load the base template which will be used for the comparison work
+            creationInfo.BaseTemplate = web.GetBaseTemplate();
+
+            return new SiteToTemplateConversion().GetRemoteTemplate(web, creationInfo);
+        }
+
+        /// <summary>
+        /// Can be used to extract custom provisioning template from existing site. The extracted template
+        /// will be compared with the default base template.
+        /// </summary>
+        /// <param name="web">Web to get template from</param>
+        /// <param name="creationInfo">Specifies additional settings and/or properties</param>
+        /// <returns>ProvisioningTemplate object with generated values from existing site</returns>
+        public static ProvisioningTemplate GetProvisioningTemplate(this Web web, ProvisioningTemplateCreationInformation creationInfo)
+        {
+            return new SiteToTemplateConversion().GetRemoteTemplate(web, creationInfo);
+        }
+
+        #endregion
+
+        #region Output Cache
+
+        /// <summary>
+        /// Sets output cache on publishing web. The settings can be maintained from UI by visiting url /_layouts/15/sitecachesettings.aspx
+        /// </summary>
+        /// <param name="web">SharePoint web</param>
+        /// <param name="enableOutputCache">Specify true to enable output cache. False otherwise.</param>
+        /// <param name="anonymousCacheProfileId">Applies for anonymous users access for a site in Site Collection. Id of the profile specified in "Cache Profiles" list.</param>
+        /// <param name="authenticatedCacheProfileId">Applies for authenticated users access for a site in the Site Collection. Id of the profile specified in "Cache Profiles" list.</param>
+        /// <param name="debugCacheInformation">Specify true to enable the display of additional cache information on pages in this site collection. False otherwise.</param>
+        public static void SetPageOutputCache(this Web web, bool enableOutputCache, int anonymousCacheProfileId, int authenticatedCacheProfileId, bool debugCacheInformation)
+        {
+            const string cacheProfileUrl = "Cache Profiles/{0}_.000";
+
+            string publishingWebValue = web.GetPropertyBagValueString("__PublishingFeatureActivated", string.Empty);
+            if (string.IsNullOrEmpty(publishingWebValue))
+            {
+                throw new Exception("Page output cache can be set only on publishing sites.");
+            }
+
+            web.SetPropertyBagValue("EnableCache", enableOutputCache.ToString());
+            web.SetPropertyBagValue("AnonymousPageCacheProfileUrl", string.Format(cacheProfileUrl, anonymousCacheProfileId));
+            web.SetPropertyBagValue("AuthenticatedPageCacheProfileUrl", string.Format(cacheProfileUrl, authenticatedCacheProfileId));
+            web.SetPropertyBagValue("EnableDebuggingOutput", debugCacheInformation.ToString());
+        }
+
+        #endregion
     }
 }

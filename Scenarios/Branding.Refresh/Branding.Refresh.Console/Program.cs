@@ -29,9 +29,6 @@ namespace Contoso.Branding.Refresh
 
         static void Main(string[] args)
         {
-            OfficeDevPnP.Core.Utilities.LoggingUtility.Internal.Source.Switch.Level = SourceLevels.Information;
-            OfficeDevPnP.Core.Utilities.LoggingUtility.Internal.Source.Listeners.Add(new ConsoleTraceListener() { Name = "Console" });
-
             // Create a context to work with
             // Office 365 Multi-tenant sample - TODO Change your URL and username
             ClientContext cc = new AuthenticationManager().GetSharePointOnlineAuthenticatedContextTenant("https://bertonline.sharepoint.com", "bert.jansen@bertonline.onmicrosoft.com", GetPassWord());
@@ -51,12 +48,12 @@ namespace Contoso.Branding.Refresh
             // Name of the theme that will be applied
             string currentThemeName = "SPCTheme";
             // Turn forceBranding to true to apply branding in case the site was not branded before
-            bool forceBranding = false;
+            bool forceBranding = true;
 
             // Optionally further refine the list of returned site collections by inspecting the url here we are looking for a specific value that is contained in the url
         
             var filteredSites = from p in sites
-                                where p.Url.Contains("13003")
+                                where p.Url.Contains("130042")
                                 select p;
 
             List<SiteEntity> sitesAndSubSites = new List<SiteEntity>();
@@ -135,7 +132,7 @@ namespace Contoso.Branding.Refresh
                     Console.WriteLine("Theme {0} is set for site {1}", themeName, site.Url);
                     // the used theme matches to the theme we want to update
                     int? brandingVersion = cc.Web.GetPropertyBagValueInt(BRANDING_VERSION, 0);
-                    if (brandingVersion < currentBrandingVersion)
+                    if (brandingVersion < currentBrandingVersion || forceBranding)
                     {
                         Console.WriteLine("Theme {0} has version {1} while version {2} is needed. Theme will be updated", themeName, brandingVersion, currentBrandingVersion);
                         // The used theme is having an older version or the branding version was property bag entry was removed
@@ -161,7 +158,7 @@ namespace Contoso.Branding.Refresh
                 // No theme property bag entry, assume no theme has been applied, so this site should not be updated
                 if (forceBranding)
                 {
-                    Console.WriteLine("Web property bag {0} is not set for site {1}, but force branding is configued, so set theme {1} for site {2}", BRANDING_THEME, themeName, site.Url);
+                    Console.WriteLine("Web property bag {0} is not set for site {1}, but force branding is configured, so set theme {1} for site {2}", BRANDING_THEME, themeName, site.Url);
 
                     // The used theme is having an older version or the branding version was property bag entry was removed
                     DeployTheme(cc, currentThemeName);
@@ -185,24 +182,67 @@ namespace Contoso.Branding.Refresh
         {
             string themeRoot = Path.Combine(AppRootPath, String.Format(@"Themes\{0}", themeName));
             string spColorFile = Path.Combine(themeRoot, string.Format("{0}.spcolor", themeName));
+            if (!System.IO.File.Exists(spColorFile))
+            {
+                spColorFile = null;
+            }
             string spFontFile = Path.Combine(themeRoot, string.Format("{0}.spfont", themeName));
-            string backgroundFile = Path.Combine(themeRoot, string.Format("{0}bg.jpg", themeName));
+            if (!System.IO.File.Exists(spFontFile))
+            {
+                spFontFile = null;
+            }
+            string spBackgroundFile = Path.Combine(themeRoot, string.Format("{0}bg.jpg", themeName));
+            if (!System.IO.File.Exists(spBackgroundFile))
+            {
+                spBackgroundFile = null;
+            }
             string logoFile = Path.Combine(themeRoot, string.Format("{0}logo.png", themeName));
-           
+
             if (IsThisASubSite(cc))
             {
                 // Retrieve the context of the root site of the site collection
-                using (ClientContext ccParent = new ClientContext(GetRootSite(cc)))
+                using (ClientContext ccParent = cc.Clone(GetRootSite(cc)))
                 {
-                    ccParent.Credentials = cc.Credentials;
-                    cc.Web.DeployThemeToSubWeb(ccParent.Web, themeName, spColorFile, spFontFile, backgroundFile, "");
-                    cc.Web.SetThemeToSubWeb(ccParent.Web, themeName);
+                    
+                    // Show the approach that uses the relative paths to the theme files. Works for sub site composed look setting as well as for root site composed look settings
+                    string colorFileRelativePath = "";
+                    string fontFileRelativePath = "";
+                    string backgroundFileRelativePath = "";
+                    if (!String.IsNullOrEmpty(spColorFile))
+                    {
+                        colorFileRelativePath = ccParent.Web.UploadThemeFile(spColorFile).ServerRelativeUrl;
+                    }
+                    if (!String.IsNullOrEmpty(spFontFile))
+                    {
+                        fontFileRelativePath = ccParent.Web.UploadThemeFile(spFontFile).ServerRelativeUrl;
+                    }
+                    if (!String.IsNullOrEmpty(spBackgroundFile))
+                    {
+                        backgroundFileRelativePath = ccParent.Web.UploadThemeFile(spBackgroundFile).ServerRelativeUrl;
+                    }
+
+                    cc.Web.CreateComposedLookByUrl(themeName, colorFileRelativePath, fontFileRelativePath, backgroundFileRelativePath, null, replaceContent: true);
+                    cc.Web.SetComposedLookByUrl(themeName);
                 }
             }
             else
             {
-                cc.Web.DeployThemeToWeb(themeName, spColorFile, spFontFile, backgroundFile, "");
-                cc.Web.SetThemeToWeb(themeName);
+                // Use the absolute paths to the theme files, works for the root site only
+                if (!String.IsNullOrEmpty(spColorFile))
+                {
+                    cc.Web.UploadThemeFile(spColorFile);
+                }
+                if (!String.IsNullOrEmpty(spFontFile))
+                {
+                    cc.Web.UploadThemeFile(spFontFile);
+                }
+                if (!String.IsNullOrEmpty(spBackgroundFile))
+                {
+                    cc.Web.UploadThemeFile(spBackgroundFile);
+                }
+
+                cc.Web.CreateComposedLookByName(themeName, spColorFile, spFontFile, spBackgroundFile, null, replaceContent: true);
+                cc.Web.SetComposedLookByUrl(themeName);
             }
         }
 

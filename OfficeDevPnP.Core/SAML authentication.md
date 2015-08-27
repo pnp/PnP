@@ -5,7 +5,7 @@ Below schema shows how this work:
 
 ![](http://i.imgur.com/0unVI8h.png)
 
-1. The application (can be a web app, console application,...) first tries to authenticate the against ADFS using a username and password combination. The endpoint that's being used is the trust/13/usernamemixed endpoint which is available and enabled by default on ADFS v2.0.
+1. The application (can be a web add-in, console application,...) first tries to authenticate the against ADFS using a username and password combination. The endpoint that's being used is the trust/13/usernamemixed endpoint which is available and enabled by default on ADFS v2.0.
 2. The ADFS server authenticates the user and returns a SAML token to the application. If the proxy endpoint was hit the proxy will communicate with the ADFS federation server to process the authentication request
 3. The application will wrap the SAML token in a WS-Federation message and will send it to the SharePoint Security Token Service (STS) by hitting the /trust/ url. The response of this action contains a FedAuth cookie
 4. In all CSOM request the FedAuth cookie is inserted during the call which makes the CSOM calls succeed

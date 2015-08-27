@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.SharePoint.Client;
 using System.IO;
+using System.Configuration;
 
 namespace OfficeDevPnP.Core.Tests.AppModelExtensions
 {
@@ -48,6 +49,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         bool deactivateSiteFeatureOnTeardown = false;
         bool deactivateWebFeatureOnTeardown = false;
         private Web pageLayoutTestWeb = null;
+        private string AvailablePageLayouts = "__PageLayouts";
 
         #region Test initialize and cleanup
         [TestInitialize()]
@@ -71,7 +73,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 wci1.Title = testWebName;
                 wci1.WebTemplate = "CMSPUBLISHING#0";
                 var web1 = context.Web.Webs.Add(wci1);
-                context.ExecuteQuery();
+                context.ExecuteQueryRetry();
                 web1.ActivateFeature(new Guid("41E1D4BF-B1A2-47F7-AB80-D5D6CBBA3092"));
 
                 var wci2 = new WebCreationInformation();
@@ -79,7 +81,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 wci2.Title = "A";
                 wci2.WebTemplate = "CMSPUBLISHING#0";
                 var webA = web1.Webs.Add(wci2);
-                context.ExecuteQuery();
+                context.ExecuteQueryRetry();
                 webA.ActivateFeature(new Guid("41E1D4BF-B1A2-47F7-AB80-D5D6CBBA3092"));
 
                 var wci3 = new WebCreationInformation();
@@ -87,7 +89,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 wci3.Title = "B";
                 wci3.WebTemplate = "CMSPUBLISHING#0";
                 var webB = web1.Webs.Add(wci3);
-                context.ExecuteQuery();
+                context.ExecuteQueryRetry();
                 webB.ActivateFeature(new Guid("41E1D4BF-B1A2-47F7-AB80-D5D6CBBA3092"));
             }
 
@@ -128,14 +130,14 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 query.ViewXml = camlString;
                 var found = themeGallery.GetItems(query);
                 web.Context.Load(found);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
                 Console.WriteLine("{0} matching looks found to delete", found.Count);
                 var looksToDelete = found.ToList();
                 foreach (var item in looksToDelete)
                 {
                     Console.WriteLine("Delete look item '{0}'", item["Name"]);
                     item.DeleteObject();
-                    context.ExecuteQuery();
+                    context.ExecuteQueryRetry();
                 }
 
                 // Remove Theme Files
@@ -144,7 +146,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 FolderCollection rootFolders = rootFolder.Folders;
                 web.Context.Load(rootFolder);
                 web.Context.Load(rootFolders, f => f.Where(folder => folder.Name == "15"));
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 Folder folder15 = rootFolders.FirstOrDefault();
 
@@ -152,7 +154,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 {
                     Microsoft.SharePoint.Client.File customColorFile = folder15.Files.GetByUrl("custom.spcolor");
                     customColorFile.DeleteObject();
-                    context.ExecuteQuery();
+                    context.ExecuteQueryRetry();
                 }
                 catch (Exception ex)
                 {
@@ -163,7 +165,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 {
                     Microsoft.SharePoint.Client.File customBackgroundFile = folder15.Files.GetByUrl("custombg.jpg");
                     customBackgroundFile.DeleteObject();
-                    context.ExecuteQuery();
+                    context.ExecuteQueryRetry();
                 }
                 catch (Exception ex)
                 {
@@ -173,7 +175,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 // Remove webs
                 var webCollection1 = web.Webs;
                 context.Load(webCollection1, wc => wc.Include(w => w.Title, w => w.ServerRelativeUrl));
-                context.ExecuteQuery();
+                context.ExecuteQueryRetry();
                 var websToDelete = new List<Web>();
                 foreach (var web1 in webCollection1)
                 {
@@ -181,13 +183,13 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                     {
                         var webCollection2 = web1.Webs;
                         context.Load(webCollection2, wc => wc.Include(w => w.Title, w => w.ServerRelativeUrl));
-                        context.ExecuteQuery();
+                        context.ExecuteQueryRetry();
                         var childrenToDelete = new List<Web>(webCollection2);
                         foreach (var web2 in childrenToDelete)
                         {
                             Console.WriteLine("Deleting site {0}", web2.ServerRelativeUrl);
                             web2.DeleteObject();
-                            context.ExecuteQuery();
+                            context.ExecuteQueryRetry();
                         }
                         websToDelete.Add(web1);
                     }
@@ -199,7 +201,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                     web1.DeleteObject();
                     try
                     {
-                        context.ExecuteQuery();
+                        context.ExecuteQueryRetry();
                     }
                     catch (Exception ex)
                     {
@@ -211,23 +213,23 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 List masterPageGallery = context.Web.GetCatalog((int)ListTemplateType.MasterPageCatalog);
                 Folder rootFolderInMasterPageGallery = masterPageGallery.RootFolder;
                 context.Load(rootFolderInMasterPageGallery, f => f.ServerRelativeUrl);
-                context.ExecuteQuery();
+                context.ExecuteQueryRetry();
 
                 try
                 {
                     var fileServerRelativeUrl = UrlUtility.Combine(rootFolderInMasterPageGallery.ServerRelativeUrl, publishingPageWithoutExtension);
                     var file = context.Web.GetFileByServerRelativeUrl(String.Format("{0}.aspx", fileServerRelativeUrl));
                     context.Load(file);
-                    context.ExecuteQuery();
+                    context.ExecuteQueryRetry();
                     file.DeleteObject();
-                    context.ExecuteQuery();
+                    context.ExecuteQueryRetry();
 
                     fileServerRelativeUrl = UrlUtility.Combine(rootFolderInMasterPageGallery.ServerRelativeUrl, "test/test", publishingPageWithoutExtension);
                     file = context.Web.GetFileByServerRelativeUrl(String.Format("{0}.aspx", fileServerRelativeUrl));
                     context.Load(file);
-                    context.ExecuteQuery();
+                    context.ExecuteQueryRetry();
                     file.DeleteObject();
-                    context.ExecuteQuery();
+                    context.ExecuteQueryRetry();
                 }
                 catch (Exception ex)
                 {
@@ -279,7 +281,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
         }
         #endregion
 
-        #region Pagelayout upload tests
+        #region Pagelayout tests
         [TestMethod]
         public void CanUploadHtmlPageLayoutAndConvertItToAspxVersionTest()
         {
@@ -287,7 +289,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             web.Context.Load(web);
             web.DeployHtmlPageLayout(htmlPublishingPagePath, pageLayoutTitle, "", welcomePageContentTypeId);
             web.Context.Load(web, w => w.ServerRelativeUrl);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             var item = web.GetPageLayoutListItemByName(htmlPublishingPageWithoutExtension);
             Assert.AreNotEqual(null, item);
         }
@@ -299,7 +301,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             web.Context.Load(web);
             web.DeployPageLayout(publishingPagePath, pageLayoutTitle, "", welcomePageContentTypeId);
             web.Context.Load(web, w => w.ServerRelativeUrl);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             var item = web.GetPageLayoutListItemByName(publishingPageWithoutExtension);
             Assert.AreNotEqual(null, item);
         }
@@ -311,10 +313,23 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             web.Context.Load(web);
             web.DeployPageLayout(publishingPagePath, pageLayoutTitle, "", welcomePageContentTypeId, "test/test");
             web.Context.Load(web, w => w.ServerRelativeUrl);
-            web.Context.ExecuteQuery();
+            web.Context.ExecuteQueryRetry();
             var item = web.GetPageLayoutListItemByName("test/test/" + publishingPageWithoutExtension);
             Assert.AreNotEqual(null, item);
         }
+
+        [TestMethod]
+        public void AllowAllPageLayoutsTest()
+        {
+            var web = pageLayoutTestWeb;
+
+            web.AllowAllPageLayouts();
+
+            string allowedPageLayouts = web.GetPropertyBagValueString(AvailablePageLayouts, null);
+
+            Assert.AreEqual(allowedPageLayouts, string.Empty);
+        }
+
         #endregion
 
         #region Composed Look tests
@@ -364,7 +379,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             using (var context = TestCommon.CreateClientContext())
             {
                 context.Load(context.Web, w => w.ServerRelativeUrl);
-                context.ExecuteQuery();
+                context.ExecuteQueryRetry();
                 var paletteServerRelativeUrl = context.Web.ServerRelativeUrl + "/_catalog/theme/15" + builtInPalette003;
                 var masterServerRelativeUrl = context.Web.ServerRelativeUrl + "/_catalog/masterpage" + builtInMasterOslo;
 
@@ -378,7 +393,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 query.ViewXml = string.Format(CAML_QUERY_FIND_BY_FILENAME, testLookName);
                 var existingCollection = composedLooksList.GetItems(query);
                 context.Load(existingCollection);
-                context.ExecuteQuery();
+                context.ExecuteQueryRetry();
                 var item = existingCollection.FirstOrDefault();
 
                 var lookPaletteUrl = item["ThemeUrl"] as FieldUrlValue;
@@ -408,7 +423,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 query.ViewXml = string.Format(CAML_QUERY_FIND_BY_FILENAME, testLookName);
                 var existingCollection = composedLooksList.GetItems(query);
                 context.Load(existingCollection);
-                context.ExecuteQuery();
+                context.ExecuteQueryRetry();
                 var item = existingCollection.FirstOrDefault();
 
                 var lookPaletteUrl = item["ThemeUrl"] as FieldUrlValue;
@@ -425,12 +440,12 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             {
                 var webCollection = context.Web.Webs;
                 context.Load(webCollection, wc => wc.Include(w => w.Title));
-                context.ExecuteQuery();
+                context.ExecuteQueryRetry();
                 var webToChange1 = webCollection.First(w => w.Title == testWebName);
 
                 var webCollection2 = webToChange1.Webs;
                 context.Load(webCollection2, wc => wc.Include(w => w.Title));
-                context.ExecuteQuery();
+                context.ExecuteQueryRetry();
                 var webToChangeA = webCollection2.First(w => w.Title == "A");
 
                 // Act
@@ -442,18 +457,18 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             {
                 var webCollection = context.Web.Webs;
                 context.Load(webCollection, wc => wc.Include(w => w.Title));
-                context.ExecuteQuery();
+                context.ExecuteQueryRetry();
                 var webToCheck1 = webCollection.First(w => w.Title == testWebName);
 
                 var webCollection2 = webToCheck1.Webs;
                 context.Load(webCollection2, wc => wc.Include(w => w.Title, w => w.MasterUrl, w => w.CustomMasterUrl));
-                context.ExecuteQuery();
+                context.ExecuteQueryRetry();
 
                 var webToCheckB = webCollection2.First(w => w.Title == "B");
                 var webToCheckA = webCollection2.First(w => w.Title == "A");
                 var accentTextB = webToCheckB.ThemeInfo.GetThemeShadeByName("AccentText");
                 var accentTextA = webToCheckA.ThemeInfo.GetThemeShadeByName("AccentText");
-                context.ExecuteQuery();
+                context.ExecuteQueryRetry();
 
                 // Assert: B will have new style, A will have Inherit = false and not get the new style
 
@@ -474,32 +489,32 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
             {
                 var webCollection = context.Web.Webs;
                 context.Load(webCollection, wc => wc.Include(w => w.Title));
-                context.ExecuteQuery();
-                var webToChange1 = webCollection.First(w => w.Title == testWebName);
+                context.ExecuteQueryRetry();
+                var webToChangeRoot = webCollection.First(w => w.Title == testWebName);
 
-                var webCollection2 = webToChange1.Webs;
+                var webCollection2 = webToChangeRoot.Webs;
                 context.Load(webCollection2, wc => wc.Include(w => w.Title));
-                context.ExecuteQuery();
+                context.ExecuteQueryRetry();
                 var webToChangeA = webCollection2.First(w => w.Title == "A");
 
                 // Act
                 webToChangeA.SetComposedLookByUrl(builtInLookBlossom);
-                webToChange1.SetComposedLookByUrl(builtInLookSeaMonster, resetSubsitesToInherit: true);
+                webToChangeRoot.SetComposedLookByUrl(builtInLookSeaMonster, resetSubsitesToInherit: true, updateRootOnly:false);
             }
 
             using (var context = TestCommon.CreateClientContext())
             {
                 var webCollection = context.Web.Webs;
                 context.Load(webCollection, wc => wc.Include(w => w.Title));
-                context.ExecuteQuery();
-                var webToCheck1 = webCollection.First(w => w.Title == testWebName);
+                context.ExecuteQueryRetry();
+                var webToCheckRoot = webCollection.First(w => w.Title == testWebName);
 
-                var webCollection2 = webToCheck1.Webs;
+                var webCollection2 = webToCheckRoot.Webs;
                 context.Load(webCollection2, wc => wc.Include(w => w.Title, w => w.MasterUrl, w => w.CustomMasterUrl));
-                context.ExecuteQuery();
+                context.ExecuteQueryRetry();
                 var webToCheckA = webCollection2.First(w => w.Title == "A");
                 var accentA = webToCheckA.ThemeInfo.GetThemeShadeByName("AccentText");
-                context.ExecuteQuery();
+                context.ExecuteQueryRetry();
 
                 // Assert: B will have Inherit = false and not get the new style, A will hav new style
 
@@ -520,7 +535,7 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 var web = context.Web;
                 //need to get the server relative url 
                 context.Load(web, w => w.ServerRelativeUrl);
-                context.ExecuteQuery();
+                context.ExecuteQueryRetry();
                 //Use the existing context to directly get a copy of the seattle master page 
                 string masterpageGalleryServerRelativeUrl = UrlUtility.Combine(UrlUtility.EnsureTrailingSlash(web.ServerRelativeUrl), "_catalogs/masterpage/");
                 var serverRelativeUrlOfSeattle = UrlUtility.Combine(masterpageGalleryServerRelativeUrl, builtInMasterSeattle);
@@ -529,13 +544,13 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 //FileInformation seattle = Microsoft.SharePoint.Client.File.OpenBinaryDirect(context, serverRelativeUrlOfSeattle);
                 var seattle = context.Web.GetFileByServerRelativeUrl(serverRelativeUrlOfSeattle);
                 web.Context.Load(seattle);
-                web.Context.ExecuteQuery();
+                web.Context.ExecuteQueryRetry();
 
                 Assert.IsNotNull(seattle);
 
                 ClientResult<Stream> data = seattle.OpenBinaryStream();
                 context.Load(seattle);
-                context.ExecuteQuery();
+                context.ExecuteQueryRetry();
 
                 //Dump seattle.master
                 //if (data != null)
@@ -567,6 +582,22 @@ namespace OfficeDevPnP.Core.Tests.AppModelExtensions
                 string hex = BitConverter.ToString(hash);
                 //Check against last known hash 
                 Assert.AreEqual(knownHashOfSeattle, hex);
+            }
+        }
+        #endregion
+
+        #region Miscellanious tests
+        [TestMethod]
+        public void IsSubsiteTest()
+        {
+            using (ClientContext cc = TestCommon.CreateClientContext())
+            {
+                Assert.IsFalse(cc.Web.IsSubSite());
+
+                using (ClientContext ctx = cc.Clone(string.Format("{0}/{1}", ConfigurationManager.AppSettings["SPODevSiteUrl"], testWebName)))
+                {
+                    Assert.IsTrue(ctx.Web.IsSubSite());
+                }
             }
         }
         #endregion

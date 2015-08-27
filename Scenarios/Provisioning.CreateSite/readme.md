@@ -40,11 +40,11 @@ newWeb.CreateDocumentLibrary("Specifications");
 newWeb.CreateDocumentLibrary("Presentations");
 
 // Let's also apply theme to the site to demonstrate how easy this is
-newWeb.SetThemeToSubWeb(ctx.Web, "Characters");
+newWeb.SetComposedLookByUrl("Characters");
 ```
 
 ## SITE COLLECTION CREATION ##
-To be able to create site collections, you’ll need to associate to the admin site of the Office365 tenant and in this example we are also using the app only token so that end user does not have to have high permission to the tenant. In following lines we resolve the access token and then create site collection using extension methods.
+To be able to create site collections, you’ll need to associate to the admin site of the Office365 tenant and in this example we are also using the add-in only token so that end user does not have to have high permission to the tenant. In following lines we resolve the access token and then create site collection using extension methods.
 
 ```C#
 User currUser = ResolveCurrentUser();
@@ -57,7 +57,7 @@ tenantStr = tenantStr.Substring(0, tenantStr.IndexOf("."));
 var webUrl = String.Format("https://{0}.sharepoint.com/{1}/{2}", tenantStr, "sites", txtUrl.Text);
 var tenantAdminUri = new Uri(String.Format("https://{0}-admin.sharepoint.com", tenantStr));
 
-// Creating new app only context for the operation
+// Creating new add-in only context for the operation
 string accessToken = TokenHelper.GetAppOnlyAccessToken(
     TokenHelper.SharePointPrincipal,
     tenantAdminUri.Authority,
@@ -65,14 +65,16 @@ string accessToken = TokenHelper.GetAppOnlyAccessToken(
 
 using (var ctx = TokenHelper.GetClientContextWithAccessToken(tenantAdminUri.ToString(), accessToken))
 {
-    if (ctx.Web.SiteExistsInTenant(webUrl))
+    Tenant tenant = new Tenant(ctx);
+
+    if (tenant.SiteExists(webUrl))
     {
         lblStatus1.Text = string.Format("Site already existed. Used URL - {0}", webUrl);
     }
     else
     {
         // Create new site collection with some storage limts and English locale
-        ctx.Web.CreateSiteCollectionTenant(webUrl, txtName.Text, currUser.Email, drpContentTypes.SelectedValue, 500, 400, 7, 7, 1, 1033);
+        tenant.CreateSiteCollection(webUrl, txtName.Text, currUser.Email, drpContentTypes.SelectedValue, 500, 400, 7, 7, 1, 1033);
 
         // Let's get instance to the newly added site collection using URLs
         var siteUri = new Uri(webUrl);
@@ -89,7 +91,7 @@ using (var ctx = TokenHelper.GetClientContextWithAccessToken(tenantAdminUri.ToSt
             newWeb.CreateDocumentLibrary("Presentations");
 
             // Let's also apply theme to the site to demonstrate how easy this is
-            newWeb.SetThemeToWeb("Characters");
+            newWeb.SetComposedLookByUrl("Characters");
         }
 
         lblStatus1.Text = string.Format("Created a new site collection to address <a href='{0}'>{1}</a>", webUrl, webUrl);

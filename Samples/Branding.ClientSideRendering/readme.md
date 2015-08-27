@@ -66,11 +66,11 @@ In order for the Client Side Rendering sample to render correctly, you must firs
 
 ![](http://i.imgur.com/p9fQUTp.png)
 
-9)  After app installation, a new page will be displayed.  Click the Provision Samples button to create the list columns, lists, list views, initialize the lists with data, and upload the Client Side Rendering JavaScript and image files that support the samples.  The provisioning code registers the Client Side Rendering JavaScript files with the list forms and views via the JSLink property.
+9)  After add-in installation, a new page will be displayed.  Click the Provision Samples button to create the list columns, lists, list views, initialize the lists with data, and upload the Client Side Rendering JavaScript and image files that support the samples.  The provisioning code registers the Client Side Rendering JavaScript files with the list forms and views via the JSLink property.
 
 ![](http://i.imgur.com/LGC32Fc.png)
 
-10)  After you have successfully configured your SharePoint environment and deployed the artifacts via the app, you can view the Client Side Rendering samples by clicking on the links in the app.
+10)  After you have successfully configured your SharePoint environment and deployed the artifacts via the add-in, you can view the Client Side Rendering samples by clicking on the links in the add-in.
 
 # DEPLOYMENT DETAILS #
 The code behind in the default.aspx.cs file contains all the code used to deploy the artifacts which support this sample.  This code sample uses the remote provisioning pattern to deploy the artifacts.  The remote provisioning pattern uses the SharePoint Client Side Object Model to deploy the artifacts.  There are many other Office AMS samples which demonstrate this same approach.
@@ -117,7 +117,7 @@ void UploadJSFiles(Web web)
 ```
 
 ## CREATING LISTS, VIEWS, ITEMS, AND REGISTERING CLIENT SIDE RENDERING JAVASCRIPT FILES WITH LIST VIEWS AND FORMS ##
-After the Client Side Rendering JavaScript files and image are uploaded, the app provisions the list columns, lists, list views, initializes the lists with data, and registers the Client Side Rendering JavaScript files with the list views and forms via the JSLink property.
+After the Client Side Rendering JavaScript files and image are uploaded, the add-in provisions the list columns, lists, list views, initializes the lists with data, and registers the Client Side Rendering JavaScript files with the list views and forms via the JSLink property.
 
 Not every sample demonstrates how to register the Client Side Rendering JavaScript files with list views and forms.  However, Sample 5 demonstrates everything.  The ProvisionSample5 method deploys Sample 5.  It illustrates all of the patterns.
 
