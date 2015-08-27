@@ -49,7 +49,7 @@ Projects what are included in the solution.
 ### Governance.TimerJobs.Data ###
 The data access layer for governance information records powered by Entity Framework 6.
 
-The [SiteInformation](https://github.com/OfficeDev/PnP-Governance/blob/dev/Solutions/Governance.TimerJobs/Governance.TimerJobs.Data/SiteInformation.cs) entity class contains both SharePoint site status and additional governance status.  
+The [SiteInformation](https://github.com/OfficeDev/PnP/blob/dev/Solutions/Governance.TimerJobs/Governance.TimerJobs.Data/SiteInformation.cs) entity class contains both SharePoint site status and additional governance status.  
 
 ```C#
 DateTime time = DateTime.UtcNow;
@@ -101,7 +101,7 @@ var site = new SiteInformation()
 ```
 
 
-The [GovernanceDbRepository](https://github.com/OfficeDev/PnP-Governance/blob/dev/Solutions/Governance.TimerJobs/Governance.TimerJobs.Data/GovernanceDbRepository.cs) class provides methods to access SiteInformation records. 
+The [GovernanceDbRepository](https://github.com/OfficeDev/PnP/blob/dev/Solutions/Governance.TimerJobs/Governance.TimerJobs.Data/GovernanceDbRepository.cs) class provides methods to access SiteInformation records. 
 
 ```C#
 string connetionString = ConfigurationManager.ConnectionStrings["default"].ConnectionString;
@@ -138,22 +138,22 @@ A set of reusable abstract or concrete site management policies.
 
 ![](https://raw.githubusercontent.com/LiyeXu/PnP-Governance-Assets/master/policy.png)
 
-- [AdministratorPolicy](https://github.com/OfficeDev/PnP-Governance/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs.Policy/Samples/AdministratorsPolicy.cs): marks site information record as in-compliant if there is less than 2 site collection administrators
-- [MembershipReviewPolicy](https://github.com/OfficeDev/PnP-Governance/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs.Policy/Samples/MembershipReviewPolicy.cs): marks site information record as in-compliant if the latest external user membership review date in DB repository is earlier than 1 month ago
-- [HbiBroadAccessPolicy](https://github.com/OfficeDev/PnP-Governance/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs.Policy/Samples/HbiBroadAccessPolicy.cs): marks site information record as in-compliant if there is any permission assignment at site collection or sub web level for a large security group, which is predefined in the app.config
-- [LifeCyclePolicy](https://github.com/OfficeDev/PnP-Governance/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs.Policy/Samples/LifeCyclePolicy.cs): marks site information record as expired if the site collection is about to be existing for longer than expected time of period. (6 months for team sites / 1 year for enterprise sites)  
+- [AdministratorPolicy](https://github.com/OfficeDev/PnP/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs.Policy/Samples/AdministratorsPolicy.cs): marks site information record as in-compliant if there is less than 2 site collection administrators
+- [MembershipReviewPolicy](https://github.com/OfficeDev/PnP/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs.Policy/Samples/MembershipReviewPolicy.cs): marks site information record as in-compliant if the latest external user membership review date in DB repository is earlier than 1 month ago
+- [HbiBroadAccessPolicy](https://github.com/OfficeDev/PnP/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs.Policy/Samples/HbiBroadAccessPolicy.cs): marks site information record as in-compliant if there is any permission assignment at site collection or sub web level for a large security group, which is predefined in the app.config
+- [LifeCyclePolicy](https://github.com/OfficeDev/PnP/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs.Policy/Samples/LifeCyclePolicy.cs): marks site information record as expired if the site collection is about to be existing for longer than expected time of period. (6 months for team sites / 1 year for enterprise sites)  
 
 ### Governance.TimerJobs ###
 This project contains a set of PnP timer jobs. It is responsible of the SPO site status synchronization and site policy enforcement / notification works.
 
 ![](https://raw.githubusercontent.com/LiyeXu/PnP-Governance-Assets/master/TimerJobs.png)
 
-- [TenantManagementTimerJob](https://github.com/OfficeDev/PnP-Governance/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs/TenantManagementTimerJob%20.cs) is an abstract class inherits [OfficeDevPnP.Core.Framework.TimerJobs](https://github.com/OfficeDev/PnP-Sites-Core/blob/dev/Core/OfficeDevPnP.Core/Framework/TimerJobs/TimerJob.cs), which is designed to be used as the base class of all tenant management related timer jobs. It outputs the current job progress to the console.
-- [SynchronizationJob](https://github.com/OfficeDev/PnP-Governance/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs/SynchronizationJob.cs) is a concrete TenantManagementTimerJob which iterates thru all SharePoint site collections to keep the DB repository being up to date.
-- [DatabaseTimerJob](https://github.com/OfficeDev/PnP-Governance/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs/DatabaseTimerJob.cs) is an abstract class derived from TenantManagementTimerJob, it replaces the default SharePoint site resolving logic by providing a GovernanceDdContext for concrete classes to query the site information records from DB repository.
-- [CleanUpJob](https://github.com/OfficeDev/PnP-Governance/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs/CleanUpJob.cs) is a concrete DatabaseTimerJob. It steps thru each DB site record and deletes all out-dated ones of which the corresponding site collection has been deleted manually from SPO.
-- [GovernanceJob](https://github.com/OfficeDev/PnP-Governance/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs/GovernanceJob.cs) is a concrete DatabaseTimerJob. It queries all incompliant site collections from DB by using the NoncompliancePredictor property of all registered site policies and then run governance workflow. 
-- [GovernancePreprocessJob](https://github.com/OfficeDev/PnP-Governance/blob/dev/Solutions/Governance.TimerJobs/Governance.TimerJobs/GovernancePreprocessJob.cs) is designed to support some special site policies (like [HbiBroadAccessPolicy](https://github.com/OfficeDev/PnP-Governance/tree/dev/Solutions/Governance.TimerJobs/Governance.TimerJobs.Policy)) which requires a customizable site scope query (check all HBI webs) as well as a complex DB status updates process. 
+- [TenantManagementTimerJob](https://github.com/OfficeDev/PnP/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs/TenantManagementTimerJob%20.cs) is an abstract class inherits [OfficeDevPnP.Core.Framework.TimerJobs](https://github.com/OfficeDev/PnP-Sites-Core/blob/dev/Core/OfficeDevPnP.Core/Framework/TimerJobs/TimerJob.cs), which is designed to be used as the base class of all tenant management related timer jobs. It outputs the current job progress to the console.
+- [SynchronizationJob](https://github.com/OfficeDev/PnP/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs/SynchronizationJob.cs) is a concrete TenantManagementTimerJob which iterates thru all SharePoint site collections to keep the DB repository being up to date.
+- [DatabaseTimerJob](https://github.com/OfficeDev/PnP/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs/DatabaseTimerJob.cs) is an abstract class derived from TenantManagementTimerJob, it replaces the default SharePoint site resolving logic by providing a GovernanceDdContext for concrete classes to query the site information records from DB repository.
+- [CleanUpJob](https://github.com/OfficeDev/PnP/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs/CleanUpJob.cs) is a concrete DatabaseTimerJob. It steps thru each DB site record and deletes all out-dated ones of which the corresponding site collection has been deleted manually from SPO.
+- [GovernanceJob](https://github.com/OfficeDev/PnP/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs/GovernanceJob.cs) is a concrete DatabaseTimerJob. It queries all incompliant site collections from DB by using the NoncompliancePredictor property of all registered site policies and then run governance workflow. 
+- [GovernancePreprocessJob](https://github.com/OfficeDev/PnP/blob/dev/Solutions/Governance.TimerJobs/Governance.TimerJobs/GovernancePreprocessJob.cs) is designed to support some special site policies (like [HbiBroadAccessPolicy](https://github.com/OfficeDev/PnP/tree/dev/Solutions/Governance.TimerJobs/Governance.TimerJobs.Policy)) which requires a customizable site scope query (check all HBI webs) as well as a complex DB status updates process. 
 
 ### Governance.TimerJobs.ConsoleHost ###
 This is a sample console project to host the governance timer jobs, which maybe deployed to Azure or on-premises.
