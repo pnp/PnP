@@ -61,6 +61,14 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.Model
         public string Title { get; set; }
 
         /// <summary>
+        /// Gets or sets the original ID for the instance.
+        /// </summary>
+        /// <value>
+        /// The original ID.
+        /// </value>
+        public Guid OriginalId { get; set; }
+
+        /// <summary>
         /// Gets or sets the description of the list
         /// </summary>
         public string Description { get; set; }

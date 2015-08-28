@@ -98,7 +98,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             var webFeatures = web.Features;
             var siteFeatures = context.Site.Features;
 
-            context.Load(webFeatures, fs => fs.Include(f => f.DefinitionId));
+            context.Load(webFeatures, fs => fs.Include(f => f.DefinitionId, f => f.DisplayName));
             if (!isSubSite)
             {
                 context.Load(siteFeatures, fs => fs.Include(f => f.DefinitionId));
@@ -106,9 +106,10 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             context.ExecuteQueryRetry();
 
             var features = new Features();
-            foreach (var feature in webFeatures)
+            var validWebFeatures = webFeatures.Where(f => f.DefinitionId.ToString() != f.DisplayName);
+            foreach (var feature in validWebFeatures)
             {
-                features.WebFeatures.Add(new Feature() { Deactivate = false, Id = feature.DefinitionId });
+                features.WebFeatures.Add(new Feature { Deactivate = false, Id = feature.DefinitionId });
             }
 
             // if this is a sub site then we're not creating  site collection scoped feature entities
@@ -116,7 +117,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
             {
                 foreach (var feature in siteFeatures)
                 {
-                    features.SiteFeatures.Add(new Feature() { Deactivate = false, Id = feature.DefinitionId });
+                    features.SiteFeatures.Add(new Feature { Deactivate = false, Id = feature.DefinitionId });
                 }
             }
 

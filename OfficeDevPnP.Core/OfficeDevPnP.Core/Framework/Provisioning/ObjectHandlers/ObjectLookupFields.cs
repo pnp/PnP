@@ -71,7 +71,7 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
                 }
             }
 
-            web.Context.Load(web.Lists, lists => lists.Include(l => l.Id, l => l.RootFolder.ServerRelativeUrl, l => l.Fields).Where(l => l.Hidden == false));
+            web.Context.Load(web.Lists, lists => lists.Include(l => l.Id, l => l.Title, l => l.RootFolder.ServerRelativeUrl, l => l.Fields).Where(l => l.Hidden == false));
             web.Context.ExecuteQueryRetry();
 
             foreach (var listInstance in template.Lists)
@@ -83,39 +83,45 @@ namespace OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers
 
                     var fieldId = Guid.Parse(fieldElement.Attribute("ID").Value);
                     var listIdentifier = fieldElement.Attribute("List").Value;
-                    var webId = string.Empty;
-
                     var listUrl = UrlUtility.Combine(web.ServerRelativeUrl, listInstance.Url.ToParsedString());
-
                     var createdList = web.Lists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(listUrl, StringComparison.OrdinalIgnoreCase));
-                    if (createdList != null)
+
+                    if (createdList == null)
+                        continue;
+
+                    var field = createdList.Fields.GetById(fieldId);
+                    web.Context.Load(field, f => f.SchemaXml);
+                    web.Context.ExecuteQueryRetry();
+
+                    Guid listGuid;
+                    List sourceList;
+                    if (!Guid.TryParse(listIdentifier, out listGuid))
                     {
-                        var field = createdList.Fields.GetById(fieldId);
-                        web.Context.Load(field, f => f.SchemaXml);
-                        web.Context.ExecuteQueryRetry();
-
-                        Guid listGuid;
-                        if (!Guid.TryParse(listIdentifier, out listGuid))
-                        {
-                            var sourceListUrl = UrlUtility.Combine(web.ServerRelativeUrl, listIdentifier.ToParsedString());
-                            var sourceList = web.Lists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(sourceListUrl, StringComparison.OrdinalIgnoreCase));
-                            if (sourceList != null)
-                            {
-                                listGuid = sourceList.Id;
-
-                                web.Context.Load(sourceList.ParentWeb);
-                                web.Context.ExecuteQueryRetry();
-
-                                webId = sourceList.ParentWeb.Id.ToString();
-                            }
-                        }
-                        if (listGuid != Guid.Empty)
-                        {
-                            ProcessField(field, listGuid, webId);
-                        }
+                        var sourceListUrl = UrlUtility.Combine(web.ServerRelativeUrl, listIdentifier.ToParsedString());
+                        sourceList = web.Lists.FirstOrDefault(l => l.RootFolder.ServerRelativeUrl.Equals(sourceListUrl, StringComparison.OrdinalIgnoreCase));
                     }
+                    else
+                    {
+                        // The Guid came from the parsed value and is still the template guid.
+                        // Fetch the list from the original ID so we can retrieve it again
+                        var templateSourceList = template.Lists.Single(l => l.OriginalId.Equals(listGuid));
+                        sourceList = web.Lists.FirstOrDefault(l => l.Title.Equals(templateSourceList.Title));
+                    }
+
+                    ProcessField(field, sourceList);
                 }
             }
+        }
+
+        private static void ProcessField(Field field, List sourceList)
+        {
+            if (sourceList == null)
+                return;
+
+            sourceList.ParentWeb.Context.Load(sourceList.ParentWeb);
+            sourceList.ParentWeb.Context.ExecuteQueryRetry();
+
+            ProcessField(field, sourceList.Id, sourceList.ParentWeb.Id.ToString());
         }
 
         private static void ProcessField(Field field, Guid listGuid, string webId)

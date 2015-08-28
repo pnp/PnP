@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Online.SharePoint.TenantAdministration;
+﻿using Microsoft.Azure.WebJobs;
 
 namespace Provisioning.Framework.Cloud.Async.Job
 {
@@ -15,10 +9,13 @@ namespace Provisioning.Framework.Cloud.Async.Job
         // AzureWebJobsDashboard and AzureWebJobsStorage
         static void Main()
         {
-            var host = new JobHost();
+            var config = new JobHostConfiguration();
+            // Make sure an item can only be picked up once, otherwise you get errors
+            config.Queues.MaxDequeueCount = 1;
+            var host = new JobHost(config);
+
             // The following code ensures that the WebJob will be running continuously
             host.RunAndBlock();
-
         }
     }
 }
