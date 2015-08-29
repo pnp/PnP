@@ -9,20 +9,23 @@ This sample demonstrates mail add-in for Outlook which extracts data from a mail
 ### Prerequisites ###
 -  Office 365 Developer Subscription. See [Sign up for an Office 365 Developer Subscription and set up your tools and environment](https://msdn.microsoft.com/EN-US/library/office/fp179924.aspx)
 -  Must have an Office 365 developer site. See [How to: Create a Developer Site within your existing Office 365 subscription](https://msdn.microsoft.com/en-us/library/office/jj692554.aspx)
-- Azure accout is required - you will need to configure Azure Active Directory for this sample. See [Step 2: Register the sample with your Azure Active Directory tenant](https://github.com/AzureADSamples/SinglePageApp-AngularJS-DotNet#step-2--register-the-sample-with-your-azure-active-directory-tenant)
+-  [Node.js](https://nodejs.org) environment (locally for development, Azure can be used for production)
+- [Azure](http://azure.microsoft.com) accout is required - you will need to configure Azure Active Directory for this sample. See [Step 2: Register the sample with your Azure Active Directory tenant](https://github.com/AzureADSamples/SinglePageApp-AngularJS-DotNet#step-2--register-the-sample-with-your-azure-active-directory-tenant)
 - Optionaly: you will run .NET WebApi project to show additional sample data (seen on picture as Reports, Employees) as an example how we can consume external REST APIs. Use this [agile9.outlook.context.db - Code First Entity Framework 6.0 Sample Project With Data](https://github.com/matejv1/agile9.outlook.context.db)
 
 ### Solution ###
 Solution | Author(s) | Twitter
----------|----------
-Context - MAIL ADDIN FOR OUTLOOK | Matej Vodopivc (**Agile9.net**) | @matejvodopivc
+---------|-----------|--------
+Context  | Matej Vodopivc (**Agile9.net**) | @matejvodopivc
+
+
 
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
 1.0  | Aug 29rd 2015 | Initial release
 
-### Disclaimer ###l
+### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
 
 
@@ -34,6 +37,8 @@ This code sample demonstrates the use of an add-in for Outlook for showing addit
 Video of the working sample:  [YouTube - Mail Addin for Outlook - Office 365, Adal.js, AngularJS, Node.js](https://www.youtube.com/watch?v=EhppDWba6XY)
 
 ![](https://agile9blog.files.wordpress.com/2015/08/snagit0.png?w=672&h=372&crop=1)
+
+More images of this sample: [blog.agile9.net](http://blog.agile9.net/2015/08/18/mail-addin-for-outlook-using-office-365-apis-adal-js-angularjs-webapi-azure-ad/)
 
 ## 1. Building this sample ##
 This sample consists of 3 primary components:
@@ -47,10 +52,10 @@ This sample consists of 3 primary components:
 
 This is already well documented. See [Step 2: Register the sample with your Azure Active Directory tenant](https://github.com/AzureADSamples/SinglePageApp-AngularJS-DotNet#step-2--register-the-sample-with-your-azure-active-directory-tenant)
 
-Note: Make sure you 
-	1. create Key 
-	2. make changes to Manifest file (Download, oauth2AllowImplicitFlow: true, Upload back)
-	3. give an app required permissions (Exchange, Sharepoint Online)
+Note:
+1. Make sure you create Key
+2. make changes to Manifest file (Download, oauth2AllowImplicitFlow: true, Upload back)
+3. give an app required permissions (Exchange, Sharepoint Online)
 
 ### 1.2 Configure App Settings ###
 
