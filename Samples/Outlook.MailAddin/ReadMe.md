@@ -4,7 +4,7 @@
 This sample demonstrates mail add-in for Outlook which extracts data from a mail message and retrieves data from Office 365 APIs. Node.js is used for server side code, AngularJS for front-end and for authentication purposes Adal.js + Azure AD. Additionaly(not required to run) there is .NET WebApi project to show how we can retrive data from custom REST APIs. (projectUrl)
 
 ### Applies to ###
--  Outlook 2013
+-  Outlook on Office 365 (outlook.office365.com) - Google Chrome
 
 ### Prerequisites ###
 -  Office 365 Developer Subscription. See [Sign up for an Office 365 Developer Subscription and set up your tools and environment](https://msdn.microsoft.com/EN-US/library/office/fp179924.aspx)
@@ -31,7 +31,8 @@ Version  | Date | Comments
 # Mail Addin For Outlook Using Office 365 APIs #
 This code sample demonstrates the use of an add-in for Outlook for showing additional data to user from Office 365 APIs and custom REST APIs.
 
-![https://agile9.sharepoint.com/SitePages/DevHome.aspx](http://img.youtube.com/vi/EhppDWba6XY/0.jpg)
+Video of the working sample:  [YouTube - Mail Addin for Outlook - Office 365, Adal.js, AngularJS, Node.js](https://www.youtube.com/watch?v=EhppDWba6XY)
+![](https://agile9blog.files.wordpress.com/2015/08/snagit0.png?w=672&h=372&crop=1)
 
 ## 1. Building this sample ##
 This sample consists of 3 primary components:
