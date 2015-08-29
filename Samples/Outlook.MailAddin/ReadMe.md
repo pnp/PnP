@@ -16,7 +16,7 @@ This sample demonstrates mail add-in for Outlook which extracts data from a mail
 ### Solution ###
 Solution | Author(s) | Twitter
 ---------|-----------|--------
-Context  | Matej Vodopivc (**Agile9.net**) | @matejvodopivc
+Context  | Matej Vodopivc (**Agile9.net**) | [@matejvodopivc](https://twitter.com/matejvodopivc)
 
 
 
