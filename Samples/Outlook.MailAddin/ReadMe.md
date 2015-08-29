@@ -31,7 +31,7 @@ Version  | Date | Comments
 # Mail Addin For Outlook Using Office 365 APIs #
 This code sample demonstrates the use of an add-in for Outlook for showing additional data to user from Office 365 APIs and custom REST APIs.
 
-![](http://)
+![](http://img.youtube.com/vi/EhppDWba6XY/0.jpg)
 
 ## 1. Building this sample ##
 This sample consists of 3 primary components:
@@ -76,3 +76,9 @@ Note: Make sure you
 3. Open in Chrome browser: https://localhost:8443/#/ 
 4. Accept SSL warning (certificate is not verifed by know authority)
 5. Open https://outlook.office365.com and see the result
+
+### 1.6 Hosting/Running this sample in Azure 
+
+1. You will need to replace server.js with content from server-production.js. 
+2. For the rest you should follow this article [Build and deploy a Node.js web app in Azure App Service](https://azure.microsoft.com/en-us/documentation/articles/web-sites-nodejs-develop-deploy-mac/?utm_content=buffer1e07e&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer)
+ 
