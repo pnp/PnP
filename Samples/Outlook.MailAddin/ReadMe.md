@@ -13,16 +13,16 @@ This sample demonstrates mail add-in for Outlook which extracts data from a mail
 - Optionaly: you will run .NET WebApi project to show additional sample data (seen on picture as Reports, Employees) as an example how we can consume external REST APIs. Use this [agile9.outlook.context.db - Code First Entity Framework 6.0 Sample Project With Data](https://github.com/matejv1/agile9.outlook.context.db)
 
 ### Solution ###
-Solution | Author(s)
+Solution | Author(s) | Twitter
 ---------|----------
-Context - MAIL ADDIN FOR OUTLOOK | Matej Vodopivc (**Agile9.net**)
+Context - MAIL ADDIN FOR OUTLOOK | Matej Vodopivc (**Agile9.net**) | @matejvodopivc
 
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
 1.0  | Aug 29rd 2015 | Initial release
 
-### Disclaimer ###
+### Disclaimer ###l
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
 
 
@@ -32,12 +32,13 @@ Version  | Date | Comments
 This code sample demonstrates the use of an add-in for Outlook for showing additional data to user from Office 365 APIs and custom REST APIs.
 
 Video of the working sample:  [YouTube - Mail Addin for Outlook - Office 365, Adal.js, AngularJS, Node.js](https://www.youtube.com/watch?v=EhppDWba6XY)
+
 ![](https://agile9blog.files.wordpress.com/2015/08/snagit0.png?w=672&h=372&crop=1)
 
 ## 1. Building this sample ##
 This sample consists of 3 primary components:
 
-1. Node.js server side code - running localy (can be hosted anywhere, Azure for example fully supports Node.js arhitecture)
+1. Node.js server side code - running locally (can be hosted anywhere, Azure for example fully supports Node.js arhitecture)
 2. Addin for Office Manifest - defines how our add-in is activated within Outlook
 3. Front-end code - HTML markup and AngularJS Javascript for interacting with the server-side API
 
@@ -83,3 +84,4 @@ Note: Make sure you
 1. You will need to replace server.js with content from server-production.js. 
 2. For the rest you should follow this article [Build and deploy a Node.js web app in Azure App Service](https://azure.microsoft.com/en-us/documentation/articles/web-sites-nodejs-develop-deploy-mac/?utm_content=buffer1e07e&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer)
  
+
