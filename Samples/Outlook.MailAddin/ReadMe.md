@@ -31,7 +31,7 @@ Version  | Date | Comments
 # Mail Addin For Outlook Using Office 365 APIs #
 This code sample demonstrates the use of an add-in for Outlook for showing additional data to user from Office 365 APIs and custom REST APIs.
 
-![](http://img.youtube.com/vi/EhppDWba6XY/0.jpg)
+![https://agile9.sharepoint.com/SitePages/DevHome.aspx](http://img.youtube.com/vi/EhppDWba6XY/0.jpg)
 
 ## 1. Building this sample ##
 This sample consists of 3 primary components:
