@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
-  <Module Name="MasterPages" Url="_catalogs/masterpage" Path="MOMasterPage">
-    <File Url="contoso.master" Type="GhostableInLibrary">
-      <Property Name="ContentType" Value="Master Page" />
-      <Property Name="MasterPageDescription" Value="Our uber master page." />
-    </File>
-  </Module>
-</Elements>
