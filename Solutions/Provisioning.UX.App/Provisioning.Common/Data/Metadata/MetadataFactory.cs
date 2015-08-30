@@ -5,6 +5,8 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SC = System.Configuration;
+
 
 namespace Provisioning.Common.Data.Metadata
 {
@@ -55,7 +57,16 @@ namespace Provisioning.Common.Data.Metadata
                 var typeName = type[0];
                 var assemblyName = type[1];
                 var instance = (AbstractModule)Activator.CreateInstance(assemblyName, typeName).Unwrap();
-                instance.ConnectionString = _module.ConnectionString;
+                if(String.IsNullOrEmpty(_module.ConnectionString))
+                {
+                    instance.ConnectionString = 
+                        SC.ConfigurationManager.AppSettings.Get(ModuleKeys.METADATAMANGER_KEY + "_connectionString");
+                }
+                else
+                {
+                    instance.ConnectionString = _module.ConnectionString;
+                }
+                
                 instance.Container = _module.Container;
                 return (IMetadataManager)instance;
             }

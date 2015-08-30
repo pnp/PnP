@@ -16,11 +16,12 @@
         <Field ID="{1F072DD4-BF2A-4828-9373-CCC823AE9F5A}" Type="Number" Name="SP_StorageWarningLevel" DisplayName="Storage Warning Level" Group="SiteProvisioning" Decimals="0" Required="TRUE"  />
         <Field ID="{A12236E4-DDA5-4C07-A0F4-391B167E54D6}" Type="Number" Name="SP_UserCodeMaximumLevel" DisplayName="User Code Maximum Level" Group="SiteProvisioning" Decimals="0" Required="TRUE"  />
         <Field ID="{A6489FB3-F08F-4F87-A719-8482FE3596CB}" Type="Number" Name="SP_UserCodeWarningLevel" DisplayName="User Code Warning Level" Group="SiteProvisioning" Decimals="0" Required="TRUE"  />
-        <Field ID="{9847FB17-0811-4FF8-AE3C-A4C3BEAF403A}" Type="Text" Name="SP_TenantUrl" DisplayName="Tenant Url" Group="SiteProvisioning" Required="TRUE" MaxLength="255" Description="The Tenant Admin URL. Example: https://contoso-admin.sharepoint.com/" StaticName="SP_TenantUrl" />
-        <Field ID="{C7551272-C991-428B-8E71-A1FDE12B17F2}" Type="Text" Name="SP_Host_Path" DisplayName="Host Path" Group="SiteProvisioning" Required="TRUE" MaxLength="255" Description="The Host Path. Example: https://contoso.sharepoint.com/sites/" StaticName="SP_Host_Path" />
-        <Field ID="{62D0BDE8-D559-421F-B3AA-203D03A6CCA3}" Type="Text" Name="SP_SiteProvisioningTemplate" DisplayName="Provisioning Template" Group="SiteProvisioning" Required="TRUE" MaxLength="255" Description="The Name of the provisioning Template." StaticName="SP_SiteProvisioningTemplate" />
-        <Field ID="{FB4E2E34-F3E2-402D-B3D7-A335E430BB8C}" Type="Text" Name="SP_TemplateImageUrl" DisplayName="Template Image Url" Group="SiteProvisioning" Required="TRUE" MaxLength="255" Description="Enter the Url of the Image for the Template" StaticName="SP_TemplateImageUrl" />
-        <Field ID="{7A79B397-C69C-4CFD-8C9D-644D81BEA6AE}" Type="Boolean" Name="SP_RootWebOnly" DisplayName="Enabled" Group="SiteProvisioning" />
+        <Field ID="{9847FB17-0811-4FF8-AE3C-A4C3BEAF403A}" Type="URL" Name="SP_TenantUrl" DisplayName="Tenant Url" Group="SiteProvisioning" Required="TRUE" MaxLength="255" Description="The Tenant Admin URL. Example: https://contoso-admin.sharepoint.com/" StaticName="SP_TenantUrl"  Format="Hyperlink"/>
+        <Field ID="{C7551272-C991-428B-8E71-A1FDE12B17F2}" Type="URL" Name="SP_Host_Path" DisplayName="Host Path" Group="SiteProvisioning" Required="TRUE" MaxLength="255" Description="The Host Path. Example: https://contoso.sharepoint.com/sites/" StaticName="SP_Host_Path"  Format="Hyperlink"/>
+        <Field ID="{62D0BDE8-D559-421F-B3AA-203D03A6CCA3}" Type="Text" Name="SP_SiteProvisioningTemplate" DisplayName="Provisioning Template" Group="SiteProvisioning" Required="TRUE" MaxLength="255" Description="The Name of the provisioning Template." StaticName="SP_SiteProvisioningTemplate"/>
+        <Field ID="{FB4E2E34-F3E2-402D-B3D7-A335E430BB8C}" Type="URL" Name="SP_TemplateImageUrl" DisplayName="Template Image Url" Group="SiteProvisioning" Required="TRUE" MaxLength="255" Description="Enter the Url of the Image for the Template" StaticName="SP_TemplateImageUrl" Format="Image"/>
+        <Field ID="{7A79B397-C69C-4CFD-8C9D-644D81BEA6AE}" Type="Boolean" Name="SP_RootWebOnly" DisplayName="Root web only" Group="SiteProvisioning" />
+        <Field ID="{867FB9FF-8314-4244-9A2D-41B60C5DCE3F}" Type="Boolean" Name="SP_SubWebOnly" DisplayName="Sub web only" Group="SiteProvisioning" />
 
         <!--SITE REQUEST FIELDS-->
         <Field Type="User" Name="SP_Owner" DisplayName="Owner" ID="{874ad80c-4e50-4c58-99b4-d21ab3e8bb15}" Group="SiteProvisioning" List="UserInfo" UserSelectionMode="0" ShowField="ImnName" Description="The Primary Site Collection Administrator" SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_Owner" />
@@ -29,7 +30,7 @@
         <Field Type="Text" Name="SP_Policy" DisplayName="Policy" ID="{d717873a-9a01-4b3a-97af-0f6514696c76}" Group="SiteProvisioning" Description="The Site Policy to apply" SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_Policy" />
         <Field Type="Text" Name="SP_Url" DisplayName="Url" ID="{be60c056-26b9-48df-b954-93f31698d2a4}" Group="SiteProvisioning" Required="TRUE" MaxLength="255" EnforceUniqueValues="TRUE" Indexed="TRUE" Description="The path used for the site collection URL. Example: https://contoso.sharepoint.com/sites/&lt;urlpath&gt;" SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_Url" />
         <Field Type="Text" Name="SP_TimeZone" DisplayName="Time Zone" ID="{2e07875c-07cd-48cf-a93a-40bf0cab60bd}" Group="SiteProvisioning" Description="The time zone selected for the site" SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_TimeZone" />
-        <Field Type="Text" Name="SP_Template" DisplayName="Template" ID="{63472f5d-e8f5-4b64-9172-7d60726d0133}" Group="SiteProvisioning" Description="The Site Template to apply." SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_Template" />
+        <Field Type="Text" Name="SP_Template" DisplayName="Template" ID="{63472f5d-e8f5-4b64-9172-7d60726d0133}" Group="SiteProvisioning" Description="The Site Template to apply. For instance STS#0." SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_Template" />
         <Field Type="Text" Name="SP_Lcid" DisplayName="LCID" ID="{42a75f5d-0f79-44b7-ab9e-d9fb0307a3b5}" Group="SiteProvisioning" Required="TRUE" Description="The Site Language" SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_Lcid" />
         <Field Type="Text" Name="SP_ProvisioningStatus" DisplayName="Provisioning Status" ID="{e7bd867c-79f0-46b7-b2d9-02ff239e4947}" Group="SiteProvisioning" Required="TRUE" Indexed="TRUE" ShowInDisplayForm="TRUE" Description="Status of the site request." SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_ProvisioningStatus" />
         <Field Type="Boolean" Name="SP_RequestOnPrem" DisplayName="On Premises" ID="{c9d27da5-bdf4-4128-9e97-fc0d096201b5}" Group="SiteProvisioning" Description="Indicates if the Site is targeting SharePoint On-Premises." SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_RequestOnPrem" />
@@ -56,6 +57,8 @@
             <pnp:FieldRef ID="62D0BDE8-D559-421F-B3AA-203D03A6CCA3" Name="SP_SiteProvisioningTemplate" Required="true"/>
             <pnp:FieldRef ID="EED661BC-FBD2-4880-ADDB-435D4E4ED5C2" Name="SP_Enabled"/>
             <pnp:FieldRef ID="7A79B397-C69C-4CFD-8C9D-644D81BEA6AE" Name="SP_RootWebOnly"/>
+            <pnp:FieldRef ID="867FB9FF-8314-4244-9A2D-41B60C5DCE3F" Name="SP_SubWebOnly" />
+
           </pnp:FieldRefs>
         </pnp:ContentType>
         <!--SITE REQUEST CONTENT TYPE-->
@@ -158,14 +161,13 @@
               <ViewFields>
                 <FieldRef Name="LinkTitle" />
                 <FieldRef Name="SP_Description" />
-                <FieldRef Name="SP_TenantUrl"/>
+                <FieldRef Name="SP_TemplateImageUrl"/>
                 <FieldRef Name="SP_Host_Path"/>
                 <FieldRef Name="SP_Template" />
-                <FieldRef Name="SP_StorageMaximumLevel" />
-                <FieldRef Name="SP_StorageWarningLevel" />
-                <FieldRef Name="SP_UserCodeMaximumLevel" />
-                <FieldRef Name="SP_UserCodeWarningLevel" />
-                <FieldRef Name="SP_Enabled" />
+                <FieldRef Name="SP_SiteProvisioningTemplate"/>
+                <FieldRef Name="SP_RootWebOnly"/>
+                <FieldRef Name="SP_SubWebOnly"/>
+                <FieldRef Name="SP_Enabled" />                
               </ViewFields>
               <RowLimit Paged="TRUE">30</RowLimit>
               <JSLink>clienttemplates.js</JSLink>
@@ -173,6 +175,11 @@
               <Toolbar Type="Standard" />
             </View>
           </pnp:Views>
+        </pnp:ListInstance>
+        <pnp:ListInstance Title="Site Templates Data"
+                          Description="Repository for the XML based site templates"
+                          TemplateType="101"
+                          Url="SiteTemplatesData">
         </pnp:ListInstance>
         <pnp:ListInstance Title="Site Requests" 
                           Description="Repository for new Site Collection Requests" 
