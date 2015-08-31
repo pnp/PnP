@@ -150,6 +150,7 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="images\WizardLogo.png" />
     <Content Include="Pages\Shell.html" />
     <Content Include="Scripts\bootstrap.dialog.js" />
     <None Include="Properties\PublishProfiles\wwaz-pnp-provisioning - FTP.pubxml" />
