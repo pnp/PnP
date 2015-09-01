@@ -33,7 +33,9 @@ namespace Provisioning.Framework
             // Apply template to new site from 
             ApplyProvisioningTemplate(defaultForeground, targetWebUrl, userName, pwd, template);
 
-            // Pause
+            // Just to pause and indicate that it's all done
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("We are all done. Press enter to continue.");
             Console.ReadLine();
         }
 
