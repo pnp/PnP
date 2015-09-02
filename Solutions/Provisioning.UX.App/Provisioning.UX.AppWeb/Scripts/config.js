@@ -3,7 +3,7 @@
 
     var app = angular.module('app');
 
-    // Configure Toastr
+    // Configure Toastr,
     toastr.options.timeOut = 4000;
     toastr.options.positionClass = 'toast-bottom-right';
 
@@ -38,4 +38,18 @@
         cfg.config.spinnerToggleEvent = config.events.spinnerToggle;
     }]);
     //#endregion
+    
+
+    app.config(['$translateProvider', function ($translateProvider) {
+
+        $translateProvider.useStaticFilesLoader({
+            prefix: '/scripts/i18n/',
+            suffix: '.json'
+        });
+
+     
+        $translateProvider.preferredLanguage(decodeURIComponent(getQueryStringParameter('SPLanguage')));
+        $translateProvider.fallbackLanguage(['en-US']);
+    }]);
+    
 })();
