@@ -121,7 +121,7 @@ Once user is done with the views in the wizard, they will be presented with a co
 
 
 #### User Interface Localization ####
-[Localization Document](Internationalization.md)
+See [Localization Document](Internationalization.md) on localization support within the add-in.
 
 ----------
 
@@ -165,11 +165,11 @@ This solution uses app only permissions so you will have to navigate to http://[
 
 #### Application Settings ####
 
-To avoid working with .config files the Provisioning.UX.App allows you to work with only Azure Web App Settings (or IIS settings).  See [Azure settings documentation](Internationalization.md)
+To avoid working with .config files the Provisioning.UX.App allows you to work with only Azure Web App Settings (or IIS settings).  See [Azure settings documentation](Azure-App-Settings.md)
 
 #### SharePoint Lists as a Data Repository ####
 
-How to set up the Provisioning.UX.App using SharePoint only data storage see [SharePoint only documentation](SharePoint-Only-Storage)
+How to set up the Provisioning.UX.App using SharePoint only data storage.  See [SharePoint only documentation](SharePoint-Only-Storage.md)
 
 #### Configuration Files ####
 
