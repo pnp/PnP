@@ -1,15 +1,15 @@
 ﻿<div class="modal-right-heading">
-    <h1>Specify owners and grant permissions</h1>
+    <h1>{{ 'OWNERS_AND_PERMISSIONS' | translate }}</h1>
 </div>
 
 <div class="modal-right-body" ng-controller="SiteOwnersPeoplePickerController">
 
     <div id="divFieldOwners" class="form-group">
-        <label for="inputAdditionalOwnersPrimary" class="control-label" style="margin-top: 15px !important;">Add additional owners (everyone can use a backup)</label>
+        <label for="inputAdditionalOwnersPrimary" class="control-label" style="margin-top: 15px !important;">{{ 'ADDITIONAL_OWNERS' | translate }}</label>
         <div class="ms-core-form-line">
             <div id="divAdditionalOwnersPrimary" class="form-control">
                 <span id="spanAdditionalOwnersPrimary"></span>
-                <input type="text" id="inputAdditionalOwnersPrimary" name="inputAdditionalOwnersPrimary" class="cam-peoplepicker-edit" placeholder="[names or email addresses]" required>
+                <input type="text" id="inputAdditionalOwnersPrimary" name="inputAdditionalOwnersPrimary" class="cam-peoplepicker-edit" placeholder="{{ 'NAME_OR_EMAIL' | translate }}" required>
             </div>
             <div id="divAdditionalOwnersPrimarySearch" class="cam-peoplepicker-usersearch ms-emphasisBorder"></div>
             <input type="hidden" id="hdnAdditionalOwnersPrimary" name="hdnAdditionalOwnersPrimary" />

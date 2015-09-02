@@ -7,16 +7,16 @@
                 <div class="col-sm-9">
                     <div class="panel panel-default">
                         <div class="panel-heading panel-heading-custom">
-                            <h3 class="panel-title">Site Provisioning</h3>
+                            <h3 class="panel-title">{{ 'SITE_PROVISIONING' | translate }}</h3>
                         </div>
                         <div class="panel-body">
                             <p>
                                 <img src="../images/WizardLogo.png" class="img-responsive img-thumbnail" 
                                      alt="Site Provisioning"/>
-                                Welcome to the Site Provisioning Add-in!
+                                <span ng-bind-html=" 'WELCOME_TEXT' | translate"></span>
                             </p>
                             <br />
-                            <button class="btn btn-default" data-ng-click="open()">Request a site</button>
+                            <button class="btn btn-default" data-ng-click="open()">{{ 'REQUEST_A_SITE' | translate }}</button>
                         </div>
                     </div>
                     <br />
@@ -28,7 +28,7 @@
                     <div class="form-group">
                         <div class="panel panel-success">
                             <div class="panel-heading">
-                                <h3 class="panel-title">My Completed Requests</h3>
+                                <h3 class="panel-title">{{ 'MY_COMPLETED_REQUESTS' | translate }}</h3>
                                 <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
                             </div>
                             <div class="panel-body" ng-model="vm.existingRequests">
@@ -46,7 +46,7 @@
                         </div>
                         <div class="panel panel-warning">
                             <div class="panel-heading">
-                                <h3 class="panel-title">My New Requests</h3>
+                                <h3 class="panel-title">{{'MY_NEW_REQUESTS' | translate}}</h3>
                                 <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
                             </div>
                             <div class="panel-body" ng-model="vm.existingRequests">
@@ -70,7 +70,7 @@
                 <div class="col-sm-6">
                     <div class="panel panel-info">
                         <div class="panel-heading">
-                            <h3 class="panel-title">My Approved Requests</h3>
+                            <h3 class="panel-title">{{'MY_APPROVED_REQUESTS' | translate}}</h3>
                             <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
                         </div>
                         <div class="panel-body" ng-model="vm.existingRequests">
@@ -88,7 +88,7 @@
                     </div>
                     <div class="panel panel-danger">
                         <div class="panel-heading">
-                            <h3 class="panel-title">My Failed Requests</h3>
+                            <h3 class="panel-title">{{'MY_FAILED_REQUESTS' | translate}}</h3>
                             <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
                         </div>
                         <div class="panel-body" ng-model="vm.existingRequests">
