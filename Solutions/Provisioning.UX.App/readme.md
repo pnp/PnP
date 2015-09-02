@@ -18,6 +18,8 @@ Even with good governance, your sites can proliferate and grow out of control. S
 - Site Policies and a visual indicator of the site policy that is applied
 - Applying Composed Looks including, Alternate CSS, Logo, Background image, and fonts
 - Provision site artifacts for example Site Columns, Content Types, List Definitions and Instances, Pages (either WebPart Pages or Wiki Pages)
+- Localizable (supported languages: en-US, sv-SE)
+- Support for Azure only configuration
 
 ### Applies to ###
 -  Office 365 Multi-tenant (MT)
@@ -27,7 +29,7 @@ Even with good governance, your sites can proliferate and grow out of control. S
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Provisioning.UX.App | Frank Marasco, Brian Michely and Steven Follis
+Provisioning.UX.App | Frank Marasco, Brian Michely, Steven Follis and Wictor Wilén
 
 *PnP remote provisioning Core Engine work done by Erwin van Hunen (Knowit AB), Paolo Pialorsi (PiaSys.com), Bert Jansen (Microsoft), Frank Marasco (Microsoft), Vesa Juvonen (Microsoft)*
 
@@ -36,6 +38,7 @@ Version  | Date | Comments
 ---------| -----| --------
 .1  | June 1, 2015 | Initial version
 .2  | July 1, 2015 | Modifications to Logging Component and Exception Handling.
+.3  | September 2, 2015  | Added internationalization support, Azure only configuration
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
@@ -167,6 +170,7 @@ appSettings.config | An alternate file to store application settings
 provisioningSettings.config | An alternate file which is configured to control the implementation classes for the Provisioning Engine
 Templates.config   | Used to display the available site templates to the Provisioning.UX.AppWeb and provides a mapping to PnP Provisioning Template in the Provisioning.Job
 
+** Alternate appSettings.config file should NOT be used if configuration settings is stored in Azure Web Sites configuration **
 
 ##### appSettings.config #####
 
