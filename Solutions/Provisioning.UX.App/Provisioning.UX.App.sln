@@ -1,11 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{4511E57E-06B8-4442-9D6F-F06FFDE4F7A1}"
 	ProjectSection(SolutionItems) = preProject
+		Azure-App-Settings.md = Azure-App-Settings.md
+		Internationalization.md = Internationalization.md
 		readme.md = readme.md
+		SharePoint-Only-Storage.md = SharePoint-Only-Storage.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProvisioningExtensiblity", "ProvisioningExtensiblity", "{DEEEEBCE-F741-493C-B21E-BD89FAF3DD91}"

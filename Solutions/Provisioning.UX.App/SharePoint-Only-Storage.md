@@ -51,7 +51,7 @@ The provisioningSettings.config file should look as follows:
  - RepositoryManager_connectionString
 
 
-## Install the App
+## Install the Add-in
 Install and register the Add-in and Timer job according to the [Read me file](readme.md). 
 
 ## Create lists and libraries
