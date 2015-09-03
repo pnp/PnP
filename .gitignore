@@ -175,5 +175,6 @@ FakesAssemblies/
 
 # Visual Studio 2015 cache/options directory
 .vs/
-Solutions/Provisioning.UX.App/Provisioning.UX.AppWeb/Properties/PublishProfiles/wwaz-pnp-provisioning - FTP.pubxml
-Solutions/Provisioning.UX.App/Provisioning.UX.AppWeb/Properties/PublishProfiles/wwaz-pnp-provisioning - Web Deploy.pubxml
+
+# Do not put publishing settings in git
+*.pubxml
