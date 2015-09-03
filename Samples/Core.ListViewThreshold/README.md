@@ -1,23 +1,39 @@
-Retrieve more items than Threshold limit with CSOM
-----------------------------------------------------------
-**Summary**
-<br><br>
+# Retrieve more items than Threshold limit with CSOM #
+
+### Summary ###
+This sample shows a **ContentIterator** implementation that can be used to query large lists as it reads items in batches.
+
+### Applies to ###
+-  Office 365 Multi Tenant (MT)
+-  Office 365 Dedicated (D)
+-  SharePoint 2013 on-premises
+
+
+### Solution ###
+Solution | Author(s)
+---------|----------
+Core.ListViewThreshold | Anil Lakhagoudar
+
+### Version history ###
+Version  | Date | Comments
+---------| -----| --------
+1.0  | August 7th 2015 | Initial release
+
+### Disclaimer ###
+**THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
+
+
+----------
+
+# Introduction #
 In SharePoint, when you execute query on Large List, you will receive "The attempted operation is prohibited because it exceeds the list view threshold enforced by the administrator". To avoid this exception and read list items by batch.
-The new Content Iterator class is implemented in CSOM like **ContentIterator** class which is available in Server Object Model. which can use CSOM to retrieve the items. Also CamlQuery class has been extended with the Methods
-which can be used to set the CamlQuery properties like SPQuery for Overriding the QueryThrottleMode to avoid the QueryThrottleException.
-<br><br>
-**Solution**
-<br>
-Core.ListViewThreshold
-<br>
-<br>
-How to Use?
--------------------------
-<br>
-<br>
-*Using CamlQueryExtension methods*
-<pre>
-<code>
+
+The new Content Iterator class is implemented in CSOM like **ContentIterator** class which is available in Server Object Model. which can use CSOM to retrieve the items. Also CamlQuery class has been extended with the Methods which can be used to set the CamlQuery properties like SPQuery for Overriding the QueryThrottleMode to avoid the QueryThrottleException.
+
+## How to Use? ##
+### Using CamlQueryExtension methods ###
+
+```C#
 CamlQuery camlQuery = new CamlQuery();
             
 //CamlQuery extension Methods for setting the query properties and query option for Threshold limit
@@ -46,15 +62,12 @@ camlQuery.SetOrderByIndexField();
 
 //Set RowLimit
 camlQuery.SetQueryRowlimit(5000);
-</cod>
-</pre>
-------------------------
-*Using Implemented ContentIterator Class with CSOM*
-<pre>
-<code>
+```
 
-a)	ProcessListItems method
+### Using Implemented ContentIterator Class with CSOM ###
+#### ProcessListItems method ####
 
+```C#
 using (ClientContext context = new ClientContext("SiteUrl"))
 {
    ContentIterator contentIterator = new ContentIterator(context);
@@ -78,10 +91,11 @@ private static void ProcessItems(ListItemCollection items)
    //Process items collection
 }
 
+```
 
+#### ProcessListItem method ####
 
-b)	ProcessListItem method
-
+```C#
 using (ClientContext context = new ClientContext("SiteUrl"))
 {
    ContentIterator contentIterator = new ContentIterator(context);
@@ -104,6 +118,4 @@ private static void ProcessItem(ListItem item)
 {
  //Process each item
 }
-
-</code>
-</pre>
+```
