@@ -1,8 +1,8 @@
 ﻿<script type="text/ng-template" id="form-messages">
-    <div ng-message="required">This field cannot be blank</div>
-    <div ng-message="minlength">The value for this field is too short</div>
-    <div ng-message="maxlength">The value for this field is too long</div>
-    <div ng-message="pattern">You did not enter the value in the correct format</div>
+    <div ng-message="required">{{ 'ERR_CANNOT_BE_BLANK' | translate }}</div>
+    <div ng-message="minlength">{{ 'ERR_TO_SHORT' | translate }}</div>
+    <div ng-message="maxlength">{{ 'ERR_TO_LONG' | translate }}</div>
+    <div ng-message="pattern">{{ 'ERR_NOT_CORRECT_FORMAT' | translate }}</div>
 </script>
 <div class="modal-body">
 
@@ -11,32 +11,32 @@
         <div class="col-sm-3">
 
             <div class="modal-left">
-                <img src="../images/o365-pnp-logo2.png" class="img-responsive" alt="Office 365 Patterns and Practices Logo" />
+                <img src="../images/WizardLogo.png" class="img-responsive" alt="Site Provisioning" />
 
                 <ul class="nav nav-pills nav-stacked">
                     <li ng-class="{'active': getCurrentStep() == 1}" ng-click="setCurrentStep(1)">
-                        <a href="#" class="leftnav">Welcome</a>
+                        <a href="#" class="leftnav">{{ 'WELCOME' | translate }}</a>
                     </li>
                     <li ng-class="{'active': getCurrentStep() == 2}" ng-click="setCurrentStep(2)">
-                        <a href="#" class="leftnav">Responsibilities</a>
+                        <a href="#" class="leftnav">{{ 'RESPONSIBILITIES' | translate }}</a>
                     </li>
                     <li ng-class="{'active': getCurrentStep() == 3}" ng-click="setCurrentStep(3)">
-                        <a href="#" class="leftnav">Intended Use</a>
+                        <a href="#" class="leftnav">{{ 'INTENDED_USE' | translate }}</a>
                     </li>
                     <li ng-class="{'active': getCurrentStep() == 4}" ng-click="setCurrentStep(4)">
-                        <a href="#" class="leftnav">Template Selection</a>
+                        <a href="#" class="leftnav">{{ 'TEMPLATE_SELECTION' | translate }}</a>
                     </li>
                     <li ng-class="{'active': getCurrentStep() == 5}" ng-click="setCurrentStep(5)">
-                        <a href="#" class="leftnav">The Details</a>
+                        <a href="#" class="leftnav">{{ 'THE_DETAILS' | translate }}</a>
                     </li>
                     <li ng-class="{'active': getCurrentStep() == 6}" ng-click="setCurrentStep(6)">
-                        <a href="#" class="leftnav">Select Owners</a>
+                        <a href="#" class="leftnav">{{ 'SELECT_OWNERS' | translate }}</a>
                     </li>
                     <li ng-class="{'active': getCurrentStep() == 7}" ng-click="setCurrentStep(7)">
-                        <a href="#" class="leftnav">Privacy</a>
+                        <a href="#" class="leftnav">{{ 'PRIVACY' | translate }}</a>
                     </li>
                     <li ng-class="{'active': getCurrentStep() == 8}" ng-click="setCurrentStep(8)">
-                        <a href="#" class="leftnav">Confirmation</a>
+                        <a href="#" class="leftnav">{{ 'CONFIRMATION' | translate }}</a>
                     </li>
                 </ul>
 

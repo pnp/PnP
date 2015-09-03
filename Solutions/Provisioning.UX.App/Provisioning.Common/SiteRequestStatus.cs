@@ -12,6 +12,7 @@ namespace Provisioning.Common
     public enum SiteRequestStatus
     {
         Complete,
+        CompleteWithErrors,
         Exception,
         New,
         Processing,

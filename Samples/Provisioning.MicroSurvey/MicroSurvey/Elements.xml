@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="RootModule">
+    <File Path="SurveyAppCentralDeploy\Default.aspx.template" Url="SurveyAppCentralDeploy/Default.aspx.template" ReplaceContent="TRUE" />
+    <File Path="SurveyAppCentralDeploy\MicroSurvey.dwp" Url="SurveyAppCentralDeploy/MicroSurvey.dwp" ReplaceContent="TRUE" />
+    <File Path="SurveyAppCentralDeploy\ListDisplayForm.aspx.template" Url="SurveyAppCentralDeploy/ListDisplayForm.aspx.template" ReplaceContent="TRUE" />
+    <File Path="SurveyAppCentralDeploy\ListEditForm.aspx.template" Url="SurveyAppCentralDeploy/ListEditForm.aspx.template" ReplaceContent="TRUE" />
+    <File Path="SurveyAppCentralDeploy\ListNewForm.aspx.template" Url="SurveyAppCentralDeploy/ListNewForm.aspx.template" ReplaceContent="TRUE" />
+  </Module>
+</Elements>

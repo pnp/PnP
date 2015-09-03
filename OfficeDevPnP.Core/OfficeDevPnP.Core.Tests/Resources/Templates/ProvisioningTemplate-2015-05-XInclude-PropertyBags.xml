@@ -1,5 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<pnp:PropertyBagEntries xmlns:pnp="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema">
-  <pnp:PropertyBagEntry Key="KEY1" Value="value1" />
-  <pnp:PropertyBagEntry Key="KEY2" Value="value2" />
-</pnp:PropertyBagEntries>

@@ -29,7 +29,7 @@
 
             var logFn = service[fnName] || service.log;
             return function (msg, data, showToast) {
-                logFn(msg, data, moduleId, (showToast === undefined) ? true : showToast);
+                logFn(msg, data, moduleId, (showToast === undefined) ? false : showToast);
             };
         }
 

@@ -1,10 +1,21 @@
 #Patterns and Practices
-This is the Community Source Code location for the SharePoint and Office Patterns and Practices (PnP). We will be revising and enhancing the samples here and they should be considered just that, samples. We are working with the MSDN Content Publishing team to take the most impactful and useful samples that complete common customer scenarios and publishing them as "Solution Packs" of content as well as "Sample Packs" of sample code that has been reviewed by the Office 365 team and blessed as a recommended way to approach these scenarios. 
-
-Check additional details from the [GitHub project wiki](https://github.com/OfficeDev/PnP/wiki).
+This is the main repository for the community driven Office 365 Developer Patterns and Practices (PnP) program. 
 
 ![](http://i.imgur.com/l01hhvE.png)
 
-This package is released by a group of volunteers who are committed to continue further expanding this sample package in the future. You are more than welcome to join the team on helping to provide samples which shows different patterns and practices towards add-in model development with SharePoint and Office client.
+PnP has been going through some refactoring, so some of the components and areas have been relocated to own repositories for easier consumption. This PnP repo is still the main repository for the components, samples and solutions (more ready to be used samples). Here's also other resources around PnP.
 
-Currently this project is very focused on the SharePoint scenarios but we are keeping a keen eye towards including the all-up Office Developer story as we move forward. Your submissions on this area are more than welcome.
+- [PnP at dev.office.com](http://aka.ms/OfficeDevPnP) - Welcome page with sample and guidance search
+- [PnP Yammer Group](http://aka.ms/OfficeDevPnPYammer) - Questions and feedback
+- [PnP at MSDN](http://aka.ms/OfficeDevPnPMSDN)
+- [PnP videos](http://aka.ms/OfficeDevPnPVideos) at Channel 9
+- [PnP Sites Core Component](http://aka.ms/officedevpnpsitescore) GitHub repository 
+- [PnP PowerShell](http://aka.ms/officedevpnppowershell) GitHub repository
+- [PnP Guidance](http://aka.ms/OfficeDevPnPGuidance) GitHub repository
+- [PnP Office 365 API](http://aka.ms/officedevpnpoffice365api) GitHub repository
+- [PnP Office-Addins](http://aka.ms/officedevpnpofficeaddins) GitHub repository
+
+***Notice**. There are different kind of techniques shown in the PnP guidance for apps/add-ins targetted to store and also for apps targeted to be deployed or created more as enterprise developmented apps/add-ins. Any app/add-in which requires higher than **Manage** permission to the host web cannot be distributed using SharePoint store.*
+
+## "Sharing is caring" ##
+

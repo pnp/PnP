@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" data-ng-app="app">
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8"/> 
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>Dashboard</title>
@@ -34,6 +34,9 @@
     <script src="../scripts/vendor/angular-ui/ui-bootstrap-tpls-0.12.1.min.js"></script>  
     <script src="../scripts/toastr.js"></script>
     <script src="../scripts/spin.js"></script>
+    <script src="../scripts/angular-sanitize.min.js"></script>
+    <script src="../scripts/angular-translate.min.js"></script>
+    <script src="../scripts/angular-translate-loader-static-files.min.js"></script>
     
         
 
