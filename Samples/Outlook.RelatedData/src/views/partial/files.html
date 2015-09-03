@@ -1,0 +1,31 @@
+<div ng-controller="filesController as ctrl">
+    <accordion-group is-open="true">
+        <accordion-heading>
+            Related Documents ({{ ctrl.files.length }}) <i class="pull-right glyphicon" ng-class="glyphicon-chevron-down"></i>
+        </accordion-heading>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                        <th>FileExtension</th>
+                        <th>Author</th>
+                        <th>Created</th>
+                        <th>Modified</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="file in ctrl.files | filter: filterDocs">
+                        <th scope="row"><img ng-src="https://agile9.sharepoint.com/_layouts/15/images/icdocx.png" /></th>
+                        <td><a ng-href={{document.LinkingUrl}}>{{file.Title}}</a></td>
+                        <td>{{file.FileExtension}}</td>
+                        <td>{{file.Author}}</td>
+                        <td>{{file.Write | date:'dd/MM/yyyy h:mma'}}</td>
+                        <td>{{file.LastModifiedTime | date:'dd/MM/yyyy h:mma'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </accordion-group>
+</div>
