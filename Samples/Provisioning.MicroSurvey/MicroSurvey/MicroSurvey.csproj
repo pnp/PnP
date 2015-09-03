@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{756129D2-5A57-4803-AB32-88D5FEA763A0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MicroSurveySPApp</RootNamespace>
+    <AssemblyName>MicroSurveySPApp</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetOfficeVersion>15.0</TargetOfficeVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <IncludeAssemblyInPackage>False</IncludeAssemblyInPackage>
+    <ProjectMode>SharePointApp</ProjectMode>
+    <AppFeaturePartId>{65ee14a0-bca5-46d5-b81e-408883410ef1}</AppFeaturePartId>
+    <WspPartId>{3e7c8c7c-34de-4463-bf3b-b220d347c021}</WspPartId>
+    <WorkflowPartId>{6ad7961d-49e7-4055-a2e5-7f6f5b20cfd1}</WorkflowPartId>
+    <CspkgPartId>{ce64d92f-d3bd-4ebb-bb3f-ce83d9df8d93}</CspkgPartId>
+    <SqlPackagePartId>{7ea28706-9a41-437b-bad1-cbc9ed08e15e}</SqlPackagePartId>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="Features\MicroSurveyFiles\MicroSurveyFiles.feature">
+      <FeatureId>{f251fbf1-7de8-4eb3-bd3b-5cdfe0dfa35f}</FeatureId>
+    </None>
+    <None Include="MicroSurveyWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{8bb95b9a-7be6-4acb-aade-5e330694c406}</SharePointProjectItemId>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Pages\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{3fe921aa-ea72-438a-8f6c-60a6a07a60c4}</SharePointProjectItemId>
+    </None>
+    <Content Include="Elements.xml" />
+    <Content Include="MicroSurveyWP\Elements.xml">
+      <OpcRelationship>feature-elementmanifest</OpcRelationship>
+    </Content>
+    <Content Include="Pages\MicroSurveyWP.aspx" />
+    <None Include="SurveyAppCentralDeploy\Default.aspx.template" />
+    <None Include="SurveyAppCentralDeploy\ListDisplayForm.aspx.template" />
+    <None Include="SurveyAppCentralDeploy\ListEditForm.aspx.template" />
+    <None Include="SurveyAppCentralDeploy\ListNewForm.aspx.template" />
+    <None Include="SurveyAppCentralDeploy\WebPart.html.template" />
+    <Content Include="SurveyApp\listForm.html" />
+    <Content Include="SurveyApp\listFormController.js" />
+    <Content Include="SurveyApp\ListNewForm.aspx" />
+    <Content Include="SurveyApp\ListEditForm.aspx" />
+    <Content Include="SurveyApp\ListDisplayForm.aspx" />
+    <Content Include="SurveyApp\Default.aspx" />
+    <Content Include="SurveyApp\WebPart.html" />
+    <Content Include="SurveyApp\initUI.js" />
+    <Content Include="SurveyApp\angular.1.3.14.min.js" />
+    <Content Include="SurveyApp\settings.html" />
+    <Content Include="SurveyApp\settingsController.js" />
+    <Content Include="SurveyApp\spDataService.js" />
+    <Content Include="SurveyApp\main.html" />
+    <Content Include="Features\MicroSurveyFiles\MicroSurveyFiles.Template.xml">
+      <DependentUpon>MicroSurveyFiles.feature</DependentUpon>
+    </Content>
+    <Content Include="Pages\Elements.xml" />
+    <Content Include="Pages\Default.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\jquery-1.9.1.min.map" />
+    <None Include="Scripts\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{7ea28706-9a41-437b-bad1-cbc9ed08e15e}</SharePointProjectItemId>
+    </None>
+    <Content Include="Scripts\Elements.xml" />
+    <Content Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <Content Include="SurveyApp\mainController.js" />
+    <Content Include="SurveyApp\surveyService.js" />
+    <Content Include="Scripts\_references.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{ebc5c692-c5ad-4e4e-aa09-914e03257815}</SharePointProjectItemId>
+    </None>
+    <None Include="SurveyAppCentralDeploy\MicroSurvey.dwp" />
+    <None Include="SurveyApp\MicroSurvey.dwp" />
+    <None Include="SurveyApp\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{b52069dd-3c60-4af2-be6e-6c7a766ad822}</SharePointProjectItemId>
+    </None>
+    <Content Include="SurveyApp\Elements.xml" />
+    <Content Include="SurveyApp\survey.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\AppIcon.png">
+      <OpcRelationship>manifest-icon</OpcRelationship>
+    </Content>
+    <Content Include="Images\Elements.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Images\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{9156b892-90ce-45f5-927c-5a003e584dc8}</SharePointProjectItemId>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Package\Package.package">
+      <PackageId>{a1b721c6-cae4-436a-902d-18d5ac2d120d}</PackageId>
+    </None>
+    <None Include="Package\Package.Template.xml">
+      <DependentUpon>Package.package</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <AppManifestFile Include="AppManifest.xml">
+      <SubType>Designer</SubType>
+    </AppManifestFile>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="'$(VSToolsPath)' != ''" />
+</Project>
