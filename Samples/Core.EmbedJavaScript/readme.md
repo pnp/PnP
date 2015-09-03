@@ -3,6 +3,8 @@
 ### Summary ###
 This code sample demonstrates how to embed JavaScript on a SharePoint site to update the UI. Use this technique instead of customizing the Master Page.
 
+***Notice**. Techniques shown in this sample do require full permission to web or site collection level, so this is not a suitable model for apps designed to be distributed from the SharePoint store.*
+
 ### Resources ###
 
 MSDN article - [Customize your SharePoint site UI by using JavaScript](https://msdn.microsoft.com/EN-US/library/office/dn913116.aspx)

@@ -131,7 +131,7 @@
             // Add the selected template to the configuration object
             $scope.siteConfiguration.template = template;
             // Add the Path to the configuration object to store the url
-            $scope.siteConfiguration.spNewSitePrefix = template.hostPath;
+            $scope.siteConfiguration.spNewSitePrefix = template.hostPath; // + template.managedPath + "/";
             $scope.siteConfiguration.spOnPrem = template.sharePointOnPremises;
             $scope.siteConfiguration.tenantAdminUrl = template.tenantAdminUrl;
 

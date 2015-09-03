@@ -1,21 +1,8 @@
 ﻿<div class="modal-right-heading">
-    <h1>Welcome</h1>
+    <h1>{{ 'WELCOME' | translate }}</h1>
 </div>
 
-<div class="modal-right-body">
-    <p>
-        Access, use of, and content stored on the SharePoint Online environment at Contoso may be monitored and reviewed by Contoso to manage performance, security, and compliance.
-    </p>
-    <p>
-        In general, remember to keep these terms of use in mind when using SharePoint Online: 
-
-    <p>
-        <b>Be aware</b> you can help us keep costs down by:
-        Keeping customizations to a minimum by using built-in theming.
-    </p>
-    <p>
-        <b>Be smart</b> the SharePoint service adheres to Consoto IT security policies.
-    </p>
-
-    <p>Are you ready? If so, click the next arrow below.</p>
+<div class="modal-right-body" ng-bind-html="'WIZARD_INTRO' | translate">
+   
+   
 </div>

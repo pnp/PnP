@@ -7,6 +7,8 @@ using Microsoft.SharePoint.Client;
 using Provisioning.Common.Utilities;
 using Provisioning.Common.Configuration;
 using System.Configuration;
+using SC = System.Configuration;
+
 
 namespace Provisioning.Common.Data.SiteRequests
 {
@@ -66,7 +68,14 @@ namespace Provisioning.Common.Data.SiteRequests
                 var typeName = type[0];
                 var assemblyName = type[1];
                 var instance = (AbstractModule)Activator.CreateInstance(assemblyName, typeName).Unwrap();
-                instance.ConnectionString = _module.ConnectionString;
+                if (String.IsNullOrEmpty(_module.ConnectionString))
+                {
+                    instance.ConnectionString = SC.ConfigurationManager.AppSettings.Get(ModuleKeys.REPOSITORYMANGER_KEY + "_connectionString");
+                }
+                else
+                {
+                    instance.ConnectionString = _module.ConnectionString;
+                }
                 instance.Container = _module.Container;
                 return (ISiteRequestManager)instance;
             }

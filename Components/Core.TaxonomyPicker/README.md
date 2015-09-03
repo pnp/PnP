@@ -9,7 +9,8 @@ This sample shows an implementation of a SharePoint Taxonomy Picker control that
 -  SharePoint 2013 on-premises
 
 ### Prerequisites ###
-It's important that the provider hosted add-in that's running the taxonomy picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
+- It's important that the provider hosted add-in that's running the taxonomy picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
+- You have to set the Options 'This service application is the default storage location for Keywords.' and 'This service application is the default storage location for column specific term sets.' on one of the Managed Metadata Service Application(s) Proxy Properties. If you get "Loading TermSet failed. Please refresh your browser and try again." errors then please check this.
 
 ### Solution ###
 Solution | Author(s)
