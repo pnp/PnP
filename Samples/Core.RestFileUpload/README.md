@@ -1,13 +1,30 @@
-# Core.RestFileUpload
+# Uploading files using REST #
 
+### Summary ###
 This sample demonstrate how to upload files to SharePoint using REST APIs.
 
-Despite the upload methods described in [Large Files Upload](https://github.com/OfficeDev/PnP/tree/dev/Samples/Core.LargeFileUpload) link, the best approach for large files upload inside an add-in is to use SharePoint REST APIs.
+### Applies to ###
+-  Office 365 Multi Tenant (MT)
+-  Office 365 Dedicated (D)
+-  SharePoint 2013 on-premises
 
-Using the REST approach, you do not need to slice your file into pieces and can send a file up to 2GB.
+### Solution ###
+Solution | Author(s)
+---------|----------
+Core.RestFileUpload | Rodrigo Romano
 
-This method is in compliance with SharePoint Online.
+### Version history ###
+Version  | Date | Comments
+---------| -----| --------
+1.0  | August 9th 2015 | Initial release
 
+### Disclaimer ###
+**THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
+
+
+----------
+# Introduction #
+Several upload methods are described in [Large Files Upload](https://github.com/OfficeDev/PnP/tree/dev/Samples/Core.LargeFileUpload) link, but this sample shows how to use the SharePoint REST APIs to upload files. Using the REST approach, you do not need to slice your file into pieces and can send a file up to 2 GB, but the same security time-out restrictions mentioned in the large upload sample apply here. If you really want to upload large files and you're on SharePoint Online the sliced upload is the advised approach. For on-premises or for files that can be uploaded within the security timeout window the REST approach is good one.
 
 ## Console Application
 
