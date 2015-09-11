@@ -1,4 +1,5 @@
-﻿Array.prototype.select = function (a) {
+﻿// mirror the LINQ select projection
+Array.prototype.select = function (a) {
     
     if (!$.isFunction(a)) {
         return this;

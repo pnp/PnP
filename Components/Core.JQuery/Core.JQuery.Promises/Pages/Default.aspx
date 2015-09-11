@@ -11,13 +11,14 @@
     <script type="text/javascript" src="../Scripts/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="/_layouts/15/sp.runtime.js"></script>
     <script type="text/javascript" src="/_layouts/15/sp.js"></script>
-    <script type="text/javascript" src="../Scripts/App.js"></script>
     <script type="text/javascript" src="../Scripts/arrayextensions.js"></script>
     <script type="text/javascript" src="../Scripts/officepnp.js"></script>
+
+    <script type="text/javascript" src="../Scripts/AddIn.js"></script>
     <meta name="WebPartPageExpansion" content="full" />
 
     <!-- Add your CSS styles to the following file -->
-    <link rel="Stylesheet" type="text/css" href="../Content/App.css" />
+    <link rel="Stylesheet" type="text/css" href="../Content/AddIn.css" />
 
 </asp:Content>
 
@@ -29,14 +30,7 @@
 <%-- The markup and script in the following Content element will be placed in the <body> of the page --%>
 <asp:Content ContentPlaceHolderID="PlaceHolderMain" runat="server">
 
-    <button id="setup-example">Setup Add-In Web for testing</button>
-
-
-
-
-
-
-
-
+    <button id="runtest">Run Test</button>
+    <div id="result"></div>
 
 </asp:Content>

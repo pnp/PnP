@@ -60,7 +60,7 @@
     </None>
     <Content Include="Scripts\arrayextensions.js" />
     <Content Include="Scripts\Elements.xml" />
-    <Content Include="Scripts\App.js" />
+    <Content Include="Scripts\AddIn.js" />
     <Content Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
@@ -72,7 +72,7 @@
       <SharePointProjectItemId>{bb7334ea-0cc3-4ee1-bdd1-c57b375155ec}</SharePointProjectItemId>
     </None>
     <Content Include="Content\Elements.xml" />
-    <Content Include="Content\App.css" />
+    <Content Include="Content\AddIn.css" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\AppIcon.png">

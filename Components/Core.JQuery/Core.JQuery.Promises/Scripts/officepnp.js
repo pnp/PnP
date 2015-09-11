@@ -1,18 +1,22 @@
-﻿$pnpcore = {
+﻿var $pnpcore = {
 
     onStartPromise: null,
     getContextPromise: null,
     spContext: null,
     scriptbasepath: '/_layouts/15/',
 
+    // gets the Add-In host web url
     getHostWebUrl: function () {
         return $pnpcore.getUrlParamByName('SPHostUrl');
     },
 
+    // gets the Add-In web url
     getAddInWebUrl: function () {
         return $pnpcore.getUrlParamByName('SPAppWebUrl');
     },
 
+    // a custom onStart method to ensure anything we need in our Add-In is ready
+    // includes the full DOM load as resolved by $(function() {...}) syntax
     onStart: function (/*function()*/ onStartFunc) {
 
         var hostUrl = $pnpcore.getHostWebUrl();
@@ -33,13 +37,17 @@
             });
         }
 
+        // if a function was supplied we register it as a done handler
         if ($.isFunction(onStartFunc)) {
             $pnpcore.onStartPromise.done(onStartFunc);
         }
 
+        // return the promise so the onStart().done() syntax works
         return $pnpcore.onStartPromise;
     },
 
+    // provides an easy way to use a client context from a centralized location
+    // also ensures one context is created for all functions in your Add-In
     withSPContext: function (/*function(context)*/ action) {
 
         if ($pnpcore.getContextPromise == null) {
@@ -86,29 +94,56 @@
 
         $.extend(SP.ClientContext.prototype, {
 
-            ext_executeQueryPromise: function () {
-
-                // maintain self-awareness
-                var self = this;
-
-                // create a deferred
-                var d = $.Deferred();
-
-                // resolve either success or failure and call back with self and whatever arguments were passed back from executeQueryAsync
-                self.executeQueryAsync(function () { d.resolveWith(self, arguments); }, function () { d.rejectWith(self, arguments); });
-
-                // return a promise
-                return d.promise();
-            },
-
-            // execute the query with retry
-            ext_executeQueryRetry: function (i) {
+            // the basic pattern for usign a promise to resolve executeQueryAsync
+            // supports calling patterns:
+            // ext_executeQueryPromise(function(){//success}, function(){//fail});
+            // ext_executeQueryPromise().done((function(){//success}).fail(function(){//fail});
+            ext_executeQueryPromise: function (doneFunc, failFunc) {
 
                 // maintain self-awareness
                 var self = this;
 
                 // create a deferred
                 var def = $.Deferred();
+
+                // if a function was passed in helpfully register it
+                if ($.isFunction(doneFunc)) {
+                    def.done(doneFunc);
+                }
+
+                // if a function was passed in helpfully register it
+                if ($.isFunction(failFunc)) {
+                    def.fail(failFunc);
+                }
+
+                // resolve either success or failure and resolve/reject with whatever would have been supplied by executeQueryAsync
+                self.executeQueryAsync(function () { def.resolveWith(this, arguments); }, function () { def.rejectWith(this, arguments); });
+
+                // return a promise
+                return def.promise();
+            },
+
+            // execute the query with retry
+            // supports calling patterns:
+            // ext_executeQueryRetry(function(){//success}, function(){//fail});
+            // ext_executeQueryRetry().done((function(){//success}).fail(function(){//fail});
+            ext_executeQueryRetry: function (doneFunc, failFunc) {
+
+                // maintain self-awareness
+                var self = this;
+
+                // create a deferred
+                var def = $.Deferred();
+
+                // if a function was passed in helpfully register it
+                if ($.isFunction(doneFunc)) {
+                    def.done(doneFunc);
+                }
+
+                // if a function was passed in helpfully register it
+                if ($.isFunction(failFunc)) {
+                    def.fail(failFunc);
+                }
 
                 // create a context to track our async retries
                 var ctx = {
@@ -124,8 +159,8 @@
                     errors: []
                 };
 
-                // call the implementation method to start the cycle
-                $pnpcore._$_executeQueryRetryImpl.apply(self, [ctx]);
+                // call the implementation method to start the cycle maintaining the 'self' c
+                $pnpcore.__executeQueryRetryImpl.apply(self, [ctx]);
 
                 // return a promise
                 return def.promise();
@@ -134,7 +169,7 @@
     },
 
     // implements the retry logic
-    _$_executeQueryRetryImpl: function (ctx) {
+    __executeQueryRetryImpl: function (ctx) {
 
         // maintain self-awareness
         var self = this;
@@ -147,14 +182,14 @@
 
             var retry = false;
 
-            // see if we should retry
-            if (error && error.get_message) {
-                retry = /unable to connect to the target server/i.test(error.get_message());
+            // see if we should retry, other logic can be added here
+            if (error && error.get_errorTypeName) {
+                retry = /Microsoft.SharePoint.Client.ClientServiceTimeoutException/i.test(error.get_errorTypeName());
             }
 
             if (!retry) {
                 // if we can't retry, reject
-                ctx.deferred.rejectWith(sender, [sender, $pnpcore.getNoRetryAvailableException(ctx)]);
+                ctx.deferred.rejectWith(sender, [sender, $pnpcore.__getNoRetryAvailableException(ctx)]);
             }
 
             // grab our current delay value
@@ -166,15 +201,15 @@
 
             // if we have exceeded the retry count, reject
             if (ctx.retryCount <= ctx.retryAttempts) {
-                ctx.deferred.rejectWith(sender, [sender, $pnpcore.getRetryLimitReachedException(ctx)]);
+                ctx.deferred.rejectWith(sender, [sender, $pnpcore.__getRetryLimitReachedException(ctx)]);
             }
 
-            // retry in {delay} milliseconds
-            setTimeout($pnpcore.getCtxCallback(self, $pnpcore._$_executeQueryRetryImpl, ctx), delay);
+            // set our retry timeout for {delay} milliseconds
+            setTimeout($pnpcore.getCtxCallback(self, $pnpcore.__executeQueryRetryImpl, ctx), delay);
         });
     },
 
-    getNoRetryAvailableException: function (ctx) {
+    __getNoRetryAvailableException: function (ctx) {
         return {
             message: 'Retry not available.',
             retryCount: ctx.retryAttempts,
@@ -183,7 +218,7 @@
         };
     },
 
-    getRetryLimitReachedException: function (ctx) {
+    __getRetryLimitReachedException: function (ctx) {
         return {
             message: 'Exceeded retry limit.',
             retryCount: ctx.retryAttempts,
@@ -192,6 +227,7 @@
         };
     },
 
+    // allows for the calling pattern getCtxCallback(thisobj, method, methodarg1, methodarg2, etc...)
     getCtxCallback: function (context, method) {
 
         var args = [].slice.call(arguments).slice(2);
@@ -201,24 +237,33 @@
         }
     },
 
+    // loads a set of specificed files, returning a promise
     loadFiles: function (/*string[]*/ files) {
 
+        // create a promise
         var promise = $.Deferred();
 
+        // see if we have bad data supplied
         if (typeof (files) === undefined || ($.isArray(files) && files.length < 1)) {
             promise.resolve();
             return promise.promise();
         }
 
+        // if it isn't an array stick it in one, this allows the calling pattern loadFiles('filename.js') with a singular filename
         if (!$.isArray(files)) {
             files = [files];
         }
 
+        // this function will be used to recursively load all the files
         var engine = function () {
 
+            // maintain context
             var self = this;
+
+            // get the next file to load
             var file = self.files.shift();
 
+            // load the remote script file
             $.getScript(file).done(function () {
                 if (self.files.length > 0) {
                     engine.call(self);
@@ -226,9 +271,7 @@
                 else {
                     self.promise.resolve();
                 }
-            }).fail(function () {
-                self.promise.reject();
-            });
+            }).fail(self.promise.reject);
         };
 
         // create our "this" we will apply to the engine function
@@ -237,17 +280,21 @@
             promise: promise
         };
 
+        // call the engine with our context
         engine.call(ctx);
 
+        // give back the promise
         return promise.promise();
     },
 
+    // tests if a url param exists
     urlParamExists: function (name) {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
         var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
         return regex.test(location.search);
     },
 
+    // gets a url param value by name
     getUrlParamByName: function (name) {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
         var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
@@ -255,12 +302,14 @@
         return results == null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
     },
 
+    // gets a url param by name and attempts to parse a bool value
     getUrlParamBoolByName: function (name) {
-        var p = $app.getUrlParamByName(name);
-        var isFalse = (p == '' || p == '0' || p.toLowerCase() == 'false');
+        var p = $pnpcore.getUrlParamByName(name);
+        var isFalse = (p == '' || /[false|0]/i.test(p));
         return !isFalse;
     },
 
+    // inserts the string s into the string target as the index specified by index
     stringInsert: function (target, index, s) {
         if (index > 0) {
             return target.substring(0, index) + s + target.substring(index, target.length);
@@ -268,9 +317,10 @@
         return s + target;
     },
 
+    // appends the required SP parameters to the supplied url, great for web api calls to maintain context on the server side
     appendSPQueryToUrl: function (/*string*/ url) {
 
-        // we already have the SPHostUrl param from somewhere else, just give back the url
+        // we already have the SPHostUrl param, just give back the url
         if (url.indexOf('SPHostUrl=') > -1) {
             return url;
         }
@@ -288,6 +338,7 @@
         return url;
     },
 
+    // gets the authority from the supplied url
     getAuthorityFromUrl: function (/*string*/ url) {
         if (url) {
             var match = /^(?:https:\/\/|http:\/\/|\/\/)([^\/\?#]+)(?:\/|#|$|\?)/i.exec(url);
@@ -298,6 +349,7 @@
         return null;
     },
 
+    // ensures that all the appropriate links in the page have the SP parameters attached
     ensureContextQueryString: function () {
 
         // remove the redirect flag
@@ -310,6 +362,7 @@
         $pnpcore.ensureSPHostUrlInLinks($('a'));
     },
 
+    // process all the supplied tags
     ensureSPHostUrlInLinks: function (/*jquery*/ parentNode) {
 
         var currentAuthority = $pnpcore.getAuthorityFromUrl(window.location.href);
@@ -326,4 +379,4 @@
             this.href = $pnpcore.appendSPQueryToUrl(this.href);
         });
     }
-}
+};
