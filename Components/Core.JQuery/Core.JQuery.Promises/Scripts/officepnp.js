@@ -116,7 +116,7 @@
                     def.fail(failFunc);
                 }
 
-                // resolve either success or failure and resolve/reject with whatever would have been supplied by executeQueryAsync
+                // resolve/reject with whatever would have been supplied by executeQueryAsync
                 self.executeQueryAsync(function () { def.resolveWith(this, arguments); }, function () { def.rejectWith(this, arguments); });
 
                 // return a promise
@@ -175,7 +175,7 @@
         var self = this;
 
         // call our extension method to execute query with a promise
-        self.ext_executeQueryPromise().done(function () { ctx.deferred.resolveWith(self, arguments); }).fail(function (sender, error) {
+        self.ext_executeQueryPromise().done(function () { ctx.deferred.resolveWith(this, arguments); }).fail(function (sender, error) {
 
             // record our error
             ctx.errors.push(error);
