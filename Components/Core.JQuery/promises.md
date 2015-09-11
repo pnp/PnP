@@ -10,7 +10,7 @@ The relevant files from the example solution are:
 - [AddIn.js](Core.JQuery.Promises/Scripts/AddIn.js) : the Add-In specific functions
 - [officepnp.js](Core.JQuery.Promises/Scripts/officepnp.js) : the example library code (the good stuff)
 - [arrayextensions.js](Core.JQuery.Promises/Scripts/arrayextensions.js) : extension methods for base Array object
-- [arrayextensions.js](Core.JQuery.Promises/Pages/Default.aspx) : example page
+- [Default.aspx](Core.JQuery.Promises/Pages/Default.aspx) : example page
 
 ### Dependencies ###
 
@@ -18,7 +18,7 @@ The relevant files from the example solution are:
 
 ### Basic Pattern ###
 
-The basic pattern to follow when using Deferred with executeQueryAsync is below. It involves creating a Deferred object, executing the query, and then either resolve or rejecting the Deferred. By supplying this and arguments as the resolution parameters we are able to pass back exactly what executeQueryAsync returned. This helps ensure we don't need to change our event handlers to transition to this pattern
+The basic pattern to follow when using Deferred with executeQueryAsync is below. It involves creating a Deferred object, executing the query, and then either resolving or rejecting the Deferred. By supplying this and arguments as the resolution parameters we are able to pass back exactly what executeQueryAsync returned. This helps ensure we don't need to change any existing event handlers to transition to this pattern.
 
 ```JavaScript
 function (/*SP.ClientContext*/ context) {
@@ -27,7 +27,11 @@ function (/*SP.ClientContext*/ context) {
 	var def = $.Deferred();
 	
 	// resolve/reject with whatever would have been supplied by executeQueryAsync
-	context.executeQueryAsync(function () { def.resolveWith(this, arguments); }, function () { def.rejectWith(this, arguments); });
+	context.executeQueryAsync(function () { 
+		def.resolveWith(this, arguments); 
+	}, function () { 
+		def.rejectWith(this, arguments); 
+	});
 	
 	// return a promise
 	return def.promise();

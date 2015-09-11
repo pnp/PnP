@@ -15,7 +15,7 @@ Version  | Date | Comments
 1.1  | September 11th, 2015 | Added jQuery promises examples
 
 ### [jQuery Extensions](extensions.md) ###
-Includes extensions to the core jQuery library to ease DOM manipulation and provide reusable components
+Includes extensions to the core jQuery library to ease DOM manipulation and provide reusable components.
 
 ### [jQuery Promises](promises.md) ###
-Includes sample code demonstrating using the jQuery Deferred object to manage Asyn requests using [Sp.ClientContext.executeQueryAsync](https://msdn.microsoft.com/en-us/library/office/dn168907.aspx).
+Includes sample code demonstrating using the jQuery Deferred object to manage Async requests using [SP.ClientContext.executeQueryAsync](https://msdn.microsoft.com/en-us/library/office/dn168907.aspx).
