@@ -1,0 +1,28 @@
+﻿<div class="microSurvey">
+    <div class="questionPanel" ng-show="vm.questionMode">
+        <div class="surveyQuestion">
+            {{vm.question}}
+        </div>
+        <div class="surveyAnswers">
+            <table>
+                <tr>
+                    <td ng-repeat="choice in vm.answerChoices" ng-show="choice.text != ''">
+                        <div ng-click="vm.answerClick(choice.index)">{{choice.text}}</div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="resultsPanel" ng-show="vm.resultsMode">
+        <div class="surveyQuestion">
+            {{vm.question}}
+        </div>
+        <div class="surveyAnswers">
+            <canvas class="answerCanvas" x-bg-show-data>Your browser can't display the graph.</canvas>
+        </div>
+    </div>
+    <div ng-show="vm.errorMode" class="messagePanel">
+        <a href="{{vm.questionsListUrl}}NewForm.aspx?Source={{vm.currentUrl}}">Ask a question.</a>
+    </div>
+</div>
+

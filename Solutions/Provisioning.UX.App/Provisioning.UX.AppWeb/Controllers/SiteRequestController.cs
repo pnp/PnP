@@ -57,7 +57,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             }
             catch(JsonException _ex)
             {
-                var _message = string.Format("There was an error with the data. Exeception {0}", _ex.Message);
+                var _message = string.Format("There was an error with the data. Exception {0}", _ex.Message);
                 Log.Error("SiteRequestController.GetSiteRequest",
                      "There was an error processing the request. Error Message {0} Error Stack {1}",
                      _ex.Message,
@@ -67,7 +67,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             }
             catch (Exception _ex)
             {
-                var _message = string.Format("There was an error with the data. Exeception {0}", _ex.Message);
+                var _message = string.Format("There was an error with the data. Exception {0}", _ex.Message);
                 Log.Error("SiteRequestController.GetSiteRequest",
                     "There was an error processing your request. Error Message {0} Error Stack {1}",
                     _ex.Message,
@@ -103,7 +103,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             }
             catch (JsonSerializationException _ex)
             {
-                var _message = string.Format("There was an error with the data. Exeception {0}", _ex.Message);
+                var _message = string.Format("There was an error with the data. Exception {0}", _ex.Message);
                
                 Log.Error("SiteRequestController.CreateSiteRequest",
                      "There was an error creating the new site request. Error Message {0} Error Stack {1}",
@@ -116,7 +116,7 @@ namespace Provisioning.UX.AppWeb.Controllers
 
             catch (Exception _ex)
             {
-                var _message = string.Format("There was an error processing the request. Exeception {0}", _ex.Message);
+                var _message = string.Format("There was an error processing the request. Exception {0}", _ex.Message);
                 HttpResponseMessage _response = Request.CreateResponse(HttpStatusCode.InternalServerError, _message);
 
                 Log.Error("SiteRequestController.CreateSiteRequest",
@@ -148,7 +148,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             }
             catch (JsonSerializationException _ex)
             {
-                var _message = string.Format("There was an error with the data. Exeception {0}", _ex.Message);
+                var _message = string.Format("There was an error with the data. Exception {0}", _ex.Message);
 
                 Log.Error("SiteRequestController.GetOwnerRequestsByEmail",
                      "There was an error get site requests by email. Error Message {0} Error Stack {1}",

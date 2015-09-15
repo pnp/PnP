@@ -144,7 +144,7 @@ The control uses the default Bootstrap styles and functionality in association w
 
 ### Add In Web Requirements ###
 
-You must ensure creation of an Add In web for the extension to work correctly. This can be done by creating an empty list in your app project. Also, to recurse the site hierarchy when showing sub-sites you must request SiteCollection : Manage permissions:
+You must ensure creation of an Add In web for the extension to work correctly. This can be done by creating an empty list in your Add-In project. Also, to recurse the site hierarchy when showing sub-sites you must request SiteCollection : Manage permissions:
 
 ```XML
 <?xml version="1.0" encoding="utf-8" ?>

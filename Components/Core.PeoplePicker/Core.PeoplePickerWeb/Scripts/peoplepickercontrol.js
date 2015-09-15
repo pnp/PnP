@@ -197,11 +197,18 @@
         // Remove resolved user from the array and updates the hidden field control with a JSON string
         PeoplePicker.prototype.RemoveResolvedUser = function (lookupValue) {
             var newResolvedUsers = [];
+            var userRemoved = false;
+            
             for (var i = 0; i < this._ResolvedUsers.length; i++) {
                 var resolvedLookupValue = this._ResolvedUsers[i].Login ? this._ResolvedUsers[i].Login : this._ResolvedUsers[i].LookupId;
-                if (resolvedLookupValue != lookupValue) {
-                    newResolvedUsers.push(this._ResolvedUsers[i]);
-                }
+                if (resolvedLookupValue != lookupValue || userRemoved == true) {
+                     newResolvedUsers.push(this._ResolvedUsers[i]);
+                 }
+                 
++                // Handle duplicates if enabled, only remove one user
++                if(resolvedLookupValue == lookupValue){
++                    userRemoved = true;
++                }
             }
             this._ResolvedUsers = newResolvedUsers;
             this.PeoplePickerData.val(JSON.stringify(this._ResolvedUsers));

@@ -130,6 +130,7 @@
     <Compile Include="Authentication\AppOnlyAuthenticationTenant.cs" />
     <Compile Include="Authentication\AppOnlyAuthenticationSite.cs" />
     <Compile Include="Authentication\IAuthentication.cs" />
+    <Compile Include="Authentication\OAuthException.cs" />
     <Compile Include="Configuration\Application\AppSettings.cs">
       <SubType>Code</SubType>
     </Compile>
