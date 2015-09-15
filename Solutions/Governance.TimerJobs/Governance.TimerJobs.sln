@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{9CC3AE7B-AC32-42B4-968C-89A5D03DB595}"
 	ProjectSection(SolutionItems) = preProject
@@ -19,8 +19,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Governance.TimerJobs.UnitTest", "Governance.TimerJobs.UnitTest\Governance.TimerJobs.UnitTest.csproj", "{78CAEC1F-C3EE-4DF6-9DB3-47C77A7ACB8B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Governance.TimerJobs.RemediationUx", "Governance.TimerJobs.RemediationUx\Governance.TimerJobs.RemediationUx.csproj", "{A8EBB032-ADF4-47E6-B99B-9C59703E7666}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Common", "..\Provisioning.UX.App\Provisioning.Common\Provisioning.Common.csproj", "{77447711-3AB3-4390-A22C-75BB5A97BB95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -162,26 +160,6 @@ Global
 		{A8EBB032-ADF4-47E6-B99B-9C59703E7666}.Release15|ARM.ActiveCfg = Release|Any CPU
 		{A8EBB032-ADF4-47E6-B99B-9C59703E7666}.Release15|x64.ActiveCfg = Release|Any CPU
 		{A8EBB032-ADF4-47E6-B99B-9C59703E7666}.Release15|x86.ActiveCfg = Release|Any CPU
-		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Debug15|Any CPU.ActiveCfg = Debug|Any CPU
-		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Debug15|Any CPU.Build.0 = Debug|Any CPU
-		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Debug15|ARM.ActiveCfg = Debug|Any CPU
-		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Debug15|x64.ActiveCfg = Debug|Any CPU
-		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Debug15|x86.ActiveCfg = Debug|Any CPU
-		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Release|Any CPU.Build.0 = Release|Any CPU
-		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Release|ARM.ActiveCfg = Release|Any CPU
-		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Release|x64.ActiveCfg = Release|Any CPU
-		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Release|x86.ActiveCfg = Release|Any CPU
-		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Release15|Any CPU.ActiveCfg = Release|Any CPU
-		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Release15|Any CPU.Build.0 = Release|Any CPU
-		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Release15|ARM.ActiveCfg = Release|Any CPU
-		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Release15|x64.ActiveCfg = Release|Any CPU
-		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Release15|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

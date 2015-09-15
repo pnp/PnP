@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -1077,10 +1078,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Provisioning.UX.App\Provisioning.Common\Provisioning.Common.csproj">
-      <Project>{77447711-3ab3-4390-a22c-75bb5a97bb95}</Project>
-      <Name>Provisioning.Common</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Governance.TimerJobs.Data\Governance.TimerJobs.Data.csproj">
       <Project>{20b62a43-6d05-4f93-a2a1-473bd677d936}</Project>
       <Name>Governance.TimerJobs.Data</Name>
