@@ -6,7 +6,6 @@ using System.Net.Http;
 using System.Threading;
 using System.Web.Http;
 using Microsoft.Online.SharePoint.TenantAdministration;
-using Provisioning.Common.Authentication;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core;
 using Governance.TimerJobs.RemediationUx.Model;
