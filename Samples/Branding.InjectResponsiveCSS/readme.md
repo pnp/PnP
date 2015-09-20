@@ -5,7 +5,7 @@ Demonstrate how to update out of the box seattle.master user expirience responsi
 
 * Heather Solomon (SharePoint Experts, Inc) - [Making Seattle master responsive](http://blog.sharepointexperience.com/2015/03/making-seattle-master-responsive/)
 
-To make sure the css is rendered correctly on hardware devices a viewport html meta tag needs to be added to the master page. This can be accomplished by using the Search Engine Optimization Settings. Again the master page doesn't need to be edited. More details on this are covered in the following blog post.
+To make sure the css is rendered correctly on hardware devices a viewport html meta tag needs to be added to the master page. This can be accomplied by using the Search Engine Optimization Settings. Again the master page doesn't need to be edited. More details on this are covered in the following blog post.
 
 * Stefan Bauer (n8d) - [How to add viewport meta without editing the master page](http://www.n8d.at/blog/how-to-add-viewport-meta-without-editing-the-master-page/)
 
