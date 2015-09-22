@@ -32,7 +32,7 @@
         }
 
         // Property wrapped in function to allow access from event handler
-        PeoplePicker.prototype.GetSPGroupName = function () {
+        CsomPeoplePicker.prototype.GetSPGroupName = function () {
             return this.SPGroupName;
         }
 
