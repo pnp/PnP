@@ -24,7 +24,8 @@ namespace Diagnostics.LoggingWeb
                       "~/Scripts/respond.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/spcontext").Include(
-                        "~/Scripts/spcontext.js"));
+                        "~/Scripts/spcontext.js",
+                        "~/Scripts/app.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
