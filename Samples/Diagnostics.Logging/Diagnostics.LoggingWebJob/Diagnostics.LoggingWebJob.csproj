@@ -150,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App .config.example" />
+    <None Include="App .config.example2" />
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Properties\webjob-publish-settings.json" />
