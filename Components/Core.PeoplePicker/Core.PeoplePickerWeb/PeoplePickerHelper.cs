@@ -11,6 +11,8 @@ namespace Contoso.Core.PeoplePickerWeb
 {
     public class PeoplePickerHelper
     {
+        private static int GroupID = -1;
+
         public static string GetPeoplePickerSearchData()
         {
              var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext.Current);
@@ -36,10 +38,22 @@ namespace Contoso.Core.PeoplePickerWeb
 
             if (!string.IsNullOrEmpty(spGroupName))
             {
-                var group = context.Web.SiteGroups.GetByName(spGroupName);
-                if (group != null)
+                if (PeoplePickerHelper.GroupID == -1)
                 {
-                    querryParams.SharePointGroupID = group.Id;
+                    var group = context.Web.SiteGroups.GetByName(spGroupName);
+                    if (group != null)
+                    {
+                        context.Load(group, p => p.Id);
+                        context.ExecuteQuery();
+
+                        PeoplePickerHelper.GroupID = group.Id;
+
+                        querryParams.SharePointGroupID = group.Id;
+                    }
+                }
+                else
+                {
+                    querryParams.SharePointGroupID = PeoplePickerHelper.GroupID;
                 }
             }
 
