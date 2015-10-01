@@ -25,6 +25,7 @@ namespace Contoso.Core.PeoplePickerWeb
             //get searchstring and other variables
             var searchString = (string)HttpContext.Current.Request["SearchString"];
             int principalType = Convert.ToInt32(HttpContext.Current.Request["PrincipalType"]);
+            string spGroupName = (string)HttpContext.Current.Request["SPGroupName"];
 
             ClientPeoplePickerQueryParameters querryParams = new ClientPeoplePickerQueryParameters();
             querryParams.AllowMultipleEntities = false;
@@ -32,6 +33,15 @@ namespace Contoso.Core.PeoplePickerWeb
             querryParams.PrincipalSource = PrincipalSource.All;
             querryParams.PrincipalType = (PrincipalType) principalType;
             querryParams.QueryString = searchString;
+
+            if (!string.IsNullOrEmpty(spGroupName))
+            {
+                SPGroup group = context.Web.SiteGroups.GetByName(spGroupName);
+                if (group != null)
+                {
+                    querryParams.SharePointGroupID = group.ID;
+                }
+            }
 
             //execute query to Sharepoint
             ClientResult<string> clientResult = Microsoft.SharePoint.ApplicationPages.ClientPickerQuery.ClientPeoplePickerWebServiceInterface.ClientPeoplePickerSearchUser(context, querryParams);

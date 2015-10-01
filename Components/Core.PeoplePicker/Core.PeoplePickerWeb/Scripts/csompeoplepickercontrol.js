@@ -3,7 +3,7 @@
     var CsomPeoplePicker = (function () {
 
         // Constructor
-        function CsomPeoplePicker(ServerDataMethod, SpHostUrl, PeoplePickerControl, PeoplePickerEdit, PeoplePickerDisplay, PeoplePickerData) {
+        function CsomPeoplePicker(ServerDataMethod, SpHostUrl, PeoplePickerControl, PeoplePickerEdit, PeoplePickerDisplay, PeoplePickerData, SPGroupName) {
             //public properties
             this.ServerDataMethod = ServerDataMethod;
             this.SpHostUrl = SpHostUrl;
@@ -17,6 +17,7 @@
             this.ShowTitle = true;
             this.MinimalCharactersBeforeSearching = 2;
             this.PrincipalType = 1;
+            this.SPGroupName = SPGroupName; // if SPGroupName is specified then user name will be resolved only from that group 
             this.AllowDuplicates = false;
             this.Language = "en-us";
             //Private variable is not really private, just a naming convention
@@ -28,6 +29,11 @@
         // Property wrapped in function to allow access from event handler
         CsomPeoplePicker.prototype.GetPrincipalType = function () {
             return this.PrincipalType;
+        }
+
+        // Property wrapped in function to allow access from event handler
+        CsomPeoplePicker.prototype.GetSPGroupName = function () {
+            return this.SPGroupName;
         }
 
         // Property wrapped in function to allow access from event handler
@@ -418,10 +424,12 @@
                             var queryIDToPass = parent._queryID;
                             parent._lastQueryID = queryIDToPass;
 
+                            var spGroupName = parent.GetSPGroupName();
+
                             //make call to server
                             $.ajax({
                                 type: "POST",
-                                url: parent.GetServerDataMethod() + "?SearchString=" + searchText + "&SPHostUrl=" + parent.GetSpHostUrl() + "&PrincipalType=" + parent.GetPrincipalType(),
+                                url: parent.GetServerDataMethod() + "?SearchString=" + searchText + "&SPHostUrl=" + parent.GetSpHostUrl() + "&PrincipalType=" + parent.GetPrincipalType() + (spGroupName? "&SPGroupName=" + spGroupName: ""),
                                 data: "{}",
                                 contentType: "application/json; charset=utf-8",
                                 dataType: "json",
