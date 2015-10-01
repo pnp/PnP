@@ -205,10 +205,10 @@
                      newResolvedUsers.push(this._ResolvedUsers[i]);
                  }
                  
-+                // Handle duplicates if enabled, only remove one user
-+                if(resolvedLookupValue == lookupValue){
-+                    userRemoved = true;
-+                }
+                // Handle duplicates if enabled, only remove one user
+                if (resolvedLookupValue == lookupValue) {
+                    userRemoved = true;
+                }
             }
             this._ResolvedUsers = newResolvedUsers;
             this.PeoplePickerData.val(JSON.stringify(this._ResolvedUsers));
