@@ -106,9 +106,10 @@ One of the really great this about PnP logging is monitored scope, the monitored
 
 Output:
 
-SPLoggerDemo.vshost.exe Information: 0 : 2015-10-01 14:46:28.4590       [My Scope]      [9]     [Information]   Starting sleep  1125ms  71022fd3-aaac-4f25-abc1-b56b1d6a5ff4
-SPLoggerDemo.vshost.exe Information: 0 : 2015-10-01 14:46:30.4749       [My Scope]      [9]     [Information]   Ending sleep    3142ms  71022fd3-aaac-4f25-abc1-b56b1d6a5ff4
-SPLoggerDemo.vshost.exe Information: 0 : 2015-10-01 14:46:30.4939       [My Scope]      [9]     [Debug] Code execution scope ended      3161ms  71022fd3-aaac-4f25-abc1-b56b1d6a5ff4
+	SPLoggerDemo.vshost.exe Information: 0 : 2015-10-01 15:59:51.8878       [My Scope]      [9]     [Debug] Code execution scope started    1ms     eba94e84-5891-4939-b90f-075fad1c76e0
+	SPLoggerDemo.vshost.exe Information: 0 : 2015-10-01 15:59:53.7943       [My Scope]      [9]     [Information]   Starting sleep  1926ms  eba94e84-5891-4939-b90f-075fad1c76e0
+	SPLoggerDemo.vshost.exe Information: 0 : 2015-10-01 15:59:56.9868       [My Scope]      [9]     [Information]   Ending sleep    5119ms  eba94e84-5891-4939-b90f-075fad1c76e0
+	SPLoggerDemo.vshost.exe Information: 0 : 2015-10-01 15:59:58.1284       [My Scope]      [9]     [Debug] Code execution scope ended      6260ms  eba94e84-5891-4939-b90f-075fad1c76e0
 
 
 Now let's take the next step a publish the project out to o365 and Azure and have a look at our output in the cloud.  Follow the instructions here to configure your Azure web site to catch the logging output and save it to a file located where you can access it through ftp.
