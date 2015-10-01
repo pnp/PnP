@@ -36,10 +36,10 @@ namespace Contoso.Core.PeoplePickerWeb
 
             if (!string.IsNullOrEmpty(spGroupName))
             {
-                SPGroup group = context.Web.SiteGroups.GetByName(spGroupName);
+                var group = context.Web.SiteGroups.GetByName(spGroupName);
                 if (group != null)
                 {
-                    querryParams.SharePointGroupID = group.ID;
+                    querryParams.SharePointGroupID = group.Id;
                 }
             }
 
