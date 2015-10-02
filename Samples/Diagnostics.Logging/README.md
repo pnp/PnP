@@ -54,55 +54,58 @@ SPLoggerDemo.vshost.exe Information: 0 : test message
 #### Enter PnP Logging ####
 
 Now have a look at the information provided by PnP Loggging 
-
+```csharp
 	OfficeDevPnP.Core.Diagnostics.Log.Info("MyFunction", "test message");
 	SPLoggerDemo.vshost.exe Information: 0 : 2015-09-28 17:55:04.0211       [MyFunction]    [0]     [Information]   test message    0ms
-
+```
 Notice the addition of a Source field, time-stamp and also milliseconds count that we'll have a look at in a bit.  One cool thing is that everything  is tab delimited so you can pull your file up in Excel and easily plow though the data.
 
 Now lets add a little more to our config file so if you want a more or less detailed log you can set the level, the logLevel attribute accepts "Debug", "Error", "Warning" or "Information", be sure to add at the top of the app.config or web.config file straight after the ```<Configuration>``` tag. 
 
-	<configuration>
-		<configSections>
-	    	<sectionGroup name="pnp">
-	      		<section
-			        name="tracing"
-			        type="OfficeDevPnP.Core.Diagnostics.LogConfigurationTracingSection, OfficeDevPnP.Core"
-			        allowLocation="true"
-			        allowDefinition="Everywhere"
-			      />
-		    </sectionGroup>
-	    <!-- Other <section> and <sectionGroup> elements. -->
-		</configSections>
-		<pnp>
-			<tracing logLevel="Debug">
-	      		<logger type="OfficeDevPnP.Core.Diagnostics.TraceLogger, OfficeDevPnP.Core, Culture=neutral, PublicKeyToken=null" />
-	    	</tracing>
-		</pnp>
-		<system.diagnostics>
-	    	<sharedListeners>
-	      		<add name="console" type="System.Diagnostics.ConsoleTraceListener" />
-	    	</sharedListeners>
-	    	<trace indentsize="0" autoflush="true">
-	      		<listeners>
-	        		<add name="console" />
-	      		</listeners>
-	    	</trace>
-		</system.diagnostics>
-	</configuration>
-
+```xml
+<configuration>
+	<configSections>
+	    <sectionGroup name="pnp">
+	      	<section
+			    name="tracing"
+			    type="OfficeDevPnP.Core.Diagnostics.LogConfigurationTracingSection, OfficeDevPnP.Core"
+			    allowLocation="true"
+			    allowDefinition="Everywhere"
+			    />
+		</sectionGroup>
+	<!-- Other <section> and <sectionGroup> elements. -->
+	</configSections>
+	<pnp>
+		<tracing logLevel="Debug">
+	      	<logger type="OfficeDevPnP.Core.Diagnostics.TraceLogger, OfficeDevPnP.Core, Culture=neutral, PublicKeyToken=null" />
+	    </tracing>
+	</pnp>
+	<system.diagnostics>
+	    <sharedListeners>
+	      	<add name="console" type="System.Diagnostics.ConsoleTraceListener" />
+	    </sharedListeners>
+	    <trace indentsize="0" autoflush="true">
+	      	<listeners>
+	        	<add name="console" />
+	      	</listeners>
+	    </trace>
+	</system.diagnostics>
+</configuration>
+```
 
 
 ##Using the logging framework Monitored Scope
 
-One of the really great this about PnP logging is monitored scope, the monitored scope will keep a running list of the time elapsed between each call to the scopes log function.   At the start and end of the scope a debug message will be written to the log stating the name and time it took to execute the scope.  This will enable you to easily see how long your calls to retrieve data are taking and find  bottlenecks in your code.
+One of the really great things about PnP logging is monitored scope, the monitored scope will keep a running list of the time elapsed between each call to the scopes log function.   At the start and end of the scope a debug message will be written to the log stating the name and time it took to execute the scope.  This will enable you to easily see how long your calls to retrieve data are taking and find  bottlenecks in your code.
 
-	using (var scope = new PnPMonitoredScope("My Scope"))
-	{
-	    scope.LogInfo("Starting sleep");
-	    System.Threading.Thread.Sleep(2000);
-	    scope.LogInfo("Ending sleep");
-	}
+```csharp
+using (var scope = new PnPMonitoredScope("My Scope"))
+{
+	scope.LogInfo("Starting sleep");
+	System.Threading.Thread.Sleep(2000);
+	scope.LogInfo("Ending sleep");
+}
+```
 
 
 Output:
@@ -115,12 +118,13 @@ Output:
 
 Now let's take the next step a publish the project out to o365 and Azure and have a look at our output in the cloud.  Follow the instructions here to configure your Azure web site to catch the logging output and save it to a file located where you can access it through ftp.
 
-[https://azure.microsoft.com/en-us/documentation/articles/web-sites-enable-diagnostic-log/](https://azure.microsoft.com/en-us/documentation/articles/web-sites-enable-diagnostic-log/ "Enable diagnostics logging for web apps in Azure App Service")
+[Enable diagnostics logging for web apps in Azure App Service](https://azure.microsoft.com/en-us/documentation/articles/web-sites-enable-diagnostic-log/ "Enable diagnostics logging for web apps in Azure App Service")
 
 Setup the demo: 
 
 In Diagnostics.LoggingWebJob be sure to update these values with you SharePoint information and the storage keys you got from following the article above.  
 
+```xml
 	<appSettings>
     	<add key="SpUrl" value=""/>
     	<add key="SpUsername" value=""/>
@@ -132,15 +136,10 @@ In Diagnostics.LoggingWebJob be sure to update these values with you SharePoint 
     	<add name="AzureWebJobsDashboard" connectionString=""/>
     	<add name="AzureWebJobsStorage" connectionString=""/>
 	</connectionStrings>
+```
 
 In Diagnostics.LoggingWeb be sure to update the ClientId and ClientSecret with the values you got from registering your provider hosted application with SharePoint.
 
 After publishing and navigating to the app click the buttons a few time to write some tracing output then connect using your favorite ftp client to view the output.
 
-
-
-
-  
-
-
- 
+![](http://i.imgur.com/EdpxQVH.png)
