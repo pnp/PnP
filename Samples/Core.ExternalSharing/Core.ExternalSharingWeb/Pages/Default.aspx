@@ -23,17 +23,17 @@
             <asp:HyperLink ID="hplScenario1" runat="server" Text="Learn more and test out scenario 1" />
             <br />
             <br />
-            <h1>Scenario 2: Share site externally</h1>
+            <h1>Scenario 2: Share a Site externally</h1>
             In this scenario you'll learn how to share site externally.
             <ul style="list-style-type: square;">
                 <li>Share sites to external accounts.</li>
                 <li>Provide permissions based on default site groups.</li>
-                <li>Unshare site.</li>
+                <li>Check current sharing details for the site</li>
             </ul>
             <asp:HyperLink ID="hplScenario2" runat="server" Text="Learn more and test out scenario 2"></asp:HyperLink>
             <br />
             <br />
-            <h1>Scenario 3: Share documents</h1>
+            <h1>Scenario 3: Share Documents</h1>
             In this scenario you'll learn how to share individual documents externally, including getting anonymous links.
             <ul style="list-style-type: square;">
                 <li>Create anonymous link with view or edit permissions to specific document, including option expiration time</li>

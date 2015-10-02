@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.ExternalSharingWeb", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{6DCBC38A-C134-475E-936E-B072829DC82A}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\PnP\Samples\Core.ExternalSharing\readme.md = ..\..\PnP\Samples\Core.ExternalSharing\readme.md
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Global
