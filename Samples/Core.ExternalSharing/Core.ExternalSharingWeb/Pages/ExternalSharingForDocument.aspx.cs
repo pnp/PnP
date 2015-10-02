@@ -137,7 +137,7 @@ namespace Core.ExternalSharingWeb.Pages
                     // Get file link URL
                     string fileUrl = ResolveShareUrl(ctx, documents.SelectedValue);
 
-                    // Create anonymous link for document
+                    // Create anonymous link with expiration for document
                     string link = ctx.Web.CreateAnonymousLinkWithExpirationForDocument(fileUrl, isEditLink, expirationDate.SelectedDate);
 
                     // Output the created link
@@ -170,7 +170,7 @@ namespace Core.ExternalSharingWeb.Pages
                     // Get file link URL
                     string fileUrl = ResolveShareUrl(ctx, documents.SelectedValue);
 
-                    // Create anonymous link for document
+                    // Share document for given email address
                     SharingResult result = ctx.Web.ShareDocument(fileUrl, txtTargetEmail.Text, shareOption,
                                                                  true, "Here's your important document");
 
@@ -195,7 +195,7 @@ namespace Core.ExternalSharingWeb.Pages
                     // Get file link URL
                     string fileUrl = ResolveShareUrl(ctx, documents.SelectedValue);
 
-                    // Create anonymous link for document
+                    // Unshare the document - remove all external shares
                     SharingResult result = ctx.Web.UnshareDocument(fileUrl);
 
                     // Output the created link
@@ -219,7 +219,7 @@ namespace Core.ExternalSharingWeb.Pages
                     // Get file link URL
                     string fileUrl = ResolveShareUrl(ctx, documents.SelectedValue);
 
-                    // Create anonymous link for document
+                    // Get current sharing settings
                     ObjectSharingSettings result = ctx.Web.GetObjectSharingSettingsForDocument(fileUrl, true);
 
                     // For outputting the list of people site is being shared
