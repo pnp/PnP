@@ -30,19 +30,20 @@ Version  | Date | Comments
 # Guide to using Logging with OfficeDevPnP.Core #
 
 The officeDevPnP Core framework uses its built-in tracing framework, which defaults to the standard Event Tracing framework of .NET.  Using PnP tracing is as simple as adding a reference to the OfficeDevPnP.Core assembly and calling the Logging functions.  In the future many core methods in OfficeDevPnP.Core will use this trace    output debug messages to the logging framework.  We'll start here and work our way up to some of the  more robust logging offerings later.  To get started, add the following text to your config file to add a Trace listener for the console.
-
-	<configuration>
-		<system.diagnostics>
-	    	<sharedListeners>
-	      		<add name="console" type="System.Diagnostics.ConsoleTraceListener" />
-	    	</sharedListeners>
-	    	<trace indentsize="0" autoflush="true">
-	      		<listeners>
-	        		<add name="console" />
-	      		</listeners>
-	    	</trace>
-		</system.diagnostics>
-	</configuration>
+```xml
+<configuration>
+	<system.diagnostics>
+	    <sharedListeners>
+	      	<add name="console" type="System.Diagnostics.ConsoleTraceListener" />
+	    </sharedListeners>
+	    <trace indentsize="0" autoflush="true">
+	      	<listeners>
+	        	<add name="console" />
+	      	</listeners>
+	    </trace>
+	</system.diagnostics>
+</configuration>
+```
 
 Okay now we're ready to hava a look at some trace output.  Consider the default output of the .Net Trace
 
