@@ -150,4 +150,4 @@ After publishing and navigating to the app click the buttons a few time to write
 
 ![](http://i.imgur.com/EdpxQVH.png)
 
-In the next update we'll deomstrate how to send and retrieve yuor logging data to Azure Table and Blob Storage.
+In the next update we'll demonstrate how to send and retrieve yuor logging data to Azure Table and Blob Storage.
