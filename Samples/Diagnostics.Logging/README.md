@@ -55,9 +55,13 @@ SPLoggerDemo.vshost.exe Information: 0 : test message
 
 Now have a look at the information provided by PnP Loggging 
 ```csharp
-	OfficeDevPnP.Core.Diagnostics.Log.Info("MyFunction", "test message");
-	SPLoggerDemo.vshost.exe Information: 0 : 2015-09-28 17:55:04.0211       [MyFunction]    [0]     [Information]   test message    0ms
+OfficeDevPnP.Core.Diagnostics.Log.Info("MyFunction", "test message");
 ```
+
+Output:
+
+	SPLoggerDemo.vshost.exe Information: 0 : 2015-09-28 17:55:04.0211       [MyFunction]    [0]     [Information]   test message    0ms
+
 Notice the addition of a Source field, time-stamp and also milliseconds count that we'll have a look at in a bit.  One cool thing is that everything  is tab delimited so you can pull your file up in Excel and easily plow though the data.
 
 Now lets add a little more to our config file so if you want a more or less detailed log you can set the level, the logLevel attribute accepts "Debug", "Error", "Warning" or "Information", be sure to add at the top of the app.config or web.config file straight after the ```<Configuration>``` tag. 
@@ -106,7 +110,6 @@ using (var scope = new PnPMonitoredScope("My Scope"))
 	scope.LogInfo("Ending sleep");
 }
 ```
-
 
 Output:
 
