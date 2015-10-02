@@ -149,3 +149,5 @@ In Diagnostics.LoggingWeb be sure to update the ClientId and ClientSecret with t
 After publishing and navigating to the app click the buttons a few time to write some tracing output then connect using your favorite ftp client to view the output.
 
 ![](http://i.imgur.com/EdpxQVH.png)
+
+In the next update we'll deomstrate how to send and retrieve yuor logging data to Azure Table and Blob Storage.
