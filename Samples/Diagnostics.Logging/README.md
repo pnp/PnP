@@ -101,9 +101,9 @@ Now lets add a little more to our config file so if you want a more or less deta
 ```
 
 
-##Using the logging framework Monitored Scope
+##Using the PnP Logging Framework Monitored Scope
 
-One of the really great things about PnP logging is monitored scope, the monitored scope will keep a running list of the time elapsed between each call to the scopes log function.   At the start and end of the scope a debug message will be written to the log stating the name and time it took to execute the scope.  This will enable you to easily see how long your calls to retrieve data are taking and find  bottlenecks in your code.
+One of the really great things about PnP logging is monitored scope, the monitored scope will keep a running list of the time elapsed between each call to the scopes log function.   At the start and end of the scope a debug message will be written to the log stating the name and time it took to execute the scope.  This will enable you to easily see how long your calls to retrieve data are taking and find bottlenecks in your code.
 
 ```csharp
 using (var scope = new PnPMonitoredScope("My Scope"))
@@ -131,17 +131,17 @@ Setup the demo:
 In Diagnostics.LoggingWebJob be sure to update these values with you SharePoint information and the storage keys you got from following the article above.  
 
 ```xml
-	<appSettings>
-    	<add key="SpUrl" value=""/>
-    	<add key="SpUsername" value=""/>
-    	<add key="SpPassword" value=""/>
-	</appSettings>
-	<connectionStrings>
-    	<!-- The format of the connection string is "DefaultEndpointsProtocol=https;AccountName=NAME;AccountKey=KEY" -->
-    	<!-- For local execution, the value can be set either in this config file or through environment variables -->
-    	<add name="AzureWebJobsDashboard" connectionString=""/>
-    	<add name="AzureWebJobsStorage" connectionString=""/>
-	</connectionStrings>
+<appSettings>
+	<add key="SpUrl" value=""/>
+	<add key="SpUsername" value=""/>
+	<add key="SpPassword" value=""/>
+</appSettings>
+<connectionStrings>
+	<!-- The format of the connection string is "DefaultEndpointsProtocol=https;AccountName=NAME;AccountKey=KEY" -->
+	<!-- For local execution, the value can be set either in this config file or through environment variables -->
+	<add name="AzureWebJobsDashboard" connectionString=""/>
+	<add name="AzureWebJobsStorage" connectionString=""/>
+</connectionStrings>
 ```
 
 In Diagnostics.LoggingWeb be sure to update the ClientId and ClientSecret with the values you got from registering your provider hosted application with SharePoint.
