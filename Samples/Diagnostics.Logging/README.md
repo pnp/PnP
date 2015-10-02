@@ -56,7 +56,7 @@ Output:
 
 #### Enter PnP Logging ####
 
-Now have a look at the information provided by PnP Loggging 
+Now have a look at the information provided by PnP Logging 
 ```csharp
 OfficeDevPnP.Core.Diagnostics.Log.Info("MyFunction", "test message");
 ```
@@ -150,4 +150,4 @@ After publishing and navigating to the app click the buttons a few time to write
 
 ![](http://i.imgur.com/EdpxQVH.png)
 
-In the next update we'll demonstrate how to send and retrieve yuor logging data to Azure Table and Blob Storage.
+In the next update we'll demonstrate how to send and retrieve your logging data to Azure Table and Blob Storage.
