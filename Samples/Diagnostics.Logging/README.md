@@ -46,10 +46,10 @@ The officeDevPnP Core framework uses its built-in tracing framework, which defau
 ```
 
 Okay now we're ready to hava a look at some trace output.  Consider the default output of the .Net Trace
-
-	System.Diagnostics.Trace.TraceInformation("test message"); 
-
-	SPLoggerDemo.vshost.exe Information: 0 : test message 
+```csharp
+System.Diagnostics.Trace.TraceInformation("test message"); 
+SPLoggerDemo.vshost.exe Information: 0 : test message 
+```
 
 #### Enter PnP Logging ####
 
