@@ -153,6 +153,8 @@
     <Compile Include="Data\Metadata\MetadataFactory.cs" />
     <Compile Include="Data\SiteRequests\Impl\AzureDocDbRequestManager.cs" />
     <Compile Include="Data\SiteRequests\ISiteRequestFactory.cs" />
+    <Compile Include="Data\SiteUrl\Impl\SafeTitleUrlProvider.cs" />
+    <Compile Include="Data\SiteUrl\ISiteUrlProvider.cs" />
     <Compile Include="Data\SPDataConstants.cs" />
     <Compile Include="Data\Templates\Impl\AzureDocDbTemplateManager.cs" />
     <Compile Include="Data\Templates\Impl\SPSiteTemplateManager.cs" />

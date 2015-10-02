@@ -94,9 +94,16 @@ namespace Provisioning.UX.AppWeb.Controllers
                 _data = JsonConvert.DeserializeObject<SiteRequest>(value);
                 var _newRequest = ObjectMapper.ToSiteRequestInformation(_data);
 
+                // Handle the case when the URL is null - ie, were going to generate the URL later 
+                if (_newRequest.Url == null)
+                {
+                    _newRequest.Url = "uri://autogenerate/" + Guid.NewGuid().ToString("N");
+                }
+
                 ///Save the Site Request
                 ISiteRequestFactory _srf = SiteRequestFactory.GetInstance();
                 var _manager = _srf.GetSiteRequestManager();
+                
                 _manager.CreateNewSiteRequest(_newRequest);
                  return Request.CreateResponse<SiteRequest>(HttpStatusCode.Created, _data);
 

@@ -62,5 +62,7 @@ namespace Provisioning.Common.Data.SiteRequests
         /// <param name="statusMessage">Status Message</param>
         void UpdateRequestStatus(string url, SiteRequestStatus status, string statusMessage);
 
+
+        void UpdateRequestUrl(string url, string newUrl);
     }
 }

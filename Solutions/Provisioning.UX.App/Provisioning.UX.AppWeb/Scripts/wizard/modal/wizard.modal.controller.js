@@ -29,6 +29,7 @@
         $scope.siteConfiguration.spHostWebUrl = spHostWebUrl;
         $scope.siteConfiguration.spRootHostName = "Https://" + $utilservice.spRootHostName(spHostWebUrl); // still need to capture proto
         $scope.siteConfiguration.responsibilities = { read: false };
+        $scope.siteConfiguration.allowCustomUrl = false;
       
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
@@ -80,7 +81,13 @@
 
                 var siteRequest = new Object();
                 siteRequest.title = $scope.siteConfiguration.details.title;
-                siteRequest.url = $scope.siteConfiguration.spNewSitePrefix + $scope.siteConfiguration.details.url;
+                if ($scope.siteConfiguration.allowCustomUrl) {
+                    siteRequest.url = null
+                }
+                else 
+                {
+                    siteRequest.url = $scope.siteConfiguration.spNewSitePrefix + $scope.siteConfiguration.details.url;
+                }
                 siteRequest.description = $scope.siteConfiguration.details.description;
                 siteRequest.lcid = $scope.siteConfiguration.language;
                 siteRequest.timeZoneId = $scope.siteConfiguration.timezone;
@@ -118,7 +125,14 @@
                 siteRequest.properties = props;
 
                 //process the siterequest
-                processNewSiteRequest(siteRequest);
+                if ($scope.siteConfiguration.allowCustomUrl) {
+                    saveNewSiteRequest(siteRequest);
+                } else {
+                    processNewSiteRequest(siteRequest);
+                }
+                
+                
+                
             }
         };
 
@@ -139,6 +153,8 @@
             var externalSharingRequest = new Object();
             externalSharingRequest.tenantAdminUrl = template.tenantAdminUrl;
             isExternalSharingEnabled(externalSharingRequest);
+            var siteUrlRequest = new Object();
+            isSiteUrlProviderUsed(siteUrlRequest)
         }
 
         function activate() {
@@ -221,6 +237,22 @@
                     }
                     else { $scope.siteConfiguration.externalSharingEnabled = false; }
                 }
+            }).fail(function (err) {
+                console.info(JSON.stringify(err));
+            });
+        }
+
+        function isSiteUrlProviderUsed(request) {
+            //get if external sharing is enabled for the tenant
+            $.when($SharePointProvisioningService.isSiteUrlProviderUsed(request)).done(function (data) {
+
+                if (data != null) {
+                    if (data.UsesCustomProvider == true) {
+                        $scope.siteConfiguration.allowCustomUrl = false
+                        return
+                    }
+                }
+                $scope.siteConfiguration.allowCustomUrl = true
             }).fail(function (err) {
                 console.info(JSON.stringify(err));
             });

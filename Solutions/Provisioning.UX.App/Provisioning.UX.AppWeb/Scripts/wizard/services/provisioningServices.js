@@ -74,6 +74,23 @@
                 });
                 return deferred;
             }
+            this.isSiteUrlProviderUsed = function (request) {
+                var deferred = $.Deferred();
+                var formData = JSON.stringify(request);
+                $http({
+                    method: 'POST',
+                    data: "=" + formData,
+                    url: '/api/provisioning/isSiteUrlProviderUsed',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }).success(function (data, status, headers, config) {
+                    deferred.resolve(data);
+                    console.log("api/provisioning/isSiteUrlProviderUsed result is " + data);
+                }).error(function (data, status) {
+                    deferred.reject(data);
+                    console.log("api/provisioning/isSiteUrlProviderUsed " + data);
+                });
+                return deferred;
+            }
             this.getSiteRequestByUrl = function (request) {
                 var deferred = $.Deferred();
                 var formData = JSON.stringify(request);
