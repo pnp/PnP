@@ -198,12 +198,11 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// 
+        /// Get current sharing settings for document and load list of users it has been shared automatically.
         /// </summary>
         /// <param name="web">Web for the context</param>
         /// <param name="urlToDocument"></param>
         /// <param name="useSimplifiedPolicies"></param>
-        /// <returns></returns>
         public static ObjectSharingSettings GetObjectSharingSettingsForDocument(this Web web, string urlToDocument, bool useSimplifiedPolicies = true)
         {
             // Group value for this query is always 0.
@@ -217,8 +216,9 @@ namespace Microsoft.SharePoint.Client
             return info;
         }
 
+
         /// <summary>
-        /// 
+        /// Get current sharing settings for site and load list of users it has been shared automatically.
         /// </summary>
         /// <param name="web">Web for the context</param>
         /// <param name="useSimplifiedPolicies"></param>
@@ -244,13 +244,14 @@ namespace Microsoft.SharePoint.Client
 
 
         /// <summary>
-        /// 
+        /// Share site for a person using just email. Will resolve needed people picker JSON value automatically.
         /// </summary>
         /// <param name="web">Web for the context of the site to be shared.</param>
-        /// <param name="peoplePickerInput"></param>
-        /// <param name="shareOption"></param>
-        /// <param name="sendEmail">Send email to </param>
-        /// <param name="emailBody"></param>
+        /// <param name="email">Email of the person to whom site should be shared.</param>
+        /// <param name="shareOption">Sharing style - View, Edit, Owner</param>
+        /// <param name="sendEmail">Should we send email for the given address.</param>
+        /// <param name="emailBody">Text to be added on share email sent to receiver.</param>
+        /// <returns></returns>
         /// <returns></returns>
         public static SharingResult ShareSite(this Web web, string email, 
                                                 ExternalSharingSiteOption shareOption, bool sendEmail = true, 
@@ -264,13 +265,13 @@ namespace Microsoft.SharePoint.Client
         }
 
         /// <summary>
-        /// 
+        /// Share site for a person using complex JSON object for people picker value.
         /// </summary>
         /// <param name="web">Web for the context of the site to be shared.</param>
-        /// <param name="peoplePickerInput"></param>
-        /// <param name="shareOption"></param>
-        /// <param name="sendEmail">Send email to </param>
-        /// <param name="emailBody"></param>
+        /// <param name="peoplePickerInput">JSON object with the people picker value</param>
+        /// <param name="shareOption">Sharing style - View, Edit, Owner</param>
+        /// <param name="sendEmail">Should we send email for the given address.</param>
+        /// <param name="emailBody">Text to be added on share email sent to receiver.</param>
         /// <returns></returns>
         public static SharingResult ShareSiteWithPeoplePickerValue(this Web web, string peoplePickerInput, 
                                                                     ExternalSharingSiteOption shareOption,
