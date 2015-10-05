@@ -1,7 +1,7 @@
 # # Logging with OfficeDevPnP.Core #
 
 ### Summary ###
-In this sample, a SharePoint provider hosted application and an Azure Web Job are used to demonstrate the flexibility and rich output of OfficeDevPnP.Core trace logging functionality.  The PHA web site has a single page with a few buttons that write trace output, the Web Job calls out looking for the "Site Pages" list and uses monitored scope to keep track of the time it takes to make the calls to SharePoint.   
+In this sample, a SharePoint provider hosted add-in and an Azure Web Job are used to demonstrate the flexibility and rich output of OfficeDevPnP.Core trace logging functionality.  The PHA web site has a single page with a few buttons that write trace output, the Web Job calls out looking for the "Site Pages" list and uses monitored scope to keep track of the time it takes to make the calls to SharePoint.   
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
@@ -144,9 +144,9 @@ In Diagnostics.LoggingWebJob be sure to update these values with you SharePoint 
 </connectionStrings>
 ```
 
-In Diagnostics.LoggingWeb be sure to update the ClientId and ClientSecret with the values you got from registering your provider hosted application with SharePoint.
+In Diagnostics.LoggingWeb be sure to update the ClientId and ClientSecret with the values you got from registering your provider hosted add-in with SharePoint.
 
-After publishing and navigating to the app click the buttons a few time to write some tracing output then connect using your favorite ftp client to view the output.
+After publishing and navigating to the add-in click the buttons a few time to write some tracing output then connect using your favorite ftp client to view the output.
 
 ![](http://i.imgur.com/EdpxQVH.png)
 
