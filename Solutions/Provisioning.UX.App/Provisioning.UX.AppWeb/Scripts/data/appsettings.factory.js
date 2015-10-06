@@ -15,20 +15,19 @@
 
         return service;
 
-        // Get sample divisions reference metadata
         function getAppSettings() {
-
-            return $http.get('../scripts/data/json/appsettings.json')
-               .then(getAppSettingsComplete)
-               .catch(getAppSettingsFailed);
-
-            function getAppSettingsComplete(response) {
-                return response.data.appsettings;
-            }
-
-            function getAppSettingsFailed(error) {
-                $log.error('XHR Failed for getAppSettings.' + error.data);
-            }
+            var deferred = $.Deferred();
+            $http({
+                method: 'GET',
+                url: '/api/provisioning/appSettings/get',
+                headers: { 'accept': 'application/json' }
+            }).success(function (data, status, headers, config) {
+                console.debug("/api/provisioning/appSettings/get", data);
+                deferred.resolve(data, status)
+            }).error(function (data, status) {
+                deferred.reject(data, status);
+            });
+            return deferred;            
         }
     }
 })();

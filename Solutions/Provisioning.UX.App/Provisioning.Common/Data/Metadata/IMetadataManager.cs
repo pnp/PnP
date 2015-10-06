@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Provisioning.Common.Metadata;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,5 +33,15 @@ namespace Provisioning.Common.Data.Metadata
         /// </summary>
         /// <param name="classification"></param>
         void UpdateSiteClassification(SiteClassification classification);
+
+
+        ICollection<SiteMetadata> GetAvailableOrganizationalFunctions();
+        ICollection<SiteMetadata> GetAvailableRegions();
+        ICollection<SiteMetadata> GetAvailableDivisions();
+        ICollection<SiteMetadata> GetAvailableTimeZones();
+        ICollection<SiteMetadata> GetAvailableSiteRegions();
+        ICollection<SiteMetadata> GetAvailableLanguages();
+
+
     }
 }

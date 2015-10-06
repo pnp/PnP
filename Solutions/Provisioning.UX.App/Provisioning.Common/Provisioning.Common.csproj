@@ -145,11 +145,16 @@
     <Compile Include="Configuration\ModuleKeys.cs" />
     <Compile Include="Configuration\ModulesSection.cs" />
     <Compile Include="Data\AbstractModule.cs" />
+    <Compile Include="Data\AppSettings\AppSetting.cs" />
+    <Compile Include="Data\AppSettings\AppSettingsFactory.cs" />
+    <Compile Include="Data\AppSettings\IAppSettingsFactory.cs" />
+    <Compile Include="Data\AppSettings\IAppSettingsManager.cs" />
+    <Compile Include="Data\AppSettings\Impl\SPAppSettingsManager.cs" />
     <Compile Include="Data\FactoryException.cs" />
     <Compile Include="Data\Metadata\IMetadataFactory.cs" />
     <Compile Include="Data\Metadata\IMetadataManager.cs" />
-    <Compile Include="Data\Metadata\impl\AzureDocDbMetadataManager.cs" />
-    <Compile Include="Data\Metadata\impl\SPMetadataManager.cs" />
+    <Compile Include="Data\Metadata\Impl\AzureDocDbMetadataManager.cs" />
+    <Compile Include="Data\Metadata\Impl\SPMetadataManager.cs" />
     <Compile Include="Data\Metadata\MetadataFactory.cs" />
     <Compile Include="Data\SiteRequests\Impl\AzureDocDbRequestManager.cs" />
     <Compile Include="Data\SiteRequests\ISiteRequestFactory.cs" />
@@ -182,6 +187,7 @@
     <Compile Include="Mail\FailureEmailMessage.cs" />
     <Compile Include="Mail\SuccessEmailMessage.cs" />
     <Compile Include="Mail\FileSizeFormatProvider.cs" />
+    <Compile Include="Metadata\SiteFunction.cs" />
     <Compile Include="Office365SiteProvisioningService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PCResources.Designer.cs">

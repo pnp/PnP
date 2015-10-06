@@ -24,7 +24,7 @@
             }
             this.createNewSiteRequest = function (request) {
                 var deferred = $q.defer();
-    
+
                 var formData = JSON.stringify(request);
                 $http({
                     method: 'POST',
