@@ -41,7 +41,7 @@ function REST() {
         function (result) {
             var finalResult;
             if (responseType == SharePointClient.Constants.REST.HTTP.DATA_TYPE.JSON) {
-                if (result.d != "undefined") {
+                if (!SharePointClient.Configurations.IsCrossDomainRequest) {
                     finalResult = $.parseJSON(result.d.RenderListData);
                 } else {
                     finalResult = $.parseJSON($.parseJSON(result).d.RenderListData);
