@@ -1,7 +1,9 @@
 ﻿using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
+using Provisioning.Common.Authentication;
 using Provisioning.Common.Configuration;
+using Provisioning.Common.Data.SiteUrl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,16 +33,27 @@ namespace Provisioning.Common.Utilities
                 var typeName = type[0];
                 var assemblyName = type[1];
                 var instance = (FileConnectorBase)Activator.CreateInstance(assemblyName, typeName).Unwrap();
+                string connectionString;
                 if (String.IsNullOrEmpty(_module.ConnectionString))
                 {
-                    instance.AddParameter(CONNECTIONSTRING_KEY, 
-                        System.Configuration.ConfigurationManager.AppSettings.Get(moduleKey + "_connectionString"));
+                    connectionString = 
+                        System.Configuration.ConfigurationManager.AppSettings.Get(moduleKey + "_connectionString");
                 }
                 else
                 {
-                    instance.AddParameter(CONNECTIONSTRING_KEY, _module.ConnectionString);
+                    connectionString =  _module.ConnectionString;
                 }
+                instance.AddParameter(CONNECTIONSTRING_KEY, connectionString);
                 instance.AddParameter(CONTAINERSTRING_KEY, _module.Container);
+
+                if (instance.GetType() == typeof(SharePointConnector))
+                {
+                    instance.AddParameter(SharePointConnector.CLIENTCONTEXT,
+                        new AppOnlyAuthenticationSite()
+                        {
+                            SiteUrl = connectionString
+                        }.GetAuthenticatedContext());
+                }
 
                 Log.Info("ReflectionManager", "GetProvisioningConnector:key = {0}, provider = {1}, connectionString = {2}, container = {3}",
                     moduleKey,
@@ -77,7 +90,7 @@ namespace Provisioning.Common.Utilities
                 if (String.IsNullOrEmpty(_module.ConnectionString))
                 {
                     connectorInstance.AddParameter(CONNECTIONSTRING_KEY,
-                        System.Configuration.ConfigurationManager.AppSettings.Get(ModuleKeys.PROVISIONINGCONNECTORS_KEY + "_connectionString"));
+                        System.Configuration.ConfigurationManager.AppSettings.Get(ModuleKeys.PROVISIONINGPROVIDER_KEY + "_connectionString"));
                 }
                 else
                 {
@@ -102,5 +115,34 @@ namespace Provisioning.Common.Utilities
             }
         }
 
+
+        public ISiteUrlProvider GetSiteUrlProvider(string moduleKey)
+        {
+            var _module = _configManager.GetModuleByName(moduleKey);
+            if(_module == null)
+            {
+                return null; // no SiteUrlProvider
+            }
+
+            var _managerTypeString = _module.ModuleType;
+
+            try
+            {
+                var type = _managerTypeString.Split(',');
+                var typeName = type[0];
+                var assemblyName = type[1];
+                ISiteUrlProvider instance = (ISiteUrlProvider)Activator.CreateInstance(assemblyName, typeName).Unwrap();
+                
+                Log.Info("ReflectionManager", "GetSiteUrlProvider: key = {0}, provider = {1}",
+                    moduleKey,
+                    _managerTypeString);
+                return instance;
+            }
+            catch (Exception _ex)
+            {
+                Log.Error("ReflectionManager", PCResources.FileConnectorBase_Exception, _ex);
+                throw;
+            }
+        }
     }
 }

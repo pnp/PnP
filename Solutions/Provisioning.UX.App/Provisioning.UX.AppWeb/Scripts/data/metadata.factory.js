@@ -24,100 +24,45 @@
 
         return service;
 
-        // Get sample divisions reference metadata
+
+        function getMetadata(method) {
+            var deferred = $.Deferred();
+            $http({
+                method: 'GET',
+                url: '/api/provisioning/metadata/' +method ,
+                headers:{ 'accept': 'application/json'}
+            }).success(function (data, status, headers, config) {
+                console.debug("/api/provisioning/metadata/" + method, data);
+                deferred.resolve(data, status)
+            }).error(function (data, status) {
+                deferred.reject(data, status);
+            });
+            return deferred;
+        }
+
         function getDivisions() {
-                       
-            return $http.get('../scripts/data/json/divisions.json')
-               .then(getDivisionsComplete)
-               .catch(getDivisionsFailed);
-
-            function getDivisionsComplete(response) {
-                return response.data.divisions;
-            }
-
-            function getDivisionsFailed(error) {
-                $log.error('XHR Failed for getDivions.' + error.data);
-            }
+            return getMetadata('getDivisions');
         }
 
-        // Get sample regions reference metadata
         function getRegions() {
-
-            return $http.get('../scripts/data/json/regions.json')
-               .then(getRegionsComplete)
-               .catch(getRegionsFailed);
-
-            function getRegionsComplete(response) {
-                return response.data.regions;
-            }
-
-            function getRegionsFailed(error) {
-                $log.error('XHR Failed for getRegions.' + error.data);
-            }
+            return getMetadata('getRegions');
         }
 
-        // Get sample functions reference metadata
         function getFunctions() {
-
-            return $http.get('../scripts/data/json/functions.json')
-               .then(getFunctionsComplete)
-               .catch(getFunctionsFailed);
-
-            function getFunctionsComplete(response) {
-                return response.data.functions;
-            }
-
-            function getFunctionsFailed(error) {
-                $log.error('XHR Failed for getFunctions.' + error.data);
-            }
+            return getMetadata('getFunctions');
         }
 
-        // Get sample languages reference metadata
         function getLanguages() {
-
-            return $http.get('../scripts/data/json/languages.json')
-               .then(getLanguagesComplete)
-               .catch(getLanguagesFailed);
-
-            function getLanguagesComplete(response) {
-                return response.data.languages;
-            }
-
-            function getLanguagesFailed(error) {
-                $log.error('XHR Failed for getLanguages.' + error.data);
-            }
+            return getMetadata('getLanguages');
         }
 
-        // Get sample timezone reference metadata
         function getTimeZones() {
-
-            return $http.get('../scripts/data/json/timezones.json')
-               .then(getTimeZonesComplete)
-               .catch(getTimeZonesFailed);
-
-            function getTimeZonesComplete(response) {
-                return response.data.timezones;
-            }
-
-            function getTimeZonesFailed(error) {
-                $log.error('XHR Failed for getTimeZones.' + error.data);
-            }
+            return getMetadata('getTimeZones');
         }
-
-        // Get sample site classifications reference metadata
+        
         function getSiteClassifications() {
-
-            return $http.get('../scripts/data/json/siteclassifications.json')
-               .then(getSiteClassificationsComplete)
-               .catch(getSiteClassificationsFailed);
-
-            function getSiteClassificationsComplete(response) {
-                return response.data.siteclassifications;
-            }
-
-            function getSiteClassificationsFailed(error) {
-                $log.error('XHR Failed for getSiteClassifications.' + error.data);
-            }
+            return getMetadata('getSiteClassifications');
+          
         }
     }
 })();
