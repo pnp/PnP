@@ -1,109 +1,93 @@
-Retrieve more items than Threshold limit with CSOM
+Retrieve more items than Threshold limit with JSOM and REST
 ----------------------------------------------------------
 **Summary**
 <br><br>
-In SharePoint, when you execute query on Large List, you will receive "The attempted operation is prohibited because it exceeds the list view threshold enforced by the administrator". To avoid this exception and read list items by batch.
-The new Content Iterator class is implemented in CSOM like **ContentIterator** class which is available in Server Object Model. which can use CSOM to retrieve the items. Also CamlQuery class has been extended with the Methods
-which can be used to set the CamlQuery properties like SPQuery for Overriding the QueryThrottleMode to avoid the QueryThrottleException.
+In SharePoint, when you execute query on Large List, you will receive "The attempted operation is prohibited because it exceeds the list view threshold enforced by the administrator". This solution implements the retrieving SharePoint list items more than threshold limit by using JSOM and REST. 
 <br><br>
 **Solution**
 <br>
-Core.ListViewThreshold
+Core.ListViewThreshold.JSOMAndREST
 <br>
 <br>
 How to Use?
 -------------------------
 <br>
 <br>
-*Using CamlQueryExtension methods*
+*Using SharePointClient Js for JSOM*
 <pre>
 <code>
-CamlQuery camlQuery = new CamlQuery();
-            
-//CamlQuery extension Methods for setting the query properties and query option for Threshold limit
+    //Modify the default configurations 
+    var configuration = SharePointClient.Configurations;
+    var utility = new SharePointClient.Utilities.Utility();
+    configuration.IsApp = true; //This configuration will verify whether working on SharePoint App or Page
+    
+    //Initialize the required Js files to download for example SP.Js, SP.Runtime.js
+    SharePointClient.Services.JSOM.Initialize(function () {
+        var listServices = new SharePointClient.Services.JSOM.ListServices();
 
-//Set View Scope for the Query
-camlQuery.SetViewAttribute(QueryScope.RecursiveAll);
+        //Get SP clientContext
+        var context = new SharePointClient.Services.JSOM.Context();
 
-//Set Viewfields as String array
-//camlQuery.SetViewFields(new string[] { "ID", "Title"});
+        //Create Caml object
+        var camlConstant = SharePointClient.Constants.CAML_CONSTANT;
+        var camlQuery = new SharePointClient.CamlExtension.JSOM.CamlQuery();
+        camlQuery.ViewAttribute(camlConstant.CAML_QUERY_SCOPE.recursiveAll)
+        .Query("<Where><Geq><FieldRef Name=\"Modified\" /><Value Type=\"DateTime\" IncludeTimeValue=\"TRUE\" StorageTZ=\"TRUE\">2015-08-05T15:50:08</Value></Geq></Where>")
+        .ViewFieldsXml("<FieldRef Name='ID'/><FieldRef Name='Title'/>")
+        .QueryThrottleMode(camlConstant.CAML_QUERY_THROTTLE_MODE.override)
+        .OrderByIndex()
+        .RowLimit(5000);
 
-//Or Set the ViewFields xml
-camlQuery.SetViewFields(@"&lt;FieldRef Name='ID'/&gt;&lt;FieldRef Name='Title'/&gt;");
-
-//Override the QueryThrottle Mode for avoiding ListViewThreshold exception
-camlQuery.SetQueryThrottleMode(QueryThrottleMode.Override);
-
-//Set Query condition
-camlQuery.SetQuery("&lt;Eq&gt;&lt;FieldRef Name='IndexedField' /&gt;&lt;Value Type='Text'&gt;value&lt;/Value&gt;&lt;/Eq&gt;");
-
-
-//If Query has condition Indexed column should be used  and set OrderBy with indexed column
-camlQuery.SetOrderByIndexField();
-
-//Use OrderBy ID field if Query doesn't have condition
-//camlQuery.SetOrderByIDField();
-
-//Set RowLimit
-camlQuery.SetQueryRowlimit(5000);
+        var listTitle = "";
+        listServices.GetLargeListItemsByBatch(context, listTitle, camlQuery.BuildQuery(), function (result) {
+            alert(result.get_count());
+        });
 </cod>
 </pre>
 ------------------------
-*Using Implemented ContentIterator Class with CSOM*
+*Using SharePointClient Js for REST*
 <pre>
 <code>
+    //Modify the default configurations
+    var configuration = SharePointClient.Configurations;
+    var utility = new SharePointClient.Utilities.Utility();
+    configuration.IsApp = true;//This configuration will verify whether working on SharePoint App or Page
+    
 
-a)	ProcessListItems method
+    var listServices = new SharePointClient.Services.REST.ListServices();
 
-using (ClientContext context = new ClientContext("SiteUrl"))
-{
-   ContentIterator contentIterator = new ContentIterator(context);
+    //Create Caml object
+    var camlConstant = SharePointClient.Constants.CAML_CONSTANT;
+    var camlQuery = new SharePointClient.CamlExtension.REST.CamlQuery();
+    camlQuery.SetViewScopeAttribute(camlConstant.CAML_QUERY_SCOPE.recursiveAll)
+    .SetViewFieldsXml("<FieldRef Name='ID'/><FieldRef Name='Title'/>")
+    .SetQuery("<Where><Geq><FieldRef Name=\"Modified\" /><Value Type=\"DateTime\" IncludeTimeValue=\"TRUE\" StorageTZ=\"TRUE\">2014-08-05T15:50:08</Value></Geq></Where>")
+    .OverrideQueryThrottleMode(camlConstant.CAML_QUERY_THROTTLE_MODE.override)
+    .OverrideOrderByIndex()
+    .SetRowLimit(5000);
 
-   try
-   {
-     contentIterator.ProcessListItems("ListName", camlQuery,
-     ProcessItems,
-     delegate(ListItemCollection items, System.Exception ex)
-     {
-         return true;
-     });
-    catch (Exception ex)
-    {
-    }
-}
+    var listTitle = "";
+    var responseType = SharePointClient.Constants.REST.HTTP.DATA_TYPE.JSON;
+    listServices.GetListItemsByListName(listTitle, camlQuery.BuildQuery(), responseType,
+        function (result) {
+            var finalResult;
+            if (responseType == SharePointClient.Constants.REST.HTTP.DATA_TYPE.JSON) {
+                if (!SharePointClient.Configurations.IsCrossDomainRequest) {
+                    finalResult = $.parseJSON(result.d.RenderListData);
+                } else {
+                    finalResult = $.parseJSON($.parseJSON(result).d.RenderListData);
+                }
 
-//Delegate method
-private static void ProcessItems(ListItemCollection items)
-{
-   //Process items collection
-}
+            } else {
+                finalResult = $.parseJSON($($.parseXML(result).lastChild).text());
+            }
 
-
-
-b)	ProcessListItem method
-
-using (ClientContext context = new ClientContext("SiteUrl"))
-{
-   ContentIterator contentIterator = new ContentIterator(context);
-
-   try
-   {
-     contentIterator.ProcessListItem ("ListName", camlQuery,
-     ProcessItem,
-     delegate(ListItem item, System.Exception ex)
-     {
-         return true;
-     });
-    catch (Exception ex)
-    {
-    }
-}
-
-//Delegate method
-private static void ProcessItem(ListItem item)
-{
- //Process each item
-}
-
+            alert(finalResult.Row.length);
+            var str = "";
+            $.each(finalResult.Row, function (index, value) {
+                str += value.ID + "/" + value.Title + ";";
+            });
+            alert(str);
+        });
 </code>
 </pre>
