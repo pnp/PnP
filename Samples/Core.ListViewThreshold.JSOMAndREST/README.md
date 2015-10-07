@@ -40,6 +40,44 @@ This Client Side “SharePointClient.min.Js” file can be used to read the Shar
 2. REST – SharePoint REST service end points
 
 ## How to Use? ##
+
+##### Configuration #####
+
+To work with both JSOM and REST components in this SharePointClient.min.js default configurations can be overridden according to the requirement.
+Default configuration are below
+
+1. **IsApp** : (default false) – This property can be set true if working on SharePoint App else false
+2. **SPHostUrl** : (optional) – This property has the value for host Url working with SharePoint Apps
+3. **SPAppWebUrl** : (optional) – This property has the value for App Web Url working with SharePoint Apps.
+4. **IsCrossDomainRequest** : (default false) -  This property can be set true if working on SharePoint App and trying                                                   to access hostweb data because this is cross domain access.
+5. **SPUrl** : (default null) – This property can be set if the SharePoint context can be created for this particular                                 Url.
+6. **REST.AccessToken**  : (default null) – This property can be set if working provider hosted app where AccessToken can         be retrieved from Token helper class. And this Access token can used for all sub sequent REST calls.
+
+
+### Configuration for SharePoint page ###
+No need of overriding the configuration for SharePoint page, default configuration will work for this scenario.
+
+### Configuration for SharePoint Apps ###
+_Connecting to App Web_
+
+```javascript
+    //Modify the default configurations 
+    var configuration = SharePointClient.Configurations;
+    configuration.IsApp = true; //This configuration will verify whether working on SharePoint App or Page
+```
+_Connecting to HostWeb from AppWeb_
+
+```javascript
+    //Modify the default configurations 
+    var configuration = SharePointClient.Configurations;
+    configuration.IsApp = true; //This configuration will verify whether working on SharePoint App or Page
+    configuration.IsCrossDomainRequest = true; //Cross domain request, for example app web can request data from host     web.
+```
+
+
+
+
+
 ### Using SharePointClient Js for JSOM ###
 
 ```javascript
