@@ -34,14 +34,15 @@ In SharePoint 2013 App Model JavaScript Object Modal and REST is used for intera
 
 This Client Side “SharePointClient.min.Js” file can be used to read the SharePoint list items batch by batch by using the client side CamlQuery extension methods to modify the query which can override the Throttle limit.
 
-This JavaScript file has two functionalities
-1.JSOM – SharePoint JavaScript Object Model #
-2.REST – SharePoint REST service end points #
+##### The "SharePointClient" JavaScript file has two functionalities #####
+
+1. JSOM – SharePoint JavaScript Object Model
+2. REST – SharePoint REST service end points
 
 ## How to Use? ##
 ### Using SharePointClient Js for JSOM ###
 
-```C#
+```javascript
 //Modify the default configurations 
     var configuration = SharePointClient.Configurations;
     var utility = new SharePointClient.Utilities.Utility();
@@ -72,7 +73,7 @@ This JavaScript file has two functionalities
 ```
 ### Using SharePointClient Js for REST ###
 
-```C#
+```javascript
 //Modify the default configurations
     var configuration = SharePointClient.Configurations;
     var utility = new SharePointClient.Utilities.Utility();
