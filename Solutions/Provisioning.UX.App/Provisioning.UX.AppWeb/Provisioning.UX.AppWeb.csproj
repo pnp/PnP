@@ -22,7 +22,7 @@
     <IISExpressUseClassicPipelineMode />
     <TargetOfficeVersion>15.0</TargetOfficeVersion>
     <UseGlobalApplicationHostFile />
-    <TypeScriptToolsVersion>1.5</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.6</TypeScriptToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -163,12 +163,15 @@
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.dialog.js" />
+    <None Include="Properties\PublishProfiles\sbspositeprovisioning - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\sbspositeprovisioning - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\wwaz-pnp-provisioning - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\wwaz-pnp-provisioning - Web Deploy.pubxml" />
     <Content Include="Scripts\i18n\en-US.json" />
     <Content Include="Scripts\i18n\sv-SE.json" />
     <Content Include="Scripts\angular.min.js.map" />
     <Content Include="Scripts\angular-sanitize.min.js.map" />
+    <None Include="Properties\PublishProfiles\wwaz-pnp-provisioning.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -288,6 +291,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AppSettingsController.cs" />
     <Compile Include="Controllers\MetadataController.cs" />
     <Compile Include="Controllers\ProvisioningController.cs" />
     <Compile Include="Controllers\SiteRequestController.cs" />
@@ -299,6 +303,7 @@
     <Compile Include="Models\SiteCheckResponse.cs" />
     <Compile Include="Models\SitePolicyResults.cs" />
     <Compile Include="Models\SiteRequest.cs" />
+    <Compile Include="Models\SiteUrlCheckRequest.cs" />
     <Compile Include="Models\TemplateResultResponse.cs" />
     <Compile Include="Pages\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>

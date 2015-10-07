@@ -22,18 +22,6 @@
 
         activate();
 
-        // Set language and time zone defaults
-        $scope.siteConfiguration.language = $scope.appSettings[0].value;
-        $scope.siteConfiguration.timezone = $scope.appSettings[1].value;
-        
-        $scope.siteConfiguration.spHostWebUrl = spHostWebUrl;
-        $scope.siteConfiguration.spRootHostName = "Https://" + $utilservice.spRootHostName(spHostWebUrl); // still need to capture proto
-        $scope.siteConfiguration.responsibilities = { read: false };
-      
-        $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
-        };
-
         //Form validation object
         $scope.allFormsValid = {
             readAndAccept: function () { return $scope.siteConfiguration.responsibilities.read; },
@@ -42,6 +30,46 @@
             sitePrivacy: false,
             siteTemplate: function () { return $scope.siteConfiguration.template == null; }
         };
+
+        // Set language and time zone defaults
+        for (var i = 0; i < $scope.appSettings.length; i++) {
+            var setting = $scope.appSettings[i]
+            switch (setting.Key) {
+                case 'DefaultLanguage':
+                    $scope.siteConfiguration.language = setting.Value
+                    break;
+                case 'DefaultTimeZone':
+                    $scope.siteConfiguration.timezone = setting.Value
+                    break;
+                case 'DefaultRegion':
+                    $scope.siteConfiguration.properties.region= setting.Value
+                    break;
+                case 'DefaultDivision':
+                    $scope.siteConfiguration.properties.division = setting.Value
+                    break;
+                case 'DefaultFunction':
+                    $scope.siteConfiguration.properties.function = setting.Value
+                    break;
+                case 'DefaultSiteClassification':
+                    $scope.siteConfiguration.privacy.classification = setting.Value
+                    $scope.allFormsValid.sitePrivacy = true
+                    break;
+            }
+
+        }
+        
+        
+        
+        $scope.siteConfiguration.spHostWebUrl = spHostWebUrl;
+        $scope.siteConfiguration.spRootHostName = "https://" + $utilservice.spRootHostName(spHostWebUrl); // still need to capture proto
+        $scope.siteConfiguration.responsibilities = { read: false };
+        $scope.siteConfiguration.allowCustomUrl = false;
+      
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
+
+        
 
         //Watching the forms of the specific views
         $scope.$watch('formWizard.$valid', function () {
@@ -56,7 +84,6 @@
                     $scope.allFormsValid.sitePrivacy = $scope.formWizard.siteprivacyform == null ? false : $scope.formWizard.siteprivacyform.$valid;
                     break;
             }
-
         });
 
         //submitcheck
@@ -80,7 +107,13 @@
 
                 var siteRequest = new Object();
                 siteRequest.title = $scope.siteConfiguration.details.title;
-                siteRequest.url = $scope.siteConfiguration.spNewSitePrefix + $scope.siteConfiguration.details.url;
+                if ($scope.siteConfiguration.allowCustomUrl) {
+                    siteRequest.url = null
+                }
+                else 
+                {
+                    siteRequest.url = $scope.siteConfiguration.spNewSitePrefix + $scope.siteConfiguration.details.url;
+                }
                 siteRequest.description = $scope.siteConfiguration.details.description;
                 siteRequest.lcid = $scope.siteConfiguration.language;
                 siteRequest.timeZoneId = $scope.siteConfiguration.timezone;
@@ -118,7 +151,14 @@
                 siteRequest.properties = props;
 
                 //process the siterequest
-                processNewSiteRequest(siteRequest);
+                if ($scope.siteConfiguration.allowCustomUrl) {
+                    saveNewSiteRequest(siteRequest);
+                } else {
+                    processNewSiteRequest(siteRequest);
+                }
+                
+                
+                
             }
         };
 
@@ -139,12 +179,16 @@
             var externalSharingRequest = new Object();
             externalSharingRequest.tenantAdminUrl = template.tenantAdminUrl;
             isExternalSharingEnabled(externalSharingRequest);
+            var siteUrlRequest = new Object();
+            isSiteUrlProviderUsed(siteUrlRequest)
         }
 
         function activate() {
 
             $log.info($scope.title + ' Activated');
             $scope.siteConfiguration = {};
+            $scope.siteConfiguration.properties = {};
+            $scope.siteConfiguration.privacy = {};
 
             // Initialize modal dialog box information
             initModal();
@@ -221,6 +265,22 @@
                     }
                     else { $scope.siteConfiguration.externalSharingEnabled = false; }
                 }
+            }).fail(function (err) {
+                console.info(JSON.stringify(err));
+            });
+        }
+
+        function isSiteUrlProviderUsed(request) {
+            //get if external sharing is enabled for the tenant
+            $.when($SharePointProvisioningService.isSiteUrlProviderUsed(request)).done(function (data) {
+
+                if (data != null) {
+                    if (data.UsesCustomProvider == true) {
+                        $scope.siteConfiguration.allowCustomUrl = false
+                        return
+                    }
+                }
+                $scope.siteConfiguration.allowCustomUrl = true
             }).fail(function (err) {
                 console.info(JSON.stringify(err));
             });

@@ -128,11 +128,6 @@ namespace Provisioning.Common.Data.Templates.Impl
             {
                 ReflectionManager _reflectionHelper = new ReflectionManager();
                 var _provider = _reflectionHelper.GetTemplateProvider(ModuleKeys.PROVISIONINGPROVIDER_KEY);
-                if (_provider.Connector.GetType() == typeof(SharePointConnector))
-                { 
-                    _provider.Connector.AddParameter(SharePointConnector.CLIENTCONTEXT, Authentication.GetAuthenticatedContext());
-                }
-
                 var _pt = _provider.GetTemplate(name);
 
            

@@ -472,9 +472,14 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             }
             return collection;
         }
-        #endregion 
-    
 
-     
+        public void UpdateRequestUrl(string url, string newUrl)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+
+
     }
 }

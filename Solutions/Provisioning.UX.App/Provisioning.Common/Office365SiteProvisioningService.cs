@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Provisioning.Common.Data.Templates;
 using System.Diagnostics;
+using System.Net;
 
 namespace Provisioning.Common
 {
@@ -45,6 +46,7 @@ namespace Provisioning.Common
                 try
                 {
                     Stopwatch _timespan = Stopwatch.StartNew();
+                    bool timeout_detected = false;
 
                     Tenant _tenant = new Tenant(ctx);
                     var _newsite = new SiteCreationProperties();
@@ -62,17 +64,44 @@ namespace Provisioning.Common
                     SpoOperation op = _tenant.CreateSite(_newsite);
                     ctx.Load(_tenant);
                     ctx.Load(op, i => i.IsComplete);
-                    ctx.ExecuteQuery();
 
-                    while (!op.IsComplete)
+                    try
                     {
-                        //wait 30seconds and try again
-                        System.Threading.Thread.Sleep(30000);
-                        op.RefreshLoad();
                         ctx.ExecuteQuery();
+                        while (!op.IsComplete)
+                        {
+                            //wait 30seconds and try again
+                            System.Threading.Thread.Sleep(30000);
+                            op.RefreshLoad();
+                            ctx.ExecuteQuery();
+                            // we need this one in Azure Web jobs (it pings the service so it knows it's still alive)
+                            Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection",
+                               "Waiting for Site Collection to be created....");
+                        }
                     }
-                    
-                    var _site = _tenant.GetSiteByUrl(siteRequest.Url);
+                    catch (WebException we)
+                    {
+                        if (we.Status != WebExceptionStatus.Timeout)
+                        {
+                            throw;
+                        }
+                    }
+                    Site _site = null;
+
+                    // NOTE: this is experimental due to current issues with the site collection creation
+                    while (_site == null)
+                    {
+                        try {
+                            _site = _tenant.GetSiteByUrl(siteRequest.Url);
+                        }
+                        catch (Exception ex)
+                        {
+                            _site = null;
+                            Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection",
+                               "Waiting for Site Collection to be created (" + ex.ToString() + ")");
+                            System.Threading.Thread.Sleep(30000);
+                        }
+                    }
                     var _web = _site.RootWeb;
                     _web.Description = siteRequest.Description;
                     _web.Update();
@@ -91,7 +120,7 @@ namespace Provisioning.Common
                     throw;
                 }
                Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", PCResources.SiteCreation_Creation_Successful, siteRequest.Url);
-            });
+            }, 25000);
         }
 
         /// <summary>
