@@ -1,6 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="db57c339-502b-49b4-85bf-a058c5aae279" solutionId="db57c339-502b-49b4-85bf-a058c5aae279" resetWebServer="false" sharePointProductVersion="16.0" name="Core.ConnectedSigRAngularJSAppParts" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
-  <features>
-    <featureReference itemId="d5d895d4-9ab8-4f38-aac1-310d56bda04c" />
-  </features>
-</package>
