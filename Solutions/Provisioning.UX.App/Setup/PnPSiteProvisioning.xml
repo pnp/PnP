@@ -22,6 +22,8 @@
         <Field ID="{FB4E2E34-F3E2-402D-B3D7-A335E430BB8C}" Type="URL" Name="SP_TemplateImageUrl" DisplayName="Template Image Url" Group="SiteProvisioning" Required="TRUE" MaxLength="255" Description="Enter the Url of the Image for the Template" StaticName="SP_TemplateImageUrl" Format="Image"/>
         <Field ID="{7A79B397-C69C-4CFD-8C9D-644D81BEA6AE}" Type="Boolean" Name="SP_RootWebOnly" DisplayName="Root web only" Group="SiteProvisioning" />
         <Field ID="{867FB9FF-8314-4244-9A2D-41B60C5DCE3F}" Type="Boolean" Name="SP_SubWebOnly" DisplayName="Sub web only" Group="SiteProvisioning" />
+        <Field ID="{30BD94DA-4717-450D-BB96-A40D82C0413A}" Type="Boolean" Name="SP_UseTemplateSitePolicy" DisplayName="Use Site Policy defined in template" Group="SiteProvisioning" />
+
 
         <!--SITE REQUEST FIELDS-->
         <Field Type="User" Name="SP_Owner" DisplayName="Owner" ID="{874ad80c-4e50-4c58-99b4-d21ab3e8bb15}" Group="SiteProvisioning" List="UserInfo" UserSelectionMode="0" ShowField="ImnName" Description="The Primary Site Collection Administrator" SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_Owner" />
@@ -58,7 +60,7 @@
             <pnp:FieldRef ID="EED661BC-FBD2-4880-ADDB-435D4E4ED5C2" Name="SP_Enabled"/>
             <pnp:FieldRef ID="7A79B397-C69C-4CFD-8C9D-644D81BEA6AE" Name="SP_RootWebOnly"/>
             <pnp:FieldRef ID="867FB9FF-8314-4244-9A2D-41B60C5DCE3F" Name="SP_SubWebOnly" />
-
+            <pnp:FieldRef ID="30BD94DA-4717-450D-BB96-A40D82C0413A" Name="SP_UseTemplateSitePolicy" />
           </pnp:FieldRefs>
         </pnp:ContentType>
         <!--SITE REQUEST CONTENT TYPE-->
