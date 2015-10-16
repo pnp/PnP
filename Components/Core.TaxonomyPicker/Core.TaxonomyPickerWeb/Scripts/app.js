@@ -33,12 +33,12 @@ $(document).ready(function () {
                             $.getScript(layoutsRoot + 'sp.taxonomy.js',
                                 function () {
                                     //termset used for dependant selection
-                                    var termId = "735af744-c804-4d6d-be6b-cfe617452524";
+
+                                    var termId = "9df7c69b-267c-4b8b-ab3c-ac5c15cbbfae";
 
                                     //bind the taxonomy picker to the default keywords termset
                                     $('#taxPickerKeywords').taxpicker({ isMulti: true, allowFillIn: true, useKeywords: true }, context);
                                     $('#taxPickerKeywordsContainsSuggestions').taxpicker({ isMulti: true, allowFillIn: true, useKeywords: true, useContainsSuggestions: true }, context);
-                                    
                                     //bind taxpickers that depend on eachothers choices
                                     $('#taxPickerContinent').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: termId, levelToShowTerms: 1 }, context, function () {
                                         $('#taxPickerCountry').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: termId, filterTermId: this._selectedTerms[0].Id, levelToShowTerms: 2 }, context, function () {

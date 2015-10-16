@@ -56,9 +56,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\JDP DEV\DEV\Assemblies\16\Microsoft.SharePoint.Client.UserProfiles.dll</HintPath>
     </Reference>
-    <Reference Include="OfficeAMS.Core">
-      <HintPath>..\..\..\..\..\..\JDP DEV\DEV\OfficeAMS.Core\OfficeAMS.Core\bin\Debug\OfficeAMS.Core.dll</HintPath>
-    </Reference>
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
@@ -108,6 +105,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="ListExtensions.cs" />
     <Compile Include="Pages\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

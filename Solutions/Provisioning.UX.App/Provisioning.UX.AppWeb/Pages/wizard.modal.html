@@ -1,0 +1,132 @@
+﻿<script type="text/ng-template" id="form-messages">
+    <div ng-message="required">{{ 'ERR_CANNOT_BE_BLANK' | translate }}</div>
+    <div ng-message="minlength">{{ 'ERR_TO_SHORT' | translate }}</div>
+    <div ng-message="maxlength">{{ 'ERR_TO_LONG' | translate }}</div>
+    <div ng-message="pattern">{{ 'ERR_NOT_CORRECT_FORMAT' | translate }}</div>
+</script>
+<div class="modal-body">
+
+    <div class="row">
+
+        <div class="col-sm-3">
+
+            <div class="modal-left">
+                <img src="../images/WizardLogo.png" class="img-responsive" alt="Site Provisioning" />
+
+                <ul class="nav nav-pills nav-stacked">
+                    <li ng-class="{'active': getCurrentStep() == 1}" ng-click="setCurrentStep(1)">
+                        <a href="#" class="leftnav">{{ 'WELCOME' | translate }}</a>
+                    </li>
+                    <li ng-class="{'active': getCurrentStep() == 2}" ng-click="setCurrentStep(2)">
+                        <a href="#" class="leftnav">{{ 'RESPONSIBILITIES' | translate }}</a>
+                    </li>
+                    <li ng-class="{'active': getCurrentStep() == 3}" ng-click="setCurrentStep(3)">
+                        <a href="#" class="leftnav">{{ 'INTENDED_USE' | translate }}</a>
+                    </li>
+                    <li ng-class="{'active': getCurrentStep() == 4}" ng-click="setCurrentStep(4)">
+                        <a href="#" class="leftnav">{{ 'TEMPLATE_SELECTION' | translate }}</a>
+                    </li>
+                    <li ng-class="{'active': getCurrentStep() == 5}" ng-click="setCurrentStep(5)">
+                        <a href="#" class="leftnav">{{ 'THE_DETAILS' | translate }}</a>
+                    </li>
+                    <li ng-class="{'active': getCurrentStep() == 6}" ng-click="setCurrentStep(6)">
+                        <a href="#" class="leftnav">{{ 'SELECT_OWNERS' | translate }}</a>
+                    </li>
+                    <li ng-class="{'active': getCurrentStep() == 7}" ng-click="setCurrentStep(7)">
+                        <a href="#" class="leftnav">{{ 'PRIVACY' | translate }}</a>
+                    </li>
+                    <li ng-class="{'active': getCurrentStep() == 8}" ng-click="setCurrentStep(8)">
+                        <a href="#" class="leftnav">{{ 'CONFIRMATION' | translate }}</a>
+                    </li>
+                </ul>
+
+            </div>
+
+        </div>
+
+        <div class="col-sm-9">
+
+            <form name="formWizard" novalidate>
+
+                <div class="modal-right" ng-switch="getCurrentStep()">
+
+                    <!-- Step 1 - Welcome -->
+                    <div class="step" ng-switch-when="1">
+
+                        <!-- Include the Welcome View -->
+                        <div data-ng-include="'view_welcome.html'"></div>
+
+                    </div>
+
+                    <!-- Step 2 - Owner Responsibilities -->
+                    <div class="step" ng-switch-when="2">
+
+                        <!-- Include the Owner Responsibilities View -->
+                        <div data-ng-include="'view_responsibilities.html'"></div> 
+
+                    </div>
+
+                    <!-- Step 3 - Intended Use -->
+                    <div class="step" ng-switch-when="3">
+
+                        <!-- Include the Intended Use View -->
+                        <div data-ng-include="'view_intendeduse.html'"></div>
+
+                    </div>
+
+                    <!-- Step 4 - Site Templates -->
+                    <div class="step" ng-switch-when="4">
+
+                        <!-- Include the Site Templates View -->
+                        <div data-ng-include="'view_sitetemplates.html'"></div>
+
+                    </div>
+
+                    <!-- Step 5 - Site Details -->
+                    <div class="step" ng-switch-when="5">
+
+                        <!-- Include the Site Templates View -->
+                        <div data-ng-include="'view_sitedetails.html'"></div>
+
+                    </div>
+
+                    <!-- Step 6 - Specify Owners (optional members and visitors) -->
+                    <div class="step" ng-switch-when="6">
+
+                        <!-- Include the Additional Owners View -->
+                        <div data-ng-include="'view_owners.html'"></div>
+
+                    </div>
+
+                    <!-- Step 7 - Data Privacy -->
+                    <div class="step" ng-switch-when="7">
+
+                        <!-- Include the Data Privacy View -->
+                        <div data-ng-include="'view_dataprivacy.html'"></div> 
+
+                    </div>
+
+                    <!-- Step 8 - Confirmation -->
+                    <div class="step" ng-switch-when="8">
+
+                        <!-- Include the Confirmation View -->
+                        <div data-ng-include="'view_confirmation.html'"></div>
+
+                    </div><!--/step 8-->
+
+                    <div class="modal-right-footer">
+                        <span class="btn-image btn-back" ng-if="!isFirstStep()" ng-click="handlePrevious()"></span>
+                        <span class="btn-image btn-next" ng-if="!isLastStep()" ng-click="handleNext()"></span>
+                        <span class="btn-image btn-check" ng-if="isLastStep()" ng-click="finished()"></span>
+                        <span class="btn-image btn-cancel" ng-click="cancel()"></span>
+                    </div>
+
+                </div><!--/.modal-right-->
+
+            </form>
+
+        </div><!--/.col-sm-9-->
+
+    </div><!--/.row-->
+
+</div><!--/.modal-body-->

@@ -1,14 +1,12 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.SearchSettingsConsole", "Core.SearchSettingsPortability\Core.SearchSettingsConsole.csproj", "{EA52B7CA-5AEC-40DA-B569-F80173F2CF49}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{5A63B5D7-FA8D-4AC9-B237-1224026499A0}"
 	ProjectSection(SolutionItems) = preProject
-		Readme.txt = Readme.txt
-		SearchSettings.docx = SearchSettings.docx
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Global

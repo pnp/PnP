@@ -1,7 +1,6 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30110.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.PermissionListing", "Core.PermissionListing\Core.PermissionListing.csproj", "{EC2EF6FE-F567-4787-B804-FBCE90C04AAF}"
 EndProject
@@ -9,8 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.PermissionListingWeb",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{9906CB73-6356-4900-A8B8-A86902048542}"
 	ProjectSection(SolutionItems) = preProject
-		Readme.txt = Readme.txt
-		SharePoint Tenant Permission Listing.docx = SharePoint Tenant Permission Listing.docx
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Global

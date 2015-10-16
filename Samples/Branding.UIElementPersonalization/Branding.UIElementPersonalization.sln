@@ -1,11 +1,15 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Branding.UIElementPersonalization", "Branding.UIElementPersonalization\Branding.UIElementPersonalization.csproj", "{86395938-98F2-4F12-8B4F-E8E336D584CE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Branding.UIElementPersonalizationWeb", "Branding.UIElementPersonalizationWeb\Branding.UIElementPersonalizationWeb.csproj", "{9D5B6B25-50A4-4428-AE8F-F1C730A4B9FA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{BCF553A8-DAAD-47C5-998E-A0BB3B05F372}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

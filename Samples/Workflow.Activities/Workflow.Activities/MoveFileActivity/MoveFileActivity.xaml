@@ -1,0 +1,319 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Workflow.Activities.MoveFileActivity"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:msdad="clr-namespace:Microsoft.SharePoint.DesignTime.Activities.Design;assembly=Microsoft.SharePoint.DesignTime.Activities.16.0.Design"
+ xmlns:p="wf://workflow.windows.net/$Activities"
+ xmlns:p1="http://schemas.microsoft.com/workflow/2012/07/xaml/activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:sn="clr-namespace:System.Net;assembly=System"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="TargetFolder" Type="InArgument(x:String)" />
+    <x:Property Name="OverwriteTarget" Type="InArgument(x:Boolean)" />
+    <x:Property Name="SourceItemId" Type="InArgument(x:Int32)" />
+    <x:Property Name="SourceListId" Type="InArgument(s:Guid)" />
+  </x:Members>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>Workflow.Activities.MoveFileActivity_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>Microsoft.Activities</x:String>
+      <x:String>System.Net</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.SharePoint.DesignTime.Activities.16.0</AssemblyReference>
+      <AssemblyReference>Microsoft.SharePoint.DesignTime.Activities.16.0.Design</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>Microsoft.SharePoint.WorkflowServices.Activities</AssemblyReference>
+      <AssemblyReference>Workflow.Activities</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_3">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="x:String" Name="currentAppWebUri" />
+    </Sequence.Variables>
+    <p:LookupWorkflowContextProperty DisplayName="Get Current App Web" sap2010:WorkflowViewState.IdRef="LookupWorkflowContextProperty_1" PropertyName="CurrentWebUrl">
+      <p:LookupWorkflowContextProperty.Result>
+        <OutArgument x:TypeArguments="x:String">
+          <mca:CSharpReference x:TypeArguments="x:String">currentAppWebUri</mca:CSharpReference>
+        </OutArgument>
+      </p:LookupWorkflowContextProperty.Result>
+    </p:LookupWorkflowContextProperty>
+    <p:AppOnlySequence sap2010:WorkflowViewState.IdRef="AppOnlySequence_1">
+      <p:AppOnlySequence.Body>
+        <Sequence DisplayName="Move Sequence" sap2010:WorkflowViewState.IdRef="Sequence_2">
+          <Sequence.Variables>
+            <Variable x:TypeArguments="x:String" Name="httpRequestUrl" />
+            <Variable x:TypeArguments="p1:DynamicValue" Name="httpRequestHeaders" />
+            <Variable x:TypeArguments="sn:HttpStatusCode" Name="httpResponseStatusCode" />
+            <Variable x:TypeArguments="x:String" Name="overWriteFlag" />
+            <Variable x:TypeArguments="x:String" Name="currentItemFileName" />
+          </Sequence.Variables>
+          <If DisplayName="Determine Overwrite Status" sap2010:WorkflowViewState.IdRef="If_1">
+            <If.Condition>
+              <InArgument x:TypeArguments="x:Boolean">
+                <mca:CSharpValue x:TypeArguments="x:Boolean">OverwriteTarget</mca:CSharpValue>
+              </InArgument>
+            </If.Condition>
+            <If.Then>
+              <Assign sap2010:WorkflowViewState.IdRef="Assign_1">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">
+                    <mca:CSharpReference x:TypeArguments="x:String">overWriteFlag</mca:CSharpReference>
+                  </OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">1</InArgument>
+                </Assign.Value>
+              </Assign>
+            </If.Then>
+            <If.Else>
+              <Assign sap2010:WorkflowViewState.IdRef="Assign_2">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="x:String">
+                    <mca:CSharpReference x:TypeArguments="x:String">overWriteFlag</mca:CSharpReference>
+                  </OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="x:String">0</InArgument>
+                </Assign.Value>
+              </Assign>
+            </If.Else>
+          </If>
+          <p1:BuildDynamicValue sap2010:WorkflowViewState.IdRef="BuildDynamicValue_1">
+            <p1:BuildDynamicValue.Result>
+              <InOutArgument x:TypeArguments="p1:DynamicValue">
+                <mca:CSharpReference x:TypeArguments="p1:DynamicValue">httpRequestHeaders</mca:CSharpReference>
+              </InOutArgument>
+            </p1:BuildDynamicValue.Result>
+            <scg:Dictionary x:TypeArguments="x:String, InArgument">
+              <InArgument x:TypeArguments="x:String" x:Key="Accept">application/json;odata=nometadata</InArgument>
+            </scg:Dictionary>
+          </p1:BuildDynamicValue>
+          <Sequence DisplayName="Retrieve Source File Name" sap2010:WorkflowViewState.IdRef="Sequence_4">
+            <Sequence.Variables>
+              <Variable x:TypeArguments="p1:DynamicValue" Name="httpResponseContent" />
+            </Sequence.Variables>
+            <Assign sap2010:WorkflowViewState.IdRef="Assign_5">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">
+                  <mca:CSharpReference x:TypeArguments="x:String">httpRequestUrl</mca:CSharpReference>
+                </OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">
+                  <mca:CSharpValue x:TypeArguments="x:String">String.Format("{0}/_api/web/lists/GetById(guid'{1}')/Items({2})/File?$select=Name", currentAppWebUri, SourceListId, SourceItemId)</mca:CSharpValue>
+                </InArgument>
+              </Assign.Value>
+            </Assign>
+            <p1:HttpSend sap2010:WorkflowViewState.IdRef="HttpSend_2" Method="POST">
+              <p1:HttpSend.RequestHeaders>
+                <InArgument x:TypeArguments="p1:DynamicValue">
+                  <mca:CSharpValue x:TypeArguments="p1:DynamicValue">httpRequestHeaders</mca:CSharpValue>
+                </InArgument>
+              </p1:HttpSend.RequestHeaders>
+              <p1:HttpSend.ResponseContent>
+                <OutArgument x:TypeArguments="p1:DynamicValue">
+                  <mca:CSharpReference x:TypeArguments="p1:DynamicValue">httpResponseContent</mca:CSharpReference>
+                </OutArgument>
+              </p1:HttpSend.ResponseContent>
+              <p1:HttpSend.ResponseStatusCode>
+                <OutArgument x:TypeArguments="sn:HttpStatusCode">
+                  <mca:CSharpReference x:TypeArguments="sn:HttpStatusCode">httpResponseStatusCode</mca:CSharpReference>
+                </OutArgument>
+              </p1:HttpSend.ResponseStatusCode>
+              <p1:HttpSend.Uri>
+                <InArgument x:TypeArguments="x:String">
+                  <mca:CSharpValue x:TypeArguments="x:String">httpRequestUrl</mca:CSharpValue>
+                </InArgument>
+              </p1:HttpSend.Uri>
+            </p1:HttpSend>
+            <p1:GetDynamicValueProperty x:TypeArguments="x:String" DisplayName="Get File Name Property" sap2010:WorkflowViewState.IdRef="GetDynamicValueProperty`1_1" PropertyName="Name">
+              <p1:GetDynamicValueProperty.Result>
+                <OutArgument x:TypeArguments="x:String">
+                  <mca:CSharpReference x:TypeArguments="x:String">currentItemFileName</mca:CSharpReference>
+                </OutArgument>
+              </p1:GetDynamicValueProperty.Result>
+              <p1:GetDynamicValueProperty.Source>
+                <InArgument x:TypeArguments="p1:DynamicValue">
+                  <mca:CSharpValue x:TypeArguments="p1:DynamicValue">httpResponseContent</mca:CSharpValue>
+                </InArgument>
+              </p1:GetDynamicValueProperty.Source>
+            </p1:GetDynamicValueProperty>
+          </Sequence>
+          <Sequence DisplayName="Move File" sap2010:WorkflowViewState.IdRef="Sequence_5">
+            <Assign sap2010:WorkflowViewState.IdRef="Assign_3">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">
+                  <mca:CSharpReference x:TypeArguments="x:String">httpRequestUrl</mca:CSharpReference>
+                </OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">
+                  <mca:CSharpValue x:TypeArguments="x:String">String.Format("{0}/_api/web/lists/GetById(guid'{1}')/Items({2})/File/MoveTo(newUrl='{3}/{4}',flags='{5}')", currentAppWebUri, SourceListId, SourceItemId, TargetFolder, currentItemFileName, overWriteFlag)</mca:CSharpValue>
+                </InArgument>
+              </Assign.Value>
+            </Assign>
+            <p:WriteToHistory sap2010:WorkflowViewState.IdRef="WriteToHistory_1">
+              <p:WriteToHistory.Message>
+                <InArgument x:TypeArguments="x:String">
+                  <mca:CSharpValue x:TypeArguments="x:String">httpRequestUrl</mca:CSharpValue>
+                </InArgument>
+              </p:WriteToHistory.Message>
+            </p:WriteToHistory>
+            <p1:HttpSend sap2010:WorkflowViewState.IdRef="HttpSend_1" Method="POST">
+              <p1:HttpSend.RequestHeaders>
+                <InArgument x:TypeArguments="p1:DynamicValue">
+                  <mca:CSharpValue x:TypeArguments="p1:DynamicValue">httpRequestHeaders</mca:CSharpValue>
+                </InArgument>
+              </p1:HttpSend.RequestHeaders>
+              <p1:HttpSend.ResponseStatusCode>
+                <OutArgument x:TypeArguments="sn:HttpStatusCode">
+                  <mca:CSharpReference x:TypeArguments="sn:HttpStatusCode">httpResponseStatusCode</mca:CSharpReference>
+                </OutArgument>
+              </p1:HttpSend.ResponseStatusCode>
+              <p1:HttpSend.Uri>
+                <InArgument x:TypeArguments="x:String">
+                  <mca:CSharpValue x:TypeArguments="x:String">httpRequestUrl</mca:CSharpValue>
+                </InArgument>
+              </p1:HttpSend.Uri>
+            </p1:HttpSend>
+            <If sap2010:WorkflowViewState.IdRef="If_2">
+              <If.Condition>
+                <InArgument x:TypeArguments="x:Boolean">
+                  <mca:CSharpValue x:TypeArguments="x:Boolean">httpResponseStatusCode != System.Net.HttpStatusCode.OK</mca:CSharpValue>
+                </InArgument>
+              </If.Condition>
+              <If.Then>
+                <Sequence DisplayName="Failed BreakRoleInheritance " sap2010:WorkflowViewState.IdRef="Sequence_1">
+                  <Sequence.Variables>
+                    <Variable x:TypeArguments="x:String" Name="exceptionMessage" />
+                  </Sequence.Variables>
+                  <Assign sap2010:WorkflowViewState.IdRef="Assign_4">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:String">
+                        <mca:CSharpReference x:TypeArguments="x:String">exceptionMessage</mca:CSharpReference>
+                      </OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:String">Failed to move document!</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <p:WriteToHistory DisplayName="Write Exception to History" sap2010:WorkflowViewState.IdRef="WriteToHistory_2">
+                    <p:WriteToHistory.Message>
+                      <InArgument x:TypeArguments="x:String">
+                        <mca:CSharpValue x:TypeArguments="x:String">exceptionMessage</mca:CSharpValue>
+                      </InArgument>
+                    </p:WriteToHistory.Message>
+                  </p:WriteToHistory>
+                  <Throw sap2010:WorkflowViewState.IdRef="Throw_1">
+                    <InArgument x:TypeArguments="s:Exception">
+                      <mca:CSharpValue x:TypeArguments="s:Exception">new ApplicationException(exceptionMessage)</mca:CSharpValue>
+                    </InArgument>
+                  </Throw>
+                </Sequence>
+              </If.Then>
+            </If>
+          </Sequence>
+        </Sequence>
+      </p:AppOnlySequence.Body>
+    </p:AppOnlySequence>
+    <sads:DebugSymbol.Symbol>d2lDOlxnaXRcUG5QUGFvbG9QaWFcU2FtcGxlc1xXb3JrZmxvdy5BY3Rpdml0aWVzXFdvcmtmbG93LkFjdGl2aXRpZXNcTW92ZUZpbGVBY3Rpdml0eVxNb3ZlRmlsZUFjdGl2aXR5LnhhbWw0NgP1AQ4CAQE6BUAnAwGZAkEF8wEZAgECPQs9YQMBmwI6lwE6pgEDAZoCQwnxARQCAQNLC2kQAwHzAWoLcyIDAeYBdAumARYDAYABpwEL8AEWAgEEThFOXwMB9AFSD1sYAwGMAl4PZxgDAf8BcUVxZgMB8gFtEW1wAwHnAXgNgwEWAwHNAYQBDZkBGwMBmwGaAQ2lASoDAYEBqAENswEWAgFptAENugEgAgFduwENywEbAgE6zAEN7wESAgEFWTpZOwMBmAJVFVVoAwGNAmU6ZTsDAYsCYRVhaAMBgAKAAROAAdIBAwHaAXsTe2cDAc4BhwEThwFqAwHBAZEBE5EBeAMBtQGWAROWAV8DAakBjAETjAFzAwGdAYQBToQBVAMBnAGdAROdAWwDAY8BogETogFrAwGDAZoBtAGaAboBAwGCAbABE7ABnAICAXWrAROrAWcCAWq3ARO3AV8CAV6+ARO+AWoCAVLDARPDAXgCAUfIARPIAV8CATy7AU67AVQCATvPARPPAYgBAgEG0wER7QEcAgER1wET4AEcAgEs4QET5wEmAgEf6AET7AEbAgES3gE+3gFWAgE52gEZ2gFvAgEt5AEZ5AFnAgEg6gEX6gGCAQIBEw==</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="LookupWorkflowContextProperty_1" sap:VirtualizedContainerService.HintSize="295,68">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <scg:Dictionary x:TypeArguments="x:String, msdad:ViewStateNameValue" x:Key="SPLocalizedDisplayNames">
+              <msdad:ViewStateNameValue x:Key="PropertyName" DisplayName="Current Site URL" Value="CurrentWebUrl" />
+            </scg:Dictionary>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="242,62" />
+      <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="242,62" />
+      <sap2010:ViewStateData Id="If_1" sap:VirtualizedContainerService.HintSize="247,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="BuildDynamicValue_1" sap:VirtualizedContainerService.HintSize="247,92" />
+      <sap2010:ViewStateData Id="Assign_5" sap:VirtualizedContainerService.HintSize="242,62" />
+      <sap2010:ViewStateData Id="HttpSend_2" sap:VirtualizedContainerService.HintSize="242,62" />
+      <sap2010:ViewStateData Id="GetDynamicValueProperty`1_1" sap:VirtualizedContainerService.HintSize="242,22" />
+      <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="247,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_3" sap:VirtualizedContainerService.HintSize="464,62" />
+      <sap2010:ViewStateData Id="WriteToHistory_1" sap:VirtualizedContainerService.HintSize="464,68" />
+      <sap2010:ViewStateData Id="HttpSend_1" sap:VirtualizedContainerService.HintSize="464,62" />
+      <sap2010:ViewStateData Id="Assign_4" sap:VirtualizedContainerService.HintSize="242,62" />
+      <sap2010:ViewStateData Id="WriteToHistory_2" sap:VirtualizedContainerService.HintSize="242,68" />
+      <sap2010:ViewStateData Id="Throw_1" sap:VirtualizedContainerService.HintSize="242,22" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="264,356">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="464,506" />
+      <sap2010:ViewStateData Id="Sequence_5" sap:VirtualizedContainerService.HintSize="247,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">False</x:Boolean>
+            <x:Boolean x:Key="IsPinned">False</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_2" sap:VirtualizedContainerService.HintSize="269,489">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="AppOnlySequence_1" sap:VirtualizedContainerService.HintSize="295,537" />
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="317,769">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Workflow.Activities.MoveFileActivity_1" sap:VirtualizedContainerService.HintSize="357,849" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

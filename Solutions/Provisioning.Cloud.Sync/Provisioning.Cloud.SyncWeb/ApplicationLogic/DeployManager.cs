@@ -20,6 +20,7 @@ namespace Contoso.Provisioning.Cloud.SyncWeb.ApplicationLogic
     {
 
         public const string ScriptLocation = "ScriptLink";
+        public const string ConfigList = "OfficeDevPnPConfig";
 
         /// <summary>
         /// 
@@ -202,7 +203,7 @@ namespace Contoso.Provisioning.Cloud.SyncWeb.ApplicationLogic
             // Use CSOM to uplaod the file in
             FileCreationInformation newFile = new FileCreationInformation();
             newFile.Content = System.IO.File.ReadAllBytes(fullPathToLogo);
-            newFile.Url = themeAssetsFolder.ServerRelativeUrl + "/siteIcon-2129F729.themedpng";
+            newFile.Url = UrlUtility.EnsureTrailingSlash(themeAssetsFolder.ServerRelativeUrl) + "siteIcon-2129F729.themedpng";
             newFile.Overwrite = true;
             Microsoft.SharePoint.Client.File uploadFile = themeAssetsFolder.Files.Add(newFile);
             cc.Load(uploadFile);
@@ -275,11 +276,30 @@ namespace Contoso.Provisioning.Cloud.SyncWeb.ApplicationLogic
             }
 
             // Deploy theme files to root web, if they are not there and set it as active theme for the site
-            newWeb.DeployThemeToSubWeb(rootWeb, theme,
-                                       colorFile, fontFile, backgroundImage, masterPage);
+            string themeColorFileString = "";
+            string themeFontFileString = "";
+            string themeBackgroundImageString = "";
+
+            if (!String.IsNullOrEmpty(colorFile))
+            {
+                themeColorFileString = rootWeb.UploadThemeFile(colorFile).ServerRelativeUrl;
+
+            }
+            if (!String.IsNullOrEmpty(fontFile))
+            {
+                themeFontFileString = rootWeb.UploadThemeFile(fontFile).ServerRelativeUrl;
+            }
+
+            if (!String.IsNullOrWhiteSpace(backgroundImage))
+            {
+                themeBackgroundImageString = rootWeb.UploadThemeFile(backgroundImage).ServerRelativeUrl;
+            }
+
+            masterPage = UrlUtility.Combine(rootWeb.ServerRelativeUrl, string.Format("/_catalogs/masterpage/{0}", masterPage));
+            newWeb.CreateComposedLookByUrl(theme, themeColorFileString, themeFontFileString, themeBackgroundImageString, masterPage);
 
             // Setting the theme to new web
-            newWeb.SetThemeToSubWeb(rootWeb, theme);
+            newWeb.SetComposedLookByUrl(theme);
         }
 
         private XElement SolveUsedThemeConfigElementFromXML(string theme, XDocument configuration)
@@ -653,7 +673,7 @@ headID.appendChild(newScript);", f);
             {
                 FileCreationInformation newFile = new FileCreationInformation();
                 newFile.Content = System.IO.File.ReadAllBytes(fullFilePath);
-                newFile.Url = folder.ServerRelativeUrl + "/" + Path.GetFileName(fullFilePath);
+                newFile.Url = UrlUtility.EnsureTrailingSlash(folder.ServerRelativeUrl) + Path.GetFileName(fullFilePath);
                 newFile.Overwrite = true;
                 Microsoft.SharePoint.Client.File uploadFile = folder.Files.Add(newFile);
                 context.Load(uploadFile);
@@ -698,28 +718,37 @@ headID.appendChild(newScript);", f);
             var token = TokenHelper.GetAppOnlyAccessToken(TokenHelper.SharePointPrincipal, tenantRootUri.Authority, realm).AccessToken;
             using (var adminContext = TokenHelper.GetClientContextWithAccessToken(tenantRootUri.ToString(), token))
             {
-                Web rootWeb = adminContext.Web;
-                adminContext.Load(rootWeb);
-                ListCollection listCollection = rootWeb.Lists;
-                adminContext.Load(listCollection, lists => lists.Include(list => list.Title).Where(list => list.Title == "OfficeAMSConfig"));
-                adminContext.ExecuteQuery();
+                //Check if config list exists and if not, create the list and SubSiteAppUrl item.
+                
+                //Using ExceptionHandlingScope for this so that only one call is made to the server instead of multiple calls. 
+                ExceptionHandlingScope scope = new ExceptionHandlingScope(adminContext);
 
-                if (listCollection.Count == 0)
+                using (scope.StartScope())
                 {
-                    ListCreationInformation listCreationInfo = new ListCreationInformation();
-                    listCreationInfo.Title = "OfficeAMSConfig";
-                    listCreationInfo.TemplateType = (int)ListTemplateType.GenericList;
-                    List oList = rootWeb.Lists.Add(listCreationInfo);
-                    Field oField = oList.Fields.AddFieldAsXml("<Field DisplayName='Value' Type='Text' />", true, AddFieldOptions.DefaultValue);
-                    adminContext.ExecuteQuery();
-                    ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
-                    ListItem item = oList.AddItem(itemCreateInfo);
-                    item["Title"] = "SubSiteAppUrl";
-                    item["Value"] = "https://localhost:44323";
-                    item.Update();
-                    adminContext.ExecuteQuery();
-                    
+                    using (scope.StartTry())
+                    {
+                        List configList = adminContext.Web.Lists.GetByTitle(ConfigList);
+
+                        configList.Update();
+                    }
+
+                    using (scope.StartCatch())
+                    {
+                        ListCreationInformation listCreationInfo = new ListCreationInformation();
+                        listCreationInfo.Title = ConfigList;
+                        listCreationInfo.TemplateType = (int)ListTemplateType.GenericList;
+                        List configList = adminContext.Web.Lists.Add(listCreationInfo);
+                        Field oField = configList.Fields.AddFieldAsXml("<Field DisplayName='Value' Type='Text' />", true, AddFieldOptions.DefaultValue);
+                        
+                        ListItemCreationInformation itemCreateInfo = new ListItemCreationInformation();
+                        ListItem item = configList.AddItem(itemCreateInfo);
+                        item["Title"] = "SubSiteAppUrl";
+                        item["Value"] = "https://localhost:44323";
+                        item.Update();
+                    }
                 }
+
+                adminContext.ExecuteQuery();
             }
         }
     }

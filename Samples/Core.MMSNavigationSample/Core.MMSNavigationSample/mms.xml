@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--<SiteCollection URL ="">-->
+<TermStore Name="Taxonomy_UeEMzBweD3Rscm0uRmxQMg==">
+  <TermSetGroup Name="Site Navigations" ID="{CCEE9CFE-3D04-4B99-BB42-5A0D8E705857}">
+    <TermSet Name="Root Web Nav" ID="1C35418F-27B5-4046-970E-82BB346B12C3" IsForSiteNav="true">
+      <Term Name="Bing"     NavNodeTitle="External Search"  ShowinGlobal="true" ShowinLocal="false" NavNodeSimpleLink="http://www.bing.com" termFriendlyURLLink=""                    NavTargetURL="" />
+      <Term Name="Workflow" NavNodeTitle="Workflow Page"    ShowinGlobal="true" ShowinLocal="false" NavNodeSimpleLink=""                    termFriendlyURLLink="Workflow Init Page"  NavTargetURL="/sites/test/SitePages/workflowInit.aspx"/>
+    </TermSet>
+  </TermSetGroup>
+</TermStore>
+
+
+
+
+
+
+

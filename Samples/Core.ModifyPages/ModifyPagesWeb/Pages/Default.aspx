@@ -20,7 +20,7 @@
             <br />
             HTML text to add:
         <br />
-            <asp:TextBox runat="server" ID="htmlEntry" Rows="6" TextMode="MultiLine" Width="400px" Text="Hello <strong>Office AMS</strong>!"></asp:TextBox>
+            <asp:TextBox runat="server" ID="htmlEntry" Rows="6" TextMode="MultiLine" Width="400px" Text="Hello <strong>OfficeDev PnP</strong>!"></asp:TextBox>
             <br />
             <br />
             <asp:Button runat="server" ID="btnCreateNewPage" Text="Add page with html" OnClick="btnCreateNewPage_Click" />

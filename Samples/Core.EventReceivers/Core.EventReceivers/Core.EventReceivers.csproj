@@ -20,6 +20,7 @@
     <WorkflowPartId>{fad6b398-ae59-4e13-9c31-8a1033632325}</WorkflowPartId>
     <CspkgPartId>{eebb1aed-728f-4da2-b164-e7c51c94578e}</CspkgPartId>
     <SqlPackagePartId>{e4f943da-4054-43b5-9eeb-bf83e9d3d12c}</SqlPackagePartId>
+    <ActivePublishProfile>vesaj-remove - Web Deploy</ActivePublishProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

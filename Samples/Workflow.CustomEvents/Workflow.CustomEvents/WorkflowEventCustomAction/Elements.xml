@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <CustomAction Id="a51f80e2-d616-4896-9778-f6b4ff800401.WorkflowEventCustomAction"
+                RegistrationType="List"
+                RegistrationId="{$ListId:Lists/WorkflowTargetItems;}"
+                Location="EditControlBlock"
+                Sequence="10001"
+                Title="Start Sample Workflow">
+    <!-- 
+    Update the Url below to the page you want the custom action to use.
+    Start the URL with the token ~remoteAppUrl if the page is in the
+    associated web project, use ~appWebUrl if page is in the app project.
+    -->
+    <UrlAction Url="~site/Pages/StartWorkflowWithCustomEvents.aspx?SPListItemId={ItemId}&amp;SPListId={ListId}" />
+  </CustomAction>
+  <CustomAction Id="364fea03-6263-4297-b891-c28ac8bd1064.WorkflowEventCustomAction"
+                RegistrationType="List"
+                RegistrationId="{$ListId:Lists/WorkflowTargetItems;}"
+                Location="EditControlBlock"
+                Sequence="10002"
+                Title="Fire Custom Event">
+    <!-- 
+    Update the Url below to the page you want the custom action to use.
+    Start the URL with the token ~remoteAppUrl if the page is in the
+    associated web project, use ~appWebUrl if page is in the app project.
+    -->
+    <UrlAction Url="~site/Pages/FireCustomEvent.aspx?SPListItemId={ItemId}&amp;SPListId={ListId}" />
+  </CustomAction>
+</Elements>

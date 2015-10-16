@@ -12,6 +12,8 @@ using OfficeDevPnP.Core.Utilities;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core;
 using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.Core.Enums;
+using Microsoft.Online.SharePoint.TenantAdministration;
 
 namespace Contoso.Provisioning.Hybrid.Core.SiteTemplates
 {
@@ -83,9 +85,9 @@ namespace Contoso.Provisioning.Hybrid.Core.SiteTemplates
                 this.CreatedSiteContext.Web.ActivateFeature(new Guid("e2f2bb18-891d-4812-97df-c265afdba297"));
 
                 // Picture library called Media
-                this.CreatedSiteContext.Web.AddList(Microsoft.SharePoint.Client.ListTemplateType.PictureLibrary, "Media", false);
+                this.CreatedSiteContext.Web.CreateList(Microsoft.SharePoint.Client.ListTemplateType.PictureLibrary, "Media", false);
                 // Promoted Links library called Links
-                this.CreatedSiteContext.Web.AddList(170, new Guid("192efa95-e50c-475e-87ab-361cede5dd7f"), "Links", false);
+                this.CreatedSiteContext.Web.CreateList(new Guid("192efa95-e50c-475e-87ab-361cede5dd7f"), 170, "Links", false);
 
                 // Update existing list settings for the documents library and the blog post library
                 this.CreatedSiteContext.Web.UpdateListVersioning("Documents", true);
@@ -114,17 +116,17 @@ namespace Contoso.Provisioning.Hybrid.Core.SiteTemplates
                 this.CreatedSiteContext.Web.AddLayoutToWikiPage("SitePages", WikiPageLayout.TwoColumns, siteMembersPage);
                 //Add site members web parts
                 WebPartEntity wpSiteUsers = new WebPartEntity();
-                wpSiteUsers.WebPartXml = WpSiteUsers("Site owners", this.CreatedSiteContext.Web.GetGroupID(new Uri(this.SharePointProvisioningData.Url), String.Format("{0} {1}", this.SharePointProvisioningData.Title, "Owners")));
+                wpSiteUsers.WebPartXml = WpSiteUsers("Site owners", this.CreatedSiteContext.Web.GetGroupID(String.Format("{0} {1}", this.SharePointProvisioningData.Title, "Owners")));
                 wpSiteUsers.WebPartIndex = 0;
                 wpSiteUsers.WebPartTitle = "Site owners";
                 this.CreatedSiteContext.Web.AddWebPartToWikiPage("SitePages", wpSiteUsers, siteMembersPage, 1, 1, false);
 
-                wpSiteUsers.WebPartXml = WpSiteUsers("Site visitors", this.CreatedSiteContext.Web.GetGroupID(new Uri(this.SharePointProvisioningData.Url), String.Format("{0} {1}", this.SharePointProvisioningData.Title, "Visitors")));
+                wpSiteUsers.WebPartXml = WpSiteUsers("Site visitors", this.CreatedSiteContext.Web.GetGroupID(String.Format("{0} {1}", this.SharePointProvisioningData.Title, "Visitors")));
                 wpSiteUsers.WebPartIndex = 1;
                 wpSiteUsers.WebPartTitle = "Site visitors";
                 this.CreatedSiteContext.Web.AddWebPartToWikiPage("SitePages", wpSiteUsers, siteMembersPage, 1, 1, true);
 
-                wpSiteUsers.WebPartXml = WpSiteUsers("Site members", this.CreatedSiteContext.Web.GetGroupID(new Uri(this.SharePointProvisioningData.Url), String.Format("{0} {1}", this.SharePointProvisioningData.Title, "Members")));
+                wpSiteUsers.WebPartXml = WpSiteUsers("Site members", this.CreatedSiteContext.Web.GetGroupID(String.Format("{0} {1}", this.SharePointProvisioningData.Title, "Members")));
                 wpSiteUsers.WebPartIndex = 0;
                 wpSiteUsers.WebPartTitle = "Site members";
                 this.CreatedSiteContext.Web.AddWebPartToWikiPage("SitePages", wpSiteUsers, siteMembersPage, 1, 2, false);
@@ -133,19 +135,19 @@ namespace Contoso.Provisioning.Hybrid.Core.SiteTemplates
                 //First delete all quicklaunch entries
                 this.CreatedSiteContext.Web.DeleteAllQuickLaunchNodes();
 
-                this.CreatedSiteContext.Web.AddNavigationNode("$Resources:core,nav_Home", null, "", true);
+                this.CreatedSiteContext.Web.AddNavigationNode("$Resources:core,nav_Home", null, "", NavigationType.QuickLaunch);
                 //csomService.AddNavigationNode(this.SiteToProvision, "$Resources:core,BlogQuickLaunchTitle", new Uri(this.BlogSite.Url), "News & Trending", true);
-                this.CreatedSiteContext.Web.AddNavigationNode("$Resources:spscore,DiscussionsTab", new Uri(string.Format("{0}/Lists/Community%20Discussion/AllItems.aspx", this.SharePointProvisioningData.Url)), "", true);
+                this.CreatedSiteContext.Web.AddNavigationNode("$Resources:spscore,DiscussionsTab", new Uri(string.Format("{0}/Lists/Community%20Discussion/AllItems.aspx", this.SharePointProvisioningData.Url)), "", NavigationType.QuickLaunch);
                 string notebookPath = string.Format("{0}/SiteAssets/{1} Notebook", this.SharePointProvisioningData.Url, this.SharePointProvisioningData.Title);
                 notebookPath = HttpUtility.UrlPathEncode(notebookPath, false).Replace("/", "%2F");
-                this.CreatedSiteContext.Web.AddNavigationNode("$Resources:core,SiteNotebookLink", new Uri(string.Format("{0}/_layouts/15/WopiFrame.aspx?sourcedoc={1}&action=editnew", this.SharePointProvisioningData.Url, notebookPath)), "", true);
-                this.CreatedSiteContext.Web.AddNavigationNode("$Resources:core,taskList", new Uri(string.Format("{0}/Lists/Tasks/AllItems.aspx", this.SharePointProvisioningData.Url)), "", true);
-                this.CreatedSiteContext.Web.AddNavigationNode("$Resources:core,calendarList", new Uri(string.Format("{0}/Lists/Calendar/calendar.aspx", this.SharePointProvisioningData.Url)), "", true);
-                this.CreatedSiteContext.Web.AddNavigationNode("$Resources:core,shareddocuments_Title_15", new Uri(string.Format("{0}/Shared Documents/Forms/AllItems.aspx", this.SharePointProvisioningData.Url)), "", true);
-                this.CreatedSiteContext.Web.AddNavigationNode("$Resources:core,linksList", new Uri(string.Format("{0}/Lists/Links/Tiles.aspx", this.SharePointProvisioningData.Url)), "", true);
-                this.CreatedSiteContext.Web.AddNavigationNode("$Resources:core,GrpMedia", new Uri(string.Format("{0}/Media/Forms/Thumbnails.aspx", this.SharePointProvisioningData.Url)), "", true);
-                this.CreatedSiteContext.Web.AddNavigationNode("$Resources:spscore,Members_QuickLaunch", new Uri(string.Format("{0}/{1}", this.SharePointProvisioningData.Url, siteMembersUrl)), "", true);
-                this.CreatedSiteContext.Web.AddNavigationNode("$Resources:core,category_SiteContents", new Uri(string.Format("{0}/_layouts/15/viewlsts.aspx", this.SharePointProvisioningData.Url)), "", true);
+                this.CreatedSiteContext.Web.AddNavigationNode("$Resources:core,SiteNotebookLink", new Uri(string.Format("{0}/_layouts/15/WopiFrame.aspx?sourcedoc={1}&action=editnew", this.SharePointProvisioningData.Url, notebookPath)), "", NavigationType.QuickLaunch);
+                this.CreatedSiteContext.Web.AddNavigationNode("$Resources:core,taskList", new Uri(string.Format("{0}/Lists/Tasks/AllItems.aspx", this.SharePointProvisioningData.Url)), "", NavigationType.QuickLaunch);
+                this.CreatedSiteContext.Web.AddNavigationNode("$Resources:core,calendarList", new Uri(string.Format("{0}/Lists/Calendar/calendar.aspx", this.SharePointProvisioningData.Url)), "", NavigationType.QuickLaunch);
+                this.CreatedSiteContext.Web.AddNavigationNode("$Resources:core,shareddocuments_Title_15", new Uri(string.Format("{0}/Shared Documents/Forms/AllItems.aspx", this.SharePointProvisioningData.Url)), "", NavigationType.QuickLaunch);
+                this.CreatedSiteContext.Web.AddNavigationNode("$Resources:core,linksList", new Uri(string.Format("{0}/Lists/Links/Tiles.aspx", this.SharePointProvisioningData.Url)), "", NavigationType.QuickLaunch);
+                this.CreatedSiteContext.Web.AddNavigationNode("$Resources:core,GrpMedia", new Uri(string.Format("{0}/Media/Forms/Thumbnails.aspx", this.SharePointProvisioningData.Url)), "", NavigationType.QuickLaunch);
+                this.CreatedSiteContext.Web.AddNavigationNode("$Resources:spscore,Members_QuickLaunch", new Uri(string.Format("{0}/{1}", this.SharePointProvisioningData.Url, siteMembersUrl)), "", NavigationType.QuickLaunch);
+                this.CreatedSiteContext.Web.AddNavigationNode("$Resources:core,category_SiteContents", new Uri(string.Format("{0}/_layouts/15/viewlsts.aspx", this.SharePointProvisioningData.Url)), "", NavigationType.QuickLaunch);
 
                 // Insert demo promoted links list item
                 if (contosoCollaborationPromotedSiteName.Length > 0 || contosoCollaborationPromotedSiteUrl.Length > 0)
@@ -156,14 +158,22 @@ namespace Contoso.Provisioning.Hybrid.Core.SiteTemplates
                 if (!this.CreateOnPremises)
                 {
                     // add owners to site collection administrators
-                    string[] ownerLogins = new string[this.SharePointProvisioningData.Owners.Length];
+                    List<UserEntity> adminLogins = new List<UserEntity>();
+
                     int i = 0;
                     foreach (SharePointUser owner in this.SharePointProvisioningData.Owners)
                     {
-                        ownerLogins[i] = owner.Login;
+                        adminLogins.Add(new UserEntity()
+                            {
+                                 Email = owner.Email,
+                                 LoginName = owner.Login,
+                                 Title = owner.Name,
+                            });
                         i++;
                     }
-                    this.AppOnlyClientContext.Web.AddAdministratorsTenant(ownerLogins, new Uri(this.SharePointProvisioningData.Url));
+
+                    Tenant tenant = new Tenant(this.AppOnlyClientContext);
+                    tenant.AddAdministrators(adminLogins, new Uri(this.SharePointProvisioningData.Url), true);
 
                     // Everyone reader
                     this.CreatedSiteContext.Web.AddReaderAccess();
@@ -175,9 +185,30 @@ namespace Contoso.Provisioning.Hybrid.Core.SiteTemplates
                 string spFontFile = Path.Combine(themeRoot, string.Format("{0}.spfont", contosoCollaborationThemeName));
                 string backgroundFile = Path.Combine(themeRoot, string.Format("{0}bg.jpg", contosoCollaborationThemeName));
                 string logoFile = Path.Combine(themeRoot, string.Format("{0}logo.png", contosoCollaborationThemeName));
-                this.CreatedSiteContext.Web.DeployThemeToWeb(contosoCollaborationThemeName, spColorFile, spFontFile, backgroundFile, "");
-                this.CreatedSiteContext.Web.SetThemeToWeb(contosoCollaborationThemeName);
-                
+
+                // Deploy theme files to root web, if they are not there and set it as active theme for the site
+                string themeColorFileString = "";
+                string themeFontFileString = "";
+                string themeBackgroundImageString = "";
+
+                if (!String.IsNullOrEmpty(themeRoot))
+                {
+                    themeColorFileString = this.CreatedSiteContext.Web.UploadThemeFile(themeRoot).ServerRelativeUrl;
+
+                }
+                if (!String.IsNullOrEmpty(spColorFile))
+                {
+                    themeFontFileString = this.CreatedSiteContext.Web.UploadThemeFile(spColorFile).ServerRelativeUrl;
+                }
+
+                if (!String.IsNullOrWhiteSpace(backgroundFile))
+                {
+                    themeBackgroundImageString = this.CreatedSiteContext.Web.UploadThemeFile(backgroundFile).ServerRelativeUrl;
+                }
+
+                this.CreatedSiteContext.Web.CreateComposedLookByUrl(contosoCollaborationThemeName, themeColorFileString, themeFontFileString, themeBackgroundImageString, String.Empty);
+                this.CreatedSiteContext.Web.SetComposedLookByUrl(contosoCollaborationThemeName);
+
                 //Seems to be broken at the moment...to be investigated
                 //brandingManager.SetSiteLogo(this.CreatedSiteContext, this.CreatedSiteContext.Web, logoFile);
 

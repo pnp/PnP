@@ -58,11 +58,11 @@ namespace Core.AppScriptPartWeb
             var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
             using (var clientContext = spContext.CreateUserClientContextForSPHost())
             {
-                var folder = clientContext.Web.Lists.GetByTitle("Web Part Gallery").RootFolder;
+                var folder = clientContext.Site.RootWeb.Lists.GetByTitle("Web Part Gallery").RootFolder;
                 clientContext.Load(folder);
                 clientContext.ExecuteQuery();
 
-                //upload the "OneDrive for Business Usage Guidelines.docx"
+                //upload the "userprofileinformation.webpart" file
                 using (var stream = System.IO.File.OpenRead(
                                 Server.MapPath("~/userprofileinformation.webpart")))
                 {
@@ -74,24 +74,24 @@ namespace Core.AppScriptPartWeb
                     clientContext.ExecuteQuery();
                 }
 
-                // Let's update the group for just uplaoded web part
-                var list = clientContext.Web.Lists.GetByTitle("Web Part Gallery");
+                // Let's update the group for just uploaded web part
+                var list = clientContext.Site.RootWeb.Lists.GetByTitle("Web Part Gallery");
                 CamlQuery camlQuery = CamlQuery.CreateAllItemsQuery(100);
                 Microsoft.SharePoint.Client.ListItemCollection items = list.GetItems(camlQuery);
                 clientContext.Load(items);
                 clientContext.ExecuteQuery();
                 foreach (var item in items)
                 {
-                    // Just random group name to diffentiate it from the rest
+                    // Just random group name to differentiate it from the rest
                     if (item["FileLeafRef"].ToString().ToLowerInvariant() == "userprofileinformation.webpart")
                     {
-                        item["Group"] = "App Script Part";
+                        item["Group"] = "Add-in Script Part";
                         item.Update();
                         clientContext.ExecuteQuery();
                     }
                 }
 
-                lblStatus.Text = string.Format("App script part has been added to web part gallery. You can find 'User Profile Information' script part under 'App Script Part' group in the <a href='{0}'>host web</a>.", spContext.SPHostUrl.ToString());
+                lblStatus.Text = string.Format("Add-in script part has been added to web part gallery. You can find 'User Profile Information' script part under 'Add-in Script Part' group in the <a href='{0}'>host web</a>.", spContext.SPHostUrl.ToString());
             }
         }
     }

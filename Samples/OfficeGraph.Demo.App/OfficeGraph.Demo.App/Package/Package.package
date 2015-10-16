@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package dslVersion="1.0.0.0" 
+        Id="9de8957b-5b53-4573-b934-d8fb40c38ece" 
+        solutionId="9de8957b-5b53-4573-b934-d8fb40c38ece" 
+        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
+        name="OfficeGraph.Demo.App"
+        sharePointProductVersion="16.0">
+  <features>
+        <featureReference itemId="1173388f-6369-45d5-8fb2-207d748505b7" />
+  </features>
+</package>

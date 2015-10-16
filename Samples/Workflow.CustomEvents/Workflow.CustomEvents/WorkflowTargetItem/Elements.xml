@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+
+  <Field 
+    ID="{C7689EB4-4281-4798-82F4-9B033ACC7783}"
+    Name="WFEventFired"
+    DisplayName="WFEventFired"
+    StaticName="WFEventFired"
+    Type="Text"
+    Group="Workflow.CustomEvents Site Columns"
+    Required="FALSE" />
+  
+  <!-- Parent ContentType: Item (0x01) -->
+  <ContentType ID="0x0100519236B13D784E5284A787741D9171B6"
+               Name="WorkflowTargetItem"
+               Group="Workflow.CustomEvents Content Types"
+               Description="Workflow.CustomEvents Target Item"
+               Inherits="TRUE"
+               Version="0">
+    <FieldRefs>
+      <FieldRef ID="{C7689EB4-4281-4798-82F4-9B033ACC7783}" Name="WFEventFired" />
+    </FieldRefs>
+  </ContentType>
+</Elements>

@@ -1,11 +1,15 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Search.PersonalizedResults", "PersonalizedSearchResults\Search.PersonalizedResults.csproj", "{06ACECE2-801B-465A-9274-3B6481C9CA6C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Search.PersonalizedResultsWeb", "PersonalizedSearchResultsWeb\Search.PersonalizedResultsWeb.csproj", "{3E210F0C-05CC-44AB-843B-2D864FD0C4EC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{62A874AC-85BB-4D3C-83F4-F4520DB758AD}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -181,7 +181,7 @@ namespace Contoso.Core.UserProfilePropertyUpdater
             string authCookie = credentials.GetAuthenticationCookie(new Uri(this.TenantAdminUrl));
             if (authCookie.Length > 0)
             {
-                return new Cookie("FedAuth", authCookie.TrimStart("SPOIDCRL=".ToCharArray()), String.Empty, new Uri(this.TenantAdminUrl).Authority);
+                return new Cookie("SPOIDCRL", authCookie.TrimStart("SPOIDCRL=".ToCharArray()), String.Empty, new Uri(this.TenantAdminUrl).Authority);
             }
             else
             {

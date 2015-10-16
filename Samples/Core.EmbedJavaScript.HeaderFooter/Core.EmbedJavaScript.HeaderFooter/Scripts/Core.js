@@ -1,0 +1,6 @@
+﻿Core = {
+    EmbedJavaScript: {
+        HeaderFooter: {
+        }
+    }
+}

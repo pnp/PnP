@@ -1,0 +1,207 @@
+﻿<Activity mc:Ignorable="sap sap2010 sads" x:Class="Workflow.Activities.SetTaskPredecessorsActivity"
+ xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:mca="clr-namespace:Microsoft.CSharp.Activities;assembly=System.Activities"
+ xmlns:p="http://schemas.microsoft.com/workflow/2012/07/xaml/activities"
+ xmlns:p1="wf://workflow.windows.net/$Activities"
+ xmlns:p2="wf://workflow.windows.net/$Current/$Activities/Workflow.Activities"
+ xmlns:s="clr-namespace:System;assembly=mscorlib"
+ xmlns:sads="http://schemas.microsoft.com/netfx/2010/xaml/activities/debugger"
+ xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation"
+ xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation"
+ xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib"
+ xmlns:sco="clr-namespace:System.Collections.ObjectModel;assembly=mscorlib"
+ xmlns:sn="clr-namespace:System.Net;assembly=System"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="WorkflowTaskId" Type="InArgument(x:Int32)" />
+    <x:Property Name="PredecessorsIds" Type="InArgument(scg:ICollection(x:Int32))" />
+    <x:Property Name="WorkflowTaskListId" Type="InArgument(s:Guid)" />
+  </x:Members>
+  <sap2010:ExpressionActivityEditor.ExpressionActivityEditor>C#</sap2010:ExpressionActivityEditor.ExpressionActivityEditor>
+  <sap2010:WorkflowViewState.IdRef>Workflow.Activities.SetTaskPredecessorsActivity_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <sco:Collection x:TypeArguments="x:String">
+      <x:String>System</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Text</x:String>
+      <x:String>Microsoft.Activities</x:String>
+      <x:String>System.Net</x:String>
+      <x:String>System.Collections.ObjectModel</x:String>
+    </sco:Collection>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <sco:Collection x:TypeArguments="AssemblyReference">
+      <AssemblyReference>Microsoft.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.SharePoint.DesignTime.Activities.16.0</AssemblyReference>
+      <AssemblyReference>Microsoft.SharePoint.DesignTime.Activities.16.0.Design</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Runtime.Serialization</AssemblyReference>
+      <AssemblyReference>System.ServiceModel.Activities</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>Microsoft.SharePoint.WorkflowServices.Activities</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>Workflow.Activities</AssemblyReference>
+    </sco:Collection>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="p:DynamicValue" Name="httpRequestHeaders" />
+      <Variable x:TypeArguments="x:String" Name="currentAppWebUri" />
+      <Variable x:TypeArguments="x:String" Name="formDigest" />
+      <Variable x:TypeArguments="x:String" Name="httpRequestUrl" />
+      <Variable x:TypeArguments="sn:HttpStatusCode" Name="httpResponseStatusCode" />
+      <Variable x:TypeArguments="p:DynamicValue" Name="httpRequestContent" />
+      <Variable x:TypeArguments="x:String" Name="predecessorsIdsArray">
+        <Variable.Default>
+          <Literal x:TypeArguments="x:String" Value="" />
+        </Variable.Default>
+      </Variable>
+      <Variable x:TypeArguments="x:String" Name="itemToUpdateJSON" />
+    </Sequence.Variables>
+    <p1:WebUri sap2010:WorkflowViewState.IdRef="WebUri_1">
+      <p1:WebUri.Result>
+        <OutArgument x:TypeArguments="x:String">
+          <mca:CSharpReference x:TypeArguments="x:String">currentAppWebUri</mca:CSharpReference>
+        </OutArgument>
+      </p1:WebUri.Result>
+    </p1:WebUri>
+    <p2:RetrieveFormDigestActivity DisplayName="Retrieve FormDigest" sap2010:WorkflowViewState.IdRef="RetrieveFormDigestActivity_1">
+      <p2:RetrieveFormDigestActivity.FormDigest>
+        <OutArgument x:TypeArguments="x:String">
+          <mca:CSharpReference x:TypeArguments="x:String">formDigest</mca:CSharpReference>
+        </OutArgument>
+      </p2:RetrieveFormDigestActivity.FormDigest>
+    </p2:RetrieveFormDigestActivity>
+    <ForEach x:TypeArguments="x:Int32" sap2010:WorkflowViewState.IdRef="ForEach`1_1">
+      <ForEach.Values>
+        <InArgument x:TypeArguments="scg:IEnumerable(x:Int32)">
+          <mca:CSharpValue x:TypeArguments="scg:IEnumerable(x:Int32)">PredecessorsIds</mca:CSharpValue>
+        </InArgument>
+      </ForEach.Values>
+      <ActivityAction x:TypeArguments="x:Int32">
+        <ActivityAction.Argument>
+          <DelegateInArgument x:TypeArguments="x:Int32" Name="p" />
+        </ActivityAction.Argument>
+        <Assign sap2010:WorkflowViewState.IdRef="Assign_2">
+          <Assign.To>
+            <OutArgument x:TypeArguments="x:String">
+              <mca:CSharpReference x:TypeArguments="x:String">predecessorsIdsArray</mca:CSharpReference>
+            </OutArgument>
+          </Assign.To>
+          <Assign.Value>
+            <InArgument x:TypeArguments="x:String">
+              <mca:CSharpValue x:TypeArguments="x:String">predecessorsIdsArray + p.ToString() + ","</mca:CSharpValue>
+            </InArgument>
+          </Assign.Value>
+        </Assign>
+      </ActivityAction>
+    </ForEach>
+    <Assign sap2010:WorkflowViewState.IdRef="Assign_3">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">
+          <mca:CSharpReference x:TypeArguments="x:String">predecessorsIdsArray</mca:CSharpReference>
+        </OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">"[" + predecessorsIdsArray.Substring(0, predecessorsIdsArray.Length - 1) + "]"</mca:CSharpValue>
+        </InArgument>
+      </Assign.Value>
+    </Assign>
+    <Assign sap2010:WorkflowViewState.IdRef="Assign_4">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">
+          <mca:CSharpReference x:TypeArguments="x:String">itemToUpdateJSON</mca:CSharpReference>
+        </OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">String.Format("{{ 'PredecessorsId': {0}}}", predecessorsIdsArray)</mca:CSharpValue>
+        </InArgument>
+      </Assign.Value>
+    </Assign>
+    <p:BuildDynamicValue sap2010:WorkflowViewState.IdRef="BuildDynamicValue_1">
+      <p:BuildDynamicValue.Result>
+        <InOutArgument x:TypeArguments="p:DynamicValue">
+          <mca:CSharpReference x:TypeArguments="p:DynamicValue">httpRequestHeaders</mca:CSharpReference>
+        </InOutArgument>
+      </p:BuildDynamicValue.Result>
+      <scg:Dictionary x:TypeArguments="x:String, InArgument">
+        <InArgument x:TypeArguments="x:String" x:Key="Accept">application/json;odata=nometadata</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="X-RequestDigest">
+          <mca:CSharpValue x:TypeArguments="x:String">formDigest</mca:CSharpValue>
+        </InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="X-HTTP-Method">MERGE</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="IF-MATCH">*</InArgument>
+        <InArgument x:TypeArguments="x:String" x:Key="content-type">application/json;odata=nometadata</InArgument>
+        <InArgument x:TypeArguments="x:Int32" x:Key="content-length">
+          <mca:CSharpValue x:TypeArguments="x:Int32">itemToUpdateJSON.Length</mca:CSharpValue>
+        </InArgument>
+      </scg:Dictionary>
+    </p:BuildDynamicValue>
+    <Assign sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="x:String">
+          <mca:CSharpReference x:TypeArguments="x:String">httpRequestUrl</mca:CSharpReference>
+        </OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">String.Format("{0}_api/web/lists/getById(guid'{1}')/Items({2})", currentAppWebUri, WorkflowTaskListId, WorkflowTaskId)</mca:CSharpValue>
+        </InArgument>
+      </Assign.Value>
+    </Assign>
+    <p:HttpSend sap2010:WorkflowViewState.IdRef="HttpSend_1" Method="POST">
+      <p:HttpSend.RequestContent>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">itemToUpdateJSON</mca:CSharpValue>
+        </InArgument>
+      </p:HttpSend.RequestContent>
+      <p:HttpSend.RequestHeaders>
+        <InArgument x:TypeArguments="p:DynamicValue">
+          <mca:CSharpValue x:TypeArguments="p:DynamicValue">httpRequestHeaders</mca:CSharpValue>
+        </InArgument>
+      </p:HttpSend.RequestHeaders>
+      <p:HttpSend.ResponseStatusCode>
+        <OutArgument x:TypeArguments="sn:HttpStatusCode">
+          <mca:CSharpReference x:TypeArguments="sn:HttpStatusCode">httpResponseStatusCode</mca:CSharpReference>
+        </OutArgument>
+      </p:HttpSend.ResponseStatusCode>
+      <p:HttpSend.Uri>
+        <InArgument x:TypeArguments="x:String">
+          <mca:CSharpValue x:TypeArguments="x:String">httpRequestUrl</mca:CSharpValue>
+        </InArgument>
+      </p:HttpSend.Uri>
+    </p:HttpSend>
+    <sads:DebugSymbol.Symbol>d39DOlxnaXRcUG5QUGFvbG9QaWFcU2FtcGxlc1xXb3JrZmxvdy5BY3Rpdml0aWVzXFdvcmtmbG93LkFjdGl2aXRpZXNcU2V0VGFza1ByZWRlY2Vzc29yc0FjdGl2aXR5XFNldFRhc2tQcmVkZWNlc3NvcnNBY3Rpdml0eS54YW1sIjYDuQEOAgEBQAtAOgIBAkUFSxEDAd4BTAVSJQMB0QFTBWoPAwGpAWsFdg4DAZABdwWCAQ4CAXeDAQWVARsCAU6WAQWhAQ4CATWiAQW3ARICAQNIC0hhAwHfAU8LT1sDAdIBVgtWaAMBxQFdCWgSAwGqAXMLc5cBAwGdAW4LbmUDAZEBfwt/igEDAYQBegt6YQIBeIoBP4oBYAIBdowBC4wBUwIBao8BQY8BQgIBaYYBC4YBaQIBXZIBC5IBXwIBUY4BRo4BSwIBUJABRZABZgIBT54BC54BvwECAUKZAQuZAV8CATaqAQuqAWECASmlAQulAVkCAR2vAQuvAXACARG0AQu0AVcCAQWiAUWiAUsCAQRlD2V2AwG4AWAPYGkDAasB</sads:DebugSymbol.Symbol>
+  </Sequence>
+  <sap2010:WorkflowViewState.ViewStateManager>
+    <sap2010:ViewStateManager>
+      <sap2010:ViewStateData Id="WebUri_1" sap:VirtualizedContainerService.HintSize="287,68" />
+      <sap2010:ViewStateData Id="RetrieveFormDigestActivity_1" sap:VirtualizedContainerService.HintSize="287,22" />
+      <sap2010:ViewStateData Id="Assign_2" sap:VirtualizedContainerService.HintSize="242,62" />
+      <sap2010:ViewStateData Id="ForEach`1_1" sap:VirtualizedContainerService.HintSize="287,212" />
+      <sap2010:ViewStateData Id="Assign_3" sap:VirtualizedContainerService.HintSize="287,62" />
+      <sap2010:ViewStateData Id="Assign_4" sap:VirtualizedContainerService.HintSize="287,62" />
+      <sap2010:ViewStateData Id="BuildDynamicValue_1" sap:VirtualizedContainerService.HintSize="287,92" />
+      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="287,62" />
+      <sap2010:ViewStateData Id="HttpSend_1" sap:VirtualizedContainerService.HintSize="287,62" />
+      <sap2010:ViewStateData Id="Sequence_1" sap:VirtualizedContainerService.HintSize="309,1046">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Workflow.Activities.SetTaskPredecessorsActivity_1" sap:VirtualizedContainerService.HintSize="349,1126" />
+    </sap2010:ViewStateManager>
+  </sap2010:WorkflowViewState.ViewStateManager>
+</Activity>

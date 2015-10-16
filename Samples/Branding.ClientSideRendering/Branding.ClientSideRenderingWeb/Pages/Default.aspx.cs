@@ -65,6 +65,7 @@ namespace Branding.ClientSideRenderingWeb
                 link6.NavigateUrl = clientContext.Web.Url + "/" + "_layouts/15/start.aspx#/Lists/CSREmailRegexValidator/NewForm.aspx";
                 link7.NavigateUrl = clientContext.Web.Url + "/" + "_layouts/15/start.aspx#/Lists/CSRReadonlySPControls/EditForm.aspx?ID=1";
                 link8.NavigateUrl = clientContext.Web.Url + "/" + "Lists/CSRHideControls/NewForm.aspx";
+                link9.NavigateUrl = clientContext.Web.Url + "/" + "Lists/CSRDependentFields/NewForm.aspx";
             }
         }
 
@@ -87,6 +88,7 @@ namespace Branding.ClientSideRenderingWeb
                 ProvisionSample6(clientContext.Web);
                 ProvisionSample7(clientContext.Web);
                 ProvisionSample8(clientContext.Web);
+                ProvisionSample9(clientContext.Web);
 
                 lblInfo.Text = "Provisioning operations have successfully completed.  You may now view the samples.";
             }
@@ -575,6 +577,105 @@ namespace Branding.ClientSideRenderingWeb
             RegisterJStoWebPart(web, newlist.DefaultEditFormUrl, "~sitecollection/Style Library/JSLink-Samples/HiddenField.js");
         }
 
+        void ProvisionSample9(Web web)
+        {
+            // First list: Cars
+            
+            //Delete list if it already exists
+            ListCollection lists = web.Lists;
+            IEnumerable<List> results = web.Context.LoadQuery<List>(lists.Where(list => list.Title == "CSR-Dependent-Fields-Cars"));
+            web.Context.ExecuteQuery();
+            List existingList = results.FirstOrDefault();
+
+            if (existingList != null)
+            {
+                existingList.DeleteObject();
+                web.Context.ExecuteQuery();
+            }
+
+            //Create list
+            ListCreationInformation creationInfo = new ListCreationInformation();
+            creationInfo.Title = "CSR-Dependent-Fields-Cars";
+            creationInfo.TemplateType = (int)ListTemplateType.GenericList;
+            List carslist = web.Lists.Add(creationInfo);
+
+            carslist.Update();
+            web.Context.Load(carslist);
+            web.Context.ExecuteQuery();
+
+            //Add items
+            Microsoft.SharePoint.Client.ListItem item1 = carslist.AddItem(new ListItemCreationInformation());
+            item1["Title"] = "BMW X5";
+            item1.Update();
+            Microsoft.SharePoint.Client.ListItem item2 = carslist.AddItem(new ListItemCreationInformation());
+            item2["Title"] = "Chevrolet Trax";
+            item2.Update();
+            Microsoft.SharePoint.Client.ListItem item3 = carslist.AddItem(new ListItemCreationInformation());
+            item3["Title"] = "Ford Kuga";
+            item3.Update();
+            Microsoft.SharePoint.Client.ListItem item4 = carslist.AddItem(new ListItemCreationInformation());
+            item4["Title"] = "Fiat 500L";
+            item4.Update();
+            Microsoft.SharePoint.Client.ListItem item5 = carslist.AddItem(new ListItemCreationInformation());
+            item5["Title"] = "Kia Soul";
+            item5.Update();
+
+            // Second list: Orders
+
+            //Delete list if it already exists
+            results = web.Context.LoadQuery<List>(lists.Where(list => list.Title == "CSR-Dependent-Fields"));
+            web.Context.ExecuteQuery();
+            existingList = results.FirstOrDefault();
+
+            if (existingList != null)
+            {
+                existingList.DeleteObject();
+                web.Context.ExecuteQuery();
+            }
+
+            //Create list
+            creationInfo = new ListCreationInformation();
+            creationInfo.Title = "CSR-Dependent-Fields";
+            creationInfo.TemplateType = (int)ListTemplateType.GenericList;
+            List newlist = web.Lists.Add(creationInfo);
+
+            newlist.Update();
+            web.Context.Load(newlist);
+            web.Context.ExecuteQuery();
+
+            //Add fields
+            newlist.Fields.AddFieldAsXml("<Field Type=\"" + FieldType.Lookup + "\" Name=\"Car\" DisplayName=\"Car\" ID=\"" + Guid.NewGuid() + "\"  Group=\"CSR Samples\" List=\"" + carslist.Id + "\" ShowField=\"Title\" />", false, AddFieldOptions.DefaultValue);
+            newlist.Fields.AddFieldAsXml("<Field Type=\"" + FieldType.Choice + "\" Name=\"Color\" DisplayName=\"Color\" Format=\"" + ChoiceFormatType.RadioButtons + "\" ID=\"" + Guid.NewGuid() + "\" Group=\"CSR Samples\"><Default></Default><CHOICES><CHOICE>Black</CHOICE><CHOICE>White</CHOICE><CHOICE>Green</CHOICE><CHOICE>Blue</CHOICE><CHOICE>Red</CHOICE></CHOICES></Field>", false, AddFieldOptions.DefaultValue);
+            newlist.Update();
+            web.Context.ExecuteQuery();
+
+            //Add items
+            Microsoft.SharePoint.Client.ListItem newItem = newlist.AddItem(new ListItemCreationInformation());
+            newItem["Title"] = "Sample order";
+            newItem["Car"] = 1;
+            newItem["Color"] = "Green";
+            newItem.Update();
+
+            //Create sample view
+            ViewCreationInformation sampleViewCreateInfo = new ViewCreationInformation();
+            sampleViewCreateInfo.Title = "CSR Sample View";
+            sampleViewCreateInfo.ViewFields = new string[] { "LinkTitle", "Car", "Color" };
+            sampleViewCreateInfo.SetAsDefaultView = true;
+            Microsoft.SharePoint.Client.View sampleView = newlist.Views.Add(sampleViewCreateInfo);
+            sampleView.Update();
+
+            // Load information about default new and edit forms
+            web.Context.Load(newlist,
+                l => l.DefaultEditFormUrl,
+                l => l.DefaultNewFormUrl);
+            web.Context.ExecuteQuery();
+            
+            
+            //Register JS files via JSLink properties
+            RegisterJStoWebPart(web, newlist.DefaultNewFormUrl, "~sitecollection/Style Library/JSLink-Samples/DependentFields.js");
+            RegisterJStoWebPart(web, newlist.DefaultEditFormUrl, "~sitecollection/Style Library/JSLink-Samples/DependentFields.js");
+        }
+
         void RegisterJStoWebPart(Web web, string url, string jsPath)
         {
             Microsoft.SharePoint.Client.File newFormPageFile = web.GetFileByServerRelativeUrl(url);
@@ -645,6 +746,7 @@ namespace Branding.ClientSideRenderingWeb
             UploadFileToFolder(web, Server.MapPath("../Scripts/JSLink-Samples/ReadOnlySPControls.js"), samplesJSfolder);
             UploadFileToFolder(web, Server.MapPath("../Scripts/JSLink-Samples/RegexValidator.js"), samplesJSfolder);
             UploadFileToFolder(web, Server.MapPath("../Scripts/JSLink-Samples/SubstringLongText.js"), samplesJSfolder);
+            UploadFileToFolder(web, Server.MapPath("../Scripts/JSLink-Samples/DependentFields.js"), samplesJSfolder);
 
             Folder imgsFolder = samplesJSfolder.Folders.Add("imgs");
             web.Context.Load(imgsFolder);

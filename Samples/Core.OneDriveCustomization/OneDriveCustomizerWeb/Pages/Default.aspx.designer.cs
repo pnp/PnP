@@ -7,8 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Contoso.Core.OneDriveCustomizerWeb
-{
+namespace Contoso.Core.OneDriveCustomizerWeb.Pages {
     
     
     public partial class Default {

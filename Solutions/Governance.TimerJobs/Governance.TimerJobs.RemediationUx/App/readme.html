@@ -1,0 +1,43 @@
+﻿<div class="container-fluid">
+    <h1>Readme</h1>
+    <p>
+        <b>Governance.TimerJobs.RemediationUx</b> provides a set of UX widgets for
+        site collection administartors to resolve non-compliances.
+    </p>
+    <p>
+        The front end is implemented in Angualr-JS.
+    </p>
+    <p>
+        The server side is powered by ASP.NET Web API.
+    </p>
+    <h3>
+        Unlock Site Collection 
+    </h3>
+    <p>
+        <a ng-href="#/unlock/?SiteUrl={{'https://contoso.sharepoint.com/teams/SiteCollection'}}">
+            http://{host}/App/index.html#/unlock/?<b>SiteUrl</b>={siteUrl}
+        </a>
+    </p>
+    <p>
+        The query string key <b>SiteUrl</b> is fixed. Its value will be filled by
+        SPO tenant.
+    </p> 
+    <p>
+        One should call UnlockController.SetNoAccessRedirectUrl() method 
+        before any site collection got locked, this will instruct SPO tenant 
+        redirects any further locked site accessing request to the URL above.
+    </p>
+    <h3>
+        Edit Site Information
+    </h3>
+    <p>
+        <a ng-href="#/siteedit/{{'https://contoso.sharepoint.com/teams/SiteCollection'}}">
+            http://{host}/App/index.html#/siteedit/{siteUrl}
+        </a>
+    </p>
+    <p>
+        Site collection provisioning UX App should inject a site action menu item
+        by using User Custom Action, which should be linked to this Edit Site Information page 
+        for site collection administrator to update site metadata or decommission the site.
+    </p> 
+</div>

@@ -9,7 +9,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{ED31B108-F61A-4057-9CC5-FD266CDC47AC}"
 	ProjectSection(SolutionItems) = preProject
 		readme.md = readme.md
-		SharePoint Theme.docx = SharePoint Theme.docx
 	EndProjectSection
 EndProject
 Global

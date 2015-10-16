@@ -1,7 +1,6 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Branding.AlternateCSSAndSiteLogo", "Branding.AlternateCSSAndSiteLogo\Branding.AlternateCSSAndSiteLogo.csproj", "{6C094C85-A0AF-4DF7-BDA9-051BD7EFB36A}"
 EndProject
@@ -9,8 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Branding.AlternateCSSAndSit
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{88DA29D8-7D65-4DEB-B197-9BE67CCFE125}"
 	ProjectSection(SolutionItems) = preProject
-		Branding.AlternateCSSAndSiteLogo.docx = Branding.AlternateCSSAndSiteLogo.docx
-		Readme.txt = Readme.txt
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Global

@@ -1,24 +1,9 @@
+Alternative way to register the needed permissions.
 
-<!--
-//*********************************************************
-// THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-// ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-// IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-// PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
-//*********************************************************
--->
+1. Move to “_layouts/AppInv.aspx”.
+2. Look up for client ID
+3. Provide needed permissions
 
-*****************************************************************
-*
-*	Simple remote timer job demonstration.
-*
-*	Author - Shariq Siddiqui (Microsoft), Kirk Evans (Microsoft), Vesa Juvonen (Microsoft)
-*
-*	Initially based on following blog post from Shariq and Kirk Evans
-*		- http://blogs.msdn.com/b/shariq/archive/2013/12/09/simulate-timer-job-solution-for-sharepoint-2013-online-using-csom.aspx
-*		- http://blogs.msdn.com/b/kaevans/archive/2014/03/02/building-a-sharepoint-app-as-a-timer-job.aspx
-*
-*	Date - 8.5.2014
-*	Version - 1.0
-*
-***************************************************************
+  <AppPermissionRequests AllowAppOnlyPolicy="true">
+    <AppPermissionRequest Scope="http://sharepoint/content/sitecollection/web" Right="FullControl" />
+  </AppPermissionRequests>

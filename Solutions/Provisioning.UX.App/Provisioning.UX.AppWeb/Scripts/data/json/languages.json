@@ -1,0 +1,310 @@
+﻿{    
+    "languages": [
+        {
+            "key": "Arabic",
+            "value": "1025",
+            "active": "true",
+            "displayOrder": 1
+        },
+        {
+            "key": "Azerbaijani",
+            "value": "1068",
+            "active": "true",
+            "displayOrder": 2
+        },
+        {
+            "key": "Basque",
+            "value": "1069",
+            "active": "true",
+            "displayOrder": 3
+        },
+        {
+            "key": "Bosnian (Latin)",
+            "value": "5146",
+            "active": "true",
+            "displayOrder": 4
+        },
+        {
+            "key": "Bulgarian",
+            "value": "1026",
+            "active": "true",
+            "displayOrder": 5
+        },
+        {
+            "key": "Catalan",
+            "value": "1027",
+            "active": "true",
+            "displayOrder": 6
+        },
+        {
+            "key": "Chinese (Simplified)",
+            "value": "2052",
+            "active": "true",
+            "displayOrder": 7
+        },
+        {
+            "key": "Chinese (Traditional)",
+            "value": "1028",
+            "active": "true",
+            "displayOrder": 8
+        },
+        {
+            "key": "Croatian",
+            "value": "1050",
+            "active": "true",
+            "displayOrder": 9
+        },
+        {
+            "key": "Czech",
+            "value": "1029",
+            "active": "true",
+            "displayOrder": 10
+        },
+        {
+            "key": "Danish",
+            "value": "1030",
+            "active": "true",
+            "displayOrder": 11
+        },
+        {
+            "key": "Dari",
+            "value": "1164",
+            "active": "true",
+            "displayOrder": 12
+        },
+        {
+            "key": "Dutch",
+            "value": "1043",
+            "active": "true",
+            "displayOrder": 13
+        },
+        {
+            "key": "English",
+            "value": "1033",
+            "active": "true",
+            "displayOrder": 14
+        },
+        {
+            "key": "Estonian",
+            "value": "1061",
+            "active": "true",
+            "displayOrder": 15
+        },
+        {
+            "key": "Finnish",
+            "value": "1035",
+            "active": "true",
+            "displayOrder": 16
+        },
+        {
+            "key": "French",
+            "value": "1036",
+            "active": "true",
+            "displayOrder": 17
+        },
+        {
+            "key": "Galician",
+            "value": "1110",
+            "active": "true",
+            "displayOrder": 18
+        },
+        {
+            "key": "German",
+            "value": "1031",
+            "active": "true",
+            "displayOrder": 19
+        },
+        {
+            "key": "Greek",
+            "value": "1032",
+            "active": "true",
+            "displayOrder": 20
+        },
+        {
+            "key": "Hebrew",
+            "value": "1037",
+            "active": "true",
+            "displayOrder": 21
+        },
+        {
+            "key": "Hebrew",
+            "value": "1037",
+            "active": "true",
+            "displayOrder": 22
+        },
+        {
+            "key": "Hindi",
+            "value": "1081",
+            "active": "true",
+            "displayOrder": 23
+        },
+        {
+            "key": "Hungarian",
+            "value": "1038",
+            "active": "true",
+            "displayOrder": 24
+        },
+        {
+            "key": "Indonesian",
+            "value": "1057",
+            "active": "true",
+            "displayOrder": 25
+        },
+        {
+            "key": "Irish",
+            "value": "2108",
+            "active": "true",
+            "displayOrder": 26
+        },
+        {
+            "key": "Italian",
+            "value": "1040",
+            "active": "true",
+            "displayOrder": 27
+        },
+        {
+            "key": "Japanese",
+            "value": "1041",
+            "active": "true",
+            "displayOrder": 28
+        },
+        {
+            "key": "Kazakh",
+            "value": "1087",
+            "active": "true",
+            "displayOrder": 29
+        },
+        {
+            "key": "Korean",
+            "value": "1042",
+            "active": "true",
+            "displayOrder": 30
+        },
+        {
+            "key": "Latvian",
+            "value": "1062",
+            "active": "true",
+            "displayOrder": 31
+        },
+        {
+            "key": "Lithuanian",
+            "value": "1063",
+            "active": "true",
+            "displayOrder": 32
+        },
+        {
+            "key": "Macedonian",
+            "value": "1071",
+            "active": "true",
+            "displayOrder": 33
+        },
+        {
+            "key": "Malay",
+            "value": "1086",
+            "active": "true",
+            "displayOrder": 34
+        },
+        {
+            "key": "Norwegian (Bokmål)",
+            "value": "1044",
+            "active": "true",
+            "displayOrder": 35
+        },
+        {
+            "key": "Polish",
+            "value": "1045",
+            "active": "true",
+            "displayOrder": 36
+        },
+        {
+            "key": "Portuguese (Brazil)",
+            "value": "1046",
+            "active": "true",
+            "displayOrder": 37
+        },
+        {
+            "key": "Portuguese (Portugal)",
+            "value": "2070",
+            "active": "true",
+            "displayOrder": 38
+        },
+        {
+            "key": "Romanian",
+            "value": "1048",
+            "active": "true",
+            "displayOrder": 39
+        },
+        {
+            "key": "Russian",
+            "value": "1049",
+            "active": "true",
+            "displayOrder": 40
+        },
+        {
+            "key": "Serbian (Cyrillic, Serbia)",
+            "value": "2074",
+            "active": "true",
+            "displayOrder": 41
+        },
+        {
+            "key": "Serbian (Latin)",
+            "value": "10266",
+            "active": "true",
+            "displayOrder": 42
+        },
+        {
+            "key": "Slovak",
+            "value": "1051",
+            "active": "true",
+            "displayOrder": 43
+        },
+        {
+            "key": "Slovenian",
+            "value": "1060",
+            "active": "true",
+            "displayOrder": 44
+        },
+        {
+            "key": "Spanish",
+            "value": "3082",
+            "active": "true",
+            "displayOrder": 45
+        },
+        {
+            "key": "Swedish",
+            "value": "1053",
+            "active": "true",
+            "displayOrder": 46
+        },
+        {
+            "key": "Thai",
+            "value": "1054",
+            "active": "true",
+            "displayOrder": 47
+        },
+        {
+            "key": "Turkish",
+            "value": "1055",
+            "active": "true",
+            "displayOrder": 48
+        },
+        {
+            "key": "Ukrainian",
+            "value": "1058",
+            "active": "true",
+            "displayOrder": 49
+        },
+        {
+            "key": "Vietnamese",
+            "value": "1066",
+            "active": "true",
+            "displayOrder": 50
+        },
+        {
+            "key": "Welsh",
+            "value": "1106",
+            "active": "true",
+            "displayOrder": 51
+        }
+    ]
+}

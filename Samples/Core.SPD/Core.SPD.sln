@@ -1,12 +1,10 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{FA611E30-9A16-4CF5-B260-B7F33685390E}"
 	ProjectSection(SolutionItems) = preProject
-		Disable Designer.docx = Disable Designer.docx
-		Readme.txt = Readme.txt
+		readme.md = readme.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.SPD", "Core.SPD.Console\Core.SPD.csproj", "{6ED184F6-9970-47F8-9657-87B042AD6C38}"

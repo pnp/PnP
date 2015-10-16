@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Receivers ListTemplateId="3100">
+    <Receiver>
+      <Name>CreateSiteItemUpdated</Name>
+      <Type>ItemUpdated</Type>
+      <SequenceNumber>10000</SequenceNumber>
+      <Url>~remoteAppUrl/Services/CreateSite.svc</Url>
+    </Receiver>
+  </Receivers>
+</Elements>

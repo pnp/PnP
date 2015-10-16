@@ -1,4 +1,4 @@
-# Creating sub sites using an App for SharePoint #
+# Creating sub sites using an add-in for SharePoint #
 
 ### Summary ###
 This solution uses so called remote provisioning pattern to provide as flexible sub site template system as possible. Old models using either site definitions, web templates or feature stapling will cause challenges with the evergreen model, meaning more frequent releases of new capability to the cloud and on-premises. 
@@ -11,7 +11,7 @@ Additional information related on the different site provisioning options can be
 
 Visit the video on Channel 9 [http://channel9.msdn.com/Blogs/Office-365-Dev/Creating-sub-sites-using-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practices](http://channel9.msdn.com/Blogs/Office-365-Dev/Creating-sub-sites-using-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practices)
 
-![http://channel9.msdn.com/Blogs/Office-365-Dev/Creating-sub-sites-using-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practices](/Samples/Provisioning.SubSiteCreationApp/images/ch9scrnsht.png)
+![http://channel9.msdn.com/Blogs/Office-365-Dev/Creating-sub-sites-using-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practices](http://i.imgur.com/TAXx5IZ.png)
 
 ### Applies to ###
 - Office 365 Multi-Tenant (MT)
@@ -42,7 +42,7 @@ Version  | Date | Comments
 This scenario shows how we can build the actual sub site creation experience and demonstration of possible options or configuration model for the templates.
 
 ## IMPLEMENTING CUSTOM UI FOR SITE CREATION ##
-Scenario is using pretty simple user interface design, which is mimicking the out of the box experience in high level. This is done so that end users don’t get confused and don’t even notice that we’ve taken them to separate provider hosted app, which is actually performing the sub site creation.
+Scenario is using pretty simple user interface design, which is mimicking the out of the box experience in high level. This is done so that end users don’t get confused and don’t even notice that we’ve taken them to separate provider hosted add-in, which is actually performing the sub site creation.
 
 
 ## CREATING SUB SITE BASED ON SELECTED TEMPLATE ##
@@ -185,7 +185,7 @@ if (found.Count > 0)
 # SCENARIO: OVERRIDE SUB SITE CREATION OPTION #
 Since there’s currently no supported way to override the sub site creation experience, we’ll need to do this also using our code. This can be pretty easily achieved by injecting additional JavaScript file on the site, which is only executed when view contents page with the sub site creation link is shown.
 ## INJECTING JAVASCRIPT FILE TO THE SITE ##
-This could be done for example automatically when app is installed or it could be automatically done for the sites when they are created. To avoid issues with the MDS (Minimal Download Strategy), we’ll need to do some additional tricks while we inject the JavaScript to the site.
+This could be done for example automatically when add-in is installed or it could be automatically done for the sites when they are created. To avoid issues with the MDS (Minimal Download Strategy), we’ll need to do some additional tricks while we inject the JavaScript to the site.
 
 Key point is nevertheless to upload the needed JavaScript to the site and reference that in custom action code, which is added the site. This will ensure that our uploaded JavaScript file is executed one each page request. As mentioned, these scripts will be then executed on each page request, so we’ll need to ensure that the code is written properly. Natively SharePoint also executes hundreds of lines of JavaScript code on each page request, so as long as this code is optimized, adding few more lines doesn’t really impact the page performance.
 
@@ -201,7 +201,7 @@ function SubSiteOverride_Inject() {
     }
 }
 ```
-And second phase is to actually change the link accordingly. In this demo code we only change the link to point to our local debugging app, but in real implementation you’d implemented this either by storing the link to the property bag of the root site in site collection or by having custom configuration list, from where the link target would be taken for the script.
+And second phase is to actually change the link accordingly. In this demo code we only change the link to point to our local debugging add-in, but in real implementation you’d implemented this either by storing the link to the property bag of the root site in site collection or by having custom configuration list, from where the link target would be taken for the script.
 ```JavaScript
 // Actual link override. Checking the right URL from root site collection of the tenant/web application
 function SubSiteOverride_OverrideLinkToAppUrl() {

@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.OnPrem.S2S.WindowsCertStore", "Core.OnPrem.S2S.WindowsCertStore\Core.OnPrem.S2S.WindowsCertStore.csproj", "{0F5733C0-D559-47BB-A5CD-8584CB885A8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.OnPrem.S2S.WindowsCertStoreWeb", "Core.OnPrem.S2S.WindowsCertStoreWeb\Core.OnPrem.S2S.WindowsCertStoreWeb.csproj", "{842E50EA-0EB9-424B-9500-E127B175ECE6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{B7796F96-34A2-4834-9CD0-3A74E6724B68}"
+	ProjectSection(SolutionItems) = preProject
+		ReadMe.md = ReadMe.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F5733C0-D559-47BB-A5CD-8584CB885A8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F5733C0-D559-47BB-A5CD-8584CB885A8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F5733C0-D559-47BB-A5CD-8584CB885A8B}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{0F5733C0-D559-47BB-A5CD-8584CB885A8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F5733C0-D559-47BB-A5CD-8584CB885A8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F5733C0-D559-47BB-A5CD-8584CB885A8B}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{842E50EA-0EB9-424B-9500-E127B175ECE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{842E50EA-0EB9-424B-9500-E127B175ECE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{842E50EA-0EB9-424B-9500-E127B175ECE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{842E50EA-0EB9-424B-9500-E127B175ECE6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

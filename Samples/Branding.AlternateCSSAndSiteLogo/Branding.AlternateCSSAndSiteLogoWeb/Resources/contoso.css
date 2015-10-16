@@ -8,9 +8,38 @@
 
 /* This is for relocating the page controls just for a sample */
 #RibbonContainer-TabRowRight {
-    left: 150px; 
-    top: 80px; 
-    display: block; 
-    position: absolute; 
+    left: 550px;
+    top: 80px;
+    display: block;
+    position: absolute;
     z-index: 1000;
+    border-style: solid;
+    border-width: 1px;
+    border-color: red;
+}
+
+.ms-core-listMenu-root {
+    margin: 0px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: red;
+}
+
+/* Suite bar styling */
+.o365cst.o365cs-base .ms-bgc-tp, .o365cst.o365cs-base .ms-bgc-tp-h:hover, .ms-bgc-tp.o365cst.o365cs-base {
+    background-color: #ff0000 !important;
+}
+.o365cst.o365cs-base .ms-bgc-tp, .o365cst.o365cs-base .ms-bgc-tp-h:hover, .ms-bgc-tp.o365cst.o365cs-base {
+    background-color: #ff0000 !important;
+}
+.o365cst.o365cs-base .o365cs-topnavLinkBackground-2 {
+    background-color: #ff0000 !important;
+}
+
+.o365cs-topnavBGColor-2.o365cst.o365cs-base {
+    background-color: #ff0000 !important;
+}
+
+.o365cs-topnavBGColor-2.o365cst.o365cs-base {
+    background-color: #ff0000 !important;
 }
