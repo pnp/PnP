@@ -5,8 +5,6 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Web.Http;
-using Microsoft.Online.SharePoint.TenantAdministration;
-using Provisioning.Common.Authentication;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core;
 using Governance.TimerJobs.Data;
@@ -30,8 +28,13 @@ namespace Governance.TimerJobs.RemediationUx.Controllers
 
         protected static void UsingTenantContext(Action<ClientContext> action)
         {
-            var auth = new AppOnlyAuthenticationTenant();
-            using(var context = auth.GetAuthenticatedContext())
+            var auth = new OfficeDevPnP.Core.AuthenticationManager();
+            var tenenatUrl = ConfigurationManager.AppSettings["TenantAdminUrl"];
+            var realm = ConfigurationManager.AppSettings["Realm"];
+            var appId = ConfigurationManager.AppSettings["ClientId"];
+            var appSecret = ConfigurationManager.AppSettings["ClientSecret"];
+    
+            using (var context = auth.GetAppOnlyAuthenticatedContext(tenenatUrl, realm, appId, appSecret))
             {
                 action(context);
             }
