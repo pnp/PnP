@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h2>Welcome @ViewBag.UserName!</h2>
+    <p class="lead"><b>Welcome the the PnP Trace Logging Demo, this simple app will show you how to implement the enhanced logging in a provider hosted application and a web job.</b></p>
+</div>
+
+@using (Html.BeginForm())
+{
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Standard</h2>
+            <p>Add some entries to the trace listener using the Standard output. This will give you an example of what trace output looks like without the PnP enhancements.</p>
+            <input class="btn btn-default" type="submit" name="Command" value="Standard" />
+            <br />@ViewBag.StandardMessage
+        </div>
+        <div class="col-md-4">
+            <h2>Sweet and Simple</h2>
+            <p>Add some entries to the trace listener using the bare minimum PnP.</p>
+            <input class="btn btn-default" type="submit" name="Command" value="Bare Minimum" />
+            <br />@ViewBag.BareMinimumMessage
+        </div>
+        <div class="col-md-4">
+            <h2>More horse power</h2>
+            <p>Use the new PnP Montiored Scope to keep track of processes using a Correlation Id and give some feedback about how long calls are taking.</p>
+            <input class="btn btn-default" type="submit" name="Command" value="Monitored Scope" />
+            <br />@ViewBag.MonitoredScopeMessage
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+}
