@@ -137,6 +137,7 @@ The first parameter of the Taxonomy Picker sets the options for the control. The
 | maxSuggestions | integer for the max number of suggestions to list (defaults is 10) |
 | lcid | the locale ID for creating terms (default is 1033) |
 | language | the language code for the control (defaults to en=us) context. |
+| useContainsSuggestions | optional boolean indicating if the suggestions should search with "contains" matching (default pattern is "starts with") |
 
  The second parameter is an initialized SP.ClientContext object 
 
