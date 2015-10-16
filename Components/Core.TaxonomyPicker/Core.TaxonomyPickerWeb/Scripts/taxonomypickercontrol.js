@@ -109,7 +109,7 @@
 
             //build a hierarchical representation of Terms by iterating through all of the terms for each level
             for (var currentLevel = 0; currentLevel <= topLevel; currentLevel++) {
-                if (this.LevelToShowTerms > currentLevel || typeof(this.LevelToShowTerms) === 'undefined') {
+                if (this.LevelToShowTerms > currentLevel || typeof (this.LevelToShowTerms) === 'undefined') {
                     for (var i = 0; i < this.FlatTerms.length; i++) {
                         var term = this.FlatTerms[i];
                         if (term.Level == currentLevel) {
@@ -117,8 +117,7 @@
                             if (
                                 ((path.length == this.LevelToShowTerms && this.FilterTermId != null && this.FilterTermId == term.Id) ||
                                 (this.FilterTermId != null && term.PathOfTerm.indexOf(filterTerm.Name) > -1 && this.LevelToShowTerms - 1 == term.Level)
-                                ) || typeof(filterTerm) == 'undefined')
-                            {
+                                ) || typeof (filterTerm) == 'undefined') {
                                 if (currentLevel == 0) {
                                     this.Terms.push(term.clone());
                                     this.FlatTermsForSuggestions.push(term);
@@ -166,12 +165,11 @@
         getSuggestions: function (text, useContainsSuggestions) {
             var matches = new Array();
             $(this.FlatTermsForSuggestions).each(function (i, e) {
-                if (useContainsSuggestions && e.Name.toLowerCase().indexOf(text.toLowerCase()) >= 0)
-                {
+                if (useContainsSuggestions && e.Name.toLowerCase().indexOf(text.toLowerCase()) >= 0) {
                     matches.push(e);
                 }
                 else if (!useContainsSuggestions && e.Name.toLowerCase().indexOf(text.toLowerCase()) == 0) {
-                        matches.push(e);
+                    matches.push(e);
                 }
             });
             return matches;
@@ -687,7 +685,7 @@
                         $(suggestions).each(Function.createDelegate(this, function (i, e) {
                             if (i < this._maxSuggestions) {
                                 var startOfMatchIndex = e.Name.toLowerCase().indexOf(txt.toLowerCase());
-                                var match = e.Name.substring(startOfMatchIndex, startOfMatchIndex+txt.length); //get the matched text so we can highlight it
+                                var match = e.Name.substring(startOfMatchIndex, startOfMatchIndex + txt.length); //get the matched text so we can highlight it
                                 var labels = e.RawTerm.get_labels().getEnumerator();
                                 var labelStr = "";
                                 while (labels.moveNext()) {
@@ -696,8 +694,8 @@
                                         labelStr += "," + label.get_value();
                                     }
                                 }
-                                var globalCaseInsensitiveRegExp = new RegExp(match, "ig");
-                                var itemHtml = $('<div class="cam-taxpicker-suggestion-item" data-item="' + e.Id + '">' + e.Name.replace(globalCaseInsensitiveRegExp, '<span style="background-color: yellow;">' + match + '</span>')+ ' [' + this.TermSet.Name + ':' + e.PathOfTerm.replace(/;/g, ':') + labelStr + ']</div>');
+                                var hightlightedText = this._useContainsSuggestions ? getContainsWithHighlightedText(e.Name, match) : getStartingWithHighlightedText(e.Name, match);
+                                var itemHtml = $('<div class="cam-taxpicker-suggestion-item" data-item="' + e.Id + '">' + hightlightedText + ' [' + this.TermSet.Name + ':' + e.PathOfTerm.replace(/;/g, ':') + labelStr + ']</div>');
                                 this._suggestionContainer.append(itemHtml);
                                 itemHtml.click(Function.createDelegate(this, this.suggestionClicked));
                             }
@@ -1180,6 +1178,14 @@
             result = result + i;
         }
         return result
+    }
+    //Highlights matches with yellow
+    function getStartingWithHighlightedText(termLabel, match, useContainsSuggestions) {
+        return termLabel.replace(match, '<span style="background-color: yellow;">' + match + '</span>');
+    }
+    function getContainsWithHighlightedText(termLabel, match, useContainsSuggestions) {
+        var globalCaseInsensitiveRegExp = new RegExp(match, "ig");
+        return termLabel.replace(globalCaseInsensitiveRegExp, '<span style="background-color: yellow;">' + match + '</span>');
     }
 
     //extends jquery to support taxpicker function
