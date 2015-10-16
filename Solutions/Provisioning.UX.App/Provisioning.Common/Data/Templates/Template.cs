@@ -131,7 +131,7 @@ namespace Provisioning.Common.Data.Templates
         /// Should policy defined in template be used in favor of the SitePolicy defined in the request
         /// </summary>
         [XmlAttribute]
-        [JsonProperty(PropertyName = "enabled")]
+        [JsonProperty(PropertyName = "useTemplateDefinedPolicy")]
         public bool UseTemplateDefinedPolicy { get; set; }
         
 
