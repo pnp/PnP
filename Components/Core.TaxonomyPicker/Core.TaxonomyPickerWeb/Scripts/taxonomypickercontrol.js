@@ -164,13 +164,19 @@
             return termList;
         },
         //get suggestions based on the values typed by user
-        getSuggestions: function (text, useContainsSuggestions) {
+        getSuggestions: function (text) {
             var matches = new Array();
             $(this.FlatTermsForSuggestions).each(function (i, e) {
-                if (useContainsSuggestions && e.Name.toLowerCase().indexOf(text.toLowerCase()) >= 0) {
+                if (e.Name.toLowerCase().indexOf(text.toLowerCase()) == 0) {
                     matches.push(e);
                 }
-                else if (!useContainsSuggestions && e.Name.toLowerCase().indexOf(text.toLowerCase()) == 0) {
+            });
+            return matches;
+        },
+        getContainsSuggestions: function (text, useContainsSuggestions) {
+            var matches = new Array();
+            $(this.FlatTermsForSuggestions).each(function (i, e) {
+                if (e.Name.toLowerCase().indexOf(text.toLowerCase()) >= 0) {
                     matches.push(e);
                 }
             });
@@ -677,7 +683,7 @@
 
                 if (txt.length > 0) {
                     //look for all matching suggestions
-                    var suggestions = this.TermSet.getSuggestions(txt, this._useContainsSuggestions);
+                    var suggestions = this._useContainsSuggestions ? this.TermSet.getContainsSuggestions(txt) : this.TermSet.getSuggestions(txt);
 
                     //trim suggestions based on what is already in this._selectedTerms
                     suggestions = this.trimSuggestions(suggestions);
