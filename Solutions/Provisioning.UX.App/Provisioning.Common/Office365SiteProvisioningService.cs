@@ -83,6 +83,8 @@ namespace Provisioning.Common
                     {
                         if (we.Status != WebExceptionStatus.Timeout)
                         {
+                            Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection",
+                              "Creation WebException (" + we.ToString() + ")");
                             throw;
                         }
                     }

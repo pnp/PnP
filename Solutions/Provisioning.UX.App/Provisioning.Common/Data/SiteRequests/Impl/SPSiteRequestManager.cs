@@ -445,7 +445,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                     var _message = String.Format("The List {0} does not exist in Site {1}",
                          SiteRequestList.TITLE,
                          _web.Url);
-                    Log.Fatal("SPSiteRequestManager.UpdateRequestStatus", _message);
+                    Log.Fatal("SPSiteRequestManager.UpdateRequestUrl", _message);
                     throw new DataStoreException(_message);
                 }
 
@@ -468,8 +468,8 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 }
 
                 _timespan.Stop();
-                Log.Info("SPSiteRequestManager.UpdateRequestStatus", PCResources.SiteRequestUpdate_Successful, url, newUrl);
-                Log.TraceApi("SharePoint", "SPSiteRequestManager.UpdateRequestStatus", _timespan.Elapsed);
+                Log.Info("SPSiteRequestManager.UpdateRequestUrl", PCResources.SiteRequestUpdate_Successful, url, newUrl);
+                Log.TraceApi("SharePoint", "SPSiteRequestManager.UpdateRequestUrl", _timespan.Elapsed);
             });
         }
 
