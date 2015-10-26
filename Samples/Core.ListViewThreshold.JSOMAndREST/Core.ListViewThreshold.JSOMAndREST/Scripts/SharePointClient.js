@@ -1,10 +1,18 @@
-﻿'use strict';
-
+//Define global variables for JsHint, this will prevent '{a} not defined' warnings
+/*global console, document, _spPageContextInfo, SP, arg*/
+//Define option 'unused' as false for JsHint , this will prevent '{a} defined but never used' warnings
+/* jshint unused:false */
 var SharePointClient = SharePointClient || {};
 (function () {
+    "use strict";
+
     SharePointClient.AddNameSpace = function (namespace) {
-        var nsparts = namespace.split(".");
-        var parent = SharePointClient;
+        ///<summary>
+        /// Define New Namespance or class into the root namespace.
+        ///</summary>
+        /// <param name="namespace" type="String">Name of the new namespace.</param>
+        /// <returns type="Object">Parent namespace</returns>
+        var nsparts = namespace.split("."), parent = SharePointClient, i = 0, partname;
 
         // we want to be able to include or exclude the root namespace so we strip
         // it if it's in the namespace
@@ -13,11 +21,11 @@ var SharePointClient = SharePointClient || {};
         }
 
         // loop through the parts and create a nested namespace if necessary
-        for (var i = 0; i < nsparts.length; i++) {
-            var partname = nsparts[i];
+        for (i = 0; i < nsparts.length; i++) {
+            partname = nsparts[i];
             // check if the current parent already has the namespace declared
             // if it isn't, then create it
-            if (typeof parent[partname] === "undefined") {
+            if (!parent[partname]) {
                 parent[partname] = {};
             }
             // get a reference to the deepest element in the hierarchy so far
@@ -28,7 +36,8 @@ var SharePointClient = SharePointClient || {};
         return parent;
     };
 
-    
+    //#region Configurations
+
     //Configurations for JSOM SharePoint
     SharePointClient.AddNameSpace("Configurations");
     SharePointClient.Configurations = {
@@ -45,32 +54,33 @@ var SharePointClient = SharePointClient || {};
         //Configuration for REST
         REST: {
             //For authorization this token is used
-            AccessToken: null,
+            AccessToken: null
         }
     };
+    //#endregion
+
+    //#region Constants
 
     //Constants used across the namespace
     SharePointClient.AddNameSpace("Constants");
     SharePointClient.Constants = {
+
+        //#region Caml Query Constants
         CAML_CONSTANT: {
-            VIEWXML: "<View></View>",
             CAML_QUERY_SCOPE: {
-                filesOnly: "FilesOnly",
-                recursive: "Recursive",
-                recursiveAll: "RecursiveAll"
+                FILES_ONLY: "FilesOnly",
+                RECURSIVE: "Recursive",
+                RECURSIVE_ALL: "RecursiveAll"
             },
             CAML_QUERY_THROTTLE_MODE: {
-                setdefault: "Default",
-                override: "Override",
-                strict: "Strict"
+                DEFAULT: "Default",
+                OVERRIDE: "Override",
+                STRICT: "Strict"
             }
         },
-        JSOM: {
-            APP_WEB_TYPE: {
-                hostWeb: "HOSTWEB",
-                appWeb: "APPWEB"
-            }
-        },
+        //#endregion
+
+        //#region REST Constants
         REST: {
             API: "_api",
             WEB: "web",
@@ -85,105 +95,146 @@ var SharePointClient = SharePointClient || {};
                 }
             }
         }
-
+        //#endregion
     };
+    //#endregion
 
+    //#region Logger
     //logger used to log the exception in console
     SharePointClient.AddNameSpace("Logger");
     SharePointClient.Logger = {
         LogJSOMException: function (ExceptionArgs) {
-            console.log('Request failed. ' + ExceptionArgs.get_message() +
-        '\n' + ExceptionArgs.get_stackTrace());
+            ///<summary>
+            /// Log JSOM service exception to Console.
+            ///</summary>
+            /// <param name="ExceptionArgs" type="Object">Exception Arguments</param>
+            if (console) {
+                console.log('Request failed. ' + ExceptionArgs.get_message() +
+                    '\n' + ExceptionArgs.get_stackTrace());
+            }
         },
         LogRESTException: function (Exception) {
-            console.log('Request failed. ' + Exception);
+            ///<summary>
+            /// Log REST service exception to Console.
+            ///</summary>
+            /// <param name="Exception" type="String">Exception message</param>
+            if (console) {
+                console.log('Request failed. ' + Exception);
+            }
         }
     };
+    //#endregion
 
-    //Utilities for the JSOM
+    //#region Utilities
+
+    //Utilities for the SharePoint Client
     SharePointClient.AddNameSpace("Utilities");
     SharePointClient.Utilities.Utility = function () {
 
         var configuration = SharePointClient.Configurations;
 
-        //Get the value of querystring parameter from the current Url
         var queryString = function (param) {
-            var params = document.URL.split("?")[1].split("&");
-            var strParams = "";
-            for (var i = 0; i < params.length; i = i + 1) {
-                var singleParam = params[i].split("=");
-                if (singleParam[0] == param)
+            ///<summary>
+            /// Get the value of querystring parameter from the current Url.
+            ///</summary>
+            /// <param name="param" type="String">Name of query string parameter</param>
+            /// <returns type="String">Query string parameter value</returns>
+            var params = document.URL.split("?")[1].split("&"), i = 0, singleParam;
+            for (i = 0; i < params.length; i = i + 1) {
+                singleParam = params[i].split("=");
+                if (singleParam[0] === param) {
                     return decodeURIComponent(singleParam[1]);
+                }
             }
         };
 
-        //SharePoint has the object for getting weburl and other properties, which is available in SharePoint pages
-        var UrlFromPageContextInfo = function () {
+        var urlFromPageContextInfo = function () {
+            ///<summary>
+            /// SharePoint has the object for getting weburl and other properties,
+            /// which is available in SharePoint pages
+            ///</summary>
+            /// <returns type="String">web absolute url</returns>
             var url;
-            if (typeof _spPageContextInfo != "undefined") {
+            if (_spPageContextInfo) {
                 url = _spPageContextInfo.webAbsoluteUrl;
             }
-
             return url;
         };
 
-        //App page has the Host Url
         var hostUrl = function () {
-            //Get the URI decoded URLs.
+            ///<summary>
+            /// SharePoint App page has the Host Url.
+            ///</summary>
+            /// <returns type="String">App Host Url</returns>
             return queryString("SPHostUrl");
         };
 
-        //App page has the AppWebUrl
         var appWebUrl = function () {
-            //Get the URI decoded URLs.
+            ///<summary>
+            /// SharePoint App page has the AppWebUrl.
+            ///</summary>
+            /// <returns type="String">App Web Url</returns>
             return queryString("SPAppWebUrl");
         };
 
-        //Construct baseurl for downloading required JS files for working with JSOM
         var baseUrl = function () {
+            ///<summary>
+            /// Construct baseurl for downloading required JS files for working with JSOM.
+            ///</summary>
+            /// <returns type="String">Base url for SharePoint Site</returns>
             var scriptbase;
             if (configuration.IsApp) {
                 scriptbase = hostUrl() + "/_layouts/15/";
             } else {
-                if (typeof _spPageContextInfo != "undefined") {
-                    scriptbase = _spPageContextInfo.webAbsoluteUrl + "/_layouts/15/"
+                if (_spPageContextInfo) {
+                    scriptbase = _spPageContextInfo.webAbsoluteUrl + "/_layouts/15/";
                 }
             }
 
             return scriptbase;
         };
 
-        //SharePoint REST api service url
         var _api = function () {
+            ///<summary>
+            /// SharePoint REST api service url.
+            ///</summary>
+            /// <returns type="String">REST api for service request</returns>
             var restApi;
             if (configuration.IsApp) {
-                if (configuration.SPUrl == null) {
+                if (!configuration.SPUrl) {
                     restApi = queryString("SPAppWebUrl");
                 } else {
                     restApi = configuration.SPUrl;
                 }
             } else {
-                if (typeof _spPageContextInfo != "undefined") {
+                if (_spPageContextInfo) {
                     restApi = _spPageContextInfo.webAbsoluteUrl;
                 }
             }
             return restApi + "/" + SharePointClient.Constants.REST.API + "/";
         };
 
-        //SharePoint Request Digest url
         var digestUrl = function () {
+            ///<summary>
+            /// SharePoint Request Digest url endpoint.
+            ///</summary>
+            /// <returns type="String">Endpoint for Digest REST service</returns>
             return _api() + SharePointClient.Constants.REST.REQUEST_DIGEST_ENDPOINT;
         };
 
-        //Modify the url to support cross domain access
-        var CrossDomainRequestUrl = function (url) {
+        var crossDomainRequestUrl = function (url) {
+            ///<summary>
+            /// Modify the url to support cross domain access.
+            ///</summary>
+            /// <param name="url" type="String">url for cross domain call</param>
+            /// <returns type="String">cross domain url</returns>
             var apiIndex = url.indexOf("_api/") + 5;
             var requestUrl = url.substring(0, apiIndex);
             requestUrl += "SP.AppContextSite(@target)/";
             requestUrl += url.substring(apiIndex, url.length);
             var sphostUrl = hostUrl();
             if (url.indexOf("?") > 0) {
-                requestUrl = requestUrl + "@target='" + sphostUrl + "'";
+                requestUrl = requestUrl + "&@target='" + sphostUrl + "'";
             } else {
                 requestUrl = requestUrl + "?@target='" + sphostUrl + "'";
             }
@@ -191,23 +242,83 @@ var SharePointClient = SharePointClient || {};
             return requestUrl;
         };
 
-        //Verify whether current page has script which is going to be download
-        var ScriptAlreadyLoaded = function (scriptName) {
-            scriptName = scriptName.toLowerCase();
-            if ($("Scripts[src$='" + scriptName + "']").length > 0) {
-                return true;
-            } else {
-                return false;
+        var isClientObjectAvailable = function (fileName) {
+            ///<summary>
+            /// Check if client objects are available on page.
+            ///</summary>
+            /// <param name="fileName" type="String">Name of Script to verify</param>
+            /// <returns type="Boolean">TRUE if object available,FALSE if not available.</returns>
+            switch (fileName) {
+                case "sp.js": if (SP.ClientContext) { return true; } else { return false; }
+                    break;
+                case "sp.runtime.js": if (SP.ClientRuntimeContext) { return true; } else { return false; }
+                    break;
+                case "sp.requestexecutor.js": if (SP.RequestInfo) { return true; } else { return false; }
+                    break;
+                default: return false;
             }
         };
 
+        var scriptAlreadyLoaded = function (scriptName) {
+            ///<summary>
+            /// Verify whether current page has script which is going to be download.
+            ///</summary>
+            /// <param name="scriptName" type="String">Name of Script to verify</param>
+            /// <returns type="Boolean">TRUE for if already loaded,FALSE for its not loaded.</returns>
+            scriptName = scriptName.toLowerCase();
+            var isLoaded = false;
+            var scripts = document.getElementsByTagName('script');
+            for (var i = scripts.length; i--;) {
+                if (scriptName === getScriptNameFromSrc(scripts[i].src)) {
+                    isLoaded = true;
+                }
+            }
+
+            if (!isLoaded) {
+                isLoaded = isClientObjectAvailable(scriptName);
+            }
+
+            return isLoaded;
+
+        };
+
+        var getScriptNameFromSrc = function (src) {
+            ///<summary>
+            /// Get the Script file name from the src url.
+            ///</summary>
+            /// <param name="src" type="String">src script file url</param>
+            /// <returns type="String">Script file name.</returns>
+
+            //split if any ? rev added
+            var srcArray = src.split("?");
+            if (srcArray.length > 0) {
+                src = srcArray[0];
+            } else {
+                src = src;
+            }
+
+            //read file name only
+            var lastIndex = src.lastIndexOf("/");
+            src = src.substring(lastIndex + 1, src.length);
+
+            return src.toLowerCase();
+        };
+
         var downloadScript = function (baseUrl, scriptUrls, index, callback) {
+            ///<summary>
+            /// Download JavaScript files Asynchronously.
+            ///</summary>
+            /// <param name="baseUrl" type="String">Base url for SharePoint layouts path</param>
+            /// <param name="scriptUrls" type="Array">collection of Script Urls as Array</param>
+            /// <param name="index" type="Number">Index in Array</param>
+            /// <param name="callback" type="Function">CallBack function</param>
             $.getScript(baseUrl + scriptUrls[index], function () {
                 if (index + 1 <= scriptUrls.length - 1) {
                     downloadScript(baseUrl, scriptUrls, index + 1, callback);
                 } else {
-                    if (callback)
+                    if (callback) {
                         callback();
+                    }
                 }
             });
         };
@@ -216,8 +327,8 @@ var SharePointClient = SharePointClient || {};
             GetQueryStringParameter: queryString,
             GetHostUrl: hostUrl,
             GetAppWebUrl: appWebUrl,
-            IsScriptExistsOnPage: ScriptAlreadyLoaded,
-            GetUrlFromPageContextInfo: UrlFromPageContextInfo,
+            IsScriptExistsOnPage: scriptAlreadyLoaded,
+            GetUrlFromPageContextInfo: urlFromPageContextInfo,
             GetScript: downloadScript,
             JSOM: {
                 GetBaseUrl: baseUrl
@@ -225,19 +336,25 @@ var SharePointClient = SharePointClient || {};
             REST: {
                 GetApiUrl: _api,
                 GetRequestDigestUrl: digestUrl,
-                GetCrossDomainRequestUrl: CrossDomainRequestUrl,
+                GetCrossDomainRequestUrl: crossDomainRequestUrl,
             }
         };
     };
+    //#endregion
 
+    //#region CAML Query Utility
     //Caml Query utility for creating caml schema from JSON object
     SharePointClient.AddNameSpace("Utilities.CamlQueryUtility");
     SharePointClient.Utilities.CamlQueryUtility = {
-
-        //Convert JSON object to Caml schema
+        //#region CamlQueryUtility function
         ConvertToCamlSchema: function (rootElement, jsonObject) {
-
-            if (typeof jsonObject == "string" || typeof jsonObject == "number") {
+            ///<summary>
+            /// Convert JSON object to Caml schema.
+            ///</summary>
+            /// <param name="rootElement" type="String">Name of root element.</param>
+            /// <param name="jsonObject" type="Object">JSON object.</param>
+            /// <returns type="String">XML formatted caml query</returns>
+            if (typeof jsonObject === "string" || typeof jsonObject === "number") {
                 return "<" + rootElement + ">" + jsonObject + "</" + rootElement + ">";
             }
 
@@ -247,7 +364,7 @@ var SharePointClient = SharePointClient || {};
                 if (SharePointClient.Utilities.CamlQueryUtility.IsAttribute(index)) {
                     attrCollection[index] = object;
                 } else {
-                    if (index.indexOf('_') == 0) {
+                    if (index.indexOf('_') === 0) {
                         rootNodeValue = object;
                     } else {
                         elementCollection[index] = object;
@@ -266,7 +383,7 @@ var SharePointClient = SharePointClient || {};
             //fields
             var fieldXml = "";
             $.each(elementCollection, function (k, v) {
-                if (typeof v == "object") {
+                if (typeof v === "object") {
                     fieldXml += SharePointClient.Utilities.CamlQueryUtility.ConvertToCamlSchema(k, v);
                 }
                 else {
@@ -278,7 +395,7 @@ var SharePointClient = SharePointClient || {};
                 camlQueryXml += fieldXml;
             }
 
-            if (rootNodeValue != null) {
+            if (rootNodeValue) {
                 camlQueryXml += rootNodeValue;
             }
 
@@ -287,25 +404,31 @@ var SharePointClient = SharePointClient || {};
             return camlQueryXml;
         },
 
-        //Is there any attributes defined in the JSON object
         IsAttribute: function (input) {
-
-            if (typeof input == "object") {
+            ///<summary>
+            /// Is there any attributes defined in the JSON object.
+            ///</summary>
+            /// <param name="input" type="String">Name of element.</param>
+            /// <returns type="Boolean">TRUE if attribute found, FALSE if attribute does not exists.</returns>
+            if (typeof input === "object") {
                 return false;
             }
 
-            if (input.indexOf('@') == 0) {
+            if (input.indexOf('@') === 0) {
                 return true;
             } else {
                 return false;
             }
         },
 
-        //Get the collection attributes from JSON object
         Attributes: function (JsonObject) {
-
-            if (typeof JsonObject == "string" || typeof jsonObject == "number") {
-                if (JsonObject.indexOf('@') == 0) {
+            ///<summary>
+            /// Get the collection attributes from JSON object.
+            ///</summary>
+            /// <param name="JsonObject" type="Object">JSON Object.</param>
+            /// <returns type="String">Formatted attribute collection</returns>
+            if (typeof JsonObject === "string" || typeof jsonObject === "number") {
+                if (JsonObject.indexOf('@') === 0) {
                     return JsonObject;
                 } else {
                     return "";
@@ -315,100 +438,141 @@ var SharePointClient = SharePointClient || {};
             var attributes = "";
             $.each(JsonObject, function (index, object) {
 
-                if (index.indexOf('@') == 0) {
+                if (index.indexOf('@') === 0) {
                     attributes += " " + index.replace("@", "") + "='" + object + "'";
                 }
             });
 
             return attributes;
-        },
+        }
+        //#endregion
     };
+    //#endregion
 
-    //Extend camlquery functionalities
+    //#region Extend camlquery functionalities
     SharePointClient.AddNameSpace("CamlExtension");
     SharePointClient.CamlExtension = {
+        //#region Extensions for JSOM/REST
         JSOM: {
-            //Extended caml query methods to support for creating camlQuery viewxml
             CamlQuery: function () {
+                ///<summary>
+                /// Extended caml query methods to support for creating camlQuery viewxml.
+                ///</summary>
                 $.extend(this, new SP.CamlQuery());
-            },
+            }
         },
         REST: {
-            //custom camlquery class
             CamlQuery: function () {
-                var queryStatement = {};
-                var viewXml = null;
+                ///<summary>
+                /// custom camlquery class.
+                ///</summary>
 
-                //Return viewXml property
+                //#region Private Variables
+                var queryStatement = {}, viewXml = null;
+                //#endregion
+
                 var get_viewXml = function () {
+                    ///<summary>
+                    /// Return viewXml property.
+                    ///</summary>
+                    /// <returns type="String">caml query view xml</returns>
                     return viewXml;
                 };
 
-                //This method will return default query for Allitems
                 var createAllItemsQuery = function () {
+                    ///<summary>
+                    /// This method will return default query for Allitems.
+                    ///</summary>
+                    /// <returns type="Object">Current class instance</returns>
                     viewXml = "<View Scope='RecursiveAll'><Query></Query></View>";
                     return this;
                 };
 
-                //This method will return default query for AllFolders
                 var createAllFoldersQuery = function () {
+                    ///<summary>
+                    /// This method will return default query for AllFolders.
+                    ///</summary>
+                    /// <returns type="Object">Current class instance</returns>
                     viewXml = "<View Scope='RecursiveAll'><Query><Where><Eq><FieldRef Name='FSObjType' /><Value Type='Integer'>1</Value></Eq></Where></Query></View>";
                     return this;
                 };
 
-                //This method will update Scope attribute for ViewXml,parameter as scope value
-                var ViewAttribute = function (scope) {
-
-                    //Add View
-                    queryStatement["View"] = {};
+                var viewAttribute = function (scope) {
+                    ///<summary>
+                    /// This method will update Scope attribute for ViewXml,parameter as scope value.
+                    ///</summary>
+                    /// <param name="scope" type="String">Scope value.</param>
+                    /// <returns type="Object">Current class instance</returns>
 
                     //Set scope
-                    queryStatement["View"] = {
+                    queryStatement.View = {
                         "@Scope": scope
-                    }
+                    };
                     return this;
                 };
 
-                //This method will update the query condition for filtering the result set, parameter as caml formatted condition
-                var Query = function (queryCondition) {
+                var query = function (queryCondition) {
+                    ///<summary>
+                    /// This method will update the query condition for filtering the result set, parameter as caml formatted condition.
+                    ///</summary>
+                    /// <param name="queryCondition" type="String">Caml Query condition for filtering the result set.</param>
+                    /// <returns type="Object">Current class instance</returns>
+
                     //Set scope
-                    queryStatement["Query"] = queryCondition;
+                    queryStatement.Query = queryCondition;
 
                     return this;
                 };
 
-                //This method will be used to set the required columns in the result set,parameter as array of field names
-                var ViewFields = function (viewfields) {
-                    var viewFieldsXml = "";
-                    for (var i = 0; i <= viewfields.length - 1; i++) {
-                        viewFieldsXml += "<FieldRef "
+                var viewFields = function (viewfields) {
+                    ///<summary>
+                    /// This method will be used to set the required columns in the result set,parameter as array of field names.
+                    ///</summary>
+                    /// <param name="viewfields" type="Array">Array of view fields names.</param>
+                    /// <returns type="Object">Current class instance</returns>
+
+                    var viewFieldsXml = "", i = 0;
+                    for (i = 0; i <= viewfields.length - 1; i++) {
+                        viewFieldsXml += "<FieldRef ";
                         viewFieldsXml += "Name='" + viewfields[i] + "'";
                         viewFieldsXml += "></FieldRef>";
                     }
 
-                    queryStatement["ViewFields"] = viewFieldsXml;
+                    queryStatement.ViewFields = viewFieldsXml;
 
                     return this;
                 };
 
-                //This method will be used to set the required columns in the result set, parameter as xml
-                var ViewFieldsXml = function (viewfieldsXml) {
-                    queryStatement["ViewFields"] = viewfieldsXml;
+                var viewFieldsXml = function (viewfieldsXml) {
+                    ///<summary>
+                    /// This method will be used to set the required columns in the result set, parameter as xml.
+                    ///</summary>
+                    /// <param name="viewfieldsXml" type="String">XML formatted view fields collection.</param>
+                    /// <returns type="Object">Current class instance</returns>
+
+                    queryStatement.ViewFields = viewfieldsXml;
                     return this;
                 };
 
-                //This method will be used Override the QueryThrottle mode for applying the throttle exception for this query or not
-                var QueryThrottleMode = function (mode) {
-                    queryStatement["QueryOptions"] = {
+                var queryThrottleMode = function (mode) {
+                    ///<summary>
+                    /// This method will be used Override the QueryThrottle mode for applying the throttle exception for this query or not.
+                    ///</summary>
+                    /// <param name="mode" type="String">Set Query Throttle mode.</param>
+                    /// <returns type="Object">Current class instance</returns>
+                    queryStatement.QueryOptions = {
                         "QueryThrottleMode": mode
                     };
 
                     return this;
                 };
 
-                //This method will override the order by, Use this method only when query has the condition with field as indexed
-                var OrderByIndex = function () {
-                    queryStatement["OrderBy"] = {
+                var orderByIndex = function () {
+                    ///<summary>
+                    /// This method will override the order by, Use this method only when query has the condition with field as indexed.
+                    ///</summary>
+                    /// <returns type="Object">Current class instance</returns>
+                    queryStatement.OrderBy = {
                         "@UseIndexForOrderBy": "TRUE",
                         "@Override": "TRUE"
                     };
@@ -416,9 +580,12 @@ var SharePointClient = SharePointClient || {};
                     return this;
                 };
 
-                //This method will override the order by with default ID field
-                var OrderBy = function () {
-                    queryStatement["OrderBy"] = {
+                var orderBy = function () {
+                    ///<summary>
+                    /// This method will override the order by with default ID field.
+                    ///</summary>
+                    /// <returns type="Object">Current class instance</returns>
+                    queryStatement.OrderBy = {
                         "@UseIndexForOrderBy": "TRUE",
                         "FieldRef": {
                             "@Name": "ID"
@@ -428,9 +595,12 @@ var SharePointClient = SharePointClient || {};
 
                 };
 
-                //This method will override the order by with default ID field sortng order by Descending
-                var OrderByDesc = function () {
-                    queryStatement["OrderBy"] = {
+                var orderByDesc = function () {
+                    ///<summary>
+                    /// This method will override the order by with default ID field sortng order by Descending.
+                    ///</summary>
+                    /// <returns type="Object">Current class instance</returns>
+                    queryStatement.OrderBy = {
                         "@UseIndexForOrderBy": "TRUE",
                         "FieldRef": {
                             "@Name": "ID",
@@ -441,9 +611,12 @@ var SharePointClient = SharePointClient || {};
                     return this;
                 };
 
-                //This method will set the row limit
-                var RowLimit = function (numberOfRecords) {
-                    queryStatement["RowLimit"] = {
+                var rowLimit = function (numberOfRecords) {
+                    ///<summary>
+                    /// This method will set the row limit.
+                    ///</summary>
+                    /// <returns type="Object">Current class instance</returns>
+                    queryStatement.RowLimit = {
                         "@Paged": "TRUE",
                         "_value": numberOfRecords
                     };
@@ -451,25 +624,25 @@ var SharePointClient = SharePointClient || {};
                     return this;
                 };
 
-                //This method will build the vewXml
-                var BuildCamlQuery = function () {
-
-                    if (queryStatement["View"] == null) { return this; }
+                var buildCamlQuery = function () {
+                    ///<summary>
+                    /// This method will build the vewXml.
+                    ///</summary>
+                    /// <returns type="Object">Current class instance</returns>
 
                     var camlUtility = SharePointClient.Utilities.CamlQueryUtility;
 
                     //CamlQuery Elements
-                    var viewRootElement = ""; //View is the root level element in camlQuery
-                    var queryElement = "";//Query element which has query conditions
-                    var viewFieldsElement = "";//ViewFields element for limit the fields in result while returning from list
-                    var queryOptionsElement = "";//QueryOptions for camlquery
-                    var orderByElement = "";//orderBy element for result set
-                    var rowLimit = "";//Rowlimit for result set
+                    var viewRootElement = "", //View is the root level element in camlQuery
+                    queryElement = "",//Query element which has query conditions
+                    viewFieldsElement = "",//ViewFields element for limit the fields in result while returning from list
+                    queryOptionsElement = "",//QueryOptions for camlquery
+                    orderByElement = "",//orderBy element for result set
+                    rowLimit = "",//Rowlimit for result set
+                    attributes;
 
-
-                    var attributes;
                     //Root element View
-                    var view = queryStatement["View"];
+                    var view = queryStatement.View;
                     attributes = camlUtility.Attributes(view);
                     if (attributes.length > 0) {
                         viewRootElement += "<View" + attributes + ">";
@@ -477,30 +650,30 @@ var SharePointClient = SharePointClient || {};
                     else { viewRootElement += "<View>"; }
 
                     //Query element if exists
-                    var query = queryStatement["Query"];
-                    if (query != null) {
+                    var query = queryStatement.Query;
+                    if (query) {
                         queryElement = camlUtility.ConvertToCamlSchema("Query", query);
                     }
 
                     //ViewFields element
-                    var viewFields = queryStatement["ViewFields"];
-                    if (viewFields != null) {
+                    var viewFields = queryStatement.ViewFields;
+                    if (viewFields) {
                         viewFieldsElement = camlUtility.ConvertToCamlSchema("ViewFields", viewFields);
                     }
 
                     //QueryOptions element
-                    var queryOptions = queryStatement["QueryOptions"];
-                    if (queryOptions != null) {
+                    var queryOptions = queryStatement.QueryOptions;
+                    if (queryOptions) {
                         queryOptionsElement = camlUtility.ConvertToCamlSchema("QueryOptions", queryOptions);
                     }
 
                     //OrderBy element
-                    var orderBy = queryStatement["OrderBy"];
-                    if (orderBy != null) {
+                    var orderBy = queryStatement.OrderBy;
+                    if (orderBy) {
                         orderByElement = camlUtility.ConvertToCamlSchema("OrderBy", orderBy);
 
                         //Append to Query object
-                        if (queryElement.length == 0) {
+                        if (queryElement.length === 0) {
                             queryElement += "<Query>";
                             queryElement += orderByElement;
                             queryElement += "</Query>";
@@ -515,8 +688,8 @@ var SharePointClient = SharePointClient || {};
                     }
 
                     //RowLimit element
-                    var rowlimit = queryStatement["RowLimit"];
-                    if (rowlimit != null) {
+                    var rowlimit = queryStatement.RowLimit;
+                    if (rowlimit) {
                         rowLimit = camlUtility.ConvertToCamlSchema("RowLimit", rowlimit);
                     }
 
@@ -530,96 +703,120 @@ var SharePointClient = SharePointClient || {};
                 };
 
                 return {
-                    SetViewScopeAttribute: ViewAttribute,
-                    SetQuery: Query,
-                    SetViewFields: ViewFields,
-                    SetViewFieldsXml: ViewFieldsXml,
-                    OverrideQueryThrottleMode: QueryThrottleMode,
-                    OverrideOrderByIndex: OrderByIndex,
-                    OverrideOrderBy: OrderBy,
-                    OverrideOrderByDesc: OrderByDesc,
-                    SetRowLimit: RowLimit,
-                    BuildQuery: BuildCamlQuery,
+                    SetViewScopeAttribute: viewAttribute,
+                    SetQuery: query,
+                    SetViewFields: viewFields,
+                    SetViewFieldsXml: viewFieldsXml,
+                    OverrideQueryThrottleMode: queryThrottleMode,
+                    OverrideOrderByIndex: orderByIndex,
+                    OverrideOrderBy: orderBy,
+                    OverrideOrderByDesc: orderByDesc,
+                    SetRowLimit: rowLimit,
+                    BuildQuery: buildCamlQuery,
                     GetQueryViewXml: get_viewXml
                 };
-            },
+            }
         }
+        //#endregion
     };
+    //#endregion
 
-    //Extend SP.CamlQuery methods
+    //#region Extend SP.CamlQuery methods
     SharePointClient.CamlExtension.JSOM.CamlQuery.prototype = {
-        queryStatement: {},
 
-        //This method will return default query for Allitems
-        createAllItemsQuery: function () {
+        //#region Private Variables
+        queryStatement: {},
+        //#endregion
+
+        CreateAllItemsQuery: function () {
+            ///<summary>
+            /// This method will return default query for Allitems.
+            ///</summary>
+            /// <returns type="String">View xml</returns>
             return SP.CamlQuery.createAllItemsQuery();
         },
 
-        //This method will return default query for AllFolders
-        createAllFoldersQuery: function () {
-            return SP.CamlQuery.createAllFoldersQuery()
+        CreateAllFoldersQuery: function () {
+            ///<summary>
+            /// This method will return default query for AllFolders.
+            ///</summary>
+            /// <returns type="String">View xml</returns>
+            return SP.CamlQuery.createAllFoldersQuery();
         },
 
-        //This method will update Scope attribute for ViewXml,parameter as scope value
         ViewAttribute: function (scope) {
-
-            //Add View
-            this.queryStatement["View"] = {};
-
+            ///<summary>
+            /// This method will update Scope attribute for ViewXml,parameter as scope value.
+            ///</summary>
+            /// <param name="scope" type="String">Scope value.</param>
+            /// <returns type="Object">Current class instance</returns>
             //Set scope
-            this.queryStatement["View"] = {
+            this.queryStatement.View = {
                 "@Scope": scope
-            }
+            };
             return this;
         },
 
-        //This method will update the query condition for filtering the result set, parameter as caml formatted condition
         Query: function (queryCondition) {
-            //Set scope
-            this.queryStatement["Query"] = queryCondition;
+            ///<summary>
+            ///This method will update the query condition for filtering the result set, parameter as caml formatted condition.
+            ///</summary>
+            /// <param name="queryCondition" type="String">Caml Query condition for filtering the result set.</param>
+            /// <returns type="Object">Current class instance</returns>
+
+            this.queryStatement.Query = queryCondition;
 
             return this;
         },
 
-        //This method will be used to set the required columns in the result set,parameter as array of field names
         ViewFields: function (viewfields) {
+            ///<summary>
+            /// This method will be used to set the required columns in the result set,parameter as array of field names.
+            ///</summary>
+            /// <param name="viewfields" type="Array">Array of view fields names.</param>
+            /// <returns type="Object">Current class instance</returns>
 
-            var viewFieldsXml = "";
-            for (var i = 0; i <= viewfields.length - 1; i++) {
-                viewFieldsXml += "<FieldRef "
+            var viewFieldsXml = "", i = 0;
+            for (i = 0; i <= viewfields.length - 1; i++) {
+                viewFieldsXml += "<FieldRef ";
                 viewFieldsXml += "Name='" + viewfields[i] + "'";
                 viewFieldsXml += "></FieldRef>";
             }
 
-            this.queryStatement["ViewFields"] = viewFieldsXml;
+            this.queryStatement.ViewFields = viewFieldsXml;
 
             return this;
         },
 
-        //This method will be used to set the required columns in the result set, parameter as xml
         ViewFieldsXml: function (viewfieldsXml) {
-
-            //var view = this.queryStatement["View"];
-            this.queryStatement["ViewFields"] = viewfieldsXml;
+            ///<summary>
+            /// This method will be used to set the required columns in the result set, parameter as xml.
+            ///</summary>
+            /// <param name="viewfieldsXml" type="String">XML formatted view fields collection.</param>
+            /// <returns type="Object">Current class instance</returns>
+            this.queryStatement.ViewFields = viewfieldsXml;
             return this;
         },
 
-        //This method will be used Override the QueryThrottle mode for applying the throttle exception for this query or not
         QueryThrottleMode: function (mode) {
-
-            //var view = this.queryStatement["View"];
-            this.queryStatement["QueryOptions"] = {
+            ///<summary>
+            /// This method will be used Override the QueryThrottle mode for applying the throttle exception for this query or not.
+            ///</summary>
+            /// <param name="mode" type="String">Set Query Throttle mode.</param>
+            /// <returns type="Object">Current class instance</returns>
+            this.queryStatement.QueryOptions = {
                 "QueryThrottleMode": mode
             };
 
             return this;
         },
 
-        //This method will override the order by, Use this method only when query has the condition with field as indexed
         OrderByIndex: function () {
-
-            //var view = this.queryStatement["View"];
-            this.queryStatement["OrderBy"] = {
+            ///<summary>
+            /// This method will override the order by, Use this method only when query has the condition with field as indexed.
+            ///</summary>
+            /// <returns type="Object">Current class instance</returns>
+            this.queryStatement.OrderBy = {
                 "@UseIndexForOrderBy": "TRUE",
                 "@Override": "TRUE"
             };
@@ -627,10 +824,12 @@ var SharePointClient = SharePointClient || {};
             return this;
         },
 
-        //This method will override the order by with default ID field
         OrderBy: function () {
-            //var view = this.queryStatement["View"];
-            this.queryStatement["OrderBy"] = {
+            ///<summary>
+            /// This method will override the order by with default ID field.
+            ///</summary>
+            /// <returns type="Object">Current class instance</returns>
+            this.queryStatement.OrderBy = {
                 "@UseIndexForOrderBy": "TRUE",
                 "FieldRef": {
                     "@Name": "ID"
@@ -639,11 +838,12 @@ var SharePointClient = SharePointClient || {};
             return this;
         },
 
-        //This method will override the order by with default ID field sortng order by Descending
         OrderByDesc: function () {
-
-            //var view = this.queryStatement["View"];
-            this.queryStatement["OrderBy"] = {
+            ///<summary>
+            /// This method will override the order by with default ID field sortng order by Descending.
+            ///</summary>
+            /// <returns type="Object">Current class instance</returns>
+            this.queryStatement.OrderBy = {
                 "@UseIndexForOrderBy": "TRUE",
                 "FieldRef": {
                     "@Name": "ID",
@@ -654,32 +854,32 @@ var SharePointClient = SharePointClient || {};
             return this;
         },
 
-        //This method will set the row limit
         RowLimit: function (numberOfRecords) {
-
-            //var view = this.queryStatement["View"];
-            this.queryStatement["RowLimit"] = numberOfRecords;
-
+            ///<summary>
+            /// This method will set the row limit.
+            ///</summary>
+            /// <returns type="Object">Current class instance</returns>
+            this.queryStatement.RowLimit = numberOfRecords;
             return this;
         },
 
-        //This method will build the vewXml
         BuildQuery: function () {
-
+            ///<summary>
+            /// This method will build the vewXml.
+            ///</summary>
+            /// <returns type="Object">Current class instance</returns>
             var camlUtility = SharePointClient.Utilities.CamlQueryUtility;
 
             //CamlQuery Elements
-            var viewRootElement = ""; //View is the root level element in camlQuery
-            var queryElement = "";//Query element which has query conditions
-            var viewFieldsElement = "";//ViewFields element for limit the fields in result while returning from list
-            var queryOptionsElement = "";//QueryOptions for camlquery
-            var orderByElement = "";//orderBy element for result set
-            var rowLimit = "";//Rowlimit for result set
-
-
-            var attributes;
+            var viewRootElement = "",//View is the root level element in camlQuery
+            queryElement = "",//Query element which has query conditions
+            viewFieldsElement = "",//ViewFields element for limit the fields in result while returning from list
+            queryOptionsElement = "",//QueryOptions for camlquery
+            orderByElement = "",//orderBy element for result set
+            rowLimit = "",//Rowlimit for result set
+            attributes;
             //Root element View
-            var view = this.queryStatement["View"];
+            var view = this.queryStatement.View;
             attributes = camlUtility.Attributes(view);
             if (attributes.length > 0) {
                 viewRootElement += "<View" + attributes + ">";
@@ -687,30 +887,30 @@ var SharePointClient = SharePointClient || {};
             else { viewRootElement += "<View>"; }
 
             //Query element if exists
-            var query = this.queryStatement["Query"];
-            if (query != null) {
+            var query = this.queryStatement.Query;
+            if (query) {
                 queryElement = camlUtility.ConvertToCamlSchema("Query", query);
             }
 
             //ViewFields element
-            var viewFields = this.queryStatement["ViewFields"];
-            if (viewFields != null) {
+            var viewFields = this.queryStatement.ViewFields;
+            if (viewFields) {
                 viewFieldsElement = camlUtility.ConvertToCamlSchema("ViewFields", viewFields);
             }
 
             //QueryOptions element
-            var queryOptions = this.queryStatement["QueryOptions"];
-            if (queryOptions != null) {
+            var queryOptions = this.queryStatement.QueryOptions;
+            if (queryOptions) {
                 queryOptionsElement = camlUtility.ConvertToCamlSchema("QueryOptions", queryOptions);
             }
 
             //OrderBy element
-            var orderBy = this.queryStatement["OrderBy"];
-            if (orderBy != null) {
+            var orderBy = this.queryStatement.OrderBy;
+            if (orderBy) {
                 orderByElement = camlUtility.ConvertToCamlSchema("OrderBy", orderBy);
 
                 //Append to Query object
-                if (queryElement.length == 0) {
+                if (queryElement.length === 0) {
                     queryElement += "<Query>";
                     queryElement += orderByElement;
                     queryElement += "</Query>";
@@ -725,8 +925,8 @@ var SharePointClient = SharePointClient || {};
             }
 
             //RowLimit element
-            var rowlimit = this.queryStatement["RowLimit"];
-            if (rowlimit != null) {
+            var rowlimit = this.queryStatement.RowLimit;
+            if (rowlimit) {
                 rowLimit = camlUtility.ConvertToCamlSchema("RowLimit", rowlimit);
             }
 
@@ -737,13 +937,67 @@ var SharePointClient = SharePointClient || {};
             return this;
         },
     };
+    //#endregion
 
-    //Services  for JSOM and REST
+    //#region Services  for JSOM and REST
     SharePointClient.AddNameSpace("Services");
     SharePointClient.Services = {
+
+        //#region custom deferred object like JQuery deferred
+        ClientRun: function () {
+            ///<summary>
+            /// ClientRun class to register callback for success and error like deferred in JQuery.
+            ///</summary>
+
+            var successFunction = function (result) {
+                ///<summary>
+                /// Success handler.
+                ///</summary>
+                /// <param name="result" type="Object">data returned from the request to success handler.</param>
+
+                /* override in instance method*/
+            };
+
+            var errorFunction = function () {
+                ///<summary>
+                /// Error handler.
+                ///</summary>
+
+                /* override in instance method*/
+            };
+
+            var execute = function (success, error) {
+                ///<summary>
+                /// This function register Success and Error callback functions.
+                ///</summary>
+                /// <param name="success" type="Function">CallBack function for calling this function on Success.</param>
+                /// <param name="error" type="Function">CallBack function for calling this function on Error.</param>
+                if (success) {
+                    successFunction = success;
+                }
+
+                if (error) {
+                    errorFunction = error;
+                }
+            };
+
+            return {
+                Execute: execute,
+                OnSuccess: function (result) { return successFunction(result); },
+                OnError: function () { return errorFunction; }
+            };
+        },
+        //#endregion
+
+        //#region JSOM service
         JSOM: {
-            //Initialize the JSOM with loading required JS files
+
             Initialize: function (callback) {
+                ///<summary>
+                /// Initialize the JSOM with loading required JS files.
+                ///</summary>
+                /// <param name="callback" type="Function">CallBack function for calling this function once files downloaded.</param>
+
                 var utility = new SharePointClient.Utilities.Utility();
                 var config = SharePointClient.Configurations;
                 var baseUrl = utility.JSOM.GetBaseUrl();
@@ -753,10 +1007,10 @@ var SharePointClient = SharePointClient || {};
                 if (config.IsCrossDomainRequest) {
                     //load SP.RequestExecutor if not mentioned in js Array
                     var jsExists = jQuery.grep(jsFiles, function (n, i) {
-                        return (n !== "" && n != null && n == "SP.RequestExecutor.js");
+                        return (n !== "" && n !== null && n === "SP.RequestExecutor.js");
                     });
 
-                    if (jsExists.length == 0) {
+                    if (jsExists.length === 0) {
                         jsFiles.push("SP.RequestExecutor.js");
                     }
                 }
@@ -770,7 +1024,7 @@ var SharePointClient = SharePointClient || {};
                 });
 
                 //if all files are loaded
-                if (loadJsFiles.length == 0) {
+                if (loadJsFiles.length === 0) {
                     callback();
                     return;
                 }
@@ -788,44 +1042,58 @@ var SharePointClient = SharePointClient || {};
                     cache: false
                 });
             },
-            //Context class used to get the correct context from the configuration
+
             Context: function () {
+                ///<summary>
+                /// Context class used to get the correct context from the configuration.
+                ///</summary>
+
                 var utility = new SharePointClient.Utilities.Utility();
 
-                //Properties to hold current client context and web
-                var ClientContext = null;
-                var Web = null;
+                //#region Private Variables
+                var clientContext = null, web = null;
+                //#endregion
 
-                //This method is used while working on SharePoint pages, beacuse sharePoint default provide context
-                var Current = function () {
-                    if (typeof SP.ClientContext != "undefined") {
-                        ClientContext = SP.ClientContext.get_current();
-                        Web = ClientContext.get_web();
+                var current = function () {
+                    ///<summary>
+                    /// This method is used while working on SharePoint pages, beacuse sharePoint default provide context.
+                    ///</summary>
+                    if (SP.ClientContext) {
+                        clientContext = SP.ClientContext.get_current();
+                        web = clientContext.get_web();
                     }
                 };
 
-                //Create context by SharePoint Web url
-                var ContextByUrl = function (url) {
-                    if (typeof SP.ClientContext != "undefined") {
-                        ClientContext = new SP.ClientContext(url);
-                        Web = ClientContext.get_web();
+                var contextByUrl = function (url) {
+                    ///<summary>
+                    /// Create context by SharePoint Web url.
+                    ///</summary>
+                    /// <param name="url" type="String">Url of SharePoint site.</param>
+                    if (SP.ClientContext) {
+                        clientContext = new SP.ClientContext(url);
+                        web = clientContext.get_web();
                     }
                 };
 
-                //if the Context required for cross domain request, for example access host web from SharePoint hosted app
-                var CrossDomainContext = function () {
+                var crossDomainContext = function () {
+                    ///<summary>
+                    /// if the Context required for cross domain request, for example access host web from SharePoint hosted app.
+                    ///</summary>
 
-                    ContextByUrl(utility.GetAppWebUrl());
+                    contextByUrl(utility.GetAppWebUrl());
 
                     var factory = new SP.ProxyWebRequestExecutorFactory(utility.GetAppWebUrl());
-                    ClientContext.set_webRequestExecutorFactory(factory);
+                    clientContext.set_webRequestExecutorFactory(factory);
 
-                    var AppContextSite = new SP.AppContextSite(ClientContext, utility.GetHostUrl());
-                    Web = AppContextSite.get_web();
+                    var AppContextSite = new SP.AppContextSite(clientContext, utility.GetHostUrl());
+                    web = AppContextSite.get_web();
                 };
 
-                //Intialize the context for SharePoint
-                var Init = function () {
+                var init = function () {
+                    ///<summary>
+                    /// Intialize the context for SharePoint.
+                    ///</summary>
+
                     //if confiuration property App is set TRUE , set HostUrl and AppWebUrl
                     var configuration = SharePointClient.Configurations;
                     if (configuration.IsApp) {
@@ -835,176 +1103,280 @@ var SharePointClient = SharePointClient || {};
                         //Check if the request would be cross domain call or call for current site
                         if (configuration.IsCrossDomainRequest) {
                             //Create cross domain client context
-                            CrossDomainContext();
-                        } else if (configuration.SPUrl == null) {
+                            crossDomainContext();
+                        } else if (!configuration.SPUrl) {
                             //Create context for App Web
-                            ContextByUrl(utility.GetAppWebUrl());
+                            contextByUrl(utility.GetAppWebUrl());
                         } else {
                             //Create context SPUrl property
-                            ContextByUrl(configuration.SPUrl);
+                            contextByUrl(configuration.SPUrl);
                         }
                     } else {
                         //Create context for sharepoint site where required Js files are available
-                        Current();
+                        current();
                     }
                 };
 
                 return {
-                    get_clientContext: function () {
-                        if (ClientContext == null || ClientContext == "undefined") {
+                    GetClientContext: function () {
+                        if (!clientContext) {
                             //Initialize the client context
-                            Init();
+                            init();
                         }
-                        return ClientContext;
+                        return clientContext;
                     },
-                    get_web: function () {
-                        if (ClientContext == null || ClientContext == "undefined") {
+                    GetWeb: function () {
+                        if (!clientContext) {
                             //Initialize the client context
-                            Init();
+                            init();
                         }
-                        return Web;
+                        return web;
                     }
                 };
             },
-            //JSOM list service
+
             ListServices: function () {
-                //Get the lists collection
-                var Lists = function (context, callback) {
-                    var clientContext = context.get_clientContext();
-                    var web = context.get_web();
+                ///<summary>
+                /// JSOM list service.
+                ///</summary>
+
+                var lists = function (context) {
+                    ///<summary>
+                    /// Get the lists collection.
+                    ///</summary>
+                    /// <param name="context" type="Object">SharePoint Client Context.</param>
+                    /// <returns type="Object">Lists collection</returns>
+
+                    var clientContext = context.GetClientContext();
+                    var web = context.GetWeb();
                     var lists = web.get_lists();
                     clientContext.load(lists, 'Include(Title, Id)');
 
-                    clientContext.executeQueryAsync(
-                        function (sender, args) {
-                            callback(lists);
-                        },
-                        function (sender, args) {
-                            SharePointClient.Logger.LogJSOMException(args);
-                        });
+                    return executeQuery(clientContext, lists);
                 };
 
-                //Get the list by title
-                var ListByTitle = function (context, listTitle, callback) {
-                    var clientContext = context.get_clientContext();
-                    var web = context.get_web();
+                var listByTitle = function (context, listTitle) {
+                    ///<summary>
+                    /// Get the list by title.
+                    ///</summary>
+                    /// <param name="context" type="Object">SharePoint Client Context.</param>
+                    /// <param name="listTitle" type="String">List Name.</param>
+                    /// <returns type="Object"> List </returns>
+
+                    var clientContext = context.GetClientContext();
+                    var web = context.GetWeb();
 
                     var lists = web.get_lists();
-                    list = lists.getByTitle(listTitle);
+                    var list = lists.getByTitle(listTitle);
 
                     clientContext.load(list);
 
-                    clientContext.executeQueryAsync(
-                        function () {
-                            callback(list);
-                        },
-                        function (sender, args) {
-                            SharePointClient.Logger.LogRESTException(args);
-                        });
+                    return executeQuery(clientContext, list);
                 };
 
-                //Get the items by listname
-                var ListItemsByListName = function (context, listTitle, camlQuery, callback) {
+                var listItemsByListName = function (context, listTitle, camlQuery) {
+                    ///<summary>
+                    /// Get the items by listname.
+                    ///</summary>
+                    /// <param name="context" type="Object">SharePoint Client Context.</param>
+                    /// <param name="listTitle" type="String">List Name.</param>
+                    /// <param name="camlQuery" type="Object">CamlQuery object.</param>                    
+                    /// <returns type="Object"> ListItemsCoellction </returns>
 
+                    var run = new SharePointClient.Services.ClientRun();
                     var position = new SP.ListItemCollectionPosition();
                     position.set_pagingInfo("");
                     camlQuery.set_listItemCollectionPosition(position);
 
-                    var itemsCollection = [];
+                    var itemsCollection = null;
 
-                    delegateRequest(context, camlQuery, listTitle, function (d) {
+                    var runBatch = new SharePointClient.Services.ClientRun();
+                    delegateRequest(context, camlQuery, listTitle, runBatch);
 
-                        $.each(d, function (index, value) {
-                            if (Object.prototype.toString.call(value) === '[object Array]') {
-                                $.each(value, function (k, v) {
-                                    itemsCollection.push(v);
-                                });
+                    runBatch.Execute(function (result) {
+                        if (itemsCollection) {
+                            $.each(result, function (index, value) {
+                                if ($.isArray(value)) {
+                                    //Get the previous array collection
+                                    $.each(itemsCollection, function (cIndex, cValue) {
+                                        if ($.isArray(cValue)) {
+                                            $.each(value, function (k, v) {
+                                                cValue.push(v);
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        } else {
+                            itemsCollection = result;
+                        }
+
+                        if (!result.get_listItemCollectionPosition()) {
+                            if (!itemsCollection) {
+                                itemsCollection = new SP.ListItemCollection(context.GetClientContext());
                             }
+                            //Set listitemcollection position
+                            var nextPageInfo = itemsCollection.get_listItemCollectionPosition();
+                            nextPageInfo.set_pagingInfo(result.get_listItemCollectionPosition());
 
-                        });
-
-                        if (d.get_listItemCollectionPosition() == null) {
-                            return callback(itemsCollection);
+                            run.OnSuccess(itemsCollection);
                         }
                     });
+
+                    return run;
                 };
 
-                //Get the list items batch by batch 
-                var ListItemsByBatch = function (context, listTitle, camlQuery, callback) {
+                var listItemsByBatch = function (context, listTitle, camlQuery) {
+                    ///<summary>
+                    /// Get the list items batch by batch.
+                    ///</summary>
+                    /// <param name="context" type="Object">SharePoint Client Context.</param>
+                    /// <param name="listTitle" type="String">List Name.</param>
+                    /// <param name="camlQuery" type="Object">CamlQuery object.</param>                    
+                    /// <returns type="Object"> ListItemsCoellction </returns>
+
+                    var run = new SharePointClient.Services.ClientRun();
 
                     var position = new SP.ListItemCollectionPosition();
                     position.set_pagingInfo("");
                     camlQuery.set_listItemCollectionPosition(position);
 
-                    delegateRequest(context, camlQuery, listTitle, callback);
+                    delegateRequest(context, camlQuery, listTitle, run);
+
+                    return run;
                 };
 
-                //This is the delegate request called recursively when more items to be fetched in batch
-                var delegateRequest = function (context, camlQuery, listTitle, callback) {
-                    var clientContext = context.get_clientContext();
-                    var web = context.get_web();
-                    var listItems = web.get_lists().getByTitle(listTitle).getItems(camlQuery);
-                    clientContext.load(listItems);
+                var delegateRequest = function (context, camlQuery, listTitle, run) {
+                    ///<summary>
+                    /// This is the delegate request called recursively when more items to be fetched in batch.
+                    ///</summary>
+                    /// <param name="context" type="Object">SharePoint Client Context.</param>
+                    /// <param name="listTitle" type="String">List Name.</param>
+                    /// <param name="camlQuery" type="Object">CamlQuery object.</param>                    
+                    /// <returns type="Object"> ListItemsCollection </returns>
+
+                    var clientContext = context.GetClientContext();
+                    var web = context.GetWeb();
+                    var list = web.get_lists().getByTitle(listTitle);
+                    var itemCollection = list.getItems(camlQuery);
+                    clientContext.load(itemCollection);
 
                     clientContext.executeQueryAsync(
                             function () {
-                                callback(listItems);
+                                run.OnSuccess(itemCollection);
 
                                 //Iterate if more items needs to be fetched
-                                if (listItems.get_listItemCollectionPosition()) {
-                                    camlQuery.set_listItemCollectionPosition(listItems.get_listItemCollectionPosition());
-
-                                    delegateRequest(context, camlQuery, listTitle, callback);
-
+                                if (itemCollection.get_listItemCollectionPosition()) {
+                                    camlQuery.set_listItemCollectionPosition(itemCollection.get_listItemCollectionPosition());
+                                    delegateRequest(context, camlQuery, listTitle, run);
                                 } else {
                                     return;
                                 }
-
                             },
                             function (sender, args) {
                                 SharePointClient.Logger.LogJSOMException(args);
                             });
                 };
 
+                var executeQuery = function (clientContext, clientObject) {
+                    ///<summary>
+                    /// Execute query for SharePoint client and returning promise object.
+                    ///</summary>
+                    /// <param name="clientContext" type="Object">SharePoint Client Context.</param>                   
+                    /// <returns type="Object"> loaded object </returns>
+                    var run = new SharePointClient.Services.ClientRun();
+
+                    clientContext.executeQueryAsync(
+                        function (sender, args) {
+                            run.OnSuccess(clientObject);
+                        },
+                        function (sender, args) {
+                            SharePointClient.Logger.LogJSOMException(args);
+                            run.OnError(args);
+                        });
+
+                    return run;
+                };
+
                 return {
-                    GetLists: Lists,
-                    GetListByTitle: ListByTitle,
-                    GetLargeListItemsByListTitle: ListItemsByListName,
-                    GetLargeListItemsByBatch: ListItemsByBatch
+                    GetLists: lists,
+                    GetListByTitle: listByTitle,
+                    GetListItemsByListName: listItemsByListName,
+                    GetListItemsBatchByListName: listItemsByBatch
                 };
             }
         },
+        //#endregion
+
+        //#region REST service
         REST: {
             RESTService: function () {
+                ///<summary>
+                /// REST service class.
+                ///</summary>
+
                 $.support.cors = true;
-                //REST call without Request digest
-                var Ajax = {
-                    Call: function (url, type, data, responseType, requireStringify) {
+
+                var ajax = {
+                    //#region Ajax call without Request digest
+                    call: function (url, type, data, responseType, requireStringify) {
+                        ///<summary>
+                        /// Ajax call.
+                        ///</summary>
+                        /// <param name="url" type="String">Url of service.</param>
+                        /// <param name="type" type="String">Request type.</param>
+                        /// <param name="data" type="Object">Request data.</param>
+                        /// <param name="responseType" type="String">Response type.</param>
+                        /// <param name="requireStringify" type="Boolean">Stringify request data or not.</param>
+                        /// <returns type="Object">response</returns>
                         var call = $.ajax({
                             url: url,
                             type: type,
                             contentType: responseType,
                             data: stringify(data, requireStringify),
-                            headers: GetHeaders(responseType)
+                            headers: getHeaders(responseType)
                         });
                         return (call.then(success, error));
                     }
+                    //#endregion
                 };
-                //REST call with Request digest value
-                var AjaxWithFormDigest = {
-                    Call: function (url, type, data, digestValue, responseType, requireStringify) {
+
+                var ajaxWithFormDigest = {
+                    //#region Ajax call with Request digest value
+                    call: function (url, type, data, digestValue, responseType, requireStringify) {
+                        ///<summary>
+                        /// Ajax call.
+                        ///</summary>
+                        /// <param name="url" type="String">Url of service.</param>
+                        /// <param name="type" type="String">Request type.</param>
+                        /// <param name="data" type="Object">Request data.</param>
+                        /// <param name="digestValue" type="String">Page Digest value for SharePoint.</param>
+                        /// <param name="responseType" type="String">Response type.</param>
+                        /// <param name="requireStringify" type="Boolean">Stringify request data or not.</param>
+                        /// <returns type="Object">response</returns>
                         var call = $.ajax({
                             url: url,
                             type: type,
                             data: stringify(data, requireStringify),
-                            headers: GetHeadersWithDigest(responseType, digestValue)
+                            headers: getHeadersWithDigest(responseType, digestValue)
                         });
                         return (call.then(success, error));
                     }
+                    //#endregion
                 };
-                //REST call for cross domain request
-                var CrossDomainRequest = {
-                    Call: function (url, type, data, responseType, requireStringify) {
+
+                var crossDomainRequest = {
+                    //#region CrossDomain Request
+                    call: function (url, type, data, responseType, requireStringify) {
+                        ///<summary>
+                        /// Ajax call.
+                        ///</summary>
+                        /// <param name="url" type="String">Url of service.</param>
+                        /// <param name="type" type="String">Request type.</param>
+                        /// <param name="data" type="Object">Request data.</param>
+                        /// <param name="responseType" type="String">Response type.</param>
+                        /// <param name="requireStringify" type="Boolean">Stringify request data or not.</param>
+                        /// <returns type="Object">response</returns>
                         var dfd = jQuery.Deferred();
                         var utility = new SharePointClient.Utilities.Utility();
                         var executor = new SP.RequestExecutor(utility.GetQueryStringParameter("SPAppWebUrl"));
@@ -1027,87 +1399,224 @@ var SharePointClient = SharePointClient || {};
 
                         return dfd.promise();
                     }
+                    //#endregion
                 };
-                //Convert JSON format of request data
+
                 var stringify = function (data, requireStringify) {
-                    if (requireStringify)
+                    ///<summary>
+                    /// Convert JSON format of request data.
+                    ///</summary>
+                    /// <param name="data" type="Object">Request data.</param>
+                    /// <param name="requireStringify" type="Boolean">TRUE for JSON stringify, FALSE for not converting.</param>
+                    /// <returns type="Object">Request data</returns>
+                    if (requireStringify) {
                         return JSON.stringify(data);
-                    else
+                    }
+                    else {
                         return data;
+                    }
                 };
-                //Construct request headers
-                var GetHeaders = function (responseType) {
+
+                var getHeaders = function (responseType) {
+                    ///<summary>
+                    /// Construct request headers.
+                    ///</summary>
+                    /// <param name="responseType" type="String">Response type.</param>
+                    /// <returns type="Object">Request Headers object</returns>
                     var headers = {
                         "Accept": responseType
-                    }
+                    };
 
-                    if (SharePointClient.Configurations.AccessToken != null) {
-                        headers["Authorization"] = "Bearer " + SharePointClient.Configurations.AccessToken;
+                    if (SharePointClient.Configurations.AccessToken) {
+                        headers.Authorization = "Bearer " + SharePointClient.Configurations.AccessToken;
                     }
 
                     return headers;
                 };
-                //Construct request headers with requet digest value
-                var GetHeadersWithDigest = function (responseType, digestValue) {
+
+                var getHeadersWithDigest = function (responseType, digestValue) {
+                    ///<summary>
+                    /// Construct request headers with requet digest value.
+                    ///</summary>
+                    /// <param name="responseType" type="String">Response type.</param>
+                    /// <param name="digestValue" type="String">Digest value for SharePoint.</param>
+                    /// <returns type="Object">Request Headers object</returns>
                     var headers = {
                         "Accept": responseType,
                         "X-RequestDigest": digestValue,
                         "Content-Type": SharePointClient.Constants.REST.HTTP.DATA_TYPE.JSON,
-                    }
+                    };
 
-                    if (SharePointClient.Configurations.AccessToken != null) {
-                        headers["Authorization"] = "Bearer " + SharePointClient.Configurations.AccessToken;
+                    if (SharePointClient.Configurations.AccessToken) {
+                        headers.Authorization = "Bearer " + SharePointClient.Configurations.AccessToken;
                     }
 
                     return headers;
                 };
-                //Event handler for Success call
+
                 var success = function (data) {
+                    ///<summary>
+                    /// Success Event handler for Asynchronous calls.
+                    ///</summary>
+                    /// <param name="data" type="Object">Response.</param>
+                    /// <returns type="Object">Response data</returns>
                     return data;
                 };
-                //Event handler for Error call
+
                 var error = function (xhr, errorType, exception) {
+                    ///<summary>
+                    /// Error Event handler for Asynchronous calls.
+                    ///</summary>
+                    /// <param name="xhr" type="Object">Response related object for Error details.</param>
+                    /// <param name="errorType" type="String">Type of exception.</param>
+                    /// <param name="exception" type="String">Exception message.</param>
                     SharePointClient.Logger.LogRESTException("Exception : " + xhr.responseText);
                 };
 
                 return {
-                    Request: Ajax.Call,
-                    RequestWithDigest: AjaxWithFormDigest.Call,
-                    RequestCrossDomain: CrossDomainRequest.Call
+                    Request: ajax.call,
+                    RequestWithDigest: ajaxWithFormDigest.call,
+                    RequestCrossDomain: crossDomainRequest.call
                 };
             },
-            //SharePoint REST ListServices
+
             ListServices: function () {
+                ///<summary>
+                /// SharePoint REST ListServices.
+                ///</summary>
 
                 var utility = new SharePointClient.Utilities.Utility();
                 var constants = SharePointClient.Constants.REST;
                 var Service = SharePointClient.Services.REST.RESTService();
 
-                //Get the lists collection
-                var Lists = function (callBack, responseType) {
+                var lists = function (responseType) {
+                    ///<summary>
+                    /// Get the lists collection.
+                    ///</summary>
+                    /// <param name="responseType" type="String">Response type XML/JSON.</param>
+                    /// <returns type="Object">Lists collection data</returns>
+                    var run = new SharePointClient.Services.ClientRun();
                     var RequestUrl = utility.REST.GetApiUrl() + constants.WEB + "/" + constants.LISTS;
+
                     Service.Request(RequestUrl, constants.HTTP.GET, null, responseType, false).then(
-                        function (data) {
-                            callBack(data);
-                        },
-                        function (exception) {
+                        function (result) {
+                            run.OnSuccess(result);
                         });
+
+                    return run;
                 };
 
-                //Get the list by title
-                var ListByTitle = function (listTitle, responseType) {
+                var listByTitle = function (listTitle, responseType) {
+                    ///<summary>
+                    /// Get the list by title.
+                    ///</summary>
+                    /// <param name="listTitle" type="String">List Name.</param>
+                    /// <param name="responseType" type="String">Response type XML/JSON.</param>
+                    /// <returns type="Object">List</returns>
+                    var run = new SharePointClient.Services.ClientRun();
                     var RequestUrl = utility.REST.GetApiUrl() + constants.WEB + "/" + constants.LISTS + "/getbytitle('" + listTitle + "')";
+
                     Service.Request(RequestUrl, constants.HTTP.GET, null, responseType, false).then(
+                        function (result) {
+                            run.OnSuccess(result);
+                        });
+
+                    return run;
+                };
+
+                var executeCrossDomainRequest = function (requestUrl, requestType, requestData, responseType, run) {
+                    ///<summary>
+                    /// This is the delegate request for cross domain which is called recursively when more items to be fetched in batch.
+                    ///</summary>
+                    /// <param name="requestUrl" type="String">Request Url.</param>
+                    /// <param name="requestType" type="String">Request Type.</param>
+                    /// <param name="requestData" type="Object">Request data.</param>
+                    /// <param name="responseType" type="String">Response type XML/JSON.</param>
+                    /// <returns type="Object">response data</returns>
+                    return Service.RequestCrossDomain(requestUrl, requestType, requestData, responseType, true).then(
                         function (data) {
 
-                            alert(data.d.Title);
-                        },
-                        function (exception) {
+                            //Verify if more items are present or not
+                            var convertResult;
+                            if (responseType === SharePointClient.Constants.REST.HTTP.DATA_TYPE.JSON) {
+                                convertResult = $.parseJSON($.parseJSON(data).d.RenderListData);
+                            } else {
+                                convertResult = $.parseJSON($($.parseXML(data).lastChild).text());
+                            }
+
+                            //call callback function
+                            run.OnSuccess(convertResult);
+
+                            if (convertResult.NextHref) {
+                                //update the Request Url for next batch
+                                var Url = requestUrl;
+                                var queryParam = requestUrl.split("?");
+                                if (queryParam.length === 2) {
+                                    Url = queryParam[0] + convertResult.NextHref;
+                                } else {
+                                    Url = requestUrl + convertResult.NextHref;
+                                }
+
+                                executeCrossDomainRequest(Url, SharePointClient.Constants.REST.HTTP.POST, requestData, responseType, run);
+                            }
+
+                            return convertResult;
+                        }, function (xhr, errorType, exception) {
+                            SharePointClient.Logger.LogRESTException("Exception : " + xhr.responseText);
                         });
                 };
 
-                //Get the items by listname in batch by batch
-                var ListItemsByListName = function (listTitle, camlQuery, responseType, callBack) {
+                var delegateRequest = function (requestUrl, requestType, requestData, digestValue, responseType, run) {
+                    ///<summary>
+                    /// This is the delegate request called recursively when more items to be fetched in batch.
+                    ///</summary>
+                    /// <param name="requestUrl" type="String">Request Url.</param>
+                    /// <param name="requestType" type="String">Request Type.</param>
+                    /// <param name="requestData" type="Object">Request data.</param>
+                    /// <param name="digestValue" type="String">Request Digest value.</param>
+                    /// <param name="responseType" type="String">Response type XML/JSON.</param>
+                    /// <returns type="Object">response data</returns>
+                    return Service.RequestWithDigest(requestUrl, requestType, requestData, digestValue, responseType, true).then(
+                         function (data) {
+
+                             //Verify if more items are present or not
+                             var convertResult, Url = requestUrl, queryParam = requestUrl.split("?");
+                             if (responseType === SharePointClient.Constants.REST.HTTP.DATA_TYPE.JSON) {
+                                 convertResult = JSON.parse(data.d.RenderListData);
+                             } else {
+                                 convertResult = $.parseJSON(data.lastChild.lastChild.data);
+                             }
+
+                             //call callback function
+                             run.OnSuccess(convertResult);
+
+                             if (convertResult.NextHref) {
+                                 //update the Request Url for next batch                                
+                                 if (queryParam.length === 2) {
+                                     Url = queryParam[0] + convertResult.NextHref;
+                                 } else {
+                                     Url = requestUrl + convertResult.NextHref;
+                                 }
+
+                                 delegateRequest(Url, SharePointClient.Constants.REST.HTTP.POST, requestData, digestValue, responseType, run);
+                             }
+
+                             return convertResult;
+                         }, function (xhr, errorType, exception) {
+                             SharePointClient.Logger.LogRESTException("Exception : " + xhr.responseText);
+                         });
+                };
+
+                var listItemsByListName = function (listTitle, camlQuery, responseType) {
+                    ///<summary>
+                    /// Get the items by listname in batch by batch.
+                    ///</summary>
+                    /// <param name="listTitle" type="String">List Name.</param>
+                    /// <param name="camlQuery" type="String">View Xml.</param>
+                    /// <param name="responseType" type="String">Response type XML/JSON.</param>
+                    /// <returns type="Object">ListItems collection data</returns>
+                    var run = new SharePointClient.Services.ClientRun();
+                    var runBatch = new SharePointClient.Services.ClientRun();
 
                     var RequestUrl = utility.REST.GetApiUrl() + constants.WEB + "/" + constants.LISTS + "/getbytitle('" + listTitle + "')/RenderListData";
 
@@ -1117,84 +1626,84 @@ var SharePointClient = SharePointClient || {};
 
                     if (SharePointClient.Configurations.IsCrossDomainRequest) {
                         $.getScript(utility.GetQueryStringParameter("SPHostUrl") + "/_layouts/15/SP.RequestExecutor.js", function () {
-                            ExecuteCrossDomainRequest(RequestUrl, constants.HTTP.POST, requestData, responseType, callBack);
+                            return executeCrossDomainRequest(RequestUrl, constants.HTTP.POST, requestData, responseType, runBatch);
                         });
                     } else {
                         Service.Request(utility.REST.GetRequestDigestUrl(), constants.HTTP.POST, null, constants.HTTP.DATA_TYPE.JSON, false).then(function (data) {
                             var NewDigest = data.d.GetContextWebInformation.FormDigestValue;
-                            delegateRequest(RequestUrl, constants.HTTP.POST, requestData, NewDigest, responseType, callBack);
+                            delegateRequest(RequestUrl, constants.HTTP.POST, requestData, NewDigest, responseType, runBatch);
                         });
                     }
+
+                    var itemsCollection = null;
+                    runBatch.Execute(function (result) {
+                        if (itemsCollection) {
+                            $.each(result, function (index, value) {
+                                if ($.isArray(value)) {
+                                    //Get the previous array collection
+                                    $.each(itemsCollection, function (cIndex, cValue) {
+                                        if ($.isArray(cValue)) {
+                                            $.each(value, function (k, v) {
+                                                cValue.push(v);
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        } else {
+                            itemsCollection = result;
+                        }
+
+                        if (!result.NextHref) {
+                            //Set next item collection query string
+                            itemsCollection.NextHref = result.NextHref;
+                            run.OnSuccess(itemsCollection);
+                        }
+                    });
+
+                    return run;
                 };
 
-                //This is the delegate request for cross domain which is called recursively when more items to be fetched in batch
-                var ExecuteCrossDomainRequest = function (requestUrl, requestType, requestData, responseType, callback) {
+                var listItemsBatchByListName = function (listTitle, camlQuery, responseType) {
+                    ///<summary>
+                    /// Get the items by listname in batch by batch.
+                    ///</summary>
+                    /// <param name="listTitle" type="String">List Name.</param>
+                    /// <param name="camlQuery" type="String">View Xml.</param>
+                    /// <param name="responseType" type="String">Response type XML/JSON.</param>
+                    /// <returns type="Object">ListItems collection data</returns>
 
-                    Service.RequestCrossDomain(requestUrl, requestType, requestData, responseType, true).then(
-                        function (data) {
-                            callback(data);
+                    var run = new SharePointClient.Services.ClientRun();
 
-                            //Verify if more items are present or not
-                            var convertResult;
-                            if (responseType == SharePointClient.Constants.REST.HTTP.DATA_TYPE.JSON) {
-                                convertResult = $.parseJSON($.parseJSON(data).d.RenderListData);
-                            } else {
-                                convertResult = $.parseJSON($($.parseXML(data).lastChild).text());
-                            }
-                            if (typeof (convertResult.NextHref) !== "undefined" && convertResult.NextHref != "") {
-                                //update the Request Url for next batch
-                                var Url = requestUrl;
-                                var queryParam = requestUrl.split("?");
-                                if (queryParam.length == 2) {
-                                    Url = queryParam[0] + convertResult.NextHref
-                                } else {
-                                    Url = requestUrl + convertResult.NextHref;
-                                }
+                    var RequestUrl = utility.REST.GetApiUrl() + constants.WEB + "/" + constants.LISTS + "/getbytitle('" + listTitle + "')/RenderListData";
 
-                                ExecuteCrossDomainRequest(Url, SharePointClient.Constants.REST.HTTP.POST, requestData, responseType, callback);
-                            }
+                    var requestData = {
+                        "viewXml": camlQuery.GetQueryViewXml()
+                    };
 
-                            return convertResult;
+                    if (SharePointClient.Configurations.IsCrossDomainRequest) {
+                        $.getScript(utility.GetQueryStringParameter("SPHostUrl") + "/_layouts/15/SP.RequestExecutor.js", function () {
+                            return executeCrossDomainRequest(RequestUrl, constants.HTTP.POST, requestData, responseType, run);
                         });
-                };
-
-                //This is the delegate request called recursively when more items to be fetched in batch
-                var delegateRequest = function (requestUrl, requestType, requestData, digestValue, responseType, callback) {
-
-                    Service.RequestWithDigest(requestUrl, requestType, requestData, digestValue, responseType, true).then(
-                        function (data) {
-                            callback(data);
-
-                            //Verify if more items are present or not
-                            var convertResult;
-                            if (responseType == SharePointClient.Constants.REST.HTTP.DATA_TYPE.JSON) {
-                                convertResult = JSON.parse(data.d.RenderListData)
-                            } else {
-                                convertResult = $.parseJSON(data.lastChild.lastChild.data);
-                            }
-                            if (typeof (convertResult.NextHref) !== "undefined" && convertResult.NextHref != "") {
-                                //update the Request Url for next batch
-                                var Url = requestUrl;
-                                var queryParam = requestUrl.split("?");
-                                if (queryParam.length == 2) {
-                                    Url = queryParam[0] + convertResult.NextHref
-                                } else {
-                                    Url = requestUrl + convertResult.NextHref;
-                                }
-
-                                delegateRequest(Url, SharePointClient.Constants.REST.HTTP.POST, requestData, digestValue, responseType, callback);
-                            }
-
-                            return convertResult;
+                    } else {
+                        Service.Request(utility.REST.GetRequestDigestUrl(), constants.HTTP.POST, null, constants.HTTP.DATA_TYPE.JSON, false).then(function (data) {
+                            var NewDigest = data.d.GetContextWebInformation.FormDigestValue;
+                            delegateRequest(RequestUrl, constants.HTTP.POST, requestData, NewDigest, responseType, run);
                         });
+                    }
+
+                    return run;
                 };
 
                 return {
-                    GetLists: Lists,
-                    GetListByTitle: ListByTitle,
-                    GetListItemsByListName: ListItemsByListName
+                    GetLists: lists,
+                    GetListByTitle: listByTitle,
+                    GetListItemsByListName: listItemsByListName,
+                    GetListItemsBatchByListName: listItemsBatchByListName
                 };
             }
         }
+        //#endregion
     };
+    //#endregion
 })();
