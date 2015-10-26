@@ -1545,7 +1545,7 @@ var SharePointClient = SharePointClient || {};
                             }
 
                             //call callback function
-                            run.OnSuccess(convertResult);
+                            run.OnSuccess(data);
 
                             if (convertResult.NextHref) {
                                 //update the Request Url for next batch
@@ -1584,11 +1584,11 @@ var SharePointClient = SharePointClient || {};
                              if (responseType === SharePointClient.Constants.REST.HTTP.DATA_TYPE.JSON) {
                                  convertResult = JSON.parse(data.d.RenderListData);
                              } else {
-                                 convertResult = $.parseJSON(data.lastChild.lastChild.data);
+                                 convertResult = $.parseJSON($(data.lastChild).text());
                              }
 
                              //call callback function
-                             run.OnSuccess(convertResult);
+                             run.OnSuccess(data);
 
                              if (convertResult.NextHref) {
                                  //update the Request Url for next batch                                
@@ -1605,6 +1605,46 @@ var SharePointClient = SharePointClient || {};
                          }, function (xhr, errorType, exception) {
                              SharePointClient.Logger.LogRESTException("Exception : " + xhr.responseText);
                          });
+                };
+
+                var formatListCollection = function (dataCollection, responseType) {
+                    ///<summary>
+                    /// Format the collection object to JSON.
+                    ///</summary>
+                    /// <param name="dataCollection" type="String">Response data from the request.</param>
+                    /// <param name="responseType" type="String">Response type XML/JSON.</param>
+                    /// <returns type="Object">ListItems collection data</returns>
+                    var finalFormatteData = null;
+                    if (SharePointClient.Configurations.IsCrossDomainRequest) {
+                        if (responseType === SharePointClient.Constants.REST.HTTP.DATA_TYPE.JSON) {
+                            finalFormatteData = $.parseJSON($.parseJSON(dataCollection).d.RenderListData);
+                        } else {
+                            finalFormatteData = $.parseJSON($($.parseXML(dataCollection).lastChild).text());
+                        }
+                    } else {
+                        if (responseType === SharePointClient.Constants.REST.HTTP.DATA_TYPE.JSON) {
+                            finalFormatteData = JSON.parse(dataCollection.d.RenderListData);
+                        } else {
+                            finalFormatteData = $.parseJSON($(dataCollection.lastChild).text());
+                        }
+                    }
+
+                    return finalFormatteData;
+                };
+
+                var convertRenderListDataToXml = function (jsonData) {
+                    ///<summary>
+                    /// Convert the RenderListData json to Xml Document.
+                    ///</summary>
+                    /// <param name="jsonData" type="Object">JSON object.</param>
+                    /// <returns type="String">Xml document as string</returns>
+                    var xmlString = "<d:RenderListData xmlns:d=\"http://schemas.microsoft.com/ado/2007/08/dataservices\" " +
+                        "xmlns:m=\"http://schemas.microsoft.com/ado/2007/08/dataservices/metadata\" " +
+                        "xmlns:georss=\"http://www.georss.org/georss\" " +
+                        "xmlns:gml=\"http://www.opengis.net/gml\">" + JSON.stringify(jsonData) +
+                        "</d:RenderListData>";
+
+                    return xmlString;
                 };
 
                 var listItemsByListName = function (listTitle, camlQuery, responseType) {
@@ -1637,8 +1677,10 @@ var SharePointClient = SharePointClient || {};
 
                     var itemsCollection = null;
                     runBatch.Execute(function (result) {
+                        //Convert the result to JSON
+                        var modifiedResult = formatListCollection(result, responseType);
                         if (itemsCollection) {
-                            $.each(result, function (index, value) {
+                            $.each(modifiedResult, function (index, value) {
                                 if ($.isArray(value)) {
                                     //Get the previous array collection
                                     $.each(itemsCollection, function (cIndex, cValue) {
@@ -1651,13 +1693,19 @@ var SharePointClient = SharePointClient || {};
                                 }
                             });
                         } else {
-                            itemsCollection = result;
+                            itemsCollection = modifiedResult;
                         }
 
-                        if (!result.NextHref) {
+                        if (!modifiedResult.NextHref) {
                             //Set next item collection query string
-                            itemsCollection.NextHref = result.NextHref;
-                            run.OnSuccess(itemsCollection);
+                            itemsCollection.NextHref = modifiedResult.NextHref;
+
+                            //Convert the final result on basis of response type
+                            var finalResult = itemsCollection;
+                            if (responseType === SharePointClient.Constants.REST.HTTP.DATA_TYPE.XML) {
+                                finalResult = $.parseXML(convertRenderListDataToXml(finalResult));
+                            }
+                            run.OnSuccess(finalResult);
                         }
                     });
 
