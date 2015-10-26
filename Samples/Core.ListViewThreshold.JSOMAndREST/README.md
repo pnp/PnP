@@ -96,16 +96,16 @@ _Connecting to HostWeb from AppWeb_
         //Create Caml object
         var camlConstant = SharePointClient.Constants.CAML_CONSTANT;
         var camlQuery = new SharePointClient.CamlExtension.JSOM.CamlQuery();
-        camlQuery.ViewAttribute(camlConstant.CAML_QUERY_SCOPE.recursiveAll)
+        camlQuery.ViewAttribute(camlConstant.CAML_QUERY_SCOPE.RECURSIVE_ALL)
         .Query("<Where><Geq><FieldRef Name=\"Modified\" /><Value Type=\"DateTime\" IncludeTimeValue=\"TRUE\" StorageTZ=\"TRUE\">2015-08-05T15:50:08</Value></Geq></Where>")
         .ViewFieldsXml("<FieldRef Name='ID'/><FieldRef Name='Title'/>")
-        .QueryThrottleMode(camlConstant.CAML_QUERY_THROTTLE_MODE.override)
+        .QueryThrottleMode(camlConstant.CAML_QUERY_THROTTLE_MODE.OVERRIDE)
         .OrderByIndex()
         .RowLimit(5000);
 
-        var listTitle = "";
-        listServices.GetLargeListItemsByBatch(context, listTitle, camlQuery.BuildQuery(), function (result) {
-            alert(result.get_count());
+        var listTitle = "xyz";
+        listServices.GetListItemsBatchByListName(context, listTitle, camlQuery.BuildQuery()).Execute(function (result)         {
+            //Read all items
         });
 
 ```
@@ -123,34 +123,19 @@ _Connecting to HostWeb from AppWeb_
     //Create Caml object
     var camlConstant = SharePointClient.Constants.CAML_CONSTANT;
     var camlQuery = new SharePointClient.CamlExtension.REST.CamlQuery();
-    camlQuery.SetViewScopeAttribute(camlConstant.CAML_QUERY_SCOPE.recursiveAll)
+    camlQuery.SetViewScopeAttribute(camlConstant.CAML_QUERY_SCOPE.RECURSIVE_ALL)
     .SetViewFieldsXml("<FieldRef Name='ID'/><FieldRef Name='Title'/>")
     .SetQuery("<Where><Geq><FieldRef Name=\"Modified\" /><Value Type=\"DateTime\" IncludeTimeValue=\"TRUE\" StorageTZ=\"TRUE\">2014-08-05T15:50:08</Value></Geq></Where>")
-    .OverrideQueryThrottleMode(camlConstant.CAML_QUERY_THROTTLE_MODE.override)
+    .OverrideQueryThrottleMode(camlConstant.CAML_QUERY_THROTTLE_MODE.OVERRIDE)
     .OverrideOrderByIndex()
     .SetRowLimit(5000);
 
-    var listTitle = "";
+    var listTitle = "xyz";
     var responseType = SharePointClient.Constants.REST.HTTP.DATA_TYPE.JSON;
-    listServices.GetListItemsByListName(listTitle, camlQuery.BuildQuery(), responseType,
-        function (result) {
-            var finalResult;
-            if (responseType == SharePointClient.Constants.REST.HTTP.DATA_TYPE.JSON) {
-                if (!SharePointClient.Configurations.IsCrossDomainRequest) {
-                    finalResult = $.parseJSON(result.d.RenderListData);
-                } else {
-                    finalResult = $.parseJSON($.parseJSON(result).d.RenderListData);
-                }
-
-            } else {
-                finalResult = $.parseJSON($($.parseXML(result).lastChild).text());
-            }
-
-            alert(finalResult.Row.length);
-            var str = "";
-            $.each(finalResult.Row, function (index, value) {
-                str += value.ID + "/" + value.Title + ";";
-            });
-            alert(str);
-        });
+    
+    //Get All list items batch by list name
+    listServices.GetListItemsBatchByListName(listTitle, camlQuery.BuildQuery(), responseType).Execute(
+    function (result) {
+        //logic for working with returned result set
+    });
 ```
