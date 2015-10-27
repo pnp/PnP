@@ -76,8 +76,6 @@ _Connecting to HostWeb from AppWeb_
 
 
 
-
-
 ### Using SharePointClient Js for JSOM ###
 
 ```javascript
@@ -104,10 +102,27 @@ _Connecting to HostWeb from AppWeb_
         .RowLimit(5000);
 
         var listTitle = "xyz";
+        
+        //Get All list items batch by list name
         listServices.GetListItemsBatchByListName(context, listTitle, camlQuery.BuildQuery()).Execute(function (result)         {
             //Read all items
         });
+        
+        //Get All list items by list name
+        listServices.GetListItemsByListName(context, listTitle, camlQuery.BuildQuery()).Execute(function (result) {
+            //Read all items
+        });
+        
+        //Get Lists Collection
+        listServices.GetLists(context).Execute(function () {
+            //Read lists collection
+        });
 
+        //Get List
+        listServices.GetListByTitle(context, listTitle).Execute(function () {
+            //Read list
+        });
+});
 ```
 ### Using SharePointClient Js for REST ###
 
@@ -138,4 +153,20 @@ _Connecting to HostWeb from AppWeb_
     function (result) {
         //logic for working with returned result set
     });
+    
+    //Get All list items by list name
+    listServices.GetListItemsByListName(listTitle, camlQuery.BuildQuery(), responseType).Execute(function (result) {
+        //logic for working with returned result set
+    });
+    
+    //Get Lists Collection
+    listServices.GetLists(responseType).Execute(function (result) {
+        //Read lists collection
+    });
+    
+    //Get List
+    listServices.GetListByTitle(listTitle,responseType).Execute(function (result) {
+        //Read list
+    });
+    
 ```
