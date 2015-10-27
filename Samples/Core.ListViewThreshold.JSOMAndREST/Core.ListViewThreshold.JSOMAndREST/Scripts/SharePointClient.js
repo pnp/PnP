@@ -1704,6 +1704,14 @@ var SharePointClient = SharePointClient || {};
                             var finalResult = itemsCollection;
                             if (responseType === SharePointClient.Constants.REST.HTTP.DATA_TYPE.XML) {
                                 finalResult = $.parseXML(convertRenderListDataToXml(finalResult));
+                            } else {
+                                var jsonString = {
+                                    d: {
+                                        RenderListData: JSON.stringify(finalResult)
+                                    }
+                                };
+
+                                finalResult = jsonString;
                             }
                             run.OnSuccess(finalResult);
                         }
