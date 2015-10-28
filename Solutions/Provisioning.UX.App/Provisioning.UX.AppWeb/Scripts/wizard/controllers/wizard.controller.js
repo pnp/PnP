@@ -36,10 +36,7 @@
                                  function () {
                                      $scope.spHostWebUrl = $utilservice.spHostUrl();
                                      $scope.spAppWebUrl = $utilservice.spAppWebUrl();
-
                                      $scope.getCurrentUser();
-                                     //$log.info('Current user data retrieved');
-
                                  }
                             );
                         }
@@ -81,18 +78,14 @@
                 }, function () {
                     $log.info('Modal dismissed at: ' + new Date());
                 });
-
             };
-
         }
                
-               
-
         $scope.getCurrentUser = function () {
             var executor = new SP.RequestExecutor($scope.spAppWebUrl);
             executor.executeAsync(
                    {
-                       url: $scope.spAppWebUrl + "/_api/web/currentuser",
+                       url: $scope.spAppWebUrl + "/_api/SP.AppContextSite(@t)/web/currentUser?@t='" + $scope.spHostWebUrl + "'",
                        method: "GET",
                        headers:
                        {
@@ -121,17 +114,10 @@
             }
             else {
                 $.when($SharePointProvisioningService.getSiteRequestsByOwners(request)).done(function (data) {
-                    if (data != null) {
-                        if (data.success == true) {
-                            vm.existingRequests = data.requests;
-                            logSuccess('Retrieved user request history');
-                        }
-                        else {
-                            $scope.existingRequests[0] = 'No existing site requests exist';
-                            log('No existing site requests');
-                        }
+                    if(data != null ){
+                        vm.existingRequests = data;
+                        logSuccess('Retrieved user request history');
                     }
-
                 }).fail(function (err) {
                     console.info(JSON.stringify(err));
                 });

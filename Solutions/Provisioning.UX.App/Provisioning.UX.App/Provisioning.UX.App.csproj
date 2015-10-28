@@ -10,19 +10,19 @@
     <RootNamespace>Provisioning.UX.App</RootNamespace>
     <AssemblyName>Provisioning.UX.App</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetOfficeVersion>16.0</TargetOfficeVersion>
+    <TargetOfficeVersion>15.0</TargetOfficeVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
-    <MinimumOfficeToolsVersion>12.1</MinimumOfficeToolsVersion>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+    <MinimumOfficeToolsVersion>11.1</MinimumOfficeToolsVersion>
     <IncludeAssemblyInPackage>False</IncludeAssemblyInPackage>
     <ProjectMode>SharePointApp</ProjectMode>
-    <AppFeaturePartId>{5ee6f2fe-4cda-4075-a8ae-b8855f8c62bc}</AppFeaturePartId>
-    <WspPartId>{98014fdf-c670-40d8-88b7-3fd0a820a5a1}</WspPartId>
-    <WorkflowPartId>{b43554e6-900f-4386-8377-0b6b2bc9b69c}</WorkflowPartId>
-    <CspkgPartId>{3cce3953-6db8-4f1b-8075-28d263b24187}</CspkgPartId>
-    <SqlPackagePartId>{5ad2eb3a-eb10-4f46-a1a7-313def28669c}</SqlPackagePartId>
-    <ActivePublishProfile>spsiteprov</ActivePublishProfile>
+    <AppFeaturePartId>{3ed6f04e-1073-43b2-b6ee-15bb1e1c0dcb}</AppFeaturePartId>
+    <WspPartId>{aff606ca-9fc3-4ea6-8711-b37d9dde5cb7}</WspPartId>
+    <WorkflowPartId>{5a5b75a7-80a3-4d58-a873-a950bce85085}</WorkflowPartId>
+    <CspkgPartId>{e4521710-5487-45c8-96aa-841c42635037}</CspkgPartId>
+    <SqlPackagePartId>{8d53d0b6-4db2-410d-9548-5344a913b327}</SqlPackagePartId>
+    <ActivePublishProfile>wwaz-pnp-provisioning - Web Deploy</ActivePublishProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,17 +44,17 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="PlaceholderModule\AppIcon.png">
+    <Content Include="AppIcon.png">
       <OpcRelationship>manifest-icon</OpcRelationship>
     </Content>
-    <Content Include="Features\PlaceholderFeature\PlaceholderFeature.Template.xml">
-      <DependentUpon>PlaceholderFeature.feature</DependentUpon>
+    <Content Include="DummyModule\Elements.xml" />
+    <Content Include="DummyModule\Sample.txt" />
+    <Content Include="Features\Feature1\Feature1.Template.xml">
+      <DependentUpon>Feature1.feature</DependentUpon>
     </Content>
     <Content Include="Package\Package.Template.xml">
       <DependentUpon>Package.package</DependentUpon>
     </Content>
-    <Content Include="PlaceholderModule\Elements.xml" />
-    <Content Include="PlaceholderModule\Sample.txt" />
   </ItemGroup>
   <ItemGroup>
     <AppManifestFile Include="AppManifest.xml">
@@ -63,7 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Provisioning.UX.AppWeb\Provisioning.UX.AppWeb.csproj">
-      <Project>{081D660C-E872-46BF-B2CD-DD0A86A636EC}</Project>
+      <Project>{A9BE9692-EA2B-4271-9A79-E656355F1A8C}</Project>
       <Name>Provisioning.UX.AppWeb</Name>
       <Private>True</Private>
       <RoleType>Web</RoleType>
@@ -74,14 +74,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Features\PlaceholderFeature\PlaceholderFeature.feature">
-      <FeatureId>{c2fd04ee-17b5-46af-9e42-5f392d12a9e0}</FeatureId>
+    <None Include="DummyModule\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{b3246b4e-d245-4c13-b7fc-d5fd43eab4ab}</SharePointProjectItemId>
+    </None>
+    <None Include="Features\Feature1\Feature1.feature">
+      <FeatureId>{2858e863-04b4-442b-851d-d0ad760fdf69}</FeatureId>
     </None>
     <None Include="Package\Package.package">
-      <PackageId>{693195b7-1cbc-4cc4-99d4-6fbab6d04362}</PackageId>
-    </None>
-    <None Include="PlaceholderModule\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{4e1a1863-599d-4364-a865-4e6b0d35fd90}</SharePointProjectItemId>
+      <PackageId>{98940e2b-96a8-473f-ab9b-615f0f45fe24}</PackageId>
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -147,31 +147,31 @@
   <data name="ExternalSharing_NotSupported" xml:space="preserve">
     <value>External Sharing is not supported. Site Url {0}</value>
   </data>
-  <data name="ExternalSharing_Successfull" xml:space="preserve">
+  <data name="ExternalSharing_Successful" xml:space="preserve">
     <value>Enabled External Sharing on Site Url {0}</value>
   </data>
   <data name="FileConnectorBase_Exception" xml:space="preserve">
     <value>There was an error loading Provisioning Connector. Exception {0}"</value>
   </data>
   <data name="SiteCreation_Creation_Failure" xml:space="preserve">
-    <value>An Error occured occured while creatingt the site collection {0}. The Error is {1}. Inner Exception {2}</value>
+    <value>An Error occured occured while creating the site collection {0}. The Error is {1}. Inner Exception {2}</value>
   </data>
   <data name="SiteCreation_Creation_Starting" xml:space="preserve">
     <value>Creating Site Collection with url {0}</value>
   </data>
-  <data name="SiteCreation_Creation_Successfull" xml:space="preserve">
+  <data name="SiteCreation_Creation_Successful" xml:space="preserve">
     <value>Site Collection {0} created:</value>
   </data>
-  <data name="SiteRequestNew_Successfull" xml:space="preserve">
+  <data name="SiteRequestNew_Successful" xml:space="preserve">
     <value>New Site Request Submitted for URL {0} successfull</value>
   </data>
-  <data name="SiteRequestUpdate_Successfull" xml:space="preserve">
+  <data name="SiteRequestUpdate_Successful" xml:space="preserve">
     <value>Updating Site Request Status for URL {0} to status {1}</value>
   </data>
   <data name="SiteRequest_List_Creation_Error" xml:space="preserve">
     <value>Unable to create site request list {0} in Site Collection {1}. The Exception is {2}</value>
   </data>
-  <data name="SiteRequest_List_Creation_SuccessFull" xml:space="preserve">
+  <data name="SiteRequest_List_Creation_Successful" xml:space="preserve">
     <value>Created site request list {0} in Site Collection {1}</value>
   </data>
   <data name="SiteTemplate_Factory_Created_Instance" xml:space="preserve">

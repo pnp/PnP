@@ -1,16 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OD4B.NavLinksInjection", "OD4B.NavLinksInjection\OD4B.NavLinksInjection.csproj", "{303A7F07-C187-4D83-AC5D-B9F47F41F2E1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OD4B.NavLinksInjectionWeb", "OD4B.NavLinksInjectionWeb\OD4B.NavLinksInjectionWeb.csproj", "{5F4794E6-6457-47BC-9A5F-725757366307}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{D7A6DF11-F5D5-4465-B6B6-0756DB0BC7F1}"
 	ProjectSection(SolutionItems) = preProject
 		readme.md = readme.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OD4B.NavLinksInjection", "OD4B.NavLinksInjection\OD4B.NavLinksInjection.csproj", "{303A7F07-C187-4D83-AC5D-B9F47F41F2E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OD4B.NavLinksInjectionWeb", "OD4B.NavLinksInjectionWeb\OD4B.NavLinksInjectionWeb.csproj", "{5F4794E6-6457-47BC-9A5F-725757366307}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 namespace Provisioning.Common.Data.Templates
 {
     /// <summary>
-    /// Internal class for Template Conversions
+    /// Internal class for Handling Tempalte Conversions
     /// </summary>
     internal class TemplateConversion
     {
-        internal ProvisioningTemplate HandleProvisioningTemplate(ProvisioningTemplate provisioningTemplate, SiteRequestInformation siteRequest)
+        internal ProvisioningTemplate HandleProvisioningTemplate(ProvisioningTemplate provisioningTemplate, SiteInformation siteRequest)
         {
             this.HandleExternalSharing(provisioningTemplate, siteRequest);
             this.HandleSitePolicy(provisioningTemplate, siteRequest);
@@ -22,9 +22,8 @@ namespace Provisioning.Common.Data.Templates
             this.HandleCustomActions(provisioningTemplate, siteRequest);
             return provisioningTemplate;
         }
-
       
-        private void HandleExternalSharing(ProvisioningTemplate provisioningTemplate, SiteRequestInformation siteRequest)
+        private void HandleExternalSharing(ProvisioningTemplate provisioningTemplate, SiteInformation siteRequest)
         {
             //EXTERNAL SHARING CUSTOM ACTION MUST BE DEFINED IN TEMPLATE. IF THE SITE REQUEST DOES NOT HAVE EXTERNAL SHARING ENABLE WE WILL REMOVE THE CUSTOM ACCTION
             if(!siteRequest.EnableExternalSharing)
@@ -40,14 +39,14 @@ namespace Provisioning.Common.Data.Templates
                 }
             }
         }
-        private void HandleSitePolicy(ProvisioningTemplate provisioningTemplate, SiteRequestInformation siteRequest)
+        private void HandleSitePolicy(ProvisioningTemplate provisioningTemplate, SiteInformation siteRequest)
         {
             if(!string.IsNullOrWhiteSpace(siteRequest.SitePolicy))
             {
                 provisioningTemplate.SitePolicy = siteRequest.SitePolicy;
             }
         }
-        private void HandleAdditionalAdministrators(ProvisioningTemplate provisioningTemplate, SiteRequestInformation siteRequest)
+        private void HandleAdditionalAdministrators(ProvisioningTemplate provisioningTemplate, SiteInformation siteRequest)
         {
            foreach(var _Admin in siteRequest.AdditionalAdministrators)
            {
@@ -56,24 +55,27 @@ namespace Provisioning.Common.Data.Templates
                provisioningTemplate.Security.AdditionalAdministrators.Add(_user);
            }
         }
-        private void HandlePropertyBagEntries(ProvisioningTemplate provisioningTemplate, SiteRequestInformation siteRequest)
+        private void HandlePropertyBagEntries(ProvisioningTemplate provisioningTemplate, SiteInformation siteRequest)
         {
-            Dictionary<string, string> _props = JsonConvert.DeserializeObject<Dictionary<string, string>>(siteRequest.PropertiesJSON);
-
-            foreach(var prop in _props)
-            {
-                PropertyBagEntry _pb = new PropertyBagEntry();
-                _pb.Key = prop.Key;
-                _pb.Value = prop.Value;
-                provisioningTemplate.PropertyBagEntries.Add(_pb);
+            Dictionary<string, string> _props = JsonConvert.DeserializeObject<Dictionary<string, string>>(siteRequest.SiteMetadataJson);
+            if(_props != null)
+            { 
+                foreach(var prop in _props)
+                {
+                    PropertyBagEntry _pb = new PropertyBagEntry();
+                    _pb.Key = prop.Key;
+                    _pb.Value = prop.Value;
+                    provisioningTemplate.PropertyBagEntries.Add(_pb);
+                }
             }
         }
+
         /// <summary>
         /// Member to handle the Url of custom actions
         /// </summary>
         /// <param name="provisioningTemplate"></param>
         /// <param name="siteRequest"></param>
-        private void HandleCustomActions(ProvisioningTemplate provisioningTemplate, SiteRequestInformation siteRequest)
+        private void HandleCustomActions(ProvisioningTemplate provisioningTemplate, SiteInformation siteRequest)
         {
             if (provisioningTemplate.CustomActions != null)
             {

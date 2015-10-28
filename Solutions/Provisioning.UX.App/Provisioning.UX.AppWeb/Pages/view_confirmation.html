@@ -1,57 +1,67 @@
 ﻿<div class="modal-right-heading">
-    <h1>Confirmation</h1>
+    <h1>{{ 'CONFIRMATION' | translate }}</h1>
 </div>
-
 <div class="modal-right-body">
-
-    <p>Please review your site request information for accuracy.</p>
-    <p>Click the back arrow to make changes. To proceed, click the check mark.</p>
-
+   <span ng-bind-html="'CONFIRMATION_TEXT' | translate"></span>
     <table class="table table-striped">
         <tr>
-            <th><a href="#" ng-click="setCurrentStep(5)">Site URL</a></th>
-            <td>{{siteConfiguration.details.url}}</td>
+            <th><a href="#" ng-click="setCurrentStep(5)">{{ 'SITE_URL' | translate }}</a></th>
+            <td>{{siteConfiguration.details.url}}<span ng-show="submitDenied && siteConfiguration.details.url === undefined" class="confirm-error-message" ng-click="setCurrentStep(5)">{{ 'SITE_URL_ERR' | translate }}</span></td>
         </tr>
         <tr>
-            <th><a href="#" ng-click="setCurrentStep(6)">Primary Owner</a></th>
-            <td>{{siteConfiguration.primaryOwner}}</td>
+            <th><a href="#" ng-click="setCurrentStep(6)">{{ 'PRIMARY_OWNER' | translate }}</a></th>
+            <td>{{siteConfiguration.primaryOwner}}<span ng-show="submitDenied && siteConfiguration.primaryOwner === undefined" class="confirm-error-message" ng-click="setCurrentStep(6)">{{ 'PRIMARY_OWNER_ERR' | translate }}</span></td>
         </tr>
         <tr>
-            <th><a href="#" ng-click="setCurrentStep(6)">Secondary Owner</a></th>
+            <th><a href="#" ng-click="setCurrentStep(6)">{{ 'SECONDARY_OWNER' | translate }}</a></th>
             <td>{{siteConfiguration.secondaryOwners}}</td>
-        </tr>        
-        <tr>
-            <th><a href="#" ng-click="setCurrentStep(4)">Site Template</a></th>
-            <td>{{siteConfiguration.template.title}}</td>
         </tr>
         <tr>
-            <th><a href="#" ng-click="setCurrentStep(5)">Region</a></th>
-            <td>{{siteConfiguration.properties.region}}</td>
+            <th><a href="#" ng-click="setCurrentStep(4)">{{ 'SITE_TEMPLATE' | translate }}</a></th>
+            <td>{{siteConfiguration.template.title}}<span ng-show="submitDenied && siteConfiguration.template.title === undefined" class="confirm-error-message" ng-click="setCurrentStep(4)">{{ 'SITE_TEMPLATE_ERR' | translate }}</span></td>
+        </tr>
+        <tr ng-show="siteConfiguration.externalSharingEnabled">
+            <th><a href="#" ng-click="setCurrentStep(5)">{{ 'EXTERNAL_SHARING' | translate }}</a></th>
+            <td>{{siteConfiguration.externalSharing | yesNo }}</td>
         </tr>
         <tr>
-            <th><a href="#" ng-click="setCurrentStep(5)">Division</a></th>
-            <td>{{siteConfiguration.properties.division}}</td>
+            <th><a href="#" ng-click="setCurrentStep(5)">{{ 'DETAILS_REGION' | translate }}</a></th>
+            <td>{{siteConfiguration.properties.region}}<span ng-show="submitDenied && siteConfiguration.properties.region === undefined" class="confirm-error-message" ng-click="setCurrentStep(5)">{{ 'DETAILS_REGION_ERR' | translate }}</span></td>
         </tr>
         <tr>
-            <th><a href="#" ng-click="setCurrentStep(5)">Function</a></th>
-            <td>{{siteConfiguration.properties.function}}</td>
+            <th><a href="#" ng-click="setCurrentStep(5)">{{ 'DETAILS_DIVISION' | translate }}</a></th>
+            <td>{{siteConfiguration.properties.division}}<span ng-show="submitDenied && siteConfiguration.properties.division === undefined" class="confirm-error-message" ng-click="setCurrentStep(5)">{{ 'DETAILS_DIVISION_ERR' | translate }}</span></td>
         </tr>
         <tr>
-            <th><a href="#" ng-click="setCurrentStep(5)">Language</a></th>
-            <td>{{siteConfiguration.language}}</td>
+            <th><a href="#" ng-click="setCurrentStep(5)">{{ 'DETAILS_FUNCTION' | translate }}</a></th>
+            <td>{{siteConfiguration.properties.function}}<span ng-show="submitDenied && siteConfiguration.properties.function === undefined" class="confirm-error-message" ng-click="setCurrentStep(5)">{{ 'DETAILS_FUNCTION_ERR' | translate }}</span></td>
         </tr>
         <tr>
-            <th><a href="#" ng-click="setCurrentStep(5)">Time Zone</a></th>
-            <td>{{siteConfiguration.timezone}}</td>
+            <th><a href="#" ng-click="setCurrentStep(5)">{{ 'DETAILS_LANGUAGE' | translate }}</a></th>
+            <td>{{siteConfiguration.language}}<span ng-show="submitDenied && siteConfiguration.language === undefined" class="confirm-error-message" ng-click="setCurrentStep(5)">{{ 'DETAILS_LANGUAGE_ERR' | translate }}</span></td>
         </tr>
         <tr>
-            <th><a href="#" ng-click="setCurrentStep(7)">Site Classification</a></th>
-            <td>{{siteConfiguration.privacy.classification}}</td>
+            <th><a href="#" ng-click="setCurrentStep(5)">{{ 'DETAILS_TIMEZONE' | translate }}</a></th>
+            <td>{{siteConfiguration.timezone}}<span ng-show="submitDenied && siteConfiguration.timezone === undefined" class="confirm-error-message" ng-click="setCurrentStep(5)">{{ 'DETAILS_TIMEZONE_ERR' | translate }}</span></td>
+        </tr>
+        <tr>
+            <th><a href="#" ng-click="setCurrentStep(7)">{{ 'SITE_CLASSIFICATION' | translate }}</a></th>
+            <td>{{siteConfiguration.privacy.classification}}<span ng-show="submitDenied && siteConfiguration.privacy.classification === undefined" class="confirm-error-message" ng-click="setCurrentStep(7)">{{ 'SITE_CLASSIFICATION_ERR' | translate }}</span></td>
+        </tr>
+        <tr>
+            <th><a href="#" ng-click="setCurrentStep(3)">{{ 'BUSINESS_PURPOSE' | translate }}</a></th>
+            <td>{{siteConfiguration.purpose.description}}<span ng-show="submitDenied && siteConfiguration.purpose.description === undefined" class="confirm-error-message" ng-click="setCurrentStep(3)">{{ 'BUSINESS_PURPOSE_ERR' | translate }}</span></td>
+        </tr>
+        <tr>
+            <th><a href="#" ng-click="setCurrentStep(2)">{{ 'RESPONSIBILITIES_ACCEPTED' | translate }}</a></th>
+            <td>
+                <span ng-hide="(submitDenied && siteConfiguration.responsibilities.read === undefined) || (submitDenied && siteConfiguration.responsibilities.read === false)">{{siteConfiguration.responsibilities.read | yesNo}}</span>
+                <span ng-show="(submitDenied && siteConfiguration.responsibilities.read === undefined) || (submitDenied && siteConfiguration.responsibilities.read === false)" class="confirm-error-message" ng-click="setCurrentStep(2)">{{ 'RESPONSIBILITIES_ACCEPTED_ERR' | translate }}</span>
+            </td>
         </tr>
     </table>
-
-    <p>What happens next?</p>
+    <p>{{ 'WHAT_HAPPENS_NEXT' | translate }}</p>
     <ul>
-        <li>You will receive an email notification once we have created your site.</li>
+        <li>{{ 'WHAT_HAPPENS_NEXT_1' | translate }}</li>
     </ul>
 </div>

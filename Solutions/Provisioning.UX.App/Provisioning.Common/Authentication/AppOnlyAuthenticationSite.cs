@@ -124,7 +124,7 @@ namespace Provisioning.Common.Authentication
         /// <returns></returns>
         public ClientContext GetAuthenticatedContext()
         {
-            EnsureToken();
+            EnsureToken(); 
             var ctx = TokenHelper.GetClientContextWithAccessToken(SiteUrl, AccessToken);
             return ctx;
         }

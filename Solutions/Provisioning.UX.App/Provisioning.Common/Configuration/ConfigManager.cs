@@ -37,25 +37,15 @@ namespace Provisioning.Common.Configuration
         {
             string _returnValue = string.Empty;
      
-            try
+            if (ConfigurationManager.AppSettings.AllKeys.Contains(key))
             {
-                //    Log.Debug(LOGGING_SOURCE, PCResources.AppSettings_GetKey, key);
-                if (ConfigurationManager.AppSettings.AllKeys.Contains(key))
-                {
-                    _returnValue = ConfigurationManager.AppSettings.Get(key).HandleEnvironmentToken();
-                }
-                else
-                {
-                    Log.Warning("Provisioning.Common.Configuration.GetAppSettingsKey", PCResources.AppSettings_KeyNotFound, key);
-                }
-                return _returnValue;
+                _returnValue = ConfigurationManager.AppSettings.Get(key).HandleEnvironmentToken();
             }
-            catch (ConfigurationErrorsException ex)
+            else
             {
-                Log.Fatal("Provisioning.Common.Configuration.GetAppSettingsKey", "Error Occured while reading the configuration file. The Error is {0}", ex);
-                throw;
+                Log.Warning("Provisioning.Common.Configuration.GetAppSettingsKey", PCResources.AppSettings_KeyNotFound, key);
             }
+            return _returnValue;
         } 
-      
     }
 }

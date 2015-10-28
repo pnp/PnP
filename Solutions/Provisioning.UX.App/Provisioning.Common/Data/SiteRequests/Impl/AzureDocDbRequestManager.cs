@@ -39,9 +39,9 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         }
 
         #region ISiteRequestManager Members
-        public ICollection<SiteRequestInformation> GetOwnerRequests(string email)
+        public ICollection<SiteInformation> GetOwnerRequests(string email)
         {
-            List<SiteRequestInformation> _returnResults = new List<SiteRequestInformation>();
+            List<SiteInformation> _returnResults = new List<SiteInformation>();
             UsingContext(client =>
             {
                 try
@@ -64,17 +64,17 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 catch (DocumentClientException de)
                 {
                     Exception baseException = de.GetBaseException();
-                    Log.Error("AzureDocDbRequestManager", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
+                    Log.Error("AzureDocDbRequestManager.GetOwnerRequests", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
                 }
                 catch (Exception ex)
                 {
                     Exception baseException = ex.GetBaseException();
-                    Log.Error("AzureDocDbRequestManager", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
+                    Log.Error("AzureDocDbRequestManager.GetOwnerRequests", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
                 }
             });
             return _returnResults;
         }
-        public void CreateNewSiteRequest(SiteRequestInformation siteRequest)
+        public void CreateNewSiteRequest(SiteInformation siteRequest)
         {
             siteRequest.EnumStatus = SiteRequestStatus.New;
             UsingContext(client =>
@@ -104,19 +104,19 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 catch (DocumentClientException de)
                 {
                     Exception baseException = de.GetBaseException();
-                    Log.Error("AzureDocDbRequestManager", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
+                    Log.Error("AzureDocDbRequestManager.CreateNewSiteRequest", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
                 }
                 catch (Exception ex)
                 {
                     Exception baseException = ex.GetBaseException();
-                    Log.Error("AzureDocDbRequestManager", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
+                    Log.Error("AzureDocDbRequestManager.CreateNewSiteRequest", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
                 }
              });
         }
       
-        public SiteRequestInformation GetSiteRequestByUrl(string url)
+        public SiteInformation GetSiteRequestByUrl(string url)
         {
-            SiteRequestInformation _returnResult = null;
+            SiteInformation _returnResult = null;
             UsingContext(client =>
             {
                 try
@@ -139,20 +139,20 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 catch (DocumentClientException de)
                 {
                     Exception baseException = de.GetBaseException();
-                    Log.Error("AzureDocDbRequestManager", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
+                    Log.Error("AzureDocDbRequestManager.GetSiteRequestByUrl", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
                 }
                 catch (Exception ex)
                 {
                     Exception baseException = ex.GetBaseException();
-                    Log.Error("AzureDocDbRequestManager", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
+                    Log.Error("AzureDocDbRequestManager.GetSiteRequestByUrl", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
                 }
             });
             return _returnResult;
         }
 
-        public ICollection<SiteRequestInformation> GetNewRequests()
+        public ICollection<SiteInformation> GetNewRequests()
         {
-            List<SiteRequestInformation> _returnResults = new List<SiteRequestInformation>();
+            List<SiteInformation> _returnResults = new List<SiteInformation>();
             UsingContext(client =>
             {
                 try
@@ -175,20 +175,20 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 catch (DocumentClientException de)
                 {
                     Exception baseException = de.GetBaseException();
-                    Log.Error("AzureDocDbRequestManager", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
+                    Log.Error("AzureDocDbRequestManager.GetNewRequests", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
                 }
                 catch (Exception ex)
                 {
                     Exception baseException = ex.GetBaseException();
-                    Log.Error("AzureDocDbRequestManager", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
+                    Log.Error("AzureDocDbRequestManager.GetNewRequests", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
                 }
             });
             return _returnResults;
         }
 
-        public ICollection<SiteRequestInformation> GetApprovedRequests()
+        public ICollection<SiteInformation> GetApprovedRequests()
         {
-            List<SiteRequestInformation> _returnResults = new List<SiteRequestInformation>();
+            List<SiteInformation> _returnResults = new List<SiteInformation>();
             UsingContext(client =>
             {
                 try
@@ -211,12 +211,12 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 catch (DocumentClientException de)
                 {
                     Exception baseException = de.GetBaseException();
-                    Log.Error("AzureDocDbRequestManager", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
+                    Log.Error("AzureDocDbRequestManager.GetApprovedRequests", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
                 }
                 catch (Exception ex)
                 {
                     Exception baseException = ex.GetBaseException();
-                    Log.Error("AzureDocDbRequestManager", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
+                    Log.Error("AzureDocDbRequestManager.GetApprovedRequests", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
                 }
             });
             return _returnResults;
@@ -224,7 +224,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
 
         public bool DoesSiteRequestExist(string url)
         {
-            SiteRequestInformation _siteRequest = null;
+            SiteInformation _siteRequest = null;
             bool _returnResult = false;
 
             UsingContext(client =>
@@ -258,12 +258,12 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 catch (DocumentClientException de)
                 {
                     Exception baseException = de.GetBaseException();
-                    Log.Error("AzureDocDbRequestManager", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
+                    Log.Error("AzureDocDbRequestManager.DoesSiteRequestExist", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
                 }
                 catch (Exception ex)
                 {
                     Exception baseException = ex.GetBaseException();
-                    Log.Error("AzureDocDbRequestManager", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
+                    Log.Error("AzureDocDbRequestManager.DoesSiteRequestExist", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
                 }
             });
             return _returnResult;
@@ -303,12 +303,12 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 catch (DocumentClientException de)
                 {
                     Exception baseException = de.GetBaseException();
-                    Log.Error("AzureDocDbRequestManager", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
+                    Log.Error("AzureDocDbRequestManager.UpdateRequestStatus", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
                 }
                 catch (Exception ex)
                 {
                     Exception baseException = ex.GetBaseException();
-                    Log.Error("AzureDocDbRequestManager", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
+                    Log.Error("AzureDocDbRequestManager.UpdateRequestStatus", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
                 }
             });
         }
@@ -329,7 +329,6 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             var dict = connectionProps
                  .Select(x => x.Split('='))
                  .ToDictionary(i => i[0], i => i[1]);
-
             return dict;
         }
 
@@ -342,13 +341,12 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         /// <param name="status"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        private Document UpdateSiteRequestStatusByUrl(DocumentClient client, string selfLink, SiteRequestInformation request, SiteRequestStatus status, string message)
+        private Document UpdateSiteRequestStatusByUrl(DocumentClient client, string selfLink, SiteInformation request, SiteRequestStatus status, string message)
         {
-
-            dynamic requestDocument = client.CreateDocumentQuery<Document>(selfLink).Where(d => d.Id == request.Id).AsEnumerable().FirstOrDefault();
-            Document _d = requestDocument; //Cast to Document to get the Selflink property
+            dynamic _requestDocument = client.CreateDocumentQuery<Document>(selfLink).Where(d => d.Id == request.Id).AsEnumerable().FirstOrDefault();
+            Document _d = _requestDocument; //Cast to Document to get the Selflink property
             Document _dReturnResult = null;
-            SiteRequestInformation _requestToUpdate = requestDocument;
+            SiteInformation _requestToUpdate = _requestDocument;
             if(!string.IsNullOrEmpty(message))
             {
                 _requestToUpdate.RequestStatusMessage = message;
@@ -363,10 +361,10 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             return _dReturnResult;
         }
       
-        private List<SiteRequestInformation> GetSiteRequestsbyEmail(DocumentClient client, string collectionLink, string email)
+        private List<SiteInformation> GetSiteRequestsbyEmail(DocumentClient client, string collectionLink, string email)
         {
-            List<SiteRequestInformation> _returnResults = new List<SiteRequestInformation>();
-            var siteRequests = from record in client.CreateDocumentQuery<SiteRequestInformation>(collectionLink)
+            List<SiteInformation> _returnResults = new List<SiteInformation>();
+            var siteRequests = from record in client.CreateDocumentQuery<SiteInformation>(collectionLink)
                                where record.SiteOwner.Name == email
                                select record;
 
@@ -382,10 +380,10 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         /// <param name="collectionLink"></param>
         /// <param name="status"></param>
         /// <returns></returns>
-        private List<SiteRequestInformation> GetSiteRequestsByStatus(DocumentClient client, string collectionLink, SiteRequestStatus status)
+        private List<SiteInformation> GetSiteRequestsByStatus(DocumentClient client, string collectionLink, SiteRequestStatus status)
         {
-            List<SiteRequestInformation> _returnResults = new List<SiteRequestInformation>();
-            var siteRequests = from record in client.CreateDocumentQuery<SiteRequestInformation>(collectionLink)
+            List<SiteInformation> _returnResults = new List<SiteInformation>();
+            var siteRequests = from record in client.CreateDocumentQuery<SiteInformation>(collectionLink)
                                where record.RequestStatus == status.ToString()
                                select record;
 
@@ -401,9 +399,9 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         /// <param name="collectionLink"></param>
         /// <param name="url"></param>
         /// <returns></returns>
-        private SiteRequestInformation GetSiteRequestByUrl(DocumentClient client, string collectionLink, string url)
+        private SiteInformation GetSiteRequestByUrl(DocumentClient client, string collectionLink, string url)
         { 
-            var siteRequests  = from record in client.CreateDocumentQuery<SiteRequestInformation>(collectionLink)
+            var siteRequests  = from record in client.CreateDocumentQuery<SiteInformation>(collectionLink)
                            where record.Url == url
                            select record;
 
@@ -417,7 +415,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         /// <param name="collectionLink"></param>
         /// <param name="info"></param>
         /// <returns></returns>
-        private Document SaveNewRequest(DocumentClient client, string collectionLink, SiteRequestInformation info )
+        private Document SaveNewRequest(DocumentClient client, string collectionLink, SiteInformation info )
         {
             //If Settings are set to autoapprove then automatically approve the requests
             if (_manager.GetAppSettings().AutoApprove)
@@ -451,8 +449,8 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             Database database = client.CreateDatabaseQuery().Where(db => db.Id == this.Container).ToArray().FirstOrDefault();
             if (database == null)
             {
-                Log.Info("AzureDocDbRequestManager", "Created Document DB {0}", this.Container);
                 database = await client.CreateDatabaseAsync(new Database { Id = this.Container });
+               Log.Info("AzureDocDbRequestManager.GetOrCreateDatabaseAsync", "Created Document DB {0}", this.Container);
             }
             return database;
         }
@@ -470,6 +468,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             if (collection == null)
             {
                 collection = await client.CreateDocumentCollectionAsync(dbLink, new DocumentCollection { Id = id });
+               Log.Info("AzureDocDbRequestManager.GetOrCreateCollectionAsync", "Created Document DB Collection {0}", dbLink);
             }
             return collection;
         }

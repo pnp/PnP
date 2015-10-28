@@ -3,9 +3,9 @@
 
     var controllerId = 'shell';
     angular.module('app').controller(controllerId,
-        ['$rootScope', 'common', 'config', shell]);
+        ['$rootScope', 'common', 'config','$translate', shell]);
 
-    function shell($rootScope, common, config) {
+    function shell($rootScope, common, config, $translate) {
         var vm = this;
         var logSuccess = common.logger.getLogFn(controllerId, 'success');
         var events = config.events;
@@ -22,10 +22,15 @@
             color: '#DC3C00'
         };
 
-        activate();
+        
+        vm.translations ={};
+        $translate(['SOLUTION_LOADED']).then(function (translations) {
+            vm.translations.HEADLINE = translations.SOLUTION_LOADED;
+        }).then(activate)
+
 
         function activate() {
-            logSuccess('Provisioning solution loaded!', null, true);
+            logSuccess(vm.translations.HEADLINE, null, true);
             common.activateController([], controllerId);
         }
 

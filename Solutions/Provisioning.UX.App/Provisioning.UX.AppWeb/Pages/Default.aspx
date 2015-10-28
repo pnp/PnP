@@ -4,10 +4,10 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" data-ng-app="app">
 <head>
-    <meta charset="utf-8"/>
+    <meta charset="utf-8"/> 
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <title></title>
+    <title>Dashboard</title>
 
     <!-- CSS -->
     <%--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.css"/>--%>
@@ -17,12 +17,6 @@
     <link rel="stylesheet" href="../styles/toastr.css" />
     <link rel="stylesheet" href="../styles/app.css" /> 
     <link rel="stylesheet" href="../styles/peoplepickercontrol.css" />    
-    
-           
-
-    
-
-    
 </head>
 <body>    
     <div id="divSPChrome"></div>            
@@ -40,6 +34,9 @@
     <script src="../scripts/vendor/angular-ui/ui-bootstrap-tpls-0.12.1.min.js"></script>  
     <script src="../scripts/toastr.js"></script>
     <script src="../scripts/spin.js"></script>
+    <script src="../scripts/angular-sanitize.min.js"></script>
+    <script src="../scripts/angular-translate.min.js"></script>
+    <script src="../scripts/angular-translate-loader-static-files.min.js"></script>
     
         
 
@@ -47,6 +44,7 @@
     <script src="../scripts/wizard/modules/common.js"></script>
     <script src="../scripts/wizard/modules/logger.js"></script>
     <script src="../scripts/wizard/modules/spinner.js"></script>
+    <script src="../scripts/wizard/modules/filter.js"></script>
 
     <!-- common.bootstrap Modules -->
     <script src="../scripts/bootstrap.dialog.js"></script>

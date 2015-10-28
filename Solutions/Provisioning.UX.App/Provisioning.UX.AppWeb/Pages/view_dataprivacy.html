@@ -1,23 +1,18 @@
 ﻿<div class="modal-right-heading">
-    <h1>Data Privacy &amp; Security</h1>
+    <h1 >{{ 'DATA_PRIVACY' | translate }}</h1>
 </div>
 
-<div class="modal-right-body">
-
-    <p>How sensitive is your site content?</p>
-    <p>Contoso classifies all business information based on the impact that information might have on Contoso or relying parties if it were to be disclosed to unauthorized persons.</p>
-    <p>For information about privacy visit your privacy center.</p>
-
+<div class="modal-right-body" ng-form="siteprivacyform">
+    <span ng-bind-html="'DATA_PRIVACY_TEXT' | translate"></span>
+    
     <div class="row">
         <div class="col-sm-6">
             <div class="form-group">
-                <label class="control-label" for="privacyClassification">Site Classification</label>
+                <label class="control-label" for="privacyClassification">{{ 'SITE_CLASSIFICATION' | translate }}</label>
                 <select class="form-control" name="privacyClassification" id="privacyClassification" ng-model="siteConfiguration.privacy.classification" required>
                     <option ng-repeat="siteclassification in siteclassifications | orderBy: 'displayOrder'" value="{{siteclassification.value}}">{{siteclassification.key}}</option>
                 </select>
-
             </div>
         </div>
     </div>
-
 </div>

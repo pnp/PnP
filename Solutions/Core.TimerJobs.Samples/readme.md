@@ -19,6 +19,7 @@ Core.TimerJobs.Samples | Bert Jansen (**Microsoft**)
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
+1.1  | June 23rd 2015 | Additional sample showing how to use the tenant API in a timer job
 1.0  | February 13th 2015 | Initial release
 
 ### Disclaimer ###
@@ -30,7 +31,7 @@ Version  | Date | Comments
 # Introduction #
 The PnP timer job framework is set of classes designed to ease the creation of background processes that operate against SharePoint sites, kind of similar to what full trust code timer jobs (`SPJobDefinition`) are for an on-premises SharePoint deployment. The big difference with between this timer job framework and the out of the box one is that this one only uses client side API's and as such can (and should) be run outside of SharePoint. This makes it possible to build timer jobs that operate against SharePoint Online. 
 
-For a detailed view on how the timer job framework can be used, how to deploy timer jobs and learn everything about the internals of the timer job framework consult the [PnP Core documentation](https://github.com/OfficeDev/PnP/blob/dev/OfficeDevPnP.Core/TimerJob%20Framework.md). 
+For a detailed view on how the timer job framework can be used, how to deploy timer jobs and learn everything about the internals of the timer job framework consult the [PnP Core documentation](https://github.com/OfficeDev/PnP-Sites-Core/blob/dev/Core/TimerJob%20Framework.md). 
 
 Below documentation describes each sample and focuses on the unique elements in the sample. You'll notice that the samples below slowly build up in complexity, so if you want to learn about the timer framework you should read this sequentially. If you already understand how things work you better jump to the sample you need.
 
@@ -193,7 +194,7 @@ Besides the real life business scenario this sample also shows how to use the ti
 ## Timer job implementation ##
 The timer job logic in this sample is using the PnP Core extension methods which makes things so much easier. Methods like `GetAdministrators`, `GetListByUrl`, `UploadFile`, `AddJsLink` and `DeleteJsLink` all are coming from PnP Core.
 
-What's specific in this timer job sample is the state management: the property **ManageState** has been set to true which makes that the timer job framework stores information about the timer job run (=state). This state data is stored as a JSON serialized text in a single web property named *<timerjobname>_properties*. For this sample that means that the property is called *SiteGovernanceJob_properties*. To learn everything about managing state using the timer job framework check out the PnP core documentation over [here](https://github.com/OfficeDev/PnP/blob/dev/OfficeDevPnP.Core/TimerJob%20Framework.md#state-management), but in a nutshell you'll need to know that:
+What's specific in this timer job sample is the state management: the property **ManageState** has been set to true which makes that the timer job framework stores information about the timer job run (=state). This state data is stored as a JSON serialized text in a single web property named *<timerjobname>_properties*. For this sample that means that the property is called *SiteGovernanceJob_properties*. To learn everything about managing state using the timer job framework check out the PnP core documentation over [here](https://github.com/OfficeDev/PnP-Sites-Core/blob/dev/Core/TimerJob%20Framework.md#state-management), but in a nutshell you'll need to know that:
 - The **last run (DateTime), timer job version (string) and successful run (boolean)** are always stored after the run. If your code processes the same site the next time these properties are automatically available. 
 - As a timer job author you are responsible for setting **CurrentRunSuccessful** to true when the timer job did run successful
 - As a timer job author you can store your own property/value pairs in the state and easily retrieve them afterwards. Simply use the `GetProperty`, `SetProperty` and `DeleteProperty` methods on the `TimerJobRunEventArgs` object like shown in below sample
@@ -412,7 +413,41 @@ public class SiteCollectionScopedJob: TimerJob
 ## Timer job host implementation ##
 Identical to sample 1.
 
-# Sample 10: ChainingJob #
+# Sample 10: TenantAPIJob #
+## Goal ##
+This sample's purpose is to show you how the SharePoint Tenant API can be used in a timer job. 
+## Timer job implementation ##
+In the `TimerJobRun` event handler you can construct a `Tenant` class via providing it the correct `ClientContext` object via the `TimerJobRunEventArgs.TenantClientContext` property. Below code shows this:
+
+```C#
+public class TenantAPIJob: TimerJob
+{
+    public TenantAPIJob()
+        : base("TenantAPIJob", "1.0")
+    {
+        TimerJobRun += TenantAPIJob_TimerJobRun;
+    }
+
+    void TenantAPIJob_TimerJobRun(object sender, TimerJobRunEventArgs e)
+    {
+        Tenant t = new Tenant(e.TenantClientContext);
+        var sites = t.GetSiteProperties(0, true);
+        e.TenantClientContext.Load(sites);
+        e.TenantClientContext.ExecuteQueryRetry();
+
+        foreach(var site in sites)
+        {
+            Console.WriteLine(site.Template);
+        }
+
+    }
+}
+```
+
+## Timer job host implementation ##
+Identical to sample 3.
+
+# Sample 11: ChainingJob #
 ## Goal ##
 A more theoretical example, but still might be valuable...showing how you can call another timer job from an existig one.
 

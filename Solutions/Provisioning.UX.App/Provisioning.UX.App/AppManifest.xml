@@ -2,14 +2,14 @@
 <!--Created:cb85b80c-f585-40ff-8bfc-12ff4d0e34a9-->
 <App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest"
      Name="ProvisioningUXApp"
-     ProductID="{9dc55e96-ba86-4308-9724-5943319dafb0}"
-     Version="1.0.0.0"
+     ProductID="{38f8b465-ba5b-48ca-980e-4df724a54f9c}"
+     Version="1.1.0.0"
      SharePointMinVersion="15.0.0.0"
 >
   <Properties>
-    <Title>Provisioning.UX.App</Title>
+    <Title>Site Provisioning</Title>
     <StartPage>~remoteAppUrl/Pages/Default.aspx?{StandardTokens}</StartPage>
-   </Properties>
+  </Properties>
 
   <AppPrincipal>
     <RemoteWebApplication ClientId="*" />
@@ -17,7 +17,7 @@
   <AppPermissionRequests AllowAppOnlyPolicy="true">
     <AppPermissionRequest Scope="http://sharepoint/content/tenant" Right="FullControl" />
     <AppPermissionRequest Scope="http://sharepoint/content/sitecollection/web" Right="FullControl" />
-    <AppPermissionRequest Scope="http://sharepoint/taxonomy" Right="Read" />
+    <AppPermissionRequest Scope="http://sharepoint/taxonomy" Right="Write" />
     <AppPermissionRequest Scope="http://sharepoint/search" Right="QueryAsUserIgnoreAppPrincipal" />
     <AppPermissionRequest Scope="http://sharepoint/content/sitecollection" Right="FullControl" />
   </AppPermissionRequests>

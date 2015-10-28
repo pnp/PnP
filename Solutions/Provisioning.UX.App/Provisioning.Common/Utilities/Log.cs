@@ -91,6 +91,33 @@ namespace Provisioning.Common.Utilities
             Trace.Fail(log);
         }
 
+     
+        /// <summary>
+        /// TraceAPI - trace inter-service calls (including latency) 
+        /// </summary>
+        /// <param name="componentName"></param>
+        /// <param name="method"></param>
+        /// <param name="timespan"></param>
+        public static void TraceApi(string componentName, string method, TimeSpan timespan)
+        {
+            TraceApi(componentName, method, timespan, "");
+        }
+
+        public static void TraceApi(string componentName, string method, TimeSpan timespan, string fmt, params object[] vars)
+        {
+            TraceApi(componentName, method, timespan, string.Format(fmt, vars));
+        }
+
+        public static void TraceApi(string componentName, string method, TimeSpan timespan, string properties)
+        {
+            string message = String.Concat("Component:",
+                    componentName,
+                    " method:", method,
+                    " timespan:", timespan.ToString(),
+                    " properties:", properties);
+            Trace.TraceInformation(message);
+        } 
+
         #endregion
 
         #region Private Members
@@ -108,8 +135,7 @@ namespace Provisioning.Common.Utilities
                 if (args == null || args.Length == 0)
                     message = message.Replace("{", "{{").Replace("}", "}}");
                 string _msg = String.Format(System.Globalization.CultureInfo.CurrentCulture, message, args);
-                string _log = string.Format(System.Globalization.CultureInfo.CurrentCulture, "{0} [[{1}]] {2}",
-                    DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), source, _msg);
+                string _log = string.Format(System.Globalization.CultureInfo.CurrentCulture, "[{0}] {1}", source, _msg);
                 return _log;
             }
             catch (Exception e)

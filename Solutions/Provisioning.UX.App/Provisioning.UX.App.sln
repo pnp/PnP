@@ -1,13 +1,21 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{4511E57E-06B8-4442-9D6F-F06FFDE4F7A1}"
+	ProjectSection(SolutionItems) = preProject
+		Azure-App-Settings.md = Azure-App-Settings.md
+		Internationalization.md = Internationalization.md
+		readme.md = readme.md
+		SharePoint-Only-Storage.md = SharePoint-Only-Storage.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ProvisioningExtensiblity", "ProvisioningExtensiblity", "{DEEEEBCE-F741-493C-B21E-BD89FAF3DD91}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.UX.App", "Provisioning.UX.App\Provisioning.UX.App.csproj", "{DD58135C-14A4-4CBF-BBCD-6BB99FA3182E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.UX.AppWeb", "Provisioning.UX.AppWeb\Provisioning.UX.AppWeb.csproj", "{081D660C-E872-46BF-B2CD-DD0A86A636EC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.Core", "..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj", "{F2077977-8EBF-409D-BBF4-8EFB328928A8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Common", "Provisioning.Common\Provisioning.Common.csproj", "{77447711-3AB3-4390-A22C-75BB5A97BB95}"
 EndProject
@@ -15,12 +23,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProvisioningTests", "Provis
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Job", "Provisioning.Job\Provisioning.Job.csproj", "{7752C5E7-4D76-4956-B616-6DAE0CE0021D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{4511E57E-06B8-4442-9D6F-F06FFDE4F7A1}"
-	ProjectSection(SolutionItems) = preProject
-		readme.md = readme.md
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Provider.Security", "Provisioning.Provider.Security\Provisioning.Provider.Security.csproj", "{D0081FA6-264E-4961-9BCE-8D1BCF7E7222}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{8DA204DE-67BE-4D0C-B8B2-788931F8A244}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Setup", "Setup", "{82F04E51-FD3A-4ACA-A177-5E3FCD2789AB}"
+	ProjectSection(SolutionItems) = preProject
+		Setup\PnPSiteProvisioning.xml = Setup\PnPSiteProvisioning.xml
+		Setup\SetupSPRepository.ps1 = Setup\SetupSPRepository.ps1
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,14 +59,6 @@ Global
 		{081D660C-E872-46BF-B2CD-DD0A86A636EC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{081D660C-E872-46BF-B2CD-DD0A86A636EC}.Release15|Any CPU.ActiveCfg = Release|Any CPU
 		{081D660C-E872-46BF-B2CD-DD0A86A636EC}.Release15|Any CPU.Build.0 = Release|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug15|Any CPU.ActiveCfg = Debug15|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug15|Any CPU.Build.0 = Debug15|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release15|Any CPU.ActiveCfg = Release15|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release15|Any CPU.Build.0 = Release15|Any CPU
 		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{77447711-3AB3-4390-A22C-75BB5A97BB95}.Debug15|Any CPU.ActiveCfg = Debug|Any CPU
@@ -82,11 +83,19 @@ Global
 		{7752C5E7-4D76-4956-B616-6DAE0CE0021D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7752C5E7-4D76-4956-B616-6DAE0CE0021D}.Release15|Any CPU.ActiveCfg = Release|Any CPU
 		{7752C5E7-4D76-4956-B616-6DAE0CE0021D}.Release15|Any CPU.Build.0 = Release|Any CPU
+		{D0081FA6-264E-4961-9BCE-8D1BCF7E7222}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0081FA6-264E-4961-9BCE-8D1BCF7E7222}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0081FA6-264E-4961-9BCE-8D1BCF7E7222}.Debug15|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0081FA6-264E-4961-9BCE-8D1BCF7E7222}.Debug15|Any CPU.Build.0 = Debug|Any CPU
+		{D0081FA6-264E-4961-9BCE-8D1BCF7E7222}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0081FA6-264E-4961-9BCE-8D1BCF7E7222}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0081FA6-264E-4961-9BCE-8D1BCF7E7222}.Release15|Any CPU.ActiveCfg = Release|Any CPU
+		{D0081FA6-264E-4961-9BCE-8D1BCF7E7222}.Release15|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8} = {8DA204DE-67BE-4D0C-B8B2-788931F8A244}
+		{D0081FA6-264E-4961-9BCE-8D1BCF7E7222} = {DEEEEBCE-F741-493C-B21E-BD89FAF3DD91}
 	EndGlobalSection
 EndGlobal

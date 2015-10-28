@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
-  <!-- Parent ContentType: Document (0x0101) -->
-  <ContentType ID="0x01010002CB55784047481FA81FC315856D4A41" Name="Contoso Document" Group="Contoso Content Types" Description="Contoso Document" Inherits="TRUE" Version="0">
-    <FieldRefs>
-      <FieldRef ID="{8478039d-fbd5-421d-bd6c-87a07d7ce499}" DisplayName="Contoso Status" Required="FALSE" Name="ContosoStatus" />
-    </FieldRefs>
-  </ContentType>
-</Elements>

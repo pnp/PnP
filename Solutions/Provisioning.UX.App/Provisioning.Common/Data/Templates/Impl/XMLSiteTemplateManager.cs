@@ -21,6 +21,7 @@ namespace Provisioning.Common.Data.Templates.Impl
     {
         #region Instance Members
         internal XMLSiteTemplateData _data = null;
+        
         #endregion
 
         #region Constructor
@@ -60,7 +61,7 @@ namespace Provisioning.Common.Data.Templates.Impl
         {
             try
             {
-                ReflectionHelper _reflectionHelper = new ReflectionHelper();
+                ReflectionManager _reflectionHelper = new ReflectionManager();
                 var _provider = _reflectionHelper.GetTemplateProvider(ModuleKeys.PROVISIONINGPROVIDER_KEY);
                 var _pt = _provider.GetTemplate(name);
                 return _pt;
@@ -68,7 +69,7 @@ namespace Provisioning.Common.Data.Templates.Impl
             catch(Exception _ex)
             {
                 var _message = string.Format(PCResources.TemplateProviderBase_Exception_Message, _ex.Message);
-                Log.Fatal("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager", PCResources.TemplateProviderBase_Exception_Message, _ex);
+                Log.Error("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager", PCResources.TemplateProviderBase_Exception_Message, _ex);
                 throw new DataStoreException(_message, _ex);
             }
         }
@@ -83,37 +84,37 @@ namespace Provisioning.Common.Data.Templates.Impl
                 var _filePath = Path.Combine(this.ConnectionString.HandleEnvironmentToken(), "Templates.config");
                 bool _fileExists = System.IO.File.Exists(_filePath);
                
-                Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", PCResources.XMLTemplateManager_TryRead_ConfigFile, _filePath);
+               Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", PCResources.XMLTemplateManager_TryRead_ConfigFile, _filePath);
 
                 if(_fileExists)
                 {
                     XDocument _doc = XDocument.Load(_filePath);
-                    this._data = XmlSerializerHelper.Deserialize<XMLSiteTemplateData>(_doc);
-                    Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", PCResources.XMLTemplateManager_Loaded_ConfigFile, _filePath);
+                    this._data = XmlSerializerManager.Deserialize<XMLSiteTemplateData>(_doc);
+                   Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", PCResources.XMLTemplateManager_Loaded_ConfigFile, _filePath);
                 }
                 else
                 {
                     _filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, this.ConnectionString, "Templates.config");
-                    Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", PCResources.XMLTemplateManager_TryRead_ConfigFile, _filePath);
+                   Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", PCResources.XMLTemplateManager_TryRead_ConfigFile, _filePath);
                     _fileExists = System.IO.File.Exists(_filePath);
                     if (_fileExists)
                     {
-                        Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", PCResources.XMLTemplateManager_File_Found, _filePath);
+                       Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", PCResources.XMLTemplateManager_File_Found, _filePath);
                         XDocument _doc = XDocument.Load(_filePath);
-                        this._data = XmlSerializerHelper.Deserialize<XMLSiteTemplateData>(_doc);
-                        Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", PCResources.XMLTemplateManager_Loaded_ConfigFile, _filePath);
+                        this._data = XmlSerializerManager.Deserialize<XMLSiteTemplateData>(_doc);
+                       Log.Info("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", PCResources.XMLTemplateManager_Loaded_ConfigFile, _filePath);
                     }
                     else
                     {
                         var _message = string.Format(PCResources.Exception_MasterTemplateNotFound, _filePath);
-                        Log.Fatal("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", _message);
+                        Log.Error("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager.LoadXML", _message);
                         throw new DataStoreException(_message);
                     }
                 }
             }
             catch (Exception _ex)
             {
-                Log.Fatal("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager", PCResources.XMLTemplateManager_Error, _ex.Message, _ex.StackTrace);
+                Log.Error("Provisioning.Common.Data.Templates.Impl.XMLSiteTemplateManager", PCResources.XMLTemplateManager_Error, _ex.Message, _ex.StackTrace);
                 throw;
             }
 

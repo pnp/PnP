@@ -1,0 +1,602 @@
+<?xml version="1.0"?>
+<pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema">
+  <pnp:Preferences Generator="OfficeDevPnP.Core, Version=1.4.815.0, Culture=neutral, PublicKeyToken=null" />
+  <pnp:Templates ID="CONTAINER-PNPSITEPROVISIONING">
+    <pnp:ProvisioningTemplate ID="PNPSITEPROVISIONING" Version="1">
+      <pnp:SiteFields>
+        <!--REUSABLE FIELDS-->
+        <Field ID="{30FF489E-082F-41F0-BDC2-E7F473CFA3FC}" Type="Text" Name="SP_Key" DisplayName="Key" Group="SiteProvisioning" MaxLength="255" Required="TRUE" />
+        <Field ID="{9BFAAAE8-8BD3-47CB-BD60-71F9A9CDEBE9}" Type="Text" Name="SP_Value" DisplayName="Value" Group="SiteProvisioning" MaxLength="255"  Required="TRUE"  />
+        <Field ID="{34201F05-B271-4BD6-A835-41D497659AF2}" Type="Number" Name="SP_DisplayOrder" DisplayName="DisplayOrder" Group="SiteProvisioning" Decimals="0" Required="TRUE"  />
+        <Field ID="{A2CC6F95-5F6B-45FC-80CE-40C1397C5E46}" Type="Number" Name="SP_SiteExpirationMonths" DisplayName="Expiration Months" Group="SiteProvisioning" Decimals="0" Required="TRUE"  />
+        <Field ID="{15D63ACE-65C4-4B98-9139-145DD04D2887}" Type="Boolean" Name="SP_AddAllAuthenticatedUsers" DisplayName="AddAllAuthenticatedUsers" Group="SiteProvisioning" />
+        <Field ID="{EED661BC-FBD2-4880-ADDB-435D4E4ED5C2}" Type="Boolean" Name="SP_Enabled" DisplayName="Enabled" Group="SiteProvisioning" />
+        <Field ID="{7EEFF0B8-D2E2-4FCD-AFC6-039EE17FA0F0}" Type="Text" Name="SP_Description" DisplayName="Description" Group="SiteProvisioning" MaxLength="255" Required="TRUE"  />
+        <Field ID="{64A12086-D574-43EE-8B02-AB49BC8DD8B0}" Type="Number" Name="SP_StorageMaximumLevel" DisplayName="Storage Maximum Level" Group="SiteProvisioning" Decimals="0" Required="TRUE"  />
+        <Field ID="{1F072DD4-BF2A-4828-9373-CCC823AE9F5A}" Type="Number" Name="SP_StorageWarningLevel" DisplayName="Storage Warning Level" Group="SiteProvisioning" Decimals="0" Required="TRUE"  />
+        <Field ID="{A12236E4-DDA5-4C07-A0F4-391B167E54D6}" Type="Number" Name="SP_UserCodeMaximumLevel" DisplayName="User Code Maximum Level" Group="SiteProvisioning" Decimals="0" Required="TRUE"  />
+        <Field ID="{A6489FB3-F08F-4F87-A719-8482FE3596CB}" Type="Number" Name="SP_UserCodeWarningLevel" DisplayName="User Code Warning Level" Group="SiteProvisioning" Decimals="0" Required="TRUE"  />
+        <Field ID="{9847FB17-0811-4FF8-AE3C-A4C3BEAF403A}" Type="URL" Name="SP_TenantUrl" DisplayName="Tenant Url" Group="SiteProvisioning" Required="TRUE" MaxLength="255" Description="The Tenant Admin URL. Example: https://contoso-admin.sharepoint.com/" StaticName="SP_TenantUrl"  Format="Hyperlink"/>
+        <Field ID="{C7551272-C991-428B-8E71-A1FDE12B17F2}" Type="URL" Name="SP_Host_Path" DisplayName="Host Path" Group="SiteProvisioning" Required="TRUE" MaxLength="255" Description="The Host Path. Example: https://contoso.sharepoint.com/sites/" StaticName="SP_Host_Path"  Format="Hyperlink"/>
+        <Field ID="{62D0BDE8-D559-421F-B3AA-203D03A6CCA3}" Type="Text" Name="SP_SiteProvisioningTemplate" DisplayName="Provisioning Template" Group="SiteProvisioning" Required="TRUE" MaxLength="255" Description="The Name of the provisioning Template." StaticName="SP_SiteProvisioningTemplate"/>
+        <Field ID="{FB4E2E34-F3E2-402D-B3D7-A335E430BB8C}" Type="URL" Name="SP_TemplateImageUrl" DisplayName="Template Image Url" Group="SiteProvisioning" Required="TRUE" MaxLength="255" Description="Enter the Url of the Image for the Template" StaticName="SP_TemplateImageUrl" Format="Image"/>
+        <Field ID="{7A79B397-C69C-4CFD-8C9D-644D81BEA6AE}" Type="Boolean" Name="SP_RootWebOnly" DisplayName="Root web only" Group="SiteProvisioning" />
+        <Field ID="{867FB9FF-8314-4244-9A2D-41B60C5DCE3F}" Type="Boolean" Name="SP_SubWebOnly" DisplayName="Sub web only" Group="SiteProvisioning" />
+
+        <!--SITE REQUEST FIELDS-->
+        <Field Type="User" Name="SP_Owner" DisplayName="Owner" ID="{874ad80c-4e50-4c58-99b4-d21ab3e8bb15}" Group="SiteProvisioning" List="UserInfo" UserSelectionMode="0" ShowField="ImnName" Description="The Primary Site Collection Administrator" SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_Owner" />
+        <Field Type="User" Name="SP_AdditionalAdmins" DisplayName="Additional Admins" ID="{8c25e50c-9d31-483c-9a6d-66bdb39bbfe4}" Group="SiteProvisioning" Mult="TRUE" List="UserInfo" UserSelectionMode="0" ShowField="ImnName" Description="Additional Administrators" SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_AdditionalAdmins" />
+        <Field Type="DateTime" Name="SP_ApprovedDate" DisplayName="Request Approved Date" ID="{33ca4a33-6bd5-42e5-a28f-09eba9409c6b}" Group="SiteProvisioning" Format="DateOnly" ShowInDisplayForm="TRUE" Description="Date the request was approved" SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_ApprovedDate" />
+        <Field Type="Text" Name="SP_Policy" DisplayName="Policy" ID="{d717873a-9a01-4b3a-97af-0f6514696c76}" Group="SiteProvisioning" Description="The Site Policy to apply" SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_Policy" />
+        <Field Type="Text" Name="SP_Url" DisplayName="Url" ID="{be60c056-26b9-48df-b954-93f31698d2a4}" Group="SiteProvisioning" Required="TRUE" MaxLength="255" EnforceUniqueValues="TRUE" Indexed="TRUE" Description="The path used for the site collection URL. Example: https://contoso.sharepoint.com/sites/&lt;urlpath&gt;" SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_Url" />
+        <Field Type="Text" Name="SP_TimeZone" DisplayName="Time Zone" ID="{2e07875c-07cd-48cf-a93a-40bf0cab60bd}" Group="SiteProvisioning" Description="The time zone selected for the site" SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_TimeZone" />
+        <Field Type="Text" Name="SP_Template" DisplayName="Template" ID="{63472f5d-e8f5-4b64-9172-7d60726d0133}" Group="SiteProvisioning" Description="The Site Template to apply. For instance STS#0." SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_Template" />
+        <Field Type="Text" Name="SP_Lcid" DisplayName="LCID" ID="{42a75f5d-0f79-44b7-ab9e-d9fb0307a3b5}" Group="SiteProvisioning" Required="TRUE" Description="The Site Language" SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_Lcid" />
+        <Field Type="Text" Name="SP_ProvisioningStatus" DisplayName="Provisioning Status" ID="{e7bd867c-79f0-46b7-b2d9-02ff239e4947}" Group="SiteProvisioning" Required="TRUE" Indexed="TRUE" ShowInDisplayForm="TRUE" Description="Status of the site request." SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_ProvisioningStatus" />
+        <Field Type="Boolean" Name="SP_RequestOnPrem" DisplayName="On Premises" ID="{c9d27da5-bdf4-4128-9e97-fc0d096201b5}" Group="SiteProvisioning" Description="Indicates if the Site is targeting SharePoint On-Premises." SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_RequestOnPrem" />
+        <Field Type="Note" Name="SP_BusinessCase" DisplayName="Business Case" ID="{8513d7b5-211a-43cf-9cd8-fd25320a8c66}" Group="SiteProvisioning" Description="Business Case" SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_BusinessCase" />
+        <Field Type="Note" Name="SP_Props" DisplayName="Properties" ID="{ff0d9ebb-576f-45ff-8328-73d6b7c6e1a4}" Group="SiteProvisioning" Description="Field that stores custom property bag entries." SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_Props" />
+        <Field Type="Boolean" Name="SP_ExternalSharingFlag" DisplayName="External Sharing Enabled" ID="{be2c62c2-5973-4223-a5b3-95e7379cce66}" Group="SiteProvisioning" ShowInDisplayForm="TRUE" Description="" SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_ExternalSharingFlag" />
+        <Field Type="Text" Name="SP_StatusMessage" DisplayName="Status Message" ID="{80fdfcf7-b765-48a4-8391-52ce026bdf42}" Group="SiteProvisioning" ShowInDisplayForm="TRUE" Description="Status Message" SourceID="{e39236f6-e0b6-4d25-99b4-6e02eceb2207}" StaticName="SP_StatusMessage" />
+      </pnp:SiteFields>
+      <pnp:ContentTypes>
+        <!--TEMPLATES-->
+        <pnp:ContentType ID="0x01005F743F288BED4D10815B9BF740850BC0" Name="Site Templates" Description="Defines Site Templates" Group="Site Provisioning Content Types">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" Required="true" />
+            <pnp:FieldRef ID="7EEFF0B8-D2E2-4FCD-AFC6-039EE17FA0F0" Name="SP_Description" Required="true"/>
+            <pnp:FieldRef ID="FB4E2E34-F3E2-402D-B3D7-A335E430BB8C" Name="SP_TemplateImageUrl" Required="true"/>
+            <pnp:FieldRef ID="C7551272-C991-428B-8E71-A1FDE12B17F2" Name="SP_Host_Path" Required="true"/>
+            <pnp:FieldRef ID="9847FB17-0811-4FF8-AE3C-A4C3BEAF403A" Name="SP_TenantUrl" Required="true"/>
+            <pnp:FieldRef ID="c9d27da5-bdf4-4128-9e97-fc0d096201b5" Name="SP_RequestOnPrem" />
+            <pnp:FieldRef ID="63472f5d-e8f5-4b64-9172-7d60726d0133" Name="SP_Template" Required="true" />
+            <pnp:FieldRef ID="64A12086-D574-43EE-8B02-AB49BC8DD8B0" Name="SP_StorageMaximumLevel" Required="true"/>
+            <pnp:FieldRef ID="1F072DD4-BF2A-4828-9373-CCC823AE9F5A" Name="SP_StorageWarningLevel" Required="true"/>
+            <pnp:FieldRef ID="A12236E4-DDA5-4C07-A0F4-391B167E54D6" Name="SP_UserCodeMaximumLevel" Required="true"/>
+            <pnp:FieldRef ID="A6489FB3-F08F-4F87-A719-8482FE3596CB" Name="SP_UserCodeWarningLevel" Required="true"/>
+            <pnp:FieldRef ID="62D0BDE8-D559-421F-B3AA-203D03A6CCA3" Name="SP_SiteProvisioningTemplate" Required="true"/>
+            <pnp:FieldRef ID="EED661BC-FBD2-4880-ADDB-435D4E4ED5C2" Name="SP_Enabled"/>
+            <pnp:FieldRef ID="7A79B397-C69C-4CFD-8C9D-644D81BEA6AE" Name="SP_RootWebOnly"/>
+            <pnp:FieldRef ID="867FB9FF-8314-4244-9A2D-41B60C5DCE3F" Name="SP_SubWebOnly" />
+
+          </pnp:FieldRefs>
+        </pnp:ContentType>
+        <!--SITE REQUEST CONTENT TYPE-->
+        <pnp:ContentType ID="0x01008AFD1A3CDDC04ECAAED455326AC126FC" Name="Site Request" Description="Used to store site requests." Group="Site Provisioning Content Types">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" Required="true" />
+            <pnp:FieldRef ID="be60c056-26b9-48df-b954-93f31698d2a4" Name="SP_Url" Required="true" />
+            <pnp:FieldRef ID="7EEFF0B8-D2E2-4FCD-AFC6-039EE17FA0F0" Name="SP_Description" />
+            <pnp:FieldRef ID="c9d27da5-bdf4-4128-9e97-fc0d096201b5" Name="SP_RequestOnPrem" />
+            <pnp:FieldRef ID="ff0d9ebb-576f-45ff-8328-73d6b7c6e1a4" Name="SP_Props" />
+            <pnp:FieldRef ID="8513d7b5-211a-43cf-9cd8-fd25320a8c66" Name="SP_BusinessCase" />
+            <pnp:FieldRef ID="874ad80c-4e50-4c58-99b4-d21ab3e8bb15" Name="SP_Owner" />
+            <pnp:FieldRef ID="8c25e50c-9d31-483c-9a6d-66bdb39bbfe4" Name="SP_AdditionalAdmins" />
+            <pnp:FieldRef ID="d717873a-9a01-4b3a-97af-0f6514696c76" Name="SP_Policy" />
+            <pnp:FieldRef ID="63472f5d-e8f5-4b64-9172-7d60726d0133" Name="SP_Template" />
+            <pnp:FieldRef ID="e7bd867c-79f0-46b7-b2d9-02ff239e4947" Name="SP_ProvisioningStatus" Required="true" />
+            <pnp:FieldRef ID="42a75f5d-0f79-44b7-ab9e-d9fb0307a3b5" Name="SP_Lcid" Required="true" />
+            <pnp:FieldRef ID="2e07875c-07cd-48cf-a93a-40bf0cab60bd" Name="SP_TimeZone" />
+            <pnp:FieldRef ID="33ca4a33-6bd5-42e5-a28f-09eba9409c6b" Name="SP_ApprovedDate" />
+            <pnp:FieldRef ID="80fdfcf7-b765-48a4-8391-52ce026bdf42" Name="SP_StatusMessage" />
+            <pnp:FieldRef ID="be2c62c2-5973-4223-a5b3-95e7379cce66" Name="SP_ExternalSharingFlag" />
+          </pnp:FieldRefs>
+        </pnp:ContentType>
+        <pnp:ContentType ID="0x0100E8E02176148641249C78524B952CD187" Name="Site Classifications" Description="Site Classification Reference Data" Group="Site Provisioning Content Types">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" Required="false" Hidden="true" />
+            <pnp:FieldRef ID="30FF489E-082F-41F0-BDC2-E7F473CFA3FC" Required="true" /> <!--KEY-->
+            <pnp:FieldRef ID="9BFAAAE8-8BD3-47CB-BD60-71F9A9CDEBE9" Required="true" /> <!--Value-->
+            <pnp:FieldRef ID="34201F05-B271-4BD6-A835-41D497659AF2" Required="true" /> <!--DisplayOrder-->
+            <pnp:FieldRef ID="15D63ACE-65C4-4B98-9139-145DD04D2887" /> <!--AddAllAuthenticatedUsers-->
+            <pnp:FieldRef ID="EED661BC-FBD2-4880-ADDB-435D4E4ED5C2" /> <!--Enabled-->
+            <pnp:FieldRef ID="A2CC6F95-5F6B-45FC-80CE-40C1397C5E46" Required="true" /> <!--Expiration Months-->
+          </pnp:FieldRefs>
+        </pnp:ContentType>
+        <pnp:ContentType ID="0x0100DDD5F1086D874F38BC7D3BE76AA56045" Name="Divisions" Description="Division Reference Data" Group="Site Provisioning Content Types">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" Required="false" Hidden="true" />
+            <pnp:FieldRef ID="30FF489E-082F-41F0-BDC2-E7F473CFA3FC" Required="true" /> <!--KEY-->
+            <pnp:FieldRef ID="9BFAAAE8-8BD3-47CB-BD60-71F9A9CDEBE9" Required="true" /> <!--Value-->
+            <pnp:FieldRef ID="34201F05-B271-4BD6-A835-41D497659AF2" Required="true" /> <!--DisplayOrder-->
+          </pnp:FieldRefs>
+        </pnp:ContentType>
+        <pnp:ContentType ID="0x010062F4AEC213DF4050BD1D081E35AF93AD" Name="Functions" Description="Function Reference Data" Group="Site Provisioning Content Types">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" Required="false" Hidden="true" />
+            <pnp:FieldRef ID="30FF489E-082F-41F0-BDC2-E7F473CFA3FC" Required="true" /> <!--KEY-->
+            <pnp:FieldRef ID="9BFAAAE8-8BD3-47CB-BD60-71F9A9CDEBE9" Required="true" /> <!--Value-->
+            <pnp:FieldRef ID="34201F05-B271-4BD6-A835-41D497659AF2" Required="true" /> <!--DisplayOrder-->
+          </pnp:FieldRefs>
+        </pnp:ContentType>
+        <pnp:ContentType ID="0x01000DF94FAFE4F74CD6A1D289D7506A6A21" Name="Languages" Description="Language Reference Data" Group="Site Provisioning Content Types">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" Required="false" Hidden="true" />
+            <pnp:FieldRef ID="30FF489E-082F-41F0-BDC2-E7F473CFA3FC" Required="true" /> <!--KEY-->
+            <pnp:FieldRef ID="9BFAAAE8-8BD3-47CB-BD60-71F9A9CDEBE9" Required="true" /> <!--Value-->
+            <pnp:FieldRef ID="34201F05-B271-4BD6-A835-41D497659AF2" Required="true" /> <!--DisplayOrder-->
+            <pnp:FieldRef ID="EED661BC-FBD2-4880-ADDB-435D4E4ED5C2"  /> <!--Enabled-->
+          </pnp:FieldRefs>
+        </pnp:ContentType>
+        <pnp:ContentType ID="0x01007D5F32EB4E4843C4B1FDB886D4A62EBA" Name="Regions" Description="Regions Reference Data" Group="Site Provisioning Content Types">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" Required="false" Hidden="true" />
+            <pnp:FieldRef ID="30FF489E-082F-41F0-BDC2-E7F473CFA3FC" Required="true" /> <!--KEY-->
+            <pnp:FieldRef ID="9BFAAAE8-8BD3-47CB-BD60-71F9A9CDEBE9" Required="true" /> <!--Value-->
+            <pnp:FieldRef ID="34201F05-B271-4BD6-A835-41D497659AF2" Required="true" /> <!--DisplayOrder-->
+          </pnp:FieldRefs>
+        </pnp:ContentType>
+        <pnp:ContentType ID="0x010012AE48B675F64BAEA91D16A5532F07A9" Name="TimeZone" Description="TimeZone Reference Data" Group="Site Provisioning Content Types">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" Required="false" Hidden="true" />
+            <pnp:FieldRef ID="30FF489E-082F-41F0-BDC2-E7F473CFA3FC" Required="true" /> <!--KEY-->
+            <pnp:FieldRef ID="9BFAAAE8-8BD3-47CB-BD60-71F9A9CDEBE9" Required="true" /> <!--Value-->
+            <pnp:FieldRef ID="34201F05-B271-4BD6-A835-41D497659AF2" Required="true" /> <!--DisplayOrder-->
+            <pnp:FieldRef ID="7EEFF0B8-D2E2-4FCD-AFC6-039EE17FA0F0" Required="true" /> <!--Description-->
+          </pnp:FieldRefs>
+        </pnp:ContentType>
+      </pnp:ContentTypes>
+      <pnp:Lists>
+        <pnp:ListInstance Title="Templates" 
+                          Description="Repository for defining Site Templates" 
+                          DocumentTemplate="" 
+                          TemplateType="100" 
+                          Url="Lists/Templates" 
+                          MinorVersionLimit="0" 
+                          MaxVersionLimit="0" 
+                          TemplateFeatureID="00bfea71-de22-43b2-a848-c05709900100" 
+                          ContentTypesEnabled="true" 
+                          EnableFolderCreation="false"
+                          RemoveExistingContentTypes="true">
+          <pnp:ContentTypeBindings>
+            <pnp:ContentTypeBinding ContentTypeID="0x01005F743F288BED4D10815B9BF740850BC0" Default="true" />
+          </pnp:ContentTypeBindings>
+          <pnp:Views RemoveExistingViews="true">
+            <View DisplayName="AllItems">
+              <Query>
+                <OrderBy>
+                  <FieldRef Name="ID" />
+                </OrderBy>
+              </Query>
+              <ViewFields>
+                <FieldRef Name="LinkTitle" />
+                <FieldRef Name="SP_Description" />
+                <FieldRef Name="SP_TemplateImageUrl"/>
+                <FieldRef Name="SP_Host_Path"/>
+                <FieldRef Name="SP_Template" />
+                <FieldRef Name="SP_SiteProvisioningTemplate"/>
+                <FieldRef Name="SP_RootWebOnly"/>
+                <FieldRef Name="SP_SubWebOnly"/>
+                <FieldRef Name="SP_Enabled" />                
+              </ViewFields>
+              <RowLimit Paged="TRUE">30</RowLimit>
+              <JSLink>clienttemplates.js</JSLink>
+              <XslLink Default="TRUE">main.xsl</XslLink>
+              <Toolbar Type="Standard" />
+            </View>
+          </pnp:Views>
+        </pnp:ListInstance>
+        <pnp:ListInstance Title="Site Templates Data"
+                          Description="Repository for the XML based site templates"
+                          TemplateType="101"
+                          Url="SiteTemplatesData">
+        </pnp:ListInstance>
+        <pnp:ListInstance Title="Site Requests" 
+                          Description="Repository for new Site Collection Requests" 
+                          DocumentTemplate="" 
+                          TemplateType="100" 
+                          Url="Lists/SiteRequests" 
+                          MinorVersionLimit="0" 
+                          MaxVersionLimit="0" 
+                          TemplateFeatureID="00bfea71-de22-43b2-a848-c05709900100" 
+                          ContentTypesEnabled="true" 
+                          EnableFolderCreation="false" 
+                          RemoveExistingContentTypes="true">
+          <pnp:ContentTypeBindings>
+            <pnp:ContentTypeBinding ContentTypeID="0x01008AFD1A3CDDC04ECAAED455326AC126FC" Default="true" />
+          </pnp:ContentTypeBindings>
+          <pnp:Views RemoveExistingViews="true">
+            <View DisplayName="AllItems">
+              <Query>
+                <OrderBy>
+                  <FieldRef Name="ID" />
+                </OrderBy>
+              </Query>
+              <ViewFields>
+                <FieldRef Name="LinkTitle" />
+                <FieldRef Name="SP_Url"/>
+                <FieldRef Name="SP_Description"/>
+                <FieldRef Name="SP_RequestOnPrem" />
+                <FieldRef Name="SP_Owner" />
+                <FieldRef Name="SP_AdditionalAdmins" />
+                <FieldRef Name="SP_Policy" />
+                <FieldRef Name="SP_Template" />
+                <FieldRef Name="SP_ProvisioningStatus" />
+                <FieldRef Name="SP_Lcid" />
+                <FieldRef Name="SP_TimeZone" />
+                <FieldRef Name="SP_ApprovedDate" />
+                <FieldRef Name="SP_StatusMessage" />
+                <FieldRef Name="SP_ExternalSharingFlag" />
+              </ViewFields>
+              <RowLimit Paged="TRUE">30</RowLimit>
+              <JSLink>clienttemplates.js</JSLink>
+              <XslLink Default="TRUE">main.xsl</XslLink>
+              <Toolbar Type="Standard" />
+            </View>
+          </pnp:Views>
+        </pnp:ListInstance>
+        <pnp:ListInstance Title="Site Classifications"
+                   Description="Site Classification Reference Data"
+                   DocumentTemplate=""
+                   OnQuickLaunch="false"
+                   TemplateType="100"
+                   Url="Lists/SiteClassifications"
+                   EnableVersioning="false"
+                   RemoveExistingContentTypes="true">
+          <pnp:DataRows>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">LBI</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">Low Business Impact (LBI)</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">1</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_AddAllAuthenticatedUsers">true</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_SiteExpirationMonths">6</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">MBI</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">Medium Business Impact (MBI)</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">2</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_AddAllAuthenticatedUsers">true</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_SiteExpirationMonths">6</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">HBI</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">High Business Impact (HBI)</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">3</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_AddAllAuthenticatedUsers">false</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_SiteExpirationMonths">6</pnp:DataValue>
+            </pnp:DataRow>
+          </pnp:DataRows>
+          <pnp:ContentTypeBindings>
+            <pnp:ContentTypeBinding ContentTypeID="0x0100E8E02176148641249C78524B952CD187" Default="true"/>
+          </pnp:ContentTypeBindings>
+          <pnp:Views RemoveExistingViews="true">
+            <View DisplayName="AllItems">
+              <ViewFields>
+                <FieldRef Name="SP_Key" />
+                <FieldRef Name="SP_Value" />
+                <FieldRef Name="SP_SiteExpirationMonths" />
+                <FieldRef Name="SP_DisplayOrder" />
+                <FieldRef Name="SP_AddAllAuthenticatedUsers" />
+                <FieldRef Name="SP_Enabled" />
+              </ViewFields>
+            </View>
+          </pnp:Views>
+        </pnp:ListInstance>
+        <pnp:ListInstance Title="Divisions"
+                 Description="Divisions Reference Data"
+                 DocumentTemplate=""
+                 OnQuickLaunch="false"
+                 TemplateType="100"
+                 Url="Lists/Divisions"
+                 EnableVersioning="false"
+                 RemoveExistingContentTypes="true" >
+          <pnp:DataRows>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Commercial</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">Commercial</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">1</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Corporate</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">Corporate</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">2</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Customer Service</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">Customer Service</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">3</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Finance</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">Finance</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">4</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Information Technology</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">Information Technology</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">5</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Legal</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">Legal</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">6</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Marketing</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">Marketing</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">7</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Sales</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">Sales</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">8</pnp:DataValue>
+            </pnp:DataRow>
+          </pnp:DataRows>
+          <pnp:ContentTypeBindings>
+            <pnp:ContentTypeBinding ContentTypeID="0x0100DDD5F1086D874F38BC7D3BE76AA56045" Default="true"/>
+          </pnp:ContentTypeBindings>
+          <pnp:Views RemoveExistingViews="true">
+            <View DisplayName="AllItems">
+              <ViewFields>
+                <FieldRef Name="SP_Key" />
+                <FieldRef Name="SP_Value" />
+                <FieldRef Name="SP_DisplayOrder" />
+              </ViewFields>
+            </View>
+          </pnp:Views>
+        </pnp:ListInstance>
+        <pnp:ListInstance Title="Functions"
+                 Description="Functions Reference Data"
+                 DocumentTemplate=""
+                 OnQuickLaunch="false"
+                 TemplateType="100"
+                 Url="Lists/Functions"
+                 EnableVersioning="false"
+                 RemoveExistingContentTypes="true" >
+          <pnp:DataRows>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Information Technology</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">Information Technology</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">1</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Human Resources</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">Human Resources</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">2</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Legal</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">Legal</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">3</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Accounting</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">Accounting</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">4</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Administrative</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">Administrative</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">5</pnp:DataValue>
+            </pnp:DataRow>
+          </pnp:DataRows>
+          <pnp:ContentTypeBindings>
+            <pnp:ContentTypeBinding ContentTypeID="0x010062F4AEC213DF4050BD1D081E35AF93AD" Default="true"/>
+          </pnp:ContentTypeBindings>
+          <pnp:Views RemoveExistingViews="true">
+            <View DisplayName="AllItems">
+              <ViewFields>
+                <FieldRef Name="SP_Key" />
+                <FieldRef Name="SP_Value" />
+                <FieldRef Name="SP_DisplayOrder" />
+              </ViewFields>
+            </View>
+          </pnp:Views>
+        </pnp:ListInstance>
+        <pnp:ListInstance Title="Languages"
+                 Description="Languages Reference Data"
+                 DocumentTemplate=""
+                 OnQuickLaunch="false"
+                 TemplateType="100"
+                 Url="Lists/Languages"
+                 EnableVersioning="false"
+                 RemoveExistingContentTypes="true">
+          <pnp:DataRows>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Arabic</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1025</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">1</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Azerbaijani</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1068</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">2</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Basque</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1069</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">3</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Bosnian (Latin)</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">5146</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">4</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Bulgarian</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1026</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">5</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Catalan</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1027</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">6</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Chinese (Simplified)</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">2052</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">7</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Chinese (Traditional)</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1028</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">8</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Croatian</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1050</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">9</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Czech</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1029</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">10</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Danish</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1030</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">11</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Dari</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1164</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">12</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Dutch</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1164</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">13</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">English</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1033</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">14</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Estonian</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1061</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">15</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Finnish</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1035</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">16</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">French</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1036</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">17</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Galician</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1110</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">18</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">German</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1031</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">19</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Greek</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1032</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">20</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Italian</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1040</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">21</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+          </pnp:DataRows>
+          <pnp:ContentTypeBindings>
+            <pnp:ContentTypeBinding ContentTypeID="0x01000DF94FAFE4F74CD6A1D289D7506A6A21" Default="true"/>
+          </pnp:ContentTypeBindings>
+          <pnp:Views RemoveExistingViews="true">
+            <View DisplayName="AllItems">
+              <ViewFields>
+                <FieldRef Name="SP_Key" />
+                <FieldRef Name="SP_Value" />
+                <FieldRef Name="SP_DisplayOrder" />
+                <FieldRef Name="SP_Enabled" />
+              </ViewFields>
+            </View>
+          </pnp:Views>
+        </pnp:ListInstance>
+        <pnp:ListInstance Title="Regions"
+                 Description="Regions Reference Data"
+                 DocumentTemplate=""
+                 OnQuickLaunch="false"
+                 TemplateType="100"
+                 Url="Lists/Regions"
+                 EnableVersioning="false"
+                 RemoveExistingContentTypes="true">
+          <pnp:DataRows>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">North America</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">North America</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">1</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">EMEA</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">EMEA</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">2</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">APAC</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">APAC</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">3</pnp:DataValue>
+            </pnp:DataRow>
+          </pnp:DataRows>
+          <pnp:ContentTypeBindings>
+            <pnp:ContentTypeBinding ContentTypeID="0x01007D5F32EB4E4843C4B1FDB886D4A62EBA" Default="true"/>
+          </pnp:ContentTypeBindings>
+          <pnp:Views RemoveExistingViews="true">
+            <View DisplayName="AllItems">
+              <ViewFields>
+                <FieldRef Name="SP_Key" />
+                <FieldRef Name="SP_Value" />
+                <FieldRef Name="SP_DisplayOrder" />
+              </ViewFields>
+            </View>
+          </pnp:Views>
+        </pnp:ListInstance>
+        <pnp:ListInstance Title="TimeZone"
+                 Description="TimeZone Reference Data"
+                 DocumentTemplate=""
+                 OnQuickLaunch="false"
+                 TemplateType="100"
+                 Url="Lists/TimeZone"
+                 EnableVersioning="false"
+                 RemoveExistingContentTypes="true">
+          <pnp:ContentTypeBindings>
+            <pnp:ContentTypeBinding ContentTypeID="0x010012AE48B675F64BAEA91D16A5532F07A9" Default="true"/>
+          </pnp:ContentTypeBindings>
+          <pnp:Views RemoveExistingViews="true">
+            <View DisplayName="AllItems">
+              <ViewFields>
+                <FieldRef Name="SP_Key" />
+                <FieldRef Name="SP_Value" />
+                <FieldRef Name="SP_Description"/>
+                <FieldRef Name="SP_DisplayOrder" />
+              </ViewFields>
+            </View>
+          </pnp:Views>
+        </pnp:ListInstance>
+      </pnp:Lists>
+    </pnp:ProvisioningTemplate>
+  </pnp:Templates>
+</pnp:Provisioning>
