@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectItem Type="Microsoft.VisualStudio.SharePoint.Module" DefaultFile="Elements.xml" SupportedTrustLevels="All" SupportedDeploymentScopes="Web, Site" xmlns="http://schemas.microsoft.com/VisualStudio/2010/SharePointTools/SharePointProjectItemModel">
+  <Files>
+    <ProjectItemFile Source="Elements.xml" Type="ElementManifest" />
+    <ProjectItemFile Source="SurveyAppCentralDeploy\Default.aspx.template" Target="SurveyAppCentralDeploy\" Type="ElementFile" />
+    <ProjectItemFile Source="SurveyAppCentralDeploy\MicroSurvey.dwp" Target="SurveyAppCentralDeploy\" Type="ElementFile" />
+    <ProjectItemFile Source="SurveyAppCentralDeploy\ListDisplayForm.aspx.template" Target="SurveyAppCentralDeploy\" Type="ElementFile" />
+    <ProjectItemFile Source="SurveyAppCentralDeploy\ListEditForm.aspx.template" Target="SurveyAppCentralDeploy\" Type="ElementFile" />
+    <ProjectItemFile Source="SurveyAppCentralDeploy\ListNewForm.aspx.template" Target="SurveyAppCentralDeploy\" Type="ElementFile" />
+  </Files>
+</ProjectItem>

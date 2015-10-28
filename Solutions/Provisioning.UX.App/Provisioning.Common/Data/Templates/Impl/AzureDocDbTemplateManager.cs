@@ -83,12 +83,12 @@ namespace Provisioning.Common.Data.Templates.Impl.AzureDocDbRequestManager
                 catch (DocumentClientException de)
                 {
                     Exception baseException = de.GetBaseException();
-                    Log.Error("AzureDocDbRequestManager", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
+                    Log.Error("AzureDocDbRequestManager.GetTemplateByName", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
                 }
                 catch (Exception ex)
                 {
                     Exception baseException = ex.GetBaseException();
-                    Log.Error("AzureDocDbRequestManager", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
+                    Log.Error("AzureDocDbRequestManager.GetTemplateByName", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
                 }
             });
             return _returnResult;
@@ -139,7 +139,7 @@ namespace Provisioning.Common.Data.Templates.Impl.AzureDocDbRequestManager
         {
             try
             {
-                ReflectionHelper _reflectionHelper = new ReflectionHelper();
+                ReflectionManager _reflectionHelper = new ReflectionManager();
                 var _provider = _reflectionHelper.GetTemplateProvider(ModuleKeys.PROVISIONINGPROVIDER_KEY);
                 var _pt = _provider.GetTemplate(name);
                 return _pt;
@@ -181,7 +181,7 @@ namespace Provisioning.Common.Data.Templates.Impl.AzureDocDbRequestManager
             Database database = client.CreateDatabaseQuery().Where(db => db.Id == this.Container).ToArray().FirstOrDefault();
             if (database == null)
             {
-               Log.Info("AzureDocDbRequestManager", "Created Document DB {0}", this.Container);
+                Log.Info("AzureDocDbRequestManager.GetOrCreateDatabaseAsync", "Created Document DB {0}", this.Container);
                 database = await client.CreateDatabaseAsync(new Database { Id = this.Container });
             }
             return database;

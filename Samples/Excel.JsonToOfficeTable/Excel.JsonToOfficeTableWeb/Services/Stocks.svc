@@ -1,1 +1,0 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="Excel.JsonToOfficeTableWeb.Services.Stocks" CodeBehind="Stocks.svc.cs" %>

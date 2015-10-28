@@ -4,6 +4,8 @@
 This application sample demonstrates how to perform JavaScript embedding to update SharePoint sites, using the JavaScript Object Model and a SharePoint Hosted Add-In. 
 This approach is preferred over customizing the Master Page.
 
+***Notice**. Techniques shown in this sample do require full permission to web or site collection level, so this is not a suitable model for apps designed to be distributed from the SharePoint store.*
+
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
 -  Office 365 Dedicated (D)

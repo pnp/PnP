@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="a1b721c6-cae4-436a-902d-18d5ac2d120d" solutionId="a1b721c6-cae4-436a-902d-18d5ac2d120d" resetWebServer="false" sharePointProductVersion="15.0" name="MicroSurveySPApp" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="f251fbf1-7de8-4eb3-bd3b-5cdfe0dfa35f" />
+  </features>
+</package>

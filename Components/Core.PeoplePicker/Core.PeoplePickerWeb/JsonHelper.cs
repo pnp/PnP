@@ -25,12 +25,12 @@ namespace Contoso.Core.PeoplePickerWeb
         public static T Deserialize<T>(string json)
         {
             T obj = Activator.CreateInstance<T>();
-            MemoryStream ms = new MemoryStream(Encoding.Unicode.GetBytes(json));
-            System.Runtime.Serialization.Json.DataContractJsonSerializer serializer = new System.Runtime.Serialization.Json.DataContractJsonSerializer(obj.GetType());
-            obj = (T)serializer.ReadObject(ms);
-            ms.Close();
-            ms.Dispose();
-            return obj;
+            using (MemoryStream ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
+            {
+                System.Runtime.Serialization.Json.DataContractJsonSerializer serializer = new System.Runtime.Serialization.Json.DataContractJsonSerializer(obj.GetType());
+                obj = (T)serializer.ReadObject(ms);
+                return obj;
+            }
         }
     }
 }

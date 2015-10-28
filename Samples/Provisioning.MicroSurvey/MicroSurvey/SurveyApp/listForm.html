@@ -1,0 +1,45 @@
+﻿<div class="editPanel">
+
+    <table>
+        <tr>
+            <td class="label">Question:</td>
+            <td>
+                <input type="text" ng-model="vm.question" ng-disabled="!vm.inputEnabled"
+                       ng-show="vm.isNewForm || vm.isEditForm" />
+                <span ng-show="vm.isDisplayForm" class="label">{{vm.question}}</span>
+            </td>
+        </tr>
+        <tr>
+            <td class ="label">Answers:</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr ng-repeat="choice in vm.answerChoices">
+            <td class="label">{{choice.index+1}}.</td>
+            <td>
+                <input type="text" ng-model="choice.text" ng-disabled="!vm.inputEnabled" ng-model-instant
+                       ng-show="vm.isNewForm || vm.isEditForm" />
+                <span ng-show="vm.isDisplayForm" class="label">{{choice.text}}</span>
+            </td>
+        </tr>
+        <tr ng-show="vm.isNewForm || vm.isEditForm">
+            <td class="buttons" colspan="2">
+                <input type="button" value="Save" ng-disabled="!vm.inputEnabled" ng-click="vm.saveButtonClick()" /> 
+                &nbsp;
+                <input type="button" value="Cancel" ng-disabled="!vm.inputEnabled" ng-click="vm.cancelButtonClick()" />
+            </td>
+        </tr>
+        <tr ng-show="vm.isDisplayForm">
+            <td class="buttons" colspan="2">
+                <input type="button" value="Edit" ng-disabled="!vm.inputEnabled" ng-click="vm.editButtonClick()" />
+                &nbsp;
+                <input type="button" value="Close" ng-disabled="!vm.inputEnabled" ng-click="vm.closeButtonClick()" />
+            </td>
+        </tr>
+        <tr>
+            <td class="errorMessage" colspan="2">
+                {{vm.message}}
+            </td>
+        </tr>
+    </table>
+
+</div>

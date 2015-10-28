@@ -1,0 +1,57 @@
+﻿@{
+    Layout = null;
+}
+
+<html>
+<head>
+    <title>Cross domain sample</title>
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/app.js"></script>
+    <script>
+        function chromeLoaded() {
+            $('body').show();
+        }
+
+        //function callback to render chrome after SP.UI.Controls.js loads
+        function renderSPChrome() {
+            //Set the chrome options for launching Help, Account, and Contact pages
+            var options = {
+                'appTitle': document.title,
+                'onCssLoaded': 'chromeLoaded()'
+            };
+
+            //Load the Chrome Control in the divSPChrome element of the page
+            var chromeNavigation = new SP.UI.Controls.Navigation('divSPChrome', options);
+            chromeNavigation.setVisible(true);
+        }
+    </script>
+</head>
+<body>
+    <div id="divSPChrome"></div>
+    <div style="padding-left:10px;">
+        <h1>What is the cross domain library</h1>
+        <span>
+            In normal circumstances it is not possible to do calls from javascript to  another domain, in this case from a SharePoint page to a MVC provider hosted app.<br />
+            The cross site domain library enables your to do <b>GET and POST calls to your provider hosted app</b>.<br />
+            It is also possible to get html (enabeling you to create app part behaviour, without Iframes) from the provider hosted app.<br />
+            The C# code in the provider hosted app is <b>automatically authenticated in the same way a app part is</b> (clientcontext is created in the same way, and also app-only calls are possible)
+        </span>
+        <h1>Why use the cross domain library</h1>
+        Javascript is a nice tool to customize SharePoint, but it has limitations that C# code does not have. <br />
+        <ul>
+            <li>Execute code using app permission, or impersonating another user</li>
+            <li>Calling external resources, like webservices or databases</li>
+            <li>Use technologies that are not possible in javascript, like serverside cashing</li>
+        </ul>
+        With the cross site domain library you can combine javascript and C# code, giving you more development possibilities.<br />
+        It is even possible to show views with javascript on your SharePoint page, rendered by the provider hosted app. (app part behaviour, without Iframes)
+        <h1>Test the samples</h1>
+        <a href="@(ViewBag.SPHost)@(ViewBag.GetSampleUrl)" target="_blank">Go to the GET sample</a>
+        <br /><br />
+        <a href="@(ViewBag.SPHost)@(ViewBag.PostSampleUrl)" target="_blank">Go to the POST sample</a>
+        <br /><br />
+        <a href="@(ViewBag.SPHost)@(ViewBag.ViewWithPostSampleUrl)" target="_blank">Go to the View with post sample</a>
+    </div>
+</body>
+</html>
+

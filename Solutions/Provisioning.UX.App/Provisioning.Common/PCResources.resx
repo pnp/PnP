@@ -204,9 +204,6 @@
   <data name="Site_Web_VisitorGroup_Title" xml:space="preserve">
     <value>{0} Visitors</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="TemplateProviderBase_Exception_Message" xml:space="preserve">
     <value>There was an error loading Template Provider. Exception {0}"</value>
   </data>

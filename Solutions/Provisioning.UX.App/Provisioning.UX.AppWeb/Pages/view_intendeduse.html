@@ -1,11 +1,10 @@
 ﻿<div class="modal-right-heading">
-    <h1>Intended Use</h1>
+    <h1>{{ 'INTENDED_USE' | translate }}</h1>
 </div>
 
-<div class="modal-right-body">
-
-    <div class="form-group has-feedback" ng-class="{ 'has-error' : formWizard.purposeDescription.$invalid && !formWizard.purposeDescription.$pristine, 'has-success' : formWizard.purposeDescription.$valid && !formWizard.purposeDescription.$pristine }">
-        <label class="control-label" for="purposeDescription">What is your business purpose for this site?</label>
+<div class="modal-right-body" ng-form="siteintendeduseform">
+    <div class="form-group has-feedback" ng-class="{ 'has-error' : siteintendeduseform.purposeDescription.$invalid && !siteintendeduseform.purposeDescription.$pristine, 'has-success' : siteintendeduseform.purposeDescription.$valid && !siteintendeduseform.purposeDescription.$pristine }">
+        <label class="control-label" for="purposeDescription">{{ 'BUSINESS_PURPOSE' | translate }}</label>
         <textarea class="form-control" rows="12" name="purposeDescription" id="purposeDescription" ng-model="siteConfiguration.purpose.description" required></textarea>
     </div>
 </div>

@@ -33,31 +33,33 @@ $(document).ready(function () {
         clerk.createsitecolumn()
         .then(
             function () {
-                console.log("Site column provisioned");
+                showMessage("Site column provisioned");
+                
                 return clerk.createcontenttype();
             },
             function () { console.log("Site column could not be created."); })
         .then(
             function () {
-                console.log("Content type provisioned");
+                showMessage("Content type provisioned");
+                
                 return clerk.createsite();
             },
             function () { console.log("Content type could not be created."); })
         .then(
             function () {
-                console.log("Site provisioned");
+                showMessage("Site provisioned");
                 return clerk.createdocumentlibrary();
             },
             function () { console.log("Site could not be created.") })
         .then(
             function () {
-                console.log("Document library provisioned");
+                showMessage("Document library provisioned");
                 return clerk.createfile();
             },
             function () { console.log("Document library could not be created.") })
         .then(
             function () {
-                console.log("File provisioned");
+                showMessage("File provisioned");
             },
             function () { console.log("File could not be created.") })
     };
@@ -65,7 +67,7 @@ $(document).ready(function () {
         clerk.deletedocumentlibrary()
         .then(
             function () {
-                console.log("Document library deleted");
+                showMessage("Document library deleted");
                 return clerk.deletesite();
             },
             function () {
@@ -75,33 +77,37 @@ $(document).ready(function () {
         )
         .then(
             function () {
-                console.log("Site deleted");
+                showMessage("Site deleted");
                 return clerk.deletecontenttype();
             },
             function () {
-                console.log("Site cleanup failed.");
+                showMessage("Site cleanup failed.");
                 return clerk.deletecontenttype();
             }
         )
         .then(
             function () {
-                console.log("Content type deleted");
+                showMessage("Content type deleted");
                 return clerk.deletesitecolumn();
             },
             function () {
-                console.log("Content type cleanup failed.");
+                showMessage("Content type cleanup failed.");
                 return clerk.deletesitecolumn();
             }
         )
         .then(
             function () {
-                console.log("Site column deleted");
+                showMessage("Site column deleted");
             },
             function () {
                 console.log("Site column cleanup failed.");
             }
         )
     };
+    function showMessage(message) {
+        SP.UI.Notify.addNotification(message, false);
+        console.log(message);
+    }
 });
 
 

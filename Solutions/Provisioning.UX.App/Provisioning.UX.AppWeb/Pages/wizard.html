@@ -5,30 +5,22 @@
 
             <div class="row">
                 <div class="col-sm-9">
-                    <img src="../images/o365-pnp-logo2.png" class="img-responsive" alt="Office 365 Patterns and Practices Logo" />
-                    <br />
-                    <br />
-
                     <div class="panel panel-default">
                         <div class="panel-heading panel-heading-custom">
-                            <h3 class="panel-title">Provisioning Sample</h3>
-
+                            <h3 class="panel-title">{{ 'SITE_PROVISIONING' | translate }}</h3>
                         </div>
                         <div class="panel-body">
                             <p>
-                                This Patterns and Practices solution sample prpvides end to end provisioning capabilities
-                                and leverages the Office PnP core library. This interface is launches an angularjs modal dialog
-                                wizard. It can be easily modified to suit your requirements or replaced with another interface.
+                                <img src="../images/WizardLogo.png" class="img-responsive img-thumbnail" 
+                                     alt="Site Provisioning"/>
+                                <span ng-bind-html=" 'WELCOME_TEXT' | translate"></span>
                             </p>
                             <br />
-                            <button class="btn btn-default" data-ng-click="open()">Get a site</button>
+                            <button class="btn btn-default" data-ng-click="open()">{{ 'REQUEST_A_SITE' | translate }}</button>
                         </div>
                     </div>
-
-
                     <br />
                     <br />
-
                 </div>
             </div>
             <div class="col-sm-6">
@@ -36,7 +28,7 @@
                     <div class="form-group">
                         <div class="panel panel-success">
                             <div class="panel-heading">
-                                <h3 class="panel-title">My Completed Requests</h3>
+                                <h3 class="panel-title">{{ 'MY_COMPLETED_REQUESTS' | translate }}</h3>
                                 <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
                             </div>
                             <div class="panel-body" ng-model="vm.existingRequests">
@@ -54,7 +46,7 @@
                         </div>
                         <div class="panel panel-warning">
                             <div class="panel-heading">
-                                <h3 class="panel-title">My New Requests</h3>
+                                <h3 class="panel-title">{{'MY_NEW_REQUESTS' | translate}}</h3>
                                 <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
                             </div>
                             <div class="panel-body" ng-model="vm.existingRequests">
@@ -78,7 +70,7 @@
                 <div class="col-sm-6">
                     <div class="panel panel-info">
                         <div class="panel-heading">
-                            <h3 class="panel-title">My Approved Requests</h3>
+                            <h3 class="panel-title">{{'MY_APPROVED_REQUESTS' | translate}}</h3>
                             <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
                         </div>
                         <div class="panel-body" ng-model="vm.existingRequests">
@@ -96,7 +88,7 @@
                     </div>
                     <div class="panel panel-danger">
                         <div class="panel-heading">
-                            <h3 class="panel-title">My Failed Requests</h3>
+                            <h3 class="panel-title">{{'MY_FAILED_REQUESTS' | translate}}</h3>
                             <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
                         </div>
                         <div class="panel-body" ng-model="vm.existingRequests">
@@ -111,6 +103,8 @@
                                 </tbody>
                             </table>
                         </div>
+                        </
+                        iv
                     </div>
 
                 </div>
@@ -118,16 +112,14 @@
 
             <div class="row">
                 <div class="col-sm-6">
-
-                    <p>Once wizard completes, data is returned and shown here:</p>
-                    <pre data-ng-show="completedConfiguration">{{completedConfiguration | json}}</pre>
-
+                    <!--<p>Once wizard completes, data is returned and shown here:</p>
+                    <pre data-ng-show="completedConfiguration">{{completedConfiguration | json}}</pre>-->
                 </div>
             </div>
 
 
         </div>
-    
+
     </section>
     
 </section>
