@@ -59,6 +59,7 @@
   <ItemGroup>
     <Content Include="corefunctions.js" />
     <Content Include="designtemplate.js" />
+    <Content Include="LoaderCached.js" />
     <Content Include="Loader.js" />
     <Content Include="uimodifications.js" />
     <Content Include="Web.config" />
