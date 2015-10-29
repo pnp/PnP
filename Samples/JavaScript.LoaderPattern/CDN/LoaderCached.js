@@ -1,4 +1,7 @@
-﻿(function (files) {
+﻿// by default the $.getScript method will get a fresh copy of the file each time. For
+// performance reasons you may want these scripts to be cached and this version of the Loader
+// accomplishes that.
+(function (files) {
 
     // create a promise
     var promise = $.Deferred();
@@ -13,7 +16,12 @@
         var file = self.files.shift();
 
         // load the remote script file
-        $.getScript(file).done(function () {
+        $.ajax({
+            type: 'GET',
+            url: file,
+            cache: true,
+            dataType: 'script'
+        }).done(function () {
             if (self.files.length > 0) {
                 engine.call(self);
             }
