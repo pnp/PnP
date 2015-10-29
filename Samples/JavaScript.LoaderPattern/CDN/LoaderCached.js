@@ -1,7 +1,7 @@
 ﻿// by default the $.getScript method will get a fresh copy of the file each time. For
 // performance reasons you may want these scripts to be cached and this version of the Loader
 // accomplishes that.
-(function (/*string[]*/ files) {
+(function (files) {
 
     // create a promise
     var promise = $.Deferred();
@@ -43,4 +43,8 @@
     // give back the promise
     return promise.promise();
 
-})(['https://localhost:44323/corefunctions.js', 'https://localhost:44323/uimodifications.js']).done(function () { /* all scripts are loaded and I could take actions here */ });
+})(['https://localhost:44323/corefunctions.js', 'https://localhost:44323/uimodifications.js']).done(function () {
+    /* all scripts are loaded and I could take actions here */
+}).fail(function () {
+    /* something failed, take some action here if needed */
+});
