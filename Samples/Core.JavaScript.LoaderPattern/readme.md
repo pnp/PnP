@@ -1,4 +1,4 @@
-#JavaScript - Loader Pattern#
+#Core JavaScript - Loader Pattern#
 
 ### Summary ###
 This sample demonstrates how to use a loader file in conjunction with a UserCustomAction to embed JavaScript in a SharePoint site. This pattern minimizes the need to update the deployed custom action.
