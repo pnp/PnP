@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ServiceDefinition name="Provisioning.Hybrid" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2013-10.2.2">
+<ServiceDefinition name="Provisioning.Hybrid" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2015-04.2.6">
   <WebRole name="Provisioning.Hybrid.Web" vmsize="Small">
     <Sites>
       <Site name="Web">
@@ -23,9 +23,9 @@
       <Setting name="General.MailUserPassword" />
       <Setting name="General.MailSiteRequested" />
       <Setting name="General.EncryptionThumbPrint" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
     </ConfigurationSettings>
     <Imports>
-      <Import moduleName="Diagnostics" />
       <Import moduleName="RemoteAccess" />
     </Imports>
     <Certificates>
@@ -53,9 +53,9 @@
       <Setting name="General.SBIssuerSecret" />
       <Setting name="ContosoCollaboration.ThemeName" />
       <Setting name="General.OnPremWebApplication" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" />
     </ConfigurationSettings>
     <Imports>
-      <Import moduleName="Diagnostics" />
       <Import moduleName="RemoteAccess" />
       <Import moduleName="RemoteForwarder" />
     </Imports>

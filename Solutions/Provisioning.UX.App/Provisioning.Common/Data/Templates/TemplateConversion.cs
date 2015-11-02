@@ -13,13 +13,14 @@ namespace Provisioning.Common.Data.Templates
     /// </summary>
     internal class TemplateConversion
     {
-        internal ProvisioningTemplate HandleProvisioningTemplate(ProvisioningTemplate provisioningTemplate, SiteInformation siteRequest)
+        internal ProvisioningTemplate HandleProvisioningTemplate(ProvisioningTemplate provisioningTemplate, SiteInformation siteRequest, Template template)
         {
             this.HandleExternalSharing(provisioningTemplate, siteRequest);
-            this.HandleSitePolicy(provisioningTemplate, siteRequest);
+            this.HandleSitePolicy(provisioningTemplate, siteRequest, template);
             this.HandleAdditionalAdministrators(provisioningTemplate, siteRequest);
             this.HandlePropertyBagEntries(provisioningTemplate, siteRequest);
             this.HandleCustomActions(provisioningTemplate, siteRequest);
+            this.HandleParameters(provisioningTemplate, siteRequest);
             return provisioningTemplate;
         }
       
@@ -39,11 +40,14 @@ namespace Provisioning.Common.Data.Templates
                 }
             }
         }
-        private void HandleSitePolicy(ProvisioningTemplate provisioningTemplate, SiteInformation siteRequest)
+        private void HandleSitePolicy(ProvisioningTemplate provisioningTemplate, SiteInformation siteRequest, Template template)
         {
-            if(!string.IsNullOrWhiteSpace(siteRequest.SitePolicy))
+            if (!template.UseTemplateDefinedPolicy)
             {
-                provisioningTemplate.SitePolicy = siteRequest.SitePolicy;
+                if (!string.IsNullOrWhiteSpace(siteRequest.SitePolicy))
+                {
+                    provisioningTemplate.SitePolicy = siteRequest.SitePolicy;
+                }
             }
         }
         private void HandleAdditionalAdministrators(ProvisioningTemplate provisioningTemplate, SiteInformation siteRequest)
@@ -101,5 +105,25 @@ namespace Provisioning.Common.Data.Templates
                 }
             }
         }
+        private void HandleParameters(ProvisioningTemplate provisioningTemplate, SiteInformation siteRequest)
+        {
+            // Add dynamic properties
+            Dictionary<string, string> _props = JsonConvert.DeserializeObject<Dictionary<string, string>>(siteRequest.SiteMetadataJson);
+            if (_props != null)
+            {
+                foreach (var prop in _props)
+                {
+                    provisioningTemplate.Parameters.Add("pnp_" + prop.Key, prop.Value);
+                }
+            }
+            // Add static properties
+            provisioningTemplate.Parameters.Add("pnp_LCID", siteRequest.Lcid.ToString());
+            provisioningTemplate.Parameters.Add("pnp_Title", siteRequest.Title);
+            provisioningTemplate.Parameters.Add("pnp_SafeTitle", siteRequest.Title.UrlNameFromString());
+            provisioningTemplate.Parameters.Add("pnp_Policy", siteRequest.SitePolicy);
+            provisioningTemplate.Parameters.Add("pnp_ExternalSharing", siteRequest.EnableExternalSharing.ToString());
+            provisioningTemplate.Parameters.Add("pnp_TemplateName", siteRequest.Template);
+        }
+
     }
 }

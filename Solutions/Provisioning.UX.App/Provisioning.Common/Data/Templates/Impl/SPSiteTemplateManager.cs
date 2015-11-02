@@ -76,7 +76,8 @@ namespace Provisioning.Common.Data.Templates.Impl
                      item => item[TemplateFields.PROVISIONINGTEMPLATE_NAME],
                      item => item[TemplateFields.ENABLED_NAME],
                     item => item[TemplateFields.ROOTWEBONLY_NAME],
-                    item => item[TemplateFields.SUBWEBONLY_NAME]
+                    item => item[TemplateFields.SUBWEBONLY_NAME],
+                    item => item[TemplateFields.USETEMPLATESITEPOLICY_NAME]
 
                      ));
                 ctx.ExecuteQuery();
@@ -100,7 +101,8 @@ namespace Provisioning.Common.Data.Templates.Impl
                         UserCodeMaximumLevel = item.BaseGetInt(TemplateFields.USERCODEMAX_NAME),
                         UserCodeWarningLevel = item.BaseGetInt(TemplateFields.USERCODEWARN_NAME),
                         SharePointOnPremises = item.BaseGet<bool>(TemplateFields.ONPREM_NAME),
-                        RootTemplate = item.BaseGet(TemplateFields.TEMPLATE_NAME)
+                        RootTemplate = item.BaseGet(TemplateFields.TEMPLATE_NAME),
+                        UseTemplateDefinedPolicy = item.BaseGet<bool>(TemplateFields.USETEMPLATESITEPOLICY_NAME)
                     });
 
                 }
@@ -128,11 +130,6 @@ namespace Provisioning.Common.Data.Templates.Impl
             {
                 ReflectionManager _reflectionHelper = new ReflectionManager();
                 var _provider = _reflectionHelper.GetTemplateProvider(ModuleKeys.PROVISIONINGPROVIDER_KEY);
-                if (_provider.Connector.GetType() == typeof(SharePointConnector))
-                { 
-                    _provider.Connector.AddParameter(SharePointConnector.CLIENTCONTEXT, Authentication.GetAuthenticatedContext());
-                }
-
                 var _pt = _provider.GetTemplate(name);
 
            
