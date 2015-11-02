@@ -1,4 +1,4 @@
-# title of the PnP sample #
+# UserProfile Sync Stuff! #
 
 ### Summary ###
 Short summary.
