@@ -25,6 +25,14 @@
                     </td>
                 </tr>
                 <tr>
+                    <td class="ms-formlabel" valign="top"><h3 class="ms-standardheader">Keywords Termset (with contains suggestions):</h3></td>
+                    <td class="ms-formbody" valign="top">
+                        <div class="ms-core-form-line" style="margin-bottom: 0px;">
+                            <asp:HiddenField runat="server" id="taxPickerKeywordsContainsSuggestions" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
                     <td colspan="2">
                         <b>Important:</b>
                         <br />
