@@ -214,34 +214,12 @@ namespace Core.JQueryWeb
 
         /// <summary>
         /// Gets the database connection string from SharePoint for autohosted app.
+        /// This method is deprecated because the autohosted option is no longer available.
         /// </summary>
-        /// <returns>The database connection string. Returns <c>null</c> if the app is not autohosted or there is no database.</returns>
+        [ObsoleteAttribute("This method is deprecated because the autohosted option is no longer available.", true)]
         public string GetDatabaseConnectionString()
         {
-            string dbConnectionString = null;
-
-            using (ClientContext clientContext = CreateAppOnlyClientContextForSPHost())
-            {
-                if (clientContext != null)
-                {
-                    var result = AppInstance.RetrieveAppDatabaseConnectionString(clientContext);
-
-                    clientContext.ExecuteQuery();
-
-                    dbConnectionString = result.Value;
-                }
-            }
-
-            if (dbConnectionString == null)
-            {
-                const string LocalDBInstanceForDebuggingKey = "LocalDBInstanceForDebugging";
-
-                var dbConnectionStringSettings = WebConfigurationManager.ConnectionStrings[LocalDBInstanceForDebuggingKey];
-
-                dbConnectionString = dbConnectionStringSettings != null ? dbConnectionStringSettings.ConnectionString : null;
-            }
-
-            return dbConnectionString;
+            throw new NotSupportedException("This method is deprecated because the autohosted option is no longer available.");
         }
 
         /// <summary>

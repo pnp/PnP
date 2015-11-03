@@ -18,6 +18,8 @@ Even with good governance, your sites can proliferate and grow out of control. S
 - Site Policies and a visual indicator of the site policy that is applied
 - Applying Composed Looks including, Alternate CSS, Logo, Background image, and fonts
 - Provision site artifacts for example Site Columns, Content Types, List Definitions and Instances, Pages (either WebPart Pages or Wiki Pages)
+- Localizable (supported languages: en-US, sv-SE)
+- Support for Azure only configuration
 
 ### Applies to ###
 -  Office 365 Multi-tenant (MT)
@@ -27,7 +29,7 @@ Even with good governance, your sites can proliferate and grow out of control. S
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Provisioning.UX.App | Frank Marasco, Brian Michely and Steven Follis
+Provisioning.UX.App | Frank Marasco, Brian Michely, Steven Follis and Wictor Wilén
 
 *PnP remote provisioning Core Engine work done by Erwin van Hunen (Knowit AB), Paolo Pialorsi (PiaSys.com), Bert Jansen (Microsoft), Frank Marasco (Microsoft), Vesa Juvonen (Microsoft)*
 
@@ -36,6 +38,7 @@ Version  | Date | Comments
 ---------| -----| --------
 .1  | June 1, 2015 | Initial version
 .2  | July 1, 2015 | Modifications to Logging Component and Exception Handling.
+.3  | September 2, 2015  | Added internationalization support, Azure only configuration
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
@@ -116,6 +119,10 @@ The site details view contains a field where the user specifies the url of their
 #### Confirmation ####
 Once user is done with the views in the wizard, they will be presented with a confirmation view and the chance to change their inputs. Once they click the checkmark icon, the site request object data will be submitted to the engine. 
 
+
+#### User Interface Localization ####
+See [Localization Document](Internationalization.md) on localization support within the add-in.
+
 ----------
 
 # Getting Started #
@@ -135,7 +142,10 @@ Repeat the above setup two more times for MBI and LBI. You should end up with th
 
 Once we have the policies created we are going to publish the Site Policies from the content type hub so they will be available to all the sites.
 
-#### App Registration and Permissions ####
+#### SharePoint Data Repository ####
+If you will be hosting the Site Requests in SharePoint list you will have to pre-provision the necessary lists. The PnP Provisioning Engine is used to provision the Fields, Content Types, and lists. The Template file PnPSiteProvisioning.xml may be found in the source directory under setup.  See [https://github.com/OfficeDev/PnP/tree/master/Binaries/PowerShell.Commands](https://github.com/OfficeDev/PnP/tree/master/Binaries/PowerShell.Commands "PnP cmdlets")
+
+#### Add-in Registration and Permissions ####
 
 You should use AppRegNew.aspx to register the SharePoint Add-in. 
 
@@ -152,15 +162,28 @@ This solution uses app only permissions so you will have to navigate to http://[
 	</AppPermissionRequests>
 	
 ----------
+
+#### Application Settings ####
+
+To avoid working with .config files the Provisioning.UX.App allows you to work with only Azure Web App Settings (or IIS settings).  See [Azure settings documentation](Azure-App-Settings.md)
+
+#### SharePoint Lists as a Data Repository ####
+
+How to set up the Provisioning.UX.App using SharePoint only data storage.  See [SharePoint only documentation](SharePoint-Only-Storage.md)
+
 #### Configuration Files ####
 
+
 The Provisioning.UX.AppWeb and Provisioning.Job each has its own configuration settings and you have to ensure that the settings are applied in both projects.
+
 
 Configuration File | Description
 -------------------|----------
 appSettings.config | An alternate file to store application settings
 provisioningSettings.config | An alternate file which is configured to control the implementation classes for the Provisioning Engine
 Templates.config   | Used to display the available site templates to the Provisioning.UX.AppWeb and provides a mapping to PnP Provisioning Template in the Provisioning.Job
+
+** Alternate appSettings.config file should NOT be used if configuration settings is stored in Azure Web Sites configuration **
 
 ##### appSettings.config #####
 
@@ -199,8 +222,10 @@ type | The class and assembly of the implementation
 connectionString | The connection information that is used to connect to the source. 
 container | The container where the artifacts are stored
 
+##### Module Configuration Section #####
 
 Module Name | Description
+-------------------|----------
 RepositoryManager | Used to change the implementation class of the site request repository
 MasterTemplateProvider | Used to display the available site templates and provides a mapping to PnP Provisioning Template. PnP provisioning XML uses community standardize schema available from own [repository](https://github.com/OfficeDev/PnP-Provisioning-Schema) under Office Dev in GitHub
 ProvisioningProviders | PnP Core Provisioning Providers that contain the implementation on how to work with various source files.

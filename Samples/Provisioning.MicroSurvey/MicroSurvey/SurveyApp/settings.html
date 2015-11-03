@@ -1,0 +1,11 @@
+﻿<div class="settingsPanel">
+
+    <a class="button-link" href="{{vm.questionsListUrl}}">Edit Questions</a>
+    <a class="button-link" href="{{vm.answersListUrl}}">Check Answers</a>
+    <br />
+
+    <h3>SharePoint Content Check</h3>
+    <ol>
+        <li ng-repeat ="message in vm.displayMessages">{{message}}</li>
+    </ol>
+</div>

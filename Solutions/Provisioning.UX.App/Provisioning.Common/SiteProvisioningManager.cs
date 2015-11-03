@@ -10,6 +10,8 @@ using Provisioning.Common.Authentication;
 using Provisioning.Common.Data.Templates;
 using Provisioning.Common.Configuration;
 using Provisioning.Common.Utilities;
+using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
+using Provisioning.Common.Data.SiteRequests;
 
 namespace Provisioning.Common
 {
@@ -45,7 +47,23 @@ namespace Provisioning.Common
         {
             _siteprovisioningService.Authentication = new AppOnlyAuthenticationTenant();
             _siteprovisioningService.Authentication.TenantAdminUrl = template.TenantAdminUrl;
-     
+
+            ReflectionManager rm = new ReflectionManager();
+
+            var siteUrlProvider = rm.GetSiteUrlProvider("SiteUrlProvider");
+            if(siteUrlProvider != null)
+            {
+                var newUrl = siteUrlProvider.GenerateSiteUrl(siteRequest, template);
+                if (!String.IsNullOrEmpty(newUrl))
+                {
+                    Log.Info("SiteProvisioningManager.CreateSiteCollection", "Site {0} was renamed to {1}", siteRequest.Url, newUrl);
+
+                    SiteRequestFactory.GetInstance().GetSiteRequestManager().UpdateRequestUrl(siteRequest.Url, newUrl);
+                    siteRequest.Url = newUrl;
+
+                }
+                
+            }
             _siteprovisioningService.CreateSiteCollection(siteRequest, template);
             if(siteRequest.EnableExternalSharing)
             {
@@ -58,20 +76,26 @@ namespace Provisioning.Common
         /// </summary>
         /// <param name="web"></param>
         /// <exception cref="ProvisioningTemplateException">An Exception that occurs when applying the template to a site</exception>
-        public void ApplyProvisioningTemplate(ProvisioningTemplate provisioningTemplate, SiteInformation siteRequest)
+        public void ApplyProvisioningTemplate(ProvisioningTemplate provisioningTemplate, SiteInformation siteRequest, Template template)
         {
             try
             {
                 this._siteprovisioningService.Authentication = new AppOnlyAuthenticationSite();
                 this._siteprovisioningService.Authentication.SiteUrl = siteRequest.Url;
                 var _web = _siteprovisioningService.GetWebByUrl(siteRequest.Url);
-                provisioningTemplate.Connector = this.GetProvisioningConnector();
-                provisioningTemplate = new TemplateConversion().HandleProvisioningTemplate(provisioningTemplate, siteRequest);
+                provisioningTemplate.Connector = this.GetProvisioningConnector();                
+                provisioningTemplate = new TemplateConversion().HandleProvisioningTemplate(provisioningTemplate, siteRequest, template);
+
+                ProvisioningTemplateApplyingInformation _pta = new ProvisioningTemplateApplyingInformation();
+                _pta.ProgressDelegate = (message, step, total) =>
+                {
+                    Log.Info("SiteProvisioningManager.ApplyProvisioningTemplate", "Applying Provisioning template - Step {0}/{1} : {2} ", step, total, message);
+                }; 
                 _web.ApplyProvisioningTemplate(provisioningTemplate);
             }
             catch(Exception _ex)
             {
-                var _message =string.Format("Error Occured when applying the template: {0}", _ex.Message);
+                var _message =string.Format("Error Occured when applying the template: {0} to site: {1}", _ex.Message, siteRequest.Url);
                 throw new ProvisioningTemplateException(_message, _ex);
             }
         }
@@ -81,8 +105,8 @@ namespace Provisioning.Common
         /// <returns></returns>
         private FileConnectorBase GetProvisioningConnector()
         {
-            ReflectionHelper _helper = new ReflectionHelper();
-            FileConnectorBase _connectorInstance =  _helper.GetProvisioningConnector(ModuleKeys.PROVISIONINGCONNECTORS_KEY);
+            ReflectionManager _helper = new ReflectionManager();
+            FileConnectorBase _connectorInstance =  _helper.GetProvisioningConnector(ModuleKeys.PROVISIONINGCONNECTORS_KEY);          
             return _connectorInstance;
         }
     }

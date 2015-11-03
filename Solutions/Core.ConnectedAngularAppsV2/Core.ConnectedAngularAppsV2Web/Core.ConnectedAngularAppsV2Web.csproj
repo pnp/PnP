@@ -20,6 +20,7 @@
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
     <TargetOfficeVersion>16.1</TargetOfficeVersion>
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -126,9 +127,9 @@
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="OfficeDevPnP.Core, Version=1.4.815.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\OfficeDevPnP\PnP\OfficeDevPnP.Core\OfficeDevPnP.Core\bin\Debug\OfficeDevPnP.Core.dll</HintPath>
+    <Reference Include="OfficeDevPnP.Core, Version=1.7.1015.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OfficeDevPnPCore16.1.7.1015.0\lib\net45\OfficeDevPnP.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>

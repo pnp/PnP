@@ -81,18 +81,20 @@ namespace Provisioning.Job
                     _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Processing);
                     SiteProvisioningManager _siteProvisioningManager = new SiteProvisioningManager(siteRequest, _template);
                     Log.Info("Provisioning.Job.SiteProvisioningJob.ProvisionSites", "Provisioning Site Request for Site Url {0}.", siteRequest.Url);
+                
                     _siteProvisioningManager.CreateSiteCollection(siteRequest, _template);
-                    _siteProvisioningManager.ApplyProvisioningTemplate(_provisioningTemplate, siteRequest);
+                    _siteProvisioningManager.ApplyProvisioningTemplate(_provisioningTemplate, siteRequest, _template);
                     this.SendSuccessEmail(siteRequest);
                     _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Complete);
                 }
                 catch(ProvisioningTemplateException _pte)
                 {
-                    _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Exception, _pte.Message);
+                    _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.CompleteWithErrors, _pte.Message);
                 }
                 catch(Exception _ex)
                 {
-                  _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Exception, _ex.Message);
+                    Log.Error("Provisioning.Job.SiteProvisioningJob.ProvisionSites", _ex.ToString());
+                    _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Exception, _ex.Message);
                   this.SendFailureEmail(siteRequest, _ex.Message);
                 }
             }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Framework.TimerJobs;
 using OfficeDevPnP.Core.Framework.TimerJobs.Utilities;
-using OfficeDevPnP.Core.Utilities;
+using OfficeDevPnP.Core.Diagnostics;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;

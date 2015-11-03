@@ -1,7 +1,7 @@
 ﻿using Microsoft.Azure.Documents;
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
-
+using Provisioning.Common.Metadata;
 using Provisioning.Common.Utilities;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Provisioning.Common.Data.Metadata.impl
+namespace Provisioning.Common.Data.Metadata.Impl
 {
     class AzureDocDbMetadataManager : AbstractModule, IMetadataManager
     {
@@ -40,9 +40,9 @@ namespace Provisioning.Common.Data.Metadata.impl
         /// Returns a Collection of Site Classification Objects.
         /// </summary>
         /// <returns></returns>
-        public List<SiteClassification> GetSiteClassifications()
+        public ICollection<SiteClassification> GetAvailableSiteClassifications()
         {
-            List<SiteClassification> _returnResult = new List<SiteClassification>();
+            ICollection<SiteClassification> _returnResult = new List<SiteClassification>();
             UsingContext(client =>
             {
                 try
@@ -262,5 +262,13 @@ namespace Provisioning.Common.Data.Metadata.impl
                            select record;
             return _siteClassification.ToList().FirstOrDefault();
         }
+
+        public ICollection<SiteMetadata> GetAvailableOrganizationalFunctions() { return new List<SiteMetadata>(); }
+        public ICollection<SiteMetadata> GetAvailableRegions() { return new List<SiteMetadata>(); }
+        public ICollection<SiteMetadata> GetAvailableDivisions() { return new List<SiteMetadata>(); }
+        public ICollection<SiteMetadata> GetAvailableTimeZones() { return new List<SiteMetadata>(); }
+        public ICollection<SiteMetadata> GetAvailableSiteRegions() { return new List<SiteMetadata>(); }
+
+        public ICollection<SiteMetadata> GetAvailableLanguages() { return new List<SiteMetadata>(); }
     }
 }

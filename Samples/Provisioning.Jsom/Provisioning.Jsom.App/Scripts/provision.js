@@ -46,6 +46,14 @@ Contoso.JSOMProvisioning.ProvisioningClerk = function () {
         fci.set_content(new SP.Base64EncodedByteArray())
         return fci;
     }
+    function getContext() {
+        return new SP.ClientContext(appweburl);
+    }
+    function getAppContextSite(ctx) {
+        var fct = new SP.ProxyWebRequestExecutorFactory(appweburl);
+        ctx.set_webRequestExecutorFactory(fct);
+        return new SP.AppContextSite(ctx, hostweburl);
+    }
 
     var publicMembers = {
         get_appweburl: function () { return appweburl; },
@@ -82,10 +90,8 @@ Contoso.JSOMProvisioning.ProvisioningClerk = function () {
             var fieldschema = '<Field Type="' + sitecolumntype + '" Name="' + sitecolumnname + '" DisplayName="' + sitecolumndisplayname + '" Group="JSOM Provisioned Columns" />';
             var dfd = $.Deferred();
 
-            var ctx = new SP.ClientContext(appweburl);
-            var fct = new SP.ProxyWebRequestExecutorFactory(appweburl);
-            ctx.set_webRequestExecutorFactory(fct);
-            var appctx = new SP.AppContextSite(ctx, hostweburl);
+            var ctx = getContext();
+            var appctx = getAppContextSite(ctx);
 
             var targetWeb = appctx.get_site().get_rootWeb();
             var fields = targetWeb.get_fields()
@@ -100,10 +106,8 @@ Contoso.JSOMProvisioning.ProvisioningClerk = function () {
         deletesitecolumn: function () {
             var dfd = $.Deferred();
 
-            var ctx = new SP.ClientContext(appweburl);
-            var fct = new SP.ProxyWebRequestExecutorFactory(appweburl);
-            ctx.set_webRequestExecutorFactory(fct);
-            var appctx = new SP.AppContextSite(ctx, hostweburl);
+            var ctx = getContext();
+            var appctx = getAppContextSite(ctx);
 
             var targetWeb = appctx.get_site().get_rootWeb();
             var fields = targetWeb.get_fields()
@@ -119,10 +123,8 @@ Contoso.JSOMProvisioning.ProvisioningClerk = function () {
         createcontenttype: function () {
             var dfd = $.Deferred();
 
-            var ctx = new SP.ClientContext(appweburl);
-            var fct = new SP.ProxyWebRequestExecutorFactory(appweburl);
-            ctx.set_webRequestExecutorFactory(fct);
-            var appctx = new SP.AppContextSite(ctx, hostweburl);
+            var ctx = getContext();
+            var appctx = getAppContextSite(ctx);
 
             var targetWeb = appctx.get_site().get_rootWeb();
             var fields = targetWeb.get_fields()
@@ -162,10 +164,8 @@ Contoso.JSOMProvisioning.ProvisioningClerk = function () {
         deletecontenttype: function () {
             var dfd = $.Deferred();
 
-            var ctx = new SP.ClientContext(appweburl);
-            var fct = new SP.ProxyWebRequestExecutorFactory(appweburl);
-            ctx.set_webRequestExecutorFactory(fct);
-            var appctx = new SP.AppContextSite(ctx, hostweburl);
+            var ctx = getContext();
+            var appctx = getAppContextSite(ctx);
 
             var targetWeb = appctx.get_site().get_rootWeb();
             var webTypes = targetWeb.get_contentTypes();
@@ -182,10 +182,8 @@ Contoso.JSOMProvisioning.ProvisioningClerk = function () {
         createsite: function () {
             var dfd = $.Deferred();
 
-            var ctx = new SP.ClientContext(appweburl);
-            var fct = new SP.ProxyWebRequestExecutorFactory(appweburl);
-            ctx.set_webRequestExecutorFactory(fct);
-            var appctx = new SP.AppContextSite(ctx, hostweburl);
+            var ctx = getContext();
+            var appctx = getAppContextSite(ctx);
 
             var thisWeb = appctx.get_web();
             ctx.load(thisWeb);
@@ -206,10 +204,8 @@ Contoso.JSOMProvisioning.ProvisioningClerk = function () {
         deletesite: function () {
             var dfd = $.Deferred();
 
-            var ctx = new SP.ClientContext(appweburl);
-            var fct = new SP.ProxyWebRequestExecutorFactory(appweburl);
-            ctx.set_webRequestExecutorFactory(fct);
-            var appctx = new SP.AppContextSite(ctx, hostweburl);
+            var ctx = getContext();
+            var appctx = getAppContextSite(ctx);
 
             var thisWeb = appctx.get_web();
             ctx.load(thisWeb);
@@ -233,10 +229,9 @@ Contoso.JSOMProvisioning.ProvisioningClerk = function () {
         },
         createdocumentlibrary: function () {
             var dfd = $.Deferred();
-            var ctx = new SP.ClientContext(appweburl);
-            var fct = new SP.ProxyWebRequestExecutorFactory(appweburl);
-            ctx.set_webRequestExecutorFactory(fct);
-            var appctx = new SP.AppContextSite(ctx, hostweburl);
+
+            var ctx = getContext();
+            var appctx = getAppContextSite(ctx);
 
             var targetType = appctx.get_site().get_rootWeb().get_contentTypes().getById(contenttypeid);
             var thisWeb = appctx.get_web();
@@ -277,10 +272,8 @@ Contoso.JSOMProvisioning.ProvisioningClerk = function () {
         deletedocumentlibrary: function () {
             var dfd = $.Deferred();
 
-            var ctx = new SP.ClientContext(appweburl);
-            var fct = new SP.ProxyWebRequestExecutorFactory(appweburl);
-            ctx.set_webRequestExecutorFactory(fct);
-            var appctx = new SP.AppContextSite(ctx, hostweburl);
+            var ctx = getContext();
+            var appctx = getAppContextSite(ctx);
 
             var thisWeb = appctx.get_web();
             ctx.load(thisWeb);
@@ -306,10 +299,8 @@ Contoso.JSOMProvisioning.ProvisioningClerk = function () {
         createfile: function () {
             var dfd = $.Deferred();
 
-            var ctx = new SP.ClientContext(appweburl);
-            var fct = new SP.ProxyWebRequestExecutorFactory(appweburl);
-            ctx.set_webRequestExecutorFactory(fct);
-            var appctx = new SP.AppContextSite(ctx, hostweburl);
+            var ctx = getContext();
+            var appctx = getAppContextSite(ctx);
 
             var thisWeb = appctx.get_web();
             ctx.load(thisWeb);

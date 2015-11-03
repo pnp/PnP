@@ -1,16 +1,16 @@
 ﻿<div class="modal-right-heading">
-    <h1>Which type of site would you like to create?</h1>
+    <h1>{{ 'TEMPLATE_WHICH_TEMPLATE' | translate }}</h1>
 </div>
 
 <div class="modal-right-body">
 
     <div class="media" ng-repeat="template in templates" ng-click="selectTemplate(template)" ng-class="{ 'active': template == siteConfiguration.template }">
         <div class=" media-left">
-            <img class="media-object" ng-src="{{template.imageUrl}}" alt="Template Icon">
+            <img class="media-object" ng-src="{{template.imageUrl}}" alt="{{ 'TEMPLATE_ICON' | translate }}">
         </div>
         <div class="media-body">
             <h4 class="media-heading">{{template.title}}</h4>
-            {{template.description}}
+            <p ng-bind-html-unsafe="template.description"></p>
         </div>
     </div>
 

@@ -30,7 +30,6 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         const string CAML_GETREQUEST_BY_URL = "<View><Query><Where><Eq><FieldRef Name='SP_Url'/><Value Type='Text'>{0}</Value></Eq></Where></Query><RowLimit>100</RowLimit></View>";
         const string CAML_APPROVEDREQUESTS = "<View><Query><Where><Eq><FieldRef Name='SP_ProvisioningStatus'/><Value Type='Text'>Approved</Value></Eq></Where></Query><RowLimit>100</RowLimit></View>";
         const string CAML_GETREQUESTSBYOWNER = "<View><Query><Where><Eq><FieldRef Name='SP_Owner' LookupId='True'/><Value Type='Int'>{0}</Value></Eq></Where></Query></View>";
-        
         #endregion
 
         #region Constructor
@@ -39,144 +38,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         }
         #endregion
 
-        #region Private Methods
-        /// <summary>
-        /// Creates the Site Request if it doesnt exist
-        /// </summary>
-        /// <param name="ctx"></param>
-        private void HandleSiteRequestList(ClientContext ctx)
-        {
-            try
-            {
-                Stopwatch _timespan = Stopwatch.StartNew();
-
-                SiteRequestList.CreateSharePointRepositoryList(ctx.Web,
-                    SiteRequestList.TITLE,
-                    SiteRequestList.DESCRIPTION,
-                    SiteRequestList.LISTURL);
-
-               Log.Info("SPSiteRequestManager.HandleSiteRequestList",
-                    PCResources.SiteRequest_List_Creation_Successful, SiteRequestList.LISTURL, ctx.Url,
-                    SiteRequestList.LISTURL,
-                    ctx.Url);
-                
-                _timespan.Stop();
-                Log.TraceApi("SharePoint", "SPSiteRequestManager.HandleSiteRequestList", _timespan.Elapsed);
-            }
-            catch (Exception _ex)
-            {
-                var _message = String.Format(PCResources.SiteRequest_List_Creation_Error, SiteRequestList.LISTURL, ctx.Url, _ex.Message);
-                Log.Error("SPSiteRequestManager.HandleSiteRequestList",
-                    PCResources.SiteRequest_List_Creation_Error,
-                    SiteRequestList.LISTURL,
-                    ctx.Url,
-                    _ex);
-                throw new DataStoreException(_message, _ex);
-            }
-        }
-        /// <summary>
-        /// Used to get a value from a list item
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="fieldName"></param>
-        /// <returns></returns>
-        private string BaseSet(ListItem item, string fieldName)
-        {
-            return item[fieldName] == null ? String.Empty : item[fieldName].ToString();
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="item"></param>
-        /// <param name="fieldName"></param>
-        /// <returns></returns>
-        private T BaseGet<T>(ListItem item, string fieldName)
-        {
-            var value = item[fieldName];
-            return (T)value;
-        }
-    
-        /// <summary>
-        /// Used to get a User Object from a list item
-        /// </summary>
-        /// <param name="ctx"></param>
-        /// <param name="item"></param>
-        /// <param name="field"></param>
-        /// <returns></returns>
-        private SiteUser BaseSetUser(ClientContext ctx, ListItem item, string field)
-        {
-            SiteUser _owner = new SiteUser();
-            var _fieldUser = ((FieldUserValue)(item[field]));
-            User _user = ctx.Web.EnsureUser(_fieldUser.LookupValue);
-            ctx.Load(_user, u => u.LoginName, u => u.Email, u => u.PrincipalType, u => u.Title);
-            ctx.ExecuteQuery();
-            _owner.Name = _user.Email;
-            return _owner;
-        }
-
-        /// <summary>
-        /// Used to get a value from a list item and convert to Int
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="fieldName"></param>
-        /// <returns></returns>
-        private int BaseSetInt(ListItem item, string fieldName)
-        {
-            return Convert.ToInt32(item[fieldName]);
-        }
-
-        /// <summary>
-        /// Used to get a value from a list item and convert to UInt
-        /// </summary>
-        /// <param name="item"></param>
-        /// <param name="fieldName"></param>
-        /// <returns></returns>
-        private uint BaseSetUint(ListItem item, string fieldName)
-        {
-            object _temp = item[fieldName];
-            uint _result = new uint();
-            if (_temp != null)
-            {
-                uint.TryParse(item[fieldName].ToString(), out _result);
-                return _result;
-            }
-            return _result;
-
-        }
-
-        /// <summary>
-        /// Method for working with User Fields
-        /// </summary>
-        /// <param name="ctx"></param>
-        /// <param name="item"></param>
-        /// <param name="fieldName"></param>
-        /// <returns></returns>
-        private List<SiteUser> BaseSetUsers(ClientContext ctx, ListItem item, string fieldName)
-        {
-            List<SiteUser> _users = new List<SiteUser>();
-            if(item[fieldName] != null)
-            {
-                foreach (FieldUserValue _userValue in item[fieldName] as FieldUserValue[])
-                {
-                    User _user = ctx.Web.EnsureUser(_userValue.LookupValue);
-                    ctx.Load(_user, u => u.LoginName, u => u.Email, u => u.PrincipalType, u => u.Title);
-                    ctx.ExecuteQuery();
-
-                    var _spUser = new SiteUser()
-                    {
-                        //Email = _user.Email,
-                        //LoginName = _user.LoginName,
-                        Name = _user.Email
-                    };
-                    _users.Add(_spUser);
-                }
-            }
-            return _users;
-        }
-       
-
+        #region Private Methods 
         /// <summary>
         /// Member to return SiteRequest from the SharePoint SiteRequest Repository
         /// </summary>
@@ -196,10 +58,16 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                     SiteRequestList.LISTURL,
                     _camlQuery.ViewXml);
 
-                var web = ctx.Web;
-                if (!web.ListExists(SiteRequestList.TITLE))
+                var _web = ctx.Web;
+                ctx.Load(_web);
+
+                if (!_web.ListExists(SiteRequestList.TITLE))
                 {
-                    this.HandleSiteRequestList(ctx);
+                    var _message = String.Format("The List {0} does not exist in Site {1}",
+                         SiteRequestList.TITLE,
+                         _web.Url);
+                    Log.Fatal("SPSiteRequestManager.GetSiteRequestsByCaml", _message);
+                    throw new DataStoreException(_message);
                 }
 
                 var _list = ctx.Web.Lists.GetByTitle(SiteRequestList.TITLE);
@@ -226,28 +94,27 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 ctx.ExecuteQuery();
 
                 _timespan.Stop();
-
                 Log.TraceApi("SharePoint", "SPSiteRequestManager.GetSiteRequestsByCaml", _timespan.Elapsed);
 
                 foreach (ListItem _item in _listItemCollection)
                 {
                     var _site = new SiteInformation()
                     {
-                        Title = this.BaseSet(_item, SiteRequestFields.TITLE),
-                        Description = this.BaseSet(_item, SiteRequestFields.DESCRIPTION_NAME),
-                        Template = this.BaseSet(_item, SiteRequestFields.TEMPLATE_NAME),
-                        SitePolicy = this.BaseSet(_item, SiteRequestFields.POLICY_NAME),
-                        Url = this.BaseSet(_item, SiteRequestFields.URL_NAME),
-                        SiteOwner = this.BaseSetUser(ctx, _item, SiteRequestFields.OWNER_NAME),
-                        AdditionalAdministrators = this.BaseSetUsers(ctx, _item, SiteRequestFields.ADD_ADMINS_NAME),
-                        EnableExternalSharing = this.BaseGet<bool>(_item, SiteRequestFields.EXTERNALSHARING_NAME),
-                        RequestStatus = this.BaseSet(_item, SiteRequestFields.PROVISIONING_STATUS_NAME),
-                        Lcid = this.BaseSetUint(_item, SiteRequestFields.LCID_NAME),
-                        TimeZoneId = this.BaseSetInt(_item, SiteRequestFields.TIMEZONE_NAME),
-                        SharePointOnPremises = this.BaseGet<bool>(_item, SiteRequestFields.ONPREM_REQUEST_NAME),
-                        BusinessCase = this.BaseSet(_item, SiteRequestFields.BC_NAME),
-                        SiteMetadataJson = this.BaseSet(_item, SiteRequestFields.PROPS_NAME),
-                        RequestStatusMessage = this.BaseSet(_item, SiteRequestFields.STATUSMESSAGE_NAME)
+                        Title = _item.BaseGet(SiteRequestFields.TITLE),
+                        Description = _item.BaseGet(SiteRequestFields.DESCRIPTION_NAME),
+                        Template = _item.BaseGet(SiteRequestFields.TEMPLATE_NAME),
+                        SitePolicy = _item.BaseGet(SiteRequestFields.POLICY_NAME),
+                        Url = _item.BaseGet(SiteRequestFields.URL_NAME),
+                        SiteOwner = _item.BaseGetUser(SiteRequestFields.OWNER_NAME),
+                        AdditionalAdministrators = _item.BaseGetUsers(SiteRequestFields.ADD_ADMINS_NAME),
+                        EnableExternalSharing = _item.BaseGet<bool>(SiteRequestFields.EXTERNALSHARING_NAME),
+                        RequestStatus = _item.BaseGet(SiteRequestFields.PROVISIONING_STATUS_NAME),
+                        Lcid = _item.BaseGetUint(SiteRequestFields.LCID_NAME),
+                        TimeZoneId = _item.BaseGetInt(SiteRequestFields.TIMEZONE_NAME),
+                        SharePointOnPremises = _item.BaseGet<bool>(SiteRequestFields.ONPREM_REQUEST_NAME),
+                        BusinessCase = _item.BaseGet(SiteRequestFields.BC_NAME),
+                        SiteMetadataJson = _item.BaseGet(SiteRequestFields.PROPS_NAME),
+                        RequestStatusMessage = _item.BaseGet(SiteRequestFields.STATUSMESSAGE_NAME)
                     };
                     _siteRequests.Add(_site);
                 }
@@ -264,17 +131,21 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 CamlQuery _camlQuery = new CamlQuery();
                 _camlQuery.ViewXml = string.Format(camlQuery, filter);
 
-               Log.Info("SPSiteRequestManager.GetSiteRequestsByCaml",
-                  "Querying SharePoint Request Repository: {0}, Caml Query: {1} Filter: {2}",
+               Log.Info("SPSiteRequestManager.GetSiteRequestsByCaml", "Querying SharePoint Request Repository: {0}, Caml Query: {1} Filter: {2}",
                   SiteRequestList.LISTURL,
                   _camlQuery.ViewXml,
                   filter);
 
                 var _web = ctx.Web;
+                ctx.Load(_web);
 
                 if (!_web.ListExists(SiteRequestList.TITLE))
                 {
-                    this.HandleSiteRequestList(ctx);
+                    var _message = String.Format("The List {0} does not exist in Site {1}",
+                          SiteRequestList.TITLE,
+                          _web.Url);
+                    Log.Fatal("SPSiteRequestManager.GetSiteRequestsByCaml", _message);
+                    throw new DataStoreException(_message);
                 }
 
                 var _list = ctx.Web.Lists.GetByTitle(SiteRequestList.TITLE);
@@ -311,21 +182,21 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
 
                     _siteRequest = new SiteInformation()
                     {
-                        Title = this.BaseSet(_item, SiteRequestFields.TITLE),
-                        Description = this.BaseSet(_item, SiteRequestFields.DESCRIPTION_NAME),
-                        Template = this.BaseSet(_item, SiteRequestFields.TEMPLATE_NAME),
-                        SitePolicy = this.BaseSet(_item, SiteRequestFields.POLICY_NAME),
-                        Url = this.BaseSet(_item, SiteRequestFields.URL_NAME),
-                        SiteOwner = this.BaseSetUser(ctx, _item, SiteRequestFields.OWNER_NAME),
-                        AdditionalAdministrators = this.BaseSetUsers(ctx, _item, SiteRequestFields.ADD_ADMINS_NAME),
-                        EnableExternalSharing = this.BaseGet<bool>(_item, SiteRequestFields.EXTERNALSHARING_NAME),
-                        RequestStatus = this.BaseSet(_item, SiteRequestFields.PROVISIONING_STATUS_NAME),
-                        Lcid = this.BaseSetUint(_item, SiteRequestFields.LCID_NAME),
-                        TimeZoneId = this.BaseSetInt(_item, SiteRequestFields.TIMEZONE_NAME),
-                        SharePointOnPremises = this.BaseGet<bool>(_item, SiteRequestFields.ONPREM_REQUEST_NAME),
-                        BusinessCase = this.BaseSet(_item, SiteRequestFields.BC_NAME),
-                        SiteMetadataJson = this.BaseSet(_item, SiteRequestFields.PROPS_NAME),
-                        RequestStatusMessage = this.BaseSet(_item, SiteRequestFields.STATUSMESSAGE_NAME)
+                        Title = _item.BaseGet(SiteRequestFields.TITLE),
+                        Description = _item.BaseGet(SiteRequestFields.DESCRIPTION_NAME),
+                        Template = _item.BaseGet(SiteRequestFields.TEMPLATE_NAME),
+                        SitePolicy = _item.BaseGet(SiteRequestFields.POLICY_NAME),
+                        Url = _item.BaseGet(SiteRequestFields.URL_NAME),
+                        SiteOwner = _item.BaseGetUser(SiteRequestFields.OWNER_NAME),
+                        AdditionalAdministrators = _item.BaseGetUsers(SiteRequestFields.ADD_ADMINS_NAME),
+                        EnableExternalSharing = _item.BaseGet<bool>(SiteRequestFields.EXTERNALSHARING_NAME),
+                        RequestStatus = _item.BaseGet(SiteRequestFields.PROVISIONING_STATUS_NAME),
+                        Lcid = _item.BaseGetUint(SiteRequestFields.LCID_NAME),
+                        TimeZoneId = _item.BaseGetInt(SiteRequestFields.TIMEZONE_NAME),
+                        SharePointOnPremises = _item.BaseGet<bool>(SiteRequestFields.ONPREM_REQUEST_NAME),
+                        BusinessCase = _item.BaseGet( SiteRequestFields.BC_NAME),
+                        SiteMetadataJson = _item.BaseGet( SiteRequestFields.PROPS_NAME),
+                        RequestStatusMessage = _item.BaseGet(SiteRequestFields.STATUSMESSAGE_NAME)
                     };
                 }
             });
@@ -374,7 +245,9 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
 
         #region ISiteRequestManager Members
         public ICollection<SiteInformation> GetOwnerRequests(string email)
-        {  
+        {
+            Log.Info("SPSiteRequestManager.GetOwnerRequests", "Entering GetOwnerRequests by email {0}", email);
+
             ICollection<SiteInformation> _returnResults = new List<SiteInformation>();
             UsingContext(ctx =>
             {
@@ -396,7 +269,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                     }
                     else
                     {
-                        //TODO LOG 
+                        Log.Warning("SPSiteRequestManager.GetOwnerRequests", "GetOwnerRequests email {0} not found", email);
                     }
                 }
                 catch (Exception _ex) 
@@ -409,16 +282,23 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
 
         public void CreateNewSiteRequest(SiteInformation siteRequest)
         {
+            Log.Info("SPSiteRequestManager.CreateNewSiteRequest", "Entering CreateNewSiteRequest requested url {0}", siteRequest.Url);
             UsingContext(ctx =>
             {
                 Stopwatch _timespan = Stopwatch.StartNew();
-                var web = ctx.Web;
+                var _web = ctx.Web;
+                ctx.Load(_web);
 
-                if(!web.ListExists(SiteRequestList.TITLE)) {
-                    this.HandleSiteRequestList(ctx);
+                if (!_web.ListExists(SiteRequestList.TITLE))
+                {
+                    var _message = String.Format("The List {0} does not exist in Site {1}",
+                         SiteRequestList.TITLE,
+                         _web.Url);
+                    Log.Fatal("SPSiteRequestManager.CreateNewSiteRequest", _message);
+                    throw new DataStoreException(_message);
                 }
 
-                List list = web.Lists.GetByTitle(SiteRequestList.TITLE);
+                List list = _web.Lists.GetByTitle(SiteRequestList.TITLE);
                 ListItemCreationInformation _listItemCreation = new ListItemCreationInformation();
                 ListItem _record = list.AddItem(_listItemCreation);
                 _record[SiteRequestFields.TITLE] = siteRequest.Title;
@@ -464,31 +344,35 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 }
                 _record.Update();
                 ctx.ExecuteQuery();
-
                 _timespan.Stop();
-               Log.TraceApi("SharePoint", "SPSiteRequestManager.CreateNewSiteRequest", _timespan.Elapsed);
-               Log.Info("SPSiteRequestManager.CreateNewSiteRequest", PCResources.SiteRequestNew_Successful, siteRequest.Url);
+
+                Log.TraceApi("SharePoint", "SPSiteRequestManager.CreateNewSiteRequest", _timespan.Elapsed);
+                Log.Info("SPSiteRequestManager.CreateNewSiteRequest", PCResources.SiteRequestNew_Successful, siteRequest.Url);
             }
             );
         }
 
         public SiteInformation GetSiteRequestByUrl(string url)
         {
+            Log.Info("SPSiteRequestManager.GetSiteRequestByUrl", "Entering GetSiteRequestByUrl url {0}", url);
             return this.GetSiteRequestByCaml(CAML_GETREQUEST_BY_URL, url);
         }
 
         public ICollection<SiteInformation> GetNewRequests()
         {
+            Log.Info("SPSiteRequestManager.GetNewRequests", "Entering GetNewRequests");
             return this.GetSiteRequestsByCaml(CAML_NEWREQUESTS);
         }
 
         public ICollection<SiteInformation> GetApprovedRequests()
         {
+            Log.Info("SPSiteRequestManager.GetNewRequests", "Entering GetApprovedRequests");
             return this.GetSiteRequestsByCaml(CAML_APPROVEDREQUESTS);
         }
 
         public bool DoesSiteRequestExist(string url)
         {
+            Log.Info("SPSiteRequestManager.DoesSiteRequestExist", "Entering DoesSiteRequestExist url {0}", url);
             var _result = this.GetSiteRequestByUrl(url);
             if(_result != null)
             {
@@ -499,18 +383,26 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
 
         public void UpdateRequestStatus(string url, SiteRequestStatus status)
         {
+            Log.Info("SPSiteRequestManager.UpdateRequestStatus", "Entering UpdateRequestStatus url {0} status {1}", url, status.ToString());
             this.UpdateRequestStatus(url, status, string.Empty);
         }
 
         public void UpdateRequestStatus(string url, SiteRequestStatus status, string statusMessage)
         {
+            Log.Info("SPSiteRequestManager.UpdateRequestStatus", "Entering UpdateRequestStatus url {0} status {1} status message", url, status.ToString(), statusMessage);
             UsingContext(ctx =>
             {
                 Stopwatch _timespan = Stopwatch.StartNew();
                
-                var web = ctx.Web;
-                if (!web.ListExists(SiteRequestList.TITLE)) {
-                    this.HandleSiteRequestList(ctx);
+                var _web = ctx.Web;
+                ctx.Load(_web);
+
+                if (!_web.ListExists(SiteRequestList.TITLE)) {
+                    var _message = String.Format("The List {0} does not exist in Site {1}",
+                         SiteRequestList.TITLE,
+                         _web.Url);
+                    Log.Fatal("SPSiteRequestManager.UpdateRequestStatus", _message);
+                    throw new DataStoreException(_message);
                 }
 
                 var _list = ctx.Web.Lists.GetByTitle(SiteRequestList.TITLE);
@@ -533,10 +425,52 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 }
 
                 _timespan.Stop();
-               Log.Info("SPSiteRequestManager.UpdateRequestStatus", PCResources.SiteRequestUpdate_Successful, url, status.ToString());
+                Log.Info("SPSiteRequestManager.UpdateRequestStatus", PCResources.SiteRequestUpdate_Successful, url, status.ToString());
                 Log.TraceApi("SharePoint", "SPSiteRequestManager.UpdateRequestStatus", _timespan.Elapsed);
             });
+        }
 
+        public void UpdateRequestUrl(string url, string newUrl)
+        {
+            Log.Info("SPSiteRequestManager.UpdateRequestUrl", "Entering UpdateRequestUrl url {0} status {1} status message", url, newUrl);
+            UsingContext(ctx =>
+            {
+                Stopwatch _timespan = Stopwatch.StartNew();
+
+                var _web = ctx.Web;
+                ctx.Load(_web);
+
+                if (!_web.ListExists(SiteRequestList.TITLE))
+                {
+                    var _message = String.Format("The List {0} does not exist in Site {1}",
+                         SiteRequestList.TITLE,
+                         _web.Url);
+                    Log.Fatal("SPSiteRequestManager.UpdateRequestUrl", _message);
+                    throw new DataStoreException(_message);
+                }
+
+                var _list = ctx.Web.Lists.GetByTitle(SiteRequestList.TITLE);
+                var _query = new CamlQuery();
+                _query.ViewXml = string.Format(CAML_GETREQUEST_BY_URL, url);
+
+                ListItemCollection _itemCollection = _list.GetItems(_query);
+                ctx.Load(_itemCollection);
+                ctx.ExecuteQuery();
+
+                if (_itemCollection.Count != 0)
+                {
+                    ListItem _item = _itemCollection.FirstOrDefault();
+                    _item[SiteRequestFields.URL_NAME] = newUrl;
+
+                    
+                    _item.Update();
+                    ctx.ExecuteQuery();
+                }
+
+                _timespan.Stop();
+                Log.Info("SPSiteRequestManager.UpdateRequestUrl", PCResources.SiteRequestUpdate_Successful, url, newUrl);
+                Log.TraceApi("SharePoint", "SPSiteRequestManager.UpdateRequestUrl", _timespan.Elapsed);
+            });
         }
 
         #endregion

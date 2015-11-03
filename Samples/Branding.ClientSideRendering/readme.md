@@ -3,6 +3,8 @@
 ### Summary ###
 This sample shows how to customize a field type with Client-Side Rendering (also called CSR, JS Link) technology in SharePoint 2013.
 
+***Notice**. Techniques shown in this sample do require full permission to web or site collection level, so this is not a suitable model for apps designed to be distributed from the SharePoint store.*
+
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
 -  Office 365 Dedicated (D)

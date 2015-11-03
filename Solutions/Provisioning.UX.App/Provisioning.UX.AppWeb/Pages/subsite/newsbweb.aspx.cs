@@ -34,20 +34,26 @@ namespace Provisioning.UX.AppWeb.Pages.SubSite
             var _spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
             _ctx = _spContext.CreateUserClientContextForSPHost();
 
-            var _web = _ctx.Web;
-            _ctx.Load(_web);
-            _ctx.ExecuteQuery();
-            Response.Write(_web.Title);
-
             if (!Page.IsPostBack)
             {
                 if (this.DoesUserHavePermission())
                 {
-
+                    SetHiddenFields();
+                    SetUI();
                 }
             }
            
         }
+
+        private void SetUI()
+        {
+            var _web = _ctx.Web;
+            _ctx.Load(_web);
+            _ctx.ExecuteQuery();
+            this.labelHostURL.InnerHtml = _web.Url;
+          //  this.lblHostSite.Text = _web.Url;
+        }
+
         protected bool DoesUserHavePermission()
         {
             BasePermissions perms = new BasePermissions();
@@ -60,6 +66,12 @@ namespace Provisioning.UX.AppWeb.Pages.SubSite
         protected void Submit_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void SetHiddenFields()
+        {
+            string _url = Request.QueryString["SPHostUrl"];
+            this.Url.Value = _url;
         }
     }
 }

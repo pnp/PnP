@@ -3,6 +3,7 @@ using Microsoft.SharePoint.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -115,6 +116,9 @@ namespace Contoso.Provisioning.SiteCollectionCreationWeb
                 adminContext.Load(tenant);
                 adminContext.Load(op, i => i.IsComplete);
                 adminContext.ExecuteQuery();
+
+                // Set timeout for the request - notice that since we are using web site, this could still time out
+                adminContext.RequestTimeout = Timeout.Infinite;
 
                 //check if site creation operation is complete
                 while (!op.IsComplete)

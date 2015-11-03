@@ -20,7 +20,6 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
         const string ACCOUNT_KEY = "AccountKey";
         private static readonly IConfigurationFactory _cf = ConfigurationFactory.GetInstance();
         private static readonly IAppSettingsManager _manager = _cf.GetAppSetingsManager();
-        
         #endregion
 
         /// <summary>
@@ -473,9 +472,14 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             }
             return collection;
         }
-        #endregion 
-    
 
-     
+        public void UpdateRequestUrl(string url, string newUrl)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
+
+
+
     }
 }

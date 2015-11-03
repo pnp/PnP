@@ -135,7 +135,7 @@ namespace Provisioning.Common.Utilities
                 if (args == null || args.Length == 0)
                     message = message.Replace("{", "{{").Replace("}", "}}");
                 string _msg = String.Format(System.Globalization.CultureInfo.CurrentCulture, message, args);
-                string _log = string.Format(System.Globalization.CultureInfo.CurrentCulture, "[[{0}]] {1}", source, _msg);
+                string _log = string.Format(System.Globalization.CultureInfo.CurrentCulture, "[{0}] {1}", source, _msg);
                 return _log;
             }
             catch (Exception e)

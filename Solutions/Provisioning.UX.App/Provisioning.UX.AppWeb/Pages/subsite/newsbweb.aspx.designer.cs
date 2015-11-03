@@ -13,94 +13,85 @@ namespace Provisioning.UX.AppWeb.Pages.SubSite {
     public partial class newsbweb {
         
         /// <summary>
-        /// form control.
+        /// form1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form;
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// lblDivision control.
+        /// scriptManager control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblDivision;
+        protected global::System.Web.UI.ScriptManager scriptManager;
         
         /// <summary>
-        /// selectDivision control.
+        /// progress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect selectDivision;
+        protected global::System.Web.UI.UpdateProgress progress;
         
         /// <summary>
-        /// lblFunction control.
+        /// mainPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblFunction;
+        protected global::System.Web.UI.UpdatePanel mainPanel;
         
         /// <summary>
-        /// selectFunction control.
+        /// siteTitle control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect selectFunction;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText siteTitle;
         
         /// <summary>
-        /// lblRegion control.
+        /// siteDescription control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblRegion;
+        protected global::System.Web.UI.HtmlControls.HtmlTextArea siteDescription;
         
         /// <summary>
-        /// selectRegions control.
+        /// labelHostURL control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect selectRegions;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl labelHostURL;
         
         /// <summary>
-        /// lblSitePolicy control.
+        /// txtSiteUrl control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSitePolicy;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtSiteUrl;
         
         /// <summary>
-        /// BusinessImpact control.
+        /// selectSiteTeamplate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect BusinessImpact;
-        
-        /// <summary>
-        /// lblExpirationDate control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblExpirationDate;
+        protected global::System.Web.UI.HtmlControls.HtmlSelect selectSiteTeamplate;
         
         /// <summary>
         /// Url control.
@@ -112,12 +103,12 @@ namespace Provisioning.UX.AppWeb.Pages.SubSite {
         protected global::System.Web.UI.HtmlControls.HtmlInputHidden Url;
         
         /// <summary>
-        /// submit_button control.
+        /// create_button control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button submit_button;
+        protected global::System.Web.UI.WebControls.Button create_button;
     }
 }

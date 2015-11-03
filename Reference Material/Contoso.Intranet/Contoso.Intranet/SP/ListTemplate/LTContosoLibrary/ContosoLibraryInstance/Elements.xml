@@ -1,4 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
-  <ListInstance Title="ContosoLibrary" OnQuickLaunch="TRUE" TemplateType="10003" Url="Lists/ContosoLibrary" Description="Contoso Library Instance"></ListInstance>
-</Elements>
