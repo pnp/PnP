@@ -1,22 +1,22 @@
-# UserProfile Sync Stuff! #
+# Readme file for UserProfile.MIMSync toolset #
 
 ### Summary ###
-Short summary.
+This solution provides a set of powershell commandlets to set-up Microsoft Identity Manager sync engine with SharePoint and to kick off sync on-demand. Commandlets included in this tool should help two scenarios:
+1.  Customers setting up SharePoint 2016 on-prem farm from scratch can use the tool to set-up initial mapping for default user profile properties to corresponding properties in Active Directory. 
+2.  Customer upgrading from SharePoint 2010 or 2013 on-prem, where they used SharePoint's in-product sync solution for syncing data from Active Directory to user profile properties can use the tool to replicate the same mappings in a Microsoft Identity Manager based sync.
+
+Detailed step-wise documentation is provided in the repository.    
 
 ### Applies to ###
--  Office 365 Multi Tenant (MT)
--  Office 365 Dedicated (D)
--  SharePoint 2013 on-premises
-
--> Remove platforms if needed
+-  SharePoint 2016 on-premises - new deployments or upgrades from SharePoint 2010 or SharePoint 2013
 
 ### Prerequisites ###
-Any special pre-requisites?
+Documentation in the repository calls out prerequisites 
 
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-solution name | Author
+MIM Sync Tools | Craig Martin 
 
 ### Version history ###
 Version  | Date | Comments
@@ -30,30 +30,17 @@ Version  | Date | Comments
 
 ----------
 
-# Doc scenario 1 #
-Description
-Image
+# For detailed description of scenarios and steps, please refer to following documentation in the repository.#
+
+## Installing Microsoft Identity Manager components needed for User Profile Sync in SharePoint 2016 ##
+Use document "Install Microsoft Identity Manager for User Profiles in SharePoint Server 2016"
+
+## Deploying a new SharePoint 2016 farm and setting up sync using Microsoft Identity Manager from scratch ##
+Use document "Set up User Profile Sync in a new SharePoint Server 2016 farm using Microsoft Identity Manager"
+
+## Setting up User Profile Sync in an upgraded SharePoint 2016 farm using sync config from previous version ##
+Use document "Use Microsoft Identity Manager to set-up User Profile Sync in an upgraded SharePoint  Server 2016 farm using sync configuration from previous version"
 
 
-## Sub level 1.1 ##
-Description:
-Code snippet:
-```C#
-string scenario1Page = String.Format("scenario1-{0}.aspx", DateTime.Now.Ticks);
-string scenario1PageUrl = csomService.AddWikiPage("Site Pages", scenario1Page);
-```
 
-## Sub level 1.2 ##
-
-# Doc scenario 2 #
-
-## Sub level 2.1 ##
-
-## Sub level 2.2 ##
-
-### Note: ###
-
-## Sub level 2.3 ##
-
-# Doc scenario 3#
 
