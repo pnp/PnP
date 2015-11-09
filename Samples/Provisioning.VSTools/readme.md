@@ -98,7 +98,7 @@ E.g. if file is supported to be deployed to "_catalogs/masterpage", it should be
 
 Monitoring progress: VSTools adds own pane to the "Output" tool window (View -> Output) called "PnP Deployment Tools". All notifications about file synchronization and deployments are displayed in this pane.
 
-![](readme.images/outputPane.png)
+![](readme.images/outputPane.PNG)
 
 ## Deploying single file ##
 
