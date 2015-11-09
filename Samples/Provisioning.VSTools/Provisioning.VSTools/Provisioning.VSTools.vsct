@@ -49,12 +49,6 @@
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_FOLDERNODE"/>
       </Group>
 
-      <!--<Group guid="guidVSPackageHackathonCmdSet" id="PnPTemplateProvisioningGroup" priority="0x0600">
-        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_ITEMNODE"/>
-        --><!--<Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS"/>--><!--
-        --><!--<Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_FOLDERNODE"/>--><!--
-      </Group>-->
-
       <Group guid="guidPnPTemplateProvisioningProjectCmdSet" id="PnPTemplateProvisioningProjectGroup" priority="0x0600">
         <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_PROJNODE"/>
       </Group>
@@ -75,7 +69,6 @@
 
       <Button guid="guidProvisioning_VSToolsCmdSet" id="cmdidDeployWithPNP" priority="0x0100" type="Button">
         <Parent guid="guidProvisioning_VSToolsCmdSet" id="PnPTemplateProvisioningGroup" />
-        <Icon guid="guidImages" id="bmpPic1" />
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
@@ -85,21 +78,12 @@
       
       <Button guid="guidPnPTemplateProvisioningFolderCmdSet" id="cmdidDeployFolderWithPNP" priority="0x0100" type="Button">
         <Parent guid="guidPnPTemplateProvisioningFolderCmdSet" id="PnPTemplateProvisioningFolderGroup" />
-        <Icon guid="guidImages" id="bmpPic1" />
         <CommandFlag>DefaultInvisible</CommandFlag>
         <CommandFlag>DynamicVisibility</CommandFlag>
         <Strings>
           <ButtonText>Deploy with PnP Tools</ButtonText>
         </Strings>
       </Button>   
-
-      <!--<Button guid="guidProvisioning_VSToolsCmdSet" id="cmdidProvisionConfig" priority="0x0100" type="Button">
-        <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1"/>
-        <Icon guid="guidImages" id="bmpPic2" />
-        <Strings>
-          <ButtonText>Provisioning Configuration</ButtonText>
-        </Strings>
-      </Button>-->
 
       <Button guid="guidPnPTemplateProvisioningProjectCmdSet" id="cmdidPnPToolsToggle" priority="0x0101" type="Button">
         <Parent guid="guidPnPTemplateProvisioningProjectCmdSet" id="PnPTemplateProvisioningProjectGroup" />

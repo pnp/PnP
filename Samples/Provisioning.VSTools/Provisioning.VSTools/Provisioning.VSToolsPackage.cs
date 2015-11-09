@@ -90,7 +90,7 @@ namespace Perficient.Provisioning.VSTools
             OleMenuCommandService mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (null != mcs)
             {
-                CommandID menuCommandID = new CommandID(GuidList.guidProvisioning_VSToolsCmdSet, (int)PkgCmdIDList.cmdidHackathon);
+                CommandID menuCommandID = new CommandID(GuidList.guidPnPTemplateProvisioningItemCmdSet, (int)PkgCmdIDList.cmdidDeployItemWithPNP);
                 _projectItemDeployCommand = new OleMenuCommand(MenuItemCallback_DeploySingleitem, menuCommandID);
                 _projectItemDeployCommand.BeforeQueryStatus += BeforeQueryStatus_DeploySingleItem;
                 mcs.AddCommand(_projectItemDeployCommand);
