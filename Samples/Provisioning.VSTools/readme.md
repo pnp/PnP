@@ -1,7 +1,7 @@
 # Provisioning.VSTools #
 
 ### Summary ###
-This sample demonstrates using the PnP provisioning engine within a Visual Studio extension package to assist with common deployment tasks for SharePoint assets.  The VSTools extension package maintains the PnP provisioning engine XML file automatically as files are added or removed from the project instead of the developer having to fill out the file manually which usually results in missing items, misspelled items, etc.  In addition to the XML file, the extension package also provides some useful developer shortcuts such as right click to quickly deploy a file (rather than all items in the XML file) and right click to quickly deploy the entire provisioning template.  The PnP provisioning engine XML file is fully supported (ie: content types, site columns, etc.) and deployable however the extension package only maintains file references within this XML file at this time.
+This sample demonstrates using the PnP provisioning engine within a Visual Studio extension package to assist with common deployment tasks for SharePoint assets.  The VSTools extension package maintains the PnP provisioning engine XML file automatically as files are added or removed from the project instead of the developer having to fill out the file manually which usually results in missing items, misspelled items, etc.  In addition to the XML file, the extension package also provides some useful developer shortcuts such as right-click to quickly deploy a file (rather than all items in the XML file) and right-click to quickly deploy the entire provisioning template.  The PnP provisioning engine XML file is fully supported (ie: content types, site columns, etc.) and deployable, however the extension package only maintains file references within this XML file at this time.
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
@@ -9,7 +9,7 @@ This sample demonstrates using the PnP provisioning engine within a Visual Studi
 
 ### Prerequisites ###
 Visual Studio SDK – this is a beta version of the extension package and requires the SDK to properly install.
-Note: extension packages require referenced assemblies to be signed… the PnP assemblies aren’t signed so use this in an extension package, the latest PnP Provisioning engine was downloaded, compiled, and signed.  This is important because the extension package will not auto-update if a new version of the provisioning engine is released.
+Note: extension packages require referenced assemblies to be signed… the PnP assemblies aren’t signed so to use them in an extension package, the latest PnP Provisioning engine was downloaded, compiled, and signed.  This is important because the extension package will not auto-update if a new version of the provisioning engine is released.
 
 ### Solution ###
 Solution | Author(s)
@@ -39,7 +39,7 @@ One item that was required in the web.config file of the private gallery website
     </staticContent>
   </system.webServer> 
 ```
-Once the VSIX package is hosted and available in Visual Studio, it can be installed from the Extension and Updates Tool menu item.  Once installed, the package functionality can be turned on or off by either right mouse clicking your project and selecting Enable PnP Provisioning Tools 
+Once the VSIX package is hosted and available in Visual Studio, it can be installed from the Extension and Updates Tool menu item.  Once installed, the package functionality can be turned on or off by right-clicking your project and selecting Enable PnP Provisioning Tools 
 
 ![](readme.images/enablePnPCommand.png)
 
@@ -87,16 +87,16 @@ Alternatively you can set the ToolEnabled element in the ProvisioningTemplateToo
 
 # Working with Files and Folders #
 
-Provisioning.VSTools supports synchronization of files included in template.xml with files inside dedicated resources folder. This way you can add/remove/rename files inside Template Resources folder and template.xml will be updated automatically to reflect the changes.
+Provisioning.VSTools supports synchronization of files included in the template.xml with files inside dedicated resources folders. This way you can add/remove/rename files inside Template Resources folder and the template.xml will be updated automatically to reflect the changes.
 
-Provisioning.VSTools assumes the convention, that files inside Template Resources folder will follow SharePoint files structure. 
-E.g. if file is supported to be deployed to "_catalogs/masterpage", it should be put inside {Template Resources Folder}\_catalogs\masterpage folder.
+Provisioning.VSTools assumes the convention that files inside Template Resources folder will follow SharePoint files structure. 
+(ie: if file is supported to be deployed to "_catalogs/masterpage", it should be put inside {Template Resources Folder}\_catalogs\masterpage folder.)
 
 # Deploying to SharePoint #
 
-**Prerequisites**: make sure you specified target site and credentials in ProvisioningTemplateTools.config file.
+**Prerequisites**: make sure you have specified the target site and credentials in ProvisioningTemplateTools.config file.
 
-Monitoring progress: VSTools adds own pane to the "Output" tool window (View -> Output) called "PnP Deployment Tools". All notifications about file synchronization and deployments are displayed in this pane.
+Monitoring progress: VSTools adds it's own pane to the "Output" tool window (View -> Output) called "PnP Deployment Tools". All notifications about file synchronization and deployments are displayed in this pane.
 
 ![](readme.images/outputPane.PNG)
 
