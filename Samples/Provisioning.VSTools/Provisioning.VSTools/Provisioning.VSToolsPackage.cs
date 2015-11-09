@@ -47,26 +47,6 @@ namespace Perficient.Provisioning.VSTools
             Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}", this.ToString()));
         }
 
-        /// <summary>
-        /// This function is called when the user clicks the menu item that shows the 
-        /// tool window. See the Initialize method to see how the menu item is associated to 
-        /// this function using the OleMenuCommandService service and the MenuCommand class.
-        /// </summary>
-        private void ShowToolWindow(object sender, EventArgs e)
-        {
-            // Get the instance number 0 of this tool window. This window is single instance so this instance
-            // is actually the only one.
-            // The last flag is set to true so that if the tool window does not exists it will be created.
-            ToolWindowPane window = this.FindToolWindow(typeof(ConfigToolWindow), 0, true);
-            if ((null == window) || (null == window.Frame))
-            {
-                throw new NotSupportedException(Resources.CanNotCreateWindow);
-            }
-            IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
-            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
-        }
-
-
         #region Package Members
 
         protected override void Initialize()
@@ -87,8 +67,8 @@ namespace Perficient.Provisioning.VSTools
                 {
                     // project-level commands
                     CommandID toolsToggleCommandID = new CommandID(GuidList.guidPnPTemplateProvisioningProjectCmdSet, (int)PkgCmdIDList.cmdidPnPToolsToggle);
-                    var toolsToggleMenuItem = new OleMenuCommand(ToggleToolsMenuItemCallback, toolsToggleCommandID);
-                    toolsToggleMenuItem.BeforeQueryStatus += ToggleToolsMenuItemOnBeforeQueryStatus;
+                    var toolsToggleMenuItem = new OleMenuCommand(MenuItemCallback_ToggleTools, toolsToggleCommandID);
+                    toolsToggleMenuItem.BeforeQueryStatus += BeforeQueryStatus_ToggleToolsMenu;
 
                     mcs.AddCommand(toolsToggleMenuItem);
                 }
@@ -103,51 +83,8 @@ namespace Perficient.Provisioning.VSTools
                 outputWindowPane.OutputString(string.Format("Error in Initialize : {0} , {1}\n", ex.Message, ex.StackTrace));
             }
 
-
-
-            //Debug.WriteLine (string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", this.ToString()));
-            //base.Initialize();
-
-            //// Add our command handlers for menu (commands must exist in the .vsct file)
-            //OleMenuCommandService mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
-            //if ( null != mcs )
-            //{
-            //    // Create the command for the menu item.
-            //    CommandID menuCommandID = new CommandID(GuidList.guidProvisioning_VSToolsCmdSet, (int)PkgCmdIDList.cmdidMyCommand);
-            //    MenuCommand menuItem = new MenuCommand(MenuItemCallback, menuCommandID );
-            //    mcs.AddCommand( menuItem );
-            //    // Create the command for the tool window
-            //    CommandID toolwndCommandID = new CommandID(GuidList.guidProvisioning_VSToolsCmdSet, (int)PkgCmdIDList.cmdidProvisionConfig);
-            //    MenuCommand menuToolWin = new MenuCommand(ShowToolWindow, toolwndCommandID);
-            //    mcs.AddCommand( menuToolWin );
-            //}
         }
         #endregion
-
-        /// <summary>
-        /// This function is the callback used to execute a command when the a menu item is clicked.
-        /// See the Initialize method to see how the menu item is associated to this function using
-        /// the OleMenuCommandService service and the MenuCommand class.
-        /// </summary>
-        private void MenuItemCallback(object sender, EventArgs e)
-        {
-            // Show a Message Box to prove we were here
-            IVsUIShell uiShell = (IVsUIShell)GetService(typeof(SVsUIShell));
-            Guid clsid = Guid.Empty;
-            int result;
-            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(uiShell.ShowMessageBox(
-                       0,
-                       ref clsid,
-                       "Provisioning.VSTools",
-                       string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.ToString()),
-                       string.Empty,
-                       0,
-                       OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                       OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST,
-                       OLEMSGICON.OLEMSGICON_INFO,
-                       0,        // false
-                       out result));
-        }
 
         private void AddProjectItemCommand()
         {
@@ -155,8 +92,8 @@ namespace Perficient.Provisioning.VSTools
             if (null != mcs)
             {
                 CommandID menuCommandID = new CommandID(GuidList.guidProvisioning_VSToolsCmdSet, (int)PkgCmdIDList.cmdidHackathon);
-                _projectItemDeployCommand = new OleMenuCommand(DeployMenuItemCallback, menuCommandID);
-                _projectItemDeployCommand.BeforeQueryStatus += menuCommand_ProjectItemBeforeQueryStatus;
+                _projectItemDeployCommand = new OleMenuCommand(MenuItemCallback_DeploySingleitem, menuCommandID);
+                _projectItemDeployCommand.BeforeQueryStatus += BeforeQueryStatus_DeploySingleItem;
                 mcs.AddCommand(_projectItemDeployCommand);
             }
         }
@@ -167,22 +104,11 @@ namespace Perficient.Provisioning.VSTools
             if (null != mcs)
             {
                 CommandID menuCommandID = new CommandID(GuidList.guidPnPTemplateProvisioningFolderCmdSet, (int)PkgCmdIDList.cmdidDeployFolderWithPNP);
-                _projectFolderDeployCommand = new OleMenuCommand(DeployFolderMenuItemCallback, menuCommandID);
-                _projectFolderDeployCommand.BeforeQueryStatus += menuCommand_ProjectFolderBeforeQueryStatus;
+                _projectFolderDeployCommand = new OleMenuCommand(MenuItemCallback_DeployFolder, menuCommandID);
+                _projectFolderDeployCommand.BeforeQueryStatus += BeforeQueryStatus_DeployFolder;
                 mcs.AddCommand(_projectFolderDeployCommand);
             }
         }
-
-
-        private void RemoveProjectItemCommand()
-        {
-            OleMenuCommandService mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
-            if (null != mcs)
-            {
-                mcs.RemoveCommand(_projectItemDeployCommand);
-            }
-        }
-
 
         private void AttachFileEventListeners()
         {
@@ -202,30 +128,6 @@ namespace Perficient.Provisioning.VSTools
                 docEvents = (EnvDTE.DocumentEvents)
                 dte.Events.DocumentEvents;
                 docEvents.DocumentSaved += new _dispDocumentEvents_DocumentSavedEventHandler(DocEventsDocSaved);
-            }
-            catch (System.Exception ex)
-            {
-                outputWindowPane.OutputString(string.Format("Error registering file event handlers : {0} , {1}\n", ex.Message, ex.StackTrace));
-            }
-        }
-
-        private void DetachFileEventListeners()
-        {
-            try
-            {
-                DTE2 dte = (DTE2)GetService(typeof(DTE));
-
-                //IVsHierarchyEvents
-                // ((Events2)dte.Events).SolutionEvents.
-
-                projItemsEvents = (EnvDTE.ProjectItemsEvents)
-                dte.Events.GetObject("CSharpProjectItemsEvents");
-                projItemsEvents.ItemAdded -= ProjItemAdded;
-                projItemsEvents.ItemRemoved -= ProjItemRemoved;
-                projItemsEvents.ItemRenamed -= ProjItemRenamed;
-
-                docEvents = (EnvDTE.DocumentEvents)dte.Events.DocumentEvents;
-                docEvents.DocumentSaved -= DocEventsDocSaved;
             }
             catch (System.Exception ex)
             {
@@ -382,37 +284,12 @@ namespace Perficient.Provisioning.VSTools
                 var projectItemFullPath = ProjectHelpers.GetFullPath(projectItem);
                 outputWindowPane.OutputString(string.Format("Item added : {0} \n", projectItemFullPath));
 
-                // Get an instance of the currently running Visual Studio IDE
-                //DTE dte = (DTE)GetService(typeof(DTE));
-                //string solutionDir = System.IO.Path.GetDirectoryName(dte.Solution.FullName);
-                //string solutionDir2 = System.IO.Path.GetDirectoryName(dte.);
-                outputWindowPane.OutputString(string.Format("Item added : {0} \n", projectItemFullPath));
-
                 var pnpTemplateInfo = GetParentProvisioningTemplateInformation(projectItem, config);
                 if (pnpTemplateInfo != null)
                 {
                     // Item is PnP resource. 
                     var src = ProjectHelpers.MakeRelativePath(projectItemFullPath, pnpTemplateInfo.ResourcesPath);
                     var targetFolder = String.Join("/", Path.GetDirectoryName(src).Split('\\'));
-
-                    /*var templatePath = Path.Combine(pnpTemplateInfo.TemplateFolderPath, pnpTemplateInfo.TemplateFileName);
-                    var xmlDocument = XDocument.Load(templatePath);
-                    var templatesNode = XmlHelpers.GetElementByLocalName(xmlDocument.Root, "Templates");
-                    var templateNode = XmlHelpers.GetElementByLocalName(templatesNode, "ProvisioningTemplate");
-                    var filesNode = XmlHelpers.GetElementByLocalName(templateNode, "Files");
-                    if (filesNode == null)
-                    {
-                        filesNode = new XElement(templateNode.Name.Namespace + "Files");
-                        templateNode.Add(filesNode);
-                    }
-                    filesNode.Add(new XElement(filesNode.Name.Namespace+"File",
-                        new XAttribute("Src", src),
-                        new XAttribute("Folder", targetFolder),
-                        new XAttribute("Overwrite", "true")
-                        ));
-                    xmlDocument.Save(templatePath);*/
-
-                    // PnP-powered code
 
                     XMLFileSystemTemplateProvider provider = InitializeProvisioningTemplateProvider(pnpTemplateInfo);
                     ProvisioningTemplate template = InitializeProvisioningTemplate(provider, pnpTemplateInfo);
@@ -451,7 +328,6 @@ namespace Perficient.Provisioning.VSTools
                     return;
                 }
 
-
                 var projectItemFullPath = ProjectHelpers.GetFullPath(projectItem);
                 outputWindowPane.OutputString(string.Format("Item removed : {0} \n", projectItemFullPath));
 
@@ -482,22 +358,6 @@ namespace Perficient.Provisioning.VSTools
                     {
                         var src = ProjectHelpers.MakeRelativePath(projectItemFullPath, pnpTemplateInfo.ResourcesPath);
 
-
-                        // Item is PnP resource. 
-                        /*var templatePath = Path.Combine(pnpTemplateInfo.TemplateFolderPath, pnpTemplateInfo.TemplateFileName);
-                        var xmlDocument = XDocument.Load(templatePath);
-                        var templatesNode = XmlHelpers.GetElementByLocalName(xmlDocument.Root, "Templates");
-                        var templateNode = XmlHelpers.GetElementByLocalName(templatesNode, "ProvisioningTemplate");
-                        var filesNode = XmlHelpers.GetElementByLocalName(templateNode, "Files");
-                        if (filesNode != null)
-                        {
-                            var fileNode = filesNode.Elements().FirstOrDefault(el => el.Attribute("Src") != null && 
-                                el.Attribute("Src").Value.Equals(src, StringComparison.InvariantCultureIgnoreCase));
-                            fileNode.Remove();
-                        }
-
-                        xmlDocument.Save(templatePath);*/
-
                         // PNP-powered code
                         XMLFileSystemTemplateProvider provider = InitializeProvisioningTemplateProvider(pnpTemplateInfo);
                         ProvisioningTemplate template = InitializeProvisioningTemplate(provider, pnpTemplateInfo);
@@ -509,19 +369,13 @@ namespace Perficient.Provisioning.VSTools
 
                             provider.Save(template);
                         }
-
                     }
                 }
-
-
-
             }
             catch (Exception ex)
             {
                 outputWindowPane.OutputString(string.Format("Error in item removed event: {0}, {1} \n", ex.Message, ex.StackTrace));
             }
-
-
         }
 
         private void ProjItemRenamed(EnvDTE.ProjectItem projectItem, string oldName)
@@ -536,8 +390,6 @@ namespace Perficient.Provisioning.VSTools
                 {
                     return;
                 }
-
-
 
                 outputWindowPane.OutputString(string.Format("Item renamed : {0}, old name: {1} \n", projectItemFullPath, oldName));
 
@@ -576,23 +428,6 @@ namespace Perficient.Provisioning.VSTools
                         // Item is PnP resource. 
                         var src = ProjectHelpers.MakeRelativePath(projectItemFullPath, pnpTemplateInfo.ResourcesPath);
                         var oldSrc = Path.Combine(Path.GetDirectoryName(src), oldName);
-
-                        /*var templatePath = Path.Combine(pnpTemplateInfo.TemplateFolderPath, pnpTemplateInfo.TemplateFileName);
-                    var xmlDocument = XDocument.Load(templatePath);
-                    var templatesNode = XmlHelpers.GetElementByLocalName(xmlDocument.Root, "Templates");
-                    var templateNode = XmlHelpers.GetElementByLocalName(templatesNode, "ProvisioningTemplate");
-                    var filesNode = XmlHelpers.GetElementByLocalName(templateNode, "Files");
-                    if (filesNode != null)
-                    {
-                        var fileNode = filesNode.Elements().FirstOrDefault(el => el.Attribute("Src") != null && 
-                            el.Attribute("Src").Value.Equals(oldSrc, StringComparison.InvariantCultureIgnoreCase));
-                        if (fileNode != null)
-                        {
-                            fileNode.SetAttributeValue("Src", src);
-                        }
-                    }
-
-                    xmlDocument.Save(templatePath);*/
 
                         //PNP-powered code
                         XMLFileSystemTemplateProvider provider = InitializeProvisioningTemplateProvider(pnpTemplateInfo);
@@ -634,12 +469,10 @@ namespace Perficient.Provisioning.VSTools
         private EnvDTE.DocumentEvents docEvents;
         private OutputWindowPane outputWindowPane;
 
-        private void DeployFolderMenuItemCallback(object sender, EventArgs e)
+        private void MenuItemCallback_DeployFolder(object sender, EventArgs e)
         {
             try
             {
-
-
                 IVsHierarchy hierarchy = null;
                 uint itemid = VSConstants.VSITEMID_NIL;
 
@@ -698,12 +531,10 @@ namespace Perficient.Provisioning.VSTools
         }
 
 
-        private void DeployMenuItemCallback(object sender, EventArgs e)
+        private void MenuItemCallback_DeploySingleitem(object sender, EventArgs e)
         {
             try
             {
-
-
                 IVsHierarchy hierarchy = null;
                 uint itemid = VSConstants.VSITEMID_NIL;
 
@@ -813,7 +644,7 @@ namespace Perficient.Provisioning.VSTools
 
 
         //Context menu check for specific file name
-        void menuCommand_ProjectItemBeforeQueryStatus(object sender, EventArgs e)
+        void BeforeQueryStatus_DeploySingleItem(object sender, EventArgs e)
         {
             // get the menu that fired the event
             var menuCommand = sender as OleMenuCommand;
@@ -854,9 +685,6 @@ namespace Perficient.Provisioning.VSTools
                 {
                     menuCommand.Visible = true;
                     menuCommand.Enabled = true;
-
-
-
                 }
                 else
                 {
@@ -871,7 +699,7 @@ namespace Perficient.Provisioning.VSTools
             }
         }
 
-        void menuCommand_ProjectFolderBeforeQueryStatus(object sender, EventArgs e)
+        void BeforeQueryStatus_DeployFolder(object sender, EventArgs e)
         {
             // get the menu that fired the event
             var menuCommand = sender as OleMenuCommand;
@@ -936,8 +764,6 @@ namespace Perficient.Provisioning.VSTools
 
             try
             {
-
-
                 hr = monitorSelection.GetCurrentSelection(out hierarchyPtr, out itemid, out multiItemSelect, out selectionContainerPtr);
 
                 if (ErrorHandler.Failed(hr) || hierarchyPtr == IntPtr.Zero || itemid == VSConstants.VSITEMID_NIL)
@@ -981,9 +807,7 @@ namespace Perficient.Provisioning.VSTools
         }
 
 
-
-
-        private void ToggleToolsMenuItemOnBeforeQueryStatus(object sender, EventArgs eventArgs)
+        private void BeforeQueryStatus_ToggleToolsMenu(object sender, EventArgs eventArgs)
         {
             // get the menu that fired the event
             var menuCommand = sender as OleMenuCommand;
@@ -1051,7 +875,7 @@ namespace Perficient.Provisioning.VSTools
             return config;
         }
 
-        private void ToggleToolsMenuItemCallback(object sender, EventArgs e)
+        private void MenuItemCallback_ToggleTools(object sender, EventArgs e)
         {
             var menuCommand = sender as OleMenuCommand;
             if (menuCommand != null)
