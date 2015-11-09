@@ -29,7 +29,6 @@ namespace Perficient.Provisioning.VSTools
     [PackageRegistration(UseManagedResourcesOnly = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    [ProvideToolWindow(typeof(ConfigToolWindow))]
     [Guid(GuidList.guidProvisioning_VSToolsPkgString)]
     [ProvideAutoLoad(UIContextGuids80.SolutionExists)]
     public sealed class Provisioning_VSToolsPackage : Package

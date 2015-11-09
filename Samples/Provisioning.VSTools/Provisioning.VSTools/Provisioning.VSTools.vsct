@@ -93,13 +93,13 @@
         </Strings>
       </Button>   
 
-      <Button guid="guidProvisioning_VSToolsCmdSet" id="cmdidProvisionConfig" priority="0x0100" type="Button">
+      <!--<Button guid="guidProvisioning_VSToolsCmdSet" id="cmdidProvisionConfig" priority="0x0100" type="Button">
         <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1"/>
         <Icon guid="guidImages" id="bmpPic2" />
         <Strings>
           <ButtonText>Provisioning Configuration</ButtonText>
         </Strings>
-      </Button>
+      </Button>-->
 
       <Button guid="guidPnPTemplateProvisioningProjectCmdSet" id="cmdidPnPToolsToggle" priority="0x0101" type="Button">
         <Parent guid="guidPnPTemplateProvisioningProjectCmdSet" id="PnPTemplateProvisioningProjectGroup" />

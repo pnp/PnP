@@ -214,10 +214,6 @@
     <Compile Include="Models\ItemEventType.cs" />
     <Compile Include="Models\ProvisioningTemplateLocationInfo.cs" />
     <Compile Include="Models\ProvisioningTemplateToolsConfiguration.cs" />
-    <Compile Include="ConfigControl.xaml.cs">
-      <DependentUpon>ConfigControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ConfigToolWindow.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -261,12 +257,6 @@
   <ItemGroup>
     <Resource Include="ProvisioningTemplateToolsConfiguration.xml" />
     <Content Include="Resources\Package.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="ConfigControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>
