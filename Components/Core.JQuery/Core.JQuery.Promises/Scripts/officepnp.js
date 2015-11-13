@@ -22,7 +22,7 @@
         var hostUrl = $pnpcore.getHostWebUrl();
         var scriptbase = hostUrl + $pnpcore.scriptbasepath;
 
-        if ($pnpcore.onStartPromise == null) {
+        if ($pnpcore.onStartPromise === null) {
 
             // these scripts will be loaded ahead of other files and scripts
             var fileUrls = ['SP.Runtime.js', 'SP.js', 'SP.RequestExecutor.js'].select(function (s) {
@@ -50,7 +50,7 @@
     // also ensures one context is created for all functions in your Add-In
     withSPContext: function (/*function(context)*/ action) {
 
-        if ($pnpcore.getContextPromise == null) {
+        if ($pnpcore.getContextPromise === null) {
 
             $pnpcore.getContextPromise = $.Deferred(function (def) {
 
@@ -234,7 +234,7 @@
 
         return function () {
             method.apply(context, args);
-        }
+        };
     },
 
     // loads a set of specificed files, returning a promise
@@ -298,14 +298,14 @@
     getUrlParamByName: function (name) {
         name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
         var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-        results = regex.exec(location.search);
-        return results == null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
     },
 
     // gets a url param by name and attempts to parse a bool value
     getUrlParamBoolByName: function (name) {
         var p = $pnpcore.getUrlParamByName(name);
-        var isFalse = (p == '' || /[false|0]/i.test(p));
+        var isFalse = (p === '' || /[false|0]/i.test(p));
         return !isFalse;
     },
 
@@ -373,7 +373,7 @@
                 // Filters out anchors and urls with other unsupported protocols.
                 return false;
             }
-            return authority != null && authority.toUpperCase() == currentAuthority;
+            return authority !== null && authority.toUpperCase() === currentAuthority;
         })
         .each(function () {
             this.href = $pnpcore.appendSPQueryToUrl(this.href);
