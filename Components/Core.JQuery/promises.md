@@ -43,6 +43,6 @@ In the samples you will see that SP.ClientContext.prototype has been extended di
 
 ### Query with Retry ###
 
-If you have used the PnP CSOM framework before you are familiar with the [ExecuteQueryRetry](https://github.com/OfficeDev/PnP-Sites-Core/blob/master/Core/OfficeDevPnP.Core/AppModelExtensions/ClientContextExtensions.cs) method. The question has been asked if a similar capability is available in the JSOM framework. As an exercise, this is possible and you can see the method ext_executeQueryRetry in the [officepnp.js](Core.JQuery.Promises/Scripts/officepnp.js) file.
+If you have used the PnP CSOM framework before you are familiar with the [ExecuteQueryRetry](https://github.com/OfficeDev/PnP-Sites-Core/blob/master/Core/OfficeDevPnP.Core/AppModelExtensions/ClientContextExtensions.cs) method. The question has been asked if a similar capability is available in the JSOM framework. As an exercise, this is possible and you can see the method `executeQueryRetry` in the [officepnp.js](Core.JQuery.Promises/Scripts/officepnp.js) file.
 
 **An IMPORTANT note...depending on the error all the pending actions in the ClientContext may be flushed and a retry may not be possible. This will result in a failure followed by a success produced by an empty query.**
