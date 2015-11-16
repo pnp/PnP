@@ -1,5 +1,4 @@
 ﻿var $pnpcore = {
-
     onStartPromise: null,
     getContextPromise: null,
     spContext: null,
@@ -18,12 +17,10 @@
     // a custom onStart method to ensure anything we need in our Add-In is ready
     // includes the full DOM load as resolved by $(function() {...}) syntax
     onStart: function (/*function()*/ onStartFunc) {
-
         var hostUrl = $pnpcore.getHostWebUrl();
         var scriptbase = hostUrl + $pnpcore.scriptbasepath;
 
         if ($pnpcore.onStartPromise === null) {
-
             // these scripts will be loaded ahead of other files and scripts
             var fileUrls = ['SP.Runtime.js', 'SP.js', 'SP.RequestExecutor.js'].select(function (s) {
                 return scriptbase + s;
@@ -49,14 +46,10 @@
     // provides an easy way to use a client context from a centralized location
     // also ensures one context is created for all functions in your Add-In
     withSPContext: function (/*function(context)*/ action) {
-        
         if ($pnpcore.getContextPromise === null) {
-            
             $pnpcore.getContextPromise = $.Deferred(function (def) {
-                
                 // use custom onstart to ensure we have the files loaded and are ready to do stuff
-                $pnpcore.onStart(function () {
-                    
+                $pnpcore.onStart(function () {                    
                     try {
                         
                         var addinWebUrl = $pnpcore.getAddInWebUrl();
@@ -70,8 +63,7 @@
                         // if we have a problem just reject with the associated error
                         def.rejectWith(e, [e]);
                     }
-                });
-                
+                });                
             }).promise();
         }
 
@@ -91,9 +83,7 @@
     // the benefit of this approach is that you can call it at any time to ensure the extended functionality is present
     // another option would be to pass a ClientContext instance to this method instead of extending prototype directly
     extendSPClientContext: function () {
-
         $.extend(SP.ClientContext.prototype, {
-
             /**
              * Executes the current pending request asynchronously on the server using a jQuery promise.
              * @param {object} context - Context passed to the doneCallbacks as the this object.
@@ -224,7 +214,6 @@
 
     // loads a set of specificed files, returning a promise
     loadFiles: function (/*string[]*/ files) {
-
         // create a promise
         var promise = $.Deferred();
 
@@ -240,13 +229,9 @@
         }
 
         // this function will be used to recursively load all the files
-        var engine = function () {
-
-            // maintain context
-            var self = this;
-
-            // get the next file to load
-            var file = self.files.shift();
+        var engine = function () {            
+            var self = this, // Maintain context.
+                file = self.files.shift(); // get the next file to load.
 
             // load the remote script file
             $.getScript(file).done(function () {
@@ -304,7 +289,6 @@
 
     // appends the required SP parameters to the supplied url, great for web api calls to maintain context on the server side
     appendSPQueryToUrl: function (/*string*/ url) {
-
         // we already have the SPHostUrl param, just give back the url
         if (url.indexOf('SPHostUrl=') > -1) {
             return url;
@@ -336,7 +320,6 @@
 
     // ensures that all the appropriate links in the page have the SP parameters attached
     ensureContextQueryString: function () {
-
         // remove the redirect flag
         var SPHasRedirectedToSharePointParam = "&SPHasRedirectedToSharePoint=1";
         var queryString = window.location.search;
@@ -349,7 +332,6 @@
 
     // process all the supplied tags
     ensureSPHostUrlInLinks: function (/*jquery*/ parentNode) {
-
         var currentAuthority = $pnpcore.getAuthorityFromUrl(window.location.href);
 
         parentNode.filter(function () {
