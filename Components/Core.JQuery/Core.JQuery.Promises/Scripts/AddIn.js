@@ -11,7 +11,7 @@
             var web = context.get_web();
             context.load(web);
 
-            context.ext_executeQueryRetry(web).done(function () {
+            context.executeQueryRetry(web).done(function () {
                 
                 $('#result').html('Successfully loaded web! Web Title: ' + this.get_title());
                 $('#result').css({ color: 'green' });

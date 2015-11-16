@@ -99,7 +99,7 @@
              * @param {object} context - Context passed to the doneCallbacks as the this object.
              * @returns {jquery.promise} Promise for the request.
              */
-            ext_executeQueryPromise: function (context) {                
+            executeQueryPromise: function (context) {                
                 var self = this, // Maintain self-awareness.
                     def = $.Deferred(); // Create a deferred.
 
@@ -125,7 +125,7 @@
              * @param {object} context - Context passed to the doneCallbacks as the this object.
              * @returns {jquery.promise} Promise for the request.
              */
-            ext_executeQueryRetry: function (context) {
+            executeQueryRetry: function (context) {
                 var self = this, // Maintain self-awareness.
                     def = $.Deferred(), // Create a deferred.
                     // Create a context to track our async retries.
