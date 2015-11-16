@@ -49,16 +49,16 @@
     // provides an easy way to use a client context from a centralized location
     // also ensures one context is created for all functions in your Add-In
     withSPContext: function (/*function(context)*/ action) {
-
+        
         if ($pnpcore.getContextPromise === null) {
-
+            
             $pnpcore.getContextPromise = $.Deferred(function (def) {
-
+                
                 // use custom onstart to ensure we have the files loaded and are ready to do stuff
                 $pnpcore.onStart(function () {
-
+                    
                     try {
-
+                        
                         var addinWebUrl = $pnpcore.getAddInWebUrl();
                         $pnpcore.spContext = new SP.ClientContext(addinWebUrl);
                         $pnpcore.spContext.set_webRequestExecutorFactory(new SP.ProxyWebRequestExecutorFactory(addinWebUrl));
@@ -66,12 +66,12 @@
                         def.resolveWith($pnpcore.spContext, [$pnpcore.spContext]);
                     }
                     catch (e) {
-
+                        
                         // if we have a problem just reject with the associated error
                         def.rejectWith(e, [e]);
                     }
                 });
-
+                
             }).promise();
         }
 
@@ -94,142 +94,127 @@
 
         $.extend(SP.ClientContext.prototype, {
 
-            // the basic pattern for usign a promise to resolve executeQueryAsync
-            // supports calling patterns:
-            // ext_executeQueryPromise(function(){//success}, function(){//fail});
-            // ext_executeQueryPromise().done((function(){//success}).fail(function(){//fail});
-            ext_executeQueryPromise: function (doneFunc, failFunc) {
+            /**
+             * Executes the current pending request asynchronously on the server using a jQuery promise.
+             * @param {object} context - Context passed to the doneCallbacks as the this object.
+             * @returns {jquery.promise} Promise for the request.
+             */
+            ext_executeQueryPromise: function (context) {                
+                var self = this, // Maintain self-awareness.
+                    def = $.Deferred(); // Create a deferred.
 
-                // maintain self-awareness
-                var self = this;
+                // Resolve/reject with whatever would have been supplied by executeQueryAsync.
+                self.executeQueryAsync(
+                    function () { 
+                        if (!context) {
+                            context = this;
+                        }
+                        def.resolveWith(context, arguments); 
+                    }, 
+                    function () { 
+                        def.rejectWith(this, arguments); 
+                    });
 
-                // create a deferred
-                var def = $.Deferred();
-
-                // if a function was passed in helpfully register it
-                if ($.isFunction(doneFunc)) {
-                    def.done(doneFunc);
-                }
-
-                // if a function was passed in helpfully register it
-                if ($.isFunction(failFunc)) {
-                    def.fail(failFunc);
-                }
-
-                // resolve/reject with whatever would have been supplied by executeQueryAsync
-                self.executeQueryAsync(function () { def.resolveWith(this, arguments); }, function () { def.rejectWith(this, arguments); });
-
-                // return a promise
+                // Return a promise.
                 return def.promise();
             },
 
-            // execute the query with retry
-            // supports calling patterns:
-            // ext_executeQueryRetry(function(){//success}, function(){//fail});
-            // ext_executeQueryRetry().done((function(){//success}).fail(function(){//fail});
-            ext_executeQueryRetry: function (doneFunc, failFunc) {
+            /**
+             * Executes the current pending request asynchronously on the server using a jQuery promise
+             * and retry if a failure occurs.
+             * @param {object} context - Context passed to the doneCallbacks as the this object.
+             * @returns {jquery.promise} Promise for the request.
+             */
+            ext_executeQueryRetry: function (context) {
+                var self = this, // Maintain self-awareness.
+                    def = $.Deferred(), // Create a deferred.
+                    // Create a context to track our async retries.
+                    retryContext = {
+                        // Used to track how many times we have tried.
+                        retryAttempts: 0,
+                        // The max number of times to retry the operation.
+                        retryCount: 5,
+                        // The starting delay in ms, increased with each retry.
+                        delay: 100,
+                        // Hold a ref to the deferred object.
+                        deferred: def,
+                        // Track all the errors as we retry.
+                        errors: []
+                    };
 
-                // maintain self-awareness
-                var self = this;
+                // Call the implementation method to start the cycle maintaining the 'self' c
+                $pnpcore.__executeQueryRetryImpl.apply(self, [context, retryContext]);
 
-                // create a deferred
-                var def = $.Deferred();
-
-                // if a function was passed in helpfully register it
-                if ($.isFunction(doneFunc)) {
-                    def.done(doneFunc);
-                }
-
-                // if a function was passed in helpfully register it
-                if ($.isFunction(failFunc)) {
-                    def.fail(failFunc);
-                }
-
-                // create a context to track our async retries
-                var ctx = {
-                    // used to track how many times we have tried
-                    retryAttempts: 0,
-                    // the max number of times to retry the operation
-                    retryCount: 5,
-                    // the starting delay in ms, increased with each retry
-                    delay: 100,
-                    // hold a ref to the deferred object
-                    deferred: def,
-                    // track all the errors as we retry
-                    errors: []
-                };
-
-                // call the implementation method to start the cycle maintaining the 'self' c
-                $pnpcore.__executeQueryRetryImpl.apply(self, [ctx]);
-
-                // return a promise
+                // Return a promise.
                 return def.promise();
             }
         });
     },
 
     // implements the retry logic
-    __executeQueryRetryImpl: function (ctx) {
+    __executeQueryRetryImpl: function (context, retryContext) {        
+        var self = this; // Maintain self-awareness.
 
-        // maintain self-awareness
-        var self = this;
+        // Call our extension method to execute query with a promise.
+        self.ext_executeQueryPromise()
+            .done(function () { 
+                retryContext.deferred.resolveWith(context, arguments); 
+            })
+            .fail(function (sender, error) {
+                var retry = false,
+                    delay = retryContext.delay; // Grab our current delay value.
 
-        // call our extension method to execute query with a promise
-        self.ext_executeQueryPromise().done(function () { ctx.deferred.resolveWith(this, arguments); }).fail(function (sender, error) {
+                // Record our error.
+                retryContext.errors.push(error);
 
-            // record our error
-            ctx.errors.push(error);
+                // See if we should retry, other logic can be added here.
+                if (error && error.get_errorTypeName) {
+                    retry = /Microsoft.SharePoint.Client.ClientServiceTimeoutException/i.test(error.get_errorTypeName());
+                }
 
-            var retry = false;
+                if (!retry) {
+                    // If we can't retry, reject.
+                    retryContext.deferred.rejectWith(
+                        sender, 
+                        [sender, $pnpcore.__getNoRetryAvailableException(retryContext)]);
+                }
 
-            // see if we should retry, other logic can be added here
-            if (error && error.get_errorTypeName) {
-                retry = /Microsoft.SharePoint.Client.ClientServiceTimeoutException/i.test(error.get_errorTypeName());
-            }
+                // Increment our counters.
+                retryContext.delay *= 2;
+                retryContext.retryAttempts++;
 
-            if (!retry) {
-                // if we can't retry, reject
-                ctx.deferred.rejectWith(sender, [sender, $pnpcore.__getNoRetryAvailableException(ctx)]);
-            }
+                // If we have exceeded the retry count, reject.
+                if (retryContext.retryCount <= retryContext.retryAttempts) {
+                    retryContext.deferred.rejectWith(
+                        sender, 
+                        [sender, $pnpcore.__getRetryLimitReachedException(retryContext)]);
+                }
 
-            // grab our current delay value
-            var delay = ctx.delay;
-
-            // increment our counters
-            ctx.delay *= 2;
-            ctx.retryAttempts++;
-
-            // if we have exceeded the retry count, reject
-            if (ctx.retryCount <= ctx.retryAttempts) {
-                ctx.deferred.rejectWith(sender, [sender, $pnpcore.__getRetryLimitReachedException(ctx)]);
-            }
-
-            // set our retry timeout for {delay} milliseconds
-            setTimeout($pnpcore.getCtxCallback(self, $pnpcore.__executeQueryRetryImpl, ctx), delay);
-        });
+                // Set our retry timeout for {delay} milliseconds.
+                setTimeout($pnpcore.getCtxCallback(self, $pnpcore.__executeQueryRetryImpl, retryContext), delay);
+            });
     },
 
-    __getNoRetryAvailableException: function (ctx) {
+    __getNoRetryAvailableException: function (retryContext) {
         return {
             message: 'Retry not available.',
-            retryCount: ctx.retryAttempts,
-            errors: ctx.errors,
+            retryCount: retryContext.retryAttempts,
+            errors: retryContext.errors,
             get_message: function () { return this.message; }
         };
     },
 
-    __getRetryLimitReachedException: function (ctx) {
+    __getRetryLimitReachedException: function (retryContext) {
         return {
             message: 'Exceeded retry limit.',
-            retryCount: ctx.retryAttempts,
-            errors: ctx.errors,
+            retryCount: retryContext.retryAttempts,
+            errors: retryContext.errors,
             get_message: function () { return this.message; }
         };
     },
 
     // allows for the calling pattern getCtxCallback(thisobj, method, methodarg1, methodarg2, etc...)
     getCtxCallback: function (context, method) {
-
         var args = [].slice.call(arguments).slice(2);
 
         return function () {
