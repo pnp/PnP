@@ -1,4 +1,4 @@
-# Taxonomy picker for sharepoint app #
+# Taxonomy picker for sharepoint add-in #
 
 ### Summary ###
 This sample shows an implementation of a SharePoint Taxonomy Picker control that can be used on provider hosted SharePoint apps.
@@ -9,7 +9,8 @@ This sample shows an implementation of a SharePoint Taxonomy Picker control that
 -  SharePoint 2013 on-premises
 
 ### Prerequisites ###
-It's important that the provider hosted app that's running the taxonomy picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
+- It's important that the provider hosted add-in that's running the taxonomy picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
+- You have to set the Options 'This service application is the default storage location for Keywords.' and 'This service application is the default storage location for column specific term sets.' on one of the Managed Metadata Service Application(s) Proxy Properties. If you get "Loading TermSet failed. Please refresh your browser and try again." errors then please check this.
 
 ### Solution ###
 Solution | Author(s)
@@ -30,23 +31,23 @@ Version  | Date | Comments
 ----------
 
 
-# How to use the taxonomy picker in your provider hosted SharePoint app #
+# How to use the taxonomy picker in your provider hosted SharePoint add-in #
 
-Using the Taxonomy Picker in your provider hosted app does not require many steps?
+Using the Taxonomy Picker in your provider hosted add-in does not require many steps?
 
-## Ensure you trigger the creation of an app web ##
-When you build a provider hosted app it does not necessarily have an app web associated with it whereas a SharePoint hosted app always has an app web. 
+## Ensure you trigger the creation of an add-in web ##
+When you build a provider hosted add-in it does not necessarily have an add-in web associated with it whereas a SharePoint hosted add-in always has an add-in web. 
 
-Since the Taxonomy Picker control uses the CSOM object model from JavaScript it’s required to have an app web. 
+Since the Taxonomy Picker control uses the CSOM object model from JavaScript it’s required to have an add-in web. 
 
-To ensure you have an app web you can just add an empty module to your SharePoint app as shown below:
+To ensure you have an add-in web you can just add an empty module to your SharePoint add-in as shown below:
 
 ![Screenshot of module](http://i.imgur.com/FBh3CfY.png "Screenshot of module")
 
-## App permissions ##
-The Taxonomy Picker communicates with SharePoint’s Managed Metadata Service, which requires special permissions in the app model.  Working with Closed TermSets will require Read permission on the Taxonomy permission scope.  To enable the creation of new terms in Open TermSets, the app will require Write permission on the Taxonomy permission scope.  These permissions can be set in the AppManifest.xml as seen below:
+## Add-In permissions ##
+The Taxonomy Picker communicates with SharePoint’s Managed Metadata Service, which requires special permissions in the add-in model.  Working with Closed TermSets will require Read permission on the Taxonomy permission scope.  To enable the creation of new terms in Open TermSets, the add-in will require Write permission on the Taxonomy permission scope.  These permissions can be set in the AppManifest.xml as seen below:
 
-![Screenshot of app permissions](http://i.imgur.com/MjQHxN1.png "Screenshot of app permissions")
+![Screenshot of add-in permissions](http://i.imgur.com/MjQHxN1.png "Screenshot of add-in permissions")
  
 ## Required files ##
 The Taxonomy Picker is implemented as a jQuery extension, which means it requires a reference to jQuery on and pages it will be used. In addition to jQuery, the Taxonomy Picker control requires the reference of a taxonomypicker.js and taxonomypicker.css files included in the sample solution.
@@ -73,7 +74,7 @@ $(document).ready(function () {
         function () {
             $.getScript(layoutsRoot + 'SP.js',
                 function () {
-                    //Load the SP.UI.Controls.js file to render the App Chrome
+                    //Load the SP.UI.Controls.js file to render the Add-In Chrome
                     $.getScript(layoutsRoot + 'SP.UI.Controls.js', renderSPChrome);
 
                     //load scripts for cross-domain calls
@@ -136,6 +137,7 @@ The first parameter of the Taxonomy Picker sets the options for the control. The
 | maxSuggestions | integer for the max number of suggestions to list (defaults is 10) |
 | lcid | the locale ID for creating terms (default is 1033) |
 | language | the language code for the control (defaults to en=us) context. |
+| useContainsSuggestions | optional boolean indicating if the suggestions should search with "contains" matching (default pattern is "starts with") |
 
  The second parameter is an initialized SP.ClientContext object 
 
@@ -217,7 +219,7 @@ Such a resource file is simple collection of global constants:
 
 
 # Appendix A: Using the taxonomypicker on hierarchical termsets #
-The taxonomy picker can be used when a cascaded taxonomy picker control is required in your SharePoint Provider Hosted App and you have Term Set structure similar to mentioned below:
+The taxonomy picker can be used when a cascaded taxonomy picker control is required in your SharePoint Provider Hosted Add-In and you have Term Set structure similar to mentioned below:
 ![Typical Term Set](http://i.imgur.com/bQk27IP.png)
 
 And you wanted to represent them like this with cascading filter functionality:
@@ -263,7 +265,7 @@ $(document).ready(function () {
         function () {
             $.getScript(layoutsRoot + 'SP.js',
                 function () {
-                    //Load the SP.UI.Controls.js file to render the App Chrome
+                    //Load the SP.UI.Controls.js file to render the Add-In Chrome
                     $.getScript(layoutsRoot + 'SP.UI.Controls.js', renderSPChrome);
 
                     //load scripts for cross site calls (needed to use the people picker control in an IFrame)

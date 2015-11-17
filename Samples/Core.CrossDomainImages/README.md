@@ -1,9 +1,9 @@
 # Cross-Domain Images #
 
 ### Summary ###
-The sample shows a technique for displaying secured images in provider-hosted app that live in a separate domain (ex: AppWeb or MySite). This can be largely problematic when the two domains are in separate security zones as the domains will not be able to share browser tokens. The technique outlined in the sample leverages a REST Service in the provider-hosted app to “proxy” the image delivery as a base64 encoded string instead of an absolute URL. All you need is a SharePoint access token.
+The sample shows a technique for displaying secured images in provider-hosted add-in that live in a separate domain (ex: AppWeb or MySite). This can be largely problematic when the two domains are in separate security zones as the domains will not be able to share browser tokens. The technique outlined in the sample leverages a REST Service in the provider-hosted addom to “proxy” the image delivery as a base64 encoded string instead of an absolute URL. All you need is a SharePoint access token.
 
-The following image shows an expected outcome of running the app. Notice that the first images fails to load, but the base64 encoded images display as expected:
+The following image shows an expected outcome of running the add-in. Notice that the first images fails to load, but the base64 encoded images display as expected:
 
 ![Cross-domain images](http://i.imgur.com/riOu9zn.png)
 

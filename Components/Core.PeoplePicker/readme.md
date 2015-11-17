@@ -9,7 +9,7 @@ This sample shows an implementation of a SharePoint People Picker control that c
 -  SharePoint 2013 on-premises
 
 ### Prerequisites ###
-It's important that the provider hosted app that's running the people picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
+It's important that the provider hosted add-in that's running the people picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
 
 
 ### Solution ###
@@ -28,16 +28,16 @@ Version  | Date | Comments
 
 ----------
 
-# HOW TO USE THE PEOPLEPICKER IN YOUR PROVIDER HOSTED SP APP? #
-Using the people picker in your provider hosted app does not require many steps :-)
+# HOW TO USE THE PEOPLEPICKER IN YOUR PROVIDER HOSTED SP ADD-IN? #
+Using the people picker in your provider hosted add-in does not require many steps :-)
 
-## ENSURE YOU TRIGGER THE CREATION OF AN APP WEB ##
-When you build a provider hosted app it does not necessarily have an app web associated with it whereas a SharePoint hosted app always has an app web. Since the people picker control uses the CSOM object model from JavaScript it’s required to have an app web. To ensure you have an app web you can just add a dummy module to your SharePoint app as shown below:
+## ENSURE YOU TRIGGER THE CREATION OF AN ADD-IN WEB ##
+When you build a provider hosted add-in it does not necessarily have an add-in web associated with it whereas a SharePoint hosted add-in always has an add-in web. Since the people picker control uses the CSOM object model from JavaScript it’s required to have an add-in web. To ensure you have an add-in web you can just add a dummy module to your SharePoint add-in as shown below:
 
 ![](http://i.imgur.com/EUDXrvo.png)
 
 ## DEFINING JAVASCRIPT GLOBAL VARIABLES ##
-Your app should have a JavaScript file that’s being loaded by your app pages (app.js in the sample) and in this JavaScript file you should define a context variable for the SharePoint clientcontext and one variable for the people picker:
+Your add-in should have a JavaScript file that’s being loaded by your add-in pages (app.js in the sample) and in this JavaScript file you should define a context variable for the SharePoint clientcontext and one variable for the people picker:
 
 ```JavaScript
 // variable used for cross site CSOM calls
@@ -48,7 +48,7 @@ var peoplePicker;
 ```
 
 ## CREATE THE CLIENTCONTEXT OBJECT ##
-Below code shows how to load the relevant SP js files and how to create the cliencontext object. The clientcontext object is created is such a way (see the ProxyWebRequestExecutorFactory that's being hooked up) that it can be used in cross domain scenarios which will be the case when you’re integrating your provider hosted app via a dialog in SharePoint.
+Below code shows how to load the relevant SP js files and how to create the cliencontext object. The clientcontext object is created is such a way (see the ProxyWebRequestExecutorFactory that's being hooked up) that it can be used in cross domain scenarios which will be the case when you’re integrating your provider hosted add-in via a dialog in SharePoint.
 
 ```JavaScript
 //Wait for the page to load

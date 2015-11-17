@@ -40,7 +40,7 @@ namespace Core.ListRatingSettings
              *  1. Library name as per locale
              *  2. Experience Ratings/Likes
             */  
-            ratingEnabler.Enable("listtoconfigure",VotingExperience.Ratings);
+            ratingEnabler.Enable("listtoconfigure",VotingExperience.Likes);
 
 
 

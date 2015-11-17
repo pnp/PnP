@@ -1,11 +1,10 @@
 # Corporate Events #
 
 ### Summary ###
-Corporate Events app is reference composite solution demonstrating usage of Core component capabilities to provide centralized corporate evetn management system.
+Corporate Events add-in is reference composite solution demonstrating usage of Core component capabilities to provide centralized corporate evetn management system.
 
 Solution is build using ASP.net MVC model.
 
-**Notice**. *This app is still work in progress.*
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
@@ -28,7 +27,7 @@ Version  | Date | Comments
 ----------
 
 # SCENARIO 1 #
-This application is a sample of how to approach a line-of-business application such as a corporate events app. This application creates a number of app parts for displaying 
+This application is a sample of how to approach a line-of-business application such as a corporate events add-in. This application creates a number of add-in parts for displaying 
 
 ## CONFIGURATION ##
 The configuration of the application utilizes the __CorporateEvents.SharePointWeb.Models.DataInitializer__ class. The /Home page of the application will route the user to the /Home/Config page to begin initialization of the application. The initializer will create the following:
@@ -129,7 +128,7 @@ public void Save(Web web) {
 ```
 
 # WEB INTERFACE #
-The user experience for the Corporate Events app uses both SharePoint to be the primary driving interface as well as the provider-hosted web interface. The web interface is MVC controlled using the OOB ASP.NET MVC interface with Bootstrap and jquery.
+The user experience for the Corporate Events add-in uses both SharePoint to be the primary driving interface as well as the provider-hosted web interface. The web interface is MVC controlled using the OOB ASP.NET MVC interface with Bootstrap and jquery.
 
 ## EVENTS HOME ##
 ![SharePoint - Events home](http://i.imgur.com/nwHBVn7.png)

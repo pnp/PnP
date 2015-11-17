@@ -32,11 +32,11 @@ This sample shows how one can personalize elements within the UI by the use of s
 ![](http://i.imgur.com/3RRVCbt.png)
 
 # SCENARIO: UI ELEMENT PERSONALIZATION #
-The app page does a few things up front to support the sample. It uploads three images into the Site Assets library as well as creates a list named “CodesList”, and then creates three list items that contains a title and a URL to one of the three images that were uploaded to the Site Assets library. The list items are titled as “XX”, “YY” and “ZZ” as fictitious business unit codes.
+The add-in page does a few things up front to support the sample. It uploads three images into the Site Assets library as well as creates a list named “CodesList”, and then creates three list items that contains a title and a URL to one of the three images that were uploaded to the Site Assets library. The list items are titled as “XX”, “YY” and “ZZ” as fictitious business unit codes.
 
 It is assumed the user has one of these three codes listed in their ‘About Me’ section of their profile.
 
-The last task the app page performs, is the javascript injection. 
+The last task the add-in page performs, is the javascript injection. 
 
 Once these tasks are done, the user clicks the ‘Back to Site’ link, and their site will load, and that when the injected javascript kicks in and check local storage for a saved profile value. If it does not exist, or is expired, the javascript will query the user profile and look for one of the codes above. It then stores it into local storage and queries the CodesList to find the matching code’s image URL to the Site Assets library. If it is found, the image will be rendered in the Head section within the Page Title area.
 

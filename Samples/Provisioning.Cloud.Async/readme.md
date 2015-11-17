@@ -1,7 +1,7 @@
 # Provisioning.Cloud.Async #
 
 ### Summary ###
-Demonstrates how to create site collections in Office 365/SharePoint asynchronously. Requests are saved in a list within the SharePoint App Web. The console application included in this samples is deployed to Azure or an on-premises & scheduled.
+Demonstrates how to create site collections in Office 365/SharePoint asynchronously. Requests are saved in a list within the SharePoint add-in Web. The console application included in this samples is deployed to Azure or an on-premises & scheduled.
 
 ### Walk-through Video ###
 Visit the video on Channel 9 - [http://channel9.msdn.com/Blogs/Office-365-Dev/Asynchronious-site-collection-creation-for-cloud-Office-365-Developer-Patterns-and-Practices](http://channel9.msdn.com/Blogs/Office-365-Dev/Asynchronious-site-collection-creation-for-cloud-Office-365-Developer-Patterns-and-Practices)

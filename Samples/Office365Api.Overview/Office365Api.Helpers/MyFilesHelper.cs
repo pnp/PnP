@@ -32,12 +32,15 @@ namespace Office365Api.Helpers
 
             var filesResults = await filesQuery.ExecuteAsync();
 
-            do
+            if (filesResults != null)
             {
-                files.AddRange(filesResults.CurrentPage.Where(i => i.Type == "File"));
-                filesResults = await filesResults.GetNextPageAsync();
+                do
+                {
+                    files.AddRange(filesResults.CurrentPage.Where(i => i.Type == "File"));
+                    filesResults = await filesResults.GetNextPageAsync();
+                }
+                while (null != filesResults);
             }
-            while (null != filesResults);
 
             return files.OrderBy(f => f.DateTimeLastModified);
         }
@@ -58,13 +61,15 @@ namespace Office365Api.Helpers
 
             var filesResults = await filesQuery.ExecuteAsync();
 
-            do
+            if (filesResults != null)
             {
-                files.AddRange(filesResults.CurrentPage.Where(i => i.Type == "File"));
-                filesResults = await filesResults.GetNextPageAsync();
+                do
+                {
+                    files.AddRange(filesResults.CurrentPage.Where(i => i.Type == "File"));
+                    filesResults = await filesResults.GetNextPageAsync();
+                }
+                while (null != filesResults);
             }
-            while (null != filesResults);
-
 
             return files.OrderBy(f => f.Name);
         }
@@ -84,12 +89,15 @@ namespace Office365Api.Helpers
 
             var foldersResults = await foldersQuery.ExecuteAsync();
 
-            do
+            if (foldersResults != null)
             {
-                folders.AddRange(foldersResults.CurrentPage.Where(i => i.Type == "Folder"));
-                foldersResults = await foldersResults.GetNextPageAsync();
+                do
+                {
+                    folders.AddRange(foldersResults.CurrentPage.Where(i => i.Type == "Folder"));
+                    foldersResults = await foldersResults.GetNextPageAsync();
+                }
+                while (null != foldersResults);
             }
-            while (null != foldersResults);
 
             return folders;
         }

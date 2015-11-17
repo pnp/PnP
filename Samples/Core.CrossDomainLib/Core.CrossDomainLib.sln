@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{4C59FE31-A8A3-4D57-8D9C-06E8AD47101F}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.CrossDomainLib", "Core.CrossDomainLib\Core.CrossDomainLib.csproj", "{C2A5BC5F-5AC4-456C-9896-9CD78F55B0E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.CrossDomainLibWeb", "Core.CrossDomainLibWeb\Core.CrossDomainLibWeb.csproj", "{1521068A-9989-4A4B-8883-36C9FE776AB3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C2A5BC5F-5AC4-456C-9896-9CD78F55B0E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2A5BC5F-5AC4-456C-9896-9CD78F55B0E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2A5BC5F-5AC4-456C-9896-9CD78F55B0E7}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{C2A5BC5F-5AC4-456C-9896-9CD78F55B0E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2A5BC5F-5AC4-456C-9896-9CD78F55B0E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2A5BC5F-5AC4-456C-9896-9CD78F55B0E7}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{1521068A-9989-4A4B-8883-36C9FE776AB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1521068A-9989-4A4B-8883-36C9FE776AB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1521068A-9989-4A4B-8883-36C9FE776AB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1521068A-9989-4A4B-8883-36C9FE776AB3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

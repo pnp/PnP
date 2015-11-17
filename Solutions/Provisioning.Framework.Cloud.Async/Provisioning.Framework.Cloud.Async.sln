@@ -1,22 +1,18 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Framework.Cloud.Async", "Provisioning.Framework.Cloud.Async\Provisioning.Framework.Cloud.Async.csproj", "{4169F738-0DCA-495F-9634-EC81613F86F7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Framework.Cloud.AsyncWeb", "Provisioning.Framework.Cloud.AsyncWeb\Provisioning.Framework.Cloud.AsyncWeb.csproj", "{831E0091-796B-49EB-BB0C-FEAA02D34059}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{86B55447-CCF4-46C7-A784-AD5585E44D56}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{83FEF115-BF26-4BFA-8817-5A68D9F69D20}"
 	ProjectSection(SolutionItems) = preProject
 		readme.md = readme.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeDevPnP.Core", "..\..\OfficeDevPnP.Core\OfficeDevPnP.Core\OfficeDevPnP.Core.csproj", "{F2077977-8EBF-409D-BBF4-8EFB328928A8}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helper Projects", "Helper Projects", "{2E4DA635-4AE8-45EE-A617-A05E53754EE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Framework.Cloud.Async", "Provisioning.Framework.Cloud.Async\Provisioning.Framework.Cloud.Async.csproj", "{4169F738-0DCA-495F-9634-EC81613F86F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Framework.Cloud.AsyncWeb", "Provisioning.Framework.Cloud.AsyncWeb\Provisioning.Framework.Cloud.AsyncWeb.csproj", "{831E0091-796B-49EB-BB0C-FEAA02D34059}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Helper.ApplyCustomTemplate", "Helper.ApplyCustomTemplate\Helper.ApplyCustomTemplate.csproj", "{F7A15195-FC7C-473B-846A-7C4DA8A117A5}"
 EndProject
@@ -56,14 +52,6 @@ Global
 		{831E0091-796B-49EB-BB0C-FEAA02D34059}.Release|Any CPU.Build.0 = Release|Any CPU
 		{831E0091-796B-49EB-BB0C-FEAA02D34059}.Release15|Any CPU.ActiveCfg = Release|Any CPU
 		{831E0091-796B-49EB-BB0C-FEAA02D34059}.Release15|Any CPU.Build.0 = Release|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug15|Any CPU.ActiveCfg = Debug15|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Debug15|Any CPU.Build.0 = Debug15|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release15|Any CPU.ActiveCfg = Release15|Any CPU
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8}.Release15|Any CPU.Build.0 = Release15|Any CPU
 		{F7A15195-FC7C-473B-846A-7C4DA8A117A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F7A15195-FC7C-473B-846A-7C4DA8A117A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F7A15195-FC7C-473B-846A-7C4DA8A117A5}.Debug15|Any CPU.ActiveCfg = Debug|Any CPU
@@ -109,7 +97,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{F2077977-8EBF-409D-BBF4-8EFB328928A8} = {86B55447-CCF4-46C7-A784-AD5585E44D56}
 		{F7A15195-FC7C-473B-846A-7C4DA8A117A5} = {2E4DA635-4AE8-45EE-A617-A05E53754EE1}
 		{2D11E286-76AC-4A6E-9D15-9B4973BCA353} = {2E4DA635-4AE8-45EE-A617-A05E53754EE1}
 		{B14AA18F-E59E-4BA3-8D7C-4C5448F491F4} = {2E4DA635-4AE8-45EE-A617-A05E53754EE1}

@@ -29,10 +29,10 @@ Version  | Date | Comments
 # To use this sample #
 
 12. Open the .sln file for the sample in **Visual Studio**.
-13. In Solution Explorer, highlight the SharePoint app project and replace the **Site URL** property with the URL of your SharePoint developer site.
+13. In Solution Explorer, highlight the SharePoint add-in project and replace the **Site URL** property with the URL of your SharePoint developer site.
 14. Turn on Fiddler if you have it installed.
 
-You can now run the sample with F5. The first time you do, you are prompted to trust the app. The default page of the web application then opens. There are three different batch jobs you can try. They use lists that are present on every Developer Site out-of-the-box: The User list, the Composed Looks list, and the List of Lists on the website.
+You can now run the sample with F5. The first time you do, you are prompted to trust the add-in. The default page of the web application then opens. There are three different batch jobs you can try. They use lists that are present on every Developer Site out-of-the-box: The User list, the Composed Looks list, and the List of Lists on the website.
 
 # Questions and comments
 
