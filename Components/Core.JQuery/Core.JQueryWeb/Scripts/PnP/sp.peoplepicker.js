@@ -83,7 +83,7 @@
 
             setSelectedUsers: function (/*controlContext*/ controlContext, /*userInfo[]*/ arr) {
 
-                if (arr === null || arr === '' || arr == '' || !$.isArray(arr)) {
+                if (arr === null || !$.isArray(arr)) {
                     // count this as an attempt to clear the control
                     methods.emptyControl(controlContext);
                     return;
