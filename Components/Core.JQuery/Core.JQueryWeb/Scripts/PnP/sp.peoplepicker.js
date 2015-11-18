@@ -62,7 +62,12 @@
                 var controlContext = methods.getControlContext(selectedItem);
 
                 // get a data object from the choice
-                var chosen = { login: selectedItem.attr('sp-login'), title: selectedItem.attr('sp-title'), email: selectedItem.attr('sp-email'), displayName: selectedItem.attr('sp-displayName') };
+                var chosen = { 
+                    login: selectedItem.attr('sp-login'), 
+                    title: selectedItem.attr('sp-title'), 
+                    email: selectedItem.attr('sp-email'), 
+                    displayName: selectedItem.attr('sp-displayName') 
+                };
 
                 // update our hidden field value
                 var arr = methods.parseValue(controlContext.hiddenInput);
@@ -142,7 +147,9 @@
                     };
 
                     // issue request
-                    spContext.executeQueryAsync($app.getCtxCallback(searchCtx, methods.searchSuccess), $app.getCtxCallback(searchCtx, methods.searchFail));
+                    spContext.executeQueryAsync(
+                        $app.getCtxCallback(searchCtx, methods.searchSuccess), 
+                        $app.getCtxCallback(searchCtx, methods.searchFail));
                 });
             },
 
