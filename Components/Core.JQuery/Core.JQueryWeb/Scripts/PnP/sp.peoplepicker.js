@@ -1,4 +1,5 @@
 ﻿(function ($) {
+    "use strict";
 
     $.fn.spPeoplePicker = function (options) {
 
@@ -22,7 +23,7 @@
                 return container;
             },
 
-            removeChosenUser: function (e) {
+            removeChosenUser: function () {
                 var source = $(this);
                 var controlContext = methods.getControlContext(source);
                 var chosen = source.closest('span.sp-peoplepicker-chosen');
@@ -34,7 +35,7 @@
                 var newArr = [];
 
                 for (var i = 0; i < arr.length; i++) {
-                    if (arr[i].login != chosenToRemoveLogin) {
+                    if (arr[i].login !== chosenToRemoveLogin) {
                         newArr.push(arr[i]);
                     }
                 }
@@ -110,7 +111,7 @@
                 // we add on the key that was just pressed
                 var currentValue = controlContext.userEditInput.val() + e.key;
 
-                if (currentValue == null || currentValue.length < settings.minSearchTriggerLength) {
+                if (currentValue === null || currentValue.length < settings.minSearchTriggerLength) {
                     // do nothing. seriously, stop doing things if they haven't entered enough letters
                     return;
                 }
@@ -180,10 +181,10 @@
 
                     for (var i = 0; i < displayCount; i++) {
                         var item = results[i];
-                        var loginName = item['Key'];
-                        var displayName = item['DisplayText'];
-                        var title = item['EntityData']['Title'];
-                        var email = item['EntityData']['Email'];
+                        var loginName = item.Key;
+                        var displayName = item.DisplayText;
+                        var title = item.EntityData.Title;
+                        var email = item.EntityData.Email;
 
                         foundItems.push('<li role="presentation" class="sp-peoplepicker-foundItem" sp-login="' + loginName + '" sp-title="' + title + '" sp-email="' + email + '" sp-displayName="' + displayName + '">' + displayName + '</li>');
                     }
@@ -209,13 +210,13 @@
                     selectUsersDiv: container.find('div.sp-peoplepicker-selectedValues'),
                     userEditInput: container.find('input.sp-peoplepicker-editInput'),
                     dropdown: container.find('ul.sp-peoplepicker-dropdown'),
-                    hiddenInput: container.find('input[type="hidden"]'),
+                    hiddenInput: container.find('input[type="hidden"]')
                 };
             },
 
             parseValue: function (hiddenInput) {
                 var rawValue = hiddenInput.val();
-                return rawValue === '' || rawValue == null ? [] : eval(rawValue);
+                return rawValue === '' || rawValue === null ? [] : eval(rawValue);
             },
 
             emptyControl: function (controlContext) {
@@ -247,8 +248,7 @@
             // clear any matching people picker controls
             return this.each(function () {
 
-                // we expect the target to be a div with a people picker inside
-                var peoplePickerContainer = $(this);
+                // we expect the target to be a div with a people picker inside                
                 var container = $(this).find('div.sp-peoplepicker-wrapper');
                 methods.emptyControl(methods.getControlContext(container));
             });
@@ -277,8 +277,7 @@
 
             // set any matching people picker controls
             return this.each(function () {
-                // we expect the target to be a div with a people picker inside
-                var peoplePickerContainer = $(this);
+                // we expect the target to be a div with a people picker inside                
                 var container = $(this).find('div.sp-peoplepicker-wrapper');
                 var controlContext = methods.getControlContext(container);
 
@@ -297,5 +296,5 @@
                 }
             });
         }
-    }
+    };
 })(jQuery);
