@@ -122,7 +122,7 @@ namespace Provisioning.Common
                     throw;
                 }
                Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", PCResources.SiteCreation_Creation_Successful, siteRequest.Url);
-            }, 25000);
+            });
         }
 
         /// <summary>
