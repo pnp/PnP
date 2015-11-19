@@ -20,6 +20,7 @@ function Install-SharePointSyncConfiguration
         SharePointCredential = New-Object PSCredential ("LITWARE\administrator", (ConvertTo-SecureString 'J$p1ter' -AsPlainText -Force))
     }
     Install-SharePointSyncConfiguration @spProps -Verbose
+
 #>
     [CmdletBinding()]
     [OutputType([int])]
@@ -210,6 +211,59 @@ if ($PSCmdlet.ShouldProcess('SharePoint',$confirmMessage))
 
 }##Closing: function Start-SharePointSync
 
+
+function Publish-SynchronizationAssembly
+{
+<#
+.Synopsis
+   Build a Sychronization Service rules extension from a source code file and output it to the Extensions folder
+.DESCRIPTION
+   The sychronization service can be extended by calling out to a .NET assembly containing synchronization rules.
+   This function builds that assembly and outputs it to the synchronization service 'Extensions' folder.
+   
+.EXAMPLE
+   #Build and publish the assembly for the SharePoint Synchronization Solution
+   Publish-SynchronizationAssembly -Path C:\Temp\SharePointSync\SynchronizationRulesExtensions.cs -Verbose
+#>
+    [CmdletBinding()]
+    [OutputType([void])]
+    Param
+    (
+        # Path to the source code file
+        [ValidateScript({
+        if (-not(Test-Path $_ -PathType Leaf))
+        {
+            throw "Source code file not found: $_"
+        } 
+        else
+        {
+            Write-Verbose "Verified $_ exists."
+            return $true
+        }      
+        })] 
+        [String]
+        $Path
+    )
+    $ExtensionsFolder = Join-Path (Get-SynchronizationServicePath) Extensions
+    Write-Verbose "Assembly will be output to: $ExtensionsFolder"
+
+    if (-not(Test-Path -Path $ExtensionsFolder -PathType Container))
+    {
+        throw "Extensions folder not found: $ExtensionsFolder"
+    }
+
+    $SynchronizationAssembly = Join-Path (Get-SynchronizationServicePath) Bin\Assemblies\Microsoft.MetadirectoryServicesEx.dll
+    Write-Verbose "Assembly will reference: $SynchronizationAssembly"
+    if (-not(Test-Path -Path $SynchronizationAssembly -PathType Leaf))
+    {
+        throw "Microsoft.MetadirectoryServicesEx.dll assembly not found: $SynchronizationAssembly"
+    }
+
+    Write-Verbose "Calling Add-Type to build and output the assembly..."
+    Add-Type -Path $Path -ReferencedAssemblies $SynchronizationAssembly -OutputType Library -OutputAssembly (Join-Path $ExtensionsFolder SharePointSynchronization.dll)
+    Write-Verbose "Done."
+
+}##Closing: function Publish-SynchronizationAssembly
 
 function Get-SynchronizationServiceRegistryKey
 {
