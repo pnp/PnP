@@ -129,8 +129,14 @@ function Install-SharePointSyncConfiguration
     Write-Verbose "  Path: $Path"
     Import-MIISServerConfig -Path $Path -Verbose    
 
-    Write-Verbose "Set-MIISADMAConfiguration -MAName ADMA -Forest $ForestDnsName -Credentials $ForestCredential -Verbose"
-    Set-MIISADMAConfiguration -MAName ADMA -Credentials $ForestCredential -Forest $ForestDnsName -Verbose    
+    #region BUG - Avoiding the call to Set-MIISADMAConfiguration because it deletes the ADMA partitions
+    #TODO - fix this part of the function once we get an updated Set-MIISADMAConfiguration PowerShell cmdlet from MIM 
+    Write-Warning "======================================================================================="
+    Write-Warning "IMPORTANT: the Password must be set on the AD Connector before sychronization will work"
+    Write-Warning "======================================================================================="
+    #Write-Verbose "Set-MIISADMAConfiguration -MAName ADMA -Forest $ForestDnsName -Credentials $ForestCredential -Verbose"
+    #Set-MIISADMAConfiguration -MAName ADMA -Credentials $ForestCredential -Forest $ForestDnsName -Verbose  
+    #endregion  
     
     Write-Verbose "Configuring the SharePoint Connector"
     Write-Verbose "  SharePoint URL:          $SharePointUrl"
@@ -141,9 +147,8 @@ function Install-SharePointSyncConfiguration
     Write-Verbose "  SharePoint Credential:   $($SharePointCredential.UserName)"
     Set-MIISECMA2Configuration -MAName SPMA -ParameterUse ‘connectivity’ -HTTPProtocol $SharePointUrl.Scheme -HostName $SharePointUrl.Host -Port $SharePointUrl.Port -PictureFlowDirection $PictureFlowDirection -Credentials $SharePointCredential -Verbose
 
-    Write-Verbose "Copying the extension DLL to the Sychronization Service extensions folder"
-    Write-Verbose "  Extensions Folder:       $(Get-SynchronizationServicePath)"
-    Copy-Item -Path (Join-Path $Path *.dll) -Destination (Join-Path (Get-SynchronizationServicePath) Extensions)
+    Write-Verbose "Publishing the Sync Rules Extension DLL to the Sychronization Service extensions folder"      
+    Publish-SynchronizationAssembly -Path (Join-Path $Path SynchronizationRulesExtensions.cs) -Verbose
 }##Closing: function Install-SharePointSyncConfiguration
 
 function Start-SharePointSync
