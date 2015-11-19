@@ -863,7 +863,7 @@
             <action>delete-object</action>
         </provisioning-cleanup>
         <extension>
-            <assembly-name>MIMSPExtension.dll</assembly-name>
+            <assembly-name>SharePointSynchronization.dll</assembly-name>
             <application-protection>low</application-protection>
         </extension>
         <controller-configuration>
