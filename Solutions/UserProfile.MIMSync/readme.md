@@ -42,7 +42,7 @@ Use document [Install Microsoft Identity Manager for User Profiles in SharePoint
 Use document [Set up User Profile Sync in a new SharePoint Server 2016 farm using Microsoft Identity Manager](Documentation/Set up User Profile Sync in a new SharePoint Server 2016 farm using Microsoft Identity Manager.docx)
 
 ## Setting up User Profile Sync in an upgraded SharePoint 2016 farm using sync config from previous version ##
-Use document [Use Microsoft Identity Manager to set-up User Profile Sync in an upgraded SharePoint  Server 2016 farm using sync configuration from previous version](Use Microsoft Identity Manager to set up User Profile Sync in an upgraded SharePoint Server 2016 farm (using sync config fr.docx)
+Use document *Use Microsoft Identity Manager to set-up User Profile Sync in an upgraded SharePoint  Server 2016 farm using sync configuration from previous version*
 
 
 
