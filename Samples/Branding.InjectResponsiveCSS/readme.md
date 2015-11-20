@@ -9,6 +9,8 @@ To make sure the css is rendered correctly on hardware devices a viewport html m
 
 * Stefan Bauer (n8d) - [How to add viewport meta without editing the master page](http://www.n8d.at/blog/how-to-add-viewport-meta-without-editing-the-master-page/)
 
+*Notice* - There's more fine tuned and polished responsive UI CSS included in the PnP Partner Pack, which can be accessed from http://aka.ms/OfficeDevPnPPartnerPack. 
+
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
 -  Office 365 Dedicated (D)*
@@ -35,10 +37,9 @@ Provisioning of viewport meta tag settings done by Stefan Bauer, n8d
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
+1.2  | November 19th 2015 | Small polishing on the code and adjustments in the documentation
 1.1  | May 2nd 2015 | Viewport meta tag added
-
-
-> 1.0  | April 26th 2015 | Initial release
+1.0  | April 26th 2015 | Initial release
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
