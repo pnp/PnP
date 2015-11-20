@@ -16,7 +16,7 @@ Documentation in the repository calls out prerequisites
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-MIM Sync Tools | Craig Martin 
+MIM-Sync Tools | Craig Martin 
 
 ### Version history ###
 Version  | Date | Comments
