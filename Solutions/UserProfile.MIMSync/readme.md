@@ -11,7 +11,10 @@ Detailed step-wise documentation is provided in the repository.
 -  SharePoint 2016 on-premises - new deployments or upgrades from SharePoint 2010 or SharePoint 2013
 
 ### Prerequisites ###
-Documentation in the repository calls out prerequisites 
+Documentation in the repository calls out prerequisites, such as:
+* Microsoft Identity Manager 2016
+* Microsoft Identity Manager 2016 Update
+* SharePoint Connector for FIM 
 
 ### Solution ###
 Solution | Author(s)
@@ -33,13 +36,13 @@ Version  | Date | Comments
 # For detailed description of scenarios and steps, please refer to following documentation in the repository.#
 
 ## Installing Microsoft Identity Manager components needed for User Profile Sync in SharePoint 2016 ##
-Use document "Install Microsoft Identity Manager for User Profiles in SharePoint Server 2016"
+Use document [Install Microsoft Identity Manager for User Profiles in SharePoint Server 2016](Documentation/Install Microsoft Identity Manager for User Profiles in SharePoint Server 2016.docx)
 
 ## Deploying a new SharePoint 2016 farm and setting up sync using Microsoft Identity Manager from scratch ##
-Use document "Set up User Profile Sync in a new SharePoint Server 2016 farm using Microsoft Identity Manager"
+Use document [Set up User Profile Sync in a new SharePoint Server 2016 farm using Microsoft Identity Manager](Documentation/Set up User Profile Sync in a new SharePoint Server 2016 farm using Microsoft Identity Manager.docx)
 
 ## Setting up User Profile Sync in an upgraded SharePoint 2016 farm using sync config from previous version ##
-Use document "Use Microsoft Identity Manager to set-up User Profile Sync in an upgraded SharePoint  Server 2016 farm using sync configuration from previous version"
+Use document [Use Microsoft Identity Manager to set-up User Profile Sync in an upgraded SharePoint  Server 2016 farm using sync configuration from previous version](Use Microsoft Identity Manager to set up User Profile Sync in an upgraded SharePoint Server 2016 farm (using sync config fr.docx)
 
 
 
