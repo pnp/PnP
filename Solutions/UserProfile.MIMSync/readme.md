@@ -36,10 +36,10 @@ Version  | Date | Comments
 # For detailed description of scenarios and steps, please refer to following documentation in the repository.#
 
 ## Installing Microsoft Identity Manager components needed for User Profile Sync in SharePoint 2016 ##
-Use document [Install Microsoft Identity Manager for User Profiles in SharePoint Server 2016](Documentation/Install Microsoft Identity Manager for User Profiles in SharePoint Server 2016.docx)
+Use document *Install Microsoft Identity Manager for User Profiles in SharePoint Server 2016*
 
 ## Deploying a new SharePoint 2016 farm and setting up sync using Microsoft Identity Manager from scratch ##
-Use document [Set up User Profile Sync in a new SharePoint Server 2016 farm using Microsoft Identity Manager](Documentation/Set up User Profile Sync in a new SharePoint Server 2016 farm using Microsoft Identity Manager.docx)
+Use document *Set up User Profile Sync in a new SharePoint Server 2016 farm using Microsoft Identity Manager*
 
 ## Setting up User Profile Sync in an upgraded SharePoint 2016 farm using sync config from previous version ##
 Use document *Use Microsoft Identity Manager to set-up User Profile Sync in an upgraded SharePoint  Server 2016 farm using sync configuration from previous version*
