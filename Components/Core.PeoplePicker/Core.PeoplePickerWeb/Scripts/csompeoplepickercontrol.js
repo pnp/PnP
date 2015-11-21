@@ -280,7 +280,14 @@
                         var displayName = item['DisplayText'];
                         var title = item['EntityData']['Title'];
                         var email = item['EntityData']['Email'];
-                        txtResults += this.Format(displayTemplate, this.InstanceName, loginName, this.HtmlEncode(displayName), email, displayName, loginName.split('|')[2], title);
+
+                        var loginNameDisplay = email;
+                        if (loginName && loginName.indexOf('|') > -1) {
+                            var segs = loginName.split('|');
+                            loginNameDisplay = loginNameDisplay + " " + segs[segs.length - 1];
+                            loginNameDisplay = loginNameDisplay.trim();
+                        }
+                        txtResults += this.Format(displayTemplate, this.InstanceName, loginName, this.HtmlEncode(displayName), email, displayName, loginNameDisplay, title);
                     }
                     var resultDisplay = '';
                     txtResults += '<div class=\'ms-emphasisBorder\' style=\'width: 400px; padding: 4px; border-left: none; border-bottom: none; border-right: none; cursor: default;\'>';
