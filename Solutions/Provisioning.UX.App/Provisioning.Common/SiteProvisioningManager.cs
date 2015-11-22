@@ -76,7 +76,7 @@ namespace Provisioning.Common
         /// </summary>
         /// <param name="web"></param>
         /// <exception cref="ProvisioningTemplateException">An Exception that occurs when applying the template to a site</exception>
-        public void ApplyProvisioningTemplate(ProvisioningTemplate provisioningTemplate, SiteInformation siteRequest)
+        public void ApplyProvisioningTemplate(ProvisioningTemplate provisioningTemplate, SiteInformation siteRequest, Template template)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace Provisioning.Common
                 this._siteprovisioningService.Authentication.SiteUrl = siteRequest.Url;
                 var _web = _siteprovisioningService.GetWebByUrl(siteRequest.Url);
                 provisioningTemplate.Connector = this.GetProvisioningConnector();                
-                provisioningTemplate = new TemplateConversion().HandleProvisioningTemplate(provisioningTemplate, siteRequest);
+                provisioningTemplate = new TemplateConversion().HandleProvisioningTemplate(provisioningTemplate, siteRequest, template);
 
                 ProvisioningTemplateApplyingInformation _pta = new ProvisioningTemplateApplyingInformation();
                 _pta.ProgressDelegate = (message, step, total) =>

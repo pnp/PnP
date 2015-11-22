@@ -321,15 +321,23 @@ namespace Core.JQueryWeb
             }
 
             redirectUrl = null;
+            bool contextTokenExpired = false;
 
-            if (SharePointContextProvider.Current.GetSharePointContext(httpContext) != null)
+            try
             {
-                return RedirectionStatus.Ok;
+                if (SharePointContextProvider.Current.GetSharePointContext(httpContext) != null)
+                {
+                    return RedirectionStatus.Ok;
+                }
+            }
+            catch (SecurityTokenExpiredException)
+            {
+                contextTokenExpired = true;
             }
 
             const string SPHasRedirectedToSharePointKey = "SPHasRedirectedToSharePoint";
 
-            if (!string.IsNullOrEmpty(httpContext.Request.QueryString[SPHasRedirectedToSharePointKey]))
+            if (!string.IsNullOrEmpty(httpContext.Request.QueryString[SPHasRedirectedToSharePointKey]) && !contextTokenExpired)
             {
                 return RedirectionStatus.CanNotRedirect;
             }

@@ -1,5 +1,5 @@
 #Patterns and Practices
-This is the main repository for the community driven Office 365 Developer Patterns and Practices (PnP) program.  
+This is the main repository for the community driven Office 365 Developer Patterns and Practices (PnP) program. 
 
 ![](http://i.imgur.com/l01hhvE.png)
 
@@ -12,7 +12,6 @@ PnP has been going through some refactoring, so some of the components and areas
 - [PnP Sites Core Component](http://aka.ms/officedevpnpsitescore) GitHub repository 
 - [PnP PowerShell](http://aka.ms/officedevpnppowershell) GitHub repository
 - [PnP Guidance](http://aka.ms/OfficeDevPnPGuidance) GitHub repository
-- [PnP Office 365 API](http://aka.ms/officedevpnpoffice365api) GitHub repository
 - [PnP Office-Addins](http://aka.ms/officedevpnpofficeaddins) GitHub repository
 
 ***Notice**. There are different kind of techniques shown in the PnP guidance for apps/add-ins targetted to store and also for apps targeted to be deployed or created more as enterprise developmented apps/add-ins. Any app/add-in which requires higher than **Manage** permission to the host web cannot be distributed using SharePoint store.*

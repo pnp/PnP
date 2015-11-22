@@ -153,8 +153,8 @@
     <Compile Include="Data\FactoryException.cs" />
     <Compile Include="Data\Metadata\IMetadataFactory.cs" />
     <Compile Include="Data\Metadata\IMetadataManager.cs" />
-    <Compile Include="Data\Metadata\Impl\AzureDocDbMetadataManager.cs" />
-    <Compile Include="Data\Metadata\Impl\SPMetadataManager.cs" />
+    <Compile Include="Data\Metadata\impl\AzureDocDbMetadataManager.cs" />
+    <Compile Include="Data\Metadata\impl\SPMetadataManager.cs" />
     <Compile Include="Data\Metadata\MetadataFactory.cs" />
     <Compile Include="Data\SiteRequests\Impl\AzureDocDbRequestManager.cs" />
     <Compile Include="Data\SiteRequests\ISiteRequestFactory.cs" />

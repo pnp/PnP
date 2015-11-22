@@ -80,6 +80,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Dummy\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{23a0b894-3a8f-4cd8-a8ad-2c99b27b5830}</SharePointProjectItemId>
     </None>

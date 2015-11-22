@@ -1,13 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F670CD84-B2C4-4293-A47F-6BC9B9DB0750}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\packages.config = .nuget\packages.config
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.ConnectedAngularAppsV2", "Core.ConnectedAngularAppsV2\Core.ConnectedAngularAppsV2.csproj", "{2608C4F2-71F6-48D2-B2F1-8D821029E9EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.ConnectedAngularAppsV2Web", "Core.ConnectedAngularAppsV2Web\Core.ConnectedAngularAppsV2Web.csproj", "{A3140519-0946-4626-91F0-2F80F2366FEB}"
