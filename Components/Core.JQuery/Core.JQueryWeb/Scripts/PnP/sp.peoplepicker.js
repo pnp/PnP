@@ -108,7 +108,7 @@
                 var controlContext = methods.getControlContext(source);
 
                 // we add on the key that was just pressed
-                var currentValue = controlContext.userEditInput.val() + e.key;
+                var currentValue = controlContext.userEditInput.val() + String.fromCharCode(e.which);
 
                 if (currentValue == null || currentValue.length < settings.minSearchTriggerLength) {
                     // do nothing. seriously, stop doing things if they haven't entered enough letters
