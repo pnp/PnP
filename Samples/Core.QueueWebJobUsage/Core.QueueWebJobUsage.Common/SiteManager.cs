@@ -46,23 +46,28 @@ namespace Core.QueueWebJobUsage.Common
 
         public void PerformSiteModification(ClientContext ctx, SiteModifyRequest modifyRequest)
         {
-            // Sleep 10 sec to show the challenge
-            Thread.Sleep(10000);
+            // Sleep 20 sec to show the challenge
+            Thread.Sleep(20000);
 
             // Perform simple operation by adding new document lib to host web
             CreateDocLibrary(ctx, DateTime.Now.Ticks.ToString(), string.Format("Requested by {0}", modifyRequest.RequestorName));
         }
 
-        public void CreateDocLibrary(ClientContext ctx, string libraryName, string description)
+        public void CreateDocLibrary(ClientContext ctx, string libraryName, string requestor)
         {
 
             // Create new list to the host web
-            ListCreationInformation list = new ListCreationInformation();
-            list.Title = libraryName;
-            list.TemplateType = (int)ListTemplateType.DocumentLibrary;
-            list.Description = description;
-            list.Url = libraryName;
-            ctx.Web.Lists.Add(list);
+            ListCreationInformation newList = new ListCreationInformation();
+            newList.Title = libraryName;
+            newList.TemplateType = (int)ListTemplateType.GenericList;
+            newList.Description = requestor;
+            newList.Url = libraryName;
+            List list = ctx.Web.Lists.Add(newList);
+
+            ListItemCreationInformation newItem = new ListItemCreationInformation();
+            ListItem item = list.AddItem(newItem);
+            item["Title"] = requestor;
+            item.Update();
             ctx.ExecuteQuery();
         }
     }
