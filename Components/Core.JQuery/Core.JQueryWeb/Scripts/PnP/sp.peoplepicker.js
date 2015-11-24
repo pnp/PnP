@@ -142,6 +142,9 @@
 
                     // issue request
                     spContext.executeQueryAsync($app.getCtxCallback(searchCtx, methods.searchSuccess), $app.getCtxCallback(searchCtx, methods.searchFail));
+                }).fail(function () {
+                    controlContext.dropdown.empty();
+                    alert('There was a problem connecting to SharePoint. Please refresh the page to try again.');
                 });
             },
 
