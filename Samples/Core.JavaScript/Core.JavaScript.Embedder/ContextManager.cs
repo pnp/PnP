@@ -1,4 +1,4 @@
-﻿namespace Embedder
+﻿namespace Core.JavaScript.Embedder
 {
     using Microsoft.SharePoint.Client;
     using System;
@@ -13,15 +13,22 @@
         {
             // you could make this as complicated as you want (load from config, etc)
             // for testing simple is easier
-            var mySite = "{ url of site where we want to embed JavaScript }";
-            var myLogin = "{ login to site with sufficient permissions to embed JavaScript }";
-            var myPassword = "{ password for account }";
+            var mySite = "{server url}";
+            var myLogin = "{login}";
+            var myPassword = "{password}";
             var isOnline = true;
             var hasPartnerAccess = false;
+            var useDefault = true;
+
 
             var context = new ClientContext(mySite);
 
-            if (isOnline)
+            if (useDefault)
+            {
+                // we will use the current user's credentials
+                context.Credentials = CredentialCache.DefaultNetworkCredentials;
+            }
+            else if (isOnline)
             {
                 var password = new SecureString();
                 foreach (char c in myPassword.ToCharArray())

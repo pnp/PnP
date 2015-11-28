@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CDN")]
+[assembly: AssemblyTitle("Core.JavaScript.CDN")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CDN")]
+[assembly: AssemblyProduct("Core.JavaScript.CDN")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("f7121a31-5b74-4922-9ebb-e6a5f4df4f1a")]
+[assembly: Guid("47a1f3ff-50f6-451d-a262-894566db19b0")]
 
 // Version information for an assembly consists of the following four values:
 //

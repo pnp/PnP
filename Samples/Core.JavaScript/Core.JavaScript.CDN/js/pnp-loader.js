@@ -1,7 +1,15 @@
-﻿// by default the $.getScript method will get a fresh copy of the file each time. For
-// performance reasons you may want these scripts to be cached and this version of the Loader
-// accomplishes that.
-(function (files) {
+﻿(function () {
+
+    var urlbase = 'https://localhost:44324';
+    var files = [
+        '/js/pnp-settings.js',
+        '/js/pnp-core.js',
+        '/js/pnp-clientcache.js',
+        '/js/pnp-config.js',
+        '/js/pnp-logging.js',
+        '/js/pnp-devdashboard.js',
+        '/js/pnp-uimods.js'
+    ];
 
     // create a promise
     var promise = $.Deferred();
@@ -15,13 +23,10 @@
         // get the next file to load
         var file = self.files.shift();
 
+        var fullPath = urlbase + file;
+
         // load the remote script file
-        $.ajax({
-            type: 'GET',
-            url: file,
-            cache: true,
-            dataType: 'script'
-        }).done(function () {
+        $.getScript(fullPath).done(function () {
             if (self.files.length > 0) {
                 engine.call(self);
             }
@@ -43,7 +48,7 @@
     // give back the promise
     return promise.promise();
 
-})(['https://localhost:44323/corefunctions.js', 'https://localhost:44323/uimodifications.js']).done(function () {
+})().done(function () {
     /* all scripts are loaded and I could take actions here */
 }).fail(function () {
     /* something failed, take some action here if needed */

@@ -7,15 +7,15 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{40095680-6C00-4086-B598-15A980AF4117}</ProjectGuid>
+    <ProjectGuid>{813DAF7A-54E8-47A1-891D-3EC947807547}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CDN</RootNamespace>
-    <AssemblyName>CDN</AssemblyName>
+    <RootNamespace>Core.JavaScript.CDN</RootNamespace>
+    <AssemblyName>Core.JavaScript.CDN</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort>44323</IISExpressSSLPort>
+    <IISExpressSSLPort>44324</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -57,16 +57,35 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="corefunctions.js" />
-    <Content Include="designtemplate.js" />
-    <Content Include="LoaderCached.js" />
-    <Content Include="Loader.js" />
-    <Content Include="uimodifications.js" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="css\pnpdevdashboard.css" />
+    <Content Include="js\jquery.js" />
+    <Content Include="js\pnp-clientcache.js" />
+    <Content Include="js\pnp-config.js" />
+    <Content Include="js\pnp-core.js" />
+    <Content Include="js\pnp-devdashboard.js" />
+    <Content Include="js\pnp-loader-cached.js" />
+    <Content Include="js\pnp-loader.js" />
+    <Content Include="js\pnp-loaderMDS-cached.js" />
+    <Content Include="js\pnp-loaderMDS.js" />
+    <Content Include="js\pnp-logging.js" />
+    <Content Include="js\pnp-settings.js" />
+    <Content Include="js\pnp-uimods.js" />
+    <Content Include="js\designtemplate.js" />
+    <Content Include="static\pnpdevdashboard.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -80,9 +99,9 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>40667</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:41098/</IISUrl>
+          <IISUrl>http://localhost:40667/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -1,4 +1,4 @@
-﻿(function () {
+﻿function EstablishDesignTemplate() {
 
     var utils = {
 
@@ -18,16 +18,16 @@
         renderItem: function (ctx) {
 
             // we need a unique heading id
-            var headingId = 'heading_' + ctx.CurrentItem.ID;
+            var headingId = 'heading' + ctx.CurrentItem.ID;
 
             // we need a unique collapse panel id
-            var collapseId = 'collapse_' + ctx.CurrentItem.ID;
+            var collapseId = 'collapse' + ctx.CurrentItem.ID;
 
             var html = [];
-            html.push('<div class="panel panel-default">');
+            html.push('<div class="panel panel-info">');
             html.push('<div class="panel-heading" role="tab" id="' + headingId + '">');
             html.push('<h4 class="panel-title">');
-            html.push('<a role="button" data-toggle="collapse" data-parent="#accordion" href="#' + collapseId + '" aria-expanded="true" aria-controls="' + headingId + '">');
+            html.push('<a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#' + collapseId + '" aria-controls="' + headingId + '" aria-expanded="false">');
 
             html.push(ctx.CurrentItem.Title);
 
@@ -77,51 +77,53 @@
             return footerHTML + pagingCtrl;
         },
 
+        preRenderCallback: function (ctx) {
+            // nothing here, note that we don't have any output in the DOM yet. If you need to manipulate the display use the post render
+        },
+
         postRenderCallback: function (ctx) {
-            // no reason these files can't also be loaded by the loader and made available to every page to be used across tempates
-            SP.SOD.registerSod('cdn-bootstrap.js', 'https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.5/bootstrap.min.js');
-            SP.SOD.executeFunc('cdn-bootstrap.js', null, function () {
-                utils.loadStyleSheet('https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.5/css/bootstrap.css');
+            // note that we have the DOM now. If you need to manipulate our ouput you can do so
+            ExecuteOrDelayUntilBodyLoaded(function () {
+                SP.SOD.registerSod('cdn-bootstrap.js', 'https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.5/bootstrap.min.js');
+                SP.SOD.executeFunc('cdn-bootstrap.js', null, function () {
+                    utils.loadStyleSheet('https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.5/css/bootstrap.css');
+                    // manually call this to try and ensure it is run on the pages with MDS enabled.
+                    $('.collapsed').collapse();
+                });
             });
-        },
+        }
+    }
 
-        registerTemplateOverride: function () {
+    // the override is a JSON structure
+    var override = {
 
-            // the override is a JSON structure
-            var override = {
+        //	Register this Display Template against views with matching BaseViewID and ListTemplateType
+        //	See http://msdn.microsoft.com/en-us/library/microsoft.sharepoint.client.listtemplatetype(v=office.15).aspx for more ListTemplateTypes	
+        BaseViewID: 1,
+        ListTemplateType: 100,
 
-                //	Register this Display Template against views with matching BaseViewID and ListTemplateType
-                //	See http://msdn.microsoft.com/en-us/library/microsoft.sharepoint.client.listtemplatetype(v=office.15).aspx for more ListTemplateTypes	
-                BaseViewID: 1,
-                ListTemplateType: 100,
+        // this is an array of callback functions
+        OnPreRender: [template.preRenderCallback],
 
-                // this is an array
-                OnPostRender: [template.postRenderCallback],
+        // this is an array of callback functions
+        OnPostRender: [template.postRenderCallback],
 
-                // this child object defines what methods we are calling for our header, footer and item
-                Templates: {
-                    Header: template.renderHeader,
-                    Item: template.renderItem,
-                    Footer: template.renderFooter
-                }
-            };
-
-            //  Register the template overrides with SharePoint
-            SPClientTemplates.TemplateManager.RegisterTemplateOverrides(override);
-        },
-
-        Init: function () {
-
-            // CSR override for MDS enabled site
-            RegisterModuleInit('~sitecollection/Style%20Library/Examples/designtemplate.js', template.registerTemplateOverride);
-
-            // CSR override for MDS disabled site (because we need to call the entry point function in this case whereas it is not needed for anonymous functions)
-            template.registerTemplateOverride();
+        // this child object defines what methods we are calling for our header, footer and item
+        Templates: {
+            Header: template.renderHeader,
+            Item: template.renderItem,
+            Footer: template.renderFooter
         }
     };
 
-    template.Init();
+    //  Register the template overrides with SharePoint
+    SPClientTemplates.TemplateManager.RegisterTemplateOverrides(override);
+};
 
-})();
+// CSR override for MDS enabled site
+RegisterModuleInit('/sites/dev/Style%20Library/Examples/designtemplate.js', EstablishDesignTemplate);
+
+// CSR override for MDS disabled site
+EstablishDesignTemplate();
 
 
