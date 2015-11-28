@@ -1,9 +1,7 @@
 #PnP JavaScript Core - Test Embedder#
 
 ### Summary ###
-This sample is a consolidated set of JavaScript examples for use in your PnP related projects.
-
-This sample also demonstrates how to use a loader file in conjunction with a UserCustomAction to embed JavaScript in a SharePoint site. This pattern minimizes the need to update the deployed custom action.
+This sample demonstrates how to use a loader file in conjunction with a UserCustomAction to embed JavaScript in a SharePoint site. This pattern minimizes the need to update the deployed custom action.
 
 *Notice*: This sample uses [PnP Core Nuget package](https://github.com/OfficeDev/PnP-sites-core) for the needed API operations in the embedder program.
 
