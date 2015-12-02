@@ -46,7 +46,8 @@
 
                 // this block handles deleting previous test custom actions
                 var doDelete = false;
-                foreach (var link in links.Where(l => l.Title.Equals("MyTestCustomAction", StringComparison.OrdinalIgnoreCase)))
+
+                foreach (var link in links.ToArray().Where(l => l.Title.Equals("MyTestCustomAction", StringComparison.OrdinalIgnoreCase)))
                 {
                     link.DeleteObject();
                     doDelete = true;
