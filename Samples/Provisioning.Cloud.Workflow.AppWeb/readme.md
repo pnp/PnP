@@ -33,7 +33,7 @@ Version  | Date | Comments
 # Introduction #
 This sample demonstrates how to use a workflow to provision a SharePoint site by using the remote provisioning pattern and CSOM. The sample uses an add-in installed event to associate a remote event receiver with the custom list on the host web.
 
-For a more detailed description of this sample, see Module 5 of the [SharePoint 2013 and SharePoint Online solution pack for branding and site provisioning](http://www.microsoft.com/downloads/details.aspx?FamilyID=2c8011b0-441a-4bab-bf19-6b1009c7d8dd).
+See more recommendations from the PnP MSDN library under the title "[Branding and site provisioning solutions for SharePoint 2013 and SharePoint Online](https://msdn.microsoft.com/en-us/library/office/dn985881.aspx)".
 
 
 ## Configure the sample ##

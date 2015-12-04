@@ -1,4 +1,5 @@
-﻿using Microsoft.SharePoint.Client;
+﻿using Microsoft.Azure;
+using Microsoft.SharePoint.Client;
 using Microsoft.WindowsAzure;
 using Provisioning.Cloud.Async.WebJob.Common;
 using System;
