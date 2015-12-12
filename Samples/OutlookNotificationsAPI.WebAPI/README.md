@@ -19,7 +19,11 @@ Read more about this sample at: <http://simonjaeger.com/call-me-back-outlook-not
 -  Passport.com
 
 ### Prerequisites ###
-Any special pre-requisites?
+The Outlook Notifications REST API is available for multiple services. You will need to register your app before you can make any calls towards the Outlook Notifcations REST API. Find more information: <https://dev.outlook.com/RestGettingStarted>
+
+If you are building for Office 365 and you're missing an Office 365 tenant - get yourself a developer account at: <http://dev.office.com/devprogram>
+
+Lastly, you will need to host and deploy your Web API, for instance to a web app on Microsoft Azure: <https://azure.microsoft.com/en-us/documentation/scenarios/web-app/>.
 
 ### Solution ###
 Solution | Author(s)
