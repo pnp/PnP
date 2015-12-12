@@ -34,20 +34,20 @@ Version  | Date | Comments
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
 
-
 ----------
 
-# How to use? #
+# How to Use? #
 The first step is to create and host your Web API somewhere – it needs to be deployed and validated by the Outlook Notifications REST API before we can get notifications sent to it. In terms of validation, it’s pretty straight forward. When we ask the Outlook Notifications REST API to start sending notifications (by creating a subscription) to your Web API – it will go ahead and send a validation token to it. 
 
 The Web API needs to respond with the same validation token within 5 seconds, if it can achieve that – a subscription for notifications will be created and returned to the client application (creating the subscription).
 
-Deploy your Web API to a hosting provider, for instance Microsoft Azure: <https://azure.microsoft.com/en-us/>.
+Deploy your Web API to a hosting provider, for instance a web app on Microsoft Azure: <https://azure.microsoft.com/en-us/documentation/scenarios/web-app/>.
 
 # Response Models #
-The following models are implemented in the sample. They serve to help out when dealing with the notification requests (parsing the JSON).
+The following models are implemented in the sample. They serve to help out when dealing with the notification requests (parsing the received JSON).
 
-The ResponseModel<T> class is the main container for the response itself. In the sample it will contain a collection of the NotificationModel class.
+The generic ResponseModel class is the main container for the response itself. In the sample it will contain a collection of the NotificationModel class.
+
 ```C#
 public class ResponseModel<T>
 {
@@ -67,7 +67,7 @@ public class NotificationModel
     public ResourceDataModel ResourceData { get; set; }
 }
 ```
-The ResourceDataModel class represents the entity that has triggered a change. This is a navigation property. 
+The ResourceDataModel class represents the entity (i.e. mail, contact, event) that has triggered a change. This is a navigation property. 
 
 ```C#
 public class ResourceDataModel
@@ -77,7 +77,7 @@ public class ResourceDataModel
 ```
 
 # Web API Controller #
-The NotifyController implements a single POST method. Both the validation and notification requests will be sent as POST messages to this method.
+The NotifyController implements a single POST method. Both the validation and notification requests will be sent as POST messages to your Web API.
 
 As for the validation token, it will accept it as an optional parameter. If it’s present in the request, we know that a validation of the URL (Web API) is happening. If not, we can assume that we’re getting a notification from an active subscription.
 So if a validation token parameter is present, we return it right away in the proper way – by setting the content type header to text/plain and return HTTP 200 as the response code.
@@ -131,6 +131,7 @@ The key source code files in this project are the following:
 
 # More Resources #
 - Discover the Office development at: <https://msdn.microsoft.com/en-us/office/>
+- Get started on Microsoft Azure at: <https://azure.microsoft.com/en-us/>
 - Learn about webhooks at: <http://culttt.com/2014/01/22/webhooks/>
 - Explore the Outook Notifications REST API and its operations at: <https://msdn.microsoft.com/en-us/office/office365/api/notify-rest-operations> 
 - Read more about this sample at: <http://simonjaeger.com/call-me-back-outlook-notifications-rest-api/>
