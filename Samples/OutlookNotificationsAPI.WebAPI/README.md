@@ -128,10 +128,10 @@ I recommend you to pay attention to the client state header in the request (name
 # Source Code Files #
 The key source code files in this project are the following:
 
-- `OutlookNotificationsAPI.WebAPI\Controllers\NotifyController.cs` - contains the common add-in functionality.
-- `OutlookNotificationsAPI.WebAPI\Models\ResponseModel.cs` - contains the common add-in functionality.
-- `OutlookNotificationsAPI.WebAPI\Models\NotificationModel.cs` - contains the common add-in functionality.
-- `OutlookNotificationsAPI.WebAPI\Models\ResourceDataModel.cs` - contains the common add-in functionality.
+- `OutlookNotificationsAPI.WebAPI\Controllers\NotifyController.cs` - the Web API controller containing the single POST method (handling both validation and notification requests).
+- `OutlookNotificationsAPI.WebAPI\Models\ResponseModel.cs` - represents the collection of entities sent in the notification request to your listener service (Web API).
+- `OutlookNotificationsAPI.WebAPI\Models\NotificationModel.cs` - represents the notification sent to your listener service (Web API).
+- `OutlookNotificationsAPI.WebAPI\Models\ResourceDataModel.cs` - represents the entity (i.e. mail, contact, event) that has triggered a change. This is a navigation property. 
 
 # More Resources #
 - Discover the Office development at: <https://msdn.microsoft.com/en-us/office/>
