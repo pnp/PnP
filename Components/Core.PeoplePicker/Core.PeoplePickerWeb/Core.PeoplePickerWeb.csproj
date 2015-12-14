@@ -88,19 +88,15 @@
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
     <Content Include="Pages\Default.aspx" />
     <Content Include="Scripts\app.js" />
-    <Content Include="Scripts\csompeoplepickercontrol.js" />
-    <Content Include="Scripts\csompeoplepickercontrol_resources.en.js" />
-    <Content Include="Scripts\csompeoplepickercontrol_resources.fi.js" />
-    <Content Include="Scripts\csompeoplepickercontrol_resources.nl.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
     <Content Include="packages.config" />
     <None Include="Scripts\_references.js" />
     <Content Include="Scripts\peoplepickercontrol.js" />
+    <Content Include="Scripts\peoplepickercontrol_resources.en.js" />
     <Content Include="Scripts\peoplepickercontrol_resources.fi.js" />
     <Content Include="Scripts\peoplepickercontrol_resources.nl.js" />
-    <Content Include="Scripts\peoplepickercontrol_resources.en.js" />
     <Content Include="Styles\peoplepickercontrol.css" />
     <Content Include="Web.config" />
   </ItemGroup>

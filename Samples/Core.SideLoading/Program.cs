@@ -20,52 +20,52 @@ namespace Core.SideLoading
     {
         static void Main(string[] args)
         {
-            Guid _sideloadingFeature = new Guid("AE3A1339-61F5-4f8f-81A7-ABD2DA956A7D");
+            // Unique ID for side loading feature
+            Guid sideloadingFeature = new Guid("AE3A1339-61F5-4f8f-81A7-ABD2DA956A7D");
+            // Prompt for URL
+            string url = GetUserInput("Please provide URL for the site where app is being installed: \n");
+            // Prompt for Credentials 
+            Console.WriteLine("Enter Credentials for {0}", url);
+            string userName = GetUserInput("SharePoint username: ");
+            SecureString pwd = GetPassword();
 
-            string _url = GetUserInput("Please Supply the SharePoint Online Site Collection URL: ");
-            /* Prompt for Credentials */
-            Console.WriteLine("Enter Credentials for {0}", _url);
+            // Get path to the location of the app file in file system
+            string path = GetUserInput("Please provide full path to your app package: \n");
 
-            string _userName = GetUserInput("SharePoint Username: ");
-            SecureString _pwd = GetPassword();
-            ClientContext _ctx = new ClientContext(_url);
-            _ctx.ApplicationName = "AMS SIDELOADING SAMPLE";
-            _ctx.AuthenticationMode = ClientAuthenticationMode.Default;
-            //For SharePoint Online
-            _ctx.Credentials = new SharePointOnlineCredentials(_userName, _pwd);
+            // Create context for SharePoint online
+            ClientContext ctx = new ClientContext(url);
+            ctx.AuthenticationMode = ClientAuthenticationMode.Default;
+            ctx.Credentials = new SharePointOnlineCredentials(userName, pwd);
 
-            string _path = GetUserInput("Please supply path to your app package:");
-
-            Site _site = _ctx.Site;
-            Web _web = _ctx.Web;
+            // Get variables for the operations
+            Site site = ctx.Site;
+            Web web = ctx.Web;
 
             try
             {
-                _ctx.Load(_web);
-                _ctx.ExecuteQuery();
-
-                //Make sure we have side loading enabled. You must be a tenant admin to activate or you will get an exception! The ProcessFeature is an extension method,
-                _site.ProcessFeature(_sideloadingFeature, true);
+                // Make sure we have side loading enabled. 
+                // Using PnP Nuget package extensions.
+                site.ActivateFeature(sideloadingFeature);
                 try
                 {
-                    var _appstream = System.IO.File.OpenRead(_path);
-                    AppInstance _app = _web.LoadAndInstallApp(_appstream);
-                    _ctx.Load(_app);
-                    _ctx.ExecuteQuery();
+                    // Load .app file and install that to site
+                    var appstream = System.IO.File.OpenRead(path);
+                    AppInstance app = web.LoadAndInstallApp(appstream);
+                    ctx.Load(app);
+                    ctx.ExecuteQuery();
                 }
                 catch
                 {
                     throw;
                 }
-
-                //we should ensure that the side loading feature is disable when we are done or if an exception occurs 
-                _site.ProcessFeature(_sideloadingFeature, false);
-
+                // Disable side loading feature using 
+                // PnP Nuget package extensions. 
+                site.DeactivateFeature(sideloadingFeature);
             }
-            catch (Exception _ex)
+            catch (Exception ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine(string.Format("Exception!"), _ex.ToString());
+                Console.WriteLine(string.Format("Exception!"), ex.ToString());
                 Console.WriteLine("Press any key to continue.");
                 Console.Read();
             }
@@ -78,11 +78,11 @@ namespace Core.SideLoading
         /// <returns></returns>
         public static string GetUserInput(string message)
         {
-            string _path = string.Empty;
+            string path = string.Empty;
             Console.Write(message);
-            _path = Console.ReadLine();
+            path = Console.ReadLine();
            
-            return _path;
+            return path;
         }
         /// <summary>
         /// Helper to return the password

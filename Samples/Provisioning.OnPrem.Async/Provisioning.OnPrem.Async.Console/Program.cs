@@ -1,21 +1,15 @@
 ﻿using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.SharePoint.Client;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Hosting;
+using System.Threading;
 
 namespace Provisioning.OnPrem.Async.Console
 {
     class Program
     {
-        private static string SharePointPrincipal = "00000003-0000-0ff1-ce00-000000000000";
-
         static void Main(string[] args)
         {
 
@@ -94,12 +88,15 @@ namespace Provisioning.OnPrem.Async.Console
             var tenantAdminUri = new Uri(rootSiteUrl);
             string realm = TokenHelper.GetRealmFromTargetUrl(tenantAdminUri);
             var token = TokenHelper.GetAppOnlyAccessToken(TokenHelper.SharePointPrincipal, tenantAdminUri.Authority, realm).AccessToken;
-            using (var adminContext = TokenHelper.GetClientContextWithAccessToken(tenantAdminUri.ToString(), token))
+            using (var actx = TokenHelper.GetClientContextWithAccessToken(tenantAdminUri.ToString(), token))
             {
                 // Set the time out as high as possible
-                adminContext.RequestTimeout = int.MaxValue;
+                actx.RequestTimeout = Timeout.Infinite;
 
-                var tenant = new Tenant(adminContext);
+                // Create tenant object - used for on-premises as well
+                var tenant = new Tenant(actx);
+
+                // Get the request details for the site creation object
                 var properties = new SiteCreationProperties()
                 {
                     Url = webUrl,
@@ -108,14 +105,14 @@ namespace Provisioning.OnPrem.Async.Console
                     Template = listItem["Template"].ToString(),
                 };
 
-                //start the SPO operation to create the site
+                // Start the operation to create the site
                 SpoOperation op = tenant.CreateSite(properties);
-                adminContext.Load(op, i => i.IsComplete);
-                adminContext.RequestTimeout = int.MaxValue;
-                adminContext.ExecuteQuery();
+
+                // Notice that following line is synchronious in on-premises               
+                actx.ExecuteQuery();
             }
 
-            // Do some branding for the new site
+            // Apply needed customizations to just created site collection
             SetThemeToNewSite(webUrl);
 
             return webUrl;
