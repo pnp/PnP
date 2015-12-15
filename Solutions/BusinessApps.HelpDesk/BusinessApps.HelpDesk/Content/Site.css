@@ -1,0 +1,257 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+    background-color:lightgrey;
+        font-family: "Trebuchet MS",Arial,Helvetica,sans-serif;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.dashboard-tile {
+    width: 49%;
+    min-height: 400px;
+    margin-top: 2%;
+    padding-left: 1%;
+    padding-right: 1%;
+    background-color: white;
+}
+
+.dashboard-tile-content {
+    border: 1px solid grey;
+    width: 100%;
+    min-height: 330px;
+    padding: 1%;
+}
+
+#embedded-feed {
+    width: 100%;
+    height: 320px;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.email-message {
+    width: 100%;
+    cursor: pointer;
+}
+
+    .email-message:hover {
+        background-color: lightsteelblue;
+    }
+
+.email-text {
+    font-weight: bold;
+    
+}
+
+.email-timestamp {
+    float: right;
+    padding-left: 1%;
+    min-width: 4%
+}
+
+.email-content {
+    overflow: scroll;
+    height: 250px;
+    width: 675px;
+}
+
+.support-ticket-content {
+    overflow: scroll;
+    height: 250px;
+    width: 675px;
+}
+
+.announcement-content {
+    overflow: scroll;
+    height: 250px;
+    width: 675px;
+}
+
+.announcement {
+    width: 100%;
+}
+
+    .announcement:hover {
+        background-color: lightsteelblue;
+    }
+
+.support-ticket-message {
+    width: 100%;
+    cursor: pointer;
+}
+
+    .support-ticket-message:hover {
+        background-color: lightsteelblue;
+    }
+
+.support-ticket-title {
+    font-weight: bold;
+    
+}
+
+.support-ticket-status {
+    float: right;
+    padding-left: 1%;
+    min-width: 4%
+}
+
+
+#user-dropdown-wrapper {
+    /* Size and position */
+    position: relative; /* Enable absolute positioning for children and pseudo elements */
+    width: 250px;
+    padding: 10px;
+    margin: 10px auto;
+
+    /* Styles */
+    background: lightgrey;
+    color: black;
+    outline: none;
+    cursor: pointer;
+
+    /* Font settings */
+    font-weight: bold;
+}
+
+    #user-dropdown-wrapper:after {
+        content: "";
+        width: 0;
+        height: 0;
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        margin-top: -6px;
+        border-width: 6px 0 6px 6px;
+        border-style: solid;
+        border-color: transparent #fff;  
+    }
+    
+    #user-dropdown-wrapper .user-dropdown {
+	    /* Size & position */
+        position: absolute;
+        top: 100%;
+        left: 0; /* Size */
+        right: 0; /* Size */
+
+        /* Styles */
+        background: #fff;
+        font-weight: normal; /* Overwrites previous font-weight: bold; */
+
+        /* Hiding */
+        opacity: 0;
+        pointer-events: none;
+        display: none;
+    }
+
+    .user-dropdown {
+        position: fixed;
+        border: black 1px solid;
+        max-height: 150px;
+        min-width: 400px;
+        overflow-x: scroll;
+        padding: 5px;
+        list-style-type: none;
+    }
+
+    .user-dropdown li {
+        padding: 5px;
+    }
+
+    .user-dropdown li:hover {
+        background-color: lightblue;
+    }
+
+    .user-dropdown li img {
+        width: 48px;
+        height: 48px;
+        background-image:url('../../Content/images/silhouette.png')
+    }
+
+    #user-dropdown-wrapper.active {
+        background: lightgrey;
+        /*background: linear-gradient(to right, #9bc7de 0%, #9bc7de 78%, #ffffff 78%, #ffffff 100%);*/
+    }
+
+    #user-dropdown-wrapper.active:after {
+        border-color: #9bc7de transparent;
+        border-width: 6px 6px 0 6px ;
+        margin-top: -3px;
+    }
+
+    #user-dropdown-wrapper.active .user-dropdown {
+        opacity: 1;
+        pointer-events: auto;
+        display: inherit;
+    }
+
+.email-assign {
+    float: right;
+    padding-left: 1%;
+    min-width: 4%
+}
+
+.email-discard {
+    float: right;
+    padding-left: 1%;
+    min-width: 4%
+}
+
+footer {
+    clear: both;
+}
+
+iframe {
+    width: 100%;
+    height: 320px;
+}
+
+button {
+    /* Size and position */
+    position: relative; /* Enable absolute positioning for children and pseudo elements */
+    width: 100px;
+    padding: 10px;
+    margin: 10px 10px;
+
+    /* Styles */
+    background: lightgrey;
+    color: black;
+    outline: none;
+    cursor: pointer;
+    border: none;
+
+    /* Font settings */
+    font-weight: bold;
+}
+
+.ui-dialog .ui-dialog-content {
+    overflow: visible;
+}
+
+.ui-dialog {
+    overflow: visible;
+}

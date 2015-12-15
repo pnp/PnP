@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="dashboard-tile float-left">
+    <h3>
+        Incoming E-mail Messages
+    </h3>
+    <div class="dashboard-tile-content" id="email-content">
+    </div>
+</div>
+
+<div class="dashboard-tile float-right">
+    <h3>
+        My Tickets
+    </h3>
+    <div class="dashboard-tile-content" id="support-ticket-content">
+    </div>
+</div>
+
+<div class="dashboard-tile float-left">
+    <h3>
+        Operations Yammer Feed
+    </h3>
+    <div class="dashboard-tile-content">
+        <div id="embedded-feed"></div>
+    </div>
+</div>
+
+<div class="dashboard-tile float-right">
+    <h3>
+        Operations Announcements
+    </h3>
+    <div class="dashboard-tile-content" id="announcement-content">
+        
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/Email.js"></script>
+    <script src="~/Scripts/SupportTicket.js"></script>
+    <script src="~/Scripts/Home.js"></script>
+
+    <!-- Embed Yammer -->
+    <script type="text/javascript" src="https://assets.yammer.com/assets/platform_embed.js"></script>
+    <script type="text/javascript">
+     yam.connect.embedFeed({
+	    container: "#embedded-feed",
+	    network: "jonhussdev.com",
+	    feedType: "group",
+	    feedId: "6791432"});
+    </script>
+}
