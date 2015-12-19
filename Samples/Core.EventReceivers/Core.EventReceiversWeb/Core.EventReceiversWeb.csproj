@@ -57,6 +57,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
