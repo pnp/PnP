@@ -93,6 +93,6 @@ These are the values I use to connect to my dev tenant located in SharePoint onl
 ----------
 
 
-####9. Set a break point in one of the JS files, for example pnp-uimods.js and hit F5. You should see your breakpoint get hit. You should also see the dev dashboard icon in the very bottom right of your page, clicking thsi will open the dev dashboard.
+####9. Set a break point in one of the JS files, for example pnp-uimods.js and hit F5. You should see your breakpoint get hit. You should also see the dev dashboard icon in the very bottom right of your page, clicking this will open the dev dashboard.
 
 ![](http://i.imgur.com/dCUHnDX.png)
