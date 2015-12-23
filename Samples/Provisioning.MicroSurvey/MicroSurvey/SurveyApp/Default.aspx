@@ -34,8 +34,18 @@
             </td>
         </tr></table>
 
-        <%-- Load scripts and bootstrap AngularJS --%>
-        <script src="initUI.js"></script>
+        <%-- Bootstrap with Widget Wrangler --%>
+        <script type="text/javascript" src="../SurveyApp/pnp-ww.js" 
+                ww-appName="microSurvey" 
+                ww-appType="Angular"
+                ww-appScripts='[{"src": "../SurveyApp/angular.1.3.14.min.js", "priority":0, "test": "false"},
+                                {"src": "../SurveyApp/mainController.js", "priority":1, "test": "false"},
+                                {"src": "../SurveyApp/settingsController.js", "priority":2, "test": "false"},
+                                {"src": "../SurveyApp/listFormController.js", "priority":3, "test": "false"},
+                                {"src": "../SurveyApp/surveyService.js", "priority":4, "test": "false"},
+                                {"src": "../SurveyApp/spDataService.js", "priority":5, "test": "false"}
+            ]'>
+        </script> 
 
     </div>
 </asp:Content>

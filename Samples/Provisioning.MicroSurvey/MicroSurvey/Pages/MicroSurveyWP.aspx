@@ -32,9 +32,63 @@
             </td>
         </tr></table>
 
-        <%-- Initialize the page for Angular --%>
-        <%-- NOTE: Angular will bind to the first div within the parent of this script block --%>
-        <script src="../SurveyApp/initUI.js"></script>
+        <%-- Bootstrap with Widget Wrangler --%>
+        <script type="text/javascript" src="../SurveyApp/pnp-ww.js" 
+                ww-appName="microSurvey" 
+                ww-appType="Angular"
+                ww-appScripts='[{"src": "../SurveyApp/angular.1.3.14.min.js", "priority":0, "test": "false"},
+                                {"src": "../SurveyApp/mainController.js", "priority":1, "test": "false"},
+                                {"src": "../SurveyApp/settingsController.js", "priority":2, "test": "false"},
+                                {"src": "../SurveyApp/listFormController.js", "priority":3, "test": "false"},
+                                {"src": "../SurveyApp/surveyService.js", "priority":4, "test": "false"},
+                                {"src": "../SurveyApp/spDataService.js", "priority":5, "test": "false"}
+            ]'>
+        </script> 
 
     </div>
+
+    <!-- Script to strip away extraneous heading on this page -->
+    <script type="text/javascript">
+        (function () {
+            // App parts will hide chrome using IsDlg=1 query string parameter.
+            // There is one HTML element that isn't hidden by this parameter - this code hides it.
+            // ref: http://www.vxcompany.info/2013/01/23/removing-styling-in-a-sharepoint-2013-apppart-the-easy-way/
+
+            'use strict';
+
+
+            // $.ready() - with no script lib dependencies
+            // ref: http://blog.simonwillison.net/post/57956760515/addloadevent
+            function addLoadEvent(func) {
+                var oldonload = window.onload;
+                if (typeof window.onload !== 'function') {
+                    window.onload = func;
+                } else {
+                    window.onload = function () {
+                        if (oldonload) {
+                            oldonload();
+                        }
+                        func();
+                    }
+                }
+            }
+
+            addLoadEvent(function hideGlobalNavBox() {
+
+                // Query string reader with no script lib dependencies
+                // ref: http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript
+                function getQueryStringParam(name) {
+                    var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+                    return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+                }
+
+                var isDialog = getQueryStringParam('IsDlg');
+                if (isDialog === '1') {
+                    document.getElementById('globalNavBox').style.display = "none";
+                }
+            });
+        }());
+
+
+    </script>
 </asp:Content>
