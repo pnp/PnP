@@ -1244,7 +1244,7 @@
             </mv-deletion-rule>
         </mv-deletion>
         <extension>
-            <assembly-name>MIMSPExtension.dll</assembly-name>
+            <assembly-name>SharePointSynchronization.dll</assembly-name>
             <application-protection>low</application-protection>
         </extension>
         <password-change-history-size>24</password-change-history-size>

@@ -20,7 +20,7 @@
 # Get web application
 $wa = Get-SPWebApplication -Identity $webAppUrl
 # Increase time out for CSOM calls - by default this is 90 seconds
-$wa.ClientCallableSettings.ExecutionTimeout = [System.Timespan]::FromMinutes($timeoutInMinutes);
+$wa.ClientCallableSettings.ExecutionTimeout = [System.Timespan]::FromMinutes($timeoutInMinutes)
 $wa.Update();
 
 # Output current setting

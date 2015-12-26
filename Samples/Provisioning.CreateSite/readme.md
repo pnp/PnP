@@ -28,10 +28,10 @@ Version  | Date | Comments
 
 ----------
 
-# SCENARIO: CREATE SUB SITES OR SITE COLLECTIOSN USIGN CORE COMPONENT #
+# SCENARIO: Create a sub site or a site collection using core component #
 This sample demonstrates how to create sub sites or site collections using the extensions methods from the OfficeDevPnP core component. Extensions are available from normal client side object model objects after you have referenced the OfficeDevPnP core component
 
-## SUB SITE CREATION ##
+## Sub site creation ##
 Sub site creation is actually a single line of code. Following calls are for applying small modifications to the newly created sub site
 
 ```C#
@@ -46,8 +46,10 @@ newWeb.CreateDocumentLibrary("Presentations");
 newWeb.SetComposedLookByUrl("Characters");
 ```
 
-## SITE COLLECTION CREATION ##
+## Site collection creation ##
 To be able to create site collections, you’ll need to associate to the admin site of the Office365 tenant and in this example we are also using the add-in only token so that end user does not have to have high permission to the tenant. In following lines we resolve the access token and then create site collection using extension methods.
+
+Notice. Since site collection creation does take longer than 1 minute, running this code in the context of Azure WebSite will timeout in the Azure. You should always use so called "asynchronous task" pattern for creating site collections to avoid timeout. See [Provisioning.Cloud.Async](https://github.com/OfficeDev/PnP/tree/master/Samples/Provisioning.Cloud.Async) as a most simplistic sample for this async model.
 
 ```C#
 User currUser = ResolveCurrentUser();
