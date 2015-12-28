@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 using Provisioning.Common.Authentication;
 using System.Diagnostics;
 using Provisioning.Common.Utilities;
+using Provisioning.Common.Metadata;
 
-namespace Provisioning.Common.Data.Metadata.impl
+namespace Provisioning.Common.Data.Metadata.Impl
 {
     /// <summary>
     /// Implementation Class for working Metadata Repository
@@ -18,6 +19,7 @@ namespace Provisioning.Common.Data.Metadata.impl
     {
         #region instance Members
         const string CAML_GET_ENABLED_CLASSIFICATIONS = "<View><Query><Where><Eq><FieldRef Name='SP_Enabled'/><Value Type='Text'>True</Value></Eq></Where></Query><RowLimit>100</RowLimit></View>";
+        const string CAML_GET_ENABLED_SITEMETADATA = "<View><Query><Where><Eq><FieldRef Name='SP_Enabled'/><Value Type='Text'>True</Value></Eq></Where></Query><RowLimit>100</RowLimit></View>";
 
         #endregion
         #region Properties
@@ -135,6 +137,81 @@ namespace Provisioning.Common.Data.Metadata.impl
         {
             throw new NotImplementedException();
         }
+
+
+
+        public ICollection<SiteMetadata> GetAvailableOrganizationalFunctions() { return GetSiteMetadataFromList("Functions"); }
+        public ICollection<SiteMetadata> GetAvailableRegions() { return GetSiteMetadataFromList("Regions"); }
+        public ICollection<SiteMetadata> GetAvailableDivisions() { return GetSiteMetadataFromList("Divisions"); }
+        public ICollection<SiteMetadata> GetAvailableTimeZones() { return GetSiteMetadataFromList("TimeZone"); }
+        public ICollection<SiteMetadata> GetAvailableSiteRegions() { return GetSiteMetadataFromList("Regions"); }
+        public ICollection<SiteMetadata> GetAvailableLanguages() { return GetSiteMetadataFromList("Languages"); }
+
         #endregion
+
+        ICollection<SiteMetadata> GetSiteMetadataFromList(string listName) {
+            ICollection<SiteMetadata> _returnResults = new List<SiteMetadata>();
+            UsingContext(ctx =>
+            {
+                Stopwatch _timespan = Stopwatch.StartNew();
+                try
+                {
+                    var _web = ctx.Web;
+                    ctx.Load(_web);
+                    if (!_web.ListExists(listName))
+                    {
+                        var _message = String.Format("The List {0} does not exist in Site {1}",
+                         listName,
+                         ctx.Url);
+
+                        Log.Fatal("SPMetadataManager.GetSiteMetadataFromList", _message);
+                        throw new DataStoreException(_message);
+                    }
+
+                    var _camlQuery = new CamlQuery();
+                    _camlQuery.ViewXml = CAML_GET_ENABLED_SITEMETADATA;
+
+                    var _list = ctx.Web.Lists.GetByTitle(listName);
+                    var _listItemCollection = _list.GetItems(_camlQuery);
+                    ctx.Load(_listItemCollection,
+                        eachItem => eachItem.Include(
+                            item => item,
+                            item => item["ID"],
+                            item => item["SP_Key"],
+                            item => item["SP_Value"],
+                            item => item["SP_DisplayOrder"],
+                            item => item["SP_Enabled"]
+                            ));
+                      ctx.ExecuteQuery();
+
+                    _timespan.Stop();
+                    Log.TraceApi("SharePoint", "SPMetadataManager.GetSiteMetadataFromList", _timespan.Elapsed);
+
+                    foreach (ListItem _item in _listItemCollection)
+                    {
+                        var _metadata = new SiteMetadata()
+                        {
+                            Id = _item.BaseGetInt("ID"),
+                            Key = _item.BaseGet("SP_Key"),
+                            Value = _item.BaseGet("SP_Value"),
+                            DisplayOrder = _item.BaseGetInt("SP_DisplayOrder"),
+                            Enabled = _item.BaseGet<bool>("SP_Enabled")
+                        };
+                        _returnResults.Add(_metadata);
+                    }
+
+                }
+                catch (ServerException ex)
+                {
+                    //TODO LOG
+                }
+                catch (DataStoreException ex)
+                {
+                    throw;
+                }
+
+            });
+            return _returnResults;
+        }
     }
 }

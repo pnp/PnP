@@ -65,6 +65,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="OneDriveCustomizer\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{4cb01fd2-27d9-41c1-8737-a7d854c0d32f}</SharePointProjectItemId>
     </None>

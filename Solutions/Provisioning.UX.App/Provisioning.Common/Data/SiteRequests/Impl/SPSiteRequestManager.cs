@@ -430,6 +430,49 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             });
         }
 
+        public void UpdateRequestUrl(string url, string newUrl)
+        {
+            Log.Info("SPSiteRequestManager.UpdateRequestUrl", "Entering UpdateRequestUrl url {0} status {1} status message", url, newUrl);
+            UsingContext(ctx =>
+            {
+                Stopwatch _timespan = Stopwatch.StartNew();
+
+                var _web = ctx.Web;
+                ctx.Load(_web);
+
+                if (!_web.ListExists(SiteRequestList.TITLE))
+                {
+                    var _message = String.Format("The List {0} does not exist in Site {1}",
+                         SiteRequestList.TITLE,
+                         _web.Url);
+                    Log.Fatal("SPSiteRequestManager.UpdateRequestUrl", _message);
+                    throw new DataStoreException(_message);
+                }
+
+                var _list = ctx.Web.Lists.GetByTitle(SiteRequestList.TITLE);
+                var _query = new CamlQuery();
+                _query.ViewXml = string.Format(CAML_GETREQUEST_BY_URL, url);
+
+                ListItemCollection _itemCollection = _list.GetItems(_query);
+                ctx.Load(_itemCollection);
+                ctx.ExecuteQuery();
+
+                if (_itemCollection.Count != 0)
+                {
+                    ListItem _item = _itemCollection.FirstOrDefault();
+                    _item[SiteRequestFields.URL_NAME] = newUrl;
+
+                    
+                    _item.Update();
+                    ctx.ExecuteQuery();
+                }
+
+                _timespan.Stop();
+                Log.Info("SPSiteRequestManager.UpdateRequestUrl", PCResources.SiteRequestUpdate_Successful, url, newUrl);
+                Log.TraceApi("SharePoint", "SPSiteRequestManager.UpdateRequestUrl", _timespan.Elapsed);
+            });
+        }
+
         #endregion
     }
 }

@@ -163,6 +163,8 @@
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.dialog.js" />
+    <None Include="Properties\PublishProfiles\sbspositeprovisioning - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\sbspositeprovisioning - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\wwaz-pnp-provisioning - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\wwaz-pnp-provisioning - Web Deploy.pubxml" />
     <Content Include="Scripts\i18n\en-US.json" />
@@ -288,6 +290,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\AppSettingsController.cs" />
     <Compile Include="Controllers\MetadataController.cs" />
     <Compile Include="Controllers\ProvisioningController.cs" />
     <Compile Include="Controllers\SiteRequestController.cs" />
@@ -299,6 +302,7 @@
     <Compile Include="Models\SiteCheckResponse.cs" />
     <Compile Include="Models\SitePolicyResults.cs" />
     <Compile Include="Models\SiteRequest.cs" />
+    <Compile Include="Models\SiteUrlCheckRequest.cs" />
     <Compile Include="Models\TemplateResultResponse.cs" />
     <Compile Include="Pages\Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>

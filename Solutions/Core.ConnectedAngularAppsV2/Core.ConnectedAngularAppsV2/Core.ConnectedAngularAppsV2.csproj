@@ -82,7 +82,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="CorporateEvents\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{62b03d97-04a8-40a7-8750-34d7e9ec4977}</SharePointProjectItemId>
     </None>

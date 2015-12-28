@@ -4,7 +4,7 @@
 <div class="modal-right-body">
    <span ng-bind-html="'CONFIRMATION_TEXT' | translate"></span>
     <table class="table table-striped">
-        <tr>
+        <tr ng-hide="siteConfiguration.allowCustomUrl">
             <th><a href="#" ng-click="setCurrentStep(5)">{{ 'SITE_URL' | translate }}</a></th>
             <td>{{siteConfiguration.details.url}}<span ng-show="submitDenied && siteConfiguration.details.url === undefined" class="confirm-error-message" ng-click="setCurrentStep(5)">{{ 'SITE_URL_ERR' | translate }}</span></td>
         </tr>

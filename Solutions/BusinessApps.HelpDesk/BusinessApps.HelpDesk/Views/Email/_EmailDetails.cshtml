@@ -1,0 +1,81 @@
+﻿@model BusinessApps.HelpDesk.Models.Email.EmailDetailsViewModel
+
+<div>
+    <div class="dl-horizontal">
+        @Html.LabelFor(model => model.EmailMessage.Sender):
+        @Model.EmailMessage.Sender
+    </div>
+    <div class="dl-horizontal">
+        @Html.LabelFor(model => model.EmailMessage.Subject):
+        <span id="email-message-subject">@Model.EmailMessage.Subject</span>
+    </div>
+    <div class="dl-horizontal">
+        @Html.LabelFor(model => model.EmailMessage.Body):
+        <div class="email-content">
+            <span id="email-message-body">@Html.Raw(Model.EmailMessage.Body)</span>
+        </div>
+    </div>
+    <div class="dl-horizontal">
+        <div id="user-dropdown-wrapper" class="float-left">
+            <span>User</span>
+            <ul class="user-dropdown">
+                @foreach (BusinessApps.HelpDesk.Models.Email.HelpdeskOperator op in Model.HelpdeskOperators)
+                {
+                    <li onclick="$('.user-dropdown li').removeClass('selected'); $(this).addClass('selected');" data-user="@op.EmailAddress">
+                        <img src='@Html.Raw("https://outlook.office365.com/owa/service.svc/s/GetPersonaPhoto?email=" + op.EmailAddress + "&UA=0&size=HR48x48&sc=1431542703014")'/>
+                        @op.Name
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <button class="float-right" onclick="Discard('@Model.EmailMessage.MessageID')">Discard</button>
+        <button class="float-right" onclick="Assign('@Model.EmailMessage.MessageID')">Assign</button>
+    </div>
+</div>
+
+
+<script>
+    function DropDown(el) {
+        this.dd = el;
+        this.placeholder = this.dd.children('span');
+        this.opts = this.dd.find('ul.user-dropdown > li');
+        this.val = '';
+        this.index = -1;
+        this.initEvents();
+    }
+    DropDown.prototype = {
+        initEvents: function () {
+            var obj = this;
+
+            obj.dd.on('click', function (event) {
+                $(this).toggleClass('active');
+                return false;
+            });
+
+            obj.opts.on('click', function () {
+                var opt = $(this);
+                obj.val = opt.text();
+                obj.index = opt.index();
+                obj.placeholder.text('User: ' + obj.val);
+            });
+        },
+        getValue: function () {
+            return this.val;
+        },
+        getIndex: function () {
+            return this.index;
+        }
+    }
+
+    $(function () {
+
+        var dropdown = new DropDown($('#user-dropdown-wrapper'));
+
+        $(document).click(function () {
+            // all dropdowns
+            $('#user-dropdown-wrapper').removeClass('active');
+        });
+
+    });
+</script>

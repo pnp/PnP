@@ -9,8 +9,11 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label class="control-label" for="privacyClassification">{{ 'SITE_CLASSIFICATION' | translate }}</label>
-                <select class="form-control" name="privacyClassification" id="privacyClassification" ng-model="siteConfiguration.privacy.classification" required>
-                    <option ng-repeat="siteclassification in siteclassifications | orderBy: 'displayOrder'" value="{{siteclassification.value}}">{{siteclassification.key}}</option>
+                <select class="form-control" name="privacyClassification" id="privacyClassification" 
+                        ng-model="siteConfiguration.privacy.classification" 
+                        required="required"
+                        ng-required="true"
+                        ng-options="sc.key as sc.value for sc in siteclassifications| orderBy: 'displayOrder'">
                 </select>
             </div>
         </div>
