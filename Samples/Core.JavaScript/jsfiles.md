@@ -102,3 +102,12 @@ Global settings file, also used to establish the top-level name space.
 ## [pnp-uimods.js](Core.JavaScript.CDN/js/pnp-uimods.js) ##
 
 Simple UI modification framework provides an example of using the logging module with levels. Hides the new site link on the site contents page.
+
+## [pnp-ww.js](Core.JavaScript.CDN/js/pnp-ww.js) ##
+
+The Widget Wrangler is a light weight framework for managing the loading of javascript
+"widgets" on a web page. Widgets are self contained, and and can be developed in any
+JavaScript framework such as AngularJS, jQuery, KnockOut, or plain JavaScript.
+Widgets are easy to reuse in multiple execution environments, such as on a
+SharePoint page, in a content editor web part, in a SharePoint add-in, or outside of
+SharePoint entirely. [See Full Documentation Here](pnp-ww.md)
