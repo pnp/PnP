@@ -30,7 +30,7 @@ Version  | Date | Comments
 
 In SharePoint, when you execute query on Large List, you will receive "The attempted operation is prohibited because it exceeds the list view threshold enforced by the administrator". To avoid this exception and read list items by batch we can use Content Iterator class which is available in Server Object Model. 
 
-In SharePoint 2013 App Model JavaScript Object Modal and REST is used for interacting with SharePoint. To retrieve SharePoint list items more than Threshold limit from JSOM (SharePoint JavaScript Object Modal) need to extend client side CamlQuery functionalities which can support the retrieving of list items batch by batch. In REST there is “RenderListData” end point for retrieving the lists items by batch by using extended CamlQuery functionalities.  
+In SharePoint 2013 Add-in Model JavaScript Object Modal and REST is used for interacting with SharePoint. To retrieve SharePoint list items more than Threshold limit from JSOM (SharePoint JavaScript Object Modal) need to extend client side CamlQuery functionalities which can support the retrieving of list items batch by batch. In REST there is “RenderListData” end point for retrieving the lists items by batch by using extended CamlQuery functionalities.  
 
 This Client Side “SharePointClient.min.Js” file can be used to read the SharePoint list items batch by batch by using the client side CamlQuery extension methods to modify the query which can override the Throttle limit.
 
@@ -46,32 +46,32 @@ This Client Side “SharePointClient.min.Js” file can be used to read the Shar
 To work with both JSOM and REST components in this SharePointClient.min.js default configurations can be overridden according to the requirement.
 Default configuration are below
 
-1. **IsApp** : (default false) – This property can be set true if working on SharePoint App else false
-2. **SPHostUrl** : (optional) – This property has the value for host Url working with SharePoint Apps
-3. **SPAppWebUrl** : (optional) – This property has the value for App Web Url working with SharePoint Apps.
-4. **IsCrossDomainRequest** : (default false) -  This property can be set true if working on SharePoint App and trying                                                   to access hostweb data because this is cross domain access.
+1. **IsApp** : (default false) – This property can be set true if working on SharePoint Add-in else false
+2. **SPHostUrl** : (optional) – This property has the value for host Url working with SharePoint Add-ins
+3. **SPAppWebUrl** : (optional) – This property has the value for App Web Url working with SharePoint Add-ins.
+4. **IsCrossDomainRequest** : (default false) -  This property can be set true if working on SharePoint Add-in and trying                                                   to access hostweb data because this is cross domain access.
 5. **SPUrl** : (default null) – This property can be set if the SharePoint context can be created for this particular                                 Url.
-6. **REST.AccessToken**  : (default null) – This property can be set if working provider hosted app where AccessToken can         be retrieved from Token helper class. And this Access token can used for all sub sequent REST calls.
+6. **REST.AccessToken**  : (default null) – This property can be set if working provider hosted add-in where AccessToken can         be retrieved from Token helper class. And this Access token can used for all sub sequent REST calls.
 
 
 ### Configuration for SharePoint page ###
 No need of overriding the configuration for SharePoint page, default configuration will work for this scenario.
 
 ### Configuration for SharePoint Apps ###
-_Connecting to App Web_
+_Connecting to Add-in Web_
 
 ```javascript
     //Modify the default configurations 
     var configuration = SharePointClient.Configurations;
-    configuration.IsApp = true; //This configuration will verify whether working on SharePoint App or Page
+    configuration.IsApp = true; //This configuration will verify whether working on SharePoint Add-in or Page
 ```
 _Connecting to HostWeb from AppWeb_
 
 ```javascript
     //Modify the default configurations 
     var configuration = SharePointClient.Configurations;
-    configuration.IsApp = true; //This configuration will verify whether working on SharePoint App or Page
-    configuration.IsCrossDomainRequest = true; //Cross domain request, for example app web can request data from host     web.
+    configuration.IsApp = true; //This configuration will verify whether working on SharePoint Add-in or Page
+    configuration.IsCrossDomainRequest = true; //Cross domain request, for example add-in web can request data from host     web.
 ```
 
 
@@ -82,7 +82,7 @@ _Connecting to HostWeb from AppWeb_
 //Modify the default configurations 
     var configuration = SharePointClient.Configurations;
     var utility = new SharePointClient.Utilities.Utility();
-    configuration.IsApp = true; //This configuration will verify whether working on SharePoint App or Page
+    configuration.IsApp = true; //This configuration will verify whether working on SharePoint Add-in or Page
     
     //Initialize the required Js files to download for example SP.Js, SP.Runtime.js
     SharePointClient.Services.JSOM.Initialize(function () {
@@ -130,7 +130,7 @@ _Connecting to HostWeb from AppWeb_
 //Modify the default configurations
     var configuration = SharePointClient.Configurations;
     var utility = new SharePointClient.Utilities.Utility();
-    configuration.IsApp = true;//This configuration will verify whether working on SharePoint App or Page
+    configuration.IsApp = true;//This configuration will verify whether working on SharePoint Add-in or Page
     
 
     var listServices = new SharePointClient.Services.REST.ListServices();
