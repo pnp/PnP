@@ -160,8 +160,12 @@
     <Compile Include="Components\MSGraphAPIDemoSettings.cs" />
     <Compile Include="Components\MicrosoftGraphHelper.cs" />
     <Compile Include="Components\SessionADALCache.cs" />
+    <Compile Include="Controllers\FilesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MailCalendarContactsController.cs" />
+    <Compile Include="Controllers\OthersController.cs" />
     <Compile Include="Controllers\PeopleController.cs" />
+    <Compile Include="Controllers\UsersGroupsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -209,6 +213,10 @@
     <Content Include="Views\Shared\_Office365NavBar.cshtml" />
     <Content Include="Views\Shared\_Office365SuiteBar.cshtml" />
     <Content Include="Views\Shared\_WorkingOnIt.cshtml" />
+    <Content Include="Views\MailCalendarContacts\Index.cshtml" />
+    <Content Include="Views\Others\Index.cshtml" />
+    <Content Include="Views\Files\Index.cshtml" />
+    <Content Include="Views\UsersGroups\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

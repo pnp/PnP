@@ -22,7 +22,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                 String.Format("https://graph.microsoft.com/v1.0/users/{0}/photo/$value", upn),
                 contentType);
 
-            if (width != 0 && height != 0)
+            if (sourceStream != null && width != 0 && height != 0)
             {
                 Image sourceImage = Image.FromStream(sourceStream);
                 Image resultImage = ScaleImage(sourceImage, width, height);

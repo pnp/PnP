@@ -18,7 +18,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
 
         public ActionResult MailCalendarContacts()
         {
-            return View("Index");
+            return View();
         }
 
         public ActionResult UsersGroups()
