@@ -29,12 +29,6 @@ namespace OfficeDevPnP.MSGraphAPIDemo
                     ClientId = MSGraphAPIDemoSettings.ClientId,
                     Authority = MSGraphAPIDemoSettings.Authority,
                     PostLogoutRedirectUri = MSGraphAPIDemoSettings.PostLogoutRedirectUri,
-                    TokenValidationParameters = new System.IdentityModel.Tokens.TokenValidationParameters
-                    {
-                        // instead of using the default validation (validating against a single issuer value, as we do in line of business apps), 
-                        // we inject our own multitenant validation logic
-                        ValidateIssuer = false,
-                    },
                     Notifications = new OpenIdConnectAuthenticationNotifications()
                     {
                         SecurityTokenValidated = (context) =>
