@@ -74,7 +74,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
             {
                 HttpClient httpClient = new HttpClient();
                 httpClient.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue("Bearer", GetAccessTokenForCurrentUser());
+                    new AuthenticationHeaderValue("Bearer", accessToken);
 
                 HttpResponseMessage response = httpClient.GetAsync(graphRequestUri).Result;
 
@@ -106,7 +106,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
             {
                 HttpClient httpClient = new HttpClient();
                 httpClient.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue("Bearer", GetAccessTokenForCurrentUser());
+                    new AuthenticationHeaderValue("Bearer", accessToken);
                 httpClient.DefaultRequestHeaders.Accept.Clear();
                 httpClient.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue(accept));
