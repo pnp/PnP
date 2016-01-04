@@ -12,7 +12,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
     {
         public ActionResult Index()
         {
-            var result = MicrosoftGraphHelper.MakeGetRequestAsString("https://graph.microsoft.com/v1.0/me");
+            var result = MicrosoftGraphHelper.MakeGetRequestForString("https://graph.microsoft.com/v1.0/me");
             return View();
         }
 

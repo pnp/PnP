@@ -19,7 +19,8 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             String contentType = "image/png";
 
             var sourceStream = MicrosoftGraphHelper.MakeGetRequestForStream(
-                String.Format("https://graph.microsoft.com/v1.0/users/{0}/photo/$value", upn),
+                String.Format("{0}users/{1}/photo/$value", 
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri, upn),
                 contentType);
 
             if (sourceStream != null && width != 0 && height != 0)

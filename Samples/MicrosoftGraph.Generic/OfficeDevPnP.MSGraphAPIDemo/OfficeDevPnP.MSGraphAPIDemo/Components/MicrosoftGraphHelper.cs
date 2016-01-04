@@ -13,6 +13,9 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
 {
     public static class MicrosoftGraphHelper
     {
+        public static String MicrosoftGraphV1BaseUri = "https://graph.microsoft.com/v1.0/";
+        public static String MicrosoftGraphBetaBaseUri = "https://graph.microsoft.com/beta/";
+
         /// <summary>
         /// This helper method returns and OAuth Access Token for the current user
         /// </summary>
@@ -65,7 +68,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         /// </summary>
         /// <param name="graphRequestUri">The URL of the request</param>
         /// <returns>The String value of the result</returns>
-        public static String MakeGetRequestAsString(String graphRequestUri)
+        public static String MakeGetRequestForString(String graphRequestUri)
         {
             String result = null;
             var accessToken = GetAccessTokenForCurrentUser();
