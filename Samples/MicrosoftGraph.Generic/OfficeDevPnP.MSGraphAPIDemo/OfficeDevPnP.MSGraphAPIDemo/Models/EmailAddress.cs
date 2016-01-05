@@ -7,9 +7,9 @@ using System.Web;
 namespace OfficeDevPnP.MSGraphAPIDemo.Models
 {
     /// <summary>
-    /// Defines an email address
+    /// Defines a user info
     /// </summary>
-    public class EmailAddress
+    public class UserInfo
     {
         /// <summary>
         /// The email address

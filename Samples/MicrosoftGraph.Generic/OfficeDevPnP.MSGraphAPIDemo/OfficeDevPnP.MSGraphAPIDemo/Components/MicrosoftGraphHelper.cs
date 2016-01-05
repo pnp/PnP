@@ -8,6 +8,8 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Web;
 using Microsoft.Owin.Security.OpenIdConnect;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace OfficeDevPnP.MSGraphAPIDemo.Components
 {
@@ -80,6 +82,45 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
                     new AuthenticationHeaderValue("Bearer", accessToken);
 
                 HttpResponseMessage response = httpClient.GetAsync(graphRequestUri).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result = response.Content.ReadAsStringAsync().Result;
+                }
+                else
+                {
+                    throw new ApplicationException(
+                        String.Format("Exception while invoking endpoint {0}.", graphRequestUri));
+                }
+            }
+
+            return (result);
+        }
+
+        /// <summary>
+        /// This helper method makes an HTTP GET request and returns the result as a String
+        /// </summary>
+        /// <param name="graphRequestUri">The URL of the request</param>
+        /// <returns>The String value of the result</returns>
+        public static String MakePostRequestForString(String graphRequestUri, 
+            Object content = null, 
+            String contentType = null)
+        {
+            String result = null;
+            var accessToken = GetAccessTokenForCurrentUser();
+
+            if (!String.IsNullOrEmpty(accessToken))
+            {
+                HttpClient httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", accessToken);
+
+                HttpContent requestContent =
+                    (content != null) ?
+                    new StringContent(JsonConvert.SerializeObject(content),
+                    Encoding.UTF8, contentType) :
+                    new StringContent(null);
+                HttpResponseMessage response = httpClient.PostAsync(graphRequestUri, requestContent).Result;
 
                 if (response.IsSuccessStatusCode)
                 {

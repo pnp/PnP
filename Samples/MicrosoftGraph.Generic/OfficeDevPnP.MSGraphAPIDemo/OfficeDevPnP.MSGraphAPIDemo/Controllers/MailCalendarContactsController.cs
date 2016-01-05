@@ -19,18 +19,36 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
         {
             var folders = MailHelper.ListFolders();
             var messages = MailHelper.ListMessages(folders.FirstOrDefault(f => f.Name == "Posta in arrivo").Id);
-            var message = MailHelper.GetMessage(messages[0].Id, true);
+            var message = MailHelper.GetMessage(messages[1].Id, true);
+            MailHelper.SendMessage(new Models.MailMessageToSend {
+                Message = new Models.MailMessageToSendContent
+                {
+                    Subject = "Test message",
+                    Body = new Models.MailMessageBody
+                    {
+                        Content = "<html><body><h1>Hello from ASP.NET MVC calling Microsoft Graph API!</h1></body></html>",
+                        ContentType = "html",
+                    },
+                    To = new List<Models.MailMessageRecipient>(new Models.MailMessageRecipient[] {
+                    new Models.MailMessageRecipient
+                    {
+                        Recipient = new Models.UserInfo
+                        {
+                            Name = "Paolo Pialorsi",
+                            Address = "paolo@pialorsi.com",
+                        }
+                    }
+                }),
+                },
+                SaveToSentItems = true,
+            });
 
             return View("Index");
         }
 
         public ActionResult ListMessages()
         {
-            var folders = MailHelper.ListFolders();
-            var messages = MailHelper.ListMessages(folders.FirstOrDefault(f => f.Name == "Posta in arrivo").Id);
-            var message = MailHelper.GetMessage(messages[0].Id, true);
-
-            return View("Index");
+            return View();
         }
 
         public ActionResult SendMessage()

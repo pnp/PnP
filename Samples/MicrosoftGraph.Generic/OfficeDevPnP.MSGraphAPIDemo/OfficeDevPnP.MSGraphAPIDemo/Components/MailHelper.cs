@@ -89,7 +89,11 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
             return (message);
         }
 
-        private static void LoadAttachments(this MailMessage message)
+        /// <summary>
+        /// Extension method to load the attachments of an email message
+        /// </summary>
+        /// <param name="message">The target email message</param>
+        public static void LoadAttachments(this MailMessage message)
         {
             if (message.HasAttachments)
             {
@@ -101,6 +105,14 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
                 var attachments = JsonConvert.DeserializeObject<MailAttachmentList>(jsonResponse);
                 message.Attachments.AddRange(attachments.Attachments);
             }
+        }
+
+        public static void SendMessage(MailMessageToSend message)
+        {
+            String jsonResponse = MicrosoftGraphHelper.MakePostRequestForString(
+                String.Format("{0}me/microsoft.graph.sendMail",
+                MicrosoftGraphHelper.MicrosoftGraphV1BaseUri),
+                message, "application/json");
         }
     }
 }

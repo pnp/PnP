@@ -6,9 +6,15 @@ using System.Web;
 
 namespace OfficeDevPnP.MSGraphAPIDemo.Models
 {
+    /// <summary>
+    /// Defines a recipient of an email message
+    /// </summary>
     public class MailMessageRecipient
     {
+        /// <summary>
+        /// The email address of the recipient
+        /// </summary>
         [JsonProperty("emailAddress")]
-        public EmailAddress Recipient { get; set; }
+        public UserInfo Recipient { get; set; }
     }
 }

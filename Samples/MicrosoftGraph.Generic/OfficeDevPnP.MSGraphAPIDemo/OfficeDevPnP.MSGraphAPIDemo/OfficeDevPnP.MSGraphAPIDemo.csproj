@@ -181,6 +181,7 @@
     <Compile Include="Models\MailMessageBody.cs" />
     <Compile Include="Models\MailMessageList.cs" />
     <Compile Include="Models\MailMessageRecipient.cs" />
+    <Compile Include="Models\MailMessageToSend.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

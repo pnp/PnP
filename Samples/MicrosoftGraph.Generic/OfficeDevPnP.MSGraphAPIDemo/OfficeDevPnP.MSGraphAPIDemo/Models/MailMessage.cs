@@ -19,14 +19,12 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// <summary>
         /// The importance of the email message
         /// </summary>
-        [JsonProperty("displayName")]
         public MailImportance Importance { get; set; }
 
         /// <summary>
         /// The sender email address
         /// </summary>
         [JsonProperty("from")]
-        // [JsonConverter(typeof(MailMessageFromConverter))]
         public MailMessageRecipient From { get; set; }
 
         /// <summary>
