@@ -1,0 +1,28 @@
+{
+    "value": [
+        {
+            "IdName": "vesaj@techedairlift01.ccsctp.net",
+            "Title": "Manager",
+			"City": "Helsinki",
+			"Office": "Viper"
+        },
+        {
+            "IdName": "bjansen@techedairlift01.ccsctp.net",
+            "Title": "Consultant",
+			"City": "Amsterdam",
+			"Office": "Beetle"
+        },
+        {
+            "IdName": "unknowperson@techedairlift01.ccsctp.net",
+            "Title": "Tester",
+			"City": "None",
+			"Office": ""
+        },
+        {
+            "IdName": "erwin@techedairlift01.ccsctp.net",
+            "Title": "Developer",
+			"City": "Stockholm",
+			"Office": "Elite"
+        }
+    ]
+}

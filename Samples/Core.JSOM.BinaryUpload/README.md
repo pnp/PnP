@@ -1,7 +1,7 @@
-# Upload binary files from SharePoint Hosted App #
+# Upload binary files from SharePoint Hosted Add-in #
 
 ### Summary ###
-This sample demonstrates how to upload binary files from SharePoint Hosted App to the host web. This sample project was merged from the blog post "[Deploy binary files from SharePoint Hosted App to Host Web - Stefan Bauer](http://www.n8d.at/blog/deploy-binary-files-from-sharepoint-hosted-app-to-host-web/)".
+This sample demonstrates how to upload binary files from SharePoint Hosted Add-in to the host web. This sample project was merged from the blog post "[Deploy binary files from SharePoint Hosted App to Host Web - Stefan Bauer](http://www.n8d.at/blog/deploy-binary-files-from-sharepoint-hosted-app-to-host-web/)".
 The first method shows how to upload a binary file to the host web using jquery ajax. The missing support for binary files will corrupt the uploaded file.
 The second method extends jQuery capabilites to support binary file reading. This method makes sure that the file won't get corrupted.
 
@@ -34,8 +34,8 @@ Version  | Date | Comments
 
 ----------
 
-# Sample App #
-This sample app demonstrates how to deploy binary files from SharePoint Hosted App to the host web. 
+# Sample Add-in #
+This sample add-in demonstrates how to deploy binary files from SharePoint Hosted Add-in to the host web. 
 
 First method uploads a file using default jQuery ajax read operation and successfully upload the file. Due missing binary support of jQuery the fill will be corrupted during upload.
 
@@ -98,7 +98,7 @@ After this extension have been add the read operation needs to be changed to the
 
 ```JavaScript
 var sourceFile = appWebUrl + sourcePath;
-// Read file from app web
+// Read file from add-in web
 $.ajax({
     url: sourceFile,
     type: "GET",

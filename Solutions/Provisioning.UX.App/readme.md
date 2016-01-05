@@ -486,7 +486,7 @@ Defined in the Provisioning.Job in the Resources/SiteTemplates/ProvisioningTempl
 
 #### High-Trust Configuration ####
 
-A high-trust add-in is a provider-hosted add-in for SharePoint that uses the digital certificates to establish trust between the remote web application and SharePoint. "High-trust" is not the same as "full trust". A high-trust add-ins must still request app permissions. The add-in is considered "high-trust" because it is trusted to use any user identity that the app needs, because the add-in is responsible for creating the user portion of the access token that it passes to SharePoint. See [https://msdn.microsoft.com/en-us/library/office/fp179901.aspx](https://msdn.microsoft.com/en-us/library/office/fp179901.aspx "Create high-trust apps for SharePoint 2013") for additional information. 
+A high-trust add-in is a provider-hosted add-in for SharePoint that uses the digital certificates to establish trust between the remote web application and SharePoint. "High-trust" is not the same as "full trust". A high-trust add-in must still request app permissions. The add-in is considered "high-trust" because it is trusted to use any user identity that it needs, because the add-in is responsible for creating the user portion of the access token that it passes to SharePoint. See [https://msdn.microsoft.com/en-us/library/office/fp179901.aspx](https://msdn.microsoft.com/en-us/library/office/fp179901.aspx "Create high-trust apps for SharePoint 2013") for additional information. 
 
 If you are targeting High-Trust Add-ins in on-premises builds you most modify AppOnlyAuthenticationSite.cs and AppOnlyAuthenticationTenant.cs EnsureToken methods in the Provisioning.Common project and replace with the following code.
 

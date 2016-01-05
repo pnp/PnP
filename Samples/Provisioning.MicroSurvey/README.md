@@ -19,6 +19,7 @@ Provisioning.MicroSurvey | Bob German
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
+1.1  | January 1st 2016 | Update to use Widget Wrangler
 1.0  | July 31st 2015 | Initial release
 
 ### Disclaimer ###
