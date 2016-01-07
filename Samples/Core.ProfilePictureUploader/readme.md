@@ -33,7 +33,7 @@ The documentation below shows show to run and configure the utility, and then co
 
 When running the uploader, you will need to specify a minimum of three command line parameters. That being; a username and password of an SPO tenant admin (Office 365 admin), and the path to the configuration file which the uploader will use to control the upload process. E.g.
 
-ProfilePictureUploader.exe –SPOAdmin admin@contoso.onmicrosot.com –SPOAdminPassword pass@word1 –Configuration configuration.xml
+    ProfilePictureUploader.exe –SPOAdmin admin@contoso.onmicrosot.com –SPOAdminPassword pass@word1 –Configuration configuration.xml
 
 There are two optional parameters, which are a username and password, which should be used if your image source location requires authentication, and you don’t want to connect to the source as the user account which is executing the ProfilePictureUploader executable. Note: if the source is an HTTP(s) Uri, then this will only work if the authentication method is NTLM or basic authentication, not forms authentication. 
 The screen shot below shows the two examples for running this command.
@@ -47,14 +47,14 @@ The configuration.xml file allows you to control the upload process, and is requ
 
 1.	tenantName – required. Office 365 tenant name. Used by the utility to connect to the correct SPO web service endpoints during the upload of images, and editing of user profile properties.
 2.	pictureSourceCSV – required. This is the path to a CSV file which contains a mapping of SPO user to source image location. More information and examples are detailed in the next section.
-3.	Thumbs – required. This element determines if source image files should be uploaded as is, or scaled to create 3 sizes of each image file.
+3.	thumbs – required. This element determines if source image files should be uploaded as is, or scaled to create 3 sizes of each image file.
 	- upload3Thumbs – required. If set to “false”, the utility will take the source image for a user as is, and upload to SPO. A single image file per user profile will be uploaded. The value of “createSMLThumbs” is irrelevant if “Upload3Thumbs” is set to “false”. If “upload3Thumbs” is set to true, the utility will upload 3 image files for each user profile. The value of “createSMLThumbs” will control the size of each of those 3 images. Most often “upload3Thumbs” will be set to true, but there are cases where you might just want the source image uploaded as is.	
 	- createSMLThumbs – required. If set to true, the utility will use the source image, and create 3 different sized variations of the image, and upload those 3 images for each user profile. The sizes are, small – width of 48px, medium – width of 72px, and large, width of 200px. If set to false, the utility will use the source image, do no resizing of it, and upload it 3 times. Most often this parameter will be set to true, but there are cases where you might want it to be false.
 4.	additionalProfileProperties – required. This section allows you to specify additional user profile properties, and their values, to be set when the utility runs. For example, you may want to turn off Exchange Online picture sync to SharePoint Online for all users where you upload an image, or set any other custom or built-in SPO user profile property to a value. Note: the utility will automatically set 2 user profile properties for you i.e. PictureURL, will be set to the path of the uploaded image (if multiple image uploaded, it is always set to the path of the medium sized image), and SPS-PicturePlaceholderState will be set to 0, to indicate to SPO to show the upload picture for a user profile. 
 	- Property – not required. Can have multiple property elements. 
 		- Name – required. This is the name of SPO user profile property
 		- Value – required. This is the value you would like to set the profile property to
-5.	Logfile – required. This is used to control the output of logging while the utility runs.
+5.	logFile – required. This is used to control the output of logging while the utility runs.
 	- path – required. The full path to where the log file should be created. If the file doesn’t exist, the utility will create one. If it does exist, it will append to the existing file.
 	- enablelogging – required. If set to “false”, the utility will not write any output to the logfile.
 	- loggingLevel – not used. Support for this attribute be added to a future update.
@@ -76,7 +76,7 @@ The article linked here, describes how to the Get-MSOLUser command - http://msdn
 
 # FAQ #
 
-My company is running Azure AD Sync. Will it take user profile pictures into SPO from our local AD?
+## My company is running Azure AD Sync. Will it take user profile pictures into SPO from our local AD?
 Answer: Maybe
 
 Azure AD Synchronization (DirSync) will synchronize the value for the AD attribute “thumbnailphoto” from a user object in AD to Azure AD (Office 365). However, this doesn’t mean it ends up in SharePoint Online, and in the scenarios where it does, it doesn’t mean you have a good looking high resolution photo for a user profile. 
@@ -88,25 +88,23 @@ For these reasons, and others you may have, you want to use this utililty to upl
 
 **For Your Interest:** you will notice a SPO user profile property called SPS-PictureExchangeSyncState. It is there to toggle the syncing (pulling) of pictures from Exchange Online to SharePoint Online (pulled by SharePoint Online).
 
-**Note: **If you have Exchange Online available in your Office 365 tenant, but user mailboxes are on-premises, the thumbnail attribute does end up in Exchange Online for a user, it just doesn’t sync to SharePoint Online. If you would like to use the Exchange Online picture as a source for SPO, you can get the source image from Exchange Online for any user using their Rest API, which is a simple URL. E.g.
-
-https://outlook.office365.com/ews/Exchange.asmx/s/GetUserPhoto?email=user1@contoso.com&size=HR648x648
+**Note: **If you have Exchange Online available in your Office 365 tenant, but user mailboxes are on-premises, the thumbnail attribute does end up in Exchange Online for a user, it just doesn’t sync to SharePoint Online. If you would like to use the Exchange Online picture as a source for SPO, you can get the source image from Exchange Online for any user using their Rest API, which is a simple URL. E.g. https://outlook.office365.com/ews/Exchange.asmx/s/GetUserPhoto?email=user1@contoso.com&size=HR648x648
 Where email is the email address of the user profile in question. You could therefore, in the source CSV file use the URL above, together with the source authentication command line parameters to copy images from Exchange Online to SharePoint Online.
 
-Can i use SharePoint on-premises as the source for profile pictures?
+## Can I use SharePoint on-premises as the source for profile pictures?
 Answer: Yes
 
 It is very likely that you would want to do this e.g. you have SP2010 on-premises today. You could have the source URL field in the CSV file point straight to the HTTP URL for the large image file for each user profile. Why the large file? Because SPO has different profile picture size requrements compared to SP2010, and pointing to the large image, you could have the utility create the 3 correct sizes and upload to SPO.
 E.g. your source URL could look something like this for SharePoint 2010 – http://<mysitehost>/User Photos/Profile Pictures/<domain>_<username>_LThumb.jpg
 Note: the utility will connect to the source image location, as the user account which is running the utlity, or, you can specify a username and password to connect to the source as, on the command line when running the tool.
 
-Can i use this utility to upload pictures to an on-premises SharePoint 2013 farm?
+## Can I use this utility to upload pictures to an on-premises SharePoint 2013 farm?
 Answer: Not without adjusting the source code.
 
 It is a minor adjustment to allow this utility to upload images to SharePoint 2013 on-premises. The utlity currently only support authentication against Office 365. However with a minor change to the authenticaiton logic, and path to SP web services and my site host, the tool would work.
 Perhaps in a future relase, we could add a configuration flag to support on-premises.
 
-Can i use this utility to mass update user profile properties, and not upload image files?
+## Can I use this utility to mass update user profile properties, and not upload image files?
 Answer: Not without adjusting the source code
 
 You would need to comment out the code which fetches images from source location and uploads to SPO. The code already exists to read the “additionalProfileProperties” section in the configuration file and set the values in SPO user profiles, so this would be used to perform your mass update requirement.
