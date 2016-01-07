@@ -28,7 +28,7 @@ Note that there is no SharePoint add-in, just a console application, which you c
 ### Prerequisites ###
 - A ClientId and ClientSecret registered with SharePoint's "appregnew.aspx" page
 - Credentials to authenticate to SharePoint Online with tenand admin rights to write to user profiles
-- The ClientId to hae permissions to read Azure AD user data
+- The ClientId to have permissions to read Azure AD user data
 
 ### Solution ###
 Solution | Author(s)
