@@ -28,7 +28,7 @@ Note that there is no SharePoint add-in, just a console application, which you c
 ### Prerequisites ###
 - A ClientId and ClientSecret registered with SharePoint's "appregnew.aspx" page
 - Credentials to authenticate to SharePoint Online with tenand admin rights to write to user profiles
-- The ClientId to hae permissions to read Azure AD user data
+- The ClientId to have permissions to read Azure AD user data
 
 ### Solution ###
 Solution | Author(s)
@@ -109,11 +109,11 @@ Note: I didn't manage to get this working with an Add-in Only Policy context... 
     
     <!--Used in Azure AD AuthenticationHelper-->
 
-    <add key="TenantSharePointAdminUrl" value="https://onebitdev2015-admin.sharepoint.com" /> <!--Used in console code for Admin url-->
-    <add key="TenantUpnDomain" value="onebitsoftware.onmicrosoft.com" />
+    <add key="TenantSharePointAdminUrl" value="https://tenantid-admin.sharepoint.com" /> <!--Used in console code for Admin url-->
+    <add key="TenantUpnDomain" value="tenantid.onmicrosoft.com" />
   
     <!--Used to buils SharePointOnlineCredentials to write to UPA-->
-    <add key="TenantAdminLogin" value="admin@onebitsoftware.onmicrosoft.com" />
+    <add key="TenantAdminLogin" value="admin@tenantid.onmicrosoft.com" />
     <add key="TenantAdminPassword" value="PASSWORD HERE" /> 
   
     <!--Not used, but you could save the extra lookup of TokenHelper.GetRealmFromTargetUrl(sharePointAdminUrl); realm is tenantid --> 
