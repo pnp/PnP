@@ -20,6 +20,16 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             var folders = MailHelper.ListFolders();
             var messages = MailHelper.ListMessages(folders.FirstOrDefault(f => f.Name == "Posta in arrivo").Id);
             var message = MailHelper.GetMessage(messages[1].Id, true);
+
+            foreach (var attachment in message.Attachments)
+            {
+                // Download content only for attachments smaller than 100K
+                if (attachment.Size < 100 * 1024)
+                {
+                    attachment.EnsureContent();
+                }
+            }
+
             MailHelper.SendMessage(new Models.MailMessageToSend {
                 Message = new Models.MailMessageToSendContent
                 {

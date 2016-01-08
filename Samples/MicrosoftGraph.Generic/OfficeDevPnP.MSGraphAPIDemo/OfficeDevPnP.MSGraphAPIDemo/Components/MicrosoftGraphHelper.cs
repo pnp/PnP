@@ -102,7 +102,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         /// </summary>
         /// <param name="graphRequestUri">The URL of the request</param>
         /// <returns>The String value of the result</returns>
-        public static String MakePostRequestForString(String graphRequestUri, 
+        public static String MakePostRequest(String graphRequestUri, 
             Object content = null, 
             String contentType = null)
         {

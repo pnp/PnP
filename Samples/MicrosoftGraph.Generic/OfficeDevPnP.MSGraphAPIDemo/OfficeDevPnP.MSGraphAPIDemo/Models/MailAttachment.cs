@@ -27,7 +27,16 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// </summary>
         [JsonProperty("contentBytes")]
         public Byte[] Content { get; set; }
+
+        /// <summary>
+        /// The size of the email attachment
+        /// </summary>
+        public Int32 Size { get; set; }
+
+        /// <summary>
+        /// The ID of the parent email message
+        /// </summary>
+        [JsonIgnore]
+        public String ParentMessageId { get; set; }
     }
-
-
 }

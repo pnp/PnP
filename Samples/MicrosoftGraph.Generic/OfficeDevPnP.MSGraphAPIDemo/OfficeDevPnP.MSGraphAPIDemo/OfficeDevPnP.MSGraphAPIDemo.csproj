@@ -172,7 +172,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\EmailAddress.cs" />
+    <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Models\MailAttachment.cs" />
     <Compile Include="Models\MailAttachmentList.cs" />
     <Compile Include="Models\MailFolder.cs" />

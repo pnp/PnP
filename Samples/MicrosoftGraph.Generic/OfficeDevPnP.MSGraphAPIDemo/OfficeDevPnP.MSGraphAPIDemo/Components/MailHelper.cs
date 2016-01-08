@@ -83,7 +83,8 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
 
             if (includeAttachments)
             {
-                message.LoadAttachments();
+                // message.LoadAttachments();
+                message.LoadAttachmentsSmartly();
             }
 
             return (message);
@@ -104,12 +105,61 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
 
                 var attachments = JsonConvert.DeserializeObject<MailAttachmentList>(jsonResponse);
                 message.Attachments.AddRange(attachments.Attachments);
+
+                foreach (var attachment in message.Attachments)
+                {
+                    attachment.ParentMessageId = message.Id;
+                }
             }
         }
 
+        /// <summary>
+        /// Extension method to load the attachments of an email message in a smart way
+        /// </summary>
+        /// <param name="message">The target email message</param>
+        public static void LoadAttachmentsSmartly(this MailMessage message)
+        {
+            if (message.HasAttachments)
+            {
+                String jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
+                    String.Format("{0}me/messages/{1}/attachments?$select=contentType,id,name,size",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    message.Id));
+
+                var attachments = JsonConvert.DeserializeObject<MailAttachmentList>(jsonResponse);
+                message.Attachments.AddRange(attachments.Attachments);
+
+                foreach (var attachment in message.Attachments)
+                {
+                    attachment.ParentMessageId = message.Id;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Extension method to load the content of a specific attachment
+        /// </summary>
+        /// <param name="message">The target email message</param>
+        public static void EnsureContent(this MailAttachment attachment)
+        {
+            String jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
+                String.Format("{0}me/messages/{1}/attachments/{2}",
+                MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                attachment.ParentMessageId,
+                attachment.Id));
+
+            var result = JsonConvert.DeserializeObject<MailAttachment>(jsonResponse);
+            attachment.Content = result.Content;
+        }
+
+
+        /// <summary>
+        /// This method sends an email message
+        /// </summary>
+        /// <param name="message"></param>
         public static void SendMessage(MailMessageToSend message)
         {
-            String jsonResponse = MicrosoftGraphHelper.MakePostRequestForString(
+            String jsonResponse = MicrosoftGraphHelper.MakePostRequest(
                 String.Format("{0}me/microsoft.graph.sendMail",
                 MicrosoftGraphHelper.MicrosoftGraphV1BaseUri),
                 message, "application/json");
