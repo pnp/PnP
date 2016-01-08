@@ -28,7 +28,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// The list of email address TO recipients
         /// </summary>
         [JsonProperty("toRecipients")]
-        public List<MailMessageRecipient> To { get; set; }
+        public List<UserInfoContainer> To { get; set; }
 
         /// <summary>
         /// The subject of the email message
@@ -38,6 +38,6 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// <summary>
         /// The body of the email message
         /// </summary>
-        public MailMessageBody Body { get; set; }
+        public MessageBody Body { get; set; }
     }
 }

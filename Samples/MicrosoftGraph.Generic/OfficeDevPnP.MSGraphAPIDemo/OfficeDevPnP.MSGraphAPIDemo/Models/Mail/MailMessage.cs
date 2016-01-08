@@ -25,25 +25,25 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// The sender email address
         /// </summary>
         [JsonProperty("from")]
-        public MailMessageRecipient From { get; set; }
+        public UserInfoContainer From { get; set; }
 
         /// <summary>
         /// The list of email address TO recipients
         /// </summary>
         [JsonProperty("toRecipients")]
-        public List<MailMessageRecipient> To { get; set; }
+        public List<UserInfoContainer> To { get; set; }
 
         /// <summary>
         /// The list of email address CC recipients
         /// </summary>
         [JsonProperty("ccRecipients")]
-        public List<MailMessageRecipient> CC { get; set; }
+        public List<UserInfoContainer> CC { get; set; }
 
         /// <summary>
         /// The list of email address BCC recipients
         /// </summary>
         [JsonProperty("bccRecipients")]
-        public List<MailMessageRecipient> BCC { get; set; }
+        public List<UserInfoContainer> BCC { get; set; }
 
         /// <summary>
         /// The subject of the email message
@@ -53,7 +53,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// <summary>
         /// The body of the email message
         /// </summary>
-        public MailMessageBody Body { get; set; }
+        public MessageBody Body { get; set; }
 
         /// <summary>
         /// The UTC sent date and time of the email message
@@ -84,24 +84,5 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// The list of email message attachments, if any
         /// </summary>
         public List<MailAttachment> Attachments { get; private set; }
-    }
-
-    /// <summary>
-    /// Defines the importance of an email message
-    /// </summary>
-    public enum MailImportance
-    {
-        /// <summary>
-        /// Normal importance, default value
-        /// </summary>
-        Normal,
-        /// <summary>
-        /// High importance
-        /// </summary>
-        High,
-        /// <summary>
-        /// Low importance
-        /// </summary>
-        Low,
     }
 }

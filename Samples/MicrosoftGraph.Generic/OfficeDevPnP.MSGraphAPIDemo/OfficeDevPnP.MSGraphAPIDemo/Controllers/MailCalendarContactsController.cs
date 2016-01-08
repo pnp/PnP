@@ -34,13 +34,13 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                 Message = new Models.MailMessageToSendContent
                 {
                     Subject = "Test message",
-                    Body = new Models.MailMessageBody
+                    Body = new Models.MessageBody
                     {
                         Content = "<html><body><h1>Hello from ASP.NET MVC calling Microsoft Graph API!</h1></body></html>",
-                        ContentType = "html",
+                        Type = Models.BodyType.Html,
                     },
-                    To = new List<Models.MailMessageRecipient>(new Models.MailMessageRecipient[] {
-                    new Models.MailMessageRecipient
+                    To = new List<Models.UserInfoContainer>(new Models.UserInfoContainer[] {
+                    new Models.UserInfoContainer
                     {
                         Recipient = new Models.UserInfo
                         {
@@ -68,7 +68,11 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
 
         public ActionResult ListCalendarEvents()
         {
-            return View();
+            var calendars = CalendarHelper.ListCalendars();
+            var calendar = CalendarHelper.GetCalendar(calendars[0].Id);
+            var events = CalendarHelper.ListEvents(calendar.Id, 0);
+            var eventsCalendarView = CalendarHelper.ListEvents(calendar.Id, DateTime.Now, DateTime.Now.AddDays(10),  0);
+            return View("Index");
         }
 
         public ActionResult SendMeetingRequest()

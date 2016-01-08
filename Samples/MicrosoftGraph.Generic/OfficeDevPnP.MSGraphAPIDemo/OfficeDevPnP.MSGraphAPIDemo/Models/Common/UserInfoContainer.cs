@@ -7,9 +7,9 @@ using System.Web;
 namespace OfficeDevPnP.MSGraphAPIDemo.Models
 {
     /// <summary>
-    /// Defines a recipient of an email message
+    /// Defines a recipient of an email message/meeting
     /// </summary>
-    public class MailMessageRecipient
+    public class UserInfoContainer
     {
         /// <summary>
         /// The email address of the recipient
