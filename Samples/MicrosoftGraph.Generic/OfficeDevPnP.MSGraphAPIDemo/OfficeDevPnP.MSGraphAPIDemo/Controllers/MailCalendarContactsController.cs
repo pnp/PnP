@@ -73,7 +73,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             var events = CalendarHelper.ListEvents(calendar.Id, 0);
             var eventsCalendarView = CalendarHelper.ListEvents(calendar.Id, DateTime.Now, DateTime.Now.AddDays(10),  0);
 
-            var createdEvent = CalendarHelper.CreateEvent(calendars[0].Id,
+            var singleEvent = CalendarHelper.CreateEvent(calendars[0].Id,
                 new Models.Event
                 {
                     Attendees = new List<Models.UserInfoContainer>(
@@ -99,13 +99,15 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                     Start = new Models.TimeInfo
                     {
                         DateTime = DateTime.Now.AddDays(2).ToUniversalTime(),
-                        TimeZone = "UTC,"
+                        TimeZone = "UTC"
                     },
+                    OriginalStartTimeZone = "UTC",
                     End = new Models.TimeInfo
                     {
                         DateTime = DateTime.Now.AddDays(2).AddHours(1).ToUniversalTime(),
-                        TimeZone = "UTC,"
+                        TimeZone = "UTC"
                     },
+                    OriginalEndTimeZone = "UTC",
                     Importance = Models.MailImportance.High,
                     Subject = "Introducing the Microsoft Graph API",
                     Body = new Models.MessageBody
@@ -121,8 +123,56 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                     IsOrganizer = true,
                     ShowAs = Models.EventStatus.WorkingElsewhere,
                     Type = Models.EventType.SingleInstance,
+                });
+
+            var nextMonday = DateTime.Now.AddDays(((int)DayOfWeek.Monday - (int)DateTime.Now.DayOfWeek + 7) % 7);
+            var nextMonday9AM = new DateTime(nextMonday.Year, nextMonday.Month, nextMonday.Day, 9, 0, 0);
+            var lastDayOfMonth = new DateTime(nextMonday.AddMonths(1).Year, nextMonday.AddMonths(1).Month, 1).AddDays(-1);
+            var eventSeries = CalendarHelper.CreateEvent(calendars[0].Id,
+                new Models.Event
+                {
+                    Start = new Models.TimeInfo
+                    {
+                        DateTime = nextMonday9AM.ToUniversalTime(),
+                        TimeZone = "UTC"
+                    },
                     OriginalStartTimeZone = "UTC",
+                    End = new Models.TimeInfo
+                    {
+                        DateTime = nextMonday9AM.AddHours(1).ToUniversalTime(),
+                        TimeZone = "UTC"
+                    },
                     OriginalEndTimeZone = "UTC",
+                    Importance = Models.MailImportance.Normal,
+                    Subject = "Recurring Event about Microsoft Graph API",
+                    Body = new Models.MessageBody
+                    {
+                        Content = "<html><body><h2>Let's talk about the Microsoft Graph API!</h2></body></html>",
+                        Type = Models.BodyType.Html,
+                    },
+                    Location = new Models.EventLocation
+                    {
+                        Name = "Paolo's Office",
+                    },
+                    IsAllDay = false,
+                    IsOrganizer = true,
+                    ShowAs = Models.EventStatus.Busy,
+                    Type = Models.EventType.SeriesMaster,
+                    Recurrence = new Models.EventRecurrence
+                    {
+                        Pattern = new Models.EventRecurrencePattern
+                        {
+                            Type = Models.RecurrenceType.Weekly,
+                            DaysOfWeek = new DayOfWeek[] { DayOfWeek.Monday },
+                            Interval = 1,
+                        },
+                        Range = new Models.EventRecurrenceRange
+                        {
+                            StartDate = nextMonday9AM.ToUniversalTime(),
+                            Type = Models.RecurrenceRangeType.EndDate,
+                            EndDate = lastDayOfMonth.ToUniversalTime(),
+                        }
+                    }
                 });
 
             return View("Index");

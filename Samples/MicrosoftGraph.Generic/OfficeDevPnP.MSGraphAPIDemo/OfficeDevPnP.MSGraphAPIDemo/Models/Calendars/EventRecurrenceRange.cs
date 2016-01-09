@@ -15,12 +15,14 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// <summary>
         /// The Start Date of the recurrence
         /// </summary>
-        public DateTime StartDate { get; set; }
+        [JsonConverter(typeof(Converters.DateOnlyConverter))]
+        public Nullable<DateTime> StartDate { get; set; }
 
         /// <summary>
         /// The End Date of the recurrence
         /// </summary>
-        public DateTime EndDate { get; set; }
+        [JsonConverter(typeof(Converters.DateOnlyConverter))]
+        public Nullable<DateTime> EndDate { get; set; }
 
         /// <summary>
         /// The number of occurrences

@@ -20,7 +20,8 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// <summary>
         /// The days of the week for the recurrence
         /// </summary>
-        public List<DayOfWeek> DaysOfWeek { get; set; }
+        [JsonProperty(ItemConverterType = typeof(StringEnumConverter))]
+        public DayOfWeek[] DaysOfWeek { get; set; }
 
         /// <summary>
         /// The first day of the week

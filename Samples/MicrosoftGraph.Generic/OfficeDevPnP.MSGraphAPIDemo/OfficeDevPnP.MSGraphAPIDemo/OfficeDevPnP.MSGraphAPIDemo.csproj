@@ -185,6 +185,7 @@
     <Compile Include="Models\Common\MailImportance.cs" />
     <Compile Include="Models\Common\TimeInfo.cs" />
     <Compile Include="Models\Common\UserInfo.cs" />
+    <Compile Include="Models\Converters\DateOnlyConverter.cs" />
     <Compile Include="Models\Mail\MailAttachment.cs" />
     <Compile Include="Models\Mail\MailAttachmentList.cs" />
     <Compile Include="Models\Mail\MailFolder.cs" />
