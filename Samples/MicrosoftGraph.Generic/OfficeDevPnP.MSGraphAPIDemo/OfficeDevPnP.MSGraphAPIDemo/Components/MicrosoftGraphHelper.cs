@@ -98,12 +98,49 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         }
 
         /// <summary>
-        /// This helper method makes an HTTP GET request and returns the result as a String
+        /// This helper method makes an HTTP POST request
+        /// </summary>
+        /// <param name="graphRequestUri">The URL of the request</param>
+        public static void MakePostRequest(String graphRequestUri, 
+            Object content = null, 
+            String contentType = null)
+        {
+            var accessToken = GetAccessTokenForCurrentUser();
+
+            if (!String.IsNullOrEmpty(accessToken))
+            {
+                HttpClient httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", accessToken);
+
+                HttpContent requestContent =
+                    (content != null) ?
+                    new StringContent(JsonConvert.SerializeObject(content, 
+                        Formatting.None, 
+                        new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+                    Encoding.UTF8, contentType) :
+                    new StringContent(null);
+                HttpResponseMessage response = httpClient.PostAsync(graphRequestUri, requestContent).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return;
+                }
+                else
+                {
+                    throw new ApplicationException(
+                        String.Format("Exception while invoking endpoint {0}.", graphRequestUri));
+                }
+            }
+        }
+
+        /// <summary>
+        /// This helper method makes an HTTP POST request and returns the result as a String
         /// </summary>
         /// <param name="graphRequestUri">The URL of the request</param>
         /// <returns>The String value of the result</returns>
-        public static String MakePostRequest(String graphRequestUri, 
-            Object content = null, 
+        public static String MakePostRequestForString(String graphRequestUri,
+            Object content = null,
             String contentType = null)
         {
             String result = null;
@@ -117,7 +154,9 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
 
                 HttpContent requestContent =
                     (content != null) ?
-                    new StringContent(JsonConvert.SerializeObject(content),
+                    new StringContent(JsonConvert.SerializeObject(content,
+                        Formatting.None,
+                        new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
                     Encoding.UTF8, contentType) :
                     new StringContent(null);
                 HttpResponseMessage response = httpClient.PostAsync(graphRequestUri, requestContent).Result;

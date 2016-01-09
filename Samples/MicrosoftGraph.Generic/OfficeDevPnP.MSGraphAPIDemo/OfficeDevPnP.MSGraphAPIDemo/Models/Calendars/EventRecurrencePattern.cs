@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -23,11 +25,13 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// <summary>
         /// The first day of the week
         /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
         public DayOfWeek FirstDayOfWeek { get; set; }
 
         /// <summary>
         /// The week of the month
         /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
         public WeekIndex Index { get; set; }
 
         /// <summary>
@@ -43,6 +47,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// <summary>
         /// The type of recurrence
         /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
         public RecurrenceType Type { get; set; }
     }
 

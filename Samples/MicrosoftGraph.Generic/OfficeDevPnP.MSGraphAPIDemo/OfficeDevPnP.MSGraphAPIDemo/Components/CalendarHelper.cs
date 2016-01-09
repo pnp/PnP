@@ -81,5 +81,17 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
             var eventList = JsonConvert.DeserializeObject<EventList>(jsonResponse);
             return (eventList.Events);
         }
+
+        public static Event CreateEvent(String calendarId, Event calendarEvent)
+        {
+            String jsonResponse = MicrosoftGraphHelper.MakePostRequestForString(
+                String.Format("{0}me/calendars/{1}/events",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    calendarId),
+                calendarEvent, "application/json");
+
+            var createdEvent = JsonConvert.DeserializeObject<Event>(jsonResponse);
+            return (createdEvent);
+        }
     }
 }

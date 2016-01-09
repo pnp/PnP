@@ -31,7 +31,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             }
 
             MailHelper.SendMessage(new Models.MailMessageToSend {
-                Message = new Models.MailMessageToSendContent
+                Message = new Models.MailMessage
                 {
                     Subject = "Test message",
                     Body = new Models.MessageBody
@@ -72,6 +72,59 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             var calendar = CalendarHelper.GetCalendar(calendars[0].Id);
             var events = CalendarHelper.ListEvents(calendar.Id, 0);
             var eventsCalendarView = CalendarHelper.ListEvents(calendar.Id, DateTime.Now, DateTime.Now.AddDays(10),  0);
+
+            var createdEvent = CalendarHelper.CreateEvent(calendars[0].Id,
+                new Models.Event
+                {
+                    Attendees = new List<Models.UserInfoContainer>(
+                        new Models.UserInfoContainer[]
+                        {
+                            new Models.UserInfoContainer
+                            {
+                                Recipient = new Models.UserInfo
+                                {
+                                    Address = "paolo@pialorsi.com",
+                                    Name = "Paolo Pialorsi",
+                                }
+                            },
+                            new Models.UserInfoContainer
+                            {
+                                Recipient = new Models.UserInfo
+                                {
+                                    Address = "someone@company.com",
+                                    Name = "Someone Else",
+                                }
+                            },
+                        }),
+                    Start = new Models.TimeInfo
+                    {
+                        DateTime = DateTime.Now.AddDays(2).ToUniversalTime(),
+                        TimeZone = "UTC,"
+                    },
+                    End = new Models.TimeInfo
+                    {
+                        DateTime = DateTime.Now.AddDays(2).AddHours(1).ToUniversalTime(),
+                        TimeZone = "UTC,"
+                    },
+                    Importance = Models.MailImportance.High,
+                    Subject = "Introducing the Microsoft Graph API",
+                    Body = new Models.MessageBody
+                    {
+                        Content = "<html><body><h2>Let's talk about the Microsoft Graph API!</h2></body></html>",
+                        Type = Models.BodyType.Html,
+                    },
+                    Location  = new Models.EventLocation
+                    {
+                        Name = "PiaSys.com Head Quarters",
+                    },
+                    IsAllDay = false,
+                    IsOrganizer = true,
+                    ShowAs = Models.EventStatus.WorkingElsewhere,
+                    Type = Models.EventType.SingleInstance,
+                    OriginalStartTimeZone = "UTC",
+                    OriginalEndTimeZone = "UTC",
+                });
+
             return View("Index");
         }
 

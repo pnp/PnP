@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// 
         /// </summary>
         [JsonProperty("contentType")]
+        [JsonConverter(typeof(StringEnumConverter))]
         public BodyType Type { get; set; }
     }
 

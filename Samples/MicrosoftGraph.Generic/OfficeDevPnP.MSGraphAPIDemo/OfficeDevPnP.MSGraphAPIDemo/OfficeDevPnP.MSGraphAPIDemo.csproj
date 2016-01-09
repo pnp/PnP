@@ -181,6 +181,7 @@
     <Compile Include="Models\Calendars\EventRecurrence.cs" />
     <Compile Include="Models\Calendars\EventRecurrencePattern.cs" />
     <Compile Include="Models\Calendars\EventRecurrenceRange.cs" />
+    <Compile Include="Models\Calendars\EventToCreate.cs" />
     <Compile Include="Models\Common\MailImportance.cs" />
     <Compile Include="Models\Common\TimeInfo.cs" />
     <Compile Include="Models\Common\UserInfo.cs" />

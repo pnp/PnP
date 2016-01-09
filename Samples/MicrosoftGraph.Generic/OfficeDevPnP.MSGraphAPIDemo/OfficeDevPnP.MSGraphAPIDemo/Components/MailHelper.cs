@@ -159,7 +159,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         /// <param name="message"></param>
         public static void SendMessage(MailMessageToSend message)
         {
-            String jsonResponse = MicrosoftGraphHelper.MakePostRequest(
+            MicrosoftGraphHelper.MakePostRequest(
                 String.Format("{0}me/microsoft.graph.sendMail",
                 MicrosoftGraphHelper.MicrosoftGraphV1BaseUri),
                 message, "application/json");

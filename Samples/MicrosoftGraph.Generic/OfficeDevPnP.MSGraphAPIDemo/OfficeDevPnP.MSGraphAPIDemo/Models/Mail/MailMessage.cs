@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// <summary>
         /// The importance of the email message
         /// </summary>
+        [JsonConverter(typeof(StringEnumConverter))]
         public MailImportance Importance { get; set; }
 
         /// <summary>
@@ -58,12 +60,12 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// <summary>
         /// The UTC sent date and time of the email message
         /// </summary>
-        public DateTime SentDateTime { get; set; }
+        public Nullable<DateTime> SentDateTime { get; set; }
 
         /// <summary>
         /// The UTC received date and time of the email message
         /// </summary>
-        public DateTime ReceivedDateTime { get; set; }
+        public Nullable<DateTime> ReceivedDateTime { get; set; }
 
         /// <summary>
         /// Defines whether the email message is read on unread

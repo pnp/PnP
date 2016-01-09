@@ -14,30 +14,8 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// <summary>
         /// The email message
         /// </summary>
-        public MailMessageToSendContent Message { get; set; }
+        public MailMessage Message { get; set; }
 
         public Boolean SaveToSentItems { get; set; }
-    }
-
-    /// <summary>
-    /// Defines an email message
-    /// </summary>
-    public class MailMessageToSendContent
-    {
-        /// <summary>
-        /// The list of email address TO recipients
-        /// </summary>
-        [JsonProperty("toRecipients")]
-        public List<UserInfoContainer> To { get; set; }
-
-        /// <summary>
-        /// The subject of the email message
-        /// </summary>
-        public String Subject { get; set; }
-
-        /// <summary>
-        /// The body of the email message
-        /// </summary>
-        public MessageBody Body { get; set; }
     }
 }
