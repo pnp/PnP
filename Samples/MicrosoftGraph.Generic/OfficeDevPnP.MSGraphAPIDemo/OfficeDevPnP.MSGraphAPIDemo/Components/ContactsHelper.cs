@@ -11,15 +11,33 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
     public class ContactsHelper
     {
         /// <summary>
-        /// This method retrieves the calendars of the current user
+        /// This method retrieves the contacts of the current user
         /// </summary>
-        /// <param name="startIndex">The startIndex (0 based) of the folders to retrieve, optional</param>
+        /// <param name="startIndex">The startIndex (0 based) of the contacts to retrieve, optional</param>
         /// <returns>A page of up to 10 contacts</returns>
         public static List<Contact> ListContacts(Int32 startIndex = 0)
         {
             String jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
                 String.Format("{0}me/contacts?$skip={1}",
                     MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    startIndex));
+
+            var contactList = JsonConvert.DeserializeObject<ContactList>(jsonResponse);
+            return (contactList.Contacts);
+        }
+
+        /// <summary>
+        /// This method retrieves the contacts of a contacts folder for the current user
+        /// </summary>
+        /// <param name="contactFolderId">The ID of the contacts folder</param>
+        /// <param name="startIndex">The startIndex (0 based) of the contacts to retrieve, optional</param>
+        /// <returns>A page of up to 10 contacts</returns>
+        public static List<Contact> ListContacts(String contactFolderId, Int32 startIndex = 0)
+        {
+            String jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
+                String.Format("{0}me/contactFolders/{1}/contacts?$skip={2}",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    contactFolderId,
                     startIndex));
 
             var contactList = JsonConvert.DeserializeObject<ContactList>(jsonResponse);
