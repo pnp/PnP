@@ -144,6 +144,16 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         }
 
         /// <summary>
+        /// This helper method makes an HTTP DELETE request
+        /// </summary>
+        /// <param name="graphRequestUri">The URL of the request</param>
+        /// <returns>The String value of the result</returns>
+        public static void MakeDeleteRequest(String graphRequestUri)
+        {
+            MakeHttpRequest<String>("DELETE", graphRequestUri);
+        }
+        
+        /// <summary>
         /// This helper method makes an HTTP request and eventually returns a result
         /// </summary>
         /// <param name="httpMethod">The HTTP method for the request</param>

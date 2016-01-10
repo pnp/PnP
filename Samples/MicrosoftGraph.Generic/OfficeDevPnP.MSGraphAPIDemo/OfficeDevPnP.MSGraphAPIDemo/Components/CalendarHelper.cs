@@ -134,5 +134,18 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
             var updatedEvent = JsonConvert.DeserializeObject<Event>(jsonResponse);
             return (updatedEvent);
         }
+
+        /// <summary>
+        /// This method deleted an event from a calendar
+        /// </summary>
+        /// <param name="calendarId">The ID of the calendar</param>
+        /// <param name="eventId">The ID of the event to delete</param>
+        public static void DeleteEvent(String calendarId, String eventId)
+        {
+            MicrosoftGraphHelper.MakeDeleteRequest(
+                String.Format("{0}me/calendars/{1}/events/{2}",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    calendarId, eventId));
+        }
     }
 }

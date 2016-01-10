@@ -191,6 +191,9 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                         });
             var updatedEvent = CalendarHelper.UpdateEvent(calendar.Id, singleEventToUpdate);
 
+            CalendarHelper.DeleteEvent(calendar.Id, singleEvent.Id);
+            CalendarHelper.DeleteEvent(calendar.Id, eventSeries.Id);
+
             return View("Index");
         }
 
