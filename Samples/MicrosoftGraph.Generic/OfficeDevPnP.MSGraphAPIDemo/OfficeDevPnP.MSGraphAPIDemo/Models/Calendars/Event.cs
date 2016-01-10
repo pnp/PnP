@@ -10,7 +10,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
     /// <summary>
     /// Defines a user's calendar's event
     /// </summary>
-    public class Event
+    public class Event : BaseModel
     {
         /// <summary>
         /// The list of email address for the event's attendees

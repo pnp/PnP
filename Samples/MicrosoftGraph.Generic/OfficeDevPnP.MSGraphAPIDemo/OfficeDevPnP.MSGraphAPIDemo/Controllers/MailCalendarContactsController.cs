@@ -175,6 +175,22 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                     }
                 });
 
+            var singleEventToUpdate = CalendarHelper.GetEvent(calendar.Id, events[0].Id);
+
+            singleEventToUpdate.Attendees = new List<Models.UserInfoContainer>(
+                        new Models.UserInfoContainer[]
+                        {
+                            new Models.UserInfoContainer
+                            {
+                                Recipient = new Models.UserInfo
+                                {
+                                    Address = "paolo@pialorsi.com",
+                                    Name = "Paolo Pialorsi",
+                                }
+                            },
+                        });
+            var updatedEvent = CalendarHelper.UpdateEvent(calendar.Id, singleEventToUpdate);
+
             return View("Index");
         }
 

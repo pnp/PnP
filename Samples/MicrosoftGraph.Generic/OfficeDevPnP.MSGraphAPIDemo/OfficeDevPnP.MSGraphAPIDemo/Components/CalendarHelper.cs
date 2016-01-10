@@ -82,6 +82,12 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
             return (eventList.Events);
         }
 
+        /// <summary>
+        /// This method creates an event in a target calendar
+        /// </summary>
+        /// <param name="calendarId">The ID of the target calendar</param>
+        /// <param name="calendarEvent">The event to add</param>
+        /// <returns>The added event</returns>
         public static Event CreateEvent(String calendarId, Event calendarEvent)
         {
             String jsonResponse = MicrosoftGraphHelper.MakePostRequestForString(
@@ -93,5 +99,41 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
             var createdEvent = JsonConvert.DeserializeObject<Event>(jsonResponse);
             return (createdEvent);
         }
+
+        /// <summary>
+        /// This method retrieves an event from a calendar
+        /// </summary>
+        /// <param name="calendarId">The ID of the calendar</param>
+        /// <param name="eventId">The ID of the event</param>
+        /// <returns>The retrieved event</returns>
+        public static Event GetEvent(String calendarId, String eventId)
+        {
+            String jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
+                String.Format("{0}me/calendars/{1}/events/{2}",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    calendarId, eventId));
+
+            var calendarEvent = JsonConvert.DeserializeObject<Event>(jsonResponse);
+            return (calendarEvent);
+        }
+
+        /// <summary>
+        /// This method updates an event from a calendar
+        /// </summary>
+        /// <param name="calendarId">The ID of the calendar</param>
+        /// <param name="eventId">The event to update</param>
+        /// <returns>The updated event</returns>
+        public static Event UpdateEvent(String calendarId, Event eventToUpdate)
+        {
+            String jsonResponse = MicrosoftGraphHelper.MakePatchRequestForString(
+                String.Format("{0}me/calendars/{1}/events/{2}",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    calendarId, eventToUpdate.Id), 
+                eventToUpdate, "application/json");
+
+            var updatedEvent = JsonConvert.DeserializeObject<Event>(jsonResponse);
+            return (updatedEvent);
+        }
+        
     }
 }
