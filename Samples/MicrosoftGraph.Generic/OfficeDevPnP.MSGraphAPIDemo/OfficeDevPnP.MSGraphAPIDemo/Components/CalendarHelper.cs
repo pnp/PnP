@@ -118,7 +118,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         }
 
         /// <summary>
-        /// This method updates an event from a calendar
+        /// This method updates an event in a calendar
         /// </summary>
         /// <param name="calendarId">The ID of the calendar</param>
         /// <param name="eventId">The event to update</param>
@@ -134,6 +134,5 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
             var updatedEvent = JsonConvert.DeserializeObject<Event>(jsonResponse);
             return (updatedEvent);
         }
-        
     }
 }

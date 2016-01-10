@@ -162,7 +162,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
             String contentType = null,
             Func<HttpResponseMessage, TResult> resultPredicate = null)
         {
-            // Prepare the variable to hold the result
+            // Prepare the variable to hold the result, if any
             TResult result = default(TResult);
 
             // Get the OAuth Access Token
