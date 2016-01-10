@@ -242,7 +242,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             var photo = ContactsHelper.GetContactPhoto(contacts[0].Id);
 
             contacts[0].PersonalNotes += String.Format("Modified on {0}", DateTime.Now);
-            ContactsHelper.UpdateContact(contacts[0]);
+            var updatedContact = ContactsHelper.UpdateContact(contacts[0]);
 
             var addedContact = ContactsHelper.AddContact(new Models.Contact {
                 GivenName = "Michael",
