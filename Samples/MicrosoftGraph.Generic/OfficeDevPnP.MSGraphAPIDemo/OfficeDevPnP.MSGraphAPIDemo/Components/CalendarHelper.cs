@@ -83,6 +83,34 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         }
 
         /// <summary>
+        /// This method retrieves the events of a series within a specific date range
+        /// </summary>
+        /// <param name="calendarId">The ID of the calendar</param>
+        /// <param name="masterSeriesId">The ID of the master event of the series</param>
+        /// <param name="startDate">The start date of the range</param>
+        /// <param name="endDate">The end date of the range</param>
+        /// <param name="startIndex">The startIndex (0 based) of the folders to retrieve, optional</param>
+        /// <returns>A page of up to 10 events</returns>
+        public static List<Event> ListSeriesInstances(String calendarId, 
+            String masterSeriesId,
+            DateTime startDate,
+            DateTime endDate, 
+            Int32 startIndex = 0)
+        {
+            String jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
+                String.Format("{0}me/calendars/{1}/events/{2}/instances?startDateTime={3:o}&endDateTime={4:o}&$skip={5}",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    calendarId,
+                    masterSeriesId,
+                    startDate.ToUniversalTime(),
+                    endDate.ToUniversalTime(),
+                    startIndex));
+
+            var eventList = JsonConvert.DeserializeObject<EventList>(jsonResponse);
+            return (eventList.Events);
+        }
+
+        /// <summary>
         /// This method creates an event in a target calendar
         /// </summary>
         /// <param name="calendarId">The ID of the target calendar</param>
@@ -136,7 +164,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         }
 
         /// <summary>
-        /// This method deleted an event from a calendar
+        /// This method deletes an event from a calendar
         /// </summary>
         /// <param name="calendarId">The ID of the calendar</param>
         /// <param name="eventId">The ID of the event to delete</param>
@@ -147,5 +175,35 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
                     MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
                     calendarId, eventId));
         }
+
+        /// <summary>
+        /// This method provides a feedback for a received meeting request 
+        /// </summary>
+        /// <param name="calendarId">The ID of the calendar</param>
+        /// <param name="eventId">The ID of the meeting request</param>
+        /// <param name="feedback">The feedback for the meeting request</param>
+        /// <param name="comment">Any comment to include in the feedback, optional</param>
+        public static void SendFeedbackForMeetingRequest(String calendarId,
+            String eventId,
+            MeetingRequestFeedback feedback,
+            String comment = null)
+        {
+            MicrosoftGraphHelper.MakePostRequest(
+                String.Format("{0}me/calendars/{1}/events/{2}/{3}",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    calendarId, eventId, feedback),
+                    content: !String.IsNullOrEmpty(comment) ? new { Comment = comment } : null,
+                    contentType: "application/json");
+        }
+    }
+
+    /// <summary>
+    /// Defines the possible feedbacks for a meeting request
+    /// </summary>
+    public enum MeetingRequestFeedback
+    {
+        Accept,
+        Decline,
+        TentativelyAccept,
     }
 }

@@ -73,6 +73,10 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             var events = CalendarHelper.ListEvents(calendar.Id, 0);
             var eventsCalendarView = CalendarHelper.ListEvents(calendar.Id, DateTime.Now, DateTime.Now.AddDays(10),  0);
 
+            //CalendarHelper.SendFeedbackForMeetingRequest(
+            //    calendar.Id, events[0].Id, MeetingRequestFeedback.Accept,
+            //    "I'm looking forward to meet you!");
+
             var singleEvent = CalendarHelper.CreateEvent(calendars[0].Id,
                 new Models.Event
                 {
@@ -174,6 +178,9 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                         }
                     }
                 });
+
+            var seriesInstances = CalendarHelper.ListSeriesInstances(
+                calendar.Id, eventSeries.Id, DateTime.Now, DateTime.Now.AddMonths(2));
 
             var singleEventToUpdate = CalendarHelper.GetEvent(calendar.Id, events[0].Id);
 
