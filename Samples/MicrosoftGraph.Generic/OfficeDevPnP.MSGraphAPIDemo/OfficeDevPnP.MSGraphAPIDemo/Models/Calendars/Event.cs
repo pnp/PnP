@@ -20,7 +20,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// <summary>
         /// The body of the email message for the event
         /// </summary>
-        public MessageBody Body { get; set; }
+        public ItemBody Body { get; set; }
 
         /// <summary>
         /// The subject of the event
@@ -52,7 +52,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// The importance of the email message for the event
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
-        public MailImportance Importance { get; set; }
+        public ItemImportance Importance { get; set; }
 
         /// <summary>
         /// The location of the event

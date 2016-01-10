@@ -152,7 +152,6 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
             attachment.Content = result.Content;
         }
 
-
         /// <summary>
         /// This method sends an email message
         /// </summary>
@@ -163,6 +162,55 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
                 String.Format("{0}me/microsoft.graph.sendMail",
                 MicrosoftGraphHelper.MicrosoftGraphV1BaseUri),
                 message, "application/json");
+        }
+
+        /// <summary>
+        /// This method sends a reply to an email message
+        /// </summary>
+        /// <param name="messageId">The ID of the message to reply to</param>
+        /// <param name="comment">Any comment to include in the reply, optional</param>
+        public static void Reply(String messageId,
+            String comment = null)
+        {
+            MicrosoftGraphHelper.MakePostRequest(
+                String.Format("{0}me/messages/{1}/reply",
+                MicrosoftGraphHelper.MicrosoftGraphV1BaseUri, messageId),
+                content: !String.IsNullOrEmpty(comment) ? new { Comment = comment } : null,
+                contentType: "application/json");
+        }
+
+        /// <summary>
+        /// This method sends a reply all to an email message
+        /// </summary>
+        /// <param name="messageId">The ID of the message to reply all to</param>
+        /// <param name="comment">Any comment to include in the reply all, optional</param>
+        public static void ReplyAll(String messageId,
+            String comment = null)
+        {
+            MicrosoftGraphHelper.MakePostRequest(
+                String.Format("{0}me/messages/{1}/replyAll",
+                MicrosoftGraphHelper.MicrosoftGraphV1BaseUri, messageId),
+                content: !String.IsNullOrEmpty(comment) ? new { Comment = comment } : null,
+                contentType: "application/json");
+        }
+
+        /// <summary>
+        /// This method forwards an email message to someone else
+        /// </summary>
+        /// <param name="messageId">The ID of the message to forward</param>
+        /// <param name="recipients">The recipients of the forward</param>
+        /// <param name="comment">Any comment to include in the reply all, optional</param>
+        public static void Forward(String messageId,
+            List<UserInfoContainer> recipients,
+            String comment = null)
+        {
+            MicrosoftGraphHelper.MakePostRequest(
+                String.Format("{0}me/messages/{1}/forward",
+                MicrosoftGraphHelper.MicrosoftGraphV1BaseUri, messageId),
+                content: new {
+                    Comment = !String.IsNullOrEmpty(comment) ? comment : null,
+                    ToRecipients = recipients,
+                }, contentType: "application/json");
         }
     }
 }

@@ -10,7 +10,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
     /// <summary>
     /// 
     /// </summary>
-    public class MessageBody
+    public class ItemBody
     {
         /// <summary>
         /// 

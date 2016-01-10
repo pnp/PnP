@@ -21,7 +21,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// The importance of the email message
         /// </summary>
         [JsonConverter(typeof(StringEnumConverter))]
-        public MailImportance Importance { get; set; }
+        public ItemImportance Importance { get; set; }
 
         /// <summary>
         /// The sender email address
@@ -55,7 +55,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// <summary>
         /// The body of the email message
         /// </summary>
-        public MessageBody Body { get; set; }
+        public ItemBody Body { get; set; }
 
         /// <summary>
         /// The UTC sent date and time of the email message

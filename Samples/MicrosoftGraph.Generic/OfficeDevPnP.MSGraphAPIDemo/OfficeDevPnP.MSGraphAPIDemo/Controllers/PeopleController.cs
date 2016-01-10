@@ -12,16 +12,12 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
 {
     public class PeopleController : Controller
     {
-        // GET: People
         public ActionResult GetPersonaPhoto(String upn, Int32 width = 0, Int32 height = 0)
         {
             Stream result = null;
             String contentType = "image/png";
 
-            var sourceStream = MicrosoftGraphHelper.MakeGetRequestForStream(
-                String.Format("{0}users/{1}/photo/$value", 
-                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri, upn),
-                contentType);
+            var sourceStream = UserHelper.GetUserPhoto(upn);
 
             if (sourceStream != null && width != 0 && height != 0)
             {

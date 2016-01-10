@@ -158,11 +158,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Components\CalendarHelper.cs" />
+    <Compile Include="Components\ContactsHelper.cs" />
     <Compile Include="Components\MailHelper.cs" />
     <Compile Include="Components\MSGraphAPIDemoContext.cs" />
     <Compile Include="Components\MSGraphAPIDemoSettings.cs" />
     <Compile Include="Components\MicrosoftGraphHelper.cs" />
     <Compile Include="Components\SessionADALCache.cs" />
+    <Compile Include="Components\UserHelper.cs" />
     <Compile Include="Controllers\FilesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MailCalendarContactsController.cs" />
@@ -182,16 +184,19 @@
     <Compile Include="Models\Calendars\EventRecurrencePattern.cs" />
     <Compile Include="Models\Calendars\EventRecurrenceRange.cs" />
     <Compile Include="Models\Calendars\EventToCreate.cs" />
-    <Compile Include="Models\Common\MailImportance.cs" />
+    <Compile Include="Models\Common\ItemImportance.cs" />
+    <Compile Include="Models\Common\PhysicalAddress.cs" />
     <Compile Include="Models\Common\TimeInfo.cs" />
     <Compile Include="Models\Common\UserInfo.cs" />
+    <Compile Include="Models\Contacts\Contact.cs" />
+    <Compile Include="Models\Contacts\ContactList.cs" />
     <Compile Include="Models\Converters\DateOnlyConverter.cs" />
     <Compile Include="Models\Mail\MailAttachment.cs" />
     <Compile Include="Models\Mail\MailAttachmentList.cs" />
     <Compile Include="Models\Mail\MailFolder.cs" />
     <Compile Include="Models\Mail\MailFolderList.cs" />
     <Compile Include="Models\Mail\MailMessage.cs" />
-    <Compile Include="Models\Common\MessageBody.cs" />
+    <Compile Include="Models\Common\ItemBody.cs" />
     <Compile Include="Models\Mail\MailMessageList.cs" />
     <Compile Include="Models\Common\UserInfoContainer.cs" />
     <Compile Include="Models\Mail\MailMessageToSend.cs" />
@@ -246,7 +251,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\Contacts\" />
     <Folder Include="Views\People\" />
   </ItemGroup>
   <ItemGroup>

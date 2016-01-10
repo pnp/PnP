@@ -30,28 +30,55 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                 }
             }
 
-            MailHelper.SendMessage(new Models.MailMessageToSend {
+            MailHelper.SendMessage(new Models.MailMessageToSend
+            {
                 Message = new Models.MailMessage
                 {
                     Subject = "Test message",
-                    Body = new Models.MessageBody
+                    Body = new Models.ItemBody
                     {
                         Content = "<html><body><h1>Hello from ASP.NET MVC calling Microsoft Graph API!</h1></body></html>",
                         Type = Models.BodyType.Html,
                     },
-                    To = new List<Models.UserInfoContainer>(new Models.UserInfoContainer[] {
-                    new Models.UserInfoContainer
-                    {
-                        Recipient = new Models.UserInfo
-                        {
-                            Name = "Paolo Pialorsi",
-                            Address = "paolo@pialorsi.com",
-                        }
-                    }
-                }),
+                    To = new List<Models.UserInfoContainer>(
+                        new Models.UserInfoContainer[] {
+                            new Models.UserInfoContainer
+                            {
+                                Recipient = new Models.UserInfo
+                                {
+                                    Name = "Paolo Pialorsi",
+                                    Address = "paolo@pialorsi.com",
+                                }
+                            }
+                    }),
                 },
                 SaveToSentItems = true,
             });
+
+            MailHelper.Reply(messages[0].Id, "This a direct reply!");
+            MailHelper.ReplyAll(messages[0].Id, "This a reply all!");
+            MailHelper.Forward(messages[0].Id,
+                new List<Models.UserInfoContainer>(
+                    new Models.UserInfoContainer[]
+                    {
+                        new Models.UserInfoContainer
+                        {
+                            Recipient = new Models.UserInfo
+                            {
+                                Address = "paolo@pialorsi.com",
+                                Name = "Paolo Pialorsi"
+                            }
+                        },
+                        new Models.UserInfoContainer
+                        {
+                            Recipient = new Models.UserInfo
+                            {
+                                Address = "someone@company.com",
+                                Name = "Someone Else",
+                            }
+                        },
+                    }),
+                "Hey! Look at this!");
 
             return View("Index");
         }
@@ -71,7 +98,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             var calendars = CalendarHelper.ListCalendars();
             var calendar = CalendarHelper.GetCalendar(calendars[0].Id);
             var events = CalendarHelper.ListEvents(calendar.Id, 0);
-            var eventsCalendarView = CalendarHelper.ListEvents(calendar.Id, DateTime.Now, DateTime.Now.AddDays(10),  0);
+            var eventsCalendarView = CalendarHelper.ListEvents(calendar.Id, DateTime.Now, DateTime.Now.AddDays(10), 0);
 
             //CalendarHelper.SendFeedbackForMeetingRequest(
             //    calendar.Id, events[0].Id, MeetingRequestFeedback.Accept,
@@ -112,14 +139,14 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                         TimeZone = "UTC"
                     },
                     OriginalEndTimeZone = "UTC",
-                    Importance = Models.MailImportance.High,
+                    Importance = Models.ItemImportance.High,
                     Subject = "Introducing the Microsoft Graph API",
-                    Body = new Models.MessageBody
+                    Body = new Models.ItemBody
                     {
                         Content = "<html><body><h2>Let's talk about the Microsoft Graph API!</h2></body></html>",
                         Type = Models.BodyType.Html,
                     },
-                    Location  = new Models.EventLocation
+                    Location = new Models.EventLocation
                     {
                         Name = "PiaSys.com Head Quarters",
                     },
@@ -147,9 +174,9 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                         TimeZone = "UTC"
                     },
                     OriginalEndTimeZone = "UTC",
-                    Importance = Models.MailImportance.Normal,
+                    Importance = Models.ItemImportance.Normal,
                     Subject = "Recurring Event about Microsoft Graph API",
-                    Body = new Models.MessageBody
+                    Body = new Models.ItemBody
                     {
                         Content = "<html><body><h2>Let's talk about the Microsoft Graph API!</h2></body></html>",
                         Type = Models.BodyType.Html,
@@ -211,7 +238,10 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
 
         public ActionResult ListContacts()
         {
-            return View();
+            var contacts = ContactsHelper.ListContacts();
+            var photo = ContactsHelper.GetContactPhoto(contacts[0].Id);
+
+            return View("Index");
         }
 
         public ActionResult AddContact()

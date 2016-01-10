@@ -8,7 +8,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
     /// <summary>
     /// Defines the importance of an email message
     /// </summary>
-    public enum MailImportance
+    public enum ItemImportance
     {
         /// <summary>
         /// Low importance
