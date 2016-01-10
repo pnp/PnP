@@ -107,33 +107,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
             Object content = null, 
             String contentType = null)
         {
-            var accessToken = GetAccessTokenForCurrentUser();
-
-            if (!String.IsNullOrEmpty(accessToken))
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue("Bearer", accessToken);
-
-                HttpContent requestContent =
-                    (content != null) ?
-                    new StringContent(JsonConvert.SerializeObject(content, 
-                        Formatting.None, 
-                        new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-                    Encoding.UTF8, contentType) :
-                    new StringContent(null);
-                HttpResponseMessage response = httpClient.PostAsync(graphRequestUri, requestContent).Result;
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return;
-                }
-                else
-                {
-                    throw new ApplicationException(
-                        String.Format("Exception while invoking endpoint {0}.", graphRequestUri));
-                }
-            }
+            MakeHttpRequestForString("POST", graphRequestUri, content, contentType);
         }
 
         /// <summary>
@@ -147,36 +121,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
             Object content = null,
             String contentType = null)
         {
-            String result = null;
-            var accessToken = GetAccessTokenForCurrentUser();
-
-            if (!String.IsNullOrEmpty(accessToken))
-            {
-                HttpClient httpClient = new HttpClient();
-                httpClient.DefaultRequestHeaders.Authorization =
-                    new AuthenticationHeaderValue("Bearer", accessToken);
-
-                HttpContent requestContent =
-                    (content != null) ?
-                    new StringContent(JsonConvert.SerializeObject(content, 
-                        Formatting.None, 
-                        new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-                    Encoding.UTF8, contentType) :
-                    new StringContent(null);
-                HttpResponseMessage response = httpClient.PostAsync(graphRequestUri, requestContent).Result;
-
-                if (response.IsSuccessStatusCode)
-                {
-                    result = response.Content.ReadAsStringAsync().Result;
-                }
-                else
-                {
-                    throw new ApplicationException(
-                        String.Format("Exception while invoking endpoint {0}.", graphRequestUri));
-                }
-            }
-
-            return (result);
+            return (MakeHttpRequestForString("POST", graphRequestUri, content, contentType));
         }
 
         /// <summary>
@@ -187,6 +132,23 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         /// <param name="contentType">The content/type of the request</param>
         /// <returns>The String value of the result</returns>
         public static String MakePatchRequestForString(String graphRequestUri,
+            Object content = null,
+            String contentType = null)
+        {
+            return (MakeHttpRequestForString("PATCH", graphRequestUri, content, contentType));
+        }
+
+        /// <summary>
+        /// This helper method makes an HTTP request and returns the result as a String
+        /// </summary>
+        /// <param name="httpMethod">The HTTP method for the request</param>
+        /// <param name="graphRequestUri">The URL of the request</param>
+        /// <param name="content">The content of the request</param>
+        /// <param name="contentType">The content/type of the request</param>
+        /// <returns>The String value of the result</returns>
+        private static String MakeHttpRequestForString(
+            String httpMethod,
+            String graphRequestUri,
             Object content = null,
             String contentType = null)
         {
@@ -206,7 +168,8 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
                         new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
                     Encoding.UTF8, contentType) :
                     new StringContent(null);
-                HttpRequestMessage request = new HttpRequestMessage(new HttpMethod("PATCH"), graphRequestUri);
+                HttpRequestMessage request = new HttpRequestMessage(
+                    new HttpMethod(httpMethod), graphRequestUri);
                 request.Content = requestContent;
                 HttpResponseMessage response = httpClient.SendAsync(request).Result;
 
@@ -248,6 +211,41 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
                 if (response.IsSuccessStatusCode)
                 {
                     result = response.Content.ReadAsStreamAsync().Result;
+                }
+                else
+                {
+                    throw new ApplicationException(
+                        String.Format("Exception while invoking endpoint {0}.", graphRequestUri));
+                }
+            }
+
+            return (result);
+        }
+
+        /// <summary>
+        /// This helper method makes an HTTP GET request and returns the result as a String
+        /// </summary>
+        /// <param name="graphRequestUri">The URL of the request</param>
+        /// <returns>The Stream  of the result</returns>
+        private static TResult MakeGetRequest<TResult>(String graphRequestUri, String accept, Func<HttpResponseMessage, TResult> resultPredicate)
+        {
+            TResult result = default(TResult);
+            var accessToken = GetAccessTokenForCurrentUser();
+
+            if (!String.IsNullOrEmpty(accessToken))
+            {
+                HttpClient httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Authorization =
+                    new AuthenticationHeaderValue("Bearer", accessToken);
+                httpClient.DefaultRequestHeaders.Accept.Clear();
+                httpClient.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue(accept));
+
+                HttpResponseMessage response = httpClient.GetAsync(graphRequestUri).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    result = resultPredicate(response);
                 }
                 else
                 {
