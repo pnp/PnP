@@ -241,6 +241,26 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             var contacts = ContactsHelper.ListContacts();
             var photo = ContactsHelper.GetContactPhoto(contacts[0].Id);
 
+            contacts[0].PersonalNotes += String.Format("Modified on {0}", DateTime.Now);
+            ContactsHelper.UpdateContact(contacts[0]);
+
+            var addedContact = ContactsHelper.AddContact(new Models.Contact {
+                GivenName = "Michael",
+                DisplayName = "Michael Red",
+                EmailAddresses = new List<Models.UserInfo>(
+                    new Models.UserInfo[]
+                    {
+                        new Models.UserInfo
+                        {
+                            Address = "michael@company.com",
+                            Name  = "Michael Red",
+                        }
+                    }),
+                CompanyName = "Sample Company",
+            });
+
+            ContactsHelper.DeleteContact(addedContact.Id);
+
             return View("Index");
         }
 

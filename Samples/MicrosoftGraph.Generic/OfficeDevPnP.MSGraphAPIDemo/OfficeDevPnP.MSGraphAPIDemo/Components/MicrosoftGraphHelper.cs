@@ -229,7 +229,10 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
                 else
                 {
                     throw new ApplicationException(
-                        String.Format("Exception while invoking endpoint {0}.", graphRequestUri));
+                        String.Format("Exception while invoking endpoint {0}.", graphRequestUri),
+                        new HttpException(
+                            (Int32)response.StatusCode, 
+                            response.Content.ReadAsStringAsync().Result));
                 }
             }
 
