@@ -46,11 +46,27 @@ The first step is to create and host your Web API somewhere – it needs to be d
 
 The Web API needs to respond with the same validation token within 5 seconds, if it can achieve that – a subscription for notifications will be created and returned to the client application (creating the subscription).
 
+#### Register in Azure AD ####
+
+Your first step is to register your web application in your Azure AD tenant (associated with your Office 365 tenant). The web application is using OWIN and OpenID Connect to handle authentication and authorization.You can find more details about OWIN and OpenId Connect here, as well as about registering you app on the Azure AD tenant here: <http://www.cloudidentity.com/blog/2014/07/28/protecting-an-mvc4-vs2012-project-with-openid-connect-and-azure-ad/>
+
+When you have registered your web application in Azure AD - you will have to configure the following settings in the Web.config file:
+
+    <add key="ida:ClientId" value="[YOUR APPLICATION CLIENT ID]" />
+    <add key="ida:ClientSecret" value="[YOUR APPLICATION CLIENT SECRET]" />
+    <add key="ida:Domain" value="[YOUR DOMAIN]" />
+    <add key="ida:TenantId" value="[YOUR TENANT ID]" />
+    <add key="ida:PostLogoutRedirectUri" value="[YOUR POST LOGOUT REDIRECT URI]" />
+    
+#### Deploy ####
+
 Deploy your Web API to a hosting provider, for instance a web app on Microsoft Azure: <https://azure.microsoft.com/en-us/documentation/scenarios/web-app/>.
 
 Once you have deployed the sample to a hosting provider; configure a breakpoint to catch and validate the flow in the Web API (NotifyController). After the validation occurs, you will receive notifications and be able to investigate the responses.
 
 You can use Visual Studio 2015 to attach a debugger to an Azure web app (see <https://azure.microsoft.com/sv-se/documentation/articles/web-sites-dotnet-troubleshoot-visual-studio/#remotedebug>)
+
+Navigate to your hosted sample and click on the "Register Subscription" button to start getting notifications.
 
 # Response Models #
 The following models are implemented in the sample. They serve to help out when dealing with the notification requests (parsing the received JSON).
