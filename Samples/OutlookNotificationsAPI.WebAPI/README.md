@@ -66,6 +66,8 @@ Once you have deployed the sample to a hosting provider; configure a breakpoint 
 
 You can use Visual Studio 2015 to attach a debugger to an Azure web app (see <https://azure.microsoft.com/sv-se/documentation/articles/web-sites-dotnet-troubleshoot-visual-studio/#remotedebug>)
 
+**Be aware: If you are using remote debugging; delays may cause you to break the 5 second response time when validation notification URLs.**
+
 Navigate to your hosted sample and click on the "Register Subscription" button to start getting notifications.
 
 # Response Models #
