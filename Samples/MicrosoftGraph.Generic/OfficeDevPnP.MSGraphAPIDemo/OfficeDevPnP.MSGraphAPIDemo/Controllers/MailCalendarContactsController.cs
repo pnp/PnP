@@ -9,13 +9,51 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
 {
     public class MailCalendarContactsController : Controller
     {
-        // GET: MailCalendarContacts
+        #region Actions to be implemented
+
         public ActionResult Index()
         {
             return View();
         }
 
         public ActionResult ListFolders()
+        {
+            return View();
+        }
+
+        public ActionResult ListMessages()
+        {
+            return View();
+        }
+
+        public ActionResult SendMessage()
+        {
+            return View();
+        }
+
+        public ActionResult ListCalendarEvents()
+        {
+            return View();
+        }
+
+        public ActionResult SendMeetingRequest()
+        {
+            return View();
+        }
+
+        public ActionResult ListContacts()
+        {
+            return View();
+        }
+
+        public ActionResult AddContact()
+        {
+            return View();
+        }
+
+        #endregion
+
+        public ActionResult PlayWithMail()
         {
             var folders = MailHelper.ListFolders();
             var messages = MailHelper.ListMessages(folders.FirstOrDefault(f => f.Name == "Posta in arrivo").Id);
@@ -83,26 +121,19 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             return View("Index");
         }
 
-        public ActionResult ListMessages()
-        {
-            return View();
-        }
-
-        public ActionResult SendMessage()
-        {
-            return View();
-        }
-
-        public ActionResult ListCalendarEvents()
+        public ActionResult PlayWithCalendars()
         {
             var calendars = CalendarHelper.ListCalendars();
             var calendar = CalendarHelper.GetCalendar(calendars[0].Id);
             var events = CalendarHelper.ListEvents(calendar.Id, 0);
             var eventsCalendarView = CalendarHelper.ListEvents(calendar.Id, DateTime.Now, DateTime.Now.AddDays(10), 0);
 
-            //CalendarHelper.SendFeedbackForMeetingRequest(
-            //    calendar.Id, events[0].Id, MeetingRequestFeedback.Accept,
-            //    "I'm looking forward to meet you!");
+            if (events[0].ResponseStatus != null && events[0].ResponseStatus.Response == Models.ResponseType.NotResponded)
+            {
+                CalendarHelper.SendFeedbackForMeetingRequest(
+                    calendar.Id, events[0].Id, MeetingRequestFeedback.Accept,
+                    "I'm looking forward to meet you!");
+            }
 
             var singleEvent = CalendarHelper.CreateEvent(calendars[0].Id,
                 new Models.Event
@@ -231,12 +262,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             return View("Index");
         }
 
-        public ActionResult SendMeetingRequest()
-        {
-            return View();
-        }
-
-        public ActionResult ListContacts()
+        public ActionResult PlayWithContacts()
         {
             var contacts = ContactsHelper.ListContacts();
             var photo = ContactsHelper.GetContactPhoto(contacts[0].Id);
@@ -244,7 +270,8 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             contacts[0].PersonalNotes += String.Format("Modified on {0}", DateTime.Now);
             var updatedContact = ContactsHelper.UpdateContact(contacts[0]);
 
-            var addedContact = ContactsHelper.AddContact(new Models.Contact {
+            var addedContact = ContactsHelper.AddContact(new Models.Contact
+            {
                 GivenName = "Michael",
                 DisplayName = "Michael Red",
                 EmailAddresses = new List<Models.UserInfo>(
@@ -262,11 +289,6 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             ContactsHelper.DeleteContact(addedContact.Id);
 
             return View("Index");
-        }
-
-        public ActionResult AddContact()
-        {
-            return View();
         }
     }
 }

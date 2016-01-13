@@ -183,6 +183,7 @@
     <Compile Include="Models\Calendars\EventRecurrence.cs" />
     <Compile Include="Models\Calendars\EventRecurrencePattern.cs" />
     <Compile Include="Models\Calendars\EventRecurrenceRange.cs" />
+    <Compile Include="Models\Calendars\EventResponseStatus.cs" />
     <Compile Include="Models\Calendars\EventToCreate.cs" />
     <Compile Include="Models\Common\ItemImportance.cs" />
     <Compile Include="Models\Common\PhysicalAddress.cs" />

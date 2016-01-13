@@ -99,6 +99,11 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// The Recurrence pattern for the Series of events
         /// </summary>
         public EventRecurrence Recurrence { get; set; }
+
+        /// <summary>
+        /// The Response Status for a Meeting Request
+        /// </summary>
+        public EventResponseStatus ResponseStatus { get; set; }
     }
 
     /// <summary>
