@@ -33,6 +33,7 @@ OutlookNotificationsAPI.WebAPI | Simon Jäger (**Microsoft**)
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
+1.1  | January 13th 2016 | Added UI
 1.0  | December 12th 2015 | Initial release
 
 ### Disclaimer ###
@@ -46,6 +47,10 @@ The first step is to create and host your Web API somewhere – it needs to be d
 The Web API needs to respond with the same validation token within 5 seconds, if it can achieve that – a subscription for notifications will be created and returned to the client application (creating the subscription).
 
 Deploy your Web API to a hosting provider, for instance a web app on Microsoft Azure: <https://azure.microsoft.com/en-us/documentation/scenarios/web-app/>.
+
+Once you have deployed the sample to a hosting provider; configure a breakpoint to catch and validate the flow in the Web API (NotifyController). After the validation occurs, you will receive notifications and be able to investigate the responses.
+
+You can use Visual Studio 2015 to attach a debugger to an Azure web app (see <https://azure.microsoft.com/sv-se/documentation/articles/web-sites-dotnet-troubleshoot-visual-studio/#remotedebug>)
 
 # Response Models #
 The following models are implemented in the sample. They serve to help out when dealing with the notification requests (parsing the received JSON).
@@ -129,6 +134,7 @@ I recommend you to pay attention to the client state header in the request (name
 The key source code files in this project are the following:
 
 - `OutlookNotificationsAPI.WebAPI\Controllers\NotifyController.cs` - the Web API Controller containing the single POST method (handling both validation and notification requests).
+- `OutlookNotificationsAPI.WebAPI\Controllers\HomeController.cs` - the Web API Controller containing the registration action that configures the subscription for notifications.
 - `OutlookNotificationsAPI.WebAPI\Models\ResponseModel.cs` - represents the collection of entities sent in the notification request to your listener service (Web API).
 - `OutlookNotificationsAPI.WebAPI\Models\NotificationModel.cs` - represents the notification entity sent to your listener service (Web API).
 - `OutlookNotificationsAPI.WebAPI\Models\ResourceDataModel.cs` - represents the entity (i.e. mail, contact, event) that has triggered a change. This is a navigation property. 
