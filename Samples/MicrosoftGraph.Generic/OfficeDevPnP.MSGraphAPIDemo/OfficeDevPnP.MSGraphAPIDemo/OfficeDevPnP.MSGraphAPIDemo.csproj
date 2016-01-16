@@ -159,12 +159,13 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Components\CalendarHelper.cs" />
     <Compile Include="Components\ContactsHelper.cs" />
+    <Compile Include="Components\GroupsHelper.cs" />
     <Compile Include="Components\MailHelper.cs" />
     <Compile Include="Components\MSGraphAPIDemoContext.cs" />
     <Compile Include="Components\MSGraphAPIDemoSettings.cs" />
     <Compile Include="Components\MicrosoftGraphHelper.cs" />
     <Compile Include="Components\SessionADALCache.cs" />
-    <Compile Include="Components\UserHelper.cs" />
+    <Compile Include="Components\UsersHelper.cs" />
     <Compile Include="Controllers\FilesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MailCalendarContactsController.cs" />
@@ -201,6 +202,14 @@
     <Compile Include="Models\Mail\MailMessageList.cs" />
     <Compile Include="Models\Common\UserInfoContainer.cs" />
     <Compile Include="Models\Mail\MailMessageToSend.cs" />
+    <Compile Include="Models\Users\AssignedLicense.cs" />
+    <Compile Include="Models\Users\AssignedPlan.cs" />
+    <Compile Include="Models\Users\Group.cs" />
+    <Compile Include="Models\Users\GroupsList.cs" />
+    <Compile Include="Models\Users\PasswordProfile.cs" />
+    <Compile Include="Models\Users\ProvisionedPlan.cs" />
+    <Compile Include="Models\Users\User.cs" />
+    <Compile Include="Models\Users\UsersList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>

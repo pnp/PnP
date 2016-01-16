@@ -17,7 +17,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             Stream result = null;
             String contentType = "image/png";
 
-            var sourceStream = UserHelper.GetUserPhoto(upn);
+            var sourceStream = UsersHelper.GetUserPhoto(upn);
 
             if (sourceStream != null && width != 0 && height != 0)
             {
