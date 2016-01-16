@@ -167,9 +167,9 @@
     <None Include="packages.config" />
     <None Include="Properties\PublishProfiles\vesaj-pnpenginejob.pubxml" />
     <None Include="Properties\webjob-publish-settings.json" />
-    <None Include="Resources\custom.spcolor">
+    <Content Include="Resources\custom.spcolor">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Provisioning.Framework.Cloud.Async.Common\Provisioning.Framework.Cloud.Async.Common.csproj">
@@ -181,7 +181,9 @@
     <Content Include="Resources\ContosoTemplate-03.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Resources\ContosoTemplate-02.xml" />
+    <Content Include="Resources\ContosoTemplate-02.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\ContosoTemplate-01.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
