@@ -96,7 +96,7 @@
                 return o;
             },
 
-            // creates the persisted object using the value and the expiration, setting the default expiration if none is applied
+            // creates the persisted object wrapper using the value and the expiration, setting the default expiration if none is applied
             _createPersistable: function (/*object*/ o, /*datetime*/ expiration) {
 
                 if (typeof expiration === 'undefined') {
@@ -113,7 +113,7 @@
         // adds the client session capability
         session: {
 
-            // determine if we have local storage once
+            // determine if we have session storage once
             enabled: sessionTest(),
 
             add: function (/*string*/ key, /*object*/ value) {
@@ -123,7 +123,7 @@
                 }
             },
 
-            // gets an item from the cache, checking the expiration and removing the object if it is expired
+            // gets an item from the session storage if it exists
             get: function (/*string*/ key) {
 
                 if (!this.enabled) {
@@ -141,7 +141,7 @@
                 return persistable.value;
             },
 
-            // removes an item from local storage by key
+            // removes an item from session storage by key
             remove: function (/*string*/ key) {
 
                 if (this.enabled) {
@@ -170,7 +170,7 @@
                 return o;
             },
 
-            // creates the persisted object using the value and the expiration, setting the default expiration if none is applied
+            // creates the persisted object wrapper
             _createPersistable: function (/*object*/ o) {
 
                 return JSON.stringify({
