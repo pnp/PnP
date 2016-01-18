@@ -213,10 +213,12 @@
     </Compile>
     <Compile Include="Models\AdalTokenCache.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\CalendarEventModel.cs" />
     <Compile Include="Models\PushSubscriptionModel.cs" />
     <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\ResourceDataModel.cs" />
     <Compile Include="Models\ResponseModel.cs" />
+    <Compile Include="Models\TokenHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -229,6 +231,12 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\oapp - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\oapp2 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\oapp3 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\oapp4 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\oapp5 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\oapp6 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />

@@ -1,4 +1,6 @@
-﻿namespace OutlookNotificationsAPI.Models
+﻿using Newtonsoft.Json;
+
+namespace OutlookNotificationsAPI.Models
 {
     public class NotificationModel
     {

@@ -1,9 +1,9 @@
 # Outlook Notifications REST API with ASP.NET Web API #
 
 ### Summary ###
-This is a sample of an ASP.NET Web API project validating and responding to Outlook Notifications - created with the Outlook Notifications REST API.
+This is a sample of an ASP.NET Web API project validating and responding to Outlook Notifications - created with the Outlook Notifications REST API. The sample covers the concept of subscribing for notifications, validating notification URLs and inspecting the monitoried entities by calling the Outlook REST API using persisted tokens.
 
-As always, include a valid authorization header when making the request. You can learn more about the Outlook Notifications REST API and its operations at: <https://msdn.microsoft.com/en-us/office/office365/api/notify-rest-operations>
+You can learn more about the Outlook Notifications REST API and its operations at: <https://msdn.microsoft.com/en-us/office/office365/api/notify-rest-operations>
 
 Using this event driven approach is a much more solid way of dealing with changes in the resources and entities in Outlook. As opposed to polling the Outlook REST APIs directly, this is much more lightweight (especially when the amount of items is large). With scale, this approach becomes essential for a sustainable service architecture.
 
@@ -33,7 +33,8 @@ OutlookNotificationsAPI.WebAPI | Simon Jäger (**Microsoft**)
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
-1.1  | January 13th 2016 | Added UI
+1.2  | January 18th 2016 | Added Outlook REST API callbacks (using persisted tokens)
+1.1  | January 13th 2016 | Added UI to register a subscription
 1.0  | December 12th 2015 | Initial release
 
 ### Disclaimer ###
@@ -71,7 +72,7 @@ You can use Visual Studio 2015 to attach a debugger to an Azure web app (see <ht
 Navigate to your hosted sample and click on the "Register Subscription" button to start getting notifications.
 
 # Response Models #
-The following models are implemented in the sample. They serve to help out when dealing with the notification requests (parsing the received JSON).
+The sample implements a few response models. They serve to help out when dealing with the notification requests (parsing the received JSON). Listed here are the key response models used in the sample. 
 
 The generic ResponseModel class is the main container for the response itself. In the sample it will contain a collection of the NotificationModel class.
 
@@ -100,6 +101,29 @@ The ResourceDataModel class represents the entity (i.e. mail, contact, event) th
 public class ResourceDataModel
 {
     public string Id { get; set; }
+}
+```
+The PushSubscriptionModel class represents the subscription entity. This is used both as a request and response model when creating the subscription.
+```C#
+public class PushSubscriptionModel
+{
+    [JsonProperty("@odata.type")]
+    public string Type
+    {
+        get
+        {
+            return "#Microsoft.OutlookServices.PushSubscription";
+        }
+    }
+
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+    public string Id { get; set; }
+    public string Resource { get; set; }
+    public string NotificationURL { get; set; }
+    public string ChangeType { get; set; }
+    public Guid ClientState { get; set; }
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+    public string SubscriptionExpirationDateTime { get; set; }
 }
 ```
 
@@ -148,6 +172,51 @@ public async Task<HttpResponseMessage> Post(string validationToken = null)
 
 I recommend you to pay attention to the client state header in the request (named ClientState). If you create the subscription with a client state property, it will be passed along with the notification request. This way you can verify the legitimacy of the notification.
 
+In addition, this sample also inspects the monitored items (created calendar events) when a notification is triggered by calling the Outlook REST API using a persisted token.
+
+```C#
+// Read and parse the request body.
+var content = await Request.Content.ReadAsStringAsync();
+var notifications = JsonConvert.DeserializeObject<ResponseModel<NotificationModel>>(content).Value;
+
+// TODO: Do something with the notification.
+var entities = new ApplicationDbContext();
+foreach (var notification in notifications)
+{
+    // Get the subscription from the database in order to locate the
+    // user identifiers. This is used to tap the token cache.
+    var subscription = entities.SubscriptionList.FirstOrDefault(s =>
+        s.SubscriptionId == notification.SubscriptionId);
+
+    try
+    {
+        // Get an access token to use when calling the Outlook REST APIs.
+        var token = await TokenHelper.GetTokenForApplicationAsync(
+            subscription.SignedInUserID,
+            subscription.TenantID,
+            subscription.UserObjectID,
+            TokenHelper.OutlookResourceID);
+        var httpClient = new HttpClient();
+        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+        // Send a GET call to the monitored event.
+        var responseString = await httpClient.GetStringAsync(notification.Resource);
+        var calendarEvent = JsonConvert.DeserializeObject<CalendarEventModel>(responseString);
+
+        // TODO: Do something with the calendar event.
+    }
+    catch (AdalException)
+    {
+        // TODO: Handle token error.
+    }
+    // If the above failed, the user needs to explicitly re-authenticate for 
+    // the app to obtain the required token.
+    catch (Exception)
+    {
+        // TODO: Handle exception.
+    }
+}
+```
 # Source Code Files #
 The key source code files in this project are the following:
 
@@ -156,6 +225,7 @@ The key source code files in this project are the following:
 - `OutlookNotificationsAPI.WebAPI\Models\ResponseModel.cs` - represents the collection of entities sent in the notification request to your listener service (Web API).
 - `OutlookNotificationsAPI.WebAPI\Models\NotificationModel.cs` - represents the notification entity sent to your listener service (Web API).
 - `OutlookNotificationsAPI.WebAPI\Models\ResourceDataModel.cs` - represents the entity (i.e. mail, contact, event) that has triggered a change. This is a navigation property. 
+- `OutlookNotificationsAPI.WebAPI\Models\PushSubscriptionModel.cs` - represents the subscription entity. This is used both as a request and response model when creating the subscription.
 
 # More Resources #
 - Discover Office development at: <https://msdn.microsoft.com/en-us/office/>

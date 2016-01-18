@@ -1,9 +1,13 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Newtonsoft.Json;
 using OutlookNotificationsAPI.Models;
+using OutlookNotificationsAPI.WebAPI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web.Http;
 
@@ -41,11 +45,47 @@ namespace OutlookNotificationsAPI.Controllers
                 }
             }
 
-            // Read and parse the request body.
-            var content = await Request.Content.ReadAsStringAsync();
-            var notifications = JsonConvert.DeserializeObject<ResponseModel<NotificationModel>>(content);
+        // Read and parse the request body.
+        var content = await Request.Content.ReadAsStringAsync();
+        var notifications = JsonConvert.DeserializeObject<ResponseModel<NotificationModel>>(content).Value;
 
-            // TODO: Do something with the notification.
+        // TODO: Do something with the notification.
+        var entities = new ApplicationDbContext();
+        foreach (var notification in notifications)
+        {
+            // Get the subscription from the database in order to locate the
+            // user identifiers. This is used to tap the token cache.
+            var subscription = entities.SubscriptionList.FirstOrDefault(s =>
+                s.SubscriptionId == notification.SubscriptionId);
+
+            try
+            {
+                // Get an access token to use when calling the Outlook REST APIs.
+                var token = await TokenHelper.GetTokenForApplicationAsync(
+                    subscription.SignedInUserID,
+                    subscription.TenantID,
+                    subscription.UserObjectID,
+                    TokenHelper.OutlookResourceID);
+                var httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+                // Send a GET call to the monitored event.
+                var responseString = await httpClient.GetStringAsync(notification.Resource);
+                var calendarEvent = JsonConvert.DeserializeObject<CalendarEventModel>(responseString);
+
+                // TODO: Do something with the calendar event.
+            }
+            catch (AdalException)
+            {
+                // TODO: Handle token error.
+            }
+            // If the above failed, the user needs to explicitly re-authenticate for 
+            // the app to obtain the required token.
+            catch (Exception)
+            {
+                // TODO: Handle exception.
+            }
+        }
 
             return new HttpResponseMessage(HttpStatusCode.OK);
         }
