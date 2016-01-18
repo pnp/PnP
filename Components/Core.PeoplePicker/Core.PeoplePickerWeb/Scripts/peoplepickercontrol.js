@@ -474,7 +474,7 @@
                                 //make call to method in code-behind
                                 $.ajax({
                                     type: "POST",
-                                    url: parent.GetServerDataMethod() + "?SearchString=" + searchText + "&SPHostUrl=" + parent.GetSpHostUrl() + "&PrincipalType=" + parent.GetPrincipalType() + (spGroupName ? "&SPGroupName=" + spGroupName : ""),
+                                    url: parent.GetServerDataMethod() + "?SearchString=" + encodeURIComponent(searchText) + "&SPHostUrl=" + parent.GetSpHostUrl() + "&PrincipalType=" + parent.GetPrincipalType() + (spGroupName ? "&SPGroupName=" + spGroupName : ""),
                                     data: "{}",
                                     contentType: "application/json; charset=utf-8",
                                     dataType: "json",
