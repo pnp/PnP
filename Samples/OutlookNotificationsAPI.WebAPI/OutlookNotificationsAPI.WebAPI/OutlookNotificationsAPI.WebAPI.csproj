@@ -231,12 +231,6 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Properties\PublishProfiles\oapp - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\oapp2 - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\oapp3 - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\oapp4 - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\oapp5 - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\oapp6 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
