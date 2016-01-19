@@ -218,6 +218,7 @@
     <Compile Include="Models\NotificationModel.cs" />
     <Compile Include="Models\ResourceDataModel.cs" />
     <Compile Include="Models\ResponseModel.cs" />
+    <Compile Include="Models\SystemWebCookieManager.cs" />
     <Compile Include="Models\TokenHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
