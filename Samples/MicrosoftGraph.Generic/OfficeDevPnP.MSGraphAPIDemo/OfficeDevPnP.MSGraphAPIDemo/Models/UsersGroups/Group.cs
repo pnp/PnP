@@ -8,7 +8,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
     /// <summary>
     /// Defines a Group
     /// </summary>
-    public class Group
+    public class Group : BaseModel
     {
         public String Description;
         public String DisplayName;

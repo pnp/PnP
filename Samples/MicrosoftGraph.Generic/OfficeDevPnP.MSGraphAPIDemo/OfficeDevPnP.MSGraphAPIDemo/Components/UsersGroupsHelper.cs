@@ -6,10 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Web;
 
-
 namespace OfficeDevPnP.MSGraphAPIDemo.Components
 {
-    public class UsersHelper
+    public class UsersGroupsHelper
     {
         /// <summary>
         /// This method retrieves the list of users registered in Azure AD
@@ -21,6 +20,71 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
             String jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
                 String.Format("{0}users?$top={1}",
                     MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    numberOfItems));
+
+            var usersList = JsonConvert.DeserializeObject<UsersList>(jsonResponse);
+            return (usersList.Users);
+        }
+
+        /// <summary>
+        /// This method retrieves the list of all the external users for a tenant
+        /// </summary>
+        /// <param name="numberOfItems">Defines the TOP number of items to retrieve</param>
+        /// <returns>The list of externa users in Azure AD</returns>
+        public static List<User> ListExternalUsers(Int32 numberOfItems = 100)
+        {
+
+            String jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
+                String.Format("{0}users?$filter=userType%20eq%20'Guest'&$top={1}",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    numberOfItems));
+
+            var usersList = JsonConvert.DeserializeObject<UsersList>(jsonResponse);
+            return (usersList.Users);
+        }
+
+        /// <summary>
+        /// This method retrieves the list of users registered in Azure AD with custom fields
+        /// </summary>
+        /// <param name="fields">The list of fields to retrieve</param>
+        /// <param name="numberOfItems">Defines the TOP number of items to retrieve</param>
+        /// <returns>The list of users in Azure AD</returns>
+        public static List<User> ListUsers(String[] fields = null, Int32 numberOfItems = 100)
+        {
+            String selectFilter = String.Empty;
+
+            if (fields != null)
+            {
+                selectFilter = "&$select=";
+                foreach (var field in fields)
+                {
+                    selectFilter += HttpUtility.UrlEncode(field) + ",";
+                }
+            }
+
+            String jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
+                String.Format("{0}users?$top={1}{2}",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    numberOfItems, 
+                    selectFilter));
+
+            var usersList = JsonConvert.DeserializeObject<UsersList>(jsonResponse);
+            return (usersList.Users);
+        }
+
+        /// <summary>
+        /// This method retrieves the list of users working in a specific department
+        /// </summary>
+        /// <param name="department">The department to filter the users on</param>
+        /// <param name="numberOfItems">Defines the TOP number of items to retrieve</param>
+        /// <returns>The list of users in Azure AD</returns>
+        public static List<User> ListUsersByDepartment(String department,
+            Int32 numberOfItems = 100)
+        {
+            String jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
+                String.Format("{0}users?$filter=department%20eq%20'{1}'&$top={2}",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    department,
                     numberOfItems));
 
             var usersList = JsonConvert.DeserializeObject<UsersList>(jsonResponse);
@@ -100,7 +164,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         public static List<Group> GetUserGroups(String upn)
         {
             String jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
-                String.Format("{0}users/{1}/directReports",
+                String.Format("{0}users/{1}/memberOf",
                     MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
                     upn));
 
@@ -125,6 +189,22 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         }
 
         /// <summary>
+        /// This method retrieves the list of Office 365 Groups
+        /// </summary>
+        /// <param name="numberOfItems">Defines the TOP number of items to retrieve</param>
+        /// <returns>The list of Office 365 Groups</returns>
+        public static List<Group> ListUnifiedGroups(Int32 numberOfItems = 100)
+        {
+            String jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
+                String.Format("{0}groups?$filter=groupTypes/any(gt:%20gt%20eq%20'Unified')" +
+                    "&$top={1}", MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    numberOfItems));
+
+            var groupsList = JsonConvert.DeserializeObject<GroupsList>(jsonResponse);
+            return (groupsList.Groups);
+        }
+
+        /// <summary>
         /// This method retrieves a specific group registered in Azure AD
         /// </summary>
         /// <param name="groupId">The ID of the group</param>
@@ -141,10 +221,27 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         }
 
         /// <summary>
+        /// This method retrieves the photo of a single user from Azure AD
+        /// </summary>
+        /// <param name="groupId">The ID of the group</param>
+        /// <returns>The group's photo retrieved from Azure AD</returns>
+        public static Stream GetGroupPhoto(String groupId)
+        {
+            String contentType = "image/png";
+
+            var result = MicrosoftGraphHelper.MakeGetRequestForStream(
+                String.Format("{0}groups/{1}/photo/$value",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri, groupId),
+                contentType);
+
+            return (result);
+        }
+
+        /// <summary>
         /// This method retrieves the list of members of a group
         /// </summary>
         /// <param name="groupId">The ID of the group</param>
-        /// <returns>The full list members of the group</returns>
+        /// <returns>The members of the group</returns>
         public static List<User> ListGroupMembers(String groupId)
         {
             String jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
@@ -155,5 +252,21 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
             var usersList = JsonConvert.DeserializeObject<UsersList>(jsonResponse);
             return (usersList.Users);
         }
-    }
+
+        /// <summary>
+        /// This method retrieves the list of owners of a group
+        /// </summary>
+        /// <param name="groupId">The ID of the group</param>
+        /// <returns>The owners of the group</returns>
+        public static List<User> ListGroupOwners(String groupId)
+        {
+            String jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
+                String.Format("{0}groups/{1}/owners",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    groupId));
+
+            var usersList = JsonConvert.DeserializeObject<UsersList>(jsonResponse);
+            return (usersList.Users);
+        }
+   }
 }

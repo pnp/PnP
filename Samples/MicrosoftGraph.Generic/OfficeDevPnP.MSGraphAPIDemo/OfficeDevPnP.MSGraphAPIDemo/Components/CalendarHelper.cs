@@ -12,7 +12,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         /// <summary>
         /// This method retrieves the calendars of the current user
         /// </summary>
-        /// <param name="startIndex">The startIndex (0 based) of the folders to retrieve, optional</param>
+        /// <param name="startIndex">The startIndex (0 based) of the items to retrieve, optional</param>
         /// <returns>A page of up to 10 calendars</returns>
         public static List<Calendar> ListCalendars(Int32 startIndex = 0)
         {
@@ -45,7 +45,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         /// This method retrieves the events of the current user's calendar
         /// </summary>
         /// <param name="calendarId">The ID of the calendar</param>
-        /// <param name="startIndex">The startIndex (0 based) of the folders to retrieve, optional</param>
+        /// <param name="startIndex">The startIndex (0 based) of the items to retrieve, optional</param>
         /// <returns>A page of up to 10 events</returns>
         public static List<Event> ListEvents(String calendarId, Int32 startIndex = 0)
         {
@@ -65,7 +65,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         /// <param name="calendarId">The ID of the calendar</param>
         /// <param name="startDate">The start date of the range</param>
         /// <param name="endDate">The end date of the range</param>
-        /// <param name="startIndex">The startIndex (0 based) of the folders to retrieve, optional</param>
+        /// <param name="startIndex">The startIndex (0 based) of the items to retrieve, optional</param>
         /// <returns>A page of up to 10 events</returns>
         public static List<Event> ListEvents(String calendarId, DateTime startDate, 
             DateTime endDate, Int32 startIndex = 0)
@@ -89,7 +89,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         /// <param name="masterSeriesId">The ID of the master event of the series</param>
         /// <param name="startDate">The start date of the range</param>
         /// <param name="endDate">The end date of the range</param>
-        /// <param name="startIndex">The startIndex (0 based) of the folders to retrieve, optional</param>
+        /// <param name="startIndex">The startIndex (0 based) of the items to retrieve, optional</param>
         /// <returns>A page of up to 10 events</returns>
         public static List<Event> ListSeriesInstances(String calendarId, 
             String masterSeriesId,

@@ -6,15 +6,12 @@ using System.Web;
 
 namespace OfficeDevPnP.MSGraphAPIDemo.Models
 {
-    /// <summary>
-    /// Defines a list of users
-    /// </summary>
-    public class UsersList
+    public class ConversationThreadPostsList
     {
         /// <summary>
-        /// The list of contacts
+        /// The list of threads
         /// </summary>
         [JsonProperty("value")]
-        public List<User> Users { get; set; }
+        public List<ConversationThreadPost> Posts { get; set; }
     }
 }
