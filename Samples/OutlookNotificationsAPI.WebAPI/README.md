@@ -7,6 +7,8 @@ You can learn more about the Outlook Notifications REST API and its operations a
 
 Using this event driven approach is a much more solid way of dealing with changes in the resources and entities in Outlook. As opposed to polling the Outlook REST APIs directly, this is much more lightweight (especially when the amount of items is large). With scale, this approach becomes essential for a sustainable service architecture.
 
+![](http://i.imgur.com/r3rNNGV.png)
+
 Read more about this sample at: <http://simonjaeger.com/call-me-back-outlook-notifications-rest-api>
 
 ### Applies to ###
@@ -51,6 +53,8 @@ The Web API needs to respond with the same validation token within 5 seconds, if
 
 Your first step is to register your web application in your Azure AD tenant (associated with your Office 365 tenant). The web application is using OWIN and OpenID Connect to handle authentication and authorization.You can find more details about OWIN and OpenId Connect here, as well as about registering you app on the Azure AD tenant here: <http://www.cloudidentity.com/blog/2014/07/28/protecting-an-mvc4-vs2012-project-with-openid-connect-and-azure-ad/>
 
+Since the application is calling back into Office 365 it's important to grant it permissions to read the user's calendar.
+
 When you have registered your web application in Azure AD - you will have to configure the following settings in the Web.config file:
 
     <add key="ida:ClientId" value="[YOUR APPLICATION CLIENT ID]" />
@@ -61,7 +65,11 @@ When you have registered your web application in Azure AD - you will have to con
     
 #### Deploy ####
 
-Deploy your Web API to a hosting provider, for instance a web app on Microsoft Azure: <https://azure.microsoft.com/en-us/documentation/scenarios/web-app/>.
+Deploy your Web API to a hosting provider, for instance a web app on Microsoft Azure: <https://azure.microsoft.com/en-us/documentation/scenarios/web-app/>. Note that this application requires an SQL Azure server as the subscription and token information is maintained in a database. You can use the publish wizard in Visual Studio and publish a new web app + DB server. If you already created the web app or want to use an existing SQL Azure database server you need to download the publishing profile from the web app and use that in the publish wizard. Also ensure you set your database connection string to point to your existing SQL Azure server like shown below:
+
+```XML
+<add name="DefaultConnection" connectionString="Data Source=tcp:<sqlazuredbserver>.database.windows.net;Initial Catalog=OutlookNotifications;User ID=user@<sqlazuredbserver>;Password=*****" providerName="System.Data.SqlClient" />
+```
 
 Once you have deployed the sample to a hosting provider; configure a breakpoint to catch and validate the flow in the Web API (NotifyController). After the validation occurs, you will receive notifications and be able to investigate the responses.
 
