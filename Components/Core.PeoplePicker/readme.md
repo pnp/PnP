@@ -15,7 +15,7 @@ It's important that the provider hosted add-in that's running the people picker 
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Core.PeoplePicker | Bert Jansen (**Microsoft**) 
+Core.PeoplePicker | Bert Jansen (**Microsoft**)
 
 ### Version history ###
 Version  | Date | Comments
@@ -37,18 +37,18 @@ When you build a provider hosted add-in it does not necessarily have an add-in w
 ![](http://i.imgur.com/EUDXrvo.png)
 
 ## DEFINING JAVASCRIPT GLOBAL VARIABLES ##
-Your add-in should have a JavaScript file that’s being loaded by your add-in pages (app.js in the sample) and in this JavaScript file you should define a context variable for the SharePoint clientcontext and one variable for the people picker:
+Your add-in should have a JavaScript file that’s being loaded by your add-in pages (app.js in the sample) and in this JavaScript file you should define a context variable for the SharePoint ClientContext and one variable for the people picker:
 
 ```JavaScript
 // variable used for cross site CSOM calls
 var context;
-// peoplePicker variable needs to be globally scoped as the 
+// peoplePicker variable needs to be globally scoped as the
 // generated html contains JS that will call into functions of this class
 var peoplePicker;
 ```
 
 ## CREATE THE CLIENTCONTEXT OBJECT ##
-Below code shows how to load the relevant SP js files and how to create the cliencontext object. The clientcontext object is created is such a way (see the ProxyWebRequestExecutorFactory that's being hooked up) that it can be used in cross domain scenarios which will be the case when you’re integrating your provider hosted add-in via a dialog in SharePoint.
+Below code shows how to load the relevant SP js files and how to create the ClientContext object. The ClientContext object is created is such a way (see the `ProxyWebRequestExecutorFactory` that's being hooked up) that it can be used in cross domain scenarios which will be the case when you’re integrating your provider hosted add-in via a dialog in SharePoint.
 
 ```JavaScript
 //Wait for the page to load
@@ -67,10 +67,10 @@ $(document).ready(function () {
         function () {
             $.getScript(layoutsRoot + 'SP.js',
                 function () {
-                    //Load the SP.UI.Controls.js file to render the App Chrome
+                    //Load the SP.UI.Controls.js file to render the Add-in Chrome
                     $.getScript(layoutsRoot + 'SP.UI.Controls.js', renderSPChrome);
 
-                    //load scripts for cross site calls (needed to use the people 
+                    //load scripts for cross site calls (needed to use the people
                     //picker control in an IFrame)
                     $.getScript(layoutsRoot + 'SP.RequestExecutor.js', function () {
                         context = new SP.ClientContext(appWebUrl);
@@ -85,7 +85,7 @@ $(document).ready(function () {
 ```
 
 ## INSERT THE ‘SUPPORTING’ HTML IN YOUR ASPX PAGE ##
-The people picker control is a JavaScript class that “transforms” HTML elements on the page into a working people picker. To make this work you need to insert the correct HTML on your page:
+The people picker control is a JavaScript class that 'transforms' HTML elements on the page into a working people picker. To make this work you need to insert the correct HTML on your page:
 
 ```ASPX
 <div id="divAdministrators" class="cam-peoplepicker-userlookup ms-fullWidth">
@@ -97,7 +97,7 @@ The people picker control is a JavaScript class that “transforms” HTML eleme
 ```
 
 ## TRANSFORM THE HTML INTO A PEOPLEPICKER CONTROL ##
-The final step is to transform the HTML inserted in the previous step into a people picker control. This is done by creating an instance of the peoplepicker JavaScript class and providing it a reference to the HTML elements:
+The final step is to transform the HTML inserted in the previous step into a people picker control. This is done by creating an instance of the `CAMControl.PeoplePicker` JavaScript class and providing it a reference to the HTML elements:
 
 ```JavaScript
 //Make a people picker control
@@ -114,13 +114,13 @@ peoplePicker.Initialize();
 ```
 
 ### Important ###
-You need to set the InstanceName property to the name of the used peoplepicker variable (case sensitive!). This is needed because the peoplepicker control will ‘generate’ HTML and JavaScript that references the control.
+You need to set the `InstanceName` property to the name of the used `peoplepicker` variable (case sensitive!). This is needed because the people picker control will ‘generate’ HTML and JavaScript that references the control.
 
 # PEOPLEPICKER CONFIGURATION OPTIONS #
 The people picker control does have some configuration options which are explained below.
 
 ## LANGUAGE ##
-The strings displayed by the control will be loaded dynamically based on the passed language. This requires you to pass the language via taking over the SPLanguage url parameter (see sample) or by hardcoding it. If no language is passed the control assumes the language is English. 
+The strings displayed by the control will be loaded dynamically based on the passed language. This requires you to pass the language via taking over the `SPLanguage` URL parameter (see sample) or by hardcoding it. If no language is passed the control assumes the language is English.
 
 ```JavaScript
 peoplePicker.Language = spLanguage;
@@ -143,7 +143,8 @@ This setting determines how many entries the user will see in the people picker 
 Can the control allow duplicate people being picked or not? Default is false.
 
 ## PRINCIPALTYPE ##
-This setting determines what kind of objects the people picker will return. Default this is set to 1 which means only users. Setting it to 15 will return all possible objects (users, groups, distribution lists,…). See http://msdn.microsoft.com/en-us/library/office/microsoft.sharepoint.client.utilities.principaltype.aspx for more details on the possible values.
+This setting determines what kind of objects the people picker will return. Default this is set to 1 which means only users. Setting it to 15 will return all possible objects (users, groups, distribution lists,…).  
+See [PrincipalType enumeration](http://msdn.microsoft.com/en-us/library/office/microsoft.sharepoint.client.utilities.principaltype.aspx) for more details on the possible values.
 
 ## MINIMALCHARACTERSBEFORESEARCHING ##
 How many characters need to be entered by the user before the control issues its first query? Default setting is 2.
@@ -158,21 +159,21 @@ Putting both values on false gives you a people picker control that mimics the O
 ![](http://i.imgur.com/ZOFYq4e.png)
 
 # APPENDIX A: ADDING MULTIPLE PEOPLE PICKERS ON A FORM (BY KARIM KAMEKA) #
-While the people picker control above is great for adding and selecting multiple users there are times when you might need more than 1 people picker on a page.  This can be done with a few additions to the code in the sample.  In the end you will get something similar to the following:
+While the people picker control above is great for adding and selecting multiple users there are times when you might need more than 1 people picker on a page. This can be done with a few additions to the code in the sample. In the end you will get something similar to the following:
 
 ![](http://i.imgur.com/e2HR7Pz.png)
 
 ## ADDING HTML TO THE FORM & UPDATING JS INSTANTIATION ##
-Following the instructions above you will need to add a second block of HTML and a second variable to the JS file used to instantiate the people picker (this is app.js in this sample).
+Following the instructions above you will need to add a second block of HTML and a second variable to the JS file used to instantiate the people picker (this is `app.js` in this sample).
 
-**STEP 1:** At the top of the app.js add the following variables (1 for each people picker needed):
+**STEP 1:** At the top of the `app.js` add the following variables (1 for each people picker needed):
 
 ```JavaScript
 var businessOwnerPrimaryPicker;
 var businessOwnerSecondaryPicker;
 ```
 
-**STEP 2:** Add the following method to the bottom of the app.js file:
+**STEP 2:** Add the following method to the bottom of the `app.js` file:
 
 ```JavaScript
 function getPeoplePickerInstance(context, spanControl, inputControl, searchDivControl, hiddenControl, variableName, spLanguage)
@@ -199,7 +200,7 @@ function getPeoplePickerInstance(context, spanControl, inputControl, searchDivCo
     newPicker.ShowLoginName = true;
     // Show the user title
     newPicker.ShowTitle = true;
-    // Set principal type to determine what is shown (default = 1, only users are resolved). 
+    // Set principal type to determine what is shown (default = 1, only users are resolved).
     // See http://msdn.microsoft.com/en-us/library/office/microsoft.sharepoint.client.utilities.principaltype.aspx for more details
     // Set ShowLoginName and ShowTitle to false if you're resolving groups
     newPicker.PrincipalType = 1;
@@ -213,7 +214,7 @@ function getPeoplePickerInstance(context, spanControl, inputControl, searchDivCo
 }
 ```
 
-**STEP 3.1:** Now that we have a reusable method to instantiate the People Picker we can replace the inline method with multiple calls to our new method to wire up multiple People Picker controls.  Find the code block which looks like the following (at about line 52 in app.js):
+**STEP 3.1:** Now that we have a reusable method to instantiate the people picker we can replace the inline method with multiple calls to our new method to wire up multiple People Picker controls.  Find the code block which looks like the following (at about line 52 in `app.js`):
 
 ```JavaScript
 //Make a people picker control
@@ -236,7 +237,7 @@ peoplePicker.AllowDuplicates = false;
 peoplePicker.ShowLoginName = true;
 // Show the user title
 peoplePicker.ShowTitle = true;
-// Set principal type to determine what is shown (default = 1, only users are resolved). 
+// Set principal type to determine what is shown (default = 1, only users are resolved).
 // See http://msdn.microsoft.com/en-us/library/office/microsoft.sharepoint.client.utilities.principaltype.aspx for more details
 // Set ShowLoginName and ShowTitle to false if you're resolving groups
 peoplePicker.PrincipalType = 1;
@@ -254,7 +255,8 @@ businessOwnerPrimaryPicker = getPeoplePickerInstance(context, $('#spanbusinessOw
 businessOwnerSecondaryPicker = getPeoplePickerInstance(context, $('#spanbusinessOwnerSecondary'), $('#inputbusinessOwnerSecondary'), $('#divbusinessOwnerSecondarySearch'), $('#hdnbusinessOwnerSecondary'), "businessOwnerSecondaryPicker", spLanguage);
 ```
 
-**Step 4:** Add the corresponding HTML to your page.  **NOTE**: the spanbusinessOwnerPrimary, inputbusinessOwnerPrimary, divbusinessOwnerPrimarySearch and hdnbusinessOwnerPrimary ID's below match the names in step 3.2 (they are case-sensitive):
+**Step 4:** Add the corresponding HTML to your page.  
+**NOTE**: the `spanbusinessOwnerPrimary`, `inputbusinessOwnerPrimary`, `divbusinessOwnerPrimarySearch` and `hdnbusinessOwnerPrimary` ID's below match the names in step 3.2 (they are case-sensitive):
 
 ```ASPX
 <div id="divFieldOwners">
@@ -284,9 +286,9 @@ businessOwnerSecondaryPicker = getPeoplePickerInstance(context, $('#spanbusiness
 ```
 
 # APPENDIX B: ADDING LIMIT TO THE NUMBER OF SELECTED USERS (BY KARIM KAMEKA) #
-Another scenario that might be of interest is to limit the number of users which can be entered in the people picker box.  This would mimic the out of the box behavior like that of the Site Collection Admin field(s) when creating a new Site Collection. To do this we will add a new property to the PeoplePicker class located in the peoplepickercontrol.js file.
- 
-**STEP 1:** Add the new property **MaxUsers** to the People Picker object (see highlighted line below):
+Another scenario that might be of interest is to limit the number of users which can be entered in the people picker box.  This would mimic the out of the box behavior like that of the Site Collection Admin field(s) when creating a new Site Collection. To do this we will add a new property to the `PeoplePicker` class located in the `peoplepickercontrol.js` file.
+
+**STEP 1:** Add the new property `MaxUsers` to the PeoplePicker class (see highlighted line below):
 
 ```JavaScript
 // Constructor
@@ -305,7 +307,8 @@ function PeoplePicker(SharePointContext, PeoplePickerControl, PeoplePickerEdit, 
     this.PrincipalType = 1;
     this.AllowDuplicates = false;
     this.Language = "en-us";
-    this.MaxUsers = 0; 
+    //
+    this.MaxUsers = 0;
     //Private variable is not really private, just a naming convention
     this._queryID = 1;
     this._lastQueryID = 1;
@@ -322,7 +325,7 @@ PeoplePicker.prototype.MaxUsers = function () {
 }
 ```
 
-**STEP 3:** Update the PushResolvedUser Method in peoplepickercontrol.js with the highlighted code.  Now when a user tries to add too many items to the people picker they will get an alert.
+**STEP 3:** Update the `PushResolvedUser` method in `peoplepickercontrol.js` with the highlighted code. Now when a user tries to add too many items to the people picker they will get an alert.
 
 ```JavaScript
 // Add resolved user to array and updates the hidden field control with a JSON string
@@ -349,7 +352,8 @@ PeoplePicker.prototype.PushResolvedUser = function (resolvedUser) {
 }
 ```
 
-**STEP 4:** Set property **MaxUsers** in the App.js when initializing the control.  In the method (around line 52 in app.js) set the MaxUsers property to a number greater than 0. 
+**STEP 4:** Set property `MaxUsers` in `app.js` when initializing the control.  
+In the method (around line 52 in `app.js`) set the `MaxUsers` property to a number greater than 0.
 
 ```JavaScript
 //set max users in people control to 1
@@ -357,19 +361,19 @@ newPicker.MaxUsers = 1;
 ```
 
 # APPENDIX C: MODIFYING THE SIZE AND STYLE OF THE PEOPLE PICKER CONTROL (BY KARIM KAMEKA) #
-The people picker control included with the sample uses a fixed height of 50px, which causes the control to display like a multi-line textbox.  While modifying the sample, with the steps in Appendix B above, to restrict the people picker to select only 1 user we wanted to shrink the size of this box on the form such that the control only took up 1 line in the form.  To do this we must modify the corresponding style in the peoplepickercontrol.css file located in the sample.  However, as to not break the current styling of the control it is recommended you add a new class to do a single line.  In this case we will call this new class “cam-peoplepicker-userlookup-single”.  Other aspects of the people picker control can be modified in a similar way.
+The people picker control included with the sample uses a fixed height of 50px, which causes the control to display like a multi-line textbox. While modifying the sample, with the steps in Appendix B above, to restrict the people picker to select only 1 user we wanted to shrink the size of this box on the form such that the control only took up 1 line in the form. To do this we must modify the corresponding style in the `peoplepickercontrol.css` file located in the sample. However, as to not break the current styling of the control it is recommended you add a new class to do a single line.  In this case we will call this new class `cam-peoplepicker-userlookup-single`. Other aspects of the people picker control can be modified in a similar way.
 
-**STEP 1:** Add the following new CSS class to the peoplepickercontrol.css 
+**STEP 1:** Add the following new CSS class to the `peoplepickercontrol.css`
 
 ```CSS
 .cam-peoplepicker-userlookup-single {    
-    overflow: hidden; 
-    border: 1px solid #99b0c1; 
+    overflow: hidden;
+    border: 1px solid #99b0c1;
     padding: 2px 5px 2px 5px;
 }
 ```
 
-**STEP 2:** Use the new class (cam-peoplepicker-userlookup-single) in your HTML:
+**STEP 2:** Use the new class (`cam-peoplepicker-userlookup-single`) in your HTML:
 
 ```ASPX
 <div id="divPrimaryOwner">
@@ -383,7 +387,7 @@ The people picker control included with the sample uses a fixed height of 50px, 
 </div>
 ```
 # APPENDIX D: PEOPLEPICKER USING SERVERSIDE WEBMETHOD (CSOM) (BY STIJN NEIRINCKX) #
-The regular peoplepicker uses javascript to get data from Sharepoint. This means that the peoplepicker requires a working cross domain library and an AppWeb. The CSOM Peoplepicker does not need those. The Peoplepicker will call a serverside webmethod to get data. This serverside method will call Sharepoint using c# CSOM. It is also possible to add additional filtering or other logic in this webmethod using C#. 
+The regular people picker uses JavaScript to get data from SharePoint. This means that the people picker requires a working cross domain library and an Add-in Web. The CSOM people picker does not need those. The people picker will call a server-side method to get data. This server-side method will call SharePoint using C# CSOM. It is also possible to add additional filtering or other logic in this web method using C#.
 
 **STEP 1:** Insert HTML in the aspx page
 
@@ -396,18 +400,18 @@ The regular peoplepicker uses javascript to get data from Sharepoint. This means
 <asp:HiddenField ID="hdnCsomAdministrators" runat="server" />
 ```
 
-**STEP 2:** Add webmethod to aspx page
+**STEP 2:** Add `WebMethod` attribute to `GetPeoplePickerData` method on the code-behind of aspx page
 
-```JavaScript
+```cs
 [WebMethod]
 public static string GetPeoplePickerData()
 {
-     //peoplepickerhelper will get the needed values from the querrystring, get data from sharepoint, and return a result in Json format
+     //peoplepickerhelper will get the needed values from the query string, get data from SharePoint, and return a result in JSON format
      return PeoplePickerHelper.GetPeoplePickerSearchData();
 }
 ```
 
-**STEP 3:** Transform HTML into peoplepicker control
+**STEP 3:** Transform HTML into people picker control
 
 ```JavaScript
 //Make a Csom people picker control
@@ -417,11 +421,11 @@ public static string GetPeoplePickerData()
 //4. $('#inputCsomAdministrators') = INPUT that will be used to capture user input
 //5. $('#divCsomAdministratorsSearch') = DIV that will show the 'dropdown' of the people picker
 //6. $('#hdnCsomAdministrators') = INPUT hidden control that will host a JSON string of the resolved users
-csomPeoplePicker = new CAMControl.CsomPeoplePicker('Default.aspx/GetPeoplePickerData', spHostUrl, $('#spanCsomAdministrators'), $('#inputCsomAdministrators'), $('#divCsomAdministratorsSearch'), $('#hdnCsomAdministrators'));
+csomPeoplePicker = new CAMControl.PeoplePicker('Default.aspx/GetPeoplePickerData', spHostUrl, $('#spanCsomAdministrators'), $('#inputCsomAdministrators'), $('#divCsomAdministratorsSearch'), $('#hdnCsomAdministrators'));
 // required to pass the variable name here!
 csomPeoplePicker.InstanceName = "csomPeoplePicker";
 // Pass current language, if not set defaults to en-US. Use the SPLanguage query string param or provide a string like "nl-BE"
-// Do not set the Language property if you do not have foreseen javascript resource file for your language
+// Do not set the Language property if you do not have foreseen JavaScript resource file for your language
 csomPeoplePicker.Language = spLanguage;
 // optionally show more/less entries in the people picker dropdown, 4 is the default
 csomPeoplePicker.MaxEntriesShown = 5;
@@ -432,7 +436,7 @@ csomPeoplePicker.ShowLoginName = true;
 // Show the user title
 csomPeoplePicker.ShowTitle = true;
 
-// Set principal type to determine what is shown (default = 1, only users are resolved). 
+// Set principal type to determine what is shown (default = 1, only users are resolved).
 // See http://msdn.microsoft.com/en-us/library/office/microsoft.sharepoint.client.utilities.principaltype.aspx for more details
 // Set ShowLoginName and ShowTitle to false if you're resolving groups
 csomPeoplePicker.PrincipalType = 1;
@@ -442,11 +446,11 @@ csomPeoplePicker.MinimalCharactersBeforeSearching = 2;
 csomPeoplePicker.Initialize();
 ```
 # APPENDIX E: INCLUDING A PLACEHOLDER ATTRIBUTE TO THE PEOPLEPICKER (BY VINCENT VERBEEK) #
-The regular peoplepicker uses javascript and css to resemble the look and feel of a SharePoint OOTB people picker. There could be scenarios where you want to put a placeholder text in the peoplepicker to better inform your users as to what will be done with their entry. This sample will show the required modifications in order to achieve this.
+The regular people picker uses JavaScript and CSS to resemble the look and feel of a SharePoint OOTB people picker. There could be scenarios where you want to put a placeholder text in the people picker to better inform your users on what will be done with their entry. This sample will show the required modifications in order to achieve this.
 
 **STEP 1:** Add the placeholder attribute and modify the width of the textbox accordingly:
 
-```ASPX
+```aspx
 <div id="divSiteOwner" class="cam-peoplepicker-userlookup ms-fullWidth">
     <span id="spanSiteOwner"></span>
     <asp:TextBox ID="inputSiteOwner" runat="server" CssClass="cam-peoplepicker-edit" Width="155" placeholder="Who will manage this site?"></asp:TextBox>
@@ -455,13 +459,13 @@ The regular peoplepicker uses javascript and css to resemble the look and feel o
 <asp:HiddenField ID="hdnSiteOwner" runat="server" />
 ```
 
-**STEP 2.1:** Since the value of the selected user isnt stored inside the textbox, the placeholder text does not dissapear after a user has been selected. In order to change this, we need to attach a change event to the hiddenfield and have that change event modify the placeholder text. Open the app.js file and include the following line of code in the $(document).ready function:
+**STEP 2.1:** Since the value of the selected user isn't stored inside the textbox, the placeholder text does not disappear after a user has been selected. In order to change this, we need to attach a change event to the hidden field and have that change event modify the placeholder text. Open the `app.js` file and include the following line of code in the `$(document).ready` function:
 ```JavaScript
 //Make sure the change function is executed when the value of the hidden field changes
 $('#hdnSiteOwner').change(changeSiteOwnerPlaceholder);
 ```
 
-**STEP 2.2:** The function changeSiteOwnerPlaceholder alters the placeholder text if the hiddenfield has a value.
+**STEP 2.2:** The function *changeSiteOwnerPlaceholder* alters the placeholder text if the hidden field has a value.
 ```JavaScript
 /* Hide the placeholder text when a site owner is selected */
 function changeSiteOwnerPlaceholder() {
@@ -476,7 +480,7 @@ function changeSiteOwnerPlaceholder() {
 }
 ```
 
-**STEP 3** By default, hidden fields do not fire change events. This is because the change is not done by a user, but rather through code. To make sure the change event does fire whenever a user is added or removed, we need to alter the peoplepickercontrol.js file and specifically the methods RemoveResolvedUser, RecipientsSelected and DeleteProcessedUser and fire the change() event from there.
+**STEP 3** By default, hidden fields do not fire change events. This is because the change is not done by a user, but rather through code. To make sure the change event does fire whenever a user is added or removed, we need to alter `peoplepickercontrol.js` file and specifically the methods `RemoveResolvedUser`, `RecipientsSelected` and `DeleteProcessedUser` and fire the `change()` event from there.
 ```JavaScript
 // Remove resolved user from the array and updates the hidden field control with a JSON string
 PeoplePicker.prototype.RemoveResolvedUser = function (lookupValue) {
@@ -497,7 +501,7 @@ PeoplePicker.prototype.RecipientSelected = function(login, name, email) {
     this.HideSelectionBox();
     // Push new resolved user to list
     this.PushResolvedUser(this.ResolvedUser(login, name, email));
-    // Update the resolved user display 
+    // Update the resolved user display
     this.PeoplePickerControl.html(this.ResolvedUsersToHtml());
     // Prepare the edit control for a second user selection
     this.PeoplePickerEdit.val('');
@@ -513,4 +517,3 @@ PeoplePicker.prototype.DeleteProcessedUser = function (lookupValue) {
     this.PeoplePickerData.change();
 }
 ```
-

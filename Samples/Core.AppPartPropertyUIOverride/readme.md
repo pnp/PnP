@@ -47,7 +47,7 @@ Example Elements.xml file that was used:
 ```XML
 <?xml version="1.0" encoding="utf-8"?>
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/">
-  <ClientWebPart Name="ContosoAppPartPropertyUIOverride" Title="Contoso.AppPartPropertyUIOverride Example" Description="An example App Part that shows the techniques required to override the Add-In Part property UI." DefaultWidth="500" DefaultHeight="200">
+  <ClientWebPart Name="ContosoAppPartPropertyUIOverride" Title="Contoso.AppPartPropertyUIOverride Example" Description="An example Add-in Part that shows the techniques required to override the Add-In Part property UI." DefaultWidth="500" DefaultHeight="200">
 
     <!-- Content element identifies the location of the page that will render inside the client web part
          Properties are referenced on the query string using the pattern _propertyName_
@@ -130,7 +130,7 @@ Example Elements.xml file that was used:
 ```
 
 # AN EXAMPLE SOLUTION: JAVASCRIPT INJECTION TO CHANGE ADD-IN PART PROPERTY UI #
-An example solution is to use the JavaScript injection pattern (on the Host Web) to change the App Part property UI after it’s rendered by SharePoint.
+An example solution is to use the JavaScript injection pattern (on the Host Web) to change the Add-in Part property UI after it’s rendered by SharePoint.
 
 Example Add-In Part with custom properties UI modified by JavaScript at runtime:
 
@@ -210,7 +210,7 @@ public SPRemoteEventResult ProcessEvent(SPRemoteEventProperties properties)
 Notes:
 -  The custom category that is being looked for in an Add-In Part on app pages is: **“Custom Category 1”** in this example. This category it’s searching on needs to be unique across all Add-In Parts.
 -  The specialized custom JavaScript file to load if the custom category is found is: **Contoso.OverrideExample.js**
--  The **AppUninstalling** event only fires when a user completely removes the app: the app needs to be deleted from the site recycle bins in an end-user scenario. In a development scenario the app needs to be removed from the “Add-Ins in testing” library. 
+-  The **AppUninstalling** event only fires when a user completely removes the app: the app needs to be deleted from the site recycle bins in an end-user scenario. In a development scenario the add-in needs to be removed from the “Add-Ins in testing” library. 
 
 ### SPECIALIZED CUSTOM JAVASCRIPT FILE ###
 The **Contoso.OverrideExample.js** file is a specially crafted JavaScript file that utilizes jQuery, the **Contoso.AppPartPropertyUIOverride.js** helper library (more on that below) and SP.JS (the SharePoint JavaScript Client Side Object Model (CSOM) to manipulate the Add-In Part property UI at runtime.
@@ -359,7 +359,7 @@ overrider.expandCategory("Custom Category 1");
 ```
 
 ### hideProperty(name, category) ###
-Hides the specified property in the App Part property UI. 
+Hides the specified property in the Add-in Part property UI. 
 
 *name:* (string) the display name of the property.  Example: “My Property 1”
 *category:* (string) the display name of the category.  Example: “Custom Category 1”
@@ -371,7 +371,7 @@ overrider.hideProperty("HostWebListTitleHiddenTextBox", "Custom Category 1");
 ```
 
 ### createNewContentAtBottom(settings) ###
-Creates a new html content area in the specified App Part Property UI category bottom and returns a jQuery object that wraps the new content area created. 
+Creates a new html content area in the specified Add-in Part Property UI category bottom and returns a jQuery object that wraps the new content area created. 
 
 *settings:* (Object) A JavaScript object that contains the required and optional settings for this operation.
 -  *category:* (string) the display name of the category.  Example: “Custom Category 1”
@@ -426,7 +426,7 @@ overrider.createNewContentAtTop({
 ```
 
 ### getValue(name, category) ###
-Gets the current value of the declared string, number, enum, or boolean property that's already rendered in the App Part property UI. 
+Gets the current value of the declared string, number, enum, or boolean property that's already rendered in the Add-in Part property UI. 
 
 *name:* (string) the display name of the property.  Example: “My Property 1”
 *category:* (string) the display name of the category.  Example: “Custom Category 1”

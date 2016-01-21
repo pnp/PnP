@@ -8,6 +8,7 @@ namespace Core.ListRatingSettings
 {
     public enum VotingExperience
     {
+        None,
         Ratings,
         Likes
     }
@@ -42,6 +43,32 @@ namespace Core.ListRatingSettings
         private readonly Guid LikeFieldGuid_LikeCount = new Guid("6e4d832b-f610-41a8-b3e0-239608efda41");
 
         #endregion
+
+        public void Disable(string listName)
+        {
+
+            var web = _context.Web;
+            _context.Load(_context.Web, p => p.Url);
+            _context.ExecuteQuery();
+
+            //  Fetch Library
+            try
+            {
+                _library = web.Lists.GetByTitle(listName);
+                _context.Load(_library);
+                _context.ExecuteQuery();
+
+                _logger.WriteSuccess("Found list/library : " + _library.Title);
+            }
+            catch (ServerException e)
+            {
+                _logger.WriteException(string.Format("Error: {0} \nMessage: {1} \nStack: {2}", web.Url, e.Message, e.StackTrace));
+                return;
+            }
+
+            //  Add to property Root Folder of Pages Library
+            AddProperty(VotingExperience.None);
+        }
 
         /// <summary>
         /// Enable Social Settings Likes/Ratings on given list
@@ -219,7 +246,15 @@ namespace Core.ListRatingSettings
             _context.Load(_library.RootFolder, p => p.Properties);
             _context.ExecuteQuery();
 
-            _library.RootFolder.Properties["Ratings_VotingExperience"] = experience.ToString();
+            if (experience != VotingExperience.None)
+            {
+                _library.RootFolder.Properties["Ratings_VotingExperience"] = experience.ToString();
+            }
+            else
+            {
+                _library.RootFolder.Properties["Ratings_VotingExperience"] = "";
+            }
+            
             _library.RootFolder.Update();
             _context.ExecuteQuery();
             _logger.WriteSuccess(string.Format("Ensured {0} Property.",experience));
