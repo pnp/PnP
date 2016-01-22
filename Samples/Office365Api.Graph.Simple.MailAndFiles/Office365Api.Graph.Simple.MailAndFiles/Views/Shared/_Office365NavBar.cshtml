@@ -1,0 +1,21 @@
+﻿<div class="ms-NavBar">
+    <div class="ms-NavBar-openMenu js-openMenu">
+        <i class="ms-Icon ms-Icon--menu"></i>
+    </div>
+    <ul class="ms-NavBar-items">
+
+        <li class="ms-NavBar-item"><a class="ms-NavBar-link" href="/Home/Index"><i class="ms-Icon ms-Icon--home"></i> Home</a></li>
+        <li class="ms-NavBar-item"><a class="ms-NavBar-link" href="/PersonalData/Index"><i class="ms-Icon ms-Icon--story"></i> Email and Files</a></li>
+
+
+        @if (!String.IsNullOrEmpty(ViewBag.Name))
+        {
+            <li class="ms-NavBar-item ms-NavBar-item--right"><a class="ms-NavBar-link" href="@Url.Content("~/home/Logout")"><i class="ms-Icon ms-Icon--key"></i>Logout</a></li>
+            <li class="ms-NavBar-item ms-NavBar-item--right">@ViewBag.Name</li>
+        }
+        else
+        {
+            <li class="ms-NavBar-item ms-NavBar-item--right"><a class="ms-NavBar-link" href="@Url.Content("~/home/login")"><i class="ms-Icon ms-Icon--gear"></i>Sign in</a></li>
+        }
+    </ul>
+</div>

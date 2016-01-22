@@ -189,7 +189,7 @@
                 return guid;
             },
 
-            // loads the current user's information using the local cache for performance
+            // loads the current user's information using the session cache for performance
             getCurrentUserInfo: function (ctx) {
 
                 var self = this;
@@ -198,11 +198,11 @@
 
                     self._currentUserInfoPromise = $.Deferred(function (def) {
 
-                        var cachingTest = $pnp.caching !== 'undefined' && $pnp.caching.enabled;
+                        var cachingTest = $pnp.session !== 'undefined' && $pnp.session.enabled;
 
                         // if we have the caching module loaded
                         if (cachingTest) {
-                            var userInfo = $pnp.caching.get(self._currentUserInfoCacheKey);
+                            var userInfo = $pnp.session.get(self._currentUserInfoCacheKey);
                             if (userInfo !== null) {
                                 self._currentUserInfo = userInfo;
                                 def.resolveWith(ctx || self._currentUserInfo, [self._currentUserInfo]);
@@ -225,9 +225,7 @@
                                 });
 
                             if (cachingTest) {
-                                // we can cache this for a while since it is not likely to change often
-                                var expire = $pnp.core.dateAdd(new Date(), 'day', 1)
-                                $pnp.caching.add(self._currentUserInfoCacheKey, self._currentUserInfo, expire);
+                                $pnp.session.add(self._currentUserInfoCacheKey, self._currentUserInfo);
                             }
 
                             def.resolveWith(ctx || self._currentUserInfo, [self._currentUserInfo]);
