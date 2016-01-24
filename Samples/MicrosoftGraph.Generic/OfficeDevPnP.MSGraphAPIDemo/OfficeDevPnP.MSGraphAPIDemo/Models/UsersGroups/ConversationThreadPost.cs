@@ -9,7 +9,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
     {
         public ItemBody Body { get; set; }
 
-        public DateTimeOffset ReceivedDateTime { get; set; }
+        public Nullable<DateTimeOffset> ReceivedDateTime { get; set; }
 
         public Boolean HasAttachments { get; set; }
 

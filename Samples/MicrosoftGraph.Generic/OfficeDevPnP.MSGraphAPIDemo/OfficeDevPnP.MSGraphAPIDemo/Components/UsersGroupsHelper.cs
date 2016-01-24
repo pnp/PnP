@@ -65,7 +65,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
             String jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
                 String.Format("{0}users?$top={1}{2}",
                     MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
-                    numberOfItems, 
+                    numberOfItems,
                     selectFilter));
 
             var usersList = JsonConvert.DeserializeObject<UsersList>(jsonResponse);
@@ -122,6 +122,35 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
                 contentType);
 
             return (result);
+        }
+
+        /// <summary>
+        /// This method adds a new user to Azure AD
+        /// </summary>
+        /// <param name="user">The user to add</param>
+        /// <returns>The just added user</returns>
+        public static User AddUser(User user)
+        {
+            String jsonResponse = MicrosoftGraphHelper.MakePostRequestForString(
+                String.Format("{0}users",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri),
+                user, "application/json");
+
+            var addedUser = JsonConvert.DeserializeObject<User>(jsonResponse);
+            return (addedUser);
+        }
+
+        /// <summary>
+        /// This method updated an existing user in Azure AD
+        /// </summary>
+        /// <param name="user">The user's fields to update</param>
+        public static void UpdateUser(User user)
+        {
+            MicrosoftGraphHelper.MakePatchRequestForString(
+                String.Format("{0}users/{1}",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri, 
+                    user.Id),
+                user, "application/json");
         }
 
         /// <summary>
@@ -189,6 +218,22 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         }
 
         /// <summary>
+        /// This method retrieves the list of Security Groups
+        /// </summary>
+        /// <param name="numberOfItems">Defines the TOP number of items to retrieve</param>
+        /// <returns>The list of Security Groups</returns>
+        public static List<Group> ListSecurityGroups(Int32 numberOfItems = 100)
+        {
+            String jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
+                String.Format("{0}groups?$filter=SecurityEnabled%20eq%20true" +
+                    "&$top={1}", MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    numberOfItems));
+
+            var groupsList = JsonConvert.DeserializeObject<GroupsList>(jsonResponse);
+            return (groupsList.Groups);
+        }
+
+        /// <summary>
         /// This method retrieves the list of Office 365 Groups
         /// </summary>
         /// <param name="numberOfItems">Defines the TOP number of items to retrieve</param>
@@ -221,7 +266,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         }
 
         /// <summary>
-        /// This method retrieves the photo of a single user from Azure AD
+        /// This method retrieves the photo of a group from Azure AD
         /// </summary>
         /// <param name="groupId">The ID of the group</param>
         /// <returns>The group's photo retrieved from Azure AD</returns>
@@ -268,5 +313,37 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
             var usersList = JsonConvert.DeserializeObject<UsersList>(jsonResponse);
             return (usersList.Users);
         }
-   }
+
+        /// <summary>
+        /// This method adds a new member to a group
+        /// </summary>
+        /// <param name="user">The user to add as a new group's member</param>
+        /// <param name="groupId">The ID of the target group</param>
+        public static void AddMemberToGroup(User user, String groupId)
+        {
+            MicrosoftGraphHelper.MakePostRequest(
+                String.Format("{0}groups/{1}/members/$ref",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    groupId),
+                new GroupMemberToAdd
+                {
+                    ObjectId = String.Format("{0}users/{1}/id",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri, user.UserPrincipalName)
+                },
+                "application/json");
+        }
+
+        /// <summary>
+        /// This method removes a member from a group
+        /// </summary>
+        /// <param name="user">The user to remove from the group</param>
+        /// <param name="groupId">The ID of the target group</param>
+        public static void RemoveMemberFromGroup(User user, String groupId)
+        {
+            MicrosoftGraphHelper.MakeDeleteRequest(
+                String.Format("{0}groups/{1}/members/{2}/$ref",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    groupId, user.Id));
+        }
+    }
 }

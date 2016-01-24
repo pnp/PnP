@@ -212,6 +212,7 @@
     <Compile Include="Models\UsersGroups\ConversationThreadPostList.cs" />
     <Compile Include="Models\UsersGroups\ConversationThreadsList.cs" />
     <Compile Include="Models\UsersGroups\Group.cs" />
+    <Compile Include="Models\UsersGroups\GroupMemberToAdd.cs" />
     <Compile Include="Models\UsersGroups\GroupsList.cs" />
     <Compile Include="Models\UsersGroups\PasswordProfile.cs" />
     <Compile Include="Models\UsersGroups\ProvisionedPlan.cs" />

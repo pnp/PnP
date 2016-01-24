@@ -46,6 +46,41 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         }
 
         /// <summary>
+        /// This method retrieves a single post of a conversation thread for an Office 365 Group
+        /// </summary>
+        /// <param name="groupId">The ID of the thread</param>
+        /// <param name="threadId">The ID of the thread</param>
+        /// <param name="postId">The ID of the post</param>
+        /// <returns>The post of the conversation thread for an Office 365 Group</returns>
+        public static ConversationThreadPost GetUnifiedGroupThreadPost(String groupId, String threadId, String postId)
+        {
+            String jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
+                String.Format("{0}groups/{1}/threads/{2}/posts/{3}",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    groupId,
+                    threadId,
+                    postId));
+
+            var conversationThreadPost = JsonConvert.DeserializeObject<ConversationThreadPost>(jsonResponse);
+            return (conversationThreadPost);
+        }
+
+        /// <summary>
+        /// This method replies to a thread of an Office 365 Group
+        /// </summary>
+        /// <param name="groupId">The ID of the thread</param>
+        /// <param name="threadId">The ID of the thread</param>
+        /// <param name="post">The post to send as the reply</param>
+        public static void ReplyToUnifiedGroupThread(String groupId, String threadId, ConversationThreadPost post)
+        {
+            MicrosoftGraphHelper.MakePostRequest(
+                String.Format("{0}groups/{1}/threads/{2}/reply",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    groupId,
+                    threadId), new { post }, "application/json");
+        }
+
+        /// <summary>
         /// This method retrieves the calendar of an Office 365 Group
         /// </summary>
         /// <param name="groupId">The ID of the group</param>

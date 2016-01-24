@@ -173,12 +173,12 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// <summary>
         /// Birthdate of the user
         /// </summary>
-        public DateTimeOffset Birthday;
+        public Nullable<DateTimeOffset> Birthday;
 
         /// <summary>
         /// Hire date for the user
         /// </summary>
-        public DateTimeOffset HireDate;
+        public Nullable<DateTimeOffset> HireDate;
 
         /// <summary>
         /// List of interests for the user
