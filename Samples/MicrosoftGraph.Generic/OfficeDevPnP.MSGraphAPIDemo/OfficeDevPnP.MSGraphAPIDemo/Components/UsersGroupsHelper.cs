@@ -8,7 +8,7 @@ using System.Web;
 
 namespace OfficeDevPnP.MSGraphAPIDemo.Components
 {
-    public class UsersGroupsHelper
+    public static class UsersGroupsHelper
     {
         /// <summary>
         /// This method retrieves the list of users registered in Azure AD

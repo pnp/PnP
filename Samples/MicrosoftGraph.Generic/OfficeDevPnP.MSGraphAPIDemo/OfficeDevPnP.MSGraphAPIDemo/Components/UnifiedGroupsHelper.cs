@@ -9,7 +9,7 @@ using System.Web;
 
 namespace OfficeDevPnP.MSGraphAPIDemo.Components
 {
-    public class UnifiedGroupsHelper
+    public static class UnifiedGroupsHelper
     {
         /// <summary>
         /// This method retrieves the list of threads of an Office 365 Group
@@ -115,7 +115,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         }
 
         /// <summary>
-        /// This method retrieves the events of an Office 365 Group calendar within a specific date range
+        /// Retrieves the events of an Office 365 Group calendar within a specific date range
         /// </summary>
         /// <param name="groupId">The ID of the group</param>
         /// <param name="startDate">The start date of the range</param>
@@ -170,6 +170,36 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
 
             var drive = JsonConvert.DeserializeObject<Drive>(jsonResponse);
             return (drive);
+        }
+
+        /// <summary>
+        /// Creates/Adds a new Office 365 Group
+        /// </summary>
+        /// <param name="group">The group the add/create</param>
+        /// <returns>The just added group</returns>
+        public static Group AddUnifiedGroup(Group group)
+        {
+            String jsonResponse = MicrosoftGraphHelper.MakePostRequestForString(
+                String.Format("{0}groups",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri),
+                group, "application/json");
+
+            var addedGroup = JsonConvert.DeserializeObject<Group>(jsonResponse);
+            return (addedGroup);
+        }
+
+        /// <summary>
+        /// Updates the photo of an Office 365 Group
+        /// </summary>
+        /// <param name="groupId">The ID of the target group</param>
+        /// <param name="photo">The byte array of the photo</param>
+        public static void UpdateUnifiedGroupPhoto(String groupId, Stream photo)
+        {
+            MicrosoftGraphHelper.MakePatchRequestForString(
+                String.Format("{0}groups/{1}/photo/$value",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    groupId),
+                photo, "image/jpeg");
         }
     }
 }

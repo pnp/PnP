@@ -8,7 +8,7 @@ using System.Web;
 
 namespace OfficeDevPnP.MSGraphAPIDemo.Components
 {
-    public class ContactsHelper
+    public static class ContactsHelper
     {
         /// <summary>
         /// This method retrieves the contacts of the current user

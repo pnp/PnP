@@ -22,9 +22,9 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         public List<String> ProxyAddresses;
         public Boolean SecurityEnabled;
         public String Visibility;
-        public Boolean AllowExternalSenders;
-        public Boolean AutoSubscribeNewMembers;
-        public Boolean IsSubscribedByMail;
-        public Int32 UnseenCount;
+        public Nullable<Boolean> AllowExternalSenders;
+        public Nullable<Boolean> AutoSubscribeNewMembers;
+        public Nullable<Boolean> IsSubscribedByMail;
+        public Nullable<Int32> UnseenCount;
     }
 }

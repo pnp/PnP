@@ -1,6 +1,7 @@
 ﻿using OfficeDevPnP.MSGraphAPIDemo.Components;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -103,6 +104,35 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                             }
                         }),                        
                 });
+
+            var drive = UnifiedGroupsHelper.GetUnifiedGroupDrive(group.Id);
+
+            var newUnifiedGroup = UnifiedGroupsHelper.AddUnifiedGroup(
+                new Models.Group
+                {
+                    DisplayName = "Created via API",
+                    MailEnabled = true,
+                    SecurityEnabled = false,
+                    GroupTypes = new List<String>(new String[] { "Unified"}),
+                    MailNickname = "APICreated",
+                });
+
+            // Wait for a while to complete Office 365 Group creation
+            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(5));
+
+            MemoryStream memPhoto = new MemoryStream();
+            using (FileStream fs = new FileStream(@"C:\github\PaoloPia-PnP\Samples\MicrosoftGraph.Generic\OfficeDevPnP.MSGraphAPIDemo\OfficeDevPnP.MSGraphAPIDemo\AppIcon.png", FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                Byte[] newPhoto = new Byte[fs.Length];
+                fs.Read(newPhoto, 0, (Int32)(fs.Length - 1));
+                memPhoto.Write(newPhoto, 0, newPhoto.Length);
+                memPhoto.Position = 0;
+            }
+
+            if (memPhoto.Length > 0)
+            {
+                UnifiedGroupsHelper.UpdateUnifiedGroupPhoto(newUnifiedGroup.Id, memPhoto);
+            }
 
             return View("Index");
         }

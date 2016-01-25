@@ -196,13 +196,23 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
                 }
 
                 // Prepare the content of the request, if any
-                HttpContent requestContent =
-                    (content != null) ?
-                    new StringContent(JsonConvert.SerializeObject(content,
-                        Formatting.None,
-                        new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
-                    Encoding.UTF8, contentType) :
-                    null;
+                HttpContent requestContent = null;
+                System.IO.Stream streamContent = content as System.IO.Stream;
+                if (streamContent != null)
+                {
+                    requestContent = new StreamContent(streamContent);
+                    requestContent.Headers.ContentType = new MediaTypeHeaderValue(contentType);
+                }
+                else
+                {
+                    requestContent =
+                        (content != null) ?
+                        new StringContent(JsonConvert.SerializeObject(content,
+                            Formatting.None,
+                            new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+                        Encoding.UTF8, contentType) :
+                        null;
+                }
 
                 // Prepare the HTTP request message with the proper HTTP method
                 HttpRequestMessage request = new HttpRequestMessage(
