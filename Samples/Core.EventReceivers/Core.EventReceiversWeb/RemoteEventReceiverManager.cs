@@ -5,12 +5,13 @@ using System.Linq;
 using System.Web;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using Microsoft.SharePoint.Client.EventReceivers;
 
 namespace Contoso.Core.EventReceiversWeb
 {
     public class RemoteEventReceiverManager
     {
-        private const string RECEIVER_NAME = "ItemAddedEvent";
+        private const string RECEIVER_NAME_ADDED = "ItemAddedEvent";
         private const string LIST_TITLE = "Remote Event Receiver Jobs";
 
         public void AssociateRemoteEventsToHostWeb(ClientContext clientContext)
@@ -63,7 +64,7 @@ namespace Contoso.Core.EventReceiversWeb
             {
                 foreach (var rer in jobsList.EventReceivers)
                 {
-                    if (rer.ReceiverName == RECEIVER_NAME)
+                    if (rer.ReceiverName == RECEIVER_NAME_ADDED)
                     {
                         rerExists = true;
                         System.Diagnostics.Trace.WriteLine("Found existing ItemAdded receiver at "
@@ -83,7 +84,7 @@ namespace Contoso.Core.EventReceiversWeb
                 Message msg = op.RequestContext.RequestMessage;
                 receiver.ReceiverUrl = msg.Headers.To.ToString();
 
-                receiver.ReceiverName = RECEIVER_NAME;
+                receiver.ReceiverName = EventReceiverType.ItemAdded.ToString();
                 receiver.Synchronization = EventReceiverSynchronization.Synchronous;
 
                 //Add the new event receiver to a list in the host web
@@ -91,6 +92,34 @@ namespace Contoso.Core.EventReceiversWeb
                 clientContext.ExecuteQuery();
 
                 System.Diagnostics.Trace.WriteLine("Added ItemAdded receiver at " + receiver.ReceiverUrl);
+
+                receiver =
+                    new EventReceiverDefinitionCreationInformation();
+                receiver.EventType = EventReceiverType.ItemAdding;
+
+                receiver.ReceiverUrl = msg.Headers.To.ToString();
+                receiver.ReceiverName = EventReceiverType.ItemAdding.ToString();
+                receiver.Synchronization = EventReceiverSynchronization.Synchronous;
+
+                //Add the new event receiver to a list in the host web
+                jobsList.EventReceivers.Add(receiver);
+                clientContext.ExecuteQuery();
+
+                System.Diagnostics.Trace.WriteLine("Added ItemAdding receiver at " + receiver.ReceiverUrl);
+
+                receiver =
+                    new EventReceiverDefinitionCreationInformation();
+                receiver.EventType = EventReceiverType.ItemUpdating;
+
+                receiver.ReceiverUrl = msg.Headers.To.ToString();
+                receiver.ReceiverName = EventReceiverType.ItemUpdating.ToString();
+                receiver.Synchronization = EventReceiverSynchronization.Synchronous;
+
+                //Add the new event receiver to a list in the host web
+                jobsList.EventReceivers.Add(receiver);
+                clientContext.ExecuteQuery();
+
+                System.Diagnostics.Trace.WriteLine("Added ItemUpdating receiver at " + receiver.ReceiverUrl);
             }
         }
 
@@ -101,18 +130,23 @@ namespace Contoso.Core.EventReceiversWeb
             clientContext.ExecuteQuery();
 
             var rer = myList.EventReceivers.Where(
-                e => e.ReceiverName == RECEIVER_NAME).FirstOrDefault();
+                e => e.ReceiverName == RECEIVER_NAME_ADDED).FirstOrDefault();
 
             try
             {
-                System.Diagnostics.Trace.WriteLine("Removing ItemAdded receiver at "
+                System.Diagnostics.Trace.WriteLine("Removing receiver at "
                         + rer.ReceiverUrl);
 
-                //This will fail when deploying via F5, but works
-                //when deployed to production
-                rer.DeleteObject();
-                clientContext.ExecuteQuery();
+                var rerList = myList.EventReceivers.Where(
+                e => e.ReceiverUrl == rer.ReceiverUrl).ToList<EventReceiverDefinition>();
 
+                foreach (var rerFromUrl in rerList)
+                {
+                    //This will fail when deploying via F5, but works
+                    //when deployed to production
+                    rerFromUrl.DeleteObject();
+                }
+                clientContext.ExecuteQuery();
             }
             catch (Exception oops)
             {
@@ -128,6 +162,56 @@ namespace Contoso.Core.EventReceiversWeb
 
             clientContext.ExecuteQuery();
 
+        }
+
+        public void ItemAddingToListEventHandler(ClientContext clientContext, 
+            SPRemoteEventProperties properties, SPRemoteEventResult result)
+        {
+            try
+            {
+                // only for demo we check here the Description
+                if (properties.ItemEventProperties.AfterProperties["Description"] != null &&
+                    !string.IsNullOrEmpty(properties.ItemEventProperties.AfterProperties["Description"].ToString()))
+                {
+                    throw new Exception("Description should be empty!");
+                }
+                else
+                {
+                    result.Status = SPRemoteEventServiceStatus.Continue;
+                }
+            }
+            catch (Exception oops)
+            {
+                result.Status = SPRemoteEventServiceStatus.CancelWithError;
+                result.ErrorMessage = oops.Message;
+
+                System.Diagnostics.Trace.WriteLine(oops.Message);
+            }
+        }
+
+        public void ItemUpdatingToListEventHandler(ClientContext clientContext,
+            SPRemoteEventProperties properties, SPRemoteEventResult result)
+        {
+            try
+            {
+                // only for demo we check here the Description
+                if (properties.ItemEventProperties.BeforeProperties["Description"] !=
+                    properties.ItemEventProperties.AfterProperties["Description"])
+                {
+                    throw new Exception("Description change is not allowed!");
+                }
+                else
+                {
+                    result.Status = SPRemoteEventServiceStatus.Continue;
+                }
+            }
+            catch (Exception oops)
+            {
+                result.Status = SPRemoteEventServiceStatus.CancelWithError;
+                result.ErrorMessage = oops.Message;
+
+                System.Diagnostics.Trace.WriteLine(oops.Message);
+            }
         }
 
         public void ItemAddedToListEventHandler(ClientContext clientContext, Guid listId, int listItemId)
