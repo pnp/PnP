@@ -175,7 +175,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         /// <summary>
         /// Creates/Adds a new Office 365 Group
         /// </summary>
-        /// <param name="group">The group the add/create</param>
+        /// <param name="group">The group tp add/create</param>
         /// <returns>The just added group</returns>
         public static Group AddUnifiedGroup(Group group)
         {
@@ -200,6 +200,17 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
                     MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
                     groupId),
                 photo, "image/jpeg");
+        }
+
+        /// <summary>
+        /// Deletes an Office 365 Group
+        /// </summary>
+        /// <param name="groupId">The ID of the group to delete</param>
+        public static void DeleteUnifiedGroup(String groupId)
+        {
+            MicrosoftGraphHelper.MakeDeleteRequest(
+                String.Format("{0}groups/{1}",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri, groupId));
         }
     }
 }

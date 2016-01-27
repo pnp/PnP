@@ -118,7 +118,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                 });
 
             // Wait for a while to complete Office 365 Group creation
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(5));
+            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(30));
 
             MemoryStream memPhoto = new MemoryStream();
             using (FileStream fs = new FileStream(@"C:\github\PaoloPia-PnP\Samples\MicrosoftGraph.Generic\OfficeDevPnP.MSGraphAPIDemo\OfficeDevPnP.MSGraphAPIDemo\AppIcon.png", FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -129,10 +129,19 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                 memPhoto.Position = 0;
             }
 
-            if (memPhoto.Length > 0)
+            try
             {
-                UnifiedGroupsHelper.UpdateUnifiedGroupPhoto(newUnifiedGroup.Id, memPhoto);
+                if (memPhoto.Length > 0)
+                {
+                    UnifiedGroupsHelper.UpdateUnifiedGroupPhoto(newUnifiedGroup.Id, memPhoto);
+                }
             }
+            catch (Exception ex)
+            {
+                // Handle the exception
+            }
+
+            UnifiedGroupsHelper.DeleteUnifiedGroup(newUnifiedGroup.Id);
 
             return View("Index");
         }
