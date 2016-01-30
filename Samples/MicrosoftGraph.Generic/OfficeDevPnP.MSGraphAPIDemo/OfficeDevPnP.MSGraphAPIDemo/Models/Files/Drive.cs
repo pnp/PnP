@@ -8,7 +8,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
     /// <summary>
     /// Defines a drive of OneDrive for Business
     /// </summary>
-    public class Drive
+    public class Drive : BaseModel
     {
         /// <summary>
         /// The type of the current Drive

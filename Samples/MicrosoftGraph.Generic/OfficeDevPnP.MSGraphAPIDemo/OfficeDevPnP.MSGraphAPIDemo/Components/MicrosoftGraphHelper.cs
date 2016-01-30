@@ -181,7 +181,9 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
             if (!String.IsNullOrEmpty(accessToken))
             {
                 // If we have the token, then handle the HTTP request
-                HttpClient httpClient = new HttpClient();
+                HttpClientHandler handler = new HttpClientHandler();
+                handler.AllowAutoRedirect = true;
+                HttpClient httpClient = new HttpClient(handler, true);
 
                 // Set the Authorization Bearer token
                 httpClient.DefaultRequestHeaders.Authorization =
