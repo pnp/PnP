@@ -19,9 +19,8 @@ Visit the video on Channel 9 - [http://channel9.msdn.com/Blogs/Office-365-Dev/Us
 -  SharePoint 2013 on-premises
 
 *Sample has been tested and configured for Office 365 MT, but model works as such with other platforms as well. *
-
 ### Prerequisites ###
-
+only on a load balanced remote event receiver environment we need a redis cache server implementation (AZURE, On Premise) 
 
 ### Solution ###
 Solution | Author(s)
@@ -31,6 +30,7 @@ Core.EventReceivers | Kirk Evans (Microsoft), Vesa Juvonen (Microsoft)
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
+3.0  | January 30th 2016 | Updated to demonstrate a sample solution against recursivly calling RER with by caching the CorreleationId
 2.0  | August 24th 2014 | Updated to be on-demain example with additional notes with AppInstalled event.
 1.0  | April 26th 2014 | Initial release
 
@@ -149,3 +149,8 @@ When you update an item in an ItemUpdated/ItemUpdating remote event receiver the
 
 Using SSOM you would disable the event receiver from firing using `this.EventFiringEnabled = false;` but that's not an option for remote event receivers. A good alternative is to add a condition on the actual update logic: only perform an update if there's a change. [Stina Qvarnström](http://tech.bool.se/how-to-stop-the-itemupdated-event-from-refiring-itself-in-an-remote-event-receiver/) did write an nice blog describing this approach.
 
+# Sample Implementaion against recursively called RER
+The idea behind this sample enhancement was to use a persistent store for SharePoint CorrelationID before a RER is triggered. This sample  is using a static memory cache object. But for a production scenario, the RER is usually implemented as load-balanced Web App, so we save the ID with the help of the AZURE Redis cache service. By default, the use of Redis cache is disabled in the web.config. A Redis service is also in a on-prem scenario available. 
+The code to prevent recursively calling RER uses a EventFiringEnabled named method. The sample web app here is expanded in this way: to the existing ItemAdded RER is added a ItemAdding and ItemUpdating RER. ItemAdding checks exemplary, the Description field is not set by the user, and prevents on the ItemUpdating changes by the user after ItemAdded has set this Description. 
+
+The EventFiringEnabled uses the CorrelationID as a string typed key and a 1 for ~ing and 2 for ~ed RER to disable the recursive code flow. If we need within a ~ing RER to block the following connected ~ed, we will be able to call the EventFiringEnabled with a 2 for example.
