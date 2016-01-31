@@ -8,7 +8,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
     public class SharingLink
     {
         public Identity Application { get; set; }
-        public String Type { get; set; }
+        public SharingLinkType Type { get; set; }
         public String WebUrl { get; set; }
     }
 }

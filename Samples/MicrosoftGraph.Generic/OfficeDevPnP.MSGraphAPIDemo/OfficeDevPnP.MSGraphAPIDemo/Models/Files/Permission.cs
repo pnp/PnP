@@ -5,7 +5,7 @@ using System.Web;
 
 namespace OfficeDevPnP.MSGraphAPIDemo.Models
 {
-    public class Permission
+    public class Permission: BaseModel
     {
         public IdentitySet GrantedTo;
         public SharingInvitation Invitation;

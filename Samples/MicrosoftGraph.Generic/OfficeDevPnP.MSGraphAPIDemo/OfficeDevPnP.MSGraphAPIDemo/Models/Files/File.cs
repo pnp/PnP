@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,7 +12,6 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
     public class File
     {
         public Hashes Hashes { get; set; }
-
         public String MimeType { get; set; }
     }
 }

@@ -10,6 +10,6 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
     /// </summary>
     public class Folder
     {
-        public Int32 ChildCount { get; set; }
+        public Nullable<Int32> ChildCount { get; set; }
     }
 }

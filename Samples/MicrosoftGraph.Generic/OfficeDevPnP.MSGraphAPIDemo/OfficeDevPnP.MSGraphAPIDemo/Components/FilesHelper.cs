@@ -123,19 +123,293 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
             return (driveItems.DriveItems);
         }
 
-        public static List<Permission> GetDriveItemPermissions(String driveItemId)
+        /// <summary>
+        /// This method returns the thumbnails of a specific file by ID
+        /// </summary>
+        /// <param name="driveId">The ID of the target drive</param>
+        /// <param name="fileId">The ID of the target file</param>
+        /// <returns>The file thumbnails for the specific file</returns>
+        public static ThumbnailSet GetFileThumbnails(String driveId, String fileId)
         {
-            return (null);
+            String jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
+                String.Format("{0}drives/{1}/items/{2}/thumbnails",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    driveId,
+                    fileId));
+
+            var thumbnails = JsonConvert.DeserializeObject<ThumbnailSetResponse>(jsonResponse);
+            return (thumbnails.Value.Count > 0 ? thumbnails.Value[0] : null);
         }
 
-        public static List<DriveItem> GetDriveItemChildren(String driveItemId)
+        /// <summary>
+        /// This method returns a thumbnail by size of a specific file by ID
+        /// </summary>
+        /// <param name="driveId">The ID of the target drive</param>
+        /// <param name="fileId">The ID of the target file</param>
+        /// <param name="size">The size of the target thumbnail</param>
+        /// <returns>The file thumbnails for the specific file</returns>
+        public static Thumbnail GetFileThumbnail(String driveId, String fileId, ThumbnailSize size)
         {
-            return (null);
+            String jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
+                String.Format("{0}drives/{1}/items/{2}/thumbnails/0/{3}",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    driveId,
+                    fileId,
+                    size.ToString().ToLower()));
+
+            var thumbnail = JsonConvert.DeserializeObject<Thumbnail>(jsonResponse);
+            return (thumbnail);
         }
 
-        public static List<ThumbnailSet> GetDriveItemThumbnails(String driveItemId)
+        /// <summary>
+        /// This method returns the thumbnails of a specific file by ID
+        /// </summary>
+        /// <param name="driveId">The ID of the target drive</param>
+        /// <param name="fileId">The ID of the target file</param>
+        /// <returns>The file thumbnails for the specific file</returns>
+        public static Stream GetFileThumbnailImage(String driveId, String fileId, ThumbnailSize size)
         {
-            return (null);
+            String jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
+                String.Format("{0}drives/{1}/items/{2}/thumbnails/0/{3}",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    driveId,
+                    fileId,
+                    size.ToString().ToLower()));
+
+            var thumbnail = JsonConvert.DeserializeObject<Thumbnail>(jsonResponse);
+
+            var thumbnailImageStream = MicrosoftGraphHelper.MakeGetRequestForStream(
+                thumbnail.Url,
+                "image/jpeg");
+
+            return (thumbnailImageStream);
+        }
+
+        /// <summary>
+        /// This method creates a new folder in OneDrive for Business
+        /// </summary>
+        /// <param name="driveId">The ID of the target drive</param>
+        /// <param name="parentFolderId">The ID of the parent folder</param>
+        /// <param name="folder">The new folder object to create</param>
+        /// <returns>The just created folder</returns>
+        public static DriveItem CreateFolder(String driveId, String parentFolderId, DriveItem folder)
+        {
+            var jsonResponse = MicrosoftGraphHelper.MakePostRequestForString(
+                String.Format("{0}drives/{1}/items/{2}/children",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    driveId,
+                    parentFolderId),
+                    folder, 
+                    "application/json");
+
+            var newFolder = JsonConvert.DeserializeObject<DriveItem>(jsonResponse);
+            return (newFolder);
+        }
+
+        /// <summary>
+        /// This method creates and uploads a file into a parent folder
+        /// </summary>
+        /// <param name="driveId">The ID of the target drive</param>
+        /// <param name="parentFolderId">The ID of the parent folder</param>
+        /// <param name="file">The file object</param>
+        /// <param name="content">The binary stream of the file content</param>
+        /// <param name="contentType">The content type of the file</param>
+        /// <returns>The just created and uploaded file object</returns>
+        public static DriveItem UploadFile(String driveId, String parentFolderId, 
+            DriveItem file, Stream content, String contentType)
+        {
+            var jsonResponse = MicrosoftGraphHelper.MakePostRequestForString(
+                String.Format("{0}drives/{1}/items/{2}/children",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    driveId,
+                    parentFolderId),
+                    file,
+                    "application/json");
+
+            var uploadedFile = JsonConvert.DeserializeObject<DriveItem>(jsonResponse);
+
+            try
+            {
+                MicrosoftGraphHelper.MakePutRequest(
+                    String.Format("{0}drives/{1}/items/{2}/content",
+                        MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                        driveId,
+                        uploadedFile.Id),
+                        content,
+                        contentType);
+            }
+            catch (ApplicationException ex)
+            {
+                // For whatever reason we come here ... the upload failed
+                // and we need to delete the just created file
+                FilesHelper.DeleteFile(driveId, uploadedFile.Id);
+
+                // And then we re-throw the exception
+                throw ex;
+            }
+
+            return (uploadedFile);
+        }
+
+        /// <summary>
+        /// This method deletes a file in OneDrive for Business
+        /// </summary>
+        /// <param name="driveId">The ID of the target drive</param>
+        /// <param name="fileId">The ID of the target file</param>
+        public static void DeleteFile(String driveId, String fileId)
+        {
+            MicrosoftGraphHelper.MakeDeleteRequest(
+                String.Format("{0}drives/{1}/items/{2}",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    driveId,
+                    fileId));
+        }
+
+        /// <summary>
+        /// This method renames an already existing file in OneDrive for Business
+        /// </summary>
+        /// <param name="driveId">The ID of the target drive</param>
+        /// <param name="fileId">The ID of the target file</param>
+        /// <param name="newFileName">The new file name</param>
+        /// <returns>The updated DriveItem corresponding to the renamed file</returns>
+        public static DriveItem RenameFile(String driveId, String fileId, String newFileName)
+        {
+            var jsonResponse = MicrosoftGraphHelper.MakePatchRequestForString(
+                String.Format("{0}drives/{1}/items/{2}",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    driveId,
+                    fileId),
+                    new DriveItem {
+                        Name = newFileName,
+                    },
+                    "application/json");
+
+            var updatedFile = JsonConvert.DeserializeObject<DriveItem>(jsonResponse);
+            return (updatedFile);
+        }
+
+        /// <summary>
+        /// Uploads a new file content on top of an already existing file
+        /// </summary>
+        /// <param name="driveId">The ID of the target drive</param>
+        /// <param name="fileId">The ID of the target file</param>
+        /// <param name="content">The binary stream of the file content</param>
+        /// <param name="contentType">The content type of the file</param>
+        public static void UpdateFileContent(String driveId, String fileId, 
+            Stream content, String contentType)
+        {
+            MicrosoftGraphHelper.MakePutRequest(
+                String.Format("{0}drives/{1}/items/{2}/content",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    driveId,
+                    fileId),
+                    content,
+                    contentType);
+        }
+
+        /// <summary>
+        /// This method moves one item from one parent folder to another
+        /// </summary>
+        /// <param name="driveId">The ID of the target drive</param>
+        /// <param name="fileId">The ID of the target file</param>
+        /// <param name="newItemName">The new name for the item in the target folder</param>
+        /// <param name="newParent">The name of the new target folder</param>
+        /// <returns>The moved DriveItem instance</returns>
+        public static DriveItem MoveDriveItem(String driveId, String fileId, String newItemName, String newParent)
+        {
+            var jsonResponse = MicrosoftGraphHelper.MakePatchRequestForString(
+                String.Format("{0}drives/{1}/items/{2}",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    driveId,
+                    fileId),
+                    new DriveItem
+                    {
+                        Name = newItemName,
+                        ParentReference = new ItemReference
+                        {
+                            Path = $"/drive/root:/{newParent}"
+                        }
+                    },
+                    "application/json");
+
+            var movedItem = JsonConvert.DeserializeObject<DriveItem>(jsonResponse);
+            return (movedItem);
+        }
+
+        /// <summary>
+        /// This method returns a permission of a specific DriveItem in OneDrive for Business
+        /// </summary>
+        /// <param name="driveItemId">The ID of the DriveItem</param>
+        /// <param name="permissionId">The ID of the permission</param>
+        /// <returns>The permission object</returns>
+        public static Permission GetDriveItemPermission(String driveItemId, String permissionId)
+        {
+            var jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
+                String.Format("{0}me/drive/items/{1}/permissions/{2}",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    driveItemId,
+                    permissionId));
+
+            var permission = JsonConvert.DeserializeObject<Permission>(jsonResponse);
+            return (permission);
+        }
+
+        /// <summary>
+        /// This method adds a new permission to a target DriveItem
+        /// </summary>
+        /// <param name="driveItemId">The ID of the DriveItem</param>
+        /// <param name="permission">The permission to add</param>
+        /// <returns>The just added permission object</returns>
+        public static Permission AddDriveItemPermission(String driveItemId, Permission permission)
+        {
+            var jsonResponse = MicrosoftGraphHelper.MakePostRequestForString(
+                String.Format("{0}me/drive/items/{1}/permissions",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    driveItemId),
+                    permission,
+                    "application/json"
+                );
+
+            var addedPermission = JsonConvert.DeserializeObject<Permission>(jsonResponse);
+            return (addedPermission);
+        }
+
+        /// <summary>
+        /// This method removes a permission from a target DriveItem
+        /// </summary>
+        /// <param name="driveItemId">The ID of the DriveItem</param>
+        /// <param name="permissionId">The ID of the permission</param>
+        public static void RemoveDriveItemPermission(String driveItemId, String permissionId)
+        {
+            MicrosoftGraphHelper.MakeDeleteRequest(
+                String.Format("{0}me/drive/items/{1}/permissions/{2}",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    driveItemId,
+                    permissionId));
+        }
+
+        /// <summary>
+        /// This method creates a sharing link for a target DriveItem
+        /// </summary>
+        /// <param name="driveItemId">The ID of the DriveItem</param>
+        /// <param name="type">The type of the sharing link</param>
+        /// <param name="scope">The scope of the sharing link</param>
+        /// <returns>The just added permission for the sharing link</returns>
+        public static Permission CreateSharingLink(String driveItemId, SharingLinkType type, SharingLinkScope scope)
+        {
+            var jsonResponse = MicrosoftGraphHelper.MakePostRequestForString(
+                String.Format("{0}me/drive/items/{1}/microsoft.graph.createLink",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    driveItemId),
+                    new {
+                        @type = type.ToString().ToLower(),
+                        @scope = scope.ToString().ToLower(), 
+                    },
+                    "application/json"
+                );
+
+            var addedPermission = JsonConvert.DeserializeObject<Permission>(jsonResponse);
+            return (addedPermission);
         }
     }
 }

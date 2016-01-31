@@ -10,6 +10,7 @@ using System.Web;
 using Microsoft.Owin.Security.OpenIdConnect;
 using Newtonsoft.Json;
 using System.Text;
+using Newtonsoft.Json.Serialization;
 
 namespace OfficeDevPnP.MSGraphAPIDemo.Components
 {
@@ -21,10 +22,15 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         /// <summary>
         /// This helper method returns and OAuth Access Token for the current user
         /// </summary>
+        /// <param name="resourceId">The resourceId for which we are requesting the token</param>
         /// <returns>The OAuth Access Token value</returns>
-        public static String GetAccessTokenForCurrentUser()
+        public static String GetAccessTokenForCurrentUser(String resourceId = null)
         {
             String accessToken = null;
+            if (String.IsNullOrEmpty(resourceId))
+            {
+                resourceId = MSGraphAPIDemoSettings.MicrosoftGraphResourceId;
+            }
 
             try
             {
@@ -38,7 +44,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
                     new SessionADALCache(signedInUserID));
 
                 AuthenticationResult result = authContext.AcquireTokenSilent(
-                    MSGraphAPIDemoSettings.MicrosoftGraphResourceId,
+                    resourceId,
                     credential,
                     UserIdentifier.AnyUser);
 
@@ -50,9 +56,10 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
                 {
                     // Refresh the access token from scratch
                     HttpContext.Current.GetOwinContext().Authentication.Challenge(
-                        new AuthenticationProperties {
+                        new AuthenticationProperties
+                        {
                             RedirectUri = HttpContext.Current.Request.Url.ToString(),
-                        }, 
+                        },
                         OpenIdConnectAuthenticationDefaults.AuthenticationType);
                 }
                 else
@@ -68,41 +75,41 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         /// <summary>
         /// This helper method makes an HTTP GET request and returns the result as a String
         /// </summary>
-        /// <param name="graphRequestUri">The URL of the request</param>
+        /// <param name="requestUrl">The URL of the request</param>
         /// <returns>The String value of the result</returns>
-        public static String MakeGetRequestForString(String graphRequestUri)
+        public static String MakeGetRequestForString(String requestUrl)
         {
             return (MakeHttpRequest<String>("GET",
-                graphRequestUri,
+                requestUrl,
                 resultPredicate: r => r.Content.ReadAsStringAsync().Result));
         }
 
         /// <summary>
         /// This helper method makes an HTTP GET request and returns the result as a String
         /// </summary>
-        /// <param name="graphRequestUri">The URL of the request</param>
+        /// <param name="requestUrl">The URL of the request</param>
         /// <param name="accept">The accept header for the response</param>
         /// <returns>The Stream  of the result</returns>
-        public static System.IO.Stream MakeGetRequestForStream(String graphRequestUri, 
+        public static System.IO.Stream MakeGetRequestForStream(String requestUrl,
             String accept)
         {
             return (MakeHttpRequest<System.IO.Stream>("GET",
-                graphRequestUri,
+                requestUrl,
                 resultPredicate: r => r.Content.ReadAsStreamAsync().Result));
         }
 
         /// <summary>
         /// This helper method makes an HTTP POST request without a response
         /// </summary>
-        /// <param name="graphRequestUri">The URL of the request</param>
+        /// <param name="requestUrl">The URL of the request</param>
         /// <param name="content">The content of the request</param>
         /// <param name="contentType">The content/type of the request</param>
-        public static void MakePostRequest(String graphRequestUri, 
-            Object content = null, 
+        public static void MakePostRequest(String requestUrl,
+            Object content = null,
             String contentType = null)
         {
             MakeHttpRequest<String>("POST",
-                graphRequestUri,
+                requestUrl,
                 content: content,
                 contentType: contentType);
         }
@@ -110,35 +117,51 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         /// <summary>
         /// This helper method makes an HTTP POST request and returns the result as a String
         /// </summary>
-        /// <param name="graphRequestUri">The URL of the request</param>
+        /// <param name="requestUrl">The URL of the request</param>
         /// <param name="content">The content of the request</param>
         /// <param name="contentType">The content/type of the request</param>
         /// <returns>The String value of the result</returns>
-        public static String MakePostRequestForString(String graphRequestUri,
+        public static String MakePostRequestForString(String requestUrl,
             Object content = null,
             String contentType = null)
         {
             return (MakeHttpRequest<String>("POST",
-                graphRequestUri,
+                requestUrl,
                 content: content,
                 contentType: contentType,
                 resultPredicate: r => r.Content.ReadAsStringAsync().Result));
         }
 
         /// <summary>
-        /// This helper method makes an HTTP PATCH request and returns the result as a String
+        /// This helper method makes an HTTP PUT request without a response
         /// </summary>
-        /// <param name="graphRequestUri">The URL of the request</param>
+        /// <param name="requestUrl">The URL of the request</param>
         /// <param name="content">The content of the request</param>
         /// <param name="contentType">The content/type of the request</param>
-        /// <returns>The String value of the result</returns>
-        public static String MakePatchRequestForString(String graphRequestUri,
+        public static void MakePutRequest(String requestUrl,
             Object content = null,
             String contentType = null)
         {
-            return (MakeHttpRequest<String>("PATCH", 
-                graphRequestUri, 
-                content: content, 
+            MakeHttpRequest<String>("PUT",
+                requestUrl,
+                content: content,
+                contentType: contentType);
+        }
+
+        /// <summary>
+        /// This helper method makes an HTTP PATCH request and returns the result as a String
+        /// </summary>
+        /// <param name="requestUrl">The URL of the request</param>
+        /// <param name="content">The content of the request</param>
+        /// <param name="contentType">The content/type of the request</param>
+        /// <returns>The String value of the result</returns>
+        public static String MakePatchRequestForString(String requestUrl,
+            Object content = null,
+            String contentType = null)
+        {
+            return (MakeHttpRequest<String>("PATCH",
+                requestUrl,
+                content: content,
                 contentType: contentType,
                 resultPredicate: r => r.Content.ReadAsStringAsync().Result));
         }
@@ -146,18 +169,18 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         /// <summary>
         /// This helper method makes an HTTP DELETE request
         /// </summary>
-        /// <param name="graphRequestUri">The URL of the request</param>
+        /// <param name="requestUrl">The URL of the request</param>
         /// <returns>The String value of the result</returns>
-        public static void MakeDeleteRequest(String graphRequestUri)
+        public static void MakeDeleteRequest(String requestUrl)
         {
-            MakeHttpRequest<String>("DELETE", graphRequestUri);
+            MakeHttpRequest<String>("DELETE", requestUrl);
         }
-        
+
         /// <summary>
         /// This helper method makes an HTTP request and eventually returns a result
         /// </summary>
         /// <param name="httpMethod">The HTTP method for the request</param>
-        /// <param name="graphRequestUri">The URL of the request</param>
+        /// <param name="requestUrl">The URL of the request</param>
         /// <param name="accept">The content type of the accepted response</param>
         /// <param name="content">The content of the request</param>
         /// <param name="contentType">The content  type of the request</param>
@@ -166,8 +189,8 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         /// <returns>The value of the result, if any</returns>
         private static TResult MakeHttpRequest<TResult>(
             String httpMethod,
-            String graphRequestUri,
-            String accept = null, 
+            String requestUrl,
+            String accept = null,
             Object content = null,
             String contentType = null,
             Func<HttpResponseMessage, TResult> resultPredicate = null)
@@ -176,7 +199,12 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
             TResult result = default(TResult);
 
             // Get the OAuth Access Token
-            var accessToken = GetAccessTokenForCurrentUser();
+            Uri requestUri = new Uri(requestUrl);
+            Uri graphUri = new Uri(MSGraphAPIDemoSettings.MicrosoftGraphResourceId);
+            var accessToken =
+                GetAccessTokenForCurrentUser(requestUri.DnsSafeHost != graphUri.DnsSafeHost ?
+                    ($"{requestUri.Scheme}://{requestUri.Host}") : MSGraphAPIDemoSettings.MicrosoftGraphResourceId
+                );
 
             if (!String.IsNullOrEmpty(accessToken))
             {
@@ -211,14 +239,18 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
                         (content != null) ?
                         new StringContent(JsonConvert.SerializeObject(content,
                             Formatting.None,
-                            new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }),
+                            new JsonSerializerSettings
+                            {
+                                NullValueHandling = NullValueHandling.Ignore,
+                                ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                            }),
                         Encoding.UTF8, contentType) :
                         null;
                 }
 
                 // Prepare the HTTP request message with the proper HTTP method
                 HttpRequestMessage request = new HttpRequestMessage(
-                    new HttpMethod(httpMethod), graphRequestUri);
+                    new HttpMethod(httpMethod), requestUrl);
 
                 // Set the request content, if any
                 if (requestContent != null)
@@ -241,9 +273,9 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
                 else
                 {
                     throw new ApplicationException(
-                        String.Format("Exception while invoking endpoint {0}.", graphRequestUri),
+                        String.Format("Exception while invoking endpoint {0}.", requestUrl),
                         new HttpException(
-                            (Int32)response.StatusCode, 
+                            (Int32)response.StatusCode,
                             response.Content.ReadAsStringAsync().Result));
                 }
             }

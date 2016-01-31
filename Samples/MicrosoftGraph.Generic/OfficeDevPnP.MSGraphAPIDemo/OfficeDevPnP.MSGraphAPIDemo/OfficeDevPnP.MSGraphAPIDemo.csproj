@@ -195,6 +195,10 @@
     <Compile Include="Models\Contacts\ContactList.cs" />
     <Compile Include="Models\Converters\DateOnlyConverter.cs" />
     <Compile Include="Models\Files\DriveItemList.cs" />
+    <Compile Include="Models\Files\SharingLinkScope.cs" />
+    <Compile Include="Models\Files\SharingLinkType.cs" />
+    <Compile Include="Models\Files\ThumbnailSetResponse.cs" />
+    <Compile Include="Models\Files\ThumbnailSize.cs" />
     <Compile Include="Models\Mail\MailAttachment.cs" />
     <Compile Include="Models\Mail\MailAttachmentList.cs" />
     <Compile Include="Models\Mail\MailFolder.cs" />
@@ -270,6 +274,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="SP2016-MinRole.jpg" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
