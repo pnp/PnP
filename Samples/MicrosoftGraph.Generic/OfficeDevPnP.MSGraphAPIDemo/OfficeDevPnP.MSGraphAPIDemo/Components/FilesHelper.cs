@@ -311,17 +311,17 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         /// This method moves one item from one parent folder to another
         /// </summary>
         /// <param name="driveId">The ID of the target drive</param>
-        /// <param name="fileId">The ID of the target file</param>
+        /// <param name="driveItemId">The ID of the target file</param>
         /// <param name="newItemName">The new name for the item in the target folder</param>
         /// <param name="newParent">The name of the new target folder</param>
         /// <returns>The moved DriveItem instance</returns>
-        public static DriveItem MoveDriveItem(String driveId, String fileId, String newItemName, String newParent)
+        public static DriveItem MoveDriveItem(String driveId, String driveItemId, String newItemName, String newParent)
         {
             var jsonResponse = MicrosoftGraphHelper.MakePatchRequestForString(
                 String.Format("{0}drives/{1}/items/{2}",
                     MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
                     driveId,
-                    fileId),
+                    driveItemId),
                     new DriveItem
                     {
                         Name = newItemName,
