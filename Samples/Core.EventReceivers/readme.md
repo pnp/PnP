@@ -143,3 +143,9 @@ For more information, see the blog post at [http://blogs.msdn.com/b/kaevans/arch
 
 # Required permissions #
 Attaching a remote event receiver to an object in the host web only requires Manage permission for that object.  If we were simply attaching an event to an existing list, then the add-in would only require Manage permission for the list.  However, this sample also adds a list to the host web and activates a feature in the host web, both of which require Manage permissions for the Web.
+
+# Dealing with recursively called ItemUpdated/ItemUpdating event receivers
+When you update an item in an ItemUpdated/ItemUpdating remote event receiver then this will trigger a new execution of that same ItemUpdated/ItemUpdating event receiver...and again...and again...
+
+Using SSOM you would disable the event receiver from firing using `this.EventFiringEnabled = false;` but that's not an option for remote event receivers. A good alternative is to add a condition on the actual update logic: only perform an update if there's a change. [Stina Qvarnström](http://tech.bool.se/how-to-stop-the-itemupdated-event-from-refiring-itself-in-an-remote-event-receiver/) did write an nice blog describing this approach.
+
