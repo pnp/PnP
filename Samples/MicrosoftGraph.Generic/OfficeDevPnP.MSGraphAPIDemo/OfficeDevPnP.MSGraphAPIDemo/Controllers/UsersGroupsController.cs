@@ -1,9 +1,11 @@
 ﻿using OfficeDevPnP.MSGraphAPIDemo.Components;
+using OfficeDevPnP.MSGraphAPIDemo.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
@@ -15,8 +17,11 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             return View();
         }
 
-        public ActionResult PlayWithUsers()
+        [HttpPost]
+        public ActionResult PlayWithUsers(PlayWithUsersViewModel model)
         {
+            AntiForgery.Validate();
+
             var users = UsersGroupsHelper.ListUsers(600);
             var externalUsers = UsersGroupsHelper.ListExternalUsers(600);
             var usersWithCustomAttributes = UsersGroupsHelper.ListUsers(
@@ -25,12 +30,24 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                     "onPremisesImmutableId", "onPremisesSecurityIdentifier",
                     "onPremisesSyncEnabled", "userType" },
                 600);
-            var usersWorkingInIT = UsersGroupsHelper.ListUsersByDepartment("IT", 100);
-            var paolo = UsersGroupsHelper.GetUser("paolo@piasysdev.onmicrosoft.com");
-            var paoloMFA = UsersGroupsHelper.GetUser("paoloMFA@piasysdev.onmicrosoft.com");
-            var paoloADFS = UsersGroupsHelper.GetUser("paolo.pialorsi@sharepoint-camp.com");
 
-            var newUser = UsersGroupsHelper.AddUser(
+            try
+            {
+                var usersWorkingInIT = UsersGroupsHelper.ListUsersByDepartment("IT", 100);
+                var oneUser = UsersGroupsHelper.GetUser(model.UserPrincipalName);
+
+                oneUser.City = "Brescia";
+                UsersGroupsHelper.UpdateUser(oneUser);
+            }
+            catch (Exception)
+            {
+                // Something wrong while getting the thumbnail,
+                // We will have to handle it properly ...
+            }
+
+            try
+            {
+                var newUser = UsersGroupsHelper.AddUser(
                 new Models.User
                 {
                     AccountEnabled = true,
@@ -40,37 +57,54 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                         ForceChangePasswordNextSignIn = true,
                         Password = "Pass@w0rd!",
                     },
-                    UserPrincipalName = "api-created@piasysdev.onmicrosoft.com",
+                    UserPrincipalName = $"api-created@{model.UserPrincipalName.Substring(model.UserPrincipalName.IndexOf("@") + 1)}",
                 }
                 );
+            }
+            catch (Exception)
+            {
+                // Something wrong while getting the thumbnail,
+                // We will have to handle it properly ...
+            }
 
-            paoloMFA.City = "Brescia";
-            UsersGroupsHelper.UpdateUser(paoloMFA);
-
-            var paoloManager = UsersGroupsHelper.GetUserManager("paolo@piasysdev.onmicrosoft.com");
-            var paoloMFADirectReports = UsersGroupsHelper.GetUserDirectReports("paoloMFA@piasysdev.onmicrosoft.com");
+            try
+            {
+                var oneUserManager = UsersGroupsHelper.GetUserManager(model.UserPrincipalName);
+                var oneUserManagerDirectReports = UsersGroupsHelper.GetUserDirectReports(oneUserManager.UserPrincipalName);
+            }
+            catch (Exception)
+            {
+                // Something wrong while getting the thumbnail,
+                // We will have to handle it properly ...
+            }
 
             return View("Index");
         }
 
-        public ActionResult PlayWithSecurityGroups()
+        [HttpPost]
+        public ActionResult PlayWithSecurityGroups(PlayWithUsersViewModel model)
         {
+            AntiForgery.Validate();
+
             var groups = UsersGroupsHelper.ListGroups(100);
             var securityGroups = UsersGroupsHelper.ListSecurityGroups(100);
-            var group = UsersGroupsHelper.GetGroup(groups[6].Id);
+            var group = UsersGroupsHelper.GetGroup(groups[0].Id);
             var owners = UsersGroupsHelper.ListGroupOwners(group.Id);
             var members = UsersGroupsHelper.ListGroupMembers(group.Id);
 
-            var cristian = UsersGroupsHelper.GetUser("cristian.civera@sharepoint-camp.com");
-            UsersGroupsHelper.AddMemberToGroup(cristian, group.Id);
+            var someone = UsersGroupsHelper.GetUser(model.UserPrincipalName);
+            UsersGroupsHelper.AddMemberToGroup(someone, group.Id);
             members = UsersGroupsHelper.ListGroupMembers(group.Id);
-            UsersGroupsHelper.RemoveMemberFromGroup(cristian, group.Id);
+            UsersGroupsHelper.RemoveMemberFromGroup(someone, group.Id);
 
             return View("Index");
         }
 
-        public ActionResult PlayWithUnifiedGroups()
+        [HttpPost]
+        public ActionResult PlayWithUnifiedGroups(PlayWithUsersViewModel model)
         {
+            AntiForgery.Validate();
+
             var groups = UsersGroupsHelper.ListUnifiedGroups(100);
             var group = UsersGroupsHelper.GetGroup(groups[0].Id);
             var owners = UsersGroupsHelper.ListGroupOwners(group.Id);
@@ -98,11 +132,11 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                         new Models.UserInfoContainer[] {
                             new Models.UserInfoContainer {
                                 Recipient = new Models.UserInfo {
-                                    Name = "Paolo Pialorsi",
-                                    Address = "paolo@pialorsi.com",
+                                    Name = model.MailSendToDescription,
+                                    Address = model.MailSendTo,
                                 }
                             }
-                        }),                        
+                        }),
                 });
 
             var drive = UnifiedGroupsHelper.GetUnifiedGroupDrive(group.Id);
@@ -113,7 +147,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                     DisplayName = "Created via API",
                     MailEnabled = true,
                     SecurityEnabled = false,
-                    GroupTypes = new List<String>(new String[] { "Unified"}),
+                    GroupTypes = new List<String>(new String[] { "Unified" }),
                     MailNickname = "APICreated",
                 });
 
@@ -121,7 +155,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             System.Threading.Thread.Sleep(TimeSpan.FromSeconds(30));
 
             MemoryStream memPhoto = new MemoryStream();
-            using (FileStream fs = new FileStream(@"C:\github\PaoloPia-PnP\Samples\MicrosoftGraph.Generic\OfficeDevPnP.MSGraphAPIDemo\OfficeDevPnP.MSGraphAPIDemo\AppIcon.png", FileMode.Open, FileAccess.Read, FileShare.Read))
+            using (FileStream fs = new FileStream(Server.MapPath("~/AppIcon.png"), FileMode.Open, FileAccess.Read, FileShare.Read))
             {
                 Byte[] newPhoto = new Byte[fs.Length];
                 fs.Read(newPhoto, 0, (Int32)(fs.Length - 1));

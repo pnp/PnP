@@ -232,6 +232,8 @@
     <Compile Include="Models\Files\Thumbnail.cs" />
     <Compile Include="Models\Files\ThumbnailSet.cs" />
     <Compile Include="Models\Files\Video.cs" />
+    <Compile Include="Models\PlayWithMailViewModel.cs" />
+    <Compile Include="Models\PlayWithUsersViewModel.cs" />
     <Compile Include="Models\UsersGroups\AssignedLicense.cs" />
     <Compile Include="Models\UsersGroups\AssignedPlan.cs" />
     <Compile Include="Models\UsersGroups\Conversation.cs" />
@@ -274,7 +276,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="SP2016-MinRole.jpg" />
+    <Content Include="SP2016-MinRoles.jpg" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

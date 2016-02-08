@@ -15,25 +15,5 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             var result = MicrosoftGraphHelper.MakeGetRequestForString("https://graph.microsoft.com/v1.0/me");
             return View();
         }
-
-        public ActionResult MailCalendarContacts()
-        {
-            return View();
-        }
-
-        public ActionResult UsersGroups()
-        {
-            return View("Index");
-        }
-
-        public ActionResult Files()
-        {
-            return View("Index");
-        }
-
-        public ActionResult Others()
-        {
-            return View("Index");
-        }
     }
 }

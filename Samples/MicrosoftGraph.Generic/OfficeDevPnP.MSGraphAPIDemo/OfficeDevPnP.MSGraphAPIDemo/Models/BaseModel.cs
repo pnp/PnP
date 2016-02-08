@@ -14,7 +14,6 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Models
         /// <summary>
         /// The unique ID of the entity
         /// </summary>
-        [JsonProperty("id")]
         public String Id { get; set; }
     }
 }

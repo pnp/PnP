@@ -25,7 +25,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             var root = FilesHelper.GetUserPersonalDriveRoot();
             var childrenItems = FilesHelper.ListFolderChildren(drive.Id, root.Id);
 
-            var newFileOnRoot = UploadSampleFile(drive, root);
+            var newFileOnRoot = UploadSampleFile(drive, root, Server.MapPath("~/AppIcon.png"));
 
             // Collect information about children items in the root folder
             StringBuilder sb = new StringBuilder();
@@ -56,8 +56,8 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                     Folder = new Models.Folder { },
                 });
 
-            var newFile = UploadSampleFile(drive, newFolder);
-            UpdateSampleFile(drive, newFile);
+            var newFile = UploadSampleFile(drive, newFolder, Server.MapPath("~/AppIcon.png"));
+            UpdateSampleFile(drive, newFile, Server.MapPath("~/SP2016-MinRoles.jpg"));
 
             // Create another folder in the root folder
             var anotherFolder = FilesHelper.CreateFolder(drive.Id, root.Id,
@@ -76,17 +76,35 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             {
                 var firstFileResult = searchResult.FirstOrDefault(i => i.File != null);
 
-                var thumbnails = FilesHelper.GetFileThumbnails(drive.Id, firstFileResult.Id);
-                var thumbnailMedium = FilesHelper.GetFileThumbnail(drive.Id, firstFileResult.Id, Models.ThumbnailSize.Medium);
-                var thumbnailImage = FilesHelper.GetFileThumbnailImage(drive.Id, firstFileResult.Id, Models.ThumbnailSize.Medium);
+                try
+                {
+                    var thumbnails = FilesHelper.GetFileThumbnails(drive.Id, firstFileResult.Id);
+                    var thumbnailMedium = FilesHelper.GetFileThumbnail(drive.Id, firstFileResult.Id, Models.ThumbnailSize.Medium);
+                    var thumbnailImage = FilesHelper.GetFileThumbnailImage(drive.Id, firstFileResult.Id, Models.ThumbnailSize.Medium);
+                }
+                catch (Exception)
+                {
+                    // Something wrong while getting the thumbnail,
+                    // We will have to handle it properly ...
+                }
             }
 
-            var permission = FilesHelper.GetDriveItemPermission(newFileOnRoot.Id, "0");
+            if (newFileOnRoot != null)
+            {
+                var permission = FilesHelper.GetDriveItemPermission(newFileOnRoot.Id, "0");
+                FilesHelper.DeleteFile(drive.Id, newFileOnRoot.Id);
+            }
 
-            FilesHelper.DeleteFile(drive.Id, newFileOnRoot.Id);
-
-            var sharingPermission = FilesHelper.CreateSharingLink(newFolder.Id, 
+            try
+            {
+                var sharingPermission = FilesHelper.CreateSharingLink(newFolder.Id, 
                 SharingLinkType.View, SharingLinkScope.Anonymous);
+            }
+            catch (Exception)
+            {
+                // Something wrong while getting the sharing link,
+                // We will have to handle it properly ...
+            }
 
             if (!String.IsNullOrEmpty(oneFolderId))
             {
@@ -104,10 +122,10 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             return View("Index");
         }
 
-        private static Models.DriveItem UploadSampleFile(Models.Drive drive, Models.DriveItem newFolder)
+        private Models.DriveItem UploadSampleFile(Models.Drive drive, Models.DriveItem newFolder, String filePath)
         {
             Models.DriveItem result = null;
-            Stream memPhoto = getFileContent(@"C:\github\PaoloPia-PnP\Samples\MicrosoftGraph.Generic\OfficeDevPnP.MSGraphAPIDemo\OfficeDevPnP.MSGraphAPIDemo\AppIcon.png");
+            Stream memPhoto = getFileContent(filePath);
 
             try
             {
@@ -133,11 +151,11 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             return (result);
         }
 
-        private void UpdateSampleFile(Drive drive, DriveItem newFile)
+        private void UpdateSampleFile(Drive drive, DriveItem newFile, String filePath)
         {
             FilesHelper.RenameFile(drive.Id, newFile.Id, "SP2016-MinRoles.jpg");
 
-            Stream memPhoto = getFileContent(@"C:\github\PaoloPia-PnP\Samples\MicrosoftGraph.Generic\OfficeDevPnP.MSGraphAPIDemo\OfficeDevPnP.MSGraphAPIDemo\SP2016-MinRole.jpg");
+            Stream memPhoto = getFileContent(filePath);
 
             try
             {

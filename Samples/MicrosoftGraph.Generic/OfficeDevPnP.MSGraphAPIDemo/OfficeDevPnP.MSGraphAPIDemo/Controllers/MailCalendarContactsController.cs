@@ -1,8 +1,10 @@
 ﻿using OfficeDevPnP.MSGraphAPIDemo.Components;
+using OfficeDevPnP.MSGraphAPIDemo.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 
 namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
@@ -53,18 +55,31 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
 
         #endregion
 
-        public ActionResult PlayWithMail()
+        [HttpPost]
+        public ActionResult PlayWithMail(PlayWithMailViewModel model)
         {
-            var folders = MailHelper.ListFolders();
-            var messages = MailHelper.ListMessages(folders.FirstOrDefault(f => f.Name == "Posta in arrivo").Id);
-            var message = MailHelper.GetMessage(messages[1].Id, true);
-
-            foreach (var attachment in message.Attachments)
+            if (!ModelState.IsValid)
             {
-                // Download content only for attachments smaller than 100K
-                if (attachment.Size < 100 * 1024)
+                return View("Index", model);
+            }
+
+            AntiForgery.Validate();
+
+            var folders = MailHelper.ListFolders();
+
+            // Here you can use whatever mailbox name that you like, instead of Inbox
+            var messages = MailHelper.ListMessages(folders.FirstOrDefault(f => f.Name == "Posta in arrivo" || f.Name == "Inobx").Id);
+            if (messages != null && messages.Count > 0)
+            {
+                var message = MailHelper.GetMessage(messages[0].Id, true);
+
+                foreach (var attachment in message.Attachments)
                 {
-                    attachment.EnsureContent();
+                    // Download content only for attachments smaller than 100K
+                    if (attachment.Size < 100 * 1024)
+                    {
+                        attachment.EnsureContent();
+                    }
                 }
             }
 
@@ -84,8 +99,8 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                             {
                                 Recipient = new Models.UserInfo
                                 {
-                                    Name = "Paolo Pialorsi",
-                                    Address = "paolo@pialorsi.com",
+                                    Name = model.MailSendToDescription,
+                                    Address = model.MailSendTo,
                                 }
                             }
                     }),
@@ -93,18 +108,20 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                 SaveToSentItems = true,
             });
 
-            MailHelper.Reply(messages[0].Id, "This a direct reply!");
-            MailHelper.ReplyAll(messages[0].Id, "This a reply all!");
-            MailHelper.Forward(messages[0].Id,
-                new List<Models.UserInfoContainer>(
-                    new Models.UserInfoContainer[]
-                    {
+            if (messages != null && messages.Count > 0)
+            {
+                MailHelper.Reply(messages[0].Id, "This a direct reply!");
+                MailHelper.ReplyAll(messages[0].Id, "This a reply all!");
+                MailHelper.Forward(messages[0].Id,
+                    new List<Models.UserInfoContainer>(
+                        new Models.UserInfoContainer[]
+                        {
                         new Models.UserInfoContainer
                         {
                             Recipient = new Models.UserInfo
                             {
-                                Address = "paolo@pialorsi.com",
-                                Name = "Paolo Pialorsi"
+                                Name = model.MailSendToDescription,
+                                Address = model.MailSendTo,
                             }
                         },
                         new Models.UserInfoContainer
@@ -115,14 +132,23 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                                 Name = "Someone Else",
                             }
                         },
-                    }),
-                "Hey! Look at this!");
+                        }),
+                    "Hey! Look at this!");
+            }
 
             return View("Index");
         }
 
-        public ActionResult PlayWithCalendars()
+        [HttpPost]
+        public ActionResult PlayWithCalendars(PlayWithMailViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View("Index", model);
+            }
+
+            AntiForgery.Validate();
+
             var calendars = CalendarHelper.ListCalendars();
             var calendar = CalendarHelper.GetCalendar(calendars[0].Id);
             var events = CalendarHelper.ListEvents(calendar.Id, 0);
@@ -145,8 +171,8 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                             {
                                 Recipient = new Models.UserInfo
                                 {
-                                    Address = "paolo@pialorsi.com",
-                                    Name = "Paolo Pialorsi",
+                                    Name = model.MailSendToDescription,
+                                    Address = model.MailSendTo,
                                 }
                             },
                             new Models.UserInfoContainer
@@ -249,8 +275,8 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                             {
                                 Recipient = new Models.UserInfo
                                 {
-                                    Address = "paolo@pialorsi.com",
-                                    Name = "Paolo Pialorsi",
+                                    Name = model.MailSendToDescription,
+                                    Address = model.MailSendTo,
                                 }
                             },
                         });
@@ -265,7 +291,15 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
         public ActionResult PlayWithContacts()
         {
             var contacts = ContactsHelper.ListContacts();
-            var photo = ContactsHelper.GetContactPhoto(contacts[0].Id);
+            try
+            {
+                var photo = ContactsHelper.GetContactPhoto(contacts[0].Id);
+            }
+            catch (Exception)
+            {
+                // Something wrong while getting the thumbnail,
+                // We will have to handle it properly ...
+            }
 
             contacts[0].PersonalNotes += String.Format("Modified on {0}", DateTime.Now);
             var updatedContact = ContactsHelper.UpdateContact(contacts[0]);
