@@ -1,0 +1,72 @@
+﻿@model OfficeDevPnP.MSGraphAPIDemo.Models.PlayWithMailViewModel
+@using OfficeDevPnP.MSGraphAPIDemo.Models
+@{
+    ViewBag.Title = "Chapter 5 - Mail, Calendar, and Contacts";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <p>
+            In this section you can find samples related to the Mail, Calendar, and Contacts APIs.
+        </p>
+    </div>
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("PlayWithMail", "MailCalendarContacts", FormMethod.Post, new { id = "PlayWithMail" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="col-md-4">
+            <h2>Mail</h2>
+            <p>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.MailSendTo, htmlAttributes: new { @class = "control-label col-md-3" })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.MailSendTo, new { htmlAttributes = new { @class = "form-control", placeholder = "Recipient Email" } })
+                            @Html.ValidationMessageFor(model => model.MailSendTo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.MailSendToDescription, htmlAttributes: new { @class = "control-label col-md-3" })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.MailSendToDescription, new { htmlAttributes = new { @class = "form-control", placeholder = "Recipient Name" } })
+                            @Html.ValidationMessageFor(model => model.MailSendToDescription, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </p>
+            <p><a class="btn btn-default" onclick="document.forms['PlayWithMail'].submit();">Play with Mail Services &raquo;</a></p>
+        </div>
+    }
+    @using (Html.BeginForm("PlayWithCalendars", "MailCalendarContacts", FormMethod.Post, new { id = "PlayWithCalendars" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="col-md-4">
+            <h2>Calendar</h2>
+            <p>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.MailSendTo, htmlAttributes: new { @class = "control-label col-md-3" })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.MailSendTo, new { htmlAttributes = new { @class = "form-control", placeholder = "Recipient Email" } })
+                            @Html.ValidationMessageFor(model => model.MailSendTo, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.MailSendToDescription, htmlAttributes: new { @class = "control-label col-md-3" })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.MailSendToDescription, new { htmlAttributes = new { @class = "form-control", placeholder = "Recipient Name" } })
+                            @Html.ValidationMessageFor(model => model.MailSendToDescription, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+            </p>
+            <p><a class="btn btn-default" onclick="document.forms['PlayWithCalendars'].submit();">Play with Calendars and Events &raquo;</a></p>
+        </div>
+    }
+    <div class="col-md-4">
+        <h2>Contacts</h2>
+        <p><a class="btn btn-default" href="/MailCalendarContacts/PlayWithContacts">Play with Contacts &raquo;</a></p>
+    </div>
+</div>
