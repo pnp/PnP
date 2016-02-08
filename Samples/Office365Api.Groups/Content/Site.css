@@ -1,0 +1,27 @@
+﻿body {
+	margin: 0;
+	padding: 0;
+}
+
+.intro {
+	padding-bottom: 30px;
+}
+
+.spacer {
+	padding: 10px;
+}
+
+.login-as {
+	float:right;
+	margin: 0;
+	padding-right: 15px;
+	padding-top: 5px;
+}
+
+.ms-CommandBarItem-link {
+	text-decoration:none;
+}
+
+.ms-Table-cell.noWrap {
+	white-space:nowrap;
+}
