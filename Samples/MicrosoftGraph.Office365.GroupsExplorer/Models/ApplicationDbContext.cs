@@ -18,7 +18,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 
-namespace O365Groups.Models
+namespace OfficeDevPnP.MSGraphAPIGroups.Models
 {
     public class ApplicationDbContext : DbContext
     {

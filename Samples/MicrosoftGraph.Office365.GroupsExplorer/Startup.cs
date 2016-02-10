@@ -3,17 +3,17 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
-using O365Groups.Models;
-using O365Groups.Utils;
+using OfficeDevPnP.MSGraphAPIGroups.Models;
+using OfficeDevPnP.MSGraphAPIGroups.Utils;
 using Owin;
 using System;
 using System.IdentityModel.Claims;
 using System.Threading.Tasks;
 using System.Web;
 
-[assembly: OwinStartup(typeof(O365Groups.Startup))]
+[assembly: OwinStartup(typeof(OfficeDevPnP.MSGraphAPIGroups.Startup))]
 
-namespace O365Groups
+namespace OfficeDevPnP.MSGraphAPIGroups
 {
 	public class Startup
 	{

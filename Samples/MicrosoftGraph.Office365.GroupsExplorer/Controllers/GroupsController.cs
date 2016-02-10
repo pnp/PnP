@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
-using O365Groups.Models;
-using O365Groups.Utils;
+using OfficeDevPnP.MSGraphAPIGroups.Models;
+using OfficeDevPnP.MSGraphAPIGroups.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 
-namespace O365Groups.Controllers
+namespace OfficeDevPnP.MSGraphAPIGroups.Controllers
 {
 	[Authorize]
 	public class GroupsController : Controller
@@ -275,7 +275,7 @@ namespace O365Groups.Controllers
 
 		public async Task<ActionResult> Files(string id)
 		{
-			List<O365Groups.Models.DriveItem> files = new List<O365Groups.Models.DriveItem>();
+			List<DriveItem> files = new List<DriveItem>();
 
 			ViewBag.Title = "Group Files";
 			ViewBag.GroupId = id;

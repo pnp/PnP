@@ -19,7 +19,7 @@ using System;
 using System.Data.Entity;
 using System.Linq;
 
-namespace O365Groups.Models
+namespace OfficeDevPnP.MSGraphAPIGroups.Models
 {
     public class ADALTokenCache : TokenCache
     {

@@ -2,7 +2,7 @@
 using System.Web.Optimization;
 using System.Web.Routing;
 
-namespace O365Groups
+namespace OfficeDevPnP.MSGraphAPIGroups
 {
 	public class MvcApplication : System.Web.HttpApplication
 	{

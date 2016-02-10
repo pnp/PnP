@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace O365Groups
+namespace OfficeDevPnP.MSGraphAPIGroups
 {
 	public class RouteConfig
 	{

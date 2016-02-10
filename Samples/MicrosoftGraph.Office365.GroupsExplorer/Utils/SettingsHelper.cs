@@ -17,7 +17,7 @@
 using System;
 using System.Configuration;
 
-namespace O365Groups.Utils
+namespace OfficeDevPnP.MSGraphAPIGroups.Utils
 {
 	public class SettingsHelper
 	{

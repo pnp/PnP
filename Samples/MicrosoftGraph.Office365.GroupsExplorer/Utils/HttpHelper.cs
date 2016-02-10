@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using O365Groups.Models;
+using OfficeDevPnP.MSGraphAPIGroups.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +8,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace O365Groups.Utils
+namespace OfficeDevPnP.MSGraphAPIGroups.Utils
 {
 	public class HttpHelper
 	{

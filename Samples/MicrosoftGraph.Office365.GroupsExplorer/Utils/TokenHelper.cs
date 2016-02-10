@@ -1,9 +1,9 @@
 ﻿using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using O365Groups.Models;
+using OfficeDevPnP.MSGraphAPIGroups.Models;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace O365Groups.Utils
+namespace OfficeDevPnP.MSGraphAPIGroups.Utils
 {
 	public class TokenHelper
 	{

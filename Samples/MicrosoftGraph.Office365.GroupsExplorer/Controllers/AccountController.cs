@@ -4,7 +4,7 @@ using Microsoft.Owin.Security.OpenIdConnect;
 using System.Web;
 using System.Web.Mvc;
 
-namespace O365Groups.Controllers
+namespace OfficeDevPnP.MSGraphAPIGroups.Controllers
 {
 	public class AccountController : Controller
 	{

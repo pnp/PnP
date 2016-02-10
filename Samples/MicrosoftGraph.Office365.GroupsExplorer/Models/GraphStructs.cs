@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace O365Groups.Models
+namespace OfficeDevPnP.MSGraphAPIGroups.Models
 {
 	public class Attendee
 	{

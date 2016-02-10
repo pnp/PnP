@@ -1,5 +1,5 @@
-﻿using O365Groups.Models;
-using O365Groups.Utils;
+﻿using OfficeDevPnP.MSGraphAPIGroups.Models;
+using OfficeDevPnP.MSGraphAPIGroups.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
-namespace O365Groups.Controllers
+namespace OfficeDevPnP.MSGraphAPIGroups.Controllers
 {
 	[Authorize]
 	public class MeController : Controller

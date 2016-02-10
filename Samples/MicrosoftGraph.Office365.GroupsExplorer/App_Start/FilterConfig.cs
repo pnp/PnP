@@ -1,7 +1,7 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 
-namespace O365Groups
+namespace OfficeDevPnP.MSGraphAPIGroups
 {
 	public class FilterConfig
 	{
