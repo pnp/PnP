@@ -1,9 +1,9 @@
 # Patterns and Practices #
-This is the main repository for the community driven [Office 365 Developer Patterns and Practices](http://aka.ms/OfficeDevPnP) (PnP) initiate.
+This is the main repository for the community driven [Office 365 Developer Patterns and Practices](http://aka.ms/OfficeDevPnP) (PnP) initiative. 
 
 ![](http://i.imgur.com/l01hhvE.png)
 
-PnP initiate has numerous GitHub repositories, so that you can more easily find what's relevant for you depending on your interest. Easiest way to follow up on latest changes is our landing page at http://aka.ms/OfficeDevPnP. We also recommend you to use the [PnP sample and solution search tool](http://dev.office.com/patterns-and-practices-resources) at dev.office.com for finding relevant content for you.
+PnP initiative has numerous GitHub repositories, so that you can more easily find what's relevant for you depending on your interest. Easiest way to follow up on latest changes is our landing page at http://aka.ms/OfficeDevPnP. We also recommend you to use the [PnP sample and solution search tool](http://dev.office.com/patterns-and-practices-resources) at dev.office.com for finding relevant content for you.
 
 - [PnP at dev.office.com](http://aka.ms/OfficeDevPnP) - Welcome page with sample and guidance search
 - [PnP Yammer Group](http://aka.ms/OfficeDevPnPYammer) - Questions and feedback
