@@ -1,4 +1,4 @@
-﻿@model IEnumerable<O365Groups.Models.Post>
+﻿@model IEnumerable<OfficeDevPnP.MSGraphAPIGroups.Models.Post>
 
 <div class="ms-Grid-row ms-bgColor-themeDark ">
 
@@ -51,7 +51,7 @@
 
 			@foreach (var item in Model)
 			{
-				string newParticipants = (item.newParticipants == null) ? "" : String.Join<O365Groups.Models.Recipient>("<br/>", item.newParticipants);
+				string newParticipants = (item.newParticipants == null) ? "" : String.Join<OfficeDevPnP.MSGraphAPIGroups.Models.Recipient>("<br/>", item.newParticipants);
 				string categories = String.Join("<br/>", item.categories);
 				<div class="ms-Table-row">
 					<span class="ms-Table-cell">

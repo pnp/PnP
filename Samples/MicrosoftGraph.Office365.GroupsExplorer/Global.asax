@@ -1,1 +1,1 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="O365Groups.MvcApplication" Language="C#" %>
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="OfficeDevPnP.MSGraphAPIGroups.MvcApplication" Language="C#" %>

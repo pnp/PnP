@@ -1,4 +1,4 @@
-﻿@model IEnumerable<O365Groups.Models.ConversationThread>
+﻿@model IEnumerable<OfficeDevPnP.MSGraphAPIGroups.Models.ConversationThread>
 
 <div class="ms-Grid-row ms-bgColor-themeDark ">
 
@@ -55,8 +55,8 @@
 			@foreach (var item in Model)
 			{
 				string uniqueSenders = String.Join("<br/>", item.uniqueSenders);
-				string toRecipients = (item.toRecipients == null) ? "" : String.Join<O365Groups.Models.Recipient>("<br/>", item.toRecipients);
-				string ccRecipients = (item.ccRecipients == null) ? "" : String.Join<O365Groups.Models.Recipient>("<br/>", item.ccRecipients);
+				string toRecipients = (item.toRecipients == null) ? "" : String.Join<OfficeDevPnP.MSGraphAPIGroups.Models.Recipient>("<br/>", item.toRecipients);
+				string ccRecipients = (item.ccRecipients == null) ? "" : String.Join<OfficeDevPnP.MSGraphAPIGroups.Models.Recipient>("<br/>", item.ccRecipients);
 				<div class="ms-Table-row">
 					<span class="ms-Table-cell">
 						@Html.ActionLink(item.topic, "Posts", new { id = ViewBag.GroupId, itemId = item.id })

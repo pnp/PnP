@@ -1,4 +1,4 @@
-﻿@model IEnumerable<O365Groups.Models.Event>
+﻿@model IEnumerable<OfficeDevPnP.MSGraphAPIGroups.Models.Event>
 
 <div class="ms-Grid-row ms-bgColor-themeDark ">
 
@@ -52,7 +52,7 @@
 
 			@foreach (var item in Model)
 			{
-				string attendees = String.Join<O365Groups.Models.Attendee>("<br/>", item.attendees);
+				string attendees = String.Join<OfficeDevPnP.MSGraphAPIGroups.Models.Attendee>("<br/>", item.attendees);
 				<div class="ms-Table-row">
 					<span class="ms-Table-cell">
 						@Html.DisplayFor(modelItem => item.subject)
