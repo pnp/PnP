@@ -203,7 +203,7 @@
     <Compile Include="Models\ConversationThread.cs" />
     <Compile Include="Models\Event.cs" />
     <Compile Include="Models\Drive.cs" />
-    <Compile Include="Models\GraphResponses.cs" />
+    <Compile Include="Models\GraphResponse.cs" />
     <Compile Include="Models\GraphStructs.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Post.cs" />

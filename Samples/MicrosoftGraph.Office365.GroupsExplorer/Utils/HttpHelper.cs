@@ -19,8 +19,7 @@ namespace OfficeDevPnP.MSGraphAPIGroups.Utils
 			List<Group> groups = new List<Group>();
 
 			string responseContent = await HttpHelper.GetHttpResource(apiUrl);
-			var responseObject = JsonConvert.DeserializeObject<GetGroupsResponse>(responseContent);
-
+			var responseObject = JsonConvert.DeserializeObject<GraphResponse<Group>>(responseContent);
 			foreach (var item in responseObject.value)
 			{
 				groups.Add(item);

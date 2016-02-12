@@ -134,7 +134,7 @@ namespace OfficeDevPnP.MSGraphAPIGroups.Controllers
 			try
 			{
 				string responseContent = await HttpHelper.GetHttpResource(apiUrl);
-				var responseObject = JsonConvert.DeserializeObject<GetConversationsResponse>(responseContent);
+				var responseObject = JsonConvert.DeserializeObject<GraphResponse<Conversation>>(responseContent);
 				foreach (var item in responseObject.value)
 				{
 					convos.Add(item);
@@ -174,7 +174,7 @@ namespace OfficeDevPnP.MSGraphAPIGroups.Controllers
 			try
 			{
 				string responseContent = await HttpHelper.GetHttpResource(apiUrl);
-				var responseObject = JsonConvert.DeserializeObject<GetThreadsResponse>(responseContent);
+				var responseObject = JsonConvert.DeserializeObject<GraphResponse<ConversationThread>>(responseContent);
 				foreach (var item in responseObject.value)
 				{
 					threads.Add(item);
@@ -211,7 +211,7 @@ namespace OfficeDevPnP.MSGraphAPIGroups.Controllers
 			try
 			{
 				string responseContent = await HttpHelper.GetHttpResource(apiUrl);
-				var responseObject = JsonConvert.DeserializeObject<GetPostsResponse>(responseContent);
+				var responseObject = JsonConvert.DeserializeObject<GraphResponse<Post>>(responseContent);
 				foreach (var item in responseObject.value)
 				{
 					posts.Add(item);
@@ -248,7 +248,7 @@ namespace OfficeDevPnP.MSGraphAPIGroups.Controllers
 			try
 			{
 				string responseContent = await HttpHelper.GetHttpResource(apiUrl);
-				var responseObject = JsonConvert.DeserializeObject<GetEventsResponse>(responseContent);
+				var responseObject = JsonConvert.DeserializeObject<GraphResponse<Event>>(responseContent);
 				foreach (var item in responseObject.value)
 				{
 					events.Add(item);
@@ -286,7 +286,7 @@ namespace OfficeDevPnP.MSGraphAPIGroups.Controllers
 			try
 			{
 				string responseContent = await HttpHelper.GetHttpResource(apiUrl);
-				var responseObject = JsonConvert.DeserializeObject<GetFilesResponse>(responseContent);
+				var responseObject = JsonConvert.DeserializeObject<GraphResponse<DriveItem>>(responseContent);
 
 				foreach (var item in responseObject.value)
 				{
