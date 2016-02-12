@@ -35,13 +35,11 @@ More information can be found in the blog post at http://www.schaeflein.net/expl
 This section describes the ASP.NET MVC sample included in the current solution.
 
 ## Prepare the scenario for the ASP.NET MVC Sample ##
-The ASP.NET MVC sample application will use the new Office 365 API's to perform the following list of tasks:
--  Discover the current user's OneDrive URL
--  Discover the current user's Mail URL
--  List the files from the current user's OneDrive
--  Retrieve contacts from the current user's Address Books, just print the first 10
--  Retrieve top 50 mails from the current user's "Inbox", just print the first 10
--  Send a mail as the current user with the sent mail ending up in the user's "Sent items" mailbox folder
+The ASP.NET MVC sample application will use the new Microsoft Graph API's to perform the following list of tasks:
+
+-  Read list of groups in the current user's directory
+-  Read the conversations, events and files in "unified" groups
+-  List the groups to which the current user has joined
 
 In order to run the web application you will need to register it in your development Azure AD tenant.
 The web application uses OWIN and OpenId Connect to Authenticate against the Azure AD that sits under the cover of your Office 365 tenant.
@@ -70,3 +68,7 @@ The multi-tenancy with ASP.NET MVC and OpenID Connect is provided thanks to the 
 https://github.com/Azure-Samples/active-directory-dotnet-webapp-multitenant-openidconnect
 
 Credits to https://github.com/dstrockis and https://github.com/vibronet.
+
+The Office Fabric UI styling was aided by a blog post here: http://chakkaradeep.com/index.php/using-office-ui-fabric-in-sharepoint-add-ins/
+
+Credit to https://github.com/chakkaradeep
