@@ -23,22 +23,17 @@ using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using Perficient.Provisioning.VSTools.Helpers;
 using Perficient.Provisioning.VSTools.Models;
+using Microsoft.VisualStudio.PlatformUI;
 
 namespace Perficient.Provisioning.VSTools
 {
     [PackageRegistration(UseManagedResourcesOnly = true)]
     [InstalledProductRegistration("#110", "#112", "1.0", IconResourceID = 400)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
-    [ProvideToolWindow(typeof(ConfigToolWindow))]
     [Guid(GuidList.guidProvisioning_VSToolsPkgString)]
     [ProvideAutoLoad(UIContextGuids80.SolutionExists)]
     public sealed class Provisioning_VSToolsPackage : Package
     {
-        private const string PnPTemplateToolsConfig = "ProvisioningTemplateTools.config";
-
-        private const string ProjectCommandEnablePnPToolsText = "Enable PnP Provisioning Tools";
-        private const string ProjectCommandDisablePnPToolsText = "Disable PnP Provisioning Tools";
-
         private OleMenuCommand _projectItemDeployCommand;
         private OleMenuCommand _projectFolderDeployCommand;
 
@@ -46,26 +41,6 @@ namespace Perficient.Provisioning.VSTools
         {
             Debug.WriteLine(string.Format(CultureInfo.CurrentCulture, "Entering constructor for: {0}", this.ToString()));
         }
-
-        /// <summary>
-        /// This function is called when the user clicks the menu item that shows the 
-        /// tool window. See the Initialize method to see how the menu item is associated to 
-        /// this function using the OleMenuCommandService service and the MenuCommand class.
-        /// </summary>
-        private void ShowToolWindow(object sender, EventArgs e)
-        {
-            // Get the instance number 0 of this tool window. This window is single instance so this instance
-            // is actually the only one.
-            // The last flag is set to true so that if the tool window does not exists it will be created.
-            ToolWindowPane window = this.FindToolWindow(typeof(ConfigToolWindow), 0, true);
-            if ((null == window) || (null == window.Frame))
-            {
-                throw new NotSupportedException(Resources.CanNotCreateWindow);
-            }
-            IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
-            Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
-        }
-
 
         #region Package Members
 
@@ -86,11 +61,14 @@ namespace Perficient.Provisioning.VSTools
                 if (null != mcs)
                 {
                     // project-level commands
-                    CommandID toolsToggleCommandID = new CommandID(GuidList.guidPnPTemplateProvisioningProjectCmdSet, (int)PkgCmdIDList.cmdidPnPToolsToggle);
-                    var toolsToggleMenuItem = new OleMenuCommand(ToggleToolsMenuItemCallback, toolsToggleCommandID);
+                    //CommandID toolsToggleCommandID = new CommandID(GuidList.guidPnPTemplateProvisioningProjectCmdSet, (int)PkgCmdIDList.cmdidPnPToolsToggle);
+                    var toolsToggleMenuItem = new OleMenuCommand(ToggleToolsMenuItemCallback, PkgCmdIDList.ToggleToolsCommandID);
                     toolsToggleMenuItem.BeforeQueryStatus += ToggleToolsMenuItemOnBeforeQueryStatus;
-
                     mcs.AddCommand(toolsToggleMenuItem);
+
+                    var toolsEditConnMenuItem = new OleMenuCommand(EditConnMenuItemCallback, PkgCmdIDList.EditConnCommandID);
+                    toolsEditConnMenuItem.Text = Resources.EditConnPnPToolsText;
+                    mcs.AddCommand(toolsEditConnMenuItem);
                 }
 
                 AttachFileEventListeners();
@@ -154,8 +132,8 @@ namespace Perficient.Provisioning.VSTools
             OleMenuCommandService mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (null != mcs)
             {
-                CommandID menuCommandID = new CommandID(GuidList.guidProvisioning_VSToolsCmdSet, (int)PkgCmdIDList.cmdidHackathon);
-                _projectItemDeployCommand = new OleMenuCommand(DeployMenuItemCallback, menuCommandID);
+                //var cmd = new CommandID(GuidList.guidProvisioning_VSToolsCmdSet, (int)PkgCmdIDList.cmdidHackathon);
+                _projectItemDeployCommand = new OleMenuCommand(DeployMenuItemCallback, PkgCmdIDList.DeployItemCommandID);
                 _projectItemDeployCommand.BeforeQueryStatus += menuCommand_ProjectItemBeforeQueryStatus;
                 mcs.AddCommand(_projectItemDeployCommand);
             }
@@ -166,13 +144,12 @@ namespace Perficient.Provisioning.VSTools
             OleMenuCommandService mcs = GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (null != mcs)
             {
-                CommandID menuCommandID = new CommandID(GuidList.guidPnPTemplateProvisioningFolderCmdSet, (int)PkgCmdIDList.cmdidDeployFolderWithPNP);
-                _projectFolderDeployCommand = new OleMenuCommand(DeployFolderMenuItemCallback, menuCommandID);
+                //var cmd = new CommandID(GuidList.guidProvisioning_VSToolsCmdSet, (int)PkgCmdIDList.cmdidDeployFolderWithPNP);
+                _projectFolderDeployCommand = new OleMenuCommand(DeployFolderMenuItemCallback, PkgCmdIDList.DeployFolderCommandID);
                 _projectFolderDeployCommand.BeforeQueryStatus += menuCommand_ProjectFolderBeforeQueryStatus;
                 mcs.AddCommand(_projectFolderDeployCommand);
             }
         }
-
 
         private void RemoveProjectItemCommand()
         {
@@ -182,7 +159,6 @@ namespace Perficient.Provisioning.VSTools
                 mcs.RemoveCommand(_projectItemDeployCommand);
             }
         }
-
 
         private void AttachFileEventListeners()
         {
@@ -232,7 +208,6 @@ namespace Perficient.Provisioning.VSTools
                 outputWindowPane.OutputString(string.Format("Error registering file event handlers : {0} , {1}\n", ex.Message, ex.StackTrace));
             }
         }
-
 
         private ProvisioningTemplateLocationInfo GetParentProvisioningTemplateInformation(string projectItemFullPath, string projectFolderPath, ProvisioningTemplateToolsConfiguration config)
         {
@@ -315,7 +290,6 @@ namespace Perficient.Provisioning.VSTools
             return null;
         }
 
-
         private XMLFileSystemTemplateProvider InitializeProvisioningTemplateProvider(ProvisioningTemplateLocationInfo templateInfo)
         {
             XMLFileSystemTemplateProvider provider = new XMLFileSystemTemplateProvider(templateInfo.TemplateFolderPath, "");
@@ -359,7 +333,6 @@ namespace Perficient.Provisioning.VSTools
                        0,        // false
                        out result));
         }
-
 
         private void ProjItemAdded(EnvDTE.ProjectItem projectItem)
         {
@@ -445,7 +418,7 @@ namespace Perficient.Provisioning.VSTools
             try
             {
                 var projectFolderPath = Path.GetDirectoryName(projectItem.ContainingProject.FullName);
-                var config = GetProvisioningTemplateToolsConfiguration(projectFolderPath);
+                var config = GetProvisioningTemplateToolsConfiguration(projectFolderPath, false);
                 if (config == null || !config.ToolsEnabled)
                 {
                     return;
@@ -697,7 +670,6 @@ namespace Perficient.Provisioning.VSTools
 
         }
 
-
         private void DeployMenuItemCallback(object sender, EventArgs e)
         {
             try
@@ -782,7 +754,7 @@ namespace Perficient.Provisioning.VSTools
             ProvisioningTemplateToolsConfiguration config)
         {
             var siteUrl = config.Deployment.TargetSite;
-            var login = config.Deployment.Authentication.Office365.Username;
+            var login = config.Deployment.Credentials.Username;
 
             using (ClientContext clientContext = new ClientContext(siteUrl))
             {
@@ -790,7 +762,7 @@ namespace Perficient.Provisioning.VSTools
 
                 #region password
 
-                foreach (char c in config.Deployment.Authentication.Office365.Password.ToCharArray())
+                foreach (char c in config.Deployment.Credentials.Password.ToCharArray())
                     passWord.AppendChar(c);
 
                 #endregion
@@ -810,7 +782,6 @@ namespace Perficient.Provisioning.VSTools
             }
 
         }
-
 
         //Context menu check for specific file name
         void menuCommand_ProjectItemBeforeQueryStatus(object sender, EventArgs e)
@@ -980,43 +951,23 @@ namespace Perficient.Provisioning.VSTools
             }
         }
 
-
-
-
         private void ToggleToolsMenuItemOnBeforeQueryStatus(object sender, EventArgs eventArgs)
         {
             // get the menu that fired the event
             var menuCommand = sender as OleMenuCommand;
             if (menuCommand != null)
             {
-
-                menuCommand.Text = ProjectCommandEnablePnPToolsText;
+                menuCommand.Text = Resources.EnablePnPToolsText;
                 try
                 {
-                    uint projectItemId;
-                    var hierarchy = ProjectHelpers.GetCurrentHierarchy(out projectItemId);
+                    var projectFolderPath = Helpers.ProjectHelpers.GetProjectPath();
 
-                    EnvDTE.Project project = ProjectHelpers.GetProject(hierarchy, projectItemId);
+                    var configFilePath = Path.Combine(projectFolderPath, Resources.FileNameProvisioningTemplate);
 
-                    var projectFolderPath = Path.GetDirectoryName(project.FullName);
-
-                    var configFilePath = Path.Combine(projectFolderPath, PnPTemplateToolsConfig);
-
-                    // project.ProjectItems[]
-                    if (System.IO.File.Exists(configFilePath))
+                    var config = Helpers.XmlHelpers.GetConfigFile<ProvisioningTemplateToolsConfiguration>(configFilePath);
+                    if (config != null && config.ToolsEnabled)
                     {
-                        var dte = (DTE)Package.GetGlobalService(typeof(DTE));
-                        var configItem = dte.Solution.FindProjectItem(configFilePath);
-
-                        if (configItem != null)
-                        {
-                            ProvisioningTemplateToolsConfiguration config = XmlHelpers.DeserializeObject(configFilePath);
-
-                            if (config.ToolsEnabled)
-                            {
-                                menuCommand.Text = ProjectCommandDisablePnPToolsText;
-                            }
-                        }
+                        menuCommand.Text = Resources.DisablePnPToolsText;
                     }
                 }
                 catch (Exception ex)
@@ -1026,28 +977,90 @@ namespace Perficient.Provisioning.VSTools
             }
         }
 
-        private ProvisioningTemplateToolsConfiguration GetProvisioningTemplateToolsConfiguration(string projectFolderPath)
+        private ProvisioningTemplateToolsConfiguration GetProvisioningTemplateToolsConfiguration(string projectFolderPath, bool createIfNotExists = false)
         {
             ProvisioningTemplateToolsConfiguration config = null;
+            ProvisioningCredentials creds = null;
+
+            var configFileCredsPath = Path.Combine(projectFolderPath, Resources.FileNameProvisioningUserCreds);
+            var configFilePath = Path.Combine(projectFolderPath, Resources.FileNameProvisioningTemplate);
 
             try
             {
-                var configFilePath = Path.Combine(projectFolderPath, PnPTemplateToolsConfig);
-                if (System.IO.File.Exists(configFilePath))
-                {
-                    var dte = (DTE)Package.GetGlobalService(typeof(DTE));
-                    var configItem = dte.Solution.FindProjectItem(configFilePath);
+                //get the config from file
+                config = Helpers.XmlHelpers.GetConfigFile<ProvisioningTemplateToolsConfiguration>(configFilePath);
 
-                    if (configItem != null)
-                    {
-                        config = XmlHelpers.DeserializeObject(configFilePath);
-                    }
-                }
+                //get the user creds from file
+                creds = Helpers.XmlHelpers.GetConfigFile<ProvisioningCredentials>(configFileCredsPath, false);
             }
             catch (Exception ex)
             {
                 outputWindowPane.OutputString(string.Format("Error in GetProvisioningTemplateToolsConfiguration: {0}, {1} \n", ex.Message, ex.StackTrace));
             }
+
+            //create the default files if requested
+            if (createIfNotExists)
+            {
+                if (config == null)
+                {
+                    config = GenerateDefaultProvisioningConfig(configFilePath);
+                }
+                config.ToolsEnabled = true;
+                XmlHelpers.SerializeObject(config, configFilePath);
+
+                if (creds != null)
+                {
+                    config.Deployment.Credentials = creds;
+                }
+                else
+                {
+                    GetUserCreds(config, configFileCredsPath);
+                }
+            }
+
+            return config;
+        }
+
+        private void GetUserCreds(ProvisioningTemplateToolsConfiguration config, string credsFilePath)
+        {
+            ProvisioningCredentials creds = null;
+
+            //prompt for credentials then persist to .user xml file
+            VSToolsConfigWindow cfgWindow = new VSToolsConfigWindow();
+            cfgWindow.txtSiteUrl.Text = config.Deployment.TargetSite;
+            cfgWindow.txtUsername.Text = config.Deployment.Credentials.Username;
+            cfgWindow.ShowDialog();
+
+            if (cfgWindow.DialogResult.HasValue && cfgWindow.DialogResult.Value)
+            {
+                creds = new ProvisioningCredentials()
+                {
+                    Username = cfgWindow.txtUsername.Text,
+                    Password = cfgWindow.txtPassword.Password,
+                };
+                config.Deployment.Credentials = creds;
+
+                if (config.Deployment.TargetSite != cfgWindow.txtSiteUrl.Text && !string.IsNullOrEmpty(cfgWindow.txtSiteUrl.Text))
+                {
+                    config.Deployment.TargetSite = cfgWindow.txtSiteUrl.Text;
+                }
+
+                //serialize the credentials to a file
+                XmlHelpers.SerializeObject(config.Deployment.Credentials, credsFilePath);
+            }
+        }
+
+        private ProvisioningTemplateToolsConfiguration GenerateDefaultProvisioningConfig(string configFilePath)
+        {
+            var config = new ProvisioningTemplateToolsConfiguration();
+            config.Templates.Add(new Template()
+            {
+                Path = "relative_path_to_template.xml",
+                ResourcesFolder = "relative_path_to_resources_folder"
+            });
+            config.Deployment.TargetSite = "https://yourtenant.sharepoint.com/sites/testsite";
+            config.Deployment.Credentials = new ProvisioningCredentials();
+
             return config;
         }
 
@@ -1056,37 +1069,14 @@ namespace Perficient.Provisioning.VSTools
             var menuCommand = sender as OleMenuCommand;
             if (menuCommand != null)
             {
-                uint projectItemId;
-                var hierarchy = ProjectHelpers.GetCurrentHierarchy(out projectItemId);
+                var project = Helpers.ProjectHelpers.GetProject();
+                var projectFolderPath = Helpers.ProjectHelpers.GetProjectPath();
 
-                EnvDTE.Project project = ProjectHelpers.GetProject(hierarchy, projectItemId);
-                var projectFolderPath = Path.GetDirectoryName(project.FullName);
+                var configFilePath = Path.Combine(projectFolderPath, Resources.FileNameProvisioningTemplate);
+                var config = GetProvisioningTemplateToolsConfiguration(projectFolderPath, true);
 
-                var configFilePath = Path.Combine(projectFolderPath, PnPTemplateToolsConfig);
-                var config = GetProvisioningTemplateToolsConfiguration(projectFolderPath);
-
-
-                if (menuCommand.Text == ProjectCommandEnablePnPToolsText)
+                if (menuCommand.Text == Resources.EnablePnPToolsText)
                 {
-                    if (config == null)
-                    {
-                        config = new ProvisioningTemplateToolsConfiguration();
-                        config.Templates.Add(new Template()
-                        {
-                            Path = "Path to your template fix.xml",
-                            ResourcesFolder = "Path to your Resources folder\\"
-                        });
-                        config.Deployment.TargetSite = " ";
-                        config.Deployment.Authentication = new Authentication()
-                        {
-                            Type = "Office365",
-                            Office365 = new Office365()
-                            {
-                                Username = "your.username@tenant.sharepoint.com",
-                                Password = " "
-                            }
-                        };
-                    }
                     config.ToolsEnabled = true;
                     XmlHelpers.SerializeObject(config, configFilePath);
 
@@ -1100,17 +1090,30 @@ namespace Perficient.Provisioning.VSTools
                 }
                 else
                 {
-
-                    if (config != null)
-                    {
-                        config.ToolsEnabled = false;
-                        XmlHelpers.SerializeObject(config, configFilePath);
-                    }
+                    config.ToolsEnabled = false;
+                    XmlHelpers.SerializeObject(config, configFilePath);
                 }
             }
 
         }
 
+        private void EditConnMenuItemCallback(object sender, EventArgs e)
+        {
+            var projectFolderPath = Helpers.ProjectHelpers.GetProjectPath();
 
+            var config = GetProvisioningTemplateToolsConfiguration(projectFolderPath, true);
+
+            var configFilePath = Path.Combine(projectFolderPath, Resources.FileNameProvisioningTemplate);
+            var configFileCredsPath = Path.Combine(projectFolderPath, Resources.FileNameProvisioningUserCreds);
+
+            string originalSiteUrl = config.Deployment.TargetSite;
+            GetUserCreds(config, configFileCredsPath);
+            
+            //site url was changed, persist it to the xml file
+            if (originalSiteUrl != config.Deployment.TargetSite)
+            {
+                Helpers.XmlHelpers.SerializeObject(config, configFilePath);
+            }
+        }
     }
 }

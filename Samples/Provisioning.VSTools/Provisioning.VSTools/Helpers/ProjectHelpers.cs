@@ -37,7 +37,6 @@ namespace Perficient.Provisioning.VSTools.Helpers
             return Uri.UnescapeDataString(folderUri.MakeRelativeUri(pathUri).ToString().Replace('/', Path.DirectorySeparatorChar));
         }
 
-
         public static ProjectItem GetProjectItem(this IVsHierarchy hierarchy, uint ItemID)
         {
             if (hierarchy == null)
@@ -60,6 +59,20 @@ namespace Perficient.Provisioning.VSTools.Helpers
             return prjItemObject as EnvDTE.Project;
         }
 
+        public static EnvDTE.Project GetProject()
+        {
+            uint projectItemId;
+            var hierarchy = ProjectHelpers.GetCurrentHierarchy(out projectItemId);
+
+            return ProjectHelpers.GetProject(hierarchy, projectItemId);
+        }
+
+        public static string GetProjectPath()
+        {
+            var project = GetProject();
+            return Path.GetDirectoryName(project.FullName);
+        }
+
         public static IVsHierarchy GetCurrentHierarchy(out uint projectItemId)
         {
             IntPtr hierarchyPtr, selectionContainerPtr;
@@ -73,11 +86,11 @@ namespace Perficient.Provisioning.VSTools.Helpers
             return Marshal.GetTypedObjectForIUnknown(hierarchyPtr, typeof(IVsHierarchy)) as IVsHierarchy;
         }
 
-
         public static EnvDTE80.DTE2 GetDTE2()
         {
             return Package.GetGlobalService(typeof(DTE)) as EnvDTE80.DTE2;
         }
+
         public static string GetSourceFilePath()
         {
             EnvDTE80.DTE2 _applicationObject = GetDTE2();
