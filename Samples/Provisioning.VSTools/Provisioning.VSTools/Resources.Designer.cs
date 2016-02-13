@@ -97,6 +97,15 @@ namespace Perficient.Provisioning.VSTools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pnpsitetemplate.xml.
+        /// </summary>
+        internal static string FileNamePnPTemplate {
+            get {
+                return ResourceManager.GetString("FileNamePnPTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ProvisioningTemplateTools.config.
         /// </summary>
         internal static string FileNameProvisioningTemplate {

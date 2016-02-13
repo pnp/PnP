@@ -1052,16 +1052,37 @@ namespace Perficient.Provisioning.VSTools
 
         private ProvisioningTemplateToolsConfiguration GenerateDefaultProvisioningConfig(string configFilePath)
         {
+            string resourceFolderName = "SPResources";
+            EnsureResourcesFolder(resourceFolderName);
+
             var config = new ProvisioningTemplateToolsConfiguration();
             config.Templates.Add(new Template()
             {
-                Path = "relative_path_to_template.xml",
-                ResourcesFolder = "relative_path_to_resources_folder"
+                Path = Resources.FileNamePnPTemplate,
+                ResourcesFolder = resourceFolderName,
             });
             config.Deployment.TargetSite = "https://yourtenant.sharepoint.com/sites/testsite";
             config.Deployment.Credentials = new ProvisioningCredentials();
 
             return config;
+        }
+
+        private void EnsureResourcesFolder(string folderRelativePath)
+        {
+            string projectPath = Helpers.ProjectHelpers.GetProjectPath();
+            string folderPath = System.IO.Path.Combine(projectPath, folderRelativePath);
+
+            if (!System.IO.Directory.Exists(folderPath))
+            {
+                System.IO.Directory.CreateDirectory(folderPath);
+            }
+
+            try
+            {
+                var project = Helpers.ProjectHelpers.GetProject();
+                project.ProjectItems.AddFolder(folderRelativePath);
+            }
+            catch { }
         }
 
         private void ToggleToolsMenuItemCallback(object sender, EventArgs e)

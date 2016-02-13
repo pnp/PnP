@@ -129,6 +129,9 @@
   <data name="EnablePnPToolsText" xml:space="preserve">
     <value>Enable PnP Provisioning Tools</value>
   </data>
+  <data name="FileNamePnPTemplate" xml:space="preserve">
+    <value>pnpsitetemplate.xml</value>
+  </data>
   <data name="FileNameProvisioningTemplate" xml:space="preserve">
     <value>ProvisioningTemplateTools.config</value>
   </data>
