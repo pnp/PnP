@@ -11,19 +11,15 @@ namespace Perficient.Provisioning.VSTools.Models
     {
         public string Username { get; set; }
 
-        [XmlIgnore]
-        internal string Password
+        public void SetSecurePassword(string password)
         {
-            get
-            {
-                var securePw = Helpers.SecureStringHelper.DecryptString(this.SecurePassword);
-                return Helpers.SecureStringHelper.ToInsecureString(securePw);
-            }
-            set
-            {
-                var securePw = Helpers.SecureStringHelper.ToSecureString(value);
-                this.SecurePassword = Helpers.SecureStringHelper.EncryptString(securePw);
-            }
+            var securePw = Helpers.SecureStringHelper.ToSecureString(password);
+            this.SecurePassword = Helpers.SecureStringHelper.EncryptString(securePw);
+        }
+
+        public System.Security.SecureString GetSecurePassword()
+        {
+            return Helpers.SecureStringHelper.DecryptString(this.SecurePassword);
         }
 
         public string SecurePassword { get; set; }

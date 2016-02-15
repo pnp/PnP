@@ -24,6 +24,7 @@ using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 using Perficient.Provisioning.VSTools.Helpers;
 using Perficient.Provisioning.VSTools.Models;
 using Microsoft.VisualStudio.PlatformUI;
+using System.Threading.Tasks;
 
 namespace Perficient.Provisioning.VSTools
 {
@@ -654,8 +655,7 @@ namespace Perficient.Provisioning.VSTools
                             var filesUnderFolderTemplate = new ProvisioningTemplate(template.Connector);
                             filesUnderFolderTemplate.Files.AddRange(files);
                             outputWindowPane.OutputString(string.Format("\nStarting deployment of files under folder {0} from template template {1} ....\n", src, pnpTemplateInfo.TemplateFileName));
-                            DeployProvisioningTemplate(filesUnderFolderTemplate, config);
-                            outputWindowPane.OutputString(string.Format("Finished deployment of files under folde {0} from template template {1} ....\n\n", src, pnpTemplateInfo.TemplateFileName));
+                            DeployProvisioningTemplate(pnpTemplateInfo.TemplateFileName = " (folder)", filesUnderFolderTemplate, config);
                         }
 
                     }
@@ -665,7 +665,7 @@ namespace Perficient.Provisioning.VSTools
             }
             catch (Exception ex)
             {
-                outputWindowPane.OutputString(string.Format("Error in deploying files to SharePoint: {0}, {1} \n", ex.Message, ex.StackTrace));
+                outputWindowPane.OutputString(string.Format("Error before provisioning folder to SharePoint: {0}, {1} \n", ex.Message, ex.StackTrace));
             }
 
         }
@@ -700,7 +700,6 @@ namespace Perficient.Provisioning.VSTools
                     return;
                 }
 
-
                 var pnpTemplateInfo = GetParentProvisioningTemplateInformation(projectItem, config);
                 if (pnpTemplateInfo != null)
                 {
@@ -721,12 +720,9 @@ namespace Perficient.Provisioning.VSTools
                             var singleFileTemplate = new ProvisioningTemplate(template.Connector);
                             singleFileTemplate.Files.Add(file);
                             outputWindowPane.OutputString(string.Format("\nStarting deployment of file {0} from template template {1} ....\n", src, pnpTemplateInfo.TemplateFileName));
-                            DeployProvisioningTemplate(singleFileTemplate, config);
-                            outputWindowPane.OutputString(string.Format("Finished deployment of file {0} from template template {1} ....\n\n", src, pnpTemplateInfo.TemplateFileName));
+                            DeployProvisioningTemplate(pnpTemplateInfo.TemplateFileName + " (single file)", singleFileTemplate, config);
                         }
-
                     }
-
                 }
                 else
                 {
@@ -735,52 +731,57 @@ namespace Perficient.Provisioning.VSTools
                     {
                         XMLFileSystemTemplateProvider provider = InitializeProvisioningTemplateProvider(pnpTemplateInfo);
                         ProvisioningTemplate template = InitializeProvisioningTemplate(provider, pnpTemplateInfo);
-                        outputWindowPane.OutputString(string.Format("\nStarting deployment of template {0} ....\n", pnpTemplateInfo.TemplateFileName));
-                        DeployProvisioningTemplate(template, config);
-                        outputWindowPane.OutputString(string.Format("Finished deployment of template {0} ....\n\n", pnpTemplateInfo.TemplateFileName));
-
+                        DeployProvisioningTemplate(pnpTemplateInfo.TemplateFileName + " (all items)", template, config);
                     }
                 }
-
             }
             catch (Exception ex)
             {
-                outputWindowPane.OutputString(string.Format("Error in deploying file to SharePoint: {0}, {1} \n", ex.Message, ex.StackTrace));
+                outputWindowPane.OutputString(string.Format("Error before provisioning file to SharePoint: {0}, {1} \n", ex.Message, ex.StackTrace));
             }
-
         }
 
-        private void DeployProvisioningTemplate(ProvisioningTemplate template,
-            ProvisioningTemplateToolsConfiguration config)
+        private async System.Threading.Tasks.Task<bool> DeployProvisioningTemplate(string name, ProvisioningTemplate template, ProvisioningTemplateToolsConfiguration config)
         {
+            bool success = true;
             var siteUrl = config.Deployment.TargetSite;
             var login = config.Deployment.Credentials.Username;
 
-            using (ClientContext clientContext = new ClientContext(siteUrl))
+            outputWindowPane.OutputString(string.Format("\nStart - provisioning template '{0}'...\n", name));
+
+            await System.Threading.Tasks.Task.Run(() =>
             {
-                SecureString passWord = new SecureString();
 
-                #region password
-
-                foreach (char c in config.Deployment.Credentials.Password.ToCharArray())
-                    passWord.AppendChar(c);
-
-                #endregion
-
-                clientContext.Credentials = new SharePointOnlineCredentials(login, passWord);
-
-                Web web = clientContext.Web;
-                clientContext.Load(web);
-                clientContext.ExecuteQuery();
-                ProvisioningTemplateApplyingInformation ptai = new ProvisioningTemplateApplyingInformation();
-                ptai.ProgressDelegate = delegate(string message, int step, int total)
+                try
                 {
-                    outputWindowPane.OutputString(string.Format("Deploying {0}, Step {1}/{2} \n", message, step, total));
-                };
+                    using (ClientContext clientContext = new ClientContext(siteUrl))
+                    {
+                        clientContext.Credentials = new SharePointOnlineCredentials(login, config.Deployment.Credentials.GetSecurePassword());
 
-                clientContext.Web.ApplyProvisioningTemplate(template, ptai);
-            }
+                        Web web = clientContext.Web;
+                        clientContext.Load(web);
+                        clientContext.ExecuteQuery();
+                        ProvisioningTemplateApplyingInformation ptai = new ProvisioningTemplateApplyingInformation();
+                        ptai.ProgressDelegate = delegate(string message, int step, int total)
+                        {
+                            outputWindowPane.OutputString(string.Format("Deploying {0}, Step {1}/{2} \n", message, step, total));
+                        };
 
+                        clientContext.Web.ApplyProvisioningTemplate(template, ptai);
+                    }
+
+                    success = true;
+                }
+                catch (Exception ex)
+                {
+                    this.outputWindowPane.OutputString("Error during provisioning: " + ex.Message);
+                    success = false;
+                }
+            });
+
+            outputWindowPane.OutputString(string.Format("End - provisioning template '{0}', success={1}\n\n", name, success));
+
+            return success;
         }
 
         //Context menu check for specific file name
@@ -993,6 +994,11 @@ namespace Perficient.Provisioning.VSTools
 
                 //get the user creds from file
                 creds = Helpers.XmlHelpers.GetConfigFile<ProvisioningCredentials>(configFileCredsPath, false);
+
+                if (creds != null)
+                {
+                    config.Deployment.Credentials = creds;
+                }
             }
             catch (Exception ex)
             {
@@ -1056,8 +1062,8 @@ namespace Perficient.Provisioning.VSTools
                 creds = new ProvisioningCredentials()
                 {
                     Username = cfgWindow.txtUsername.Text,
-                    Password = cfgWindow.txtPassword.Password,
                 };
+                creds.SetSecurePassword(cfgWindow.txtPassword.Password);
                 config.Deployment.Credentials = creds;
 
                 if (config.Deployment.TargetSite != cfgWindow.txtSiteUrl.Text && !string.IsNullOrEmpty(cfgWindow.txtSiteUrl.Text))
