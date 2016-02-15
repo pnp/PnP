@@ -67,6 +67,16 @@ namespace Perficient.Provisioning.VSTools.Helpers
 
                 System.IO.File.WriteAllBytes(filename, ms.ToArray());
             }
-        } 
+        }
+
+        /// <summary>
+        /// Writes an xml string to a file
+        /// </summary>
+        internal static void WriteXmlStringToFile(string inputXml, string filePath)
+        {
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
+            doc.LoadXml(inputXml);
+            doc.Save(filePath);
+        }
     }
 }

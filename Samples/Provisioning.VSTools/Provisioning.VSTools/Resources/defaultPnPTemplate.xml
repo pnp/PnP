@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2015/12/ProvisioningSchema">
+  <pnp:Templates ID="CONTAINER-DefaultTemplate">
+    <pnp:ProvisioningTemplate ID="DefaultTemplate" Version="1">
+    </pnp:ProvisioningTemplate>
+  </pnp:Templates>
+</pnp:Provisioning>

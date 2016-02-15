@@ -984,6 +984,7 @@ namespace Perficient.Provisioning.VSTools
 
             var configFileCredsPath = Path.Combine(projectFolderPath, Resources.FileNameProvisioningUserCreds);
             var configFilePath = Path.Combine(projectFolderPath, Resources.FileNameProvisioningTemplate);
+            var pnpTemplateFilePath = Path.Combine(projectFolderPath, Resources.DefaultFileNamePnPTemplate);
 
             try
             {
@@ -1001,13 +1002,21 @@ namespace Perficient.Provisioning.VSTools
             //create the default files if requested
             if (createIfNotExists)
             {
+                //config file
                 if (config == null)
                 {
-                    config = GenerateDefaultProvisioningConfig(configFilePath);
+                    config = GenerateDefaultProvisioningConfig();
                 }
-                config.ToolsEnabled = true;
+
+                //ensure a default template exists
+                if (config.Templates == null)
+                {
+                    var tempConfig = GenerateDefaultProvisioningConfig();
+                    config.Templates = tempConfig.Templates;
+                }
                 XmlHelpers.SerializeObject(config, configFilePath);
 
+                //create the creds file
                 if (creds != null)
                 {
                     config.Deployment.Credentials = creds;
@@ -1015,6 +1024,17 @@ namespace Perficient.Provisioning.VSTools
                 else
                 {
                     GetUserCreds(config, configFileCredsPath);
+                }
+
+                //ensure pnp template files
+                foreach (var t in config.Templates)
+                {
+                    string templatePath = System.IO.Path.Combine(Helpers.ProjectHelpers.GetProjectPath(), t.Path);
+                    if (!System.IO.File.Exists(templatePath))
+                    {
+                        string resourcesPath = System.IO.Path.Combine(Helpers.ProjectHelpers.GetProjectPath(), Resources.DefaultResourcesRelativePath);
+                        GenerateDefaultPnPTemplate(resourcesPath, templatePath);
+                    }
                 }
             }
 
@@ -1050,15 +1070,16 @@ namespace Perficient.Provisioning.VSTools
             }
         }
 
-        private ProvisioningTemplateToolsConfiguration GenerateDefaultProvisioningConfig(string configFilePath)
+        private ProvisioningTemplateToolsConfiguration GenerateDefaultProvisioningConfig()
         {
-            string resourceFolderName = "SPResources";
+            string resourceFolderName = Resources.DefaultResourcesRelativePath;
             EnsureResourcesFolder(resourceFolderName);
 
             var config = new ProvisioningTemplateToolsConfiguration();
+            config.ToolsEnabled = true;
             config.Templates.Add(new Template()
             {
-                Path = Resources.FileNamePnPTemplate,
+                Path = Resources.DefaultFileNamePnPTemplate,
                 ResourcesFolder = resourceFolderName,
             });
             config.Deployment.TargetSite = "https://yourtenant.sharepoint.com/sites/testsite";
@@ -1067,7 +1088,40 @@ namespace Perficient.Provisioning.VSTools
             return config;
         }
 
-        private void EnsureResourcesFolder(string folderRelativePath)
+        private void GenerateDefaultPnPTemplate(string resourcesPath, string templatePath, string containerName = "")
+        {
+            if (string.IsNullOrEmpty(containerName))
+            {
+                containerName = "DefaultContainer";
+            }
+
+            string templateFilename = System.IO.Path.GetFileName(templatePath);
+
+            //XMLTemplateProvider provider = new XMLFileSystemTemplateProvider(resourcesPath, containerName);
+            //FileSystemConnector fileConnector = new FileSystemConnector(resourcesPath, containerName);
+            //ProvisioningTemplate template = new ProvisioningTemplate(fileConnector);
+            //template = provider.GetTemplate(templateFilename);
+
+            //provider.SaveAs(template, Resources.DefaultFileNamePnPTemplate);
+
+            //Helpers.XmlHelpers.WriteXmlStringToFile(template.ToXML(), filePath);
+            Helpers.XmlHelpers.WriteXmlStringToFile(Resources.defaultPnPTemplate, templatePath);
+
+            try
+            {
+                var dte = (DTE)Package.GetGlobalService(typeof(DTE));
+                var projectItem = dte.Solution.FindProjectItem(templatePath);
+
+                if (projectItem == null)
+                {
+                    var project = Helpers.ProjectHelpers.GetProject();
+                    project.ProjectItems.AddFromFile(templatePath);
+                }
+            }
+            catch { }
+        }
+
+        private string EnsureResourcesFolder(string folderRelativePath)
         {
             string projectPath = Helpers.ProjectHelpers.GetProjectPath();
             string folderPath = System.IO.Path.Combine(projectPath, folderRelativePath);
@@ -1083,6 +1137,8 @@ namespace Perficient.Provisioning.VSTools
                 project.ProjectItems.AddFolder(folderRelativePath);
             }
             catch { }
+
+            return folderPath;
         }
 
         private void ToggleToolsMenuItemCallback(object sender, EventArgs e)
@@ -1129,7 +1185,7 @@ namespace Perficient.Provisioning.VSTools
 
             string originalSiteUrl = config.Deployment.TargetSite;
             GetUserCreds(config, configFileCredsPath);
-            
+
             //site url was changed, persist it to the xml file
             if (originalSiteUrl != config.Deployment.TargetSite)
             {

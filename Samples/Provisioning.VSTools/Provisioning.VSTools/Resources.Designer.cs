@@ -70,6 +70,39 @@ namespace Perficient.Provisioning.VSTools {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to pnpsitetemplate.xml.
+        /// </summary>
+        internal static string DefaultFileNamePnPTemplate {
+            get {
+                return ResourceManager.GetString("DefaultFileNamePnPTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;pnp:Provisioning xmlns:pnp=&quot;http://schemas.dev.office.com/PnP/2015/12/ProvisioningSchema&quot;&gt;
+        ///  &lt;pnp:Templates ID=&quot;CONTAINER-DefaultTemplate&quot;&gt;
+        ///    &lt;pnp:ProvisioningTemplate ID=&quot;DefaultTemplate&quot; Version=&quot;1&quot;&gt;
+        ///    &lt;/pnp:ProvisioningTemplate&gt;
+        ///  &lt;/pnp:Templates&gt;
+        ///&lt;/pnp:Provisioning&gt;.
+        /// </summary>
+        internal static string defaultPnPTemplate {
+            get {
+                return ResourceManager.GetString("defaultPnPTemplate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SPResources.
+        /// </summary>
+        internal static string DefaultResourcesRelativePath {
+            get {
+                return ResourceManager.GetString("DefaultResourcesRelativePath", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disable PnP Provisioning Tools.
         /// </summary>
         internal static string DisablePnPToolsText {
@@ -93,15 +126,6 @@ namespace Perficient.Provisioning.VSTools {
         internal static string EnablePnPToolsText {
             get {
                 return ResourceManager.GetString("EnablePnPToolsText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to pnpsitetemplate.xml.
-        /// </summary>
-        internal static string FileNamePnPTemplate {
-            get {
-                return ResourceManager.GetString("FileNamePnPTemplate", resourceCulture);
             }
         }
         
