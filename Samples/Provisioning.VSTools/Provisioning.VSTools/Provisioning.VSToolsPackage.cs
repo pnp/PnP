@@ -1097,15 +1097,16 @@ namespace Perficient.Provisioning.VSTools
 
             string templateFilename = System.IO.Path.GetFileName(templatePath);
 
-            //XMLTemplateProvider provider = new XMLFileSystemTemplateProvider(resourcesPath, containerName);
-            //FileSystemConnector fileConnector = new FileSystemConnector(resourcesPath, containerName);
-            //ProvisioningTemplate template = new ProvisioningTemplate(fileConnector);
+            XMLTemplateProvider provider = new XMLFileSystemTemplateProvider(resourcesPath, containerName);
+            FileSystemConnector fileConnector = new FileSystemConnector(resourcesPath, containerName);
+            ProvisioningTemplate template = new ProvisioningTemplate(fileConnector);
+            provider.SaveAs(template, templatePath);
             //template = provider.GetTemplate(templateFilename);
 
             //provider.SaveAs(template, Resources.DefaultFileNamePnPTemplate);
 
             //Helpers.XmlHelpers.WriteXmlStringToFile(template.ToXML(), filePath);
-            Helpers.XmlHelpers.WriteXmlStringToFile(Resources.defaultPnPTemplate, templatePath);
+            //Helpers.XmlHelpers.WriteXmlStringToFile(Resources.defaultPnPTemplate, templatePath);
 
             try
             {
