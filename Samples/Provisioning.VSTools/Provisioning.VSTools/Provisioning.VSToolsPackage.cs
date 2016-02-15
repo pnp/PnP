@@ -756,17 +756,21 @@ namespace Perficient.Provisioning.VSTools
                 {
                     using (ClientContext clientContext = new ClientContext(siteUrl))
                     {
+                        outputWindowPane.OutputString("Signing in...\n");
                         clientContext.Credentials = new SharePointOnlineCredentials(login, config.Deployment.Credentials.GetSecurePassword());
 
+                        outputWindowPane.OutputString("Loading web...\n");
                         Web web = clientContext.Web;
                         clientContext.Load(web);
                         clientContext.ExecuteQuery();
+
                         ProvisioningTemplateApplyingInformation ptai = new ProvisioningTemplateApplyingInformation();
                         ptai.ProgressDelegate = delegate(string message, int step, int total)
                         {
                             outputWindowPane.OutputString(string.Format("Deploying {0}, Step {1}/{2} \n", message, step, total));
                         };
 
+                        outputWindowPane.OutputString("Applying template...\n");
                         clientContext.Web.ApplyProvisioningTemplate(template, ptai);
                     }
 
