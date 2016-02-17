@@ -389,3 +389,35 @@ span#chromeControl_topheader_sitetitle
   margin-top: 15px;
   position: relative;
 }
+
+/* Begin People Picker Styles */
+
+.sp-peoplepicker-editDiv {
+    overflow: hidden;
+}
+
+span.sp-peoplepicker-chosen {
+    margin-right: 10px;
+}
+
+span.sp-peoplepicker-removeChosen {
+    margin-left: 3px;
+    cursor: pointer;
+}
+
+li.sp-peoplepicker-foundItem {
+    cursor: pointer;
+}
+
+li.sp-peoplepicker-foundItem:hover {
+    background-color:#f5f5f5;
+}
+
+ul.sp-peoplepicker-dropdown li {
+    padding: 4px;
+}
+
+/* maintain small divider line from bootstrap */
+ul.sp-peoplepicker-dropdown li.divider {
+    padding: 0px !important;
+}

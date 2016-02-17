@@ -1,6 +1,4 @@
 ﻿var additionalOwnersPicker;
-var membersPicker;
-var visitorsPicker;
 
 
 (function () {
@@ -16,16 +14,17 @@ var visitorsPicker;
     function SiteOwnersPeoplePickerController($scope, $log, $utilservice, $peoplepickerfactory) {
         $scope.title = 'SiteOwnersPeoplePickerController';
 
-        $scope.updateSecondaryOwners = function (data) {
-            $scope.siteConfiguration.secondaryOwners = data;
-        }
-
-        $scope.updateMembers = function (data) {
-            $scope.siteConfiguration.members = data;
-        }
-
-        $scope.updateVisitors = function (data) {
-            $scope.siteConfiguration.visitors = data;
+        $scope.AddSecondaryOwners = function (data) {
+            if (data != undefined) {
+                var _resolvedOwners = jQuery.parseJSON(data);
+                var _ownersEmail = [];
+                for (var i = 0; i < _resolvedOwners.length; i++) {
+                    _ownersEmail.push(_resolvedOwners[i].email);
+                }
+                $scope.siteConfiguration.secondaryOwners = _ownersEmail;
+                var owners = $('#ppSecondaryOwners').spSecondaryOwnersPicker('get');
+                $scope.siteConfiguration._resolvedOwners = owners;
+            }
         }
 
         var context;
@@ -57,12 +56,9 @@ var visitorsPicker;
             }
         );
 
-
         function activate() {
-
             $log.info($scope.title + ' Activated');
             initSiteOwnersPeoplePickers(context);
-
         }
 
         $scope.getEmailFromPicker = function (e) {
@@ -70,23 +66,17 @@ var visitorsPicker;
             alert(elem.val());
         }
 
-
         function initSiteOwnersPeoplePickers(context) {
-
-            //Make a people picker control
-            //1. context = SharePoint Client Context object
-            //2. $('#spanAdministrators') = SPAN that will 'host' the people picker control
-            //3. $('#inputAdministrators') = INPUT that will be used to capture user input
-            //4. $('#divAdministratorsSearch') = DIV that will show the 'dropdown' of the people picker
-            //5. $('#hdnAdministrators') = INPUT hidden control that will host a JSON string of the resolved users
-
-            additionalOwnersPicker = $peoplepickerfactory.getPeoplePickerInstance(context, $('#spanAdditionalOwnersPrimary'), $('#inputAdditionalOwnersPrimary'), $('#divAdditionalOwnersPrimarySearch'), $('#hdnAdditionalOwnersPrimary'), "additionalOwnersPicker", spLanguage);
-
-            //Removed fjm if you wish to add additional people pickers this shows the pattern and look at the view_owners.html file
-            //membersPicker = $peoplepickerfactory.getPeoplePickerInstance(context, $('#spanMembers'), $('#inputMembers'), $('#divMembersSearch'), $('#hdnMembers'), "membersPicker", spLanguage);
-            //visitorsPicker = $peoplepickerfactory.getPeoplePickerInstance(context, $('#spanVisitors'), $('#inputVisitors'), $('#divVisitorsSearch'), $('#hdnVisitors'), "visitorsPicker", spLanguage);
-
-
+            
+            // setup people pickers
+            $('#ppSecondaryOwners').spSecondaryOwnersPicker({
+                onLoaded: function () {
+                    if ($scope.siteConfiguration._resolvedOwners != undefined) {
+                        var _resolvedOwners = $scope.siteConfiguration._resolvedOwners;
+                        $(this).spSecondaryOwnersPicker('set', _resolvedOwners);
+                    }
+                }
+            });
         }
 
         //function to get a parameter value by a specific key
