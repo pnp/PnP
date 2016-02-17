@@ -13,7 +13,7 @@ namespace Perficient.Provisioning.VSTools
         private const uint cmdidDeployFolderWithPnP = 0x103;
 
         public static CommandID DeployItemCommandID = new CommandID(GuidList.guidProvisioning_VSToolsCmdSet, (int)cmdidDeployItemWithPnP);
-        public static CommandID DeployFolderCommandID = new CommandID(GuidList.guidProvisioning_VSToolsCmdSet, (int)cmdidDeployFolderWithPnP);
+        public static CommandID DeployFolderCommandID = new CommandID(GuidList.guidPnPTemplateProvisioningFolderCmdSet, (int)cmdidDeployFolderWithPnP);
 
         public static CommandID ToggleToolsCommandID = new CommandID(GuidList.guidPnPTemplateProvisioningProjectCmdSet, (int)cmdidPnPToolsToggle);
         public static CommandID EditConnCommandID = new CommandID(GuidList.guidPnPTemplateProvisioningProjectCmdSet, (int)cmdidEditConnection);
