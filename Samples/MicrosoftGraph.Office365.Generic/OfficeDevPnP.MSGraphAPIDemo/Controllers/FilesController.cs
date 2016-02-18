@@ -91,25 +91,34 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
 
             if (newFileOnRoot != null)
             {
-                var permission = FilesHelper.GetDriveItemPermission(newFileOnRoot.Id, "0");
+                try
+                {
+                    var permission = FilesHelper.GetDriveItemPermission(newFileOnRoot.Id, "0");
+                }
+                catch (Exception)
+                {
+                    // Something wrong while getting permissions,
+                }
                 FilesHelper.DeleteFile(drive.Id, newFileOnRoot.Id);
             }
 
+            #region Under Construction
+
             try
             {
-                var sharingPermission = FilesHelper.CreateSharingLink(newFolder.Id, 
+                var sharingPermission = FilesHelper.CreateSharingLink(newFolder.Id,
                 SharingLinkType.View, SharingLinkScope.Anonymous);
             }
             catch (Exception)
             {
                 // Something wrong while getting the sharing link,
-                // We will have to handle it properly ...
             }
 
             if (!String.IsNullOrEmpty(oneFolderId))
             {
                 var newFolderChildren = FilesHelper.ListFolderChildren(drive.Id, newFolder.Id);
-                var file = newFolderChildren.FirstOrDefault(f => f.Name == "moved.jpg");
+                var newFolderChildFolderChildren = FilesHelper.ListFolderChildren(drive.Id, newFolderChildren.FirstOrDefault(f => f.Folder != null).Id);
+                var file = newFolderChildFolderChildren.FirstOrDefault(f => f.Name == "moved.jpg");
 
                 if (file != null)
                 {
@@ -118,6 +127,8 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                     return (base.File(fileContent, jpegContentType, file.Name));
                 }
             }
+
+            #endregion
 
             return View("Index");
         }
@@ -136,7 +147,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                         new Models.DriveItem
                         {
                             File = new Models.File { },
-                            Name = "PnPLogo.png",
+                            Name = filePath.Substring(filePath.LastIndexOf("\\") + 1),
                             ConflictBehavior = "rename",
                         },
                         memPhoto,
