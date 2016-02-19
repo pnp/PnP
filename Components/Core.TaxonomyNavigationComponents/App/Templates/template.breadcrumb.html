@@ -1,0 +1,18 @@
+<ul class="ms-Pivot" style="height: 40px">
+    <!-- ko foreach: nodes -->
+        <!-- ko if: hasParent -->
+            <i class="ms-Icon ms-Icon--chevronRight"></i>
+        <!-- /ko -->  
+        <!-- ko ifnot: hasParent -->       
+            <li class="ms-Pivot-link" data-bind="css : { 'is-selected' : isCurrentNode }">
+                <a style="text-decoration: none" data-bind="attr: {href: $parent.siteServerRelativeUrl }">
+                    <i class="ms-Icon ms-Icon--home"></i>
+                </a>  
+            </li> 
+        <i class="ms-Icon ms-Icon--chevronRight"></i>
+        <!-- /ko -->
+        <li class="ms-Pivot-link ms-Label" data-bind="css : { 'is-selected' : isCurrentNode }">  
+            <a data-bind="text: title, attr: { href: url }" style="text-decoration: none"></a>
+        </li>
+    <!-- /ko -->
+</ul>

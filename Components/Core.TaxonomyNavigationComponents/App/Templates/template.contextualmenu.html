@@ -1,0 +1,37 @@
+<!-- Note: make position relative instead of absolute to avoid overflow -->
+<ul class="ms-ContextualMenu is-open" style="position:relative">
+    <!-- ko foreach: nodes -->
+    <!-- ko ifnot: excludeFromCurrentNavigation() -->
+    <li class="ms-ContextualMenu-item">
+        <a class="ms-ContextualMenu-link ms-ContextualMenu-link--hasMenu" data-bind="text: title, attr: { href: url }, css : { 'is-selected' : isCurrentNode }"></a>
+        <!-- ko if: hasChildren -->
+        <i class="ms-ContextualMenu-subMenuIcon ms-Icon ms-Icon--chevronRight" style="line-height :40px!important"></i>
+        <ul class="ms-ContextualMenu">
+            <!-- ko foreach: children -->
+                <!-- ko ifnot: excludeFromCurrentNavigation() -->
+                <li class="ms-ContextualMenu-item">
+                    <!-- ko if: hasChildren -->
+                    <a class="ms-ContextualMenu-link ms-ContextualMenu-link--hasMenu" data-bind="text: title, attr: { href: url }"></a>
+                    <i class="ms-ContextualMenu-subMenuIcon ms-Icon ms-Icon--chevronRight" style="line-height :40px!important"></i>
+                    <ul class="ms-ContextualMenu">
+                        <!-- ko foreach: children -->
+                            <!-- ko ifnot: excludeFromCurrentNavigation() -->
+                            <li class="ms-ContextualMenu-item">
+                                <a class="ms-ContextualMenu-link" data-bind="text: title, attr: { href: url }"></a>
+                            </li>
+                            <!-- /ko -->
+                        <!-- /ko -->
+                    </ul>
+                    <!-- /ko -->
+                    <!-- ko ifnot: hasChildren -->
+                    <a class="ms-ContextualMenu-link" data-bind="text: title, attr: { href: url }"></a>
+                    <!-- /ko -->
+                </li>
+                <!-- /ko -->
+            <!-- /ko -->
+        </ul>
+        <!-- /ko -->    
+    </li>
+    <!-- /ko -->       
+    <!-- /ko -->
+</ul>
