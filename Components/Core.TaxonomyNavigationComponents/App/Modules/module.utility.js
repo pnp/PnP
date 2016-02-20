@@ -29,7 +29,7 @@ define([], function () {
         
             if (nodes) {
                 for (var i = 0; i < nodes.length; i++) {
-                    if (nodes[i].FriendlyUrlSegment === currentFriendlyUrlSegment) {
+                    if (nodes[i].FriendlyUrlSegment === decodeURI(currentFriendlyUrlSegment)) {
                         return nodes[i];
                     }
                     var found = this.getNodeByFriendlyUrlSegment(nodes[i].ChildNodes, currentFriendlyUrlSegment);
@@ -40,7 +40,7 @@ define([], function () {
         
         this.getCurrentFriendlyUrlSegment = function () {
             
-            var currentFriendlyUrlSegment = window.location.href.replace(/\/$|#/g, '').split('?')[0].split('/').pop();
+            var currentFriendlyUrlSegment = decodeURI(window.location.href.replace(/\/$|#/g, '').split('?')[0].split('/').pop());
             
             return currentFriendlyUrlSegment;
         };  
