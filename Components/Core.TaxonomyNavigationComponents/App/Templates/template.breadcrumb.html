@@ -5,14 +5,14 @@
         <!-- /ko -->  
         <!-- ko ifnot: hasParent -->       
             <li class="ms-Pivot-link" data-bind="css : { 'is-selected' : isCurrentNode }">
-                <a style="text-decoration: none" data-bind="attr: {href: $parent.siteServerRelativeUrl }">
+                <a style="text-decoration" data-bind="attr: {href: $parent.siteServerRelativeUrl }" class="ms-fontColor-neutralPrimary">
                     <i class="ms-Icon ms-Icon--home"></i>
                 </a>  
             </li> 
         <i class="ms-Icon ms-Icon--chevronRight"></i>
         <!-- /ko -->
         <li class="ms-Pivot-link ms-Label" data-bind="css : { 'is-selected' : isCurrentNode }">  
-            <a data-bind="text: title, attr: { href: url }" style="text-decoration: none"></a>
+            <a data-bind="text: title, attr: { href: url }" style="text-decoration: none" class="ms-fontColor-neutralPrimary"></a>
         </li>
     <!-- /ko -->
 </ul>
