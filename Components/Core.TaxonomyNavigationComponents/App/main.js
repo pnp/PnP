@@ -24,7 +24,7 @@ require.config({
 		'domReady' : 'Plugins/domReady',
         'text' : 'Plugins/text',
 		
-		// Office UI Fabric scripts
+		// Office UI Fabric scripts for components behavior
 		'OfficeUiNavBar' : 'OfficeUI/Jquery.NavBar',
 		'OfficeUiContextualMenu' : 'OfficeUI/Jquery.ContextualMenu',
 

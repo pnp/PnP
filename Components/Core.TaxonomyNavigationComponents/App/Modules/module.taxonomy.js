@@ -158,7 +158,8 @@ define([], function () {
 
 		var getTermNodesAsTree = function (context, allTerms, currentNodeTerms, parentFriendlyUrlSegment) {
 
-			// Special thanks to this blog post:  https://social.msdn.microsoft.com/Forums/office/en-US/ede1aa39-4c47-4308-9aef-3b036ec9b318/get-navigation-taxonomy-term-tree-in-sharepoint-app?forum=appsforsharepoint
+			// Special thanks to this blog post
+            // https://social.msdn.microsoft.com/Forums/office/en-US/ede1aa39-4c47-4308-9aef-3b036ec9b318/get-navigation-taxonomy-term-tree-in-sharepoint-app?forum=appsforsharepoint
 			var termsEnumerator = currentNodeTerms.getEnumerator();
 			var termNodes = [];
 
@@ -176,7 +177,7 @@ define([], function () {
                 // Clear TaxonomyTerm property to simplify JSON string (property not useful anymore after this step)
                 currentNode.TaxonomyTerm = null;
                 
-                // Set the parent id for the current node (used for the contextual menu after)            
+                // Set the parent id for the current node (used by the contextual menu and the breadcrumb components)            
                 currentNode.ParentFriendlyUrlSegment = parentFriendlyUrlSegment;
 
 				termNodes.push(currentNode);
@@ -189,7 +190,7 @@ define([], function () {
 
 			var deferred = new $.Deferred();
 
-			// This method get the resolved URL whatever if it is a simple link or a friendly URL
+			// This method gets the resolved URL whatever if it is a simple link or a friendly URL
 			var termUrl = navigationTerm.getResolvedDisplayUrl();
 
 			context.load(navigationTerm);
@@ -214,9 +215,9 @@ define([], function () {
 
 			context.executeQueryAsync(function () {
 
-				var iconCssClass = taxonomyTerm.get_objectData().get_properties()["CustomProperties"][customPropertyName] !== undefined ? taxonomyTerm.get_objectData().get_properties()["CustomProperties"][customPropertyName] : "";
+				var propertyValue = taxonomyTerm.get_objectData().get_properties()["CustomProperties"][customPropertyName] !== undefined ? taxonomyTerm.get_objectData().get_properties()["CustomProperties"][customPropertyName] : "";
 			
-				deferred.resolve(iconCssClass);
+				deferred.resolve(propertyValue);
 
 			}, function (sender, args) {
 

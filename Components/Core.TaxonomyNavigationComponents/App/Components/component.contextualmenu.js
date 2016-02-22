@@ -15,7 +15,7 @@ define(['jQuery',
                 
         var self = this;
                 
-        // Use the existing navigation view model intialized with the term set id passed as parameter
+        // Use the existing navigation view model
         ko.utils.extend(self, new NavigationViewModelRef());      
                 
         // Apply Office UI Fabric logic to the contextual menu

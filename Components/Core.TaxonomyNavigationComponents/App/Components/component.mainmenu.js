@@ -1,5 +1,5 @@
 // ====================
-// Navbar component
+// Main menu component
 // ====================
 define(['jQuery',
         'Knockout',
@@ -22,7 +22,7 @@ define(['jQuery',
         // Get the term set id associated to the component
         var termSetId = params.termSetId;
         
-        // Use the existing navigation view model intialized with the term set id passed as parameter in the DOM element
+        // Use the existing navigation view model
         ko.utils.extend(self, new NavigationViewModelRef());
         
         // Initialize Office UI Fabric components logic for the main menu
@@ -31,7 +31,7 @@ define(['jQuery',
             $('.ms-NavBar').ContextualMenu();
         }
         
-        // Check is a manual refresh is needed (custom property "ClearCache" in the term set)
+        // Check is a manual refresh is needed (via a custom property "NoCache" in the term set)
         taxonomyModule.getTermSetCustomPropertyValue(termSetId, "NoCache").done(function (value){
             
             if (value === "true") {
@@ -43,7 +43,7 @@ define(['jQuery',
 
                 var navigationTree = JSON.parse(localStorage.mainMenuNodes);
                 
-                // Make sure there is a value in the cache
+                // Make sure there is a valid value in the cache (not [])
                 if (navigationTree.length > 0) {  
                                 
                     // Load navigation tree from the local storage browser cache

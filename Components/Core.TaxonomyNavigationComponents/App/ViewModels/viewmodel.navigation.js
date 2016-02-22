@@ -8,17 +8,14 @@ define(['jQuery','Knockout', 'UtilityModule'], function ($, ko, UtilityModuleRef
 		var navigationMenu = this;
         var utilityModule = new UtilityModuleRef();
         		   
-		// Public properties
 		navigationMenu.nodes = ko.observableArray();
         
         navigationMenu.siteServerRelativeUrl = _spPageContextInfo.siteServerRelativeUrl;
-
-		// Public functions
+        
 		navigationMenu.initialize = function (nodes) {
 			populateObservableNodeArray(nodes, navigationMenu.nodes);
 		};
 
-		// Private functions
 		var populateObservableNodeArray = function (nodes, observableArray) {
 			
 			for (var i = 0; i < nodes.length; i++) {
