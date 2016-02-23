@@ -63,7 +63,7 @@
         $scope.siteConfiguration.spHostWebUrl = spHostWebUrl;
         $scope.siteConfiguration.spRootHostName = "https://" + $utilservice.spRootHostName(spHostWebUrl); // still need to capture proto
         $scope.siteConfiguration.responsibilities = { read: false };
-        $scope.siteConfiguration.allowCustomUrl = false;
+        $scope.siteConfiguration.allowCustomUrl = true;
       
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
