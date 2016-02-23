@@ -302,7 +302,17 @@ body {
 }
 
 .table table-striped {
-    font-size: 10px;
+    font-size: 11px;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    padding: 4px 4px;
+    line-height: 1.0;
+    vertical-align: top;
+}
+
+.table.table-bordered.table-striped {
+    font-size: 11px;
 }
 
 a {

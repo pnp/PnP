@@ -3,7 +3,7 @@
   "WELCOME_TEXT": "Welcome to the Site Provisioning Wizard.",
   "REQUEST_A_SITE": "Request a site",
   "MY_COMPLETED_REQUESTS": "My Completed Requests",
-  "MY_NEW_REQUESTS": "My New Requests",
+  "MY_PENDING_REQUESTS": "My Pending Requests",
   "MY_APPROVED_REQUESTS": "My Approved Requests",
   "MY_FAILED_REQUESTS": "My Failed Requests",
 
