@@ -32,32 +32,39 @@ gulp.task("lint", function () {
 //******************************************************************************
 //* BUILD
 //******************************************************************************
-var tsProject = tsc.createProject("tsconfig.json");
 
-gulp.task("update-definitions", function() {
+
+gulp.task("update-definitions", function () {
+
+    var tsProject = tsc.createProject("tsconfig.json");
+
     return gulp.src([
-            "src/**/**.ts",
-            "typings/main.d.ts/"
-        ])
+        "src/**/**.ts",
+        "typings/main.d.ts/"
+    ])
         .pipe(tsc(tsProject))
         .dts.pipe(gulp.dest('typings/project'));
 });
 
 gulp.task("build-app", ["update-definitions"], function () {
-        return gulp.src([
-            "src/**/**.ts",
-            "typings/main.d.ts/",
-            "typings/project/**/*.d.ts"
-        ])
+
+    var tsProject = tsc.createProject("tsconfig.json");
+
+    return gulp.src([
+        "src/**.ts",
+        "typings/main.d.ts/",
+        "typings/project/**/*.d.ts"
+    ])
         .pipe(tsc(tsProject))
         .js.pipe(gulp.dest('output'));
 });
 
-var tsTestProject = tsc.createProject("tsconfig-tests.json");
-
 gulp.task("build-test", function () {
+
+    var tsTestProject = tsc.createProject("tsconfig-tests.json");
+
     return gulp.src([
-        "tests/**/*.ts",
+        "src/tests/**/*.ts",
         "typings/main.d.ts/"
     ])
         .pipe(tsc(tsTestProject))
@@ -86,44 +93,51 @@ gulp.task("test", ["build", "istanbul:hook"], function () {
 });
 
 //******************************************************************************
-//* BUNDLE
+//* do the build that places the output in the server-root/scripts folder
 //******************************************************************************
-gulp.task("bundle", function () {
-
-    var outputFolder = "dist/";
-
-    return gulp.src('output/**/*.js')
-        .pipe(gulp.dest(outputFolder));
-});
-
-//******************************************************************************
-//* Copy files to local server
-//******************************************************************************
-gulp.task("updateserverroot", function () {
+gulp.task("build-serve", function () {
 
     var outputFolder = "server-root/scripts";
 
-    return gulp.src('dist/**/*.js')
-        .pipe(gulp.dest(outputFolder));
+    var tsBundleProject = tsc.createProject("tsconfig-bundle.json");
+
+    return gulp.src([
+        "src/**/**.ts",
+        "typings/main.d.ts/",
+        "typings/project/**/*.d.ts"
+    ])
+        .pipe(tsc(tsBundleProject))
+        .js.pipe(gulp.dest(outputFolder));
 });
 
 //******************************************************************************
-//* Build Watch
+//* do the build that places the output in the dist folder
 //******************************************************************************
-gulp.task("build-watch", function () {
-    gulp.watch(["src/**/**.ts", "tests/**/*.ts"], ["lint", "build"]);
+gulp.task("package", function () {
+
+    var outputFolder = "dist";
+
+    var tsBundleProject = tsc.createProject("tsconfig-package.json");
+
+    return gulp.src([
+        "src/**/**.ts",
+        "typings/main.d.ts/",
+        "typings/project/**/*.d.ts"
+    ])
+        .pipe(tsc(tsBundleProject))
+        .js.pipe(gulp.dest(outputFolder));
 });
 
 //******************************************************************************
 //* DEV SERVER
 //******************************************************************************
-gulp.task("serve", ["default"], function () {
+gulp.task("serve", ["lint", "build-serve"], function () {
 
     browserSync.init({
         server: "./server-root"
     });
 
-    gulp.watch(["src/**/**.ts", "tests/**/*.ts"], ["default"]);
+    gulp.watch(["src/**/**.ts"], ["lint", "build-serve"]);
     gulp.watch("server-root").on('change', browserSync.reload);
 });
 
@@ -131,5 +145,5 @@ gulp.task("serve", ["default"], function () {
 //* DEFAULT
 //******************************************************************************
 gulp.task("default", function (cb) {
-    runSequence("lint", "build", "test", "bundle", "updateserverroot", cb);
+    runSequence("lint", "build", "test", cb);
 });

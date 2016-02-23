@@ -27,6 +27,8 @@ build/Release
 node_modules
 typings
 dist
+output
+server-root/scripts
 
 # Optional npm cache directory
 .npm
