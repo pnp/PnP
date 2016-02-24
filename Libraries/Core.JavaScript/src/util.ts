@@ -1,3 +1,5 @@
+"use strict";
+
 export class Util {
     public static $: Util = new Util();
 
@@ -31,7 +33,7 @@ export class Util {
     // gets a url param by name and attempts to parse a bool value
     public getUrlParamBoolByName(name: string): boolean {
         let p = this.getUrlParamByName(name);
-        let isFalse = (p === "" || /[false|0]/i.test(p));
+        let isFalse = (p === "" || /false|0/i.test(p));
         return !isFalse;
     }
 
@@ -46,7 +48,7 @@ export class Util {
     // adds a value to a date
     // http://stackoverflow.com/questions/1197928/how-to-add-30-minutes-to-a-javascript-date-object
     public dateAdd(date: Date, interval: string, units: number): Date {
-        let ret = new Date(date.toDateString()); // don"t change original date
+        let ret = new Date(date.toLocaleString()); // don't change original date
         switch (interval.toLowerCase()) {
             case "year": ret.setFullYear(ret.getFullYear() + units); break;
             case "quarter": ret.setMonth(ret.getMonth() + 3 * units); break;

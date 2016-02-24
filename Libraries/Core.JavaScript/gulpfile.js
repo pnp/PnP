@@ -30,10 +30,8 @@ gulp.task("lint", function () {
 });
 
 //******************************************************************************
-//* BUILD
+//* BUILD, placing files in output - used when testing
 //******************************************************************************
-
-
 gulp.task("update-definitions", function () {
 
     var tsProject = tsc.createProject("tsconfig.json");
@@ -61,7 +59,7 @@ gulp.task("build-app", ["update-definitions"], function () {
 
 gulp.task("build-test", function () {
 
-    var tsTestProject = tsc.createProject("tsconfig-tests.json");
+    var tsTestProject = tsc.createProject("tsconfig.json");
 
     return gulp.src([
         "src/tests/**/*.ts",
@@ -79,14 +77,14 @@ gulp.task("build", function (cb) {
 //* TEST
 //******************************************************************************
 gulp.task("istanbul:hook", function () {
-    return gulp.src(['output/**/*.js'])
+    return gulp.src(['output/**/*.js', '!output/tests/**/*.js'])
     // Covering files
         .pipe(istanbul())
     // Force `require` to return covered files
         .pipe(istanbul.hookRequire());
 });
 
-gulp.task("test", ["build", "istanbul:hook"], function () {
+gulp.task("test", ["lint", "build", "istanbul:hook"], function () {
     return gulp.src('output/tests/**/*.test.js')
         .pipe(mocha({ ui: 'bdd' }))
         .pipe(istanbul.writeReports());
@@ -99,7 +97,7 @@ gulp.task("build-serve", function () {
 
     var outputFolder = "server-root/scripts";
 
-    var tsBundleProject = tsc.createProject("tsconfig-bundle.json");
+    var tsBundleProject = tsc.createProject("tsconfig-serve.json");
 
     return gulp.src([
         "src/**/**.ts",

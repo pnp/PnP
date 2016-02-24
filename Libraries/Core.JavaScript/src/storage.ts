@@ -1,10 +1,13 @@
+"use strict";
+
 import { Util } from "./Util";
 
 class PnPClientStorageWrapper implements IPnPClientStore {
 
     public enabled: boolean;
 
-    constructor(private store: any, public defaultTimeoutMinutes = 5) {
+    constructor(private store: Storage, public defaultTimeoutMinutes?: number) {
+        this.defaultTimeoutMinutes = (defaultTimeoutMinutes === void 0) ? 5 : defaultTimeoutMinutes;
         this.enabled = this.test();
     }
 

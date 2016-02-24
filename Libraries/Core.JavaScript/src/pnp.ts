@@ -1,3 +1,5 @@
+"use strict";
+
 import { Util } from "./Util";
 import { PnPClientStorage } from "./Storage";
 

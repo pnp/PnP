@@ -1,9 +1,10 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "es6",
         "module": "amd",
         "jsx": "react",
         "declaration": false,
-        "sourceMap": false
+        "sourceMap": false,
+        "removeComments" : true
     }
 }

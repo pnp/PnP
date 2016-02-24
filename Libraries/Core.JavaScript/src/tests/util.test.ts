@@ -1,20 +1,23 @@
+"use strict";
+
 import { expect } from "chai";
 import pnp = require("../pnp");
 import MockLocation = require("./mocks/MockLocation");
 
 describe("Util", () => {
 
-    // describe("getCtxCallback", () => {
-    //     it("Should create context callback", () => {
-    //         let func = function(a: number): number { return this.ctx + a; };
-    //         let callback = pnp.util.getCtxCallback({ ctx: 1 }, func, 7);
-    //         expect(callback).to.exist;
-    //         expect(callback).to.be.a("function");
-    //         let ret = callback();
-    //         expect(ret).to.be.a("number");
-    //         expect(ret).eql(8);
-    //     });
-    // });
+    describe("getCtxCallback", () => {
+        it("Should create contextual callback", () => {
+            let func = function(a) { this.num = this.num + a; };
+            let ctx = { num: 1 };
+            let callback = pnp.util.getCtxCallback(ctx, func, 7);
+            expect(callback).to.exist;
+            expect(callback).to.be.a("function");
+            // this call will update ctx var inside the callback
+            callback();
+            expect(ctx.num).to.eq(8);
+        });
+    });
 
     describe("urlParamExists", () => {
 
@@ -37,7 +40,7 @@ describe("Util", () => {
             expect(pnp.util.urlParamExists("param1")).to.be.true;
         });
 
-        it("Should not find a parameter called param1", () => {
+        it("Should not find a parameter called doesnotexist", () => {
             expect(pnp.util.urlParamExists("doesnotexist")).to.be.false;
         });
     });
@@ -76,7 +79,7 @@ describe("Util", () => {
             origMethod = pnp.util.getBrowserLocation;
             pnp.util.getBrowserLocation = function(): Location {
                 let mock = new MockLocation();
-                mock.search = "?param1=1&&param2=Hello%20World";
+                mock.search = "?param1=true&&param2=Hello%20World";
                 return mock;
             };
         });
@@ -95,14 +98,37 @@ describe("Util", () => {
         });
     });
 
+    describe("dateAdd", () => {
+        it("Should add 5 minutes to a date", () => {
+            let testDate = new Date();
+            let checkDate = new Date(testDate.toLocaleString());
+            checkDate.setMinutes(testDate.getMinutes() + 5);
+            expect(pnp.util.dateAdd(testDate, "minute", 5).getMinutes()).to.eq(checkDate.getMinutes());
+        });
+
+        it("Should add 2 years to a date", () => {
+            let testDate = new Date();
+            let checkDate = new Date(testDate.toLocaleString());
+            checkDate.setFullYear(testDate.getFullYear() + 2);
+            expect(pnp.util.dateAdd(testDate, "year", 2).getFullYear()).to.eq(checkDate.getFullYear());
+        });
+    });
+
     describe("stringInsert", () => {
-        it("Should insert the string cat into dog at index 2 resulting in docatg.", () => {
+        it("Should insert the string cat into dog at index 2 resulting in docatg", () => {
             expect(pnp.util.stringInsert("dog", 2, "cat")).to.eq("docatg");
         });
     });
 
+    describe("combinePaths", () => {
+        it("Should combine the paths '/path/', 'path2', 'path3' and '/path4' to be path/path2/path3/path4", () => {
+            expect(pnp.util.combinePaths("/path/", "path2", "path3", "/path4")).to.eq("path/path2/path3/path4");
+        });
 
-
+        it("Should combine the paths 'http://site/path/' and '/path4/page.aspx' to be http://site/path/path4/page.aspx", () => {
+            expect(pnp.util.combinePaths("http://site/path/", "/path4/page.aspx")).to.eq("http://site/path/path4/page.aspx");
+        });
+    });
 
     describe("getRandomString", () => {
         it("Should produce a random string of length 5", () => {
@@ -120,9 +146,19 @@ describe("Util", () => {
         });
     });
 
+    describe("getGUID", () => {
+        it("Should produce a GUID matching the expected pattern", () => {
+            expect(pnp.util.getGUID()).to.match(/[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}/i);
+        });
+    });
 
+    describe("isFunction", () => {
+        it("Should find that a function is a function", () => {
+            expect(pnp.util.isFunction(function() { return; })).to.be.true;
+        });
 
-
-
-
+        it("Should find that a non-function is not a function", () => {
+            expect(pnp.util.isFunction({ val: 0 })).to.be.false;
+        });
+    });
 });

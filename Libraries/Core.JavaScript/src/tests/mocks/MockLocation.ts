@@ -1,3 +1,5 @@
+"use strict";
+
 class MockLocation implements Location {
     public hash: string;
     public host: string;
