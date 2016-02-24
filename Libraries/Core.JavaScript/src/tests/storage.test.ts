@@ -9,7 +9,8 @@ describe("Storage", () => {
         let wrapper: Storage.PnPClientStorageWrapper;
 
         beforeEach(() => {
-            wrapper = new Storage.PnPClientStorageWrapper(new MockStorage());
+            let store: Storage = (typeof localStorage === "undefined") ? new MockStorage() : localStorage;
+            wrapper = new Storage.PnPClientStorageWrapper(store);
         });
 
         it("Add and Get a value", () => {

@@ -32,7 +32,7 @@ gulp.task("lint", function () {
 //******************************************************************************
 //* BUILD, placing files in output - used when testing
 //******************************************************************************
-gulp.task("update-definitions", function () {
+gulp.task("update-defs", function () {
 
     var tsProject = tsc.createProject("tsconfig.json");
 
@@ -44,7 +44,7 @@ gulp.task("update-definitions", function () {
         .dts.pipe(gulp.dest('typings/project'));
 });
 
-gulp.task("build-app", ["update-definitions"], function () {
+gulp.task("build-app", ["update-defs"], function () {
 
     var tsProject = tsc.createProject("tsconfig.json");
 
