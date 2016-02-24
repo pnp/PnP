@@ -40,3 +40,5 @@ class MockStorage implements Storage {
     [key: string]: any;
     [index: number]: string;
 }
+
+export = MockStorage;

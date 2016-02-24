@@ -23,7 +23,7 @@ describe("Util", () => {
 
         let origMethod: () => Location;
 
-        before(function() {
+        before(() => {
             origMethod = pnp.util.getBrowserLocation;
             pnp.util.getBrowserLocation = function(): Location {
                 let mock = new MockLocation();
@@ -32,7 +32,7 @@ describe("Util", () => {
             };
         });
 
-        after(function() {
+        after(() => {
             pnp.util.getBrowserLocation = origMethod;
         });
 

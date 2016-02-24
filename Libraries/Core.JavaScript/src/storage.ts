@@ -2,7 +2,7 @@
 
 import { Util } from "./Util";
 
-class PnPClientStorageWrapper implements IPnPClientStore {
+export class PnPClientStorageWrapper implements IPnPClientStore {
 
     public enabled: boolean;
 

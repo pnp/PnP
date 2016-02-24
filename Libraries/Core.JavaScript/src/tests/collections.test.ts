@@ -9,7 +9,7 @@ describe("Collections", () => {
 
         let dic: Collections.Dictionary<string>;
 
-        beforeEach(function() {
+        beforeEach(() => {
             dic = new Collections.Dictionary<string>();
         });
 
