@@ -1,4 +1,4 @@
-import { Core } from "./Core";
+import { Util } from "./Util";
 
 class PnPClientStorageWrapper implements IPnPClientStore {
 
@@ -52,7 +52,7 @@ class PnPClientStorageWrapper implements IPnPClientStore {
             return getter();
         }
 
-        if (!Core.$.isFunction(getter)) {
+        if (!Util.$.isFunction(getter)) {
             throw "Function expected for parameter 'getter'.";
         }
 
@@ -79,7 +79,7 @@ class PnPClientStorageWrapper implements IPnPClientStore {
 
     private createPersistable(o: any, expire?: Date): string {
         if (typeof expire === "undefined") {
-            expire = Core.$.dateAdd(new Date(), "minute", this.defaultTimeoutMinutes);
+            expire = Util.$.dateAdd(new Date(), "minute", this.defaultTimeoutMinutes);
         }
 
         return JSON.stringify({ expiration: expire, value: o });

@@ -1,8 +1,8 @@
-import { Core } from "./Core";
+import { Util } from "./Util";
 import { PnPClientStorage } from "./Storage";
 
 class PnP {
-    public static core: Core = Core.$;
+    public static util: Util = Util.$;
     public static storage: PnPClientStorage = PnPClientStorage.$;
 }
 

@@ -68,7 +68,7 @@ gulp.task("build-test", function () {
         "typings/main.d.ts/"
     ])
         .pipe(tsc(tsTestProject))
-        .js.pipe(gulp.dest("output/tests/"));
+        .js.pipe(gulp.dest("output/tests"));
 });
 
 gulp.task("build", function (cb) {

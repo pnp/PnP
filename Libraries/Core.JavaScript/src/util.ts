@@ -1,5 +1,5 @@
-export class Core {
-    public static $: Core = new Core();
+export class Util {
+    public static $: Util = new Util();
 
     // allows for the calling pattern getCtxCallback(thisobj, method, methodarg1, methodarg2, ...)
     public getCtxCallback(context: any, method: Function, ...params: any[]): Function {
@@ -8,18 +8,23 @@ export class Core {
         };
     }
 
+    // returns the browser location value
+    public getBrowserLocation(): Location {
+        return location;
+    }
+
     // tests if a url param exists
     public urlParamExists(name: string): boolean {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         let regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
-        return regex.test(location.search);
+        return regex.test(this.getBrowserLocation().search);
     }
 
     // gets a url param value by name
     public getUrlParamByName(name: string): string {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         let regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
-        let results = regex.exec(location.search);
+        let results = regex.exec(this.getBrowserLocation().search);
         return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
     }
 
