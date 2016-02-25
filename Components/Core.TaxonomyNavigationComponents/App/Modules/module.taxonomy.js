@@ -37,15 +37,6 @@ define([], function () {
 			var context = SP.ClientContext.get_current();
 			var currentWeb = SP.ClientContext.get_current().get_web();
 
-			// Create view to return all navigation terms
-			var termSetView = new SP.Publishing.Navigation.NavigationTermSetView(context, currentWeb, 'GlobalNavigationTaxonomyProvider');
-            
-            // Return global and current navigation terms (the filtering will occur after in the knockout html view)
-			termSetView.set_excludeTermsByProvider(false);
-            
-            //  Sets a value that indicates whether NavigationTerm objects are trimmed if the current user does not have permission to view the target page for the friendly URL
-            termSetView.set_excludeTermsByPermissions(true);
-
 			var taxSession = SP.Taxonomy.TaxonomySession.getTaxonomySession(context);
 			var termStore = taxSession.getDefaultSiteCollectionTermStore();
 			var termSet = termStore.getTermSet(termSetId);
@@ -57,9 +48,19 @@ define([], function () {
             // The downside of this approach is that the results are not retrieved from the navigation cache that can cause performance issues during the initial load
 			var webNavigationTermSet = SP.Publishing.Navigation.NavigationTermSet.getAsResolvedByWeb(context, termSet, currentWeb, 'GlobalNavigationTaxonomyProvider');
             
-            // Apply the view filters
+            // Get the existing view from the navigation term set
+            var termSetView = webNavigationTermSet.get_view().getCopy();
+            
+            // Return global and current navigation terms (the subsequent filtering will occur in the Knockout html view)
+            termSetView.set_excludeTermsByProvider(false);
+            
+            // Sets a value that indicates whether NavigationTerm objects are trimmed if the current user does not have permissions to view the target page (the aspx physical page) for the friendly URL
+            // If you don't see anything in the menu, check the node type (term driven page or simple link). In the case of term driven page, the target page must be accessible for the current user 
+            termSetView.set_excludeTermsByPermissions(true);
+            
+            // Apply the new view filters
             webNavigationTermSet = webNavigationTermSet.getWithNewView(termSetView);
-
+            
             var firstLevelNavigationTerms = webNavigationTermSet.get_terms();
             var allNavigationterms = webNavigationTermSet.getAllTerms();
             
