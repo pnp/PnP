@@ -1,6 +1,6 @@
 "use strict";
 
-import Collections = require("../../Collections");
+import Collections = require("../collections/collections");
 
 class MockStorage implements Storage {
     constructor() {

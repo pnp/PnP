@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
-        "target": "es6",
-        "module": "amd",
+        "target": "es5",
+        "module": "umd",
         "jsx": "react",
         "declaration": false,
         "sourceMap": false

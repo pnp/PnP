@@ -49,7 +49,7 @@ gulp.task("build-app", ["update-defs"], function () {
     var tsProject = tsc.createProject("tsconfig.json");
 
     return gulp.src([
-        "src/**.ts",
+        "src/**/**.ts",
         "typings/main.d.ts/",
         "typings/project/**/*.d.ts"
     ])
@@ -57,27 +57,27 @@ gulp.task("build-app", ["update-defs"], function () {
         .js.pipe(gulp.dest('output'));
 });
 
-gulp.task("build-test", function () {
-
-    var tsTestProject = tsc.createProject("tsconfig.json");
-
-    return gulp.src([
-        "src/tests/**/*.ts",
-        "typings/main.d.ts/"
-    ])
-        .pipe(tsc(tsTestProject))
-        .js.pipe(gulp.dest("output/tests"));
-});
+// gulp.task("build-test", function () {
+// 
+//     var tsTestProject = tsc.createProject("tsconfig.json");
+// 
+//     return gulp.src([
+//         "src/tests/**/*.ts",
+//         "typings/main.d.ts/"
+//     ])
+//         .pipe(tsc(tsTestProject))
+//         .js.pipe(gulp.dest("output/tests"));
+// });
 
 gulp.task("build", function (cb) {
-    runSequence(["build-app", "build-test"], cb);
+    runSequence(["build-app"], cb);
 });
 
 //******************************************************************************
 //* TEST
 //******************************************************************************
 gulp.task("istanbul:hook", function () {
-    return gulp.src(['output/**/*.js', '!output/tests/**/*.js'])
+    return gulp.src(['output/**/*.js', '!output/**/*.test.js'])
     // Covering files
         .pipe(istanbul())
     // Force `require` to return covered files
@@ -85,7 +85,7 @@ gulp.task("istanbul:hook", function () {
 });
 
 gulp.task("test", ["lint", "build", "istanbul:hook"], function () {
-    return gulp.src('output/tests/**/*.test.js')
+    return gulp.src('output/**/*.test.js')
         .pipe(mocha({ ui: 'bdd' }))
         .pipe(istanbul.writeReports());
 });
@@ -120,7 +120,8 @@ gulp.task("package", function () {
     return gulp.src([
         "src/**/**.ts",
         "typings/main.d.ts/",
-        "typings/project/**/*.d.ts"
+        "typings/project/**/*.d.ts",
+        '!src/**/*.test.ts'
     ])
         .pipe(tsc(tsBundleProject))
         .js.pipe(gulp.dest(outputFolder));

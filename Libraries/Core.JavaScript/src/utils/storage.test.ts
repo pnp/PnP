@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import Storage = require("../Storage");
-import MockStorage = require("./mocks/MockStorage");
+import Storage = require("./Storage");
+import MockStorage = require("../mocks/MockStorage");
 
 describe("Storage", () => {
 

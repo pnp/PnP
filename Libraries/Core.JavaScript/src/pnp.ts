@@ -1,10 +1,10 @@
 "use strict";
 
-import { Util } from "./Util";
-import { PnPClientStorage } from "./Storage";
+import * as Util from "./Utils/Util";
+import { PnPClientStorage } from "./Utils/Storage";
 
 class PnP {
-    public static util: Util = Util.$;
+    public static util = Util;
     public static storage: PnPClientStorage = PnPClientStorage.$;
 }
 
