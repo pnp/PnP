@@ -30,9 +30,13 @@
     "directories": {
         "tests": "tests"
     },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/OfficeDev/PnP"
+    },
     "author": {
-        "name": "Microsoft and other contributors",
-        "url": "https://github.com/jquery/jquery/blob/2.2.1/AUTHORS.txt"
+        "name": "Microsoft and other contributors"
     },
     "license": "MIT"
 }
+///issues

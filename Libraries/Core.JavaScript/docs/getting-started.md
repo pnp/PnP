@@ -1,4 +1,5 @@
-#PnP JavaScript Core - Quick Start Guide#
+#PnP JavaScript Core#
+##Quick Start Guide##
 
 Unsure where to begin with working on the project? This guide is designed to get you up and working quickly.
 
@@ -24,4 +25,6 @@ Unsure where to begin with working on the project? This guide is designed to get
 	2. `typings install` - installs the required typings files as defined in typings.json 
 
 7. Type `gulp serve` and you should see the browser launch and an alert window display a random string of length 5.
+
+Because we are watching the files, any changes will be reflected in the served files after a new build is complete. You can point from a script tag in your SharePoint site to the http://localhost:3000 site to use the files. Any changes you make will be reflected thanks to the watched build. 
 

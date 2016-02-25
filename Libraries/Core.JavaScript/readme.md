@@ -1,18 +1,20 @@
 #PnP JavaScript Core#
 
 ### Summary ###
-This library contains a consolidated and ready to use set of JavaScript libraries
+This library contains a consolidated and ready to use set of JavaScript libraries designed to help the client side developer interact with SharePoint and Graph. We are always looking for great contributions!
 
 ### Applies to ###
 -  Office 365
 
-### Prerequisites ###
-None
+### Yammer Group ###
 
-### Solution ###
-Solution | Author(s)
----------|----------
-Core.JavaScript | Patrick Rodgers (**Microsoft**) 
+We have an active [Yammer Group](http://aka.ms/OfficeDevPnPSIGJavaScriptYammer) dedicated to this library, please join the conversation.
+
+### Prerequisites ###
+See the [Quick Start Guide](docs/getting-started.md) for setting up your environment.
+
+### Authors ###
+This project's contributors include Microsoft and [other contributors](AUTHORS.txt)
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
