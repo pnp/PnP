@@ -302,7 +302,17 @@ body {
 }
 
 .table table-striped {
-    font-size: 10px;
+    font-size: 11px;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    padding: 4px 4px;
+    line-height: 1.0;
+    vertical-align: top;
+}
+
+.table.table-bordered.table-striped {
+    font-size: 11px;
 }
 
 a {
@@ -388,4 +398,36 @@ span#chromeControl_topheader_sitetitle
   border-radius: 5px;
   margin-top: 15px;
   position: relative;
+}
+
+/* Begin People Picker Styles */
+
+.sp-peoplepicker-editDiv {
+    overflow: hidden;
+}
+
+span.sp-peoplepicker-chosen {
+    margin-right: 10px;
+}
+
+span.sp-peoplepicker-removeChosen {
+    margin-left: 3px;
+    cursor: pointer;
+}
+
+li.sp-peoplepicker-foundItem {
+    cursor: pointer;
+}
+
+li.sp-peoplepicker-foundItem:hover {
+    background-color:#f5f5f5;
+}
+
+ul.sp-peoplepicker-dropdown li {
+    padding: 4px;
+}
+
+/* maintain small divider line from bootstrap */
+ul.sp-peoplepicker-dropdown li.divider {
+    padding: 0px !important;
 }

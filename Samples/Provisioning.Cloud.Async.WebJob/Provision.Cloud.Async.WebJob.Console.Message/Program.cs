@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAzure;
+﻿using Microsoft.Azure;
+using Microsoft.WindowsAzure;
 using Provisioning.Cloud.Async.WebJob.Common;
 using System;
 using System.Collections.Generic;

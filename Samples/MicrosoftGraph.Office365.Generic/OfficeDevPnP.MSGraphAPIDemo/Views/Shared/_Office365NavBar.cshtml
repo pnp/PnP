@@ -1,0 +1,18 @@
+﻿<div class="ms-NavBar">
+    <div class="ms-NavBar-openMenu js-openMenu">
+        <i class="ms-Icon ms-Icon--menu"></i>
+    </div>
+    <ul class="ms-NavBar-items">
+        <li class="ms-NavBar-item"><a class="ms-NavBar-link" href="/Home/Index"><i class="ms-Icon ms-Icon--home"></i> Home</a></li>
+        <li class="ms-NavBar-item"><a class="ms-NavBar-link" href="/MailCalendarContacts/Index"><i class="ms-Icon ms-Icon--mail"></i> Mail, Calendar, and Contacts</a></li>
+        <li class="ms-NavBar-item"><a class="ms-NavBar-link" href="/UsersGroups/Index"><i class="ms-Icon ms-Icon--people"></i> Users and Groups</a></li>
+        <li class="ms-NavBar-item"><a class="ms-NavBar-link" href="/Files/Index"><i class="ms-Icon ms-Icon--tile"></i> Files</a></li>
+        <li class="ms-NavBar-item"><a class="ms-NavBar-link" href="/Others/Index"><i class="ms-Icon ms-Icon--globe"></i> Others</a></li>
+    @*
+        @if (OfficeDevPnP.PartnerPack.Infrastructure.PnPPartnerPackUtilities.UserIsTenantGlobalAdmin())
+        {
+            <li class="ms-NavBar-item ms-NavBar-item--right"><a class="ms-NavBar-link" href="/Home/Settings"><i class="ms-Icon ms-Icon--gear"></i> Settings</a></li>
+        }
+    *@
+    </ul>
+</div>

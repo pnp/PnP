@@ -1,7 +1,13 @@
-# Side loading of apps #
+# Side loading of add-ins/apps #
 
 ### Summary ###
-This scenario shows how one can use sideLoading of a Provider Hosted Application to install a SharePoint Provider Hosted Application to a site collection.
+This scenario shows how one can use side load app to SharePoint site. App can be either SharePoint hosted add-in or provider hosted add-in/app. Reference sample is done with SP hosted add-in. 
+
+See following resources for additional details
+- [SideLoading Guideance](http://blogs.msdn.com/b/frank_marasco/archive/2014/07/26/side-loading.aspx) - MSDN blog
+- [Automating add-in/app installation to SharePoint sites using CSOM](http://blogs.msdn.com/b/vesku/archive/2015/11/20/automating-add-in-app-installation-to-sharepoint-sites-using-csom.aspx) - MSDN blog
+- [How to install add-in/app to SharePoint sites using CSOM](https://channel9.msdn.com/blogs/OfficeDevPnP/How-to-install-add-inapp-to-SharePoint-sites-using-CSOM) - Channel 9 PnP video blog
+
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
@@ -14,12 +20,13 @@ None
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Core.SideLoading | Frank Marasco (**Microsoft**)
+Core.SideLoading | Frank Marasco (**Microsoft**), Vesa Juvonen (**Microsoft**)
 
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
 1.0  | July 27th 2014 | Initial release
+1.1  | November 18th 2015 | Updated to use PnP Nuget package and some polishing
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
@@ -31,7 +38,7 @@ Version  | Date | Comments
 This scenario shows how one can use sideLoading of a Provider Hosted Application to install a SharePoint Provider Hosted Application to a site collection. SharePoint Administrators can deploy apps to their tenancy basically two different ways. Deploy from the add-in catalog (“app stapling”) or via sideloading. What is sideloading? add-in sideloading, from a SharePoint context, is the ability to install a SharePoint add-in directly into a site to explicitly bypass the regular governance controls of SharePoint. Sideloading apps is insecure. The main reason for blocking sideloading by default on non-developer sites is the risk that faulty apps pose to their host web/host site collection. Apps have the potential to destroy data and make sites or, given enough permissions, can even make site collections unusable. Therefore, apps should only be sideloaded in dev/test environments and in production only when deploying from the AppCatalog does not meet your needs. It is not recommended to sideload SharePoint Hosted-Applications, because of the risk of data loss.
 
 ***Note***
-- Enabling the add-in sideloading features requires tenant admin permissions (in a multi-tenant environment) or farm admin permissions (in a single tenant environment). 
+- Enabling the add-in sideloading features requires tenant admin permissions (in a multi-tenant environment) or farm admin permissions (in a single tenant environment or on-premises). 
 - You must have a user context when sideloading the application. Add-in only permission is not available.
 - Sideloading does not suppress the security check or compensate existing security requirements. It does however enable the programmatic installation of an add-in
 - You must still register and add-in principal for SharePoint Provider hosted applications
@@ -71,59 +78,53 @@ Since this solution is sideloading a provider hosted application, the following 
 - The Provider hosted application has been deployed to your hosting platform
 
 ```C#
-Guid _sideloadingFeature = new Guid("AE3A1339-61F5-4f8f-81A7-ABD2DA956A7D");
-string _url = GetUserInput("Please Supply the SharePoint Online Site Collection URL: ");
-/* Prompt for Credentials */
-Console.WriteLine("Enter Credentials for {0}", _url);
-string _userName = GetUserInput("SharePoint Username: ");
-SecureString _pwd = GetPassword();
-ClientContext _ctx = new ClientContext(_url);
-_ctx.ApplicationName = "AMS SIDELOADING SAMPLE";
-_ctx.AuthenticationMode = ClientAuthenticationMode.Default;
+Guid sideloadingFeature = new Guid("AE3A1339-61F5-4f8f-81A7-ABD2DA956A7D");
+// Prompt for URL
+string url = GetUserInput("Please provide URL for the site where app is being installed: \n");
+// Prompt for Credentials 
+Console.WriteLine("Enter Credentials for {0}", url);
+string userName = GetUserInput("SharePoint username: ");
+SecureString pwd = GetPassword();
 
-//For SharePoint Online
-_ctx.Credentials = new SharePointOnlineCredentials(_userName, _pwd);
+// Get path to the location of the app file in file system
+string path = GetUserInput("Please provide full path to your app package: \n");
 
-string _path = GetUserInput("Please supply path to your add-in package:");
-Site _site = _ctx.Site;
-Web _web = _ctx.Web;
+// Create context for SharePoint online
+ClientContext ctx = new ClientContext(url);
+ctx.AuthenticationMode = ClientAuthenticationMode.Default;
+ctx.Credentials = new SharePointOnlineCredentials(userName, pwd);
+
+// Get variables for the operations
+Site site = ctx.Site;
+Web web = ctx.Web;
 
 try
 {
- 	_ctx.Load(_web);
-    _ctx.ExecuteQuery();
-	//Make sure we have side loading enabled. You must be a tenant admin to activate or you 
-	//will get an exception! The ProcessFeature is an extension method.
-   	_site.ProcessFeature(_sideloadingFeature, true);
+    // Make sure we have side loading enabled. 
+    // Using PnP Nuget package extensions.
+    site.ActivateFeature(sideloadingFeature);
     try
     {
-    	var _appstream = System.IO.File.OpenRead(_path);
-        AppInstance _app = _web.LoadAndInstallApp(_appstream);
-        _ctx.Load(_app);
-        _ctx.ExecuteQuery();
+        // Load .app file and install that to site
+        var appstream = System.IO.File.OpenRead(path);
+        AppInstance app = web.LoadAndInstallApp(appstream);
+        ctx.Load(app);
+        ctx.ExecuteQuery();
     }
     catch
     {
-    	throw;
+        throw;
     }
-
-	//we should ensure that the side loading feature is disable when we are done or if an
-	//exception occurs 
-    _site.ProcessFeature(_sideloadingFeature, false);
+    // Disable side loading feature using 
+    // PnP Nuget package extensions. 
+    site.DeactivateFeature(sideloadingFeature);
 }
-catch (Exception _ex)
+catch (Exception ex)
 {
-	Console.ForegroundColor = ConsoleColor.Red;
-    Console.WriteLine(string.Format("Exception!"), _ex.ToString());
+    Console.ForegroundColor = ConsoleColor.Red;
+    Console.WriteLine(string.Format("Exception!"), ex.ToString());
     Console.WriteLine("Press any key to continue.");
     Console.Read();
 }
 ```
-
-## Dependencies ##
-- 	Microsoft.SharePoint.Client
--   Microsoft.SharePoint.Client.Runtime
--   [Setting up provider hosted add-in to Windows Azure for Office365 tenant](http://blogs.msdn.com/b/vesku/archive/2013/11/25/setting-up-provider-hosted-app-to-windows-azure-for-office365-tenant.aspx)
-
-
 

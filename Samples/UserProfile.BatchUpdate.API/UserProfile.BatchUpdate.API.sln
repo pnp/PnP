@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserProfile.BatchUpdate.API", "UserProfile.BatchUpdate.API\UserProfile.BatchUpdate.API.csproj", "{D5D772CC-AF1C-4A2E-A1F9-FDFB1049B21A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{2AC32859-8FCF-4F8C-ABAC-08C2C1A0ED5C}"
+	ProjectSection(SolutionItems) = preProject
+		CreateImportJob.ps1 = CreateImportJob.ps1
+		sample.txt = sample.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{69080FD4-3042-4D94-B0A6-0A09ED8DC28F}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D5D772CC-AF1C-4A2E-A1F9-FDFB1049B21A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5D772CC-AF1C-4A2E-A1F9-FDFB1049B21A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5D772CC-AF1C-4A2E-A1F9-FDFB1049B21A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5D772CC-AF1C-4A2E-A1F9-FDFB1049B21A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

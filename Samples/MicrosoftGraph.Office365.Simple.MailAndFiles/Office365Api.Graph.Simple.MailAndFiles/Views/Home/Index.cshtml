@@ -1,0 +1,18 @@
+﻿<h2>Home</h2>
+<form>
+    @if (String.IsNullOrEmpty(ViewBag.Name))
+    {
+        <p> Use the button below to connect to Microsoft Graph and Office 365. </p>
+        <p>
+            <button formaction="@Url.Content("~/home/login")">Connect to Office 365</button>
+        </p>
+    }
+    <p>
+        <i>Notice.</i> - This is simplistic graph sample to be used as stepping stone, not as reference
+        implementation for the production usage. Sample does not include actual authentication
+        of the end user. Code uses access tokens to gain access of the relevant information for the end
+        user, but user is not precisely authorized from asp.net perspective. This was a decision
+        to make the sample as simple as possible, which concentrates on graph access, not on related
+        technologies. <i>Stepping stones...</i>
+    </p>
+</form>

@@ -2,14 +2,18 @@
 (function (CAMControl) {
     var PeoplePicker = (function () {
 
+
         // Constructor
-        function PeoplePicker(SharePointContext, PeoplePickerControl, PeoplePickerEdit, PeoplePickerDisplay, PeoplePickerData) {
+        function PeoplePicker(SharePointContext, PeoplePickerControl, PeoplePickerEdit, PeoplePickerDisplay, PeoplePickerData, ServerDataMethod, LimitToGroupName) {
             //public properties
             this.SharePointContext = SharePointContext;
             this.PeoplePickerControl = PeoplePickerControl;
             this.PeoplePickerEdit = PeoplePickerEdit;
             this.PeoplePickerDisplay = PeoplePickerDisplay;
             this.PeoplePickerData = PeoplePickerData;
+            this.ServerDataMethod = ServerDataMethod;
+            this.SpGroupName = LimitToGroupName;
+            this.SpHostUrl = decodeURIComponent(getQueryStringParameter('SPHostUrl'));
             this.InstanceName = "";
             this.MaxEntriesShown = 4;
             this.ShowLoginName = true;
@@ -18,6 +22,7 @@
             this.PrincipalType = 1;
             this.AllowDuplicates = false;
             this.Language = "en-us";
+
             //Private variable is not really private, just a naming convention
             this._queryID = 1;
             this._lastQueryID = 1;
@@ -27,7 +32,8 @@
         // Property wrapped in function to allow access from event handler
         PeoplePicker.prototype.GetPrincipalType = function () {
             return this.PrincipalType;
-        }
+        };
+
 
         // Property wrapped in function to allow access from event handler
         PeoplePicker.prototype.SetPrincipalType = function (principalType) {
@@ -41,29 +47,44 @@
             //All Enumeration whose value specifies all principal types. Value = 15. 
 
             this.PrincipalType = principalType;
-        }
+        };
 
         // Property wrapped in function to allow access from event handler
         PeoplePicker.prototype.GetMinimalCharactersBeforeSearching = function () {
             return this.MinimalCharactersBeforeSearching;
-        }
+        };
 
         // Property wrapped in function to allow access from event handler
         PeoplePicker.prototype.SetMinimalCharactersBeforeSearching = function (minimalChars) {
             this.MinimalCharactersBeforeSearching = minimalChars;
-        }
+        };
+
+        // Property wrapped in function to allow access from event handler
+        PeoplePicker.prototype.GetServerDataMethod = function () {
+            return this.ServerDataMethod;
+        };
+
+        // Property wrapped in function to allow access from event handler
+        PeoplePicker.prototype.GetSpGroupName = function () {
+            return this.SpGroupName;
+        };
+
+        // Property wrapped in function to allow access from event handler
+        PeoplePicker.prototype.GetSpHostUrl = function () {
+            return this.SpHostUrl;
+        };
 
         // HTML encoder
-        PeoplePicker.prototype.HtmlEncode = function(html) {
-            return document.createElement('a').appendChild(document.createTextNode(html)).parentNode.innerHTML.ReplaceAll("'", "&apos;", true);
-        }
+        PeoplePicker.prototype.HtmlEncode = function (html) {
+            return document.createElement('a').appendChild(document.createTextNode(html)).parentNode.innerHTML.ReplaceAll("'", "&apos;");
+        };
 
         // HTML decoder
         PeoplePicker.prototype.HtmlDecode = function (html) {
             var a = document.createElement('a');
             a.innerHTML = html;
             return a.textContent;
-        }
+        };
 
         // Replace all string occurances, add a bew ReplaceAll method to the string type
         String.prototype.ReplaceAll = function (token, newToken, ignoreCase) {
@@ -99,8 +120,8 @@
             var done = false;
             script.onload = script.onreadystatechange = function () {
                 if (!done && (!this.readyState
-                            || this.readyState == "loaded"
-                            || this.readyState == "complete")) {
+                            || this.readyState === "loaded"
+                            || this.readyState === "complete")) {
                     done = true;
 
                     // Continue your code
@@ -113,41 +134,41 @@
             };
 
             head.appendChild(script);
-        }
+        };
 
-        // String formatting 
+        // String formatting
         PeoplePicker.prototype.Format = function (str) {
             for (var i = 1; i < arguments.length; i++) {
                 str = str.ReplaceAll("{" + (i - 1) + "}", arguments[i]);
             }
             return str;
-        }
+        };
 
         // Hide the user selection box
         PeoplePicker.prototype.HideSelectionBox = function () {
             this.PeoplePickerDisplay.css('display', 'none');
-        }
+        };
 
         // show the user selection box
         PeoplePicker.prototype.ShowSelectionBox = function () {
             this.PeoplePickerDisplay.css('display', 'block');
-        }
+        };
 
         // Generates the html for a resolved user
         PeoplePicker.prototype.ConstructResolvedUserSpan = function (login, name, lookupId) {
- 
-            resultDisplay = 'Remove person or group {0}';
-            if (typeof deleteUser != 'undefined') {
+
+            var resultDisplay = 'Remove person or group {0}';
+            if (typeof deleteUser !== 'undefined') {
                 resultDisplay = deleteUser;
             }
 
-            lookupValue = (login) ? login.replace("\\", "\\\\") : lookupId;
-            
+            var lookupValue = (login) ? login.replace("\\", "\\\\") : lookupId;
+
             resultDisplay = this.Format(resultDisplay, name);
-    
-            userDisplaySpanTemplate = '<span class="cam-peoplepicker-userSpan"><span class="cam-entity-resolved">{0}</span><a title="{3}" class="cam-peoplepicker-delImage" onclick="{1}.DeleteProcessedUser({2}); return false;" href="#">x</a></span>';
+
+            var userDisplaySpanTemplate = '<span class="cam-peoplepicker-userSpan"><span class="cam-entity-resolved">{0}</span><a title="{3}" class="cam-peoplepicker-delImage" onclick="{1}.DeleteProcessedUser({2}); return false;" href="#">x</a></span>';
             return this.Format(userDisplaySpanTemplate, name, this.InstanceName, "'" + lookupValue + "'", resultDisplay);
-        }
+        };
 
         // Create a html representation of the resolved user array
         PeoplePicker.prototype.ResolvedUsersToHtml = function () {
@@ -156,16 +177,16 @@
                 userHtml += this.ConstructResolvedUserSpan(this._ResolvedUsers[i].Login, this._ResolvedUsers[i].Name, this._ResolvedUsers[i].LookupId);
             }
             return userHtml;
-        }
+        };
 
         // Returns a resolved user object
         PeoplePicker.prototype.ResolvedUser = function (login, name, email) {
-            var user = new Object();
+            var user = {};
             user.Login = login;
             user.Name = name;
             user.Email = email;
             return user;
-        }
+        };
 
         // Add resolved user to array and updates the hidden field control with a JSON string
         PeoplePicker.prototype.PushResolvedUser = function (resolvedUser) {
@@ -175,7 +196,7 @@
             } else {
                 var duplicate = false;
                 for (var i = 0; i < this._ResolvedUsers.length; i++) {
-                    if (this._ResolvedUsers[i].Login == resolvedUser.Login) {
+                    if (this._ResolvedUsers[i].Login === resolvedUser.Login) {
                         duplicate = true;
                     }
                 }
@@ -186,61 +207,69 @@
             }
 
             this.PeoplePickerData.val(JSON.stringify(this._ResolvedUsers));
-        }
+        };
 
         // Remove last added resolved user from the array and updates the hidden field control with a JSON string
         PeoplePicker.prototype.PopResolvedUser = function () {
             this._ResolvedUsers.pop();
             this.PeoplePickerData.val(JSON.stringify(this._ResolvedUsers));
-        }
+        };
 
         // Remove resolved user from the array and updates the hidden field control with a JSON string
         PeoplePicker.prototype.RemoveResolvedUser = function (lookupValue) {
             var newResolvedUsers = [];
             var userRemoved = false;
-            
+
             for (var i = 0; i < this._ResolvedUsers.length; i++) {
                 var resolvedLookupValue = this._ResolvedUsers[i].Login ? this._ResolvedUsers[i].Login : this._ResolvedUsers[i].LookupId;
-                if (resolvedLookupValue != lookupValue || userRemoved == true) {
-                     newResolvedUsers.push(this._ResolvedUsers[i]);
-                 }
-                 
+                if (resolvedLookupValue !== lookupValue || userRemoved === true) {
+                    newResolvedUsers.push(this._ResolvedUsers[i]);
+                }
+
                 // Handle duplicates if enabled, only remove one user
-                if (resolvedLookupValue == lookupValue) {
+                if (resolvedLookupValue === lookupValue) {
                     userRemoved = true;
                 }
             }
             this._ResolvedUsers = newResolvedUsers;
             this.PeoplePickerData.val(JSON.stringify(this._ResolvedUsers));
-        }
+        };
 
         // Update the people picker control to show the newly added user
-        PeoplePicker.prototype.RecipientSelected = function(login, name, email) {
+        PeoplePicker.prototype.RecipientSelected = function (login, name, email) {
             this.HideSelectionBox();
             // Push new resolved user to list
             this.PushResolvedUser(this.ResolvedUser(login, name, email));
-            // Update the resolved user display 
+            // Update the resolved user display
             this.PeoplePickerControl.html(this.ResolvedUsersToHtml());
             // Prepare the edit control for a second user selection
             this.PeoplePickerEdit.val('');
             this.PeoplePickerEdit.focus();
-        }
+        };
 
         // Delete a resolved user
         PeoplePicker.prototype.DeleteProcessedUser = function (lookupValue) {
             this.RemoveResolvedUser(lookupValue);
             this.PeoplePickerControl.html(this.ResolvedUsersToHtml());
             this.PeoplePickerEdit.focus();
-        }
+        };
 
         // Function called when something went wrong with the user query (clientPeoplePickerSearchUser)
         PeoplePicker.prototype.QueryFailure = function (queryNumber) {
             alert('Error performing user search');
-        }
+        };
 
         // Function called then the clientPeoplePickerSearchUser succeeded
-        PeoplePicker.prototype.QuerySuccess = function(queryNumber, searchResult) {
-            var results = this.SharePointContext.parseObjectFromJsonString(searchResult.get_value());
+        PeoplePicker.prototype.QuerySuccess = function (queryNumber, searchResult) {
+            var resultValue = '[]';
+            //Results from code-behind WebMethod
+            if (typeof searchResult === 'string') {
+                resultValue = searchResult;
+            } else {
+                //results from JSOM
+                resultValue = searchResult.get_value();
+            }
+            var results = $.parseJSON(resultValue);
             var txtResults = '';
 
             var baseDisplayTemplate = '<div class=\'ms-bgHoverable\' style=\'width: 400px; padding: 4px;\' onclick=\'javascript:{0}.RecipientSelected(\"{1}\", \"{2}\", \"{3}\")\'>{4}';
@@ -253,7 +282,7 @@
                 displayTemplate = baseDisplayTemplate + '</div>';
             }
 
-            if (results) {
+            if (results && results.length) {
                 if (results.length > 0) {
                     // if this function is not the callback from the last issued query then just ignore it. This is needed to ensure a matching between
                     // what the user entered and what is shown in the query feedback window
@@ -283,21 +312,21 @@
                     }
                     var resultDisplay = '';
                     txtResults += '<div class=\'ms-emphasisBorder\' style=\'width: 400px; padding: 4px; border-left: none; border-bottom: none; border-right: none; cursor: default;\'>';
-                    if (results.length == 1) {
+                    if (results.length === 1) {
                         resultDisplay = 'Showing {0} result';
-                        if (typeof resultsSingle != 'undefined') {
+                        if (typeof resultsSingle !== 'undefined') {
                             resultDisplay = resultsSingle;
                         }
                         txtResults += this.Format(resultDisplay, results.length) + '</div>';
-                    } else if (displayCount != results.length) {
+                    } else if (displayCount !== results.length) {
                         resultDisplay = "Showing {0} of {1} results. <B>Please refine further<B/>";
-                        if (typeof resultsTooMany != 'undefined') {
+                        if (typeof resultsTooMany !== 'undefined') {
                             resultDisplay = resultsTooMany;
                         }
                         txtResults += this.Format(resultDisplay, displayCount, results.length) + '</div>';
                     } else {
                         resultDisplay = "Showing {0} results";
-                        if (typeof resultsMany != 'undefined') {
+                        if (typeof resultsMany !== 'undefined') {
                             resultDisplay = resultsMany;
                         }
                         txtResults += this.Format(resultDisplay, results.length) + '</div>';
@@ -318,11 +347,14 @@
                 //hide the suggestion box since results are null
                 this.HideSelectionBox();
             }
-        }
+        };
 
         // Initialize
         PeoplePicker.prototype.Initialize = function () {
-         
+
+            //Capture reference to current control so that it can be used in event handlers
+            var parent = this;
+
             var scriptUrl = "";
             var scriptRevision = "";
             $('script').each(function (i, el) {
@@ -331,7 +363,7 @@
                     scriptRevision = scriptUrl.substring(scriptUrl.indexOf('.js') + 3);
                     scriptUrl = scriptUrl.substring(0, scriptUrl.indexOf('.js'));
                 }
-            })
+            });
 
             // Load translation files
             var resourcesFile = scriptUrl + "_resources." + this.Language.substring(0, 2).toLowerCase() + ".js";
@@ -351,8 +383,6 @@
                 this.PeoplePickerControl.html(this.ResolvedUsersToHtml());
             }
 
-            //Capture reference to current control so that it can be used in event handlers
-            var parent = this;
 
             //Capture click on parent DIV and set focus to the input control
             this.PeoplePickerControl.parent().click(function (e) {
@@ -363,7 +393,7 @@
                 var keynum = event.which;
 
                 //backspace
-                if (keynum == 8) {
+                if (keynum === 8) {
                     //hide the suggestion box when backspace has been pressed
                     parent.HideSelectionBox();
                     // do we have text entered
@@ -386,12 +416,12 @@
                     }
                 }
                     // An ascii character or a space has been pressed
-                else if (keynum >= 48 && keynum <= 90 || keynum == 32) {
+                else if (keynum >= 48 && keynum <= 90 || keynum === 32) {
                     // get the text entered before the keypress processing (so the last entered key is missing here)    
                     var txt = parent.PeoplePickerEdit.val();
 
                     // keynum is not taking in account shift key and always results inthe uppercase value
-                    if (event.shiftKey == false && keynum >= 65 && keynum <= 90) {
+                    if (event.shiftKey === false && keynum >= 65 && keynum <= 90) {
                         keynum += 32;
                     }
 
@@ -410,7 +440,7 @@
                         // only perform a query when we at least have two chars and we do not have a query running already
                         if (searchText.length >= parent.GetMinimalCharactersBeforeSearching()) {
                             resultDisplay = 'Searching...';
-                            if (typeof resultsSearching != 'undefined') {
+                            if (typeof resultsSearching !== 'undefined') {
                                 resultDisplay = resultsSearching;
                             }
                             var searchbusy = parent.Format('<div class=\'ms-emphasisBorder\' style=\'width: 400px; padding: 4px; border-left: none; border-bottom: none; border-right: none; cursor: default;\'>{0}</div>', resultDisplay);
@@ -431,24 +461,44 @@
                             var queryIDToPass = parent._queryID;
                             parent._lastQueryID = queryIDToPass;
 
-                            // make the SharePoint request
-                            parent.SharePointContext.executeQueryAsync(Function.createDelegate(this, function () { parent.QuerySuccess(queryIDToPass, searchResult); }),
-                                                                       Function.createDelegate(this, function () { parent.QueryFailure(queryIDToPass); }));
+                            //Handling both previous scenarios that were split in two very similar files
+                            //First scenario uses standard JSOM APIs to resolve users
+                            //Second one uses a ServerDataMethod via this class' constructor and exposed in code-behind as WebMethod (Appendix D in readme file)
+                            if (typeof parent.ServerDataMethod === 'undefined') {
+                                // make the SharePoint request using JSOM
+                                parent.SharePointContext.executeQueryAsync(Function.createDelegate(this, function () { parent.QuerySuccess(queryIDToPass, searchResult); }),
+                                                                           Function.createDelegate(this, function () { parent.QueryFailure(queryIDToPass); }));
+                            } else {
+                                var spGroupName = parent.GetSpGroupName();
+
+                                //make call to method in code-behind
+                                $.ajax({
+                                    type: "POST",
+                                    url: parent.GetServerDataMethod() + "?SearchString=" + encodeURIComponent(searchText) + "&SPHostUrl=" + parent.GetSpHostUrl() + "&PrincipalType=" + parent.GetPrincipalType() + (spGroupName ? "&SPGroupName=" + spGroupName : ""),
+                                    data: "{}",
+                                    contentType: "application/json; charset=utf-8",
+                                    dataType: "json",
+                                    success: function (msg) {
+                                        parent.QuerySuccess(queryIDToPass, msg.d);
+                                    },
+                                    error: function (textStatus, errorThrown) {
+                                        parent.QueryFailure(queryIDToPass);
+                                    }
+                                });
+                            }
                         }
                     }
                 }
                     //tab or escape
-                else if (keynum == 9 || keynum == 27) {
+                else if (keynum === 9 || keynum === 27) {
                     //hide the suggestion box
                     parent.HideSelectionBox();
                 }
             });
 
-        }
+        };
 
         return PeoplePicker;
     })();
     CAMControl.PeoplePicker = PeoplePicker;
-    })(CAMControl || (CAMControl = {}));
-
-
+})(CAMControl || (CAMControl = {}));

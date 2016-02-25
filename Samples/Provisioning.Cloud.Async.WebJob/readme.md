@@ -17,6 +17,7 @@ Provisioning.Cloud.Async.WebJob | Vesa Juvonen
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
+1.1  | December 2nd 2015 | Updates on Nuget packages and some cleaning
 1.0  | March 4th 2015 | Initial release
 
 ### Disclaimer ###
