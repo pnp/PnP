@@ -24,20 +24,8 @@ namespace Perficient.Provisioning.VSTools.Models
     public class Deployment
     {
         public string TargetSite { get; set; }
-        public Authentication Authentication { get; set; }
-    }
-
-    public class Authentication
-    {
-        public Office365 Office365 { get; set; }
-        [XmlAttribute(AttributeName = "Type")]
-        public string Type { get; set; }
-    }
-
-    public class Office365
-    {
-        public string Username { get; set; }
-        public string Password { get; set; }
+        
+        internal ProvisioningCredentials Credentials { get; set; }
     }
 
     public class Template

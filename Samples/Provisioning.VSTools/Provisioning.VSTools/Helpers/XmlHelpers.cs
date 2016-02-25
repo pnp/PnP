@@ -1,4 +1,5 @@
-﻿using Perficient.Provisioning.VSTools.Models;
+﻿using Microsoft.VisualStudio.Shell;
+using Perficient.Provisioning.VSTools.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,38 +14,69 @@ namespace Perficient.Provisioning.VSTools.Helpers
 {
     public static class XmlHelpers
     {
-        public static XElement GetElementByLocalName(XElement parent, string name)
+        internal static T GetConfigFile<T>(string filepath, bool projectItem = true)
         {
-            return parent.Elements().Where(e => e.Name.LocalName == name).FirstOrDefault();
+            if (System.IO.File.Exists(filepath))
+            {
+                var dte = (EnvDTE.DTE)Package.GetGlobalService(typeof(EnvDTE.DTE));
+                var solutionItem = dte.Solution.FindProjectItem(filepath);
+
+                if (solutionItem != null || projectItem == false)
+                {
+                    return XmlHelpers.DeserializeObject<T>(filepath);
+                }
+            }
+
+            return default(T);
         }
 
-        public static ProvisioningTemplateToolsConfiguration DeserializeObject(string filename)
+        /// <summary>
+        /// Deserializes a file to the specified type
+        /// </summary>
+        internal static T DeserializeObject<T>(string filename)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(ProvisioningTemplateToolsConfiguration));
-            FileStream fs = new FileStream(filename, FileMode.Open);
-            XmlReader reader = XmlReader.Create(fs);
+            T result;
 
-            ProvisioningTemplateToolsConfiguration config;
-            config = (ProvisioningTemplateToolsConfiguration)serializer.Deserialize(reader);
-            fs.Close();
+            using (StreamReader sr = new StreamReader(filename))
+            {
+                XmlSerializer ser = new XmlSerializer(typeof(T));
+                result = (T)ser.Deserialize(sr);
+            }
 
-            return config;
+            return result;
         }
 
-        public static void SerializeObject(ProvisioningTemplateToolsConfiguration config, string filename)
+        /// <summary>
+        /// Serializes an item to the specied file
+        /// </summary>
+        internal static void SerializeObject(object source, string filename)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(ProvisioningTemplateToolsConfiguration));
+            if (source == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            XmlSerializer serializer = new XmlSerializer(source.GetType());
             using (MemoryStream ms = new MemoryStream())
             {
                 XmlWriterSettings settings = new XmlWriterSettings();
                 settings.Indent = true;
                 settings.NewLineOnAttributes = true;
                 XmlWriter writer = XmlWriter.Create(ms, settings);
-                serializer.Serialize(writer, config);
+                serializer.Serialize(writer, source);
 
                 System.IO.File.WriteAllBytes(filename, ms.ToArray());
             }
+        }
 
-        } 
+        /// <summary>
+        /// Writes an xml string to a file
+        /// </summary>
+        internal static void WriteXmlStringToFile(string inputXml, string filePath)
+        {
+            System.Xml.XmlDocument doc = new System.Xml.XmlDocument();
+            doc.LoadXml(inputXml);
+            doc.Save(filePath);
+        }
     }
 }

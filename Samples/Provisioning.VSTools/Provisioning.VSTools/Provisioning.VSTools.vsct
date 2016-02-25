@@ -93,6 +93,13 @@
         </Strings>
       </Button>
 
+      <Button guid="guidPnPTemplateProvisioningProjectCmdSet" id="cmdidEditConnection" priority="0x0102" type="Button">
+        <Parent guid="guidPnPTemplateProvisioningProjectCmdSet" id="PnPTemplateProvisioningProjectGroup" />
+        <CommandFlag>TextChanges</CommandFlag>
+        <Strings>
+          <ButtonText>Edit Connection</ButtonText>
+        </Strings>
+      </Button>
     </Buttons>
    
     <!--The bitmaps section is used to define the bitmaps that are used for the commands.-->
@@ -132,6 +139,7 @@
 
       <IDSymbol name="PnPTemplateProvisioningProjectGroup" value="0x1021" />
       <IDSymbol name="cmdidPnPToolsToggle" value="0x0101" />
+      <IDSymbol name="cmdidEditConnection" value="0x0102" />
     </GuidSymbol>
     
     <GuidSymbol name="guidImages" value="{6abb92a9-3664-4b13-8699-1335a45318b4}" >
