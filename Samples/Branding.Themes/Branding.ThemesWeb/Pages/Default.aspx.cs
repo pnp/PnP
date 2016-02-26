@@ -77,17 +77,17 @@ namespace Contoso.Branding.ThemesWeb
             {
                 if (clientContext != null)
                 {
-                    clientContext.Web.UploadThemeFile(HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCTheme.spcolor")));
-                    clientContext.Web.UploadThemeFile(HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCbg.jpg")));
+                    clientContext.Site.RootWeb.UploadThemeFile(HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCTheme.spcolor")));
+                    clientContext.Site.RootWeb.UploadThemeFile(HostingEnvironment.MapPath(string.Format("~/{0}", "Resources/Themes/SPC/SPCbg.jpg")));
 
                     Web web = clientContext.Web;
-                    clientContext.Load(clientContext.Web, w => w.AllProperties, w => w.ServerRelativeUrl);
+                    clientContext.Load(clientContext.Site, w => w.RootWeb.ServerRelativeUrl); // loading RootWeb.ServerRelativeUrl property;
                     clientContext.ExecuteQuery();
                     // Let's first upload the contoso theme to host web, if it does not exist there
-                    web.CreateComposedLookByName("SPC",
-                                    clientContext.Web.ServerRelativeUrl + "/_catalogs/theme/15/SPCTheme.spcolor",
+                    web.CreateComposedLookByUrl("SPC",
+                                    clientContext.Site.RootWeb.ServerRelativeUrl + "/_catalogs/theme/15/SPCTheme.spcolor",
                                     null,
-                                    clientContext.Web.ServerRelativeUrl + "/_catalogs/theme/15/SPCbg.jpg",
+                                    clientContext.Site.RootWeb.ServerRelativeUrl + "/_catalogs/theme/15/SPCbg.jpg",
                                     string.Empty);
 
                     // Setting the Contoos theme to host web
