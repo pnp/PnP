@@ -1,5 +1,6 @@
 ﻿using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using OfficeDevPnP.MSGraphAPIGroups.Models;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -22,6 +23,7 @@ namespace OfficeDevPnP.MSGraphAPIGroups.Utils
 							new UserIdentifier(userObjectId, UserIdentifierType.UniqueId));
 
 			return authResult.AccessToken;
+
 		}
 	}
 }

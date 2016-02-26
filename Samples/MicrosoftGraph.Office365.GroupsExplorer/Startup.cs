@@ -45,7 +45,10 @@ namespace OfficeDevPnP.MSGraphAPIGroups
 							String signInUserId = context.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 							AuthenticationContext authContext = new AuthenticationContext(SettingsHelper.Authority, new ADALTokenCache(signInUserId));
-							AuthenticationResult result = authContext.AcquireTokenByAuthorizationCode(code, new Uri(HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path)), credential, SettingsHelper.AADGraphResource);
+							AuthenticationResult result = authContext.AcquireTokenByAuthorizationCode(
+																							code, 
+																							new Uri(HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path)), 
+																							credential, SettingsHelper.MSGraphResource);
 
 							return Task.FromResult(0);
 						},

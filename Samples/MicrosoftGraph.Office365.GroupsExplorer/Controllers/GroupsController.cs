@@ -19,9 +19,10 @@ namespace OfficeDevPnP.MSGraphAPIGroups.Controllers
 			List<Group> groups = new List<Group>();
 
 			ViewBag.Title = "All Groups";
-			ViewBag.EnableSearch = true;
+			ViewBag.search = "";
+			ViewBag.unifiedOnly = false;
 
-			string APIURL = SettingsHelper.MSGraphResource + "/beta/myorganization/groups";
+			string APIURL = SettingsHelper.MSGraphResource + "/v1.0/myorganization/groups";
 			ViewBag.Message = "API URL: " + APIURL;
 
 			try
@@ -48,21 +49,31 @@ namespace OfficeDevPnP.MSGraphAPIGroups.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> Index(string search)
+		public async Task<ActionResult> Index(string search, string unifiedOnly)
 		{
 			List<Group> groups = new List<Group>();
-
-			if (String.IsNullOrEmpty(search))
-			{
-				ViewBag.Message = "Enter search value";
-				return View(groups);
-			}
+			string apiUrl = String.Empty;
 
 			ViewBag.Title = "Group search";
-			ViewBag.EnableSearch = true;
 
-			string apiUrl = String.Format("{0}/beta/myorganization/groups?$filter=startswith(displayName,'{1}')",
+			if (!String.IsNullOrEmpty(search))
+			{
+				ViewBag.search = search;
+				ViewBag.unifiedOnly = false;
+
+				apiUrl = String.Format("{0}/v1.0/myorganization/groups?$filter=startswith(displayName,'{1}')",
 																				SettingsHelper.MSGraphResource, search);
+			}
+
+			if (unifiedOnly == "on")
+			{
+				ViewBag.search = "";
+				ViewBag.unifiedOnly = true;
+
+				apiUrl = String.Format("{0}/v1.0/myorganization/groups?$filter=groupTypes/any(a:a%20eq%20'unified')",
+																				SettingsHelper.MSGraphResource, search);
+
+			}
 
 			ViewBag.Message = "API URL: " + apiUrl;
 
@@ -95,7 +106,7 @@ namespace OfficeDevPnP.MSGraphAPIGroups.Controllers
 
 			ViewBag.Title = "Group Details";
 
-			string apiUrl = String.Format("{0}/beta/myorganization/groups/{1}", SettingsHelper.MSGraphResource, id);
+			string apiUrl = String.Format("{0}/v1.0/myorganization/groups/{1}", SettingsHelper.MSGraphResource, id);
 			ViewBag.Message = "API URL: " + apiUrl;
 
 			try
@@ -128,7 +139,7 @@ namespace OfficeDevPnP.MSGraphAPIGroups.Controllers
 			ViewBag.Title = "Group Conversations";
 			ViewBag.GroupId = id;
 
-			string apiUrl = String.Format("{0}/beta/myorganization/groups/{1}/conversations", SettingsHelper.MSGraphResource, id);
+			string apiUrl = String.Format("{0}/v1.0/myorganization/groups/{1}/conversations", SettingsHelper.MSGraphResource, id);
 			ViewBag.Message = "API URL: " + apiUrl;
 
 			try
@@ -166,7 +177,7 @@ namespace OfficeDevPnP.MSGraphAPIGroups.Controllers
 			ViewBag.GroupId = id;
 			ViewBag.ConversationId = itemId;
 
-			string apiUrl = String.Format("{0}/beta/myorganization/groups/{1}/conversations/{2}/threads", 
+			string apiUrl = String.Format("{0}/v1.0/myorganization/groups/{1}/conversations/{2}/threads", 
 																		SettingsHelper.MSGraphResource, 
 																		id, itemId);
 			ViewBag.Message = "API URL: " + apiUrl;
@@ -205,7 +216,7 @@ namespace OfficeDevPnP.MSGraphAPIGroups.Controllers
 			ViewBag.Title = "Group ConversationThread Posts";
 			ViewBag.GroupId = id;
 
-			string apiUrl = String.Format("{0}/beta/myorganization/groups/{1}/threads/{2}/posts", SettingsHelper.MSGraphResource, id, itemId);
+			string apiUrl = String.Format("{0}/v1.0/myorganization/groups/{1}/threads/{2}/posts", SettingsHelper.MSGraphResource, id, itemId);
 			ViewBag.Message = "API URL: " + apiUrl;
 
 			try
@@ -242,7 +253,7 @@ namespace OfficeDevPnP.MSGraphAPIGroups.Controllers
 			ViewBag.Title = "Group Events";
 			ViewBag.GroupId = id;
 
-			string apiUrl = String.Format("{0}/beta/myorganization/groups/{1}/events", SettingsHelper.MSGraphResource, id);
+			string apiUrl = String.Format("{0}/v1.0/myorganization/groups/{1}/events", SettingsHelper.MSGraphResource, id);
 			ViewBag.Message = "API URL: " + apiUrl;
 
 			try
@@ -280,7 +291,7 @@ namespace OfficeDevPnP.MSGraphAPIGroups.Controllers
 			ViewBag.Title = "Group Files";
 			ViewBag.GroupId = id;
 
-			string apiUrl = String.Format("{0}/beta/myorganization/groups/{1}/drive/root/children", SettingsHelper.MSGraphResource, id);
+			string apiUrl = String.Format("{0}/v1.0/myorganization/groups/{1}/drive/root/children", SettingsHelper.MSGraphResource, id);
 			ViewBag.Message = "API URL: " + apiUrl;
 
 			try

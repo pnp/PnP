@@ -26,7 +26,7 @@ namespace OfficeDevPnP.MSGraphAPIGroups.Controllers
 			ViewBag.Title = "Groups I've Joined";
 			ViewBag.EnableSearch = false;
 
-			string APIURL = String.Format("{0}/beta/me/joinedGroups",
+			string APIURL = String.Format("{0}/v1.0/me/memberOf/$/microsoft.graph.group?$filter=groupTypes/any(a:a%20eq%20'unified')",
 																			SettingsHelper.MSGraphResource);
 			ViewBag.Message = "API URL: " + APIURL;
 

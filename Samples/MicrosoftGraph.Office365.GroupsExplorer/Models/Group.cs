@@ -24,7 +24,7 @@ namespace OfficeDevPnP.MSGraphAPIGroups.Models
 		public bool isSubscribedByMail { get; set; }
 		public string mail { get; set; }
 
-		[UIHint("FabricNullableBool")]
+		[UIHint("FabricBool")]
 		public bool? mailEnabled { get; set; }
 		public string mailNickname { get; set; }
 		public string onPremisesLastSyncDateTime { get; set; }  //timestamp

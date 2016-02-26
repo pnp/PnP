@@ -84,8 +84,10 @@
 		</div>
 	</div>
 	<div class="ms-Grid-col ms-u-sm2 ms-u-smPush2">
-		<label class="ms-Label">@Html.DisplayNameFor(model => model.mailEnabled):</label>
-		@Html.DisplayFor(model => model.mailEnabled)
+		<div class="ms-Toggle">
+			<span class="ms-Toggle-description">@Html.DisplayNameFor(model => model.mailEnabled):</span>
+			@Html.DisplayFor(model => model.mailEnabled)
+		</div>
 	</div>
 </div>
 <div class="ms-Grid-row">
