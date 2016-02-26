@@ -1,6 +1,6 @@
 "use strict";
 
-export interface TypedHash<T> {
+export interface ITypedHash<T> {
     [key: string]: T;
 }
 
@@ -29,6 +29,14 @@ export class Dictionary<T> {
         } else {
             this.keys.push(key);
             this.values.push(o);
+        }
+    }
+
+    public merge(source: ITypedHash<T>): void {
+        for (let key in source) {
+            if (typeof key === "string") {
+                this.add(key, source[key]);
+            }
         }
     }
 
