@@ -27,6 +27,12 @@ describe("Collections", () => {
             expect(dic.count()).to.eq(1);
         });
 
+        it("Should return null for a non-existant value", () => {
+            dic.add("test", "value");
+            let ret = dic.get("test2");
+            expect(ret).to.be.null;
+        });
+
         it("Should add four values, remove one and still contain the non-removed values", () => {
             dic.add("test1", "value1");
             dic.add("test2", "value2");
