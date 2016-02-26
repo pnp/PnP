@@ -16,15 +16,16 @@ Unsure where to begin with working on the project? This guide is designed to get
 	4. Restart Code after installation
 	5. Open your console and type `npm install -g tslint` to globally install the npm package
 
-5. Install typings by typing the following code in your console `npm install -g typings`
+5. Install typescript by typing the following code in your console `npm install -g typescript`
 
-5. Now we need to fork and clone the git repository. This can be done using your [console](https://help.github.com/articles/fork-a-repo/) or using your preferred method.
+6. Install typings by typing the following code in your console `npm install -g typings`
 
-6. Once you have the code locally, navigate to the root of the project in your console. Type the following commands:
+7. Now we need to fork and clone the git repository. This can be done using your [console](https://help.github.com/articles/fork-a-repo/) or using your preferred method.
+
+8. Once you have the code locally, navigate to the root of the project in your console. Type the following commands:
 	1. `npm install` - installs all of the npm package dependencies (may take awhile the first time)
 	2. `typings install` - installs the required typings files as defined in typings.json 
 
-7. Type `gulp serve` and you should see the browser launch and an alert window display a random string of length 5.
+9. Type `gulp serve` and you should see the browser launch and an alert window display a random string of length 5.
 
 Because we are watching the files, any changes will be reflected in the served files after a new build is complete. You can point from a script tag in your SharePoint site to the http://localhost:3000 site to use the files. Any changes you make will be reflected thanks to the watched build. 
-
