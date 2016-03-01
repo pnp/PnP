@@ -1,17 +1,15 @@
 ﻿var CAMControl;
-var additionalOwnersEmail;
-
 (function (CAMControl) {
     var PeoplePicker = (function () {
 
         // Constructor
-        function PeoplePicker(SharePointContext, PeoplePickerControl, PeoplePickerEdit, PeoplePickerDisplay, PeoplePickerData, PeoplePickerInstanceName) {
+        function PeoplePicker(SharePointContext, PeoplePickerControl, PeoplePickerEdit, PeoplePickerDisplay, PeoplePickerData) {
             //public properties
             this.SharePointContext = SharePointContext;
             this.PeoplePickerControl = PeoplePickerControl;
             this.PeoplePickerEdit = PeoplePickerEdit;
             this.PeoplePickerDisplay = PeoplePickerDisplay;
-            this.PeoplePickerData = PeoplePickerData;            
+            this.PeoplePickerData = PeoplePickerData;
             this.InstanceName = "";
             this.MaxEntriesShown = 4;
             this.ShowLoginName = true;
@@ -24,7 +22,6 @@ var additionalOwnersEmail;
             this._queryID = 1;
             this._lastQueryID = 1;
             this._ResolvedUsers = [];
-            this._ResolvedUsersEmail = [];
         }
 
         // Property wrapped in function to allow access from event handler
@@ -58,7 +55,7 @@ var additionalOwnersEmail;
 
         // HTML encoder
         PeoplePicker.prototype.HtmlEncode = function(html) {
-            return document.createElement('a').appendChild(document.createTextNode(html)).parentNode.innerHTML;
+            return document.createElement('a').appendChild(document.createTextNode(html)).parentNode.innerHTML.ReplaceAll("'", "&apos;", true);
         }
 
         // HTML decoder
@@ -170,12 +167,18 @@ var additionalOwnersEmail;
             return user;
         }
 
-        // Add resolved user to array and update the hidden field control with a JSON string
+        // Add resolved user to array and updates the hidden field control with a JSON string
         PeoplePicker.prototype.PushResolvedUser = function (resolvedUser) {
 
             if (this.AllowDuplicates) {
                 this._ResolvedUsers.push(resolvedUser);
-            } else {
+            }            
+
+            else if (this._ResolvedUsers.length >= 1 && this.InstanceName == 'peoplePicker') {                
+                duplicate = true;
+            }
+
+            else {
                 var duplicate = false;
                 for (var i = 0; i < this._ResolvedUsers.length; i++) {
                     if (this._ResolvedUsers[i].Login == resolvedUser.Login) {
@@ -185,29 +188,9 @@ var additionalOwnersEmail;
 
                 if (!duplicate) {
                     this._ResolvedUsers.push(resolvedUser);
-                    this._ResolvedUsersEmail.push(resolvedUser.Email)
-                    
                 }
             }
-            
-            // Need to find a bettwer way to get the data into the angular scope variables
-            if (this.InstanceName == "additionalOwnersPicker") {
-                // Update siteconfiguration object for site request
-                angular.element($("#divFieldOwners")).scope().updateSecondaryOwners(this._ResolvedUsersEmail);
-            }
 
-            // Need to find a bettwer way to get the data into the angular scope variables
-            if (this.InstanceName == "membersPicker") {
-                // Update siteconfiguration object for site request
-                angular.element($("#divFieldMembers")).scope().updateMembers(this._ResolvedUsersEmail);
-            }
-
-            // Need to find a bettwer way to get the data into the angular scope variables
-            if (this.InstanceName == "visitorsPicker") {
-                // Update siteconfiguration object for site request
-                angular.element($("#divFieldVisitors")).scope().updateVisitors(this._ResolvedUsersEmail);
-            }
-            
             this.PeoplePickerData.val(JSON.stringify(this._ResolvedUsers));
         }
 
@@ -231,17 +214,25 @@ var additionalOwnersEmail;
         }
 
         // Update the people picker control to show the newly added user
-        PeoplePicker.prototype.RecipientSelected = function(login, name, email) {
-            this.HideSelectionBox();
-            // Push new resolved user to list
-            this.PushResolvedUser(this.ResolvedUser(login, name, email));
-            // Update the resolved user display 
-            this.PeoplePickerControl.html(this.ResolvedUsersToHtml());       
-
-            
-            // Prepare the edit control for a second user selection
-            this.PeoplePickerEdit.val('');
-            this.PeoplePickerEdit.focus();
+        PeoplePicker.prototype.RecipientSelected = function (login, name, email) {
+            var parent = this;        
+            if (email.toLowerCase().indexOf("contoso.com") > 0) {
+                this.HideSelectionBox();
+                // Push new resolved user to list
+                this.PushResolvedUser(this.ResolvedUser(login, name, email));
+                // Update the resolved user display 
+                this.PeoplePickerControl.html(this.ResolvedUsersToHtml());
+                // Prepare the edit control for a second user selection
+                this.PeoplePickerEdit.val('');
+                this.PeoplePickerEdit.focus();
+            }
+            else
+            {
+                alert('Please choose a user from contoso domain');
+                this.PeoplePickerEdit.val('');
+                this.PeoplePickerEdit.focus();
+                parent.HideSelectionBox();
+            }
         }
 
         // Delete a resolved user
@@ -262,7 +253,6 @@ var additionalOwnersEmail;
             var txtResults = '';
 
             var baseDisplayTemplate = '<div class=\'ms-bgHoverable\' style=\'width: 400px; padding: 4px;\' onclick=\'javascript:{0}.RecipientSelected(\"{1}\", \"{2}\", \"{3}\")\'>{4}';
-            //var baseDisplayTemplate = '<div class=\'ms-bgHoverable\' style=\'width: 400px; padding: 4px;\' onclick=\'javascript:{0}.RecipientSelected(\"{1}\", \"{2}\", \"{3}\")\'>{4}';
             var displayTemplate = '';
             if (this.ShowLoginName && this.ShowTitle) {
                 displayTemplate = baseDisplayTemplate + ' ({5})<br/>{6}</div>';
@@ -327,7 +317,8 @@ var additionalOwnersEmail;
                     this.ShowSelectionBox();
                 }
                 else {
-                    var searchbusy = '<div class=\'ms-emphasisBorder\' style=\'width: 400px; padding: 4px; border-left: none; border-bottom: none; border-right: none; cursor: default;\'>No results found</div>';
+                    //var searchbusy = '<div class=\'ms-emphasisBorder\' style=\'width: 400px; padding: 4px; border-left: none; border-bottom: none; border-right: none; cursor: default;\'>No results found</div>';
+                    var searchbusy = '<div class=\'ms-emphasisBorder\' style=\'width: 400px; padding: 4px; border-left: none; border-bottom: none; border-right: none; cursor: default;\'></div>';
                     this.PeoplePickerDisplay.html(searchbusy);
                     //display the suggestion box
                     this.ShowSelectionBox();
@@ -379,86 +370,97 @@ var additionalOwnersEmail;
             });
 
             this.PeoplePickerEdit.keydown(function (event) {
-                var keynum = event.which;
 
-                //backspace
-                if (keynum == 8) {
-                    //hide the suggestion box when backspace has been pressed
-                    parent.HideSelectionBox();
-                    // do we have text entered
-                    var unvalidatedText = parent.PeoplePickerEdit.val();
-                    if (unvalidatedText.length > 0) {
-                        // delete the last entered character...meaning do nothing as this delete will happen as part of the keypress
-                    }
-                    else {
-                        // are there resolved users, if not there's nothing to delete
-                        if (parent._ResolvedUsers.length > 0) {
-                            // remove the last added user
-                            parent.PopResolvedUser();
-                            // update the display
-                            parent.PeoplePickerControl.html(parent.ResolvedUsersToHtml());
-                            // focus back to input control
-                            parent.PeoplePickerEdit.focus();
-                            // Eat the backspace key
-                            return false;
+                if (parent._ResolvedUsers.length < 1) {
+
+                    var keynum = event.which;
+
+                    //backspace
+                    if (keynum == 8) {
+                        //hide the suggestion box when backspace has been pressed
+                        parent.HideSelectionBox();
+                        // do we have text entered
+                        var unvalidatedText = parent.PeoplePickerEdit.val();
+                        if (unvalidatedText.length > 0) {
+                            // delete the last entered character...meaning do nothing as this delete will happen as part of the keypress
                         }
-                    }
-                }
-                    // An ascii character or a space has been pressed
-                else if (keynum >= 48 && keynum <= 90 || keynum == 32) {
-                    // get the text entered before the keypress processing (so the last entered key is missing here)    
-                    var txt = parent.PeoplePickerEdit.val();
-
-                    // keynum is not taking in account shift key and always results inthe uppercase value
-                    if (event.shiftKey == false && keynum >= 65 && keynum <= 90) {
-                        keynum += 32;
-                    }
-
-                    // Append the last entered character: since we're handling a keydown event this character has not yet been added hence the returned value misses the last character
-                    txt += String.fromCharCode(keynum);
-
-                    // we should have at least 1 character
-                    if (txt.length > 0) {
-                        var searchText = txt;
-
-                        //ensure that MinimalCharactersBeforeSearching >= 1
-                        if (parent.GetMinimalCharactersBeforeSearching() < 1) {
-                            parent.SetMinimalCharactersBeforeSearching(1);
-                        }
-
-                        // only perform a query when we at least have two chars and we do not have a query running already
-                        if (searchText.length >= parent.GetMinimalCharactersBeforeSearching()) {
-                            resultDisplay = 'Searching...';
-                            if (typeof resultsSearching != 'undefined') {
-                                resultDisplay = resultsSearching;
+                        else {
+                            // are there resolved users, if not there's nothing to delete
+                            if (parent._ResolvedUsers.length > 0) {
+                                // remove the last added user
+                                parent.PopResolvedUser();
+                                // update the display
+                                parent.PeoplePickerControl.html(parent.ResolvedUsersToHtml());
+                                // focus back to input control
+                                parent.PeoplePickerEdit.focus();
+                                // Eat the backspace key
+                                return false;
                             }
-                            var searchbusy = parent.Format('<div class=\'ms-emphasisBorder\' style=\'width: 400px; padding: 4px; border-left: none; border-bottom: none; border-right: none; cursor: default;\'>{0}</div>', resultDisplay);
-                            parent.PeoplePickerDisplay.html(searchbusy);
-                            //display the suggestion box
-                            parent.ShowSelectionBox();
-
-                            var query = new SP.UI.ApplicationPages.ClientPeoplePickerQueryParameters();
-                            query.set_allowMultipleEntities(false);
-                            query.set_maximumEntitySuggestions(2000);
-                            query.set_principalType(parent.GetPrincipalType());
-                            query.set_principalSource(15);
-                            query.set_queryString(searchText);
-                            var searchResult = SP.UI.ApplicationPages.ClientPeoplePickerWebServiceInterface.clientPeoplePickerSearchUser(parent.SharePointContext, query);
-
-                            // update the global queryID variable so that we can correlate incoming delegate calls later on
-                            parent._queryID = parent._queryID + 1;
-                            var queryIDToPass = parent._queryID;
-                            parent._lastQueryID = queryIDToPass;
-
-                            // make the SharePoint request
-                            parent.SharePointContext.executeQueryAsync(Function.createDelegate(this, function () { parent.QuerySuccess(queryIDToPass, searchResult); }),
-                                                                       Function.createDelegate(this, function () { parent.QueryFailure(queryIDToPass); }));
                         }
                     }
+                        // An ascii character or a space has been pressed
+                    else if (keynum >= 48 && keynum <= 90 || keynum == 32) {
+                        // get the text entered before the keypress processing (so the last entered key is missing here)    
+                        var txt = parent.PeoplePickerEdit.val();
+
+                        // keynum is not taking in account shift key and always results inthe uppercase value
+                        if (event.shiftKey == false && keynum >= 65 && keynum <= 90) {
+                            keynum += 32;
+                        }
+
+                        // Append the last entered character: since we're handling a keydown event this character has not yet been added hence the returned value misses the last character
+                        txt += String.fromCharCode(keynum);
+
+                        // we should have at least 1 character
+                        if (txt.length > 0) {
+                            var searchText = txt;
+
+                            //ensure that MinimalCharactersBeforeSearching >= 1
+                            if (parent.GetMinimalCharactersBeforeSearching() < 1) {
+                                parent.SetMinimalCharactersBeforeSearching(1);
+                            }
+
+                            // only perform a query when we at least have two chars and we do not have a query running already
+                            if (searchText.length >= parent.GetMinimalCharactersBeforeSearching()) {
+                                $peoplePickerControl = parent;
+                                resultDisplay = 'Searching...';
+                                if (typeof resultsSearching != 'undefined') {
+                                    resultDisplay = resultsSearching;
+                                }
+                                var searchbusy = parent.Format('<div class=\'ms-emphasisBorder\' style=\'width: 400px; padding: 4px; border-left: none; border-bottom: none; border-right: none; cursor: default;\'>{0}</div>', resultDisplay);
+                                parent.PeoplePickerDisplay.html(searchbusy);
+                                //display the suggestion box
+                                parent.ShowSelectionBox();
+
+                                var query = new SP.UI.ApplicationPages.ClientPeoplePickerQueryParameters();
+                                query.set_allowMultipleEntities(false);
+                                query.set_maximumEntitySuggestions(2000);
+                                query.set_principalType(parent.GetPrincipalType());
+                                query.set_principalSource(15);
+                                query.set_queryString(searchText);
+                                var searchResult = SP.UI.ApplicationPages.ClientPeoplePickerWebServiceInterface.clientPeoplePickerSearchUser(parent.SharePointContext, query);
+
+                                // update the global queryID variable so that we can correlate incoming delegate calls later on
+                                parent._queryID = parent._queryID + 1;
+                                var queryIDToPass = parent._queryID;
+                                parent._lastQueryID = queryIDToPass;
+
+                                // make the SharePoint request
+                                parent.SharePointContext.executeQueryAsync(Function.createDelegate(this, function () { parent.QuerySuccess(queryIDToPass, searchResult); }),
+                                                                           Function.createDelegate(this, function () { parent.QueryFailure(queryIDToPass); }));
+                            }
+                        }
+                    }
+                        //tab or escape
+                    else if (keynum == 9 || keynum == 27) {
+                        //hide the suggestion box
+                        parent.HideSelectionBox();
+                    }
                 }
-                    //tab or escape
-                else if (keynum == 9 || keynum == 27) {
-                    //hide the suggestion box
+
+                else
+                {
+                    event.preventDefault();                    
                     parent.HideSelectionBox();
                 }
             });

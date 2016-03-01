@@ -131,6 +131,8 @@ namespace Provisioning.Common.Authentication
         /// </summary>
         public void EnsureToken()
         {
+            this.TenantAdminUrl = Uri.EscapeUriString(this.TenantAdminUrl);
+
             bool _isValidURi = Uri.IsWellFormedUriString(this.TenantAdminUrl, UriKind.Absolute);
             if (_isValidURi)
             {

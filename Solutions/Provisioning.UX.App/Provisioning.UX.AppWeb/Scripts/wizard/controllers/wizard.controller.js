@@ -2,6 +2,10 @@
     'use strict';
     var controllerId = 'dashboard';
 
+    //if (!window.location.origin) { // Some browsers (mainly IE) does not have this property, so we need to build it manually...
+    //    window.location.origin = window.location.protocol + '//' + window.location.hostname + (window.location.port ? (':' + window.location.port) : '');
+    //}
+
     angular
         .module('app.wizard')
         .controller('WizardController', WizardController);
@@ -14,9 +18,11 @@
         var logSuccess = common.logger.getLogFn(controllerId, 'success');
         var getLogFn = common.logger.getLogFn;
         var log = getLogFn(controllerId);
+        var user = new Object();
 
-        vm.existingRequests = [];
-               
+        $rootScope.userContext = [];
+        $scope.user;
+                      
 
         activate();
 
@@ -47,9 +53,7 @@
             //toggleSpinner(true);
 
             getAppSettings();
-            initModal();
-
-            
+            initModal();            
             var promises = [];
             common.activateController(promises, controllerId)
                                .then(function () {
@@ -75,8 +79,10 @@
                 // Process the data returned from the modal after it is successfuly completed
                 modalInstance.result.then(function (configuration) {
                     $scope.completedConfiguration = configuration;
+                    getRequestsByOwner(user);
                 }, function () {
                     $log.info('Modal dismissed at: ' + new Date());
+                    getRequestsByOwner(user);
                 });
             };
         }
@@ -95,9 +101,7 @@
                        success: function (data) {
                            var jsonResults = JSON.parse(data.body);
                            
-                           $log.info('Current user email: ' + jsonResults.Email);
-
-                           var user = new Object();
+                           $log.info('Current user email: ' + jsonResults.Email);                           
                            user.name = jsonResults.Email;
                            getRequestsByOwner(user);                          
 
@@ -131,10 +135,12 @@
 
                 // Store settings data 
                 $scope.appSettings = settingsdata;
-
             });
+        }
 
-        }        
+        $(document).ready(function () {
+
+        });
         
     }
 })();
