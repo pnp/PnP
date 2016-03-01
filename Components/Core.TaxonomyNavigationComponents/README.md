@@ -130,6 +130,8 @@ Notes:
 
 - For the contextual menu, only the siblings and children who have been flagged to appear in the current navigation are displayed (the display is controlled directly in the HTML of the template view).
 
+- The breadcrumb and the contextual menu work with both friendly and physical (simple link) URLs.
+
 ## Troubleshooting ##
 
 If you encounter some troubles to get the navigation main menu in your page, make sure the term set is flagged as navigation term set and wired correctly to your web site for navigation.
