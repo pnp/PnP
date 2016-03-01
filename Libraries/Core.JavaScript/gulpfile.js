@@ -9,7 +9,6 @@ var gulp = require("gulp"),
     src = require("vinyl-source-stream"),
     buffer = require("vinyl-buffer"),
     srcmaps = require("gulp-sourcemaps"),
-    merge = require('merge-stream'),
     header = require('gulp-header'),
     clean = require('gulp-clean'),
     
