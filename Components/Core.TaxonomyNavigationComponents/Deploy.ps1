@@ -60,8 +60,8 @@ Add-SPOFile -Path ".\App\Templates\template.breadcrumb.html" -Folder "/Style Lib
 Add-SPOFile -Path ".\App\ViewModels\viewmodel.navigation.js" -Folder "/Style Library/NavigationSample/App/ViewModels" -Checkout
 Add-SPOFile -Path ".\App\Modules\module.taxonomy.js" -Folder "/Style Library/NavigationSample/App/Modules" -Checkout
 Add-SPOFile -Path ".\App\Modules\module.utility.js" -Folder "/Style Library/NavigationSample/App/Modules" -Checkout
-Add-SPOFile -Path ".\App\OfficeUI\Jquery.NavBar.js" -Folder "/Style Library/NavigationSample/App/OfficeUI" -Checkout
-Add-SPOFile -Path ".\App\OfficeUI\Jquery.ContextualMenu.js" -Folder "/Style Library/NavigationSample/App/OfficeUI" -Checkout
+Add-SPOFile -Path ".\App\OfficeUI\OfficeUi.NavBar.js" -Folder "/Style Library/NavigationSample/App/OfficeUI" -Checkout
+Add-SPOFile -Path ".\App\OfficeUI\OfficeUi.ContextualMenu.js" -Folder "/Style Library/NavigationSample/App/OfficeUI" -Checkout
 Add-SPOFile -Path ".\App\main.js" -Folder "/Style Library/NavigationSample/App" -Checkout
 Add-SPOFile -Path ".\App\require.js" -Folder "/Style Library/NavigationSample/App" -Checkout
 Add-SPOFile -Path ".\App\Lib\jquery-2.2.0.min.js" -Folder "/Style Library/NavigationSample/App/Lib/" -Checkout
@@ -75,9 +75,10 @@ Add-SPOFile -Path ".\App\Components\component.breadcrumb.js"-Folder "/Style Libr
 
 # -----------------
 # Add CSS and Js links to all pages
+# If you work with SharePoint Online, CDN stylesheets must be loaded via HTTPS
 # -----------------
-$OfficeUiCoreCss = "document.write('<link rel=""stylesheet"" href=""https://appsforoffice.microsoft.com/fabric/1.0/fabric.min.css""/>');"
-$OfficeUiComponentsCss = "document.write('<link rel=""stylesheet"" href=""https://appsforoffice.microsoft.com/fabric/1.0/fabric.components.min.css""/>');"
+$OfficeUiCoreCss = "document.write('<link rel=""stylesheet"" href=""https://appsforoffice.microsoft.com/fabric/2.0.1/fabric.min.css""/>');"
+$OfficeUiComponentsCss = "document.write('<link rel=""stylesheet"" href=""https://appsforoffice.microsoft.com/fabric/2.0.1/fabric.components.min.css""/>');"
 $RequireJs = "document.write('<script data-main=""$SiteUrl/Style Library/NavigationSample/App/main"" src=""$SiteUrl/Style Library/NavigationSample/App/require.js""><\/script>');"
 
 Remove-SPOJavaScriptLink -Name OfficeUiCoreCss -Scope Site -Force
@@ -99,3 +100,6 @@ Add-SPOJavaScriptBlock -Key RequireJs -Script $RequireJs -Scope Site
 # - SetMasterPageByName() = System Master Page
 # You need to use directly the .master file instead of the .html one.
 Set-SPOMasterPage -CustomMasterPageSiteRelativeUrl "_catalogs/masterpage/oslo.master"
+
+# Close the connection to the server
+Disconnect-SPOnline
