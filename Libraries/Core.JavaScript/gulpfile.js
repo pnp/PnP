@@ -5,22 +5,24 @@
 //******************************************************************************
 
 var gulp = require("gulp"),
-    print = require('gulp-print'),
-    browserify = require("browserify"),
+    print = require('gulp-print'),    
     src = require("vinyl-source-stream"),
     buffer = require("vinyl-buffer"),
+    srcmaps = require("gulp-sourcemaps"),
+    merge = require('merge-stream'),
+    header = require('gulp-header'),
+    
+    runSequence = require("run-sequence"),    
+    mocha = require("gulp-mocha"),
+    istanbul = require("gulp-istanbul"), 
+    
     tslint = require("gulp-tslint"),
     tsc = require("gulp-typescript"),
-    srcmaps = require("gulp-sourcemaps"),
-    uglify = require("gulp-uglify"),
-    runSequence = require("run-sequence"),
-    mocha = require("gulp-mocha"),
-    istanbul = require("gulp-istanbul"),
-    merge = require('merge-stream'),
-    browserSync = require('browser-sync').create(),
-    minify = require('gulp-uglify'),
     tsify = require('tsify'),
-    header = require('gulp-header');
+    
+    browserSync = require('browser-sync').create(),
+    browserify = require("browserify"),
+    uglify = require("gulp-uglify");
 
 //******************************************************************************
 //* GLOBAL VARIABLES
@@ -61,8 +63,8 @@ var TSWorkspace = {
 
 var TSDist = {
     "RootFolder":'dist',
-    "BundleFileName": "pnp.core.js",  
-    "MinifyFileName": "pnp.core.min.js"
+    "BundleFileName": "pnp.js",  
+    "MinifyFileName": "pnp.min.js"
 }
   
 var tsProject = tsc.createProject("tsconfig.json");
@@ -119,7 +121,7 @@ gulp.task("package", ["build"], function () {
         " */", ""
     ].join("\n");
         
-    bundler = browserify({debug: true});
+    bundler = browserify({debug: true, standalone: 'PnP'});
 
     bundler.add(TSWorkspace.PnPFile)
                 .plugin(tsify)
@@ -133,7 +135,7 @@ gulp.task("package", ["build"], function () {
                 .pipe(gulp.dest(TSDist.RootFolder))
                 .pipe(print());
     
-    bundler = browserify({debug: true});
+    bundler = browserify({debug: true, standalone: 'PnP'});
     
     bundler.add(TSWorkspace.PnPFile)
                 .plugin(tsify)
