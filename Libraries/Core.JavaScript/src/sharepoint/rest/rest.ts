@@ -9,5 +9,5 @@ export class Rest {
     /**
      * Web
      */
-    public static web = new Web(["_api"]);
+    public static web = new Web("/_api");
 }

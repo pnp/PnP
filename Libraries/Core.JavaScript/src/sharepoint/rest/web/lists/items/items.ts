@@ -8,8 +8,8 @@ import { Queryable } from "../../Queryable/Queryable";
  * TODO
  */
 export class Items extends Queryable {
-    constructor(url: Array<string>) {
-        super(url.concat(["/Items"]));
+    constructor(url: string) {
+        super(url, "/items");
     }
 
     public getById(itemId: number) {

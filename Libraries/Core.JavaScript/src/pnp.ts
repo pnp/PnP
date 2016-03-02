@@ -12,7 +12,7 @@ class PnP {
      * Utility methods
      */
     public static util = Util;
-    
+
     /**
      * SharePoint
      */

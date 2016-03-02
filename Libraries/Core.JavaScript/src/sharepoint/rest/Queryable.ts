@@ -2,13 +2,13 @@
 
 /// <reference path="../../typings/main.d.ts" />
 
-import * as ajax from "../../../Ajax/Ajax";
+import * as ajax from "../../../../Ajax/Ajax";
 
 export class Queryable {
     public _url: Array<string>;
     public _query: Array<string>;
-    constructor(url: Array<string>) {
-        this._url = url;
+    constructor(base: string, component: string) {
+        this._url = [base, component];
         this._query = [];
     }
     public select(select: string) {
