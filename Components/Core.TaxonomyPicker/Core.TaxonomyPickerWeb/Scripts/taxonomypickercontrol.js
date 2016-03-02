@@ -481,6 +481,8 @@
                 if (sel.length > 0) {
                     this._editor.blur();
                     sel.click();
+                    this._editor[0].focus();
+                    this.placeCaretAtEnd(this._editor[0]);
                     return false;
                 }
 
@@ -492,8 +494,11 @@
                 //close the suggestion panel
                 this._suggestionContainer.hide();
 
+                this._editor[0].focus();
+                this.placeCaretAtEnd(this._editor[0]);
+
                 if (keynum == 13) { // also validate on enter, we need to cancel the enter and blur
-                    this._editor.blur();
+                    //this._editor.blur();
                     return false;
                 }
             }
@@ -597,6 +602,24 @@
                 marker.parentNode.removeChild(marker);
             }
         },
+        //place the cursor at the end of the contentEditable div
+        placeCaretAtEnd: function (el) {
+		    el.focus();
+		    if (typeof window.getSelection != "undefined"
+		            && typeof document.createRange != "undefined") {
+		        var range = document.createRange();
+		        range.selectNodeContents(el);
+		        range.collapse(false);
+		        var sel = window.getSelection();
+		        sel.removeAllRanges();
+		        sel.addRange(range);
+		    } else if (typeof document.body.createTextRange != "undefined") {
+		        var textRange = document.body.createTextRange();
+		        textRange.moveToElementText(el);
+		        textRange.collapse(false);
+		        textRange.select();
+		    }
+		},
         //validates the text input into ranges and html output
         validateText: function (txt) {
             var textValidation = { html: '', ranges: [] };
