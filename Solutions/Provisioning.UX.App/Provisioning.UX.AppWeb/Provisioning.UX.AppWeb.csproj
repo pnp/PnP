@@ -190,6 +190,9 @@
   <ItemGroup>
     <Content Include="images\WizardLogo.png" />
     <Content Include="Pages\Shell.html" />
+    <Content Include="Pages\subsite\resources\custombg.jpg" />
+    <Content Include="Pages\subsite\resources\CustomInjectedJS.js" />
+    <Content Include="Pages\subsite\resources\template-icon.png" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-sanitize.js" />
     <Content Include="Scripts\angular-sanitize.min.js" />
@@ -199,11 +202,13 @@
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
     <Content Include="Scripts\bootstrap.dialog.js" />
+    <Content Include="Pages\subsite\resources\custom.spcolor" />
     <None Include="Properties\PublishProfiles\createasite.pubxml" />
     <None Include="Properties\PublishProfiles\sbspositeprovisioning - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\sbspositeprovisioning - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\wwaz-pnp-provisioning - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\wwaz-pnp-provisioning - Web Deploy.pubxml" />
+    <Content Include="Scripts\breadcrumb.js" />
     <Content Include="Scripts\i18n\en-US.json" />
     <Content Include="Scripts\i18n\sv-SE.json" />
     <None Include="Scripts\jquery-2.2.0.intellisense.js" />
@@ -355,6 +360,7 @@
     <Compile Include="Pages\SiteClassification\siteedit.aspx.designer.cs">
       <DependentUpon>siteedit.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\subsite\CustomActionEntity.cs" />
     <Compile Include="Pages\subsite\newsbweb.aspx.cs">
       <DependentUpon>newsbweb.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -362,6 +368,7 @@
     <Compile Include="Pages\subsite\newsbweb.aspx.designer.cs">
       <DependentUpon>newsbweb.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Pages\subsite\subsitehelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ObjectMapper.cs" />
     <Compile Include="SharePointContext.cs" />
@@ -392,6 +399,9 @@
     <TypeScriptCompile Include="Scripts\typings\angularjs\angular.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\es6-promise\es6-promise.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\jquery\jquery.d.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

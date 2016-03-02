@@ -3,12 +3,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title></title>
+    <title>Sub Site Creation</title>
      <link href="../../Styles/site.css" rel="stylesheet" type="text/css" />
      <script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-2.1.1.min.js" type="text/javascript" ></script>      
      <script src="../../Scripts/chromeloader.js?rev=1" type="text/javascript"></script>
 </head>
-<body>
+<body style="display: none; overflow: auto;">
     <form id="form1" runat="server">
         <div id="divSPChrome"></div>   
         <div class="page">
@@ -30,81 +30,95 @@
                 </div>
             </ProgressTemplate>
         </asp:UpdateProgress> 
-        <asp:UpdatePanel ID="mainPanel" runat="server">
+        <asp:UpdatePanel ID="mainPanel" runat="server" ChildrenAsTriggers="true">
             <ContentTemplate>
                     <fieldset>
-                    <legend>New Site</legend>
-                    <table id="SiteInfoTable" width="100%">
-                        <tbody>
+                    <legend>New SharePoint Site</legend>
+                    <br />
+                    <br />
+                    <table id="SiteInfoTable" width="15%">
+                        <tbody>                           
                             <tr>
                                 <!-- Title and Description -->
-                                <td valign="top">
-                                <div class="editor-label">
-                                    <div class='O15_editor_label_head'>
-                                        <p>Title and Description</p>
+                                <td class="ms-sectionheader" style="padding-top: 4px;" height="22"  valign="top">
+                                    <h3 class="ms-standardheader ms-inputformheader">
+                                        Title and Description
+                                    </h3>                                
+                                </td>
+                           </tr>
+                            <tr>                                
+                                <td valign="top" style="padding-left: 150px;">
+                                
+                                    <h3 class="ms-standardheader ms-inputformheader">Title:</h3>
+                                    <div class="ms-input">
+                                        <asp:TextBox ID="txtTitle" runat="server" CssClass="ms-fullWidth" onkeyup="javascript:txtTitleChanged();"></asp:TextBox>
                                     </div>
-                                </div>
-                                </td>
-                                <td valign="top" class="right-column">
-                                <div class="editor-field O15_editor_field_head">
-                                    <p>Title:</p>
-                                    <input id="siteTitle" type="text" name="txtTitle" runat="server" required/>
                                     <br />
-                                    <p>Description:</p>
-                                    <textarea id="siteDescription" rows="5" cols="35" title="Description" name="Description" runat="server"></textarea>
-                                </div>
+                                    <h3 class="ms-standardheader ms-inputformheader">Description:</h3>
+                                    <div class="ms-input">
+                                        <asp:TextBox ID="txtDescription" runat="server" CssClass="ms-fullWidth" TextMode="MultiLine" Rows="2"></asp:TextBox>
+                                    </div>
+                                <br />
+                                <br />
                                 </td>
-                                </tr>
+                             </tr>
                             <tr>
                                 <!-- Web Site Address -->
-                                <td valign="top">
-                                    <div class="editor-label">
-                                        <div class="O15_editor_label_head">
-                                            <p>
-                                                Web Site Address</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="right-column" valign="top">
-                                    <div class="editor-field O15_editor_field_head">
-                                        <p>URL name:</p>
-                                        <div>
-                                            <table>
-                                                <tr>
-                                                    <td><label id="labelHostURL" runat="server"></label></td>
-                                                    <td><input id="txtSiteUrl" type="text" name="txtTitle" runat="server" required/></td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <br />
-                                    </div>
-                                </td>
-                            <tr>
-                                <!-- Template -->
-                                <td valign="top">
-                                    <div class="editor-label">
-                                        <div class="O15_editor_label_head">
-                                            <p>Template Selection</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                   <td class="right-column" valign="top">
-                                    <div class="editor-field O15_editor_field_head">
-                                        <p>Site Template:</p>
-                                        <select id="selectSiteTeamplate" runat="server" name="SiteTemplateType" title="Site Template">
-                                        </select>
-                                    </div>
-                                </td>
+                                <td class="ms-sectionheader" style="padding-top: 4px;" height="22"  valign="top">
+                                    <h3 class="ms-standardheader ms-inputformheader">
+                                        Web Site Address
+                                    </h3>                                
                                 </td>
                             </tr>
-                        </tbody>
-                    </table>
-                    <input id="Url" name="Url" type="hidden" value="" runat="server"/>
-                    <p style="float: right">
-                        <asp:Button runat="server" ID="create_button" OnClick="Submit_Click" Text="Create" />
-                        <input type="button" id="cancel_button" value="Cancel" />
-                    </p>
+                            <tr>
+                                <td style="padding-left: 150px;" valign="top">
+                                    <h3 class="ms-standardheader ms-inputformheader">URL name:</h3>
+                                        <div style="float: left; white-space: nowrap; padding-bottom: 10px; padding-left: 15px; width: 450px;">
+                                            <div style="width: 320px; font-size: 13px; float: left; padding-top: 2px;" id="divBasePath">
+                                               <asp:Label ID="lblBasePath" runat="server"></asp:Label>
+                                            </div>
+                                            <div class="ms-input" style="width: 130px; float: left;">
+                                                <asp:TextBox ID="txtUrl" runat="server" CssClass="ms-fullWidth"></asp:TextBox>
+                                            </div>
+                                       </div>
+                                        <br />
+                                    </div>
+                                <br />
+                                <br />
+                                </td>
+                            </tr>
+                            <tr>
+                                <!-- Template -->
+                                <td class="ms-sectionheader" style="padding-top: 4px;" height="22"  valign="top">
+                                    <h3 class="ms-standardheader ms-inputformheader">
+                                        Template Selection
+                                    </h3>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-left: 150px;" valign="top">
+                                    <h3 class="ms-standardheader ms-inputformheader">Select Template:</h3>
+                                    <div class="ms-input" style="padding-left: 15px;">
+                                        <asp:ListBox ID="listSites" runat="server" CssClass="ms-fullWidth"></asp:ListBox>                                 
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input id="Url" name="Url" type="hidden" value="" runat="server"/>
+                        <br />
+                        <br />
+                    <div id="divButtons"  style="float: right;">
+                        <asp:Button ID="btnCreate" runat="server" Text="Create" CssClass="ms-ButtonHeightWidth" OnClick="btnCreate_Click" />
+                        <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="ms-ButtonHeightWidth" OnClick="btnCancel_Click" />
+                    </div>
                     <div class="clear"></div>
+                                </td>
+                            </tr>
+                    </tbody>                  
+
+                    </table>
+                   
                     </fieldset>
                 </ContentTemplate>
         </asp:UpdatePanel>
@@ -114,12 +128,12 @@
         <div style="float:left">
             <img style="position:relative;top:4px;"  src="../../images/MicrosoftLogo.png" alt="©2015 Microsoft Corporation"/>
             <span id="copyright">©2015 Contoso Corporation</span>&nbsp;&nbsp;&nbsp;
-            <a id="legalUrl" href="https://officeams.codeplex.com/license" target="_blank">Legal</a> |
-            <a id="privacyUrl" href="https://www.codeplex.com/site/legal/privacy" target="_blank">Privacy</a>
+            <a id="legalUrl" href="https://yoururl/license" target="_blank">Legal</a> |
+            <a id="privacyUrl" href="https://yoururl/site/legal/privacy" target="_blank">Privacy</a>
         </div>
         <div style="float:right">
-            <a id="supportUrl" href="https://officeams.codeplex.com/" target="_blank">Community</a> |
-            <a id="feedbackUrl" href="https://officeams.codeplex.com/discussions" target="_blank">Feedback</a>
+            <a id="supportUrl" href="https://yoururl/" target="_blank">Community</a> |
+            <a id="feedbackUrl" href="https://yoururl" target="_blank">Feedback</a>
         </div>
         <div class="clear"></div>
     </div>
