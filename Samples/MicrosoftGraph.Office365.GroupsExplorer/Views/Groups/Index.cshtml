@@ -1,0 +1,93 @@
+﻿@model IEnumerable<OfficeDevPnP.MSGraphAPIGroups.Models.Group>
+
+@{ 
+	string checkedAttr = ViewBag.unifiedOnly ? "checked" : "";
+}
+<div class="ms-Grid-row ms-bgColor-themeDark ">
+
+	<div class="ms-Grid-col ms-u-sm12">
+		<h2 class="ms-font-xxl ms-fontColor-white">
+			@ViewBag.Title
+		</h2>
+	</div>
+</div>
+
+<div class="ms-Grid-row">
+	<div class="ms-Grid-col ms-u-sm12">
+		@if (!String.IsNullOrEmpty(ViewBag.Message))
+		{
+			<h4 class="ms-font-xl">@ViewBag.Message</h4>
+		}
+	</div>
+</div>
+
+<div class="ms-Grid-row">
+
+	@using (Html.BeginForm())
+	{
+			<div class="ms-Grid-col ms-u-sm2">
+				<div class="ms-SearchBox">
+					<input type="text" id="search" name="search" class="ms-SearchBox-field" > <label class="ms-SearchBox-label"><i class="ms-SearchBox-icon ms-Icon ms-Icon--search"></i>Search</label> <button class="ms-SearchBox-closeButton"><i class="ms-Icon ms-Icon--x"></i></button>
+				</div>
+			</div>
+
+			<div class="ms-Grid-col ms-u-sm2 ms-u-smPush1">
+				<div class="ms-Toggle">
+					<span class="ms-Toggle-description">Show only Unified Groups</span>
+					<input type="checkbox" id="unifiedOnly" name="unifiedOnly" class="ms-Toggle-input" @checkedAttr />
+					<label for="unifiedOnly" class="ms-Toggle-field">
+						<span class="ms-Label ms-Label--off">Off</span>
+						<span class="ms-Label ms-Label--on">On</span>
+					</label>
+				</div>
+			</div>
+	}
+
+</div>
+
+
+<div class="ms-Grid-row">
+	<div class="ms-Grid-col ms-u-sm12">
+
+		<div class="ms-Table">
+			<div class="ms-Table-row">
+				<span class="ms-Table-cell">@Html.DisplayNameFor(model => model.displayName)</span>
+				<span class="ms-Table-cell">@Html.DisplayNameFor(model => model.description)</span>
+				<span class="ms-Table-cell">@Html.DisplayNameFor(model => model.groupTypes)</span>
+			</div>
+
+			@foreach (var item in Model)
+			{
+				<div class="ms-Table-row">
+					<span class="ms-Table-cell">
+						@Html.ActionLink(item.displayName, "Details", new { id = item.id })
+					</span>
+					<span class="ms-Table-cell">
+						@Html.DisplayFor(modelItem => item.description)
+					</span>
+					<span class="ms-Table-cell">
+						@if (item.groupTypes != null)
+						{
+							@Html.DisplayFor(modelItem => item.groupTypes)
+						}
+					</span>
+				</div>
+			}
+		</div>
+
+	</div>
+</div>
+
+
+@section Scripts{
+	<script type="text/javascript">
+		$(".ms-SearchBox").SearchBox();
+
+		$(document).ready(function () {
+			$("form").on("change", "input:checkbox", function () {
+				$("form").submit();
+			});
+		});
+	</script>
+}
+

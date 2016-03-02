@@ -1,0 +1,12 @@
+﻿@model bool?
+
+@{
+	var checkedAttr = Model.Value ? "checked": "";
+}
+
+<input type="checkbox" id="demo-toggle-3" class="ms-Toggle-input" @checkedAttr  >
+<label for="demo-toggle-3" class="ms-Toggle-field">
+	<span class="ms-Label ms-Label--off">False</span>
+	<span class="ms-Label ms-Label--on">True</span>
+</label>
+
