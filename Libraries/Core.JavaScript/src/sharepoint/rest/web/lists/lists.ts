@@ -6,8 +6,8 @@ import { Queryable } from "../../Queryable/Queryable";
 import { Items } from "./Items/Items";
 
 export class Lists extends Queryable {
-    constructor() {
-        super(["_api/web/Lists"]);
+    constructor(url: Array<string>) {
+        super(url.concat(["/Lists"]));
     }
     public getByTitle(title: string) {
         this._url.push(`/getByTitle('${title}')`);
