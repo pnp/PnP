@@ -85,6 +85,27 @@
         }
     }]);
 
+    app.directive('specialCharsValidator', ['$http', '$SharePointJSOMService', function ($http, $SharePointJSOMService) {
+
+        return {
+            require: 'ngModel',
+            link: function (scope, element, attrs, ngModel) {
+
+                ngModel.$parsers.push(function (inputValue) {
+                    if (inputValue === undefined)
+                        return ''
+                    cleanInputValue = inputValue.replace(/[^\w\s]/gi, '');
+
+                    if (cleanInputValue != inputValue) {
+                        ngModel.$setViewValue(cleanInputValue);
+                        ngModel.$render();
+                    }
+                    return cleanInputValue;
+                })
+            }
+        }
+    }]);
+
     app.directive('ccSpinner', ['$window', function ($window) {
         // Description:
         //  Creates a new Spinner and sets its options

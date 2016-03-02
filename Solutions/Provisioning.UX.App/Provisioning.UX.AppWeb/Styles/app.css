@@ -316,7 +316,7 @@ body {
 }
 
 a {
-    font-size: 10px;
+    font-size: 11px;
 }
 
 .leftnav {
@@ -353,6 +353,10 @@ a {
 div#chromeControl_bottomheader
 {
     height: 96px !important;
+}
+div#chromeControl_navigation
+{
+    height: 50px !important;
 }
 div#chromeControl_bottomheader_appicon
 {
