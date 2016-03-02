@@ -1,6 +1,8 @@
 "use strict";
 
-/// <reference path="..\..\..\typings\main.d.ts" />
+/// <reference path="../../typings/main.d.ts" />
+
+import * as ajax from "../../../Ajax/Ajax";
 
 export class Queryable {
     public _url: Array<string>;
@@ -22,6 +24,6 @@ export class Queryable {
         if (this._query.length > 0) {
             url += (`?${this._query.join("&")}`);
         }
-        return url;
+        return ajax.get(`${_spPageContextInfo.webAbsoluteUrl}/${url}`);
     }
 }
