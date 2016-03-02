@@ -1,9 +1,10 @@
 "use strict";
 
 import * as Collections from "../collections/collections";
+import {Promise} from "es6-promise";
 
 export interface IConfigurationProvider {
-    getConfiguration(): Collections.ITypedHash<string>;
+    getConfiguration(): Promise<Collections.ITypedHash<string>>;
 }
 
 export class Settings {
@@ -25,8 +26,16 @@ export class Settings {
         this._settings.merge(hash);
     }
 
-    public load(provider: IConfigurationProvider): void {
-        this._settings.merge(provider.getConfiguration());
+    public load(provider: IConfigurationProvider): Promise<void> {
+        let p = new Promise<void>((resolve, reject) => {
+            provider.getConfiguration().then((value) => {
+                this._settings.merge(value);
+                resolve();
+            }).catch((reason) => {
+               reject(reason);
+            });
+        });
+        return p;
     }
 
     public get(key: string): string {
