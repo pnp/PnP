@@ -7,8 +7,8 @@ import * as ajax from "../../Utils/Ajax";
 export class Queryable {
     public _url: Array<string>;
     public _query: Array<string>;
-    constructor(base: string, component: string) {
-        this._url = [base, component];
+    constructor(base: Array<string>, component: string) {
+        this._url = base.concat([component]);
         this._query = [];
     }
     public select(select: string) {

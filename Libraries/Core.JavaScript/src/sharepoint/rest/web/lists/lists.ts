@@ -6,7 +6,7 @@ import { Queryable } from "../../Queryable";
 import { Items } from "./Items/Items";
 
 export class Lists extends Queryable {
-    constructor(url: string) {
+    constructor(url: Array<string>) {
         super(url, "/lists");
     }
     public getByTitle(title: string) {

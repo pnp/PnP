@@ -8,7 +8,7 @@ import { Queryable } from "../../../Queryable";
  * TODO
  */
 export class Items extends Queryable {
-    constructor(url: string) {
+    constructor(url: Array<string>) {
         super(url, "/items");
     }
 
