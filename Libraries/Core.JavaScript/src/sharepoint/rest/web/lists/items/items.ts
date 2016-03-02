@@ -11,4 +11,9 @@ export class Items extends Queryable {
     constructor(url: Array<string>) {
         super(url.concat(["/Items"]));
     }
+
+    public getById(itemId: number) {
+        this._url.push(`(${itemId})`);
+        return this;
+    }
 }
