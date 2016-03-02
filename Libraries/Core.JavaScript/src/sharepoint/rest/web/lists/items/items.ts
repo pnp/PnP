@@ -2,7 +2,7 @@
 
 /// <reference path="..\..\..\typings\main.d.ts" />
 
-import { Queryable } from "../../Queryable/Queryable";
+import { Queryable } from "../../../Queryable";
 
 /**
  * TODO

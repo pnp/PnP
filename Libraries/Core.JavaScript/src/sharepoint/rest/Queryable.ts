@@ -2,7 +2,7 @@
 
 /// <reference path="../../typings/main.d.ts" />
 
-import * as ajax from "../../../../Ajax/Ajax";
+import * as ajax from "../../Utils/Ajax";
 
 export class Queryable {
     public _url: Array<string>;

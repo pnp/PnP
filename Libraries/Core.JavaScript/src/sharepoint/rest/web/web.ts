@@ -1,6 +1,6 @@
 "use strict";
 
-import { Queryable } from "../Queryable/Queryable";
+import { Queryable } from "../Queryable";
 import { Lists } from "./Lists/Lists";
 
 export class Web extends Queryable {
