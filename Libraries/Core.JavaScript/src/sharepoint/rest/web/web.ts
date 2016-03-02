@@ -7,5 +7,7 @@ export class Web extends Queryable {
     constructor(url: string) {
         super(url, "/web");
     }
-    public static lists = new Lists();
+    public lists() {
+        return new Lists(this._url);
+    }
 }
