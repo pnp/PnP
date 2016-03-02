@@ -136,6 +136,8 @@ namespace Provisioning.Common.Authentication
         {
             if(string.IsNullOrWhiteSpace(AccessToken))
             {
+                this.SiteUrl = Uri.EscapeUriString(this.SiteUrl);
+
                 bool _isValidURi = Uri.IsWellFormedUriString(this.SiteUrl, UriKind.Absolute);
                 if(_isValidURi)
                 {
