@@ -19,13 +19,16 @@ export class Queryable {
         this._query.push(`$filter=${filter}`);
         return this;
     }
+    public url() {
+        let url = this._url.join("");
+        if (this._query.length > 0) {
+            url += (`?${this._query.join("&")}`);
+        }
+        return url;
+    }
     public get() {
         return new Promise((resolve, reject) => {
-            let url = this._url.join("");
-            if (this._query.length > 0) {
-                url += (`?${this._query.join("&")}`);
-            }
-            ajax.get(`${_spPageContextInfo.webAbsoluteUrl}/${url}`).success(data => {
+            ajax.get(`${_spPageContextInfo.webAbsoluteUrl}/${this.url()}`).success(data => {
                 data.d.hasOwnProperty("results") ? resolve(data.d.results) : resolve(data.d);
             });
         });
