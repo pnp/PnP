@@ -24,26 +24,23 @@ define([], function () {
              return stringified;
          };
          
-         
-        this.getNodeByFriendlyUrlSegment =  function (nodes, currentFriendlyUrlSegment) {
-        
+        // The node is retrieved by its resolved display URL
+        // If there are multiple nodes with the same simple link url, only the first match is returned (and you probably have some problems with your navigation consistency...)
+        this.getNodeFromCurrentUrl =  function (nodes, pageUrl) {
+                
             if (nodes) {
                 for (var i = 0; i < nodes.length; i++) {
-                    if (nodes[i].FriendlyUrlSegment === decodeURI(currentFriendlyUrlSegment)) {
-                        return nodes[i];
+                                                     
+                    // Does a node in the whole site map have this current page url as resolved display URL (friendly or simple link)
+                    if (nodes[i].Url.localeCompare(decodeURI(pageUrl)) === 0) {    
+                        return nodes[i];                        
                     }
-                    var found = this.getNodeByFriendlyUrlSegment(nodes[i].ChildNodes, currentFriendlyUrlSegment);
+                    
+                    var found = this.getNodeFromCurrentUrl(nodes[i].ChildNodes, pageUrl);
                     if (found) return found;
                 }
             }
         };
-        
-        this.getCurrentFriendlyUrlSegment = function () {
-            
-            var currentFriendlyUrlSegment = decodeURI(window.location.href.replace(/\/$|#/g, '').split('?')[0].split('/').pop());
-            
-            return currentFriendlyUrlSegment;
-        };  
     };
 
     return utilityModule;  

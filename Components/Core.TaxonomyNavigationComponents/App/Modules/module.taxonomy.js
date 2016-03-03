@@ -100,15 +100,15 @@ define([], function () {
 						"TaxonomyTerm": currentTerm,
 						"FriendlyUrlSegment": currentTerm.get_friendlyUrlSegment().get_value(),
 						"ChildNodes": [],
-                        "ParentFriendlyUrlSegment" : "",
+                        "ParentUrl" : "",
 						"IconCssClass" : "",
                         "ExcludeFromGlobalNavigation" : currentTerm.get_excludeFromGlobalNavigation(),
                         "ExcludeFromCurrentNavigation" : currentTerm.get_excludeFromCurrentNavigation()
 					};
 									
-					getNavigationTermUrl(context, currentTerm).then(function (termUrl) {
+					getNavigationTermUrlInfo(context, currentTerm).then(function (termUrlInfo) {
 
-						termNode.Url = termUrl;
+						termNode.Url = termUrlInfo.ResolvedDisplayUrl;
                         
 						getTermCustomPropertyValue(context, currentTerm.getTaxonomyTerm(), "IconCssClass").then(function (iconCssClass) {
 								
@@ -157,7 +157,7 @@ define([], function () {
 			return null;
 		};
 
-		var getTermNodesAsTree = function (context, allTerms, currentNodeTerms, parentFriendlyUrlSegment) {
+		var getTermNodesAsTree = function (context, allTerms, currentNodeTerms, parentNode) {
 
 			// Special thanks to this blog post
             // https://social.msdn.microsoft.com/Forums/office/en-US/ede1aa39-4c47-4308-9aef-3b036ec9b318/get-navigation-taxonomy-term-tree-in-sharepoint-app?forum=appsforsharepoint
@@ -172,14 +172,21 @@ define([], function () {
 				var subTerms = currentNode.TaxonomyTerm.get_terms();
 				if (subTerms.get_count() > 0) {
 
-					currentNode.ChildNodes = getTermNodesAsTree(context, allTerms, subTerms, currentNode.FriendlyUrlSegment);
+					currentNode.ChildNodes = getTermNodesAsTree(context, allTerms, subTerms, currentNode);
 				}
                     
                 // Clear TaxonomyTerm property to simplify JSON string (property not useful anymore after this step)
                 currentNode.TaxonomyTerm = null;
                 
-                // Set the parent id for the current node (used by the contextual menu and the breadcrumb components)            
-                currentNode.ParentFriendlyUrlSegment = parentFriendlyUrlSegment;
+                if (parentNode !== null) {
+                    
+                    // Set the parent infos for the current node (used by the contextual menu and the breadcrumb components)            
+                    currentNode.ParentUrl = parentNode.Url;
+                    
+                } else {
+                    
+                    currentNode.ParentUrl = null;
+                }
 
 				termNodes.push(currentNode);
 			}
@@ -187,18 +194,24 @@ define([], function () {
 			return termNodes;
 		};
 
-		var getNavigationTermUrl = function (context, navigationTerm) {
+		var getNavigationTermUrlInfo = function (context, navigationTerm) {
+
+            var termUrlInfo = {
+                "ResolvedDisplayUrl": "",
+            };
 
 			var deferred = new $.Deferred();
 
 			// This method gets the resolved URL whatever if it is a simple link or a friendly URL
-			var termUrl = navigationTerm.getResolvedDisplayUrl();
+			var resolvedDisplayUrl = navigationTerm.getResolvedDisplayUrl();
 
 			context.load(navigationTerm);
 
 			context.executeQueryAsync(function () {
 
-				deferred.resolve(termUrl.get_value());
+                termUrlInfo.ResolvedDisplayUrl = resolvedDisplayUrl.get_value();
+                
+                deferred.resolve(termUrlInfo);
 
 			}, function (sender, args) {
 

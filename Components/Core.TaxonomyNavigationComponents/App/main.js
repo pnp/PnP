@@ -25,8 +25,8 @@ require.config({
         'text' : 'Plugins/text',
 		
 		// Office UI Fabric scripts for components behavior
-		'OfficeUiNavBar' : 'OfficeUI/Jquery.NavBar',
-		'OfficeUiContextualMenu' : 'OfficeUI/Jquery.ContextualMenu',
+		'OfficeUiNavBar' : 'OfficeUI/OfficeUi.NavBar',
+		'OfficeUiContextualMenu' : 'OfficeUI/OfficeUi.ContextualMenu',
 
 		// Application modules
 		'TaxonomyModule' :  'Modules/module.taxonomy',
@@ -70,7 +70,7 @@ require.config({
 		'OfficeUiContextualMenu' : {
 			deps: ['jQuery']
         },
-        		
+                		
 		'TaxonomyModule' : {
 			deps: ['SP_Js', 'SP_TaxonomyJs', 'SP_PublishingJs']
         },

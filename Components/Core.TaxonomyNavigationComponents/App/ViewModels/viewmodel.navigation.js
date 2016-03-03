@@ -26,22 +26,31 @@ define(['jQuery','Knockout', 'UtilityModule'], function ($, ko, UtilityModuleRef
 		var NodeViewModel = function (node) {
 			var self = this;
 
-			self.title = ko.observable(node.Title);
-			self.url = ko.observable(node.Url);
+			self.title = ko.observable(node.Title);      
+            self.url = ko.pureComputed(function() { 
+                
+                // Empty simple link URL or header for the term
+                if (node.Url.localeCompare("") === 0) {
+                    return "#";
+                }
+                else {
+                    return node.Url;
+                }
+            });
 			self.iconCssClass = ko.observable(node.IconCssClass);
 			self.hasChildren = ko.observable(node.ChildNodes.length > 0);
-            self.hasParent = ko.observable(node.ParentFriendlyUrlSegment !== null);
+            self.hasParent = ko.observable(node.ParentUrl !== null);
 			self.children = ko.observableArray();
             self.friendlyUrlSegment = ko.observable(node.FriendlyUrlSegment);          
             self.isCurrentNode = ko.pureComputed(function() {
                
                 var isCurrent = false;
-                
-                // If the friendly URL segment matches the current URL segment, the node is the current node
-                var currentFriendlyUrlSegment = utilityModule.getCurrentFriendlyUrlSegment();
-                if(currentFriendlyUrlSegment.localeCompare(self.friendlyUrlSegment()) === 0) {
+                     
+                // Works for friendly and simple link URL                
+                if (decodeURI(window.location.pathname).localeCompare(self.url()) === 0) {
                     isCurrent = true;
                 }
+                
                 return isCurrent;
                 
             }, this);

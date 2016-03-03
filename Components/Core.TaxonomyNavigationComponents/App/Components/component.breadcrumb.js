@@ -14,16 +14,18 @@ define(['jQuery',
   
         var breadcrumbNodes = [];   
            
-        // Get the current node from the current URL
-        var currentFriendlyUrlSegment = utilityModule.getCurrentFriendlyUrlSegment();
-        var currentNode = utilityModule.getNodeByFriendlyUrlSegment(nodes, currentFriendlyUrlSegment);
+        // Get the navigation node according to the current URL   
+        var currentNode = utilityModule.getNodeFromCurrentUrl(nodes, window.location.pathname);
 
         if (currentNode !== undefined) {
          
             breadcrumbNodes.push(currentNode);                         
-
-            while (currentNode.ParentFriendlyUrlSegment !== null) {                    
-                var parentNode = utilityModule.getNodeByFriendlyUrlSegment(nodes, currentNode.ParentFriendlyUrlSegment);
+            
+            // If there is no 'ParentUrl', this is a root term
+            while (currentNode.ParentUrl !== null) {
+                                        
+                var parentNode = utilityModule.getNodeFromCurrentUrl(nodes, currentNode.ParentUrl);
+                    
                 breadcrumbNodes.push(parentNode);
                 currentNode = parentNode;
             }     
