@@ -76,7 +76,7 @@ namespace Provisioning.Common
             return _returnResult;
         }
 
-        public abstract void SetExternalSharing(SiteInformation siteInfo);
+        public abstract void SetExternalSharing(SiteInformation siteInfo);        
 
         public virtual SitePolicyEntity GetAppliedSitePolicy()
         {
@@ -93,7 +93,6 @@ namespace Provisioning.Common
             });
             return _appliedSitePolicy;
         }
-
 
         public virtual void SetSitePolicy(string policyName)
         {
