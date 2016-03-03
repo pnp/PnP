@@ -2,8 +2,8 @@
 
 export function get(url: string): any {
     return jQuery.ajax({
-        url: url,
-        type: "get",
-        headers: { "accept": "application/json;odata=verbose" },
+        "url": url,
+        "type": "get",
+        "headers": { "accept": "application/json;odata=verbose" },
     });
 }
