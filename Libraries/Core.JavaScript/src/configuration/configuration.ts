@@ -27,7 +27,7 @@ export class Settings {
     }
 
     public load(provider: IConfigurationProvider): Promise<void> {
-        let p = new Promise<void>((resolve, reject) => {
+        return new Promise<void>((resolve, reject) => {
             provider.getConfiguration().then((value) => {
                 this._settings.merge(value);
                 resolve();
@@ -35,7 +35,6 @@ export class Settings {
                reject(reason);
             });
         });
-        return p;
     }
 
     public get(key: string): string {
