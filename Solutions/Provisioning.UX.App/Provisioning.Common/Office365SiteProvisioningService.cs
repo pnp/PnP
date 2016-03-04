@@ -46,7 +46,7 @@ namespace Provisioning.Common
                     var _newsite = new SiteCreationProperties();
                     _newsite.Title = siteRequest.Title;                    
                     _newsite.Url = siteRequest.Url;
-                    _newsite.Owner = siteRequest.SiteOwner.Name;
+                    _newsite.Owner = siteRequest.SiteOwner.Email;
                     _newsite.Template = template.RootTemplate;
                     _newsite.Lcid = siteRequest.Lcid;
                     _newsite.TimeZoneId = siteRequest.TimeZoneId;
@@ -113,7 +113,7 @@ namespace Provisioning.Common
             {
                 try
                 {
-                //    System.Threading.Thread.Sleep(Constants.CSOM_WAIT_TIME);
+                    System.Threading.Thread.Sleep(30000);
                     ctx.Load(operation);
                     ctx.ExecuteQuery();
                     Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", "Waiting for Site Collection {0} to be created", siteRequest.Url);
