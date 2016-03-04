@@ -62,5 +62,12 @@ describe("Configuration", () => {
                 expect(settings.get("key2")).to.eq("update2");
             });
         });
+
+        it("Uses provided cachekey with a '_configcache_' prefix", () => {
+            let provider = new CachingConfigurationProvider(wrapped, "cacheKey", store);
+            return settings.load(provider).then(() => {
+                expect(store.get("_configcache_cacheKey")).not.to.be.null;
+            });
+        });
     });
 });

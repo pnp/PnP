@@ -11,6 +11,7 @@ export default class CachingConfigurationProvider implements IConfigurationProvi
     constructor(wrappedProvider: IConfigurationProvider, cacheKey: string, cacheStore?: storage.IPnPClientStore) {
         this.wrappedProvider = wrappedProvider;
         this.store = (cacheStore) ? cacheStore : this.selectPnPCache();
+        this.cacheKey = `_configcache_${ cacheKey }`;
     }
 
     public getConfiguration(): Promise<ITypedHash<string>> {
