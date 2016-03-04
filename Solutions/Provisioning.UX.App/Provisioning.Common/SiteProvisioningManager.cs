@@ -12,6 +12,7 @@ using Provisioning.Common.Configuration;
 using Provisioning.Common.Utilities;
 using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 using Provisioning.Common.Data.SiteRequests;
+using System.Net;
 
 namespace Provisioning.Common
 {
@@ -36,6 +37,37 @@ namespace Provisioning.Common
             {
                 _siteprovisioningService = new Office365SiteProvisioningService();
             }
+        }
+
+        ///
+        /// Checks if site exists or not.
+        ///
+        /// The URL of the remote site.
+        /// True : If the file exits, False if file not exists
+        private bool RemoteSiteExists(string url)
+        {
+            HttpWebResponse response;
+            try
+            {
+                Uri urlCheck = new Uri(url);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlCheck);
+                request.Timeout = 15000;
+                                
+                try
+                {
+                    response = (HttpWebResponse)request.GetResponse();
+                }
+                catch (Exception)
+                {
+                    return false; //could not connect to the internet (maybe) 
+                }
+            }
+            catch
+            {
+                //Any exception will returns false.
+                return false;
+            }
+            return response.StatusCode == HttpStatusCode.Found;
         }
 
         /// <summary>
@@ -64,13 +96,24 @@ namespace Provisioning.Common
                 }
                 
             }
-            _siteprovisioningService.CreateSiteCollection(siteRequest, template);
-            if(siteRequest.EnableExternalSharing)
+
+           // Check to see if the site already exists before attempting to create it
+            bool siteExists = _siteprovisioningService.SiteExists(siteRequest.Url.ToString());
+
+            if (!siteExists)
             {
-                _siteprovisioningService.SetExternalSharing(siteRequest);
+                _siteprovisioningService.CreateSiteCollection(siteRequest, template);
+                if (siteRequest.EnableExternalSharing)
+                {
+                    _siteprovisioningService.SetExternalSharing(siteRequest);
+                }
             }
-           
+            else
+            {                
+                Log.Info("SiteProvisioningManager.CreateSiteCollection", "Site already exists. Moving on to next provisioning step");                
+            }           
         }
+
         /// <summary>
         /// Member to apply the Provisioning Tempalte to a site
         /// </summary>
@@ -99,6 +142,7 @@ namespace Provisioning.Common
                 throw new ProvisioningTemplateException(_message, _ex);
             }
         }
+
         /// <summary>
         /// Returns Connectors
         /// </summary>
@@ -108,6 +152,48 @@ namespace Provisioning.Common
             ReflectionManager _helper = new ReflectionManager();
             FileConnectorBase _connectorInstance =  _helper.GetProvisioningConnector(ModuleKeys.PROVISIONINGCONNECTORS_KEY);          
             return _connectorInstance;
+        }
+
+        public void UpdateRequestAccessEmail(SiteInformation siteRequest)
+        {
+            Uri siteUri = new Uri(siteRequest.Url);
+            string realm = TokenHelper.GetRealmFromTargetUrl(siteUri);
+            string accessToken = TokenHelper.GetAppOnlyAccessToken(TokenHelper.SharePointPrincipal, siteUri.Authority, realm).AccessToken;
+
+            using (var clientContext = TokenHelper.GetClientContextWithAccessToken(siteRequest.Url, accessToken))
+            {
+                // Push notifications feature activation 
+                // This needs to be here until another approach is found where it is not needed
+                clientContext.Web.ActivateFeature(new Guid("41e1d4bfb1a247f7ab80d5d6cbba3092"));
+
+                // Update Request Access Email                
+                clientContext.Load(clientContext.Web, w => w.RequestAccessEmail);
+                clientContext.ExecuteQuery();
+
+                clientContext.Web.RequestAccessEmail = siteRequest.SiteOwner.Name;
+                clientContext.Web.Update();
+                clientContext.Load(clientContext.Web, w => w.RequestAccessEmail);
+                clientContext.ExecuteQuery();
+            }
+        }
+        public void UpdateSiteDescription(SiteInformation siteRequest)
+        {
+            Uri siteUri = new Uri(siteRequest.Url);
+            string realm = TokenHelper.GetRealmFromTargetUrl(siteUri);
+            string accessToken = TokenHelper.GetAppOnlyAccessToken(TokenHelper.SharePointPrincipal, siteUri.Authority, realm).AccessToken;
+
+            using (var clientContext = TokenHelper.GetClientContextWithAccessToken(siteRequest.Url, accessToken))
+            {
+                // Update Site Description                
+                clientContext.Load(clientContext.Web, w => w.Description);
+                clientContext.ExecuteQuery();
+
+                clientContext.Web.Description = siteRequest.Description;
+                clientContext.Web.Update();
+                clientContext.Load(clientContext.Web, w => w.Description);
+                clientContext.ExecuteQuery();
+
+            }
         }
     }
 }

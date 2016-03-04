@@ -6,7 +6,7 @@ This is an example of common taxonomy navigation components (main menu, contextu
 
 Here is what you get after deploying this example:
 
-![Final result](http://thecollaborationcorner.com/wp-content/uploads/2016/02/final_allcomponents.png)
+![Final result](http://thecollaborationcorner.com/wp-content/uploads/2016/02/final_taxonomy_menu.png)
 
  - A responsive navigation main menu wired to a taxonomy term set and using the Office Ui Fabric CSS classes for rendering.
  - A contextual menu and breadcrumb menu to insert directly in your pages (see below for instructions).
@@ -129,6 +129,8 @@ Notes:
 - You don't need to pass the term set id because the nodes are always deduced form the main menu (whatever if they've been retrieved from the cache or directly from a CSOM call). To do this, we use the Pub/Sub pattern via AmplifyJS library.
 
 - For the contextual menu, only the siblings and children who have been flagged to appear in the current navigation are displayed (the display is controlled directly in the HTML of the template view).
+
+- The breadcrumb and the contextual menu work with both friendly and physical (simple link) URLs.
 
 ## Troubleshooting ##
 

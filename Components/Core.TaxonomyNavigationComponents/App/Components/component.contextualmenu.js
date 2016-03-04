@@ -27,19 +27,23 @@ define(['jQuery',
         amplify.subscribe("mainMenuNodes", function(data) {
             
             var navigationTree = data.nodes;
-                        
-            // Get the current node from the current URL
-            var currentFriendlyUrlSegment = utilityModule.getCurrentFriendlyUrlSegment();
-            var currentNode = utilityModule.getNodeByFriendlyUrlSegment(data.nodes, currentFriendlyUrlSegment);
             
-            // If there is no 'ParentFriendlyUrlSegment', this is a root term
-            if (currentNode.ParentFriendlyUrlSegment !== null) {
-                navigationTree = utilityModule.getNodeByFriendlyUrlSegment(data.nodes, currentNode.ParentFriendlyUrlSegment);
-                
-                if (navigationTree.ChildNodes.length > 0) {
-                    // Display all siblings and child nodes from the current node (just like the CSOM results)
-                    // Siblings = children of my own parent ;)
-                    navigationTree = navigationTree.ChildNodes;
+            // Get the navigation node according to the current URL   
+            var currentNode = utilityModule.getNodeFromCurrentUrl(navigationTree, window.location.pathname);
+            
+            if (currentNode !== undefined) {
+            
+                // If there is no 'ParentUrl', this is a root term
+                if (currentNode.ParentUrl !== null) {
+                    
+                    navigationTree = utilityModule.getNodeFromCurrentUrl(data.nodes, currentNode.ParentUrl);
+                    
+                    if (navigationTree.ChildNodes.length > 0) {
+                        
+                        // Display all siblings and child nodes from the current node (just like the CSOM results)
+                        // Siblings = children of my own parent ;)
+                        navigationTree = navigationTree.ChildNodes;
+                    }
                 }
             }
             

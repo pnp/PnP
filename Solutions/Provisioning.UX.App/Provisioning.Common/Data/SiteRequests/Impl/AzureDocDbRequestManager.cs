@@ -222,6 +222,42 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
             return _returnResults;
         }
 
+        public ICollection<SiteInformation> GetIncompleteRequests()
+        {
+            List<SiteInformation> _returnResults = new List<SiteInformation>();
+            UsingContext(client =>
+            {
+                try
+                {
+                    Task<Task<Database>> _taskResult = Task.FromResult<Task<Database>>(this.GetOrCreateDatabaseAsync(client));
+                    Database _db;
+                    if (!_taskResult.IsFaulted)
+                    {
+                        if (!_taskResult.Result.IsFaulted)
+                        {
+                            _db = _taskResult.Result.Result;
+                            var _dbCollectionTasks = Task.FromResult(this.GetOrCreateCollectionAsync(client, _db.SelfLink, DB_COLLECTION_ID));
+                            if (!_dbCollectionTasks.Result.IsFaulted)
+                            {
+                                _returnResults = this.GetSiteRequestsByStatus(client, _dbCollectionTasks.Result.Result.DocumentsLink, SiteRequestStatus.Exception);
+                            }
+                        }
+                    }
+                }
+                catch (DocumentClientException de)
+                {
+                    Exception baseException = de.GetBaseException();
+                    Log.Error("AzureDocDbRequestManager.GetIncompleteRequests", "{0} error occurred: {1}, Message: {2}", de.StatusCode, de.Message, baseException.Message);
+                }
+                catch (Exception ex)
+                {
+                    Exception baseException = ex.GetBaseException();
+                    Log.Error("AzureDocDbRequestManager.GetIncompleteRequests", "Error: {0}, Message: {1}", ex.Message, baseException.Message);
+                }
+            });
+            return _returnResults;
+        }
+
         public bool DoesSiteRequestExist(string url)
         {
             SiteInformation _siteRequest = null;

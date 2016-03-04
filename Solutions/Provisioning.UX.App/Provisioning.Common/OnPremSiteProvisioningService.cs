@@ -188,5 +188,6 @@ namespace Provisioning.Common
             Log.Warning("Provisioning.Common.OnPremSiteProvisioningService.SetExternalSharing", PCResources.ExternalSharing_NotSupported, siteInfo.Url);
             return;
         }
+       
     }
 }
