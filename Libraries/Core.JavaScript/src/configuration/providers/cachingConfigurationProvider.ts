@@ -8,7 +8,6 @@ export default class CachingConfigurationProvider implements IConfigurationProvi
     private store: storage.IPnPClientStore;
     private cacheKey: string;
 
-    constructor(wrappedProvider: IConfigurationProvider, cacheKey: string);
     constructor(wrappedProvider: IConfigurationProvider, cacheKey: string, cacheStore?: storage.IPnPClientStore) {
         this.wrappedProvider = wrappedProvider;
         this.store = (cacheStore) ? cacheStore : this.selectPnPCache();
