@@ -1,21 +1,15 @@
-﻿using Provisioning.Common.Authentication;
-using Provisioning.Common.Configuration;
-using Provisioning.Common.Configuration.Application;
-using Provisioning.Common.Utilities;
+﻿using Provisioning.Common.Utilities;
 using Microsoft.Online.SharePoint.TenantAdministration;
 using Microsoft.Online.SharePoint.TenantManagement;
 using Microsoft.SharePoint.Client;
-using OfficeDevPnP.Core.Entities;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using Provisioning.Common.Data;
 using Provisioning.Common.Data.Templates;
 using System.Diagnostics;
 using System.Net;
+using System.Threading.Tasks;
+using System.ServiceModel;
+using System.Linq;
 
 namespace Provisioning.Common
 {
@@ -25,7 +19,8 @@ namespace Provisioning.Common
     public class Office365SiteProvisioningService : AbstractSiteProvisioningService
     {
         #region Private Instance Members
-        
+        private int _retryCount = 3;
+        private bool _isComplete = false;
         #endregion
 
         #region Constructor
@@ -36,21 +31,20 @@ namespace Provisioning.Common
         {
         }
         #endregion
-     
+
         public override void CreateSiteCollection(SiteInformation siteRequest, Template template)
         {
             Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", PCResources.SiteCreation_Creation_Starting, siteRequest.Url);
- 
+
             UsingContext(ctx =>
             {
                 try
                 {
                     Stopwatch _timespan = Stopwatch.StartNew();
-                    bool timeout_detected = false;
 
                     Tenant _tenant = new Tenant(ctx);
                     var _newsite = new SiteCreationProperties();
-                    _newsite.Title = siteRequest.Title;
+                    _newsite.Title = siteRequest.Title;                    
                     _newsite.Url = siteRequest.Url;
                     _newsite.Owner = siteRequest.SiteOwner.Name;
                     _newsite.Template = template.RootTemplate;
@@ -61,49 +55,36 @@ namespace Provisioning.Common
                     _newsite.UserCodeMaximumLevel = template.UserCodeMaximumLevel;
                     _newsite.UserCodeMaximumLevel = template.UserCodeWarningLevel;
 
-                    SpoOperation op = _tenant.CreateSite(_newsite);
-                    ctx.Load(_tenant);
-                    ctx.Load(op, i => i.IsComplete);
 
                     try
                     {
+                        SpoOperation _spoOperation = _tenant.CreateSite(_newsite);
+                        ctx.Load(_tenant);
+                        ctx.Load(_spoOperation);
                         ctx.ExecuteQuery();
-                        while (!op.IsComplete)
+
+                        try
                         {
-                            //wait 30seconds and try again
-                            System.Threading.Thread.Sleep(30000);
-                            op.RefreshLoad();
-                            ctx.ExecuteQuery();
-                            // we need this one in Azure Web jobs (it pings the service so it knows it's still alive)
-                            Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection",
-                               "Waiting for Site Collection to be created....");
+                            this.OperationWithRetry(ctx, _spoOperation, siteRequest);
                         }
-                    }
-                    catch (WebException we)
-                    {
-                        if (we.Status != WebExceptionStatus.Timeout)
+                        catch(ServerException ex)
                         {
-                            Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection",
-                              "Creation WebException (" + we.ToString() + ")");
+                            var _message = string.Format("Error occured while provisioning site {0}, ServerErrorTraceCorrelationId: {1} Exception: {2}", siteRequest.Url, ex.ServerErrorTraceCorrelationId, ex);
+                            Log.Error("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", _message);
                             throw;
                         }
-                    }
-                    Site _site = null;
+                                                
 
-                    // NOTE: this is experimental due to current issues with the site collection creation
-                    while (_site == null)
-                    {
-                        try {
-                            _site = _tenant.GetSiteByUrl(siteRequest.Url);
-                        }
-                        catch (Exception ex)
-                        {
-                            _site = null;
-                            Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection",
-                               "Waiting for Site Collection to be created (" + ex.ToString() + ")");
-                            System.Threading.Thread.Sleep(30000);
-                        }
                     }
+                    catch (ServerException ex)
+                    {
+                        var _message = string.Format("Error occured while provisioning site {0}, ServerErrorTraceCorrelationId: {1} Exception: {2}", siteRequest.Url, ex.ServerErrorTraceCorrelationId, ex);
+                        Log.Error("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", _message);
+                        throw;
+                    }
+
+
+                    var _site = _tenant.GetSiteByUrl(siteRequest.Url);
                     var _web = _site.RootWeb;
                     _web.Description = siteRequest.Description;
                     _web.Update();
@@ -113,18 +94,59 @@ namespace Provisioning.Common
                     _timespan.Stop();
                     Log.TraceApi("SharePoint", "Office365SiteProvisioningService.CreateSiteCollection", _timespan.Elapsed, "SiteUrl={0}", siteRequest.Url);
                 }
-            
+
                 catch (Exception ex)
                 {
                     Log.Error("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection",
-                        PCResources.SiteCreation_Creation_Failure, 
+                        PCResources.SiteCreation_Creation_Failure,
                         siteRequest.Url, ex.Message, ex);
                     throw;
                 }
-               Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", PCResources.SiteCreation_Creation_Successful, siteRequest.Url);
-            }, 25000);
+                Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", PCResources.SiteCreation_Creation_Successful, siteRequest.Url);
+            }, SPDataConstants.CSOM_WAIT_TIME);
         }
 
+        private void OperationWithRetry(ClientContext ctx, SpoOperation operation, SiteInformation siteRequest)
+        {
+            int currentRetry = 0;
+            for (;;)
+            {
+                try
+                {
+                //    System.Threading.Thread.Sleep(Constants.CSOM_WAIT_TIME);
+                    ctx.Load(operation);
+                    ctx.ExecuteQuery();
+                    Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", "Waiting for Site Collection {0} to be created", siteRequest.Url);
+                    if (operation.IsComplete) break;
+                }
+                catch (Exception ex)
+                {
+                    currentRetry++;
+
+                    if (currentRetry > this._retryCount || !IsTransientException(ex))
+                    {
+                        throw;
+                    }
+                }
+            }
+        }
+
+        private bool IsTransientException(Exception ex)
+        {
+            if (ex is ServerTooBusyException) return true;
+
+            var webException = ex as WebException;
+            if (webException != null)
+            {
+                // If the web exception contains one of the following status values it may be transient.
+                return new[] {WebExceptionStatus.ConnectionClosed,
+                  WebExceptionStatus.Timeout,
+                  WebExceptionStatus.RequestCanceled }.
+                        Contains(webException.Status);
+            }
+
+            return false;
+        }
         /// <summary>
         /// Used to set External Sharing
         /// </summary>
@@ -182,7 +204,5 @@ namespace Provisioning.Common
              
             });
         }
-
-
     }
 }
