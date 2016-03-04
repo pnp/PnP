@@ -4,7 +4,7 @@ import { Rest } from "./Rest/Rest";
 
 export class SharePoint {
     /**
-     * REST
+     * The REST base class for SharePoint
      */
     public rest = new Rest();
 }

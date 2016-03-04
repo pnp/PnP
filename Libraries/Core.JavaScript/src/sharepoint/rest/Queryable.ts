@@ -4,6 +4,10 @@
 
 import * as ajax from "../../Utils/Ajax";
 
+/**
+ * Queryable Base Class
+ * 
+ */
 export class Queryable {
     public _url: Array<string>;
     public _query: Array<string>;
