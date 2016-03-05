@@ -77,7 +77,7 @@ gulp.task("build", function (cb) {
 //* TEST
 //******************************************************************************
 gulp.task("istanbul:hook", function () {
-    return gulp.src(['output/**/*.js', '!output/**/*.test.js'])
+    return gulp.src(['output/**/*.js', '!output/mocks/**/*.js', '!output/**/*.test.js'])
     // Covering files
         .pipe(istanbul())
     // Force `require` to return covered files
