@@ -1,4 +1,4 @@
-#PnP JavaScript Core#
+r#PnP JavaScript Core#
 
 ### Summary ###
 This library contains a consolidated and ready to use set of JavaScript libraries designed to help the client side developer interact with SharePoint and Graph. We are always looking for great contributions!
