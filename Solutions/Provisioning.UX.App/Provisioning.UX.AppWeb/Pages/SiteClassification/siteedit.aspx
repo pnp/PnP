@@ -27,7 +27,6 @@
         <div class="ms-fontWeight-semilight" style="padding: 7px 0px 0px 12px; color: white; font-size: 24px;">Office 365</div>
         <div class="NavLine"></div>
         <div class="appTitle ms-fontWeight-semilight">Site Classification</div>
-
     </div>
 
     <script type="text/javascript">

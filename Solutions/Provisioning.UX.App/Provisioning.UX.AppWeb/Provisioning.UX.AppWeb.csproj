@@ -211,11 +211,16 @@
     <Content Include="Scripts\breadcrumb.js" />
     <Content Include="Scripts\i18n\en-US.json" />
     <Content Include="Scripts\i18n\sv-SE.json" />
+    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.4.js" />
+    <None Include="Scripts\jquery-2.2.0.intellisense.js" />
+    <None Include="Scripts\jquery-2.2.1-vsdoc.js" />
     <Content Include="Scripts\jquery-2.2.1.js" />
     <Content Include="Scripts\jquery-2.2.1.min.js" />
     <Content Include="Scripts\sp.addChrome.js" />
     <Content Include="Scripts\sp.documentpicker.js" />
     <Content Include="Scripts\sp.peoplepicker.js" />
+    <Content Include="Scripts\vendor\jquery\jquery-2.2.1.min.js" />
     <Content Include="Scripts\wizard\controllers\shell.js" />
     <Content Include="Scripts\wizard\modules\filter.js" />
     <Content Include="Styles\toastr.css" />
