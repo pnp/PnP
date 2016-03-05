@@ -1,0 +1,3 @@
+interface IContentTypeBinding {
+    ContentTypeId: string;
+}

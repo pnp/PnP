@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2015/12/ProvisioningSchema">
+  <pnp:Preferences>
+   <pnp:Parameters>
+      <pnp:Parameter Key="Template">SERVER-ROOT</pnp:Parameter>
+    </pnp:Parameters>
+  </pnp:Preferences>
+  <pnp:Templates ID="CONTAINER-SERVER-ROOT">
+    <pnp:ProvisioningTemplate ID="SERVER-ROOT" Version="1">      
+		<pnp:Files xmlns:pnp="http://schemas.dev.office.com/PnP/2015/12/ProvisioningSchema">
+			<pnp:File Folder="SitePages" Overwrite="true" Src="index.aspx" />
+		</pnp:Files>
+    </pnp:ProvisioningTemplate>
+  </pnp:Templates>
+</pnp:Provisioning>
