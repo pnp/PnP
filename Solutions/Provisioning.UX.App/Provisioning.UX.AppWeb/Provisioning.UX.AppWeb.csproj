@@ -217,6 +217,7 @@
     <None Include="Scripts\jquery-2.2.1-vsdoc.js" />
     <Content Include="Scripts\jquery-2.2.1.js" />
     <Content Include="Scripts\jquery-2.2.1.min.js" />
+    <Content Include="Scripts\siteprivacy.js" />
     <Content Include="Scripts\sp.addChrome.js" />
     <Content Include="Scripts\sp.documentpicker.js" />
     <Content Include="Scripts\sp.peoplepicker.js" />
