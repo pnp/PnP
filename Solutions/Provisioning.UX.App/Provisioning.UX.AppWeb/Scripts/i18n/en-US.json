@@ -56,7 +56,7 @@
 
   "SITE_OWNER_RESPONSIBILITIES": "Site Owner Responsibilities",
   "SITE_OWNER_RESPONSIBILITIES_TEXT": "It is the responsibility of site owners to manage site user permissions to ensure that the information and data they create and have in their care is protected from unauthorized disclosure, exposure through enterprise search, destruction, alteration, or modification. Furthermore, any personal information, including any information that permits an individual to be identified or contacted (such as name, postal address, email address, phone number, financial information or account numbers, or any government-issued ID numbers) must be used for Contosoo business purposes only. Any use, transfer, or storage of personal information must be in accordance with our policies, the terms of any privacy statement(s) under which the information was originally collected, and any contact or other usage preferences expressed by the individual to whom the information relates.",
-  "ACCEPT": "I have read and accept...",
+  "ACCEPT": "I have read and accept the terms of the ownership agreement",
 
   "DATA_PRIVACY": "Data Privacy and Security",
   "DATA_PRIVACY_TEXT": "<p>How sensitive is your site content?</p><p>Contoso classifies all business information based on the impact that information might have on Contoso or relying parties if it were to be disclosed to unauthorized persons.</p><p>For information about privacy visit your privacy center.</p>",

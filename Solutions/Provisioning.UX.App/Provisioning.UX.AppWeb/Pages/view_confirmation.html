@@ -22,7 +22,7 @@
         </tr>
         <tr ng-show="siteConfiguration.externalSharingEnabled">
             <th><a href="#" ng-click="setCurrentStep(5)">{{ 'EXTERNAL_SHARING' | translate }}</a></th>
-            <td>{{siteConfiguration.externalSharing | yesNo }}</td>
+            <td>{{siteConfiguration.properties.externalsharing | yesNo }}</td>
         </tr>
         <tr>
             <th><a href="#" ng-click="setCurrentStep(5)">{{ 'DETAILS_REGION' | translate }}</a></th>
@@ -55,8 +55,8 @@
         <tr>
             <th><a href="#" ng-click="setCurrentStep(2)">{{ 'RESPONSIBILITIES_ACCEPTED' | translate }}</a></th>
             <td>
-                <span ng-hide="(submitDenied && siteConfiguration.responsibilities.read === undefined) || (submitDenied && siteConfiguration.responsibilities.read === false)">{{siteConfiguration.responsibilities.read | yesNo}}</span>
-                <span ng-show="(submitDenied && siteConfiguration.responsibilities.read === undefined) || (submitDenied && siteConfiguration.responsibilities.read === false)" class="confirm-error-message" ng-click="setCurrentStep(2)">{{ 'RESPONSIBILITIES_ACCEPTED_ERR' | translate }}</span>
+                <span ng-hide="(submitDenied && siteConfiguration.properties.termsaccepted === undefined) || (submitDenied && siteConfiguration.properties.termsaccepted === false)">{{siteConfiguration.properties.termsaccepted | yesNo}}</span>
+                <span ng-show="(submitDenied && siteConfiguration.properties.termsaccepted === undefined) || (submitDenied && siteConfiguration.properties.termsaccepted === false)" class="confirm-error-message" ng-click="setCurrentStep(2)">{{ 'RESPONSIBILITIES_ACCEPTED_ERR' | translate }}</span>
             </td>
         </tr>
     </table>

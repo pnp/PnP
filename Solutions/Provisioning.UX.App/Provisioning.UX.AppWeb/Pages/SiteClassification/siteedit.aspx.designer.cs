@@ -22,6 +22,15 @@ namespace Provisioning.UX.AppWeb.Pages.SiteClassification {
         protected global::System.Web.UI.HtmlControls.HtmlForm form;
         
         /// <summary>
+        /// siteOwner control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label siteOwner;
+        
+        /// <summary>
         /// lblDivision control.
         /// </summary>
         /// <remarks>
@@ -29,15 +38,6 @@ namespace Provisioning.UX.AppWeb.Pages.SiteClassification {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblDivision;
-        
-        /// <summary>
-        /// selectDivision control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect selectDivision;
         
         /// <summary>
         /// lblFunction control.
@@ -49,15 +49,6 @@ namespace Provisioning.UX.AppWeb.Pages.SiteClassification {
         protected global::System.Web.UI.WebControls.Label lblFunction;
         
         /// <summary>
-        /// selectFunction control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect selectFunction;
-        
-        /// <summary>
         /// lblRegion control.
         /// </summary>
         /// <remarks>
@@ -67,13 +58,22 @@ namespace Provisioning.UX.AppWeb.Pages.SiteClassification {
         protected global::System.Web.UI.WebControls.Label lblRegion;
         
         /// <summary>
-        /// selectRegions control.
+        /// lblExpirationDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlSelect selectRegions;
+        protected global::System.Web.UI.WebControls.Label lblExpirationDate;
+        
+        /// <summary>
+        /// divSecurityClassification control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divSecurityClassification;
         
         /// <summary>
         /// lblSitePolicy control.
@@ -94,13 +94,31 @@ namespace Provisioning.UX.AppWeb.Pages.SiteClassification {
         protected global::System.Web.UI.HtmlControls.HtmlSelect BusinessImpact;
         
         /// <summary>
-        /// lblExpirationDate control.
+        /// divExternalSharing control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblExpirationDate;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divExternalSharing;
+        
+        /// <summary>
+        /// toggleSharing control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlInputCheckBox toggleSharing;
+        
+        /// <summary>
+        /// lblSharingToggle control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl lblSharingToggle;
         
         /// <summary>
         /// Url control.
