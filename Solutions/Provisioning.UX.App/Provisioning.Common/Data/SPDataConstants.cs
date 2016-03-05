@@ -25,6 +25,7 @@ namespace Provisioning.Common.Data
         public const string LIST_TITLE_TIMEZONES = "TimeZone";
         public const string LIST_TITLE_APPSETTINGS = "AppSettings";
 
+        public const int CSOM_WAIT_TIME = -1;
         #endregion
     }
 }

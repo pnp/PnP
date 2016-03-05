@@ -1,5 +1,5 @@
 # Patterns and Practices #
-This is the main repository for the community driven [Office 365 Developer Patterns and Practices](http://aka.ms/OfficeDevPnP) (PnP) initiative.
+This is the main repository for the community driven [Office 365 Developer Patterns and Practices](http://aka.ms/OfficeDevPnP) (PnP) initiative. 
 
 ![](http://i.imgur.com/l01hhvE.png)
 
