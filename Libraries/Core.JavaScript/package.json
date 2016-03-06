@@ -4,7 +4,8 @@
   "description": "A reusable library",
   "main": "pnp.js",
   "dependencies": {
-    "jquery": "^2.2.0"
+    "jquery": "^2.2.0",
+    "es6-promise": "~3.1.2"
   },
   "devDependencies": {
     "browser-sync": "^2.11.1",
