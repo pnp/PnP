@@ -1,0 +1,55 @@
+<pnp:TermGroups xmlns:pnp="http://schemas.dev.office.com/PnP/2015/12/ProvisioningSchema">
+  <pnp:TermGroup Name="Portal" ID="6eae6267-73af-4272-bc62-571e70712fe1" Description="">
+    <pnp:TermSets>
+      <pnp:TermSet Name="Site Map" ID="52d6944d-bd98-48c1-ba45-57d4efe2f941" Description="">
+        <pnp:Terms>
+          <pnp:Term Name="Home" ID="be5541b5-e332-4bf6-a670-64e1075d9636">
+            <pnp:Labels>
+              <pnp:Label Language="1036" Value="Accueil" IsDefaultForLanguage="true" />
+            </pnp:Labels>
+			<pnp:CustomProperties>
+              <pnp:Property Key="IconCssClass" Value="ms-Icon--home" />
+            </pnp:CustomProperties>
+          </pnp:Term>
+          <pnp:Term Name="History" ID="bb647e7f-2dc6-4565-97ae-66a58200dccb">
+            <pnp:Labels>
+              <pnp:Label Language="1036" Value="Histoire" IsDefaultForLanguage="true" />
+            </pnp:Labels>
+          </pnp:Term>
+          <pnp:Term Name="News" ID="ee656c69-ef26-458e-9175-543b0df702ed">
+            <pnp:Terms>
+              <pnp:Term Name="Finances" ID="b9269051-3074-4557-b97c-c13c79aca0b5">
+                <pnp:Labels>
+                  <pnp:Label Language="1036" Value="Finances" IsDefaultForLanguage="true" />
+                </pnp:Labels>
+              </pnp:Term>
+			  <pnp:Term Name="Human resources" ID="b4b0a7b8-74f9-4a32-a236-eb87e0566575" CustomSortOrder="2">
+                <pnp:Terms>
+                  <pnp:Term Name="Careers" ID="71075682-ef63-4d41-bc2f-480ad740d7c3">
+                    <pnp:Labels>
+                      <pnp:Label Language="1036" Value="Carrières" IsDefaultForLanguage="true" />
+                    </pnp:Labels>
+                  </pnp:Term>
+                </pnp:Terms>
+                <pnp:Labels>
+                  <pnp:Label Language="1036" Value="Ressources humaines" IsDefaultForLanguage="true" />
+                </pnp:Labels>
+              </pnp:Term>
+              <pnp:Term Name="Operations" ID="f706c82d-3257-4bc2-801d-0e3c30a4df1a">
+                <pnp:Labels>
+                  <pnp:Label Language="1036" Value="Opérations" IsDefaultForLanguage="true" />
+                </pnp:Labels>
+              </pnp:Term>
+            </pnp:Terms>
+            <pnp:Labels>
+              <pnp:Label Language="1036" Value="Nouvelles" IsDefaultForLanguage="true" />
+            </pnp:Labels>
+			<pnp:CustomProperties>
+              <pnp:Property Key="IconCssClass" Value="ms-Icon--listBullets" />
+            </pnp:CustomProperties>
+          </pnp:Term>
+        </pnp:Terms>
+      </pnp:TermSet>
+    </pnp:TermSets>
+  </pnp:TermGroup>
+</pnp:TermGroups>
