@@ -6,5 +6,5 @@
  * Retrieves the list ID of the current page from _spPageContextInfo
  */
 export function getListId(): string {
-    return _spPageContextInfo.hasOwnProperty("pageListId") ? _spPageContextInfo.pageListId.substring(1,37) : "";
+    return _spPageContextInfo.hasOwnProperty("pageListId") ? _spPageContextInfo.pageListId.substring(1, 37) : "";
 }
