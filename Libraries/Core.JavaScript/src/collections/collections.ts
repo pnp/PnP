@@ -14,7 +14,7 @@ export class Dictionary<T> {
     private keys: string[];
     private values: T[];
 
-    public get(key: string) {
+    public get(key: string): T {
         let index = this.keys.indexOf(key);
         if (index < 0) {
             return null;
