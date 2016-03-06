@@ -1,0 +1,24 @@
+{
+  "name": "PnP.Core",
+  "description": "A reusable library",
+  "main": "PnP.Core.js",
+  "authors": [
+    "Microsoft and other contributors"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/OfficeDev/PnP/",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node",
+    "yui"
+  ],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "private": true
+}
