@@ -10,7 +10,8 @@ var gulp = require("gulp"),
     buffer = require("vinyl-buffer"),
     srcmaps = require("gulp-sourcemaps"),
     header = require('gulp-header'),
-    clean = require('gulp-clean'),
+    clean = require('gulp-clean'),    
+    replace = require('gulp-replace'),
     
     runSequence = require("run-sequence"),    
     mocha = require("gulp-mocha"),
@@ -122,7 +123,8 @@ gulp.task("build", ["lint", "build-typings", "clean"], function () {
 
     return gulp.src(src)
         .pipe(tsc(tsProject))
-        .js.pipe(gulp.dest(TSCompiledOutput.RootFolder))
+        .js.pipe(replace(/(\(function \(factory\) {)/g, '$1/* istanbul ignore next */'))
+        .pipe(gulp.dest(TSCompiledOutput.RootFolder))
         .pipe(print());
 });
 
@@ -177,7 +179,7 @@ gulp.task("package", ["build"], function () {
 //* TEST
 //******************************************************************************
 
-gulp.task("istanbul:hook", function () {
+gulp.task("istanbul:hook", ["build"], function () {
     return gulp.src(TSCompiledOutput.JSCodeFiles)
     // Covering files
         .pipe(istanbul())

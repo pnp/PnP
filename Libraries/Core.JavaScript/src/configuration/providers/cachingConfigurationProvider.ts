@@ -14,6 +14,10 @@ export default class CachingConfigurationProvider implements IConfigurationProvi
         this.cacheKey = `_configcache_${ cacheKey }`;
     }
 
+    public getWrappedProvider(): IConfigurationProvider {
+        return this.wrappedProvider;
+    }
+
     public getConfiguration(): Promise<ITypedHash<string>> {
         // Cache not available, pass control to  the wrapped provider
         if ((! this.store) || (!this.store.enabled)) {
