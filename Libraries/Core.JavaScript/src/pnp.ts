@@ -3,6 +3,7 @@
 import * as Util from "./Utils/Util";
 import { SharePoint } from "./SharePoint/SharePoint";
 import { PnPClientStorage } from "./Utils/Storage";
+import * as Configuration from "./configuration/configuration";
 
 /**
  * Root class of the Patterns and Practices namespace, provides an entry point to the library
@@ -22,6 +23,11 @@ class PnP {
      * Provides access to local and session storage through
      */
     public static storage: PnPClientStorage = new PnPClientStorage();
+
+    /**
+     * Configuration 
+     */
+    public static configuration = Configuration;
 }
 
 export = PnP;

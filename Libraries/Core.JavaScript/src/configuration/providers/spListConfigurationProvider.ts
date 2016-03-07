@@ -1,5 +1,5 @@
-import {IConfigurationProvider} from "configuration";
-import {ITypedHash} from "../collections/collections";
+import {IConfigurationProvider} from "../configuration";
+import {ITypedHash} from "../../collections/collections";
 import {Promise} from "es6-promise";
 import { default as CachingConfigurationProvider } from "./cachingConfigurationProvider";
 import * as ajax from "../../Utils/Ajax";
