@@ -1,0 +1,58 @@
+Live SDK for iOS 
+================
+
+version 5.6
+
+1. Introduction
+---------------
+
+The Live SDK for iOS library is intended to help developers to easily integrate OneDrive into their iOS apps.
+
+The repository here includes:
+- Live SDK Library source (src/LiveSDK/Library)
+- Live SDK framework (bin/LiveSDK.framework.zip)
+- Samples (src/samples)
+
+For questions on how to use the sdk visit http://stackoverflow.com/questions/tagged/onedrive
+
+2. Reference the API
+--------------------
+
+You can reference the iOS API in two ways.
+
+###2.1 Install with Cocoapods
+
+* [Install cocoapods](http://guides.cocoapods.org/using/getting-started.html) following the getting started guide.
+* Add the following to your Podfile: `pod 'LiveSDK'`
+* Run the command `pod install` to install the latest LiveSDK pod.
+
+###2.2 To reference the iOS API source code directly
+
+* Open your iOS project in Xcode.
+* Click File > Add Files to "Your Project Name".
+* Go to and select the src/LiveSDK/Library folder under your local copy of the repository and then click "Add".
+* In your code file that you want to reference the API source code, add this import statement: `#import "LiveConnectClient.h"`.
+
+#####Notes:
+If you reference the iOS API source code directly and you use Xcode 4.2 or later, you must disable Automatic Reference Counting (ARC). This is because the Live SDK for iOS library source code uses manual reference counting. If you want to use ARC, you can either reference the iOS API framework by following the steps in the previous section(see 2.1), or do an ARC conversion on the library source code. 
+
+3. Documentation
+----------------
+
+Visit: http://dev.onedrive.com and click the "Develop” link. 
+
+
+License Agreement
+-----------------
+
+Copyright 2014 Microsoft Corporation
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
