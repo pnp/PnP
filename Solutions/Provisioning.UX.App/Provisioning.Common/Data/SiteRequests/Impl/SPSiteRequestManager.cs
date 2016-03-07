@@ -423,10 +423,8 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                 if (_itemCollection.Count != 0) {
                     ListItem _item = _itemCollection.FirstOrDefault();
                     _item[SiteRequestFields.PROVISIONING_STATUS_NAME] = status.ToString();
-               
-                    if (!string.IsNullOrEmpty(statusMessage)) {
-                        _item[SiteRequestFields.STATUSMESSAGE_NAME] = statusMessage;
-                    }
+                    _item[SiteRequestFields.STATUSMESSAGE_NAME] = statusMessage;
+
                     _item.Update();
                     ctx.ExecuteQuery();
                 }

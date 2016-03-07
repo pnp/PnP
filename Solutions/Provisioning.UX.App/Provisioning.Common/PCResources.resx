@@ -162,6 +162,9 @@
   <data name="SiteCreation_Creation_Successful" xml:space="preserve">
     <value>Site Collection {0} created:</value>
   </data>
+  <data name="SiteExternalSharing_Enabled_Error_Message" xml:space="preserve">
+    <value>There was an error checking if Site External Sharing is enabled. Site Url {0}, Exception {1}</value>
+  </data>
   <data name="SiteRequestNew_Successful" xml:space="preserve">
     <value>New Site Request Submitted for URL {0} successfull</value>
   </data>

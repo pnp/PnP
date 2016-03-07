@@ -76,7 +76,68 @@ namespace Provisioning.Common
             return _returnResult;
         }
 
-        public abstract void SetExternalSharing(SiteInformation siteInfo);        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="siteUrl"></param>
+        public virtual bool isSiteExternalSharingEnabled(string siteUrl)
+        {
+            ConfigManager _manager = new ConfigManager();
+            var _tenantAdminUrl = _manager.GetAppSettingsKey("TenantAdminUrl");
+            var _returnResult = false;
+
+            AbstractSiteProvisioningService _siteService = new Office365SiteProvisioningService();
+            _siteService.Authentication = new AppOnlyAuthenticationTenant();
+            _siteService.Authentication.TenantAdminUrl = _tenantAdminUrl;
+
+            _siteService.UsingContext(ctx =>
+            {
+                try
+                {
+                    Tenant _tenant = new Tenant(ctx);
+                    SiteProperties _siteProps = _tenant.GetSitePropertiesByUrl(siteUrl, false);
+                    ctx.Load(_tenant);
+                    ctx.Load(_siteProps);
+                    ctx.ExecuteQuery();
+
+
+                    var _tenantSharingCapability = _tenant.SharingCapability;
+                    var _siteSharingCapability = _siteProps.SharingCapability;
+
+                    if (_tenantSharingCapability != SharingCapabilities.Disabled)
+                    {
+                        if (_siteSharingCapability != SharingCapabilities.Disabled)
+                        {
+                            // Enabled
+                            _returnResult = true;
+                        }
+                        else
+                        {
+                            // Disabled
+                            _returnResult = false;
+                        }
+                    }
+                    else
+                    {
+                        // Disabled
+                        _returnResult = false;
+                    }
+
+                }
+                catch (Exception _ex)
+                {
+                    Log.Warning("AbstractSiteProvisioningService.IsSiteExternalSharingEnabled",
+                        PCResources.SiteExternalSharing_Enabled_Error_Message,
+                        siteUrl,
+                        _ex);
+                }
+
+            });
+
+            return _returnResult;
+        }
+
+        public abstract void SetExternalSharing(SiteInformation siteInfo);
 
         public virtual SitePolicyEntity GetAppliedSitePolicy()
         {

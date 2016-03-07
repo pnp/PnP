@@ -5,7 +5,8 @@
     "chai": "github:DefinitelyTyped/DefinitelyTyped/chai/chai.d.ts#9c25433c84251bfe72bf0030a95edbbb2c81c9d5",
     "es6-promise": "github:DefinitelyTyped/DefinitelyTyped/es6-promise/es6-promise.d.ts#830e8ebd9ef137d039d5c7ede24a421f08595f83",
     "jquery": "github:DefinitelyTyped/DefinitelyTyped/jquery/jquery.d.ts#fab0b336b0414fac23963bde83f7d7077f6cf14c",
-    "microsoft.ajax": "github:DefinitelyTyped/DefinitelyTyped/microsoft-ajax/microsoft.ajax.d.ts#ae2581f4ce9d1b468089ea3d0652200d17e52af4",
-    "mocha": "github:DefinitelyTyped/DefinitelyTyped/mocha/mocha.d.ts#d6dd320291705694ba8e1a79497a908e9f5e6617"
+    "mocha": "github:DefinitelyTyped/DefinitelyTyped/mocha/mocha.d.ts#d6dd320291705694ba8e1a79497a908e9f5e6617",
+    "sharepoint": "github:DefinitelyTyped/DefinitelyTyped/sharepoint/SharePoint.d.ts#d4c22e84601e2468dcc08e1e1288a0700658f9ce",
+    "microsoft.ajax": "github:DefinitelyTyped/DefinitelyTyped/microsoft-ajax/microsoft.ajax.d.ts#ae2581f4ce9d1b468089ea3d0652200d17e52af4"
   }
 }

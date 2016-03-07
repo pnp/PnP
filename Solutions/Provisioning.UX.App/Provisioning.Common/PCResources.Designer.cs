@@ -286,6 +286,15 @@ namespace Provisioning.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There was an error checking if Site External Sharing is enabled. Site Url {0}, Exception {1}.
+        /// </summary>
+        internal static string SiteExternalSharing_Enabled_Error_Message {
+            get {
+                return ResourceManager.GetString("SiteExternalSharing_Enabled_Error_Message", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unable to create site request list {0} in Site Collection {1}. The Exception is {2}.
         /// </summary>
         internal static string SiteRequest_List_Creation_Error {

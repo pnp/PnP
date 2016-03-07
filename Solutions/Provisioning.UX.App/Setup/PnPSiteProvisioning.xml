@@ -279,7 +279,7 @@
                    RemoveExistingContentTypes="true">
           <pnp:DataRows>
             <pnp:DataRow>
-              <pnp:DataValue FieldName="SP_Key">LBI</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Key">Low Business Impact</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">Low Business Impact (LBI)</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">1</pnp:DataValue>
               <pnp:DataValue FieldName="SP_AddAllAuthenticatedUsers">true</pnp:DataValue>
@@ -287,7 +287,7 @@
               <pnp:DataValue FieldName="SP_SiteExpirationMonths">6</pnp:DataValue>
             </pnp:DataRow>
             <pnp:DataRow>
-              <pnp:DataValue FieldName="SP_Key">MBI</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Key">Medium Business Impact</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">Medium Business Impact (MBI)</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">2</pnp:DataValue>
               <pnp:DataValue FieldName="SP_AddAllAuthenticatedUsers">true</pnp:DataValue>
@@ -295,7 +295,7 @@
               <pnp:DataValue FieldName="SP_SiteExpirationMonths">6</pnp:DataValue>
             </pnp:DataRow>
             <pnp:DataRow>
-              <pnp:DataValue FieldName="SP_Key">HBI</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Key">High Business Impact</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">High Business Impact (HBI)</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">3</pnp:DataValue>
               <pnp:DataValue FieldName="SP_AddAllAuthenticatedUsers">false</pnp:DataValue>

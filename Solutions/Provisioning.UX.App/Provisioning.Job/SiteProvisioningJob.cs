@@ -143,7 +143,7 @@ namespace Provisioning.Job
                     // ****************************************************
                     // Step 8 - Set status to complete                    
                     // ****************************************************
-                    _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Complete);
+                    _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Complete, "");
 
                 }
                 catch(ProvisioningTemplateException _pte)
@@ -156,24 +156,6 @@ namespace Provisioning.Job
                     _requestManager.UpdateRequestStatus(siteRequest.Url, SiteRequestStatus.Exception, _ex.Message);
                   this.SendFailureEmail(siteRequest, _ex.Message);
                 }
-            }
-        }
-
-        /// <summary>
-        /// Check to see if site exists 
-        /// </summary>
-        /// <param name="siteRequest"></param>
-        protected void ActivatePublishingFeature(SiteInformation siteRequest)
-        {
-            Uri siteUri = new Uri(siteRequest.Url);
-            string realm = TokenHelper.GetRealmFromTargetUrl(siteUri);
-            string accessToken = TokenHelper.GetAppOnlyAccessToken(TokenHelper.SharePointPrincipal, siteUri.Authority, realm).AccessToken;
-
-            using (var clientContext = TokenHelper.GetClientContextWithAccessToken(siteRequest.Url, accessToken))
-            {
-                // Push notifications feature activation 
-                // This needs to be here until another approach is found where it is not needed
-                clientContext.Web.ActivateFeature(new Guid("22a9ef51737b4ff29346694633fe4416"));
             }
         }
 

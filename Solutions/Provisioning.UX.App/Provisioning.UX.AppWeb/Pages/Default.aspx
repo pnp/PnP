@@ -25,7 +25,7 @@
     <div data-ng-include="'shell.html'"></div>
 
     <!-- Vendor JS -->
-    <script src="../scripts/vendor/jquery/jquery-2.1.3.min.js"></script>
+    <script src="../scripts/vendor/jquery/jquery-2.2.1.min.js"></script>
     <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/4.0/1/MicrosoftAjax.js"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.6/angular.js"></script>
