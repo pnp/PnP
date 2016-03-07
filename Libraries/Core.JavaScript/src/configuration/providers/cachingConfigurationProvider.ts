@@ -1,5 +1,5 @@
-import {IConfigurationProvider} from "configuration";
-import {ITypedHash} from "../collections/collections";
+import {IConfigurationProvider} from "../configuration";
+import {ITypedHash} from "../../collections/collections";
 import * as storage from "../../utils/storage";
 import {Promise} from "es6-promise";
 
