@@ -43,7 +43,7 @@ class MailClient {
     // Get the current signed in user.
     func getUserWithCallback(callback: (MSGraphServiceUser!) -> Void) {
         // Make sure that the client is ready.
-        if (!ready || self.graphClient == nil) {
+        if (!self.ready || self.graphClient == nil) {
             print("The mail client has not been initialized properly")
             
             // Nothing to return.
@@ -108,7 +108,7 @@ class MailClient {
     // Send a mail using a message object.
     func sendMailWithMessage(message: MSGraphServiceMessage, callback: (Bool) -> Void) {
         // Make sure that the client is ready.
-        if (!ready || self.graphClient == nil) {
+        if (!self.ready || self.graphClient == nil) {
             print("The mail client has not been initialized properly")
             
             // Return failure.
