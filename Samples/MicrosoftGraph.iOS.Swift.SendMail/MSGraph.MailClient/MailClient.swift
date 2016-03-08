@@ -125,7 +125,7 @@ class MailClient {
     }
     
     // Send a mail to the current user.
-    func sendMeWithCallback(logger: (String) -> Void, callback: (Bool) -> Void) {
+    func sendMeWithCallback(callback: (Bool) -> Void, logger: (String) -> Void) {
         // Let a user sign in.
         logger("Signing in...")
         self.signInWithCallback { (success: Bool) -> Void in

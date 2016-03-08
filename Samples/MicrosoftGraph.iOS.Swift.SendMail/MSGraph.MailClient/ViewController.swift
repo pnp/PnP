@@ -48,7 +48,7 @@ class ViewController: UIViewController {
         self.button?.hidden = true
         self.spinner?.startAnimating()
         
-        self.mailClient.sendMeWithCallback(self.logMessage) { (success: Bool) -> Void in
+        self.mailClient.sendMeWithCallback({ (success: Bool) -> Void in
             // Log a final message.
             self.logMessage(success
                 ? "Check your mailbox!"
@@ -59,6 +59,6 @@ class ViewController: UIViewController {
                 self.button?.hidden = false
                 self.spinner?.stopAnimating()
             }
-        }
+            }, logger: self.logMessage);
     }
 }
