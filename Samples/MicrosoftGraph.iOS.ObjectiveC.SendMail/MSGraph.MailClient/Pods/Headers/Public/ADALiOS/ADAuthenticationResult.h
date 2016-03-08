@@ -1,1 +1,0 @@
-../../../ADALiOS/ADALiOS/ADALiOS/ADAuthenticationResult.h

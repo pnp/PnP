@@ -1,1 +1,0 @@
-../../../LiveSDK/src/LiveSDK/Library/Public/LiveConnectSession.h

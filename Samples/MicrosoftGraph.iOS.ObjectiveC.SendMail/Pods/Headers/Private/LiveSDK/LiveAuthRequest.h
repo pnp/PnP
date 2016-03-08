@@ -1,0 +1,1 @@
+../../../LiveSDK/src/LiveSDK/Library/Internal/LiveAuthRequest.h

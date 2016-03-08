@@ -1,1 +1,0 @@
-../../../MSGraph-SDK-iOS/Fetchers/MSGraphServiceProfilePhotoFetcher.h

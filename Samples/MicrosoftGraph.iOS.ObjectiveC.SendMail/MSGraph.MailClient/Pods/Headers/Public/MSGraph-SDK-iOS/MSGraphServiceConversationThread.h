@@ -1,1 +1,0 @@
-../../../MSGraph-SDK-iOS/Model/MSGraphServiceConversationThread.h

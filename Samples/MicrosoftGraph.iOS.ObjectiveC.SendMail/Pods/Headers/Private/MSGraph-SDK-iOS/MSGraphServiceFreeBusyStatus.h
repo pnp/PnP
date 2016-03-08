@@ -1,0 +1,1 @@
+../../../MSGraph-SDK-iOS/Model/MSGraphServiceFreeBusyStatus.h
