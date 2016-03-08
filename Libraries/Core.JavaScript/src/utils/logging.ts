@@ -56,6 +56,7 @@ export class Logger {
     /**
      * Creates a new instance of the Logger class
      * 
+     * @constructor
      * @param activeLogLevel the level used to filter messages (Default: LogLevel.Warning)
      * @param subscribers [Optional] if provided will initialize the array of subscribed listeners
      */
@@ -172,6 +173,7 @@ export class AzureInsightsListener implements ILogListener {
     /** 
      * Creats a new instance of the AzureInsightsListener class
      * 
+     * @constructor
      * @param azureInsightsInstrumentationKey The instrumentation key created when the Azure Insights instance was created
      */
     constructor(private azureInsightsInstrumentationKey: string) {
@@ -234,6 +236,7 @@ export class FunctionListener implements ILogListener {
     /** 
      * Creates a new instance of the FunctionListener class
      * 
+     * @constructor
      * @param  method The method to which any logging data will be passed
      */
     constructor(private method: (entry: ILogEntry) => void) { }

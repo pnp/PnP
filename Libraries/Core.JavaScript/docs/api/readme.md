@@ -20,7 +20,19 @@ Once you have downloaded the library the next step is including it in your proje
 If you are using the [SystemJS](https://github.com/systemjs/systemjs) the following example shows how to load the library. It assumes you have already loaded SystemJS into the page.
 
 ```JavaScript
-System.import('/path/to/pnp.js').then(function (pnp) {
+System.import('jquery').then(function ($) {
+    System.import('path/to/pnp.js').then(function (pnp) {
+        pnp.logging.write('My first log message!');
+    });
+});
+```
+
+###RequireJS (Or any AMD Compliant module loader)###
+
+If you are using the [RequireJS](http://requirejs.org/) the following example shows how to load the library. It assumes you have already loaded RequireJS into the page.
+
+```JavaScript
+require(['jquery', 'path/to/pnp.js'], function($, pnp) {
     pnp.logging.write('My first log message!');
 });
 ```
