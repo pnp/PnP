@@ -22,7 +22,7 @@ If you are using the [SystemJS](https://github.com/systemjs/systemjs) the follow
 ```JavaScript
 System.import('jquery').then(function ($) {
     System.import('path/to/pnp.js').then(function (pnp) {
-        pnp.logging.write('My first log message!');
+        [pnp](pnp.md).logging.write('My first log message!');
     });
 });
 ```
@@ -33,6 +33,6 @@ If you are using the [RequireJS](http://requirejs.org/) the following example sh
 
 ```JavaScript
 require(['jquery', 'path/to/pnp.js'], function($, pnp) {
-    pnp.logging.write('My first log message!');
+    [pnp](pnp.md).logging.write('My first log message!');
 });
 ```
