@@ -1,6 +1,7 @@
 "use strict";
 
 /**
+ * Gets a callback function which will maintain context across async calls.
  * Allows for the calling pattern getCtxCallback(thisobj, method, methodarg1, methodarg2, ...)
  * 
  * @param context The object that will be the 'this' value in the callback
