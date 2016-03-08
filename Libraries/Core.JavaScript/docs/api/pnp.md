@@ -5,7 +5,7 @@
 
 The root object of the library and the object with which your interactions will likely begin.
 
-Source: [pnp.ts](../src/pnp.ts)
+**Source**: [pnp.ts](../../src/pnp.ts)
 
 ###Properties###
 
