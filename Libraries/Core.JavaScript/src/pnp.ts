@@ -1,9 +1,10 @@
 "use strict";
 
-import * as Util from "./Utils/Util";
+import * as Util from "./utils/Util";
 import { SharePoint } from "./SharePoint/SharePoint";
-import { PnPClientStorage } from "./Utils/Storage";
+import { PnPClientStorage } from "./utils/Storage";
 import * as Configuration from "./configuration/configuration";
+import { Logger } from "./utils/logging";
 
 /**
  * Root class of the Patterns and Practices namespace, provides an entry point to the library
@@ -28,6 +29,11 @@ class PnP {
      * Configuration 
      */
     public static configuration = Configuration;
+
+    /**
+     * Global logging instance to which subscribers can be registered and messages written
+     */
+    public static logging = new Logger();
 }
 
 export = PnP;

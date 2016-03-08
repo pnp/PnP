@@ -4,6 +4,7 @@ import * as Util from "./Util";
 
 /**
  * A wrapper class to provide a consistent interface to browser based storage
+ * 
  */
 export class PnPClientStorageWrapper implements IPnPClientStore {
 

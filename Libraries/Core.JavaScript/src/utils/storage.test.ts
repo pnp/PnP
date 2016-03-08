@@ -1,3 +1,5 @@
+"use strict";
+
 import { expect } from "chai";
 import Storage = require("./Storage");
 import MockStorage = require("../mocks/MockStorage");
