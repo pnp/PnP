@@ -339,7 +339,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.officedev.pnp.MSGraph-MailClient";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/simonjager/Desktop/Git/PnP/Samples/MicrosoftGraph.iOS.MailClient/Swift/MSGraph.MailClient/MSGraph.MailClient/MSGraph.MailClient-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "MSGraph.MailClient/MSGraph.MailClient-Bridging-Header.h";
 			};
 			name = Debug;
 		};
@@ -352,7 +352,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.officedev.pnp.MSGraph-MailClient";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OBJC_BRIDGING_HEADER = "/Users/simonjager/Desktop/Git/PnP/Samples/MicrosoftGraph.iOS.MailClient/Swift/MSGraph.MailClient/MSGraph.MailClient/MSGraph.MailClient-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "MSGraph.MailClient/MSGraph.MailClient-Bridging-Header.h";
 			};
 			name = Release;
 		};
