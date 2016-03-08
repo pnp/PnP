@@ -35,7 +35,7 @@ class ViewController: UIViewController {
     }
     
     // Log messages by printing them on the UILabel.
-    func log(message: String) {
+    func logMessage(message: String) {
         // Run the logic on the main thread.
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             self.label?.text = message
@@ -48,9 +48,9 @@ class ViewController: UIViewController {
         self.button?.hidden = true
         self.spinner?.startAnimating()
         
-        mailClient.sendMeWithCallback(self.log) { (success: Bool) -> Void in
+        self.mailClient.sendMeWithCallback(self.logMessage) { (success: Bool) -> Void in
             // Log a final message.
-            self.log(success
+            self.logMessage(success
                 ? "Check your mailbox!"
                 : "Oops... something went wrong!")
             

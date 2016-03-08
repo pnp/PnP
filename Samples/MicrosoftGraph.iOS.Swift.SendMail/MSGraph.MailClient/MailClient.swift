@@ -83,7 +83,7 @@ class MailClient {
     }
     
     // Create a message object that can be used when sending a mail.
-    func createMessageWithSubject(subject: String, body: String, recipients: [String]) -> MSGraphServiceMessage {
+    func createMessageWithSubject(subject: String, content: String, recipients: [String]) -> MSGraphServiceMessage {
         let message = MSGraphServiceMessage()
         
         // Set the message subject.
@@ -96,12 +96,12 @@ class MailClient {
         // with the Microsoft Graph.
         let toRecipients = recipients.map({ (recipient: String) -> MSGraphServiceRecipient in return self.createRecipientWithAddress(recipient) })
         
-        // Create and set the body object.
-        let body = self.createBodyWithContent(body)
-        message.body = body
-        
         // Set the recipients of the message.
         message.toRecipients = NSMutableArray(array: toRecipients)
+        
+        // Create and set the body object.
+        let body = self.createBodyWithContent(content)
+        message.body = body
         return message
     }
     
@@ -144,7 +144,7 @@ class MailClient {
                 }
                 
                 // Create the message.
-                let message = self.createMessageWithSubject("Hello #Office365Dev", body:
+                let message = self.createMessageWithSubject("Hello #Office365Dev", content:
                     "<strong>Lorem ipsum dolor sit amet</strong>, consectetur adipiscing " +
                         "elit, sed do eiusmod tempor incididunt ut labore et dolore " +
                         "magna aliqua. Ut enim ad minim veniam, quis nostrud " +
