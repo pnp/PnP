@@ -3,12 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>ClientId</key>
-	<string>5aa05148-af7b-4620-b2fd-4b74232d5fc9</string>
+	<string>[YOUR CLIENT ID]</string>
 	<key>ResourceId</key>
 	<string>https://graph.microsoft.com/</string>
 	<key>RedirectUri</key>
-	<string>https://MicrosoftGraph.iOS.Swift.SendMail/</string>
+	<string>[YOUR REDIRECT URI]</string>
 	<key>AuthorityUrl</key>
-	<string>https://login.microsoftonline.com/ae77e2ea-14dc-41ea-bc8d-ec3c2c896524/</string>
+	<string>[YOUR AUTHORITY]</string>
 </dict>
 </plist>
