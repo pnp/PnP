@@ -40,7 +40,7 @@ describe("Configuration", () => {
             expect(setting).to.eq("value1");
         });
 
-        it("Apply a hash, apply a second hard overwritting a value and get back the new value", () => {
+        it("Apply a hash, apply a second hash overwritting a value and get back the new value", () => {
 
             let hash1: Collections.ITypedHash<string> = {
                 "key1": "value1",
