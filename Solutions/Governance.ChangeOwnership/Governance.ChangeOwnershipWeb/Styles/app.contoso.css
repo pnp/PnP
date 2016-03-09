@@ -1,0 +1,45 @@
+﻿.confirm-error-message {
+  cursor: pointer;
+  background: #DC3C00;
+  color: white;
+  padding: 5px;
+  border-radius: 5px;
+  margin-top: 15px;
+  position: relative;
+}
+
+
+@font-face {
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 30px;
+}
+
+.contoso-app-version {
+    /*font-family:'Times New Roman', Times, serif;*/
+    /*color:#007DBA;*/
+    color: lightgray;
+    font-size: 14px;
+}
+
+.contoso-app-branding {
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

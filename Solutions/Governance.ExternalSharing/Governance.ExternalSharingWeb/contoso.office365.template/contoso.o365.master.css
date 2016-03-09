@@ -1,0 +1,782 @@
+﻿body{
+    margin: 0px;
+    overflow: hidden;
+    background-color: #fff;
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: "Segoe UI","Segoe",Tahoma,Helvetica,Arial,sans-serif;
+}
+
+/***************************************Simulate Office 365 style********************************************/
+input[type=submit], input[type=button] {
+    color: white !important;
+    background-color: #00a882 !important;
+}
+
+input[type=button]:hover, input[type=reset]:hover, input[type=submit]:hover, button:hover {
+    border-color: #92c0e0;
+    background-color: #e6f2fa !important;
+}
+
+input[type=button]:disabled, input[type=reset]:disabled, input[type=submit]:disabled, button:disabled{
+    background-color: lightgray !important;
+}
+
+a:link {
+    color: #00a882;
+}
+
+a:visited {
+    color: #091F5B !important;
+    text-decoration: none;
+}
+
+a:hover{
+    text-decoration: none;
+}
+
+a, .ms-link:visited {
+    color: #091F5B;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.o365button {
+    background: transparent;
+    border-width: 0;
+    padding: 0;
+    cursor: pointer!important;
+    font-size: 14px;
+}
+
+.o365cs-topnavBGColor-2 {
+    background-color: #614767;
+}
+
+.o365cs-base.o365cst .ms-bgc-tdr, .o365cs-base.o365cst .ms-bgc-tdr-h:hover, #O365_MainLink_NavMenu:hover {
+    background-color: #564e4a;
+}
+
+#O365_MainLink_NavMenu {
+    background-color: #80746e;
+}
+
+.o365cs-nav-header16 .o365cs-nav-bposLogo {
+    display: inline-block;
+    white-space: nowrap;
+    vertical-align: middle;
+    margin-top: 1px;
+    padding-bottom: 1px;
+}
+
+.o365cs-nav-header16 {
+    width: 100%;
+    height: 50px;
+    display: table;
+    border-spacing: 0;
+    font-size: 0;
+    white-space: nowrap;
+    line-height: normal;
+}
+
+.o365cs-nav-header16 .ms-Icon-base {
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+    padding: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*.o365cs-nav-header16 .ms-Icon-base:hover {
+    background-color:#564e4a
+}*/
+
+.o365cs-nav-header16 .ms-Icon--waffle2 {
+    background-image: url('../contoso.office365.template/office-launcher.png');
+}
+
+.o365cs-nav-header16 .ms-Icon--waffle2-selected {
+    background-image: url('../contoso.office365.template/office-launcher-selected.png');
+}
+
+.o365cs-nav-header16 .ms-Icon--gear {
+    background-image: url('../contoso.office365.template/office-settings.png');
+}
+.o365cs-nav-header16 .ms-Icon--gear-selected {
+    background-image: url('../contoso.office365.template/office-settings-selected.png');
+}
+
+.o365cs-nav-header16 .ms-Icon--bell {
+    background-image: url('../contoso.office365.template/office-notification.png');
+}
+.o365cs-nav-header16 .ms-Icon--bell-selected {
+    background-image: url('../contoso.office365.template/office-notification-selected.png');
+}
+
+.o365cs-nav-header16 .ms-Icon--question {
+    background-image: url('../contoso.office365.template/office-help.png');
+}
+.o365cs-nav-header16 .ms-Icon--question-selected {
+    background-image: url('../contoso.office365.template/office-help-selected.png');
+}
+
+.o365cs-nav-header16 .ms-Icon--userprofile{
+    color:#fff;
+}
+
+.o365cs-nav-header16 .ms-Icon--userprofile-selected {
+    color:#000;
+}
+
+.o365cs-nav-header16 .ms-Icon--waffle2 :hover, 
+.o365cs-nav-header16 .ms-Icon--gear :hover, 
+.o365cs-nav-header16 .ms-Icon--bell :hover, 
+.o365cs-nav-header16 .ms-Icon--question :hover {
+    background-color: #564e4a;
+}
+
+.o365cs-nav-header16 .o365cs-nav-topItem {
+    display: inline-block;
+    vertical-align: top;
+    height:50px;
+    cursor:pointer;
+}
+
+.o365cs-nav-header16 .o365cs-nav-brandingText {
+    line-height: 46px;
+    display: inline-block;
+    font-family: "SegoeUI-SemiLight-final","Segoe UI SemiLight","Segoe UI WPC Semilight","Segoe UI",Segoe,Tahoma,Helvetica,Arial,sans-serif;
+    font-size: 22px;
+    color: white;
+    -webkit-font-smoothing: antialiased;
+    white-space:nowrap;
+}
+
+.o365cs-nav-header16 .o365cs-navMenuButton {
+    color: #fff;
+}
+
+.o365cs-nav-header16 .o365cs-nav-button {
+    vertical-align: middle;
+    border-width: 0;
+    margin: 0;
+    padding: 0;
+    min-width: 50px;
+    height: 50px;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    text-align: center;
+    line-height: normal;
+    overflow: visible;
+    cursor: pointer;
+    outline-offset: -1px;
+}
+
+.o365cs-nav-header16 .o365cs-nav-leftAlign {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.o365cs-nav-header16 .o365cs-nav-centerAlign {
+    display: table-cell;
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.o365cs-nav-header16 .o365cs-nav-tenantLogo {
+    background-position: center;
+    background-image: url('../contoso.office365.template/contosologo.jpg');
+    background-repeat: no-repeat;
+    height: 50px;
+    width: 200px;
+    padding: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.o365cs-nav-header16 .o365cs-nav-rightAlign {
+    display: table-cell;
+    vertical-align: top;
+    text-align: right;
+}
+
+.o365cs-me-tile-nophoto-username-container {
+    display: table-cell;
+    height: 50px;
+    padding-left: 5px;
+    vertical-align: middle;
+    white-space: nowrap;
+    max-width: 200px;
+    overflow: hidden;
+}
+
+.o365cs-nav-header16 .o365cs-me-tile-nophoto-username {
+    display: table-cell;
+    vertical-align: middle;
+    height: 50px;
+    font-family: "SegoeUI-SemiLight-final","Segoe UI SemiLight","Segoe UI WPC Semilight","Segoe UI",Segoe,Tahoma,Helvetica,Arial,sans-serif;
+    font-size: 15px;
+    padding-left: 15px;
+    padding-right: 5px;
+}
+
+.o365cs-nav-header16 .o365cs-nav-button:hover {
+    background-color:#564e4a
+}
+
+.o365cs-nav-header16 .o365cs-spo-topbarMenuOpen{
+    background-color: #f4f4f4;
+}
+
+.o365cs-nav-header16 .o365cs-spo-topbarMenuOpen:hover{
+    background-color: #f4f4f4 !important;
+}
+
+.ms-icon-font-size-20 {
+    font-size: 20px!important;
+}
+
+.o365cs-flexPane-panel {
+    position: fixed;
+    right: 0;
+    z-index: 1899;
+    width: 305px;
+    border-left-width: 1px!important;
+    border-style: solid;
+    border-width: 0;
+    height: 100%;
+}
+
+.o365cs-flexPane-overlay {
+    top: 50px;
+}
+
+.o365cs-base.o365cst .ms-bgc-nlr, .o365cs-base.o365cst .ms-bgc-nlr-h:hover, .o365cs-base.o365cst.ms-bgc-nlr {
+    background-color: #f4f4f4;
+}
+
+.o365cs-base.o365cst .ms-bcl-nta, .o365cs-base.o365cst .ms-bcl-nta-h:hover {
+    border-color: #c8c8c8;
+}
+
+.o365-flexPane-verticalScroll {
+    overflow-y: auto;
+}
+
+.o365cs-nfd {
+    padding-top: 20px;
+}
+
+.o365cs-nfd-normal-fontsize {
+    font-size: 12px;
+}
+
+.o365cs-nfd.o365cs-nfd-normal-fontsize {
+    padding: 17px 20px 50px 20px;
+    top: 0;
+    bottom: 0;
+    white-space: normal;
+}
+
+.o365-help-flex-pane-label {
+    font-size: 28px;
+    display: block;
+    padding-bottom: 30px;
+}
+
+.o365cs-lightFont {
+    font-family: "Segoe UI Light","Segoe UI",Segoe,Tahoma,Helvetica,Arial,Sans-Serif;
+}
+
+.o365cs-nfd-content {
+    padding-top: 20px;
+}
+
+.o365cs-base.o365cst .ms-fcl-tp, .o365cs-base.o365cst .ms-fcl-tp-h:hover {
+    color: #80746e;
+}
+
+.o365cs-nfd-normal-lineheight {
+    line-height: 30px;
+}
+
+.o365cs-nfd a:link, .o365cs-nfd a:hover, .o365cs-nfd a:active, .o365cs-nfd a:visited {
+    text-decoration: none;
+}
+
+.o365cs button, .o365cs .o365button, .o365cs-flexPane-panel .o365button, .o365cs-flexPane-panel-new .o365button {
+    min-width: 0;
+    margin: 0;
+}
+
+._fc_3, ._fc_4 {
+    vertical-align: middle;
+}
+
+#globalNavBox, .ms-clientcontrol-chromeheader {
+    background-color: rgba( 239,239,239,0.78 );
+    width: 100%;
+    height: 35px;
+}
+
+.o365cs-nav-contextMenu {
+    background-color: #fff;
+    border-left: 1px solid #dedede;
+    border-right: 1px solid #dedede;
+    border-bottom: 1px solid #dedede;
+    -webkit-box-shadow: 0 0 10px rgba(0,0,0,.2);
+    box-shadow: 0 0 10px rgba(0,0,0,.2);
+    min-width: 180px;
+    max-width: 375px;
+    clip: rect(0,10000px,10000px,-10px);
+    outline: 0;
+}
+
+.contextMenuPopup {
+    background-color: #fff;
+}
+
+._fce_M {
+    overflow-x: hidden;
+    max-height: 561px;
+}
+
+._fce_w {
+    min-width: 180px;
+    outline: 0;
+    overflow-y: auto;
+    white-space: nowrap;
+}
+
+.customScrollBar::-webkit-scrollbar-button {
+    background-color: #fff;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+.customScrollBar::-webkit-scrollbar-track {
+    background-color: #fff;
+}
+
+.customScrollBar::-webkit-scrollbar-corner {
+    background-color: #fff;
+}
+
+.customScrollBar::-webkit-scrollbar {
+    height: 18px;
+    width: 18px;
+}
+
+.customScrollBar::-webkit-scrollbar-thumb {
+    border-radius: 9px;
+    border: solid 6px #fff;
+    background-color: #c8c8c8;
+}
+
+._fce_y {
+    position: relative;
+}
+
+.o365cs-base.o365cst .ms-fcl-b, .o365cs-base.o365cst .ms-fcl-b-h:hover {
+    color: #000;
+}
+
+.o365cs-base .ms-fcl-b, .o365cs-base .ms-fcl-b-h:hover {
+    color: #000;
+}
+
+.o365cs-nav-contextMenu .o365cs-contextMenuItem, .o365cs-nav-contextMenu .o365cs-contextMenuInactiveItem {
+    display: block;
+    padding: 10px 30px;
+    font: 15px "SegoeUI-Regular-final","Segoe UI","Segoe UI WPC",Segoe,Tahoma,Helvetica,Arial,sans-serif;
+    text-align: left;
+    outline-offset: -1px;
+}
+
+.o365cs-nav-contextMenu .o365cs-contextMenuInactiveItem
+{
+    color: lightgray !important;
+    cursor: default !important;
+}
+
+._fce_F {
+    display: inline-block;
+}
+
+.o365cs-nav-contextMenu .o365cs-contextMenuSeparator {
+    border-top-style: solid;
+    border-top-width: 1px;
+}
+
+.o365cs-nav-contextMenu .o365cs-contextMenuItem:hover{
+    background-color: #eaeaea;
+}
+
+.o365cs-base.o365cst .ms-bcl-nl, .o365cs-base.o365cst .ms-bcl-nl-h:hover {
+    border-color: #eaeaea;
+}
+
+.o365cs-base.o365cst .ms-bgc-nl, .o365cs-base.o365cst .ms-bgc-nl-h:hover {
+    background-color: #eaeaea;
+}
+
+.o365cs-base.ms-bgc-w.o365cst.o365cs-context-font.o365cs-segoeRegular.o365cs-me-contextMenu {
+    background-color: #fff;
+}
+
+.o365cs-me-contextMenu {
+    width: 374px;
+    padding-right: 1px;
+    white-space: nowrap;
+}
+
+.o365cs-context-font {
+    font-size: 19px;
+}
+
+.o365cs-segoeRegular {
+    font-family: "Segoe UI Regular","Segoe UI",Segoe,Tahoma,Helvetica,Arial,sans-serif;
+}
+
+.o365cs-me-itemsList {
+    position: relative;
+    outline: none;
+}
+
+.o365cs-userInfo {
+    cursor: default!important;
+}
+
+.o365cs-me-persona.o365cs-me-nophoto {
+    padding-left: 16px;
+}
+
+.o365cs-me-persona {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.o365cs-me-persona, .o365cs-me-altpersona {
+    overflow: hidden;
+    white-space: nowrap;
+    padding-left: 21px;
+    padding-right: 10px;
+}
+
+.o365cs-me-personaView {
+    outline: none;
+    width: 100%;
+    display: table;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.o365cs-me-personaPhoto, .o365cs-me-altpersona-photoControl {
+    position: relative;
+    vertical-align: top;
+    width: 70px;
+    height: 64px;
+    display: table-cell;
+}
+
+.o365cs-me-nophoto .o365cs-me-personaDetails {
+    padding-left: 0;
+}
+
+.o365cs-me-personaDetails, .o365cs-me-altpersonaDetails {
+    max-width: 268px;
+    vertical-align: middle;
+    white-space: nowrap;
+    padding-left: 10px;
+    overflow: hidden;
+    display: table-cell;
+}
+
+.o365cs-display-Block {
+    display: block;
+}
+
+.o365cs-segoeSemiLight {
+    font-family: "Segoe UI SemiLight","Segoe UI",Segoe,Tahoma,Helvetica,Arial,sans-serif;
+}
+
+.o365cs-me-bidi {
+    direction: ltr;
+    text-align: left;
+}
+
+.o365cs-me-userDisplayName {
+    font-size: 16px;
+}
+
+.o365cs-me-userEmail {
+    font-size: 12px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#s4-ribbonrow {
+    position: relative;
+}
+
+#s4-workspace {
+    overflow: auto;
+    position: relative;
+}
+
+#s4-bodyContainer {
+    padding-bottom: 35px;
+}
+
+#s4-titlerow {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-top: 19px;
+    padding-bottom: 8px;
+}
+
+#titleAreaBox {
+    margin: auto 20px;
+}
+
+.ms-noList ul, .ms-noList ol, .ms-noList {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+.ms-table {
+    display: table;
+}
+
+.ms-tableRow {
+    display: table-row;
+}
+
+.ms-tableCell {
+    display: table-cell;
+}
+
+.ms-core-tableNoSpace {
+    border-spacing: 0px;
+}
+
+#siteIcon {
+    min-width: 64px;
+    height: 64px;
+    line-height: 64px;
+    text-align: center;
+    margin-right: 20px;
+    float: left;
+}
+
+.ms-verticalAlignTop {
+    vertical-align: top;
+}
+
+.ms-siteicon-a {
+    display: inline-block;
+    max-width: 180px;
+    max-height: 64px;
+}
+
+.ms-siteicon-img {
+    display: block;
+    max-width: 180px;
+    max-height: 64px;
+}
+
+.ms-breadcrumb-box {
+    width: 100%;
+    height: 64px;
+}
+
+.ms-breadcrumb-top {
+    white-space: nowrap;
+}
+
+.ms-displayInline {
+    display: inline;
+}
+
+.ms-core-navigation {
+    font-family: "Segoe UI","Segoe",Tahoma,Helvetica,Arial,sans-serif;
+}
+
+.ms-core-listMenu-horizontalBox {
+    color: #666666;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.ms-core-listMenu-horizontalBox ul, .ms-core-listMenu-horizontalBox li, .ms-core-listMenu-horizontalBox .ms-core-listMenu-item, .ms-core-listMenu-horizontalBox > ul > li > table {
+    display: inline-block;
+}
+
+.ms-noList ul, .ms-noList ol, .ms-noList {
+    list-style-type: none;
+    padding-left: 0px;
+}
+
+.ms-core-listMenu-root {
+    margin: 0px;
+}
+
+li {
+    display: list-item;
+    text-align: -webkit-match-parent;
+}
+
+.ms-core-listMenu-horizontalBox li.static > .ms-core-listMenu-item {
+    margin-right: 30px;
+    border: 1px solid transparent;
+}
+
+.ms-core-listMenu-horizontalBox .ms-core-listMenu-selected:link, .ms-core-listMenu-horizontalBox .ms-core-listMenu-selected:visited, .ms-core-listMenu-horizontalBox .ms-core-listMenu-selected, .ms-tv-selected:link {
+    background-color: transparent;
+    color: #00a882 !important;
+}
+
+.ms-core-listMenu-selected:link, .ms-core-listMenu-selected:visited, .ms-core-listMenu-selected {
+    background-color: #efefef;
+    background-color: rgba( 239,239,239,0.78 );
+}
+
+.ms-core-listMenu-item, .ms-core-listMenu-item:link, .ms-core-listMenu-item:visited, .ms-tv-item:link, .ms-tv-item:visited, .ms-tv-header:link, .ms-tv-header:visited {
+    color: #666666;
+    text-decoration: none;
+}
+
+.ms-selected, .ms-pivotControl-surfacedOpt-selected, .ms-core-listMenu-selected, .ms-hero-command-enabled-alt {
+    font-weight: 600;
+}
+
+.ms-core-listMenu-verticalBox, .ms-core-listMenu-horizontalBox {
+    font-size: 1em;
+}
+
+h1 {
+    display: block;
+    font-size: 2.77em;
+    -webkit-margin-before: 0.67em;
+    -webkit-margin-after: 0.67em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    font-weight: bold;
+}
+
+h1, .ms-h1 {
+    font-family: "Segoe UI Light","Segoe UI","Segoe",Tahoma,Helvetica,Arial,sans-serif;
+    font-size: 2.3em;
+    color: #777;
+    font-weight: 200;
+}
+
+h1, h2, h3, h4, h5, h6, .ms-h1, .ms-h2, .ms-h3, .ms-h4, .ms-h5, .ms-h6 {
+    margin: auto;
+    font-weight: normal;
+}
+
+
+.ms-core-pageTitle {
+    font-size: 2.2em;
+    white-space: nowrap;
+}
+
+.ms-core-pageTitle a:hover, .ms-core-pageTitle a:active {
+    text-decoration: none;
+}
+
+.ms-core-pageTitle, .ms-core-pageTitle a {
+    font-family: "Segoe UI Light","Segoe UI","Segoe",Tahoma,Helvetica,Arial,sans-serif;
+    color: #262626;
+}
+
+#contentRow {
+    padding-top: 19px;
+}
+
+#ms-pageDescriptionImage {
+    height: 16px;
+    width: 16px;
+    background: url("../contoso.office365.template/spcommon.png") no-repeat -161px -178px !important;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.ms-normalWrap {
+    white-space: normal;
+    word-wrap: normal;
+}
+
+.ms-displayInlineBlock {
+    display: inline-block;
+}
+
+#ms-pageDescriptionDiv {
+    height: 16px;
+    width: 16px;
+    display: inline-block;
+    overflow: hidden;
+}
+
+#sideNavBox {
+    float: left;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 180px;
+}
+
+#contentBox {
+    margin-right: 20px;
+    margin-left: 220px;
+    min-width: 703px;
+}
+
+.ms-forceWrap {
+    word-wrap: break-word;
+}
+
+.ms-navedit-editLinksIcon {
+    left: -218px;
+    top: -66px;
+    position: absolute;
+}
+
+.ms-core-sideNavBox-removeLeftMargin {
+    margin-left: -20px;
+}
+
+.ms-core-listMenu-verticalBox > .ms-core-listMenu-item, .ms-core-listMenu-verticalBox li.static > .ms-core-listMenu-item {
+    display: block;
+    padding: 5px 20px;
+}
+
+.ms-core-listMenu-verticalBox li.static:hover {
+    background-color:aliceblue;
+}
+
+.ms-core-listMenu-verticalBox li a:hover, .ms-core-listMenu-horizontalBox li a:hover {
+    text-decoration:none;
+}
+
+.ms-core-listMenu-verticalBox > .ms-core-listMenu-root > li > .ms-core-listMenu-item, .ms-core-listMenu-verticalBox > .ms-core-listMenu-root > li > .ms-core-listMenuEdit, .ms-core-listMenu-heading, .ms-tv-header {
+    font-size: 1em;
+    vertical-align: middle;
+    font-family: "Segoe UI","Segoe",Tahoma,Helvetica,Arial,sans-serif;
+    display: block;
+}
+
