@@ -64,6 +64,8 @@ When you have registered your application in Azure AD - you will have to configu
 </dict>
 </plist>
 ```
+
+Run the project using the **⌘R** shortcut, or by pressing the **Run** button in the **Product** menu.
     
 # Source Code Files #
 The key source code files in this project are the following:
