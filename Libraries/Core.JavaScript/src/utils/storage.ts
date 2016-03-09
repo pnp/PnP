@@ -4,6 +4,7 @@ import * as Util from "./Util";
 
 /**
  * A wrapper class to provide a consistent interface to browser based storage
+ * 
  */
 export class PnPClientStorageWrapper implements IPnPClientStore {
 
@@ -14,6 +15,8 @@ export class PnPClientStorageWrapper implements IPnPClientStore {
 
     /**
      * Creates a new instance of the PnPClientStorageWrapper class
+     * 
+     * @constructor
      */
     constructor(private store: Storage, public defaultTimeoutMinutes?: number) {
         this.defaultTimeoutMinutes = (defaultTimeoutMinutes === void 0) ? 5 : defaultTimeoutMinutes;
@@ -177,6 +180,8 @@ export class PnPClientStorage {
 
     /**
      * Creates a new instance of the PnPClientStorage class
+     * 
+     * @constructor
      */
     constructor() {
         this.local = typeof localStorage !== "undefined" ? new PnPClientStorageWrapper(localStorage) : null;
