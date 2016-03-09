@@ -1,11 +1,10 @@
 #PnP JavaScript Core#
-##API Reference##
-
-##PnP##
+##API Reference - PnP##
 
 The root object of the library and the object with which your interactions will likely begin.
 
 **Source**: [pnp.ts](../../src/pnp.ts)
+**Tests**: [util.ts](../../src/pnp.test.ts)
 
 ###Properties###
 

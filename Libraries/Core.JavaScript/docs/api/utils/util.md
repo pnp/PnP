@@ -1,21 +1,14 @@
 #PnP JavaScript Core#
-##API Reference##
+##API Reference - Util##
 
-##Util##
-
-The root object of the library and the object with which your interactions will likely begin.
+A utility library to provide global methods to support common actions.
 
 **Source**: [util.ts](../../src/utils/util.ts)
+**Tests**: [util.ts](../../src/utils/util.test.ts)
 
 ###Properties###
 
-Name | Description
----- | -----------
-[util](utils/util.md) | Object, contains utility methods
-sharepoint  | Object, contains methods for working with sharepoint
-storage  | Object, contains methods for working with browser storage
-configuration  | Object, contains methods for accessing configuration data
-logging  | Object, contains methods for global application logging
+none
 
 ###Methods###
 
