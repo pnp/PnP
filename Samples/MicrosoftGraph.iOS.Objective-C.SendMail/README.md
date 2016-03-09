@@ -27,6 +27,8 @@ You will need to register your application before you can make any calls towards
 
 If you are building for Office 365 and you're missing an Office 365 tenant - get yourself a developer account at: <http://dev.office.com/devprogram>
 
+You will need Xcode installed on your machine in order to run the sample. Get Xcode at: <https://developer.apple.com/xcode/>
+
 ### Project ###
 Project | Author(s)
 ---------|----------
@@ -65,7 +67,7 @@ When you have registered your application in Azure AD - you will have to configu
 </plist>
 ```
 
-Run the project using the **⌘R** shortcut, or by pressing the **Run** button in the **Product** menu.
+Launch the workspace file (**MSGraph.MailClient.xcworkspace**) in Xcode. Run the project using the **⌘R** shortcut, or by pressing the **Run** button in the **Product** menu.
     
 # Source Code Files #
 The key source code files in this project are the following:
