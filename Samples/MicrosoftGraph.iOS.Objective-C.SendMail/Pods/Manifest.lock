@@ -1,0 +1,21 @@
+PODS:
+  - ADALiOS (1.2.4)
+  - LiveSDK (5.6.1)
+  - MSGraph-SDK-iOS (0.8.0):
+    - ADALiOS (= 1.2.4)
+    - LiveSDK (= 5.6.1)
+    - orc
+  - orc (0.20.3):
+    - ADALiOS (= 1.2.4)
+    - LiveSDK (= 5.6.1)
+
+DEPENDENCIES:
+  - MSGraph-SDK-iOS
+
+SPEC CHECKSUMS:
+  ADALiOS: 8179aed8e136bf79dca5a4138a0c1a0d52701cb2
+  LiveSDK: 2627cf5872b33b3d960df27082a9a17afb74835d
+  MSGraph-SDK-iOS: f45747941c3636bc3d8c96504346be990d38b7ba
+  orc: 911989e38b8a018624b3dcd592e4b1f53cf00e04
+
+COCOAPODS: 0.39.0

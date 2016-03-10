@@ -1,0 +1,1 @@
+../../../MSGraph-SDK-iOS/Model/MSGraphServiceGroup.h
