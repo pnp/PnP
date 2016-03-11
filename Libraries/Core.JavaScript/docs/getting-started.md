@@ -22,11 +22,11 @@ Unsure where to begin with working on the project? This guide is designed to get
 
 
 7. Now we need to fork and clone the git repository. This can be done using your [console](https://help.github.com/articles/fork-a-repo/) or using your preferred method. If new to githib abd are using  Cmder, follow these steps:
-    1. Create a github account, and Brower to https://github.com/OfficeDev/PnP/tree/dev
+    1. Create a github account, and Browe to https://github.com/OfficeDev/PnP/tree/dev
 	2. Click the 'Fork' button in the upper right to create your own copy of the PNP Repository
 	3. Copy the URL of your local repository (ie https://github.com/yourid/PnP.git).
 	4. Start Cmder
-	5. Enter the following command into Cmder  git clone https://github.com/yourid/PnP.git
+	5. type the following command into Cmder  `git clone https://github.com/yourid/PnP.git` (this will copy the project from your github repository to your local machine)
 
 8. Once you have the code locally, navigate to the root of the project in your console. Type the following commands:
 	1. `npm install` - installs all of the npm package dependencies (may take awhile the first time)
