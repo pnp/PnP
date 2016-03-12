@@ -14,7 +14,7 @@ We have an active [Yammer Group](http://aka.ms/OfficeDevPnPSIGJavaScriptYammer) 
 See the [Quick Start Guide](docs/getting-started.md) for setting up your environment.
 
 ### Authors ###
-This project's contributors include Microsoft and [other contributors](AUTHORS.txt)
+This project's contributors include Microsoft and [other contributors](AUTHORS)
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
