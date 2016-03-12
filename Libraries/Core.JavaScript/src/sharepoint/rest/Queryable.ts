@@ -32,7 +32,7 @@ export class Queryable {
     }
     public get() {
         return new Promise((resolve, reject) => {
-            ajax.get(`${_spPageContextInfo.webAbsoluteUrl}/${this.url()}`).success(data => {
+            ajax.get(this.url()).success(data => {
                 data.d.hasOwnProperty("results") ? resolve(data.d.results) : resolve(data.d);
             });
         });
