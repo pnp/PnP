@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+<head>
+    <!--<meta charset="utf-8" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-tap-highlight" content="no" />-->
+    <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+    <!--<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />-->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" cont>
+    <title>ADAL</title>
+    <link rel="stylesheet" type="text/css" href="css/topcoat-mobile-dark.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+    <div class="topcoat-navigation-bar three-quarters">
+        <div class="topcoat-navigation-bar__item left quarter">
+            <a id="slide-menu-button" class="slide-menu-button">
+                <span class="topcoat-icon topcoat-icon--menu-stack"></span>
+            </a>
+        </div>
+        <div class="topcoat-navigation-bar__item center half">
+            <h1 class="topcoat-navigation-bar__title">Azure AD Authentication</h1>
+        </div>
+    </div>
+    <nav class="side-nav">
+        <div class="topcoat-list__container side-nav__list__container">
+            <ul class="topcoat-list side-nav__list">
+                <li class="topcoat-list__item side-nav__list__item">
+                    <a href="#" class="side-nav__button" id="create-context">
+                        Create authentication context
+                    </a>
+                </li>
+                <li class="topcoat-list__item side-nav__list__item">
+                    <a href="#" class="side-nav__button" id="acquire-token">Acquire token</a>
+                </li>
+                <li class="topcoat-list__item side-nav__list__item">
+                    <a href="#" class="side-nav__button" id="acquire-token-silent">
+                        Acquire token silently
+                    </a>
+                </li>
+                <li class="topcoat-list__item side-nav__list__item">
+                    <a href="#" class="side-nav__button" id="read-tokencache">
+                        Read cache items
+                    </a>
+                </li>
+                <li class="topcoat-list__item side-nav__list__item">
+                    <a href="#" class="side-nav__button" id="clear-tokencache">
+                        Clear cache
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="main-content">
+        <!--<div class="topcoat-text-input" id="log-area"></div>-->
+        <div class="topcoat-list__container scroller">
+            <ul class="topcoat-list list" id="log-area"></ul>
+        </div>
+    </div>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script>
+        app.initialize();
+    </script>
+</body>
+
+</html>
