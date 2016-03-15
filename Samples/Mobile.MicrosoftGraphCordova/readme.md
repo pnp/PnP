@@ -41,6 +41,9 @@ Version  | Date | Comments
 
 ----------
 
+![Running on Windows 10](MicrosoftGraphCordova.png)
+
+
 Note: The current recommended pattern is to call acquireTokenSilentAsync first.
 If a token can't be obtained silently (i.e. from the cache or by using a
 refresh token), the "fail" callback invokes acquireTokenAsync which has its
@@ -48,7 +51,7 @@ prompt behaviour set to "always".
 
 The intention is that acquireTokenAsync will always prompt in ADAL libraries moving forward. 
 
-```JavaScript
+```javascript
 
     context.acquireTokenSilentAsync(resourceUrl, appId).then(success, function () {
       context.acquireTokenAsync(resourceUrl, appId, redirectUrl).then(success, fail);
