@@ -14,7 +14,7 @@ Unsure where to begin with working on the project? This guide is designed to get
 5. Install the tslint extension in VS Code:
 	1. Press Shift + Ctrl + "p" to open the command panel
 	2. Begin typing "install extension" and select the command when it appears in view
-	3. Begin typing "tslint" and select the package when it appears in view
+	3. Begin typing "tslint" and select the package "TSLint for Visual Studio Code" when it appears in view
 	4. Restart Code after installation
 	5. Open your console and type `npm install -g tslint` to globally install the npm package
 
