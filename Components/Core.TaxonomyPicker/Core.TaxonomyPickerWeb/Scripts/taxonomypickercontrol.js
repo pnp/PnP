@@ -755,8 +755,15 @@
                                 itemHtml.click(Function.createDelegate(this, this.suggestionClicked));
                             }
                         }));
+                        this._suggestionContainer.show();
                     }
-                    this._suggestionContainer.show();
+                    else {
+                        this._suggestionContainer.hide();
+                    }
+                    
+                }
+                else {
+                    this._suggestionContainer.hide();
                 }
             }
             else
