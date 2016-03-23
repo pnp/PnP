@@ -7,10 +7,10 @@
         "files": {}
     },
     "installed_plugins": {
-        "cordova-plugin-whitelist": {
+        "cordova-plugin-ms-adal": {
             "PACKAGE_NAME": "com.flosim.MicrosoftGraphCordova"
         },
-        "cordova-plugin-ms-adal": {
+        "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.flosim.MicrosoftGraphCordova"
         }
     },

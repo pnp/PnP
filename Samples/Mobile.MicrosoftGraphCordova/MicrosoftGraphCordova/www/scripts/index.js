@@ -44,6 +44,7 @@
       var bearerToken = "Bearer " + response.accessToken;
       var xhr = new XMLHttpRequest();
       xhr.open('GET', requestUri);
+      if (xhr.msCaching) xhr.msCaching = 'disabled'; // disable aggressive caching on IE
       xhr.setRequestHeader("Authorization", bearerToken);
       xhr.setRequestHeader("Accept", "application/json;odata.metadata=minimal");
       xhr.onload = function () {
