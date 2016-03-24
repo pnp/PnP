@@ -1,0 +1,31 @@
+<!doctype html>
+<html ng-app="office365app">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Office Quick Contacts</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular-route.min.js"></script>
+    <script src="//secure.aadcdn.microsoftonline-p.com/lib/1.0.8/js/adal.min.js"></script>
+    <script src="//secure.aadcdn.microsoftonline-p.com/lib/1.0.8/js/adal-angular.min.js"></script>
+    <script src="bower_components/angular-touch/angular-touch.min.js"></script>
+
+    <link rel="stylesheet" href="content/main.css">
+</head>
+<body>
+    <div data-ng-view></div>
+
+    <script src="app/app.module.js"></script>
+    <script src="app/app.config.js"></script>
+    <script src="app/app.adalconfig.js"></script>
+    <script src="app/app.routes.js"></script>
+    <script src="app/services/data.service.js"></script>
+    <script src="app/home/home.controller.js"></script>
+    <script src="app/directives/personaItem.js"></script>
+    <script src="app/directives/focusOn.js"></script>
+    <script src="app/svg4everybody.js"></script>
+</body>
+</html>
