@@ -1,0 +1,1 @@
+../../../MSGraph-SDK-iOS/Fetchers/MSGraphServiceDirectoryRoleFetcher.h

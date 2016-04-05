@@ -1,8 +1,9 @@
 "use strict";
 
 import { expect } from "chai";
-import Collections = require("../Collections/Collections");
-import Configuration = require("./Configuration");
+import Collections = require("../collections/collections");
+import * as Configuration from "./configuration";
+import {default as MockConfigurationProvider} from "../mocks/mockConfigurationProvider";
 
 describe("Configuration", () => {
 
@@ -39,7 +40,7 @@ describe("Configuration", () => {
             expect(setting).to.eq("value1");
         });
 
-        it("Apply a hash, apply a second hard overwritting a value and get back the new value", () => {
+        it("Apply a hash, apply a second hash overwritting a value and get back the new value", () => {
 
             let hash1: Collections.ITypedHash<string> = {
                 "key1": "value1",
@@ -70,6 +71,44 @@ describe("Configuration", () => {
             settings.apply(hash);
             let setting = settings.getJSON("key3");
             expect(setting).to.deep.equal(obj);
+        });
+
+        it("loads settings from a configuration provider", () => {
+            let mockValues: Collections.ITypedHash<string> = {
+                "key2": "value_from_provider_2",
+                "key3": "value_from_provider_3",
+            };
+            let mockProvider = new MockConfigurationProvider();
+            mockProvider.mockValues = mockValues;
+
+            settings.add("key1", "value1");
+            let p = settings.load(mockProvider);
+
+            return p.then(() => {
+                expect(settings.get("key1")).to.eq("value1");
+                expect(settings.get("key2")).to.eq("value_from_provider_2");
+                expect(settings.get("key3")).to.eq("value_from_provider_3");
+            });
+        });
+
+        it("rejects a promise if configuration provider throws", () => {
+            let mockProvider = new MockConfigurationProvider();
+            mockProvider.shouldThrow = true;
+            let p = settings.load(mockProvider);
+            return p.then(
+                () => { expect.fail(null, null, "Should not resolve when provider throws!"); },
+                (reason) => { expect(reason).not.to.be.null; }
+            );
+        });
+
+        it("rejects a promise if configuration provider rejects the promise", () => {
+            let mockProvider = new MockConfigurationProvider();
+            mockProvider.shouldReject = true;
+            let p = settings.load(mockProvider);
+            return p.then(
+                () => { expect.fail(null, null, "Should not resolve when provider rejects!"); },
+                (reason) => { expect(reason).not.to.be.null; }
+            );
         });
     });
 });

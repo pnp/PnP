@@ -1,6 +1,7 @@
 "use strict";
 
 /**
+ * Gets a callback function which will maintain context across async calls.
  * Allows for the calling pattern getCtxCallback(thisobj, method, methodarg1, methodarg2, ...)
  * 
  * @param context The object that will be the 'this' value in the callback
@@ -155,4 +156,13 @@ export function getGUID(): string {
  */
 export function isFunction(candidateFunction: any): boolean {
     return typeof candidateFunction === "function";
+}
+
+/**
+ * Determines if a string is null or empty or undefined
+ * 
+ * @param s The string to test
+ */
+export function stringIsNullOrEmpty(s: string): boolean {
+    return typeof s === "undefined" || s === null || s === "";
 }

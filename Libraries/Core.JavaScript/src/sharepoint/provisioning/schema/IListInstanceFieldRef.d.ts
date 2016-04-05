@@ -1,0 +1,3 @@
+interface IListInstanceFieldRef {
+        Name: string;
+}
