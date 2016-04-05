@@ -190,6 +190,7 @@
   <ItemGroup>
     <Content Include="images\WizardLogo.png" />
     <Content Include="Pages\Shell.html" />
+    <Content Include="Pages\SiteClassification\siteedit.html" />
     <Content Include="Pages\subsite\resources\custombg.jpg" />
     <Content Include="Pages\subsite\resources\CustomInjectedJS.js" />
     <Content Include="Pages\subsite\resources\template-icon.png" />
@@ -217,13 +218,17 @@
     <None Include="Scripts\jquery-2.2.1-vsdoc.js" />
     <Content Include="Scripts\jquery-2.2.1.js" />
     <Content Include="Scripts\jquery-2.2.1.min.js" />
+    <Content Include="Scripts\sitemetadata\sitemetadatacontroller.js" />
     <Content Include="Scripts\siteprivacy.js" />
     <Content Include="Scripts\sp.addChrome.js" />
     <Content Include="Scripts\sp.documentpicker.js" />
     <Content Include="Scripts\sp.peoplepicker.js" />
+    <Content Include="Scripts\vendor\angular-spinners\angular-spinners.js" />
+    <Content Include="Scripts\vendor\angular-spinners\angular-spinners.min.js" />
     <Content Include="Scripts\vendor\jquery\jquery-2.2.1.min.js" />
     <Content Include="Scripts\wizard\controllers\shell.js" />
     <Content Include="Scripts\wizard\modules\filter.js" />
+    <Content Include="Scripts\wizard\services\siteMetadataEditService.js" />
     <Content Include="Styles\toastr.css" />
     <Content Include="Styles\toastr.min.css" />
     <Content Include="images\HBI.png" />
@@ -347,8 +352,11 @@
     </Compile>
     <Compile Include="Models\ExternalSharingRequest.cs" />
     <Compile Include="Models\SiteCheckResponse.cs" />
+    <Compile Include="Models\PropertyBagRequest.cs" />
     <Compile Include="Models\SitePolicyResults.cs" />
+    <Compile Include="Models\SiteMetadata.cs" />
     <Compile Include="Models\SiteRequest.cs" />
+    <Compile Include="Models\UserPermissionsCheckRequest.cs" />
     <Compile Include="Models\SiteUrlCheckRequest.cs" />
     <Compile Include="Models\TemplateResultResponse.cs" />
     <Compile Include="Pages\Default.aspx.cs">

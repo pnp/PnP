@@ -123,7 +123,8 @@ namespace Provisioning.UX.AppWeb.Pages.SubSite
             information.Title = title;
             information.Url = txtUrl;
             // Currently all English, could be extended to be configurable based on language pack usage
-            information.Language = 1033;
+           
+            
 
             Microsoft.SharePoint.Client.Web newWeb = null;
             newWeb = hostWeb.Webs.Add(information);

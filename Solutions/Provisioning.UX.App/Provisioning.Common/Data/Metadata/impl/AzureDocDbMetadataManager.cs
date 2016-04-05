@@ -19,6 +19,7 @@ namespace Provisioning.Common.Data.Metadata.Impl
         const string ACCOUNT_KEY = "AccountKey";
         #endregion
 
+        #region Authentication
         /// <summary>
         /// Delegate for working with DocumentClient and Wire up authentication
         /// </summary>
@@ -34,6 +35,7 @@ namespace Provisioning.Common.Data.Metadata.Impl
                 action(_client);
             }
         }
+        #endregion
 
         #region IMetadataManger Members
         /// <summary>
@@ -173,7 +175,6 @@ namespace Provisioning.Common.Data.Metadata.Impl
         }
         #endregion
 
-
         #region Private Members
         private List<SiteClassification> InternalGetAvailableSiteClassifcations(DocumentClient client, string collectionLink)
         {
@@ -254,7 +255,6 @@ namespace Provisioning.Common.Data.Metadata.Impl
             }
             return collection;
         }
-
         private SiteClassification InternalGetSiteClassificationByName(DocumentClient client, string collectionLink, string name)
         {
             var _siteClassification = from record in client.CreateDocumentQuery<SiteClassification>(collectionLink)
@@ -262,13 +262,57 @@ namespace Provisioning.Common.Data.Metadata.Impl
                            select record;
             return _siteClassification.ToList().FirstOrDefault();
         }
-
         public ICollection<SiteMetadata> GetAvailableOrganizationalFunctions() { return new List<SiteMetadata>(); }
         public ICollection<SiteMetadata> GetAvailableRegions() { return new List<SiteMetadata>(); }
         public ICollection<SiteMetadata> GetAvailableDivisions() { return new List<SiteMetadata>(); }
         public ICollection<SiteMetadata> GetAvailableTimeZones() { return new List<SiteMetadata>(); }
         public ICollection<SiteMetadata> GetAvailableSiteRegions() { return new List<SiteMetadata>(); }
-
         public ICollection<SiteMetadata> GetAvailableLanguages() { return new List<SiteMetadata>(); }
+        public ICollection<SiteMetadata> GetAvailableBusinessUnits() { return new List<SiteMetadata>(); }
+
+        public bool DoesUserHavePermissions()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateSharingPropertyBag(string status)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UpdatePropertyBag(string property, string status)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetPropertyBagValue(string property, string defaultValue)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool UpdatePropertyBagItem(string property, string status)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string GetPropertyBagItem(string property, string defaultValue)
+        {
+            throw new NotImplementedException();
+        }
+
+        public SiteEditMetadata GetSiteMetadata(SiteEditMetadata metadata)
+        {
+            throw new NotImplementedException();
+        }
+
+        public SiteEditMetadata SetSiteMetadata(SiteEditMetadata metadata)
+        {
+            throw new NotImplementedException();
+        }
+
+        public SiteEditMetadata SetSitePolicy(SiteEditMetadata metadata)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

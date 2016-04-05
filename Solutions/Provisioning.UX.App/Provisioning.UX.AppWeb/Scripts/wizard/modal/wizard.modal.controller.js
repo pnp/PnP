@@ -160,7 +160,7 @@
                 //property bag entries will enumerate all properties defined in siteConfiguration.properties
                 var props = {};
                 angular.forEach($scope.siteConfiguration.properties, function (value, key) {
-                    var data = value;
+                    var data = encodeURIComponent(value);
                     var propData = "";
                     if ($.isArray(data)) {
                         angular.forEach(data, function (value, key) {

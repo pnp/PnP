@@ -38,6 +38,8 @@ namespace Provisioning.Common
         #region ISiteProvisioning Members
         public abstract void CreateSiteCollection(SiteInformation siteRequest, Template template);
 
+        public abstract void CreateSubSite(SiteInformation siteRequest, Template template);
+
         public virtual bool IsTenantExternalSharingEnabled(string tenantUrl)
         {
             Log.Info("AbstractSiteProvisioningService.IsTenantExternalSharingEnabled", "Entering IsTenantExternalSharingEnabled Url {0}", tenantUrl);
@@ -225,6 +227,22 @@ namespace Provisioning.Common
             {
                 var tenant = new Tenant(ctx);
                 _doesSiteExist = tenant.SiteExists(siteUrl);
+            });
+            return _doesSiteExist;
+        }
+
+        /// <summary>
+        /// Checks to see if a sub site already exists.
+        /// </summary>
+        /// <param name="siteUrl"></param>
+        /// <returns></returns>
+        public bool SubSiteExists(string siteUrl)
+        {
+            bool _doesSiteExist = false;
+            UsingContext(ctx =>
+            {
+                var tenant = new Tenant(ctx);
+                _doesSiteExist = tenant.SubSiteExists(siteUrl);
             });
             return _doesSiteExist;
         }

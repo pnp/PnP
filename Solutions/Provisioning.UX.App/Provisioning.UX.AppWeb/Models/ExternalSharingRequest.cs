@@ -12,8 +12,14 @@ namespace Provisioning.UX.AppWeb.Models
         [DataMember(Name = "tenantAdminUrl")]
         public string TenantAdminUrl { get; set; }
 
+        [DataMember(Name = "siteUrl")]
+        public string SiteUrl { get; set; }
+
         [DataMember(Name = "externalSharingEnabled")]
         public bool ExternalSharingEnabled { get; set; }
+
+        [DataMember(Name = "siteExternalSharingEnabled")]
+        public bool SiteExternalSharingEnabled { get; set; }
 
         [DataMember(Name = "success")]
         public bool Success { get; set; }

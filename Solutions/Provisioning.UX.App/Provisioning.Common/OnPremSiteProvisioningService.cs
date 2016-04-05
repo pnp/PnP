@@ -188,6 +188,10 @@ namespace Provisioning.Common
             Log.Warning("Provisioning.Common.OnPremSiteProvisioningService.SetExternalSharing", PCResources.ExternalSharing_NotSupported, siteInfo.Url);
             return;
         }
-       
+
+        public override void CreateSubSite(SiteInformation siteRequest, Template template)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
