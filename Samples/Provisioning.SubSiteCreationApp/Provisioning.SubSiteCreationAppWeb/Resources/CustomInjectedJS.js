@@ -8,7 +8,7 @@ function SubSiteOverride_Inject() {
     // Run injection only for site content
     if ((window.location.href.toLowerCase().indexOf("viewlsts.aspx") > -1 && window.location.href.toLowerCase().indexOf("_layouts/15") > -1))
     {
-        SubSiteOverride_OverrideLinkToAppUrl();
+        _spBodyOnLoadFunctionNames.push(SubSiteOverride_OverrideLinkToAppUrl());
     }
 }
 
