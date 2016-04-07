@@ -1,0 +1,130 @@
+﻿html, body {
+    margin:0;
+    padding:0;
+    height: 100%;
+}
+body {
+    font-family: source-sans-pro, sans-serif;
+    position: relative;
+    width: 100%;
+    height:100%;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+body.left-nav .topcoat-navigation-bar, body.left-nav .main-content {
+    left:250px;
+}
+.topcoat-navigation-bar {
+    position:absolute;
+    width:100%;
+    z-index:100;
+    transition: left 0.2s ease-out;
+    -webkit-transition: left 0.2s ease-out;
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+}
+.side-nav {
+    display:block;
+    position:absolute;
+    top:0;
+    left:0;
+    width:320px;
+    height:100%;
+    background-color:#353535;
+}
+.side-nav__list__container {
+    margin-top:4rem;
+    border-top:none;
+    border-bottom:none;
+}
+.side-nav__list {
+    border-top:none;
+}
+.side-nav__list__item {
+    padding:0;
+}
+.side-nav__list__item.is-active {
+    background-color:#353535;
+}
+.side-nav__button {
+    display:block;
+    width:100%;
+    height:100%;
+    padding: 1.25rem;
+    box-sizing: border-box;
+    color: #c6c8c8;
+    text-decoration:none;
+}
+.side-nav__button:hover {
+    background-color:#747474;
+}
+.side-nav__button:active {
+    background-color:#353535;
+}
+button.topcoat-button--cta {
+    line-height: 40px;
+    top: 10px;
+/*    border-radius: 0px;*/
+    padding: 0px 5px;
+}
+
+.main-content {
+    position: absolute;
+    background: inherit;
+    left: 0;
+    padding-top:4rem;
+    width:100%;
+    height:100%;
+    transition: left 0.2s ease-out;
+    -webkit-transition: left 0.2s ease-out;
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.57);
+    -webkit-box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.57);
+    box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.57);
+}
+@media screen and (min-width: 640px) { /* @media screen and (min-width: 880px) { */
+    .slide-menu-button {
+        display:none;
+    }
+    .main-content {
+        left:320px;
+        right:0;
+        width:auto;
+    }
+}
+#messages-list {
+    background-color: white;
+    color: black;
+}
+
+
+.topcoat-list__item.email .recipient {
+}
+
+.topcoat-list__item.email .subject {
+    color: blue;
+}
+
+.topcoat-list__item.email .body {
+    padding-top: 15px;
+    color: gray;
+}
+
+.error-item {
+    background-color: orangered;
+}
+
+.scroller {
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    position: absolute;
+    top: 4.37rem;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.timestamp {
+    font-weight: bold;
+}

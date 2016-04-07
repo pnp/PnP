@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved.
+ Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.microsoft.aad.adalPlugin" android:versionName="1.0" android:versionCode="1">
+    <uses-sdk android:minSdkVersion="14" />
+</manifest>
