@@ -1,0 +1,25 @@
+// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved.
+// Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+repositories {
+    mavenCentral()
+}
+
+apply plugin: 'android-library'
+
+// remove default compile dependency which could include duplicate jars from project libs folder
+configurations.compile.dependencies.clear()
+
+// add required dependency
+dependencies {
+    compile('com.microsoft.aad:adal:1.1.12') {}
+}
+
+// helped methof to print all compile dependency; use 'gradle sSP' from command line
+task sourceSetProperties << {
+    configurations.all.each { cfg ->
+        cfg.each {
+            println it
+        }
+    }
+}
