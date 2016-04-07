@@ -51,10 +51,9 @@ namespace UserProfile.BatchUpdate.API
 
                 var propertyMap = new System.Collections.Generic.Dictionary<string, string>();
                 // First one is the file, second is the target at User Profile Service
-                // Notice that we have here 2 custom properties in UPA called 'City' and 'OfficeCode'
-                propertyMap.Add("Title", "Title");
+                // Notice that we have here 2 custom properties in UPA called 'City' and 'Office'
                 propertyMap.Add("City", "City");
-                propertyMap.Add("Office", "OfficeCode");
+                propertyMap.Add("Office", "Office");
 
                 // Returns a GUID, which can be used to see the status of the execution and end results
                 var workItemId = tenant.QueueImportProfileProperties(

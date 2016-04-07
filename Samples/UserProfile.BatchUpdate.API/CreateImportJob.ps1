@@ -57,7 +57,6 @@ $userLookupKey="PrincipalName"
 # Create property mapping between on-premises name and O365 property name
 # Notice that we have here 2 custom properties in UPA called 'City' and 'OfficeCode'
 $propertyMap = New-Object -type 'System.Collections.Generic.Dictionary[String,String]'
-$propertyMap.Add("Title", "Title")
 $propertyMap.Add("City", "City")
 $propertyMap.Add("Office", "OfficeCode")
 

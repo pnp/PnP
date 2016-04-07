@@ -1,26 +1,22 @@
 {
     "value": [
         {
-            "IdName": "vesaj@techedairlift01.ccsctp.net",
-            "Title": "Manager",
+            "IdName": "VesaJ@veskuonline.com",
 			"City": "Helsinki",
 			"Office": "Viper"
         },
         {
-            "IdName": "bjansen@techedairlift01.ccsctp.net",
-            "Title": "Consultant",
+            "IdName": "annaw@vesaj.onmicrosoft.com",
 			"City": "Amsterdam",
 			"Office": "Beetle"
         },
         {
-            "IdName": "unknowperson@techedairlift01.ccsctp.net",
-            "Title": "Tester",
+            "IdName": "BelindaN@vesaj.onmicrosoft.com",
 			"City": "None",
 			"Office": ""
         },
         {
-            "IdName": "erwin@techedairlift01.ccsctp.net",
-            "Title": "Developer",
+            "IdName": "DenisD@vesaj.onmicrosoft.com",
 			"City": "Stockholm",
 			"Office": "Elite"
         }
