@@ -2,23 +2,23 @@
     "value": [
         {
             "IdName": "VesaJ@veskuonline.com",
-			"City": "Helsinki",
-			"Office": "Viper"
-        },
-        {
-            "IdName": "annaw@vesaj.onmicrosoft.com",
-			"City": "Amsterdam",
-			"Office": "Beetle"
+			"Property1": "Espoo",
+			"Property2": "Viper"
         },
         {
             "IdName": "BelindaN@vesaj.onmicrosoft.com",
-			"City": "None",
-			"Office": ""
+			"Property1": "None",
+			"Property2": ""
+        },
+		{
+            "IdName": "unknown@vesaj.onmicrosoft.com",
+			"Property1": "None",
+			"Property2": ""
         },
         {
             "IdName": "DenisD@vesaj.onmicrosoft.com",
-			"City": "Stockholm",
-			"Office": "Elite"
+			"Property1": "Stockholm",
+			"Property2": "Elite"
         }
     ]
 }
