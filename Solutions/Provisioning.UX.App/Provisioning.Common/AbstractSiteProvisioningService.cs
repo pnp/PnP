@@ -38,7 +38,7 @@ namespace Provisioning.Common
         #region ISiteProvisioning Members
         public abstract void CreateSiteCollection(SiteInformation siteRequest, Template template);
 
-        public abstract void CreateSubSite(SiteInformation siteRequest, Template template);
+        public abstract Web CreateSubSite(SiteInformation siteRequest, Template template);
 
         public virtual bool IsTenantExternalSharingEnabled(string tenantUrl)
         {

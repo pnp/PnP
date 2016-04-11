@@ -121,8 +121,10 @@ namespace Provisioning.Common
         /// </summary>
         /// <param name="siteRequest">The SiteRequest</param>
         /// <param name="template">The Template</param>
-        public void CreateSubSite(SiteInformation siteRequest, Template template)
+        public Web CreateSubSite(SiteInformation siteRequest, Template template)
         {
+            Web newWeb = null;
+
             _siteprovisioningService.Authentication = new AppOnlyAuthenticationTenant();
             _siteprovisioningService.Authentication.TenantAdminUrl = template.TenantAdminUrl;
 
@@ -147,16 +149,23 @@ namespace Provisioning.Common
 
             if (!siteExists)
             {
-                _siteprovisioningService.CreateSubSite(siteRequest, template);
-                if (siteRequest.EnableExternalSharing)
-                {
-                    _siteprovisioningService.SetExternalSharing(siteRequest);
-                }
+                newWeb = _siteprovisioningService.CreateSubSite(siteRequest, template);
+               
             }
             else
             {
-                Log.Info("SiteProvisioningManager.CreateSiteCollection", "Site already exists. Moving on to next provisioning step");
+                Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSubSite", PCResources.SiteCreation_Creation_Starting, siteRequest.Url);
+                Uri siteUri = new Uri(siteRequest.Url);                
+                string realm = TokenHelper.GetRealmFromTargetUrl(siteUri);
+                string accessToken = TokenHelper.GetAppOnlyAccessToken(TokenHelper.SharePointPrincipal, siteUri.Authority, realm).AccessToken;
+
+                using (var ctx = TokenHelper.GetClientContextWithAccessToken(siteRequest.Url, accessToken))
+                {
+                    newWeb = ctx.Web;
+                }
             }
+
+            return newWeb;
         }
 
         /// <summary>

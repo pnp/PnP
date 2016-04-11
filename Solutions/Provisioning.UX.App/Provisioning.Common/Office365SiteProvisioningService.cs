@@ -131,10 +131,12 @@ namespace Provisioning.Common
             }, SPDataConstants.CSOM_WAIT_TIME);
         }
 
-        public override void CreateSubSite(SiteInformation siteRequest, Template template)
+        public override Web CreateSubSite(SiteInformation siteRequest, Template template)
         {
+            Web newWeb;
             int pos = siteRequest.Url.LastIndexOf("/");
             string parentUrl = siteRequest.Url.Substring(0, pos);
+            string subSiteUrl = siteRequest.Url.Substring(pos + 1, siteRequest.Url.Length);
 
             Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSubSite", PCResources.SiteCreation_Creation_Starting, siteRequest.Url);
             Uri siteUri = new Uri(siteRequest.Url);
@@ -155,15 +157,15 @@ namespace Provisioning.Common
                         Web parentWeb = ctx.Web;
 
                         // Create the new sub site as a new child Web
-                        WebCreationInformation newWeb = new WebCreationInformation();
-                        newWeb.Description = siteRequest.Description;
-                        newWeb.Language = (int)siteRequest.Lcid;
-                        newWeb.Title = siteRequest.Title;
-                        newWeb.Url = siteRequest.Url;
-                        newWeb.UseSamePermissionsAsParentSite = true;
-                        newWeb.WebTemplate = "STS#0";  
+                        WebCreationInformation webinfo = new WebCreationInformation();
+                        webinfo.Description = siteRequest.Description;
+                        webinfo.Language = (int)siteRequest.Lcid;
+                        webinfo.Title = siteRequest.Title;
+                        webinfo.Url = subSiteUrl;
+                        webinfo.UseSamePermissionsAsParentSite = true;
+                        webinfo.WebTemplate = template.RootTemplate;  
 
-                        Web web = parentWeb.Webs.Add(newWeb);
+                        newWeb = parentWeb.Webs.Add(webinfo);
                         ctx.ExecuteQueryRetry();
                         
                     }
@@ -186,7 +188,10 @@ namespace Provisioning.Common
                     throw;
                 }
                 Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSubSite", PCResources.SiteCreation_Creation_Successful, siteRequest.Url);
+                
             };
+
+            return newWeb;
         }
 
         private void OperationWithRetry(ClientContext ctx, SpoOperation operation, SiteInformation siteRequest)

@@ -193,7 +193,17 @@
     <Content Include="Pages\SiteClassification\siteedit.html" />
     <Content Include="Pages\subsite\resources\custombg.jpg" />
     <Content Include="Pages\subsite\resources\CustomInjectedJS.js" />
+    <Content Include="Pages\subsite\resources\EmptySubSiteTemplate.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Pages\subsite\resources\template-icon.png" />
+    <None Include="Resources\SiteTemplates\ProvisioningTemplates\SubSiteTeamsTemplate.xml">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <Content Include="Resources\SiteTemplates\ProvisioningTemplates\EmptySubSiteTemplate.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular-sanitize.js" />
     <Content Include="Scripts\angular-sanitize.min.js" />
@@ -212,6 +222,10 @@
     <Content Include="Scripts\breadcrumb.js" />
     <Content Include="Scripts\i18n\en-US.json" />
     <Content Include="Scripts\i18n\sv-SE.json" />
+    <None Include="Resources\SiteTemplates\Templates.config">
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <None Include="Scripts\jquery-2.2.0.intellisense.js" />
@@ -253,9 +267,6 @@
     <Content Include="Pages\view_sitetemplates.html" />
     <Content Include="Pages\view_welcome.html" />
     <Content Include="Pages\view_owners.html" />
-    <Content Include="Resources\SiteTemplates\Templates.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="packages.config" />
     <Content Include="appSettings.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
