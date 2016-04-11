@@ -1,9 +1,0 @@
-{
-    "compilerOptions": {
-        "target": "es5",
-        "module": "umd",
-        "jsx": "react",
-        "declaration": true,
-        "sourceMap": true
-    }
-}

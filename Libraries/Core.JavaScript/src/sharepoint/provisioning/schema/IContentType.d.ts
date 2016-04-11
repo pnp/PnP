@@ -1,3 +1,0 @@
-interface IContentType {
-    Name: string;
-}
