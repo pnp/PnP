@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+ Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved.
+ Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+-->
+<plugin id="cordova-plugin-ms-adal-sso" version="0.5.0" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>Microsoft ADAL SSO helper</name>
+    <description>Helper plugin for ADFS/SSO Windows platform support for Microsoft Azure Active Directory (ADAL) OAuth client.</description>
+
+    <license>Apache 2.0</license>
+    <keywords>microsoft, azure, adal, sso, adfs</keywords>
+    <repo>https://github.com/AzureAD/azure-activedirectory-library-for-cordova</repo>
+    <issue>https://github.com/AzureAD/azure-activedirectory-library-for-cordova/issues</issue>
+
+    <platform name="windows">
+        <js-module name="overrides" src="www/overrides.js">
+            <runs />
+        </js-module>
+
+        <config-file target="package.windows80.appxmanifest" parent="/Package/Capabilities">
+            <Capability Name="enterpriseAuthentication" />
+            <Capability Name="privateNetworkClientServer" />
+            <Capability Name="sharedUserCertificates" />
+        </config-file>
+        <config-file target="package.windows.appxmanifest" parent="/Package/Capabilities">
+            <Capability Name="enterpriseAuthentication" />
+            <Capability Name="privateNetworkClientServer" />
+            <Capability Name="sharedUserCertificates" />
+        </config-file>
+    </platform>
+</plugin>

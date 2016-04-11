@@ -179,3 +179,5 @@ FakesAssemblies/
 # Prevent the checkin of publishing settings as they typically contain environment 
 # specific information which should not be in the repo
 *.pubxml
+/Solutions/BusinessApps.HelpDesk/BusinessApps.HelpDesk
+/Samples/Provisioning.Cloud.Async.WebJob
