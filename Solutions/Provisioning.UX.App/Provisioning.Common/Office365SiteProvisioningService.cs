@@ -136,7 +136,7 @@ namespace Provisioning.Common
             Web newWeb;
             int pos = siteRequest.Url.LastIndexOf("/");
             string parentUrl = siteRequest.Url.Substring(0, pos);
-            string subSiteUrl = siteRequest.Url.Substring(pos + 1, siteRequest.Url.Length);
+            string subSiteUrl = siteRequest.Url.Substring(pos + 1);
 
             Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSubSite", PCResources.SiteCreation_Creation_Starting, siteRequest.Url);
             Uri siteUri = new Uri(siteRequest.Url);
