@@ -170,7 +170,7 @@
                 },
 
                 // dumps all the values from localStorage
-                localStorageDump: function (db) {
+                localStorageDump: function () {
 
                     $pnp.dashboard.ready(function (db) {
 
@@ -190,6 +190,29 @@
                             db.write(section, 'No local storage support.');
                         }
                     });
+                },
+
+                // dumps all the values from localStorage
+                sessionStorageDump: function () {
+
+                    $pnp.dashboard.ready(function (db) {
+
+                        var section = 'Session Storage';
+                        db.addSection(section);
+
+                        if ($pnp.session.enabled) {
+
+                            for (var i = 0; i < sessionStorage.length; i++) {
+                                var key = sessionStorage.key(i);
+                                var o = sessionStorage.getItem(key);
+                                db.write(section, '<span style="font-weight: bold;">' + key + '</span>:<br />' + o);
+                            }
+
+                        } else {
+
+                            db.write(section, 'No session storage support.');
+                        }
+                    });
                 }
             }
         }
@@ -200,5 +223,8 @@
 
     // dump the local storage
     $pnp.dashboard.builtin.localStorageDump();
+
+    // dump the session storage
+    $pnp.dashboard.builtin.sessionStorageDump();
 
 })(window);

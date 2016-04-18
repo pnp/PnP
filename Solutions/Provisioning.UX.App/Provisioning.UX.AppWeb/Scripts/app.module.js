@@ -9,6 +9,7 @@
 
         // Vendor Modules
         'ui.bootstrap',
+        'angularSpinners',
         
         // Angular translate
         'pascalprecht.translate',

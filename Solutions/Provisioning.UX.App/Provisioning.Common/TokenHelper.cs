@@ -564,6 +564,7 @@ namespace Provisioning.Common
         {
             WebRequest request = WebRequest.Create(targetApplicationUri + "/_vti_bin/client.svc");
             request.Headers.Add("Authorization: Bearer ");
+
             try
             {
                 using (request.GetResponse())

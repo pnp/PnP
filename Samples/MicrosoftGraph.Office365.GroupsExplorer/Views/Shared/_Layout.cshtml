@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@ViewBag.Title - O365 Groups</title>
+	@Styles.Render("~/Content/css")
+	@Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+	<div class="ms-NavBar ms-bgColor-themeDarker">
+		<div class="ms-NavBar-openMenu js-openMenu ms-bgColor-themeDarker">
+			<i class="ms-Icon ms-Icon--menu ms-bgColor-themeDarker ms-borderColor-white"></i>
+		</div>
+		<ul class="ms-NavBar-items ms-fontColor-white">
+			<li class="ms-NavBar-item ms-borderColor-white--hover @( ViewBag.Current=="Home"? "is-selected" : "")">@Html.ActionLink("Home", "Index", "Home",routeValues: null, htmlAttributes: new { @class = "ms-NavBar-link ms-font-l ms-fontColor-white" })</li>
+			@Html.Partial("_LoginPartial")
+		</ul>
+	</div>
+
+	<div class="ms-Grid">
+		@RenderBody()
+		<div class="ms-Grid-row spacer">
+			<hr />
+			<div class="ms-Grid-col ms-u-lg10">
+				<footer class="ms-Grid-row ms-font-s">
+					<div class="ms-Grid-col ms-u-lg10 ms-u-push1">
+						<p>Office 365 PnP - Sharing is Caring</p>
+					</div>
+				</footer>
+			</div>
+		</div>
+	</div>
+
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/fabriccomponents")
+	@RenderSection("scripts", required: false)
+</body>
+</html>

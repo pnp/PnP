@@ -169,6 +169,24 @@ namespace Provisioning.Common {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unable to site description on Site {0}, Exception is {1}.
+        /// </summary>
+        internal static string Site_Description_Update_Failure {
+            get {
+                return ResourceManager.GetString("Site_Description_Update_Failure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Site Description updated on Site Url {0}.
+        /// </summary>
+        internal static string Site_Descrption_Update_Successful {
+            get {
+                return ResourceManager.GetString("Site_Descrption_Update_Successful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Default Groups for site {0} created.
         /// </summary>
         internal static string Site_Web_DefaultGroups_Created {
@@ -264,6 +282,15 @@ namespace Provisioning.Common {
         internal static string SiteCreation_Creation_Successful {
             get {
                 return ResourceManager.GetString("SiteCreation_Creation_Successful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There was an error checking if Site External Sharing is enabled. Site Url {0}, Exception {1}.
+        /// </summary>
+        internal static string SiteExternalSharing_Enabled_Error_Message {
+            get {
+                return ResourceManager.GetString("SiteExternalSharing_Enabled_Error_Message", resourceCulture);
             }
         }
         

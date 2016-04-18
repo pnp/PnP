@@ -48,10 +48,17 @@ namespace Microsoft.SharePoint.Client
             var _fieldUser = ((FieldUserValue)(item[field]));
             var ctx = item.Context as ClientContext;
 
-            User _user = ctx.Web.EnsureUser(_fieldUser.LookupValue);
-            ctx.Load(_user, u => u.LoginName, u => u.Email, u => u.PrincipalType, u => u.Title);
+            var _user = ctx.Web.GetUserById(_fieldUser.LookupId);
+            ctx.Load(_user, u => u.LoginName, u => u.Email, u => u.Id);
             ctx.ExecuteQuery();
-            _owner.Name = _user.Email;
+            if (string.IsNullOrEmpty(_user.Email))
+            {
+                Provisioning.Common.Utilities.Log.Info("BaseGetUser", "The user {0} does not have an email address", _user.LoginName);
+            }
+
+            _owner.Name = _user.LoginName;
+            _owner.Email = _user.Email;
+            
             return _owner;
         }
 
@@ -101,16 +108,20 @@ namespace Microsoft.SharePoint.Client
                 var ctx = item.Context as ClientContext;
                 foreach (FieldUserValue _userValue in item[fieldName] as FieldUserValue[])
                 {
-                    User _user = ctx.Web.EnsureUser(_userValue.LookupValue);
-                    ctx.Load(_user, u => u.LoginName, u => u.Email, u => u.PrincipalType, u => u.Title);
-                    ctx.ExecuteQuery();
 
+                    var _user = ctx.Web.GetUserById(_userValue.LookupId);
+                    ctx.Load(_user, u => u.LoginName, u => u.Email);
+                    ctx.ExecuteQuery();
+                    if (string.IsNullOrEmpty(_user.Email))
+                    {
+                        Provisioning.Common.Utilities.Log.Info("BaseGetUsers", "The user {0} does not have an email address", _user.LoginName);
+                    }
                     var _spUser = new SiteUser()
                     {
-                        //Email = _user.Email,
-                        //LoginName = _user.LoginName,
-                        Name = _user.Email
+                        Name = _user.LoginName,
+                        Email = _user.Email
                     };
+
                     _users.Add(_spUser);
                 }
             }

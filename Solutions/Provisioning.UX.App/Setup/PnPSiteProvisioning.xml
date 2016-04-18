@@ -279,7 +279,7 @@
                    RemoveExistingContentTypes="true">
           <pnp:DataRows>
             <pnp:DataRow>
-              <pnp:DataValue FieldName="SP_Key">LBI</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Key">Low Business Impact</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">Low Business Impact (LBI)</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">1</pnp:DataValue>
               <pnp:DataValue FieldName="SP_AddAllAuthenticatedUsers">true</pnp:DataValue>
@@ -287,7 +287,7 @@
               <pnp:DataValue FieldName="SP_SiteExpirationMonths">6</pnp:DataValue>
             </pnp:DataRow>
             <pnp:DataRow>
-              <pnp:DataValue FieldName="SP_Key">MBI</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Key">Medium Business Impact</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">Medium Business Impact (MBI)</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">2</pnp:DataValue>
               <pnp:DataValue FieldName="SP_AddAllAuthenticatedUsers">true</pnp:DataValue>
@@ -295,7 +295,7 @@
               <pnp:DataValue FieldName="SP_SiteExpirationMonths">6</pnp:DataValue>
             </pnp:DataRow>
             <pnp:DataRow>
-              <pnp:DataValue FieldName="SP_Key">HBI</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Key">High Business Impact</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">High Business Impact (HBI)</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">3</pnp:DataValue>
               <pnp:DataValue FieldName="SP_AddAllAuthenticatedUsers">false</pnp:DataValue>
@@ -458,37 +458,37 @@
               <pnp:DataValue FieldName="SP_Key">Arabic</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">1025</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">1</pnp:DataValue>
-              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
             </pnp:DataRow>
             <pnp:DataRow>
               <pnp:DataValue FieldName="SP_Key">Azerbaijani</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">1068</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">2</pnp:DataValue>
-              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
             </pnp:DataRow>
             <pnp:DataRow>
               <pnp:DataValue FieldName="SP_Key">Basque</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">1069</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">3</pnp:DataValue>
-              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
             </pnp:DataRow>
             <pnp:DataRow>
               <pnp:DataValue FieldName="SP_Key">Bosnian (Latin)</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">5146</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">4</pnp:DataValue>
-              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
             </pnp:DataRow>
             <pnp:DataRow>
               <pnp:DataValue FieldName="SP_Key">Bulgarian</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">1026</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">5</pnp:DataValue>
-              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
             </pnp:DataRow>
             <pnp:DataRow>
               <pnp:DataValue FieldName="SP_Key">Catalan</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">1027</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">6</pnp:DataValue>
-              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
             </pnp:DataRow>
             <pnp:DataRow>
               <pnp:DataValue FieldName="SP_Key">Chinese (Simplified)</pnp:DataValue>
@@ -500,19 +500,19 @@
               <pnp:DataValue FieldName="SP_Key">Chinese (Traditional)</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">1028</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">8</pnp:DataValue>
-              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
             </pnp:DataRow>
             <pnp:DataRow>
               <pnp:DataValue FieldName="SP_Key">Croatian</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">1050</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">9</pnp:DataValue>
-              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
             </pnp:DataRow>
             <pnp:DataRow>
               <pnp:DataValue FieldName="SP_Key">Czech</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">1029</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">10</pnp:DataValue>
-              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
             </pnp:DataRow>
             <pnp:DataRow>
               <pnp:DataValue FieldName="SP_Key">Danish</pnp:DataValue>
@@ -524,13 +524,13 @@
               <pnp:DataValue FieldName="SP_Key">Dari</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">1164</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">12</pnp:DataValue>
-              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
             </pnp:DataRow>
             <pnp:DataRow>
               <pnp:DataValue FieldName="SP_Key">Dutch</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">1164</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">13</pnp:DataValue>
-              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
             </pnp:DataRow>
             <pnp:DataRow>
               <pnp:DataValue FieldName="SP_Key">English</pnp:DataValue>
@@ -542,13 +542,13 @@
               <pnp:DataValue FieldName="SP_Key">Estonian</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">1061</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">15</pnp:DataValue>
-              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
             </pnp:DataRow>
             <pnp:DataRow>
               <pnp:DataValue FieldName="SP_Key">Finnish</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">1035</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">16</pnp:DataValue>
-              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
             </pnp:DataRow>
             <pnp:DataRow>
               <pnp:DataValue FieldName="SP_Key">French</pnp:DataValue>
@@ -560,7 +560,7 @@
               <pnp:DataValue FieldName="SP_Key">Galician</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">1110</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">18</pnp:DataValue>
-              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
             </pnp:DataRow>
             <pnp:DataRow>
               <pnp:DataValue FieldName="SP_Key">German</pnp:DataValue>
@@ -572,13 +572,187 @@
               <pnp:DataValue FieldName="SP_Key">Greek</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">1032</pnp:DataValue>
               <pnp:DataValue FieldName="SP_DisplayOrder">20</pnp:DataValue>
-              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Hebrew</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1037</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">21</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Hindi</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1081</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">22</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Hungarian</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1038</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">23</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Indonesian</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1057</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">24</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Irish</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">2108</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">25</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
             </pnp:DataRow>
             <pnp:DataRow>
               <pnp:DataValue FieldName="SP_Key">Italian</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Value">1040</pnp:DataValue>
-              <pnp:DataValue FieldName="SP_DisplayOrder">21</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">26</pnp:DataValue>
               <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Japanese</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1041</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">27</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Kazakh</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1087</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">28</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Korean</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1042</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">29</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Latvian</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1062</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">30</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Lithuanian</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1063</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">31</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Macedonian</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1071</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">32</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Malay</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1086</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">33</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Norwegian (Bokmål)</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1044</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">34</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Polish</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1045</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">35</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Portuguese (Brazil)</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1046</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">36</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Portuguese (Portugal)</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">2070</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">37</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Romanian</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1048</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">38</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Russian</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1049</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">39</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Serbian (Cyrillic, Serbia)</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">3098</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">40</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Serbian (Latin)</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">2074</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">41</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Slovak</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1051</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">42</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Slovenian</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1060</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">43</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Spanish</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">3082</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">44</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">true</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Swedish</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1053</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">45</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Thai</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1054</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">46</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Turkish</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1055</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">47</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Ukrainian</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1058</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">48</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Vietnamese</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1066</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">49</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
+            </pnp:DataRow>
+            <pnp:DataRow>
+              <pnp:DataValue FieldName="SP_Key">Welsh</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Value">1106</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_DisplayOrder">50</pnp:DataValue>
+              <pnp:DataValue FieldName="SP_Enabled">false</pnp:DataValue>
             </pnp:DataRow>
           </pnp:DataRows>
           <pnp:ContentTypeBindings>

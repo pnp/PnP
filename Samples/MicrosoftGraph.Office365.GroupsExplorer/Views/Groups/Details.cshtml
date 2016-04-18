@@ -1,0 +1,191 @@
+﻿@model OfficeDevPnP.MSGraphAPIGroups.Models.Group
+
+<div class="ms-Grid-row ms-bgColor-themeDark ">
+
+	<div class="ms-Grid-col ms-u-sm12">
+		<h2 class="ms-font-xxl ms-fontColor-white">
+			@ViewBag.Title
+		</h2>
+	</div>
+</div>
+
+<div class="ms-Grid-row">
+	<div class="ms-Grid-col ms-u-sm12">
+		@if (!String.IsNullOrEmpty(ViewBag.Message))
+		{
+			<h4 class="ms-font-xl">@ViewBag.Message</h4>
+		}
+	</div>
+	<hr />
+</div>
+
+<div class="ms-Grid-row">
+	<div class="ms-Grid-col ms-u-sm12">
+		<div class="ms-CommandBar">
+			<div class="ms-CommandBar-sideCommands">
+				<div class="ms-CommandBarItem">
+					<div class="ms-CommandBarItem-linkWrapper">
+						<a class="ms-CommandBarItem-link" tabindex="1" href="@Url.Action("Index")">
+							<span class="ms-CommandBarItem-icon ms-Icon ms-Icon--reactivate"></span>
+							<span class="ms-CommandBarItem-commandText ms-font-m ms-font-weight-regular">Back to list</span>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="ms-CommandBar-mainArea">
+				<div class="ms-CommandBarItem">
+					<div class="ms-CommandBarItem-linkWrapper">
+						<a class="ms-CommandBarItem-link" tabindex="1" href='@Url.Action("Conversations", new { id = Model.id })'>
+							<span class="ms-CommandBarItem-icon ms-Icon ms-Icon--listBullets"></span>
+							<span class="ms-CommandBarItem-commandText ms-font-m ms-font-weight-regular">Conversations</span>
+						</a>
+					</div>
+				</div>
+				<div class="ms-CommandBarItem">
+					<div class="ms-CommandBarItem-linkWrapper">
+						<a class="ms-CommandBarItem-link" tabindex="1" href='@Url.Action("Events", new { id = Model.id })'>
+							<span class="ms-CommandBarItem-icon ms-Icon ms-Icon--calendar"></span>
+							<span class="ms-CommandBarItem-commandText ms-font-m ms-font-weight-regular">Events</span>
+						</a>
+					</div>
+				</div>
+				<div class="ms-CommandBarItem">
+					<div class="ms-CommandBarItem-linkWrapper">
+						<a class="ms-CommandBarItem-link" tabindex="1" href='@Url.Action("Files", new { id = Model.id })'>
+							<span class="ms-CommandBarItem-icon ms-Icon ms-Icon--folder"></span>
+							<span class="ms-CommandBarItem-commandText ms-font-m ms-font-weight-regular">Files</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="ms-Grid-row">
+	<div class="ms-Grid-col ms-u-sm2 ms-u-smPush1">
+		<div class="ms-TextField is-disabled">
+			<label class="ms-Label">@Html.DisplayNameFor(model => model.accessType):</label>
+			<input class="ms-TextField-field" type="text" value="@Html.DisplayFor(model => model.accessType)">
+		</div>
+	</div>
+	<div class="ms-Grid-col ms-u-sm2 ms-u-smPush2">
+		<div class="ms-TextField is-disabled">
+			<label class="ms-Label">@Html.DisplayNameFor(model => model.mail):</label>
+			<input class="ms-TextField-field" type="text" value="@Html.DisplayFor(model => model.mail)">
+		</div>
+	</div>
+</div>
+<div class="ms-Grid-row">
+	<div class="ms-Grid-col ms-u-sm2 ms-u-smPush1">
+		<div class="ms-TextField">
+			<label class="ms-Label">@Html.DisplayNameFor(model => model.allowExternalSenders):</label>
+			@Html.DisplayFor(model => model.allowExternalSenders)
+		</div>
+	</div>
+	<div class="ms-Grid-col ms-u-sm2 ms-u-smPush2">
+		<div class="ms-Toggle">
+			<span class="ms-Toggle-description">@Html.DisplayNameFor(model => model.mailEnabled):</span>
+			@Html.DisplayFor(model => model.mailEnabled)
+		</div>
+	</div>
+</div>
+<div class="ms-Grid-row">
+	<div class="ms-Grid-col ms-u-sm2 ms-u-smPush1">
+		<div class="ms-TextField">
+			<label class="ms-Label">@Html.DisplayNameFor(model => model.autoSubscribeNewMembers):</label>
+			@Html.DisplayFor(model => model.autoSubscribeNewMembers)
+		</div>
+	</div>
+	<div class="ms-Grid-col ms-u-sm2 ms-u-smPush2">
+		<div class="ms-TextField is-disabled">
+			<label class="ms-Label">@Html.DisplayNameFor(model => model.mailNickname):</label>
+			<input class="ms-TextField-field" type="text" value="@Html.DisplayFor(model => model.mailNickname)">
+		</div>
+	</div>
+</div>
+<div class="ms-Grid-row">
+	<div class="ms-Grid-col ms-u-sm2 ms-u-smPush1">
+		<div class="ms-TextField is-disabled">
+			<label class="ms-Label">@Html.DisplayNameFor(model => model.description):</label>
+			<input class="ms-TextField-field" type="text" value="@Html.DisplayFor(model => model.description)">
+		</div>
+	</div>
+	<div class="ms-Grid-col ms-u-sm2 ms-u-smPush2">
+		<div class="ms-TextField is-disabled">
+			<label class="ms-Label">@Html.DisplayNameFor(model => model.onPremisesLastSyncDateTime):</label>
+			<input class="ms-TextField-field" type="text" value="@Html.DisplayFor(model => model.onPremisesLastSyncDateTime)">
+		</div>
+	</div>
+</div>
+<div class="ms-Grid-row">
+	<div class="ms-Grid-col ms-u-sm2 ms-u-smPush1">
+		<div class="ms-TextField">
+			<label class="ms-Label">@Html.DisplayNameFor(model => model.displayName):</label>
+			<input class="ms-TextField-field" type="text" value="@Html.DisplayFor(model => model.displayName)">
+		</div>
+	</div>
+	<div class="ms-Grid-col ms-u-sm2 ms-u-smPush2">
+		<div class="ms-TextField is-disabled">
+			<label class="ms-Label">@Html.DisplayNameFor(model => model.onPremisesSecurityIdentifier):</label>
+			<input class="ms-TextField-field" type="text" value="@Html.DisplayFor(model => model.onPremisesSecurityIdentifier)">
+		</div>
+	</div>
+</div>
+<div class="ms-Grid-row">
+	<div class="ms-Grid-col ms-u-sm2 ms-u-smPush1">
+		<div class="ms-TextField">
+			<label class="ms-Label">@Html.DisplayNameFor(model => model.groupTypes):</label>
+			<input class="ms-TextField-field" type="text" value="@Html.DisplayFor(model => model.groupTypes)">
+		</div>
+	</div>
+	<div class="ms-Grid-col ms-u-sm2 ms-u-smPush2">
+		<div class="ms-TextField">
+			<label class="ms-Label">@Html.DisplayNameFor(model => model.onPremisesSyncEnabled):</label>
+			@Html.DisplayFor(model => model.onPremisesSyncEnabled)
+		</div>
+	</div>
+</div>
+<div class="ms-Grid-row">
+	<div class="ms-Grid-col ms-u-sm2 ms-u-smPush1">
+		<div class="ms-TextField">
+			<label class="ms-Label">@Html.DisplayNameFor(model => model.id):</label>
+			<input class="ms-TextField-field" type="text" value="@Html.DisplayFor(model => model.id)">
+		</div>
+	</div>
+	<div class="ms-Grid-col ms-u-sm2 ms-u-smPush2">
+		<div class="ms-TextField">
+			<label class="ms-Label">@Html.DisplayNameFor(model => model.securityEnabled):</label>
+			@Html.DisplayFor(model => model.securityEnabled)
+		</div>
+	</div>
+</div>
+<div class="ms-Grid-row">
+	<div class="ms-Grid-col ms-u-sm2 ms-u-smPush1">
+		<div class="ms-Toggle">
+			<span class="ms-Toggle-description">@Html.DisplayNameFor(model => model.isSubscribedByMail)</span>
+			@Html.DisplayFor(model => model.isSubscribedByMail)
+		</div>
+	</div>
+	<div class="ms-Grid-col ms-u-sm2 ms-u-smPush2">
+		<div class="ms-TextField">
+			<label class="ms-Label">@Html.DisplayNameFor(model => model.unseenCount):</label>
+			<input class="ms-TextField-field" type="text" value="@Html.DisplayFor(model => model.unseenCount)">
+		</div>
+	</div>
+</div>
+
+<div class="ms-Grid-row">
+	<div class="ms-Grid-col ms-u-sm2 ms-u-smPush1">
+	</div>
+	<div class="ms-Grid-col ms-u-sm2 ms-u-smPush2">
+		<div class="ms-TextField">
+			<label class="ms-Label">@Html.DisplayNameFor(model => model.visibility):</label>
+			<input class="ms-TextField-field" type="text" value="@Html.DisplayFor(model => model.visibility)">
+		</div>
+	</div>
+</div>
+
+@section Scripts{
+	<script type="text/javascript">$(".ms-Dropdown").Dropdown()</script>
+}

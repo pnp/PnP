@@ -24,5 +24,17 @@ namespace Provisioning.Common
             get;
             set;
         }
+
+
+        /// <summary>
+        /// Gets or sets the name. Can be an email address or group name 
+        /// </summary>
+        [DataMember]
+        [JsonProperty(PropertyName = "email")]
+        public string Email
+        {
+            get;
+            set;
+        }
     }
 }

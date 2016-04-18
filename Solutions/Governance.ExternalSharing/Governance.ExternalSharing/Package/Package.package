@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="069daedf-83c1-42ac-88a8-66839ad32421" solutionId="069daedf-83c1-42ac-88a8-66839ad32421" resetWebServer="false" sharePointProductVersion="16.0" name="Governance.ExternalSharing" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <features>
+    <featureReference itemId="897f7e02-4323-48b1-9de1-2ffabc15e382" />
+  </features>
+</package>

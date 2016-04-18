@@ -1,0 +1,52 @@
+﻿@model IEnumerable<OfficeDevPnP.MSGraphAPIGroups.Models.Group>
+
+<div class="ms-Grid-row ms-bgColor-themeDark ">
+
+	<div class="ms-Grid-col ms-u-sm12">
+		<h2 class="ms-font-xxl ms-fontColor-white">
+			@ViewBag.Title
+		</h2>
+	</div>
+</div>
+
+<div class="ms-Grid-row">
+	<div class="ms-Grid-col ms-u-sm12">
+		@if (!String.IsNullOrEmpty(ViewBag.Message))
+		{
+			<h4 class="ms-font-xl">@ViewBag.Message</h4>
+		}
+	</div>
+</div>
+
+<div class="ms-Grid-row">
+	<div class="ms-Grid-col ms-u-sm12">
+
+		<div class="ms-Table">
+			<div class="ms-Table-row">
+				<span class="ms-Table-cell">@Html.DisplayNameFor(model => model.displayName)</span>
+				<span class="ms-Table-cell">@Html.DisplayNameFor(model => model.description)</span>
+				<span class="ms-Table-cell">@Html.DisplayNameFor(model => model.groupTypes)</span>
+			</div>
+
+			@foreach (var item in Model)
+			{
+				<div class="ms-Table-row">
+					<span class="ms-Table-cell">
+						@Html.ActionLink(item.displayName, "Details", "Groups", new { id = item.id }, null)
+						@*				@Html.DisplayFor(modelItem => item.displayName)*@
+					</span>
+					<span class="ms-Table-cell">
+						@Html.DisplayFor(modelItem => item.description)
+					</span>
+					<span class="ms-Table-cell">
+						@if (item.groupTypes != null)
+						{
+							@Html.DisplayFor(modelItem => item.groupTypes)
+						}
+					</span>
+				</div>
+			}
+		</div>
+
+	</div>
+</div>

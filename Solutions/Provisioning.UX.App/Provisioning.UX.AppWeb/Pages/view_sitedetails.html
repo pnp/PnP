@@ -5,7 +5,7 @@
 
     <div class="form-group has-feedback" ng-class="{ 'has-error' : sitedetailsform.detailsName.$invalid && !sitedetailsform.detailsName.$pristine, 'has-success' : sitedetailsform.detailsName.$valid && !sitedetailsform.detailsName.$pristine }">
         <label class="control-label" for="detailsName">{{ 'DETAILS_TITLE' | translate }}</label>
-        <input type="text" name="detailsName" class="form-control" id="detailsName" ng-model="siteConfiguration.details.title" required />
+        <input type="text" name="detailsName" class="form-control" id="detailsName" ng-model="siteConfiguration.details.title" special-chars-validator required />
         <div class="error-messages" ng-if="!sitedetailsform.detailsName.$pristine" ng-messages="sitedetailsform.detailsName.$error">
             <div ng-message="required">{{ 'DETAILS_TITLE_ERR' | translate }}</div>
         </div>
@@ -26,7 +26,7 @@
     </div>
     <div class="form-group has-feedback" ng-class="{ 'has-error' : sitedetailsform.detailsDescription.$invalid && !sitedetailsform.detailsDescription.$pristine, 'has-success' : sitedetailsform.detailsDescription.$valid && !sitedetailsform.detailsDescription.$pristine }">
         <label class="control-label" for="detailsDescription">{{ 'DETAILS_DESCRIPTION' | translate }}</label>
-        <textarea class="form-control" rows="3" name="detailsDescription" id="detailsDescription" ng-model="siteConfiguration.details.description" required></textarea>
+        <textarea class="form-control" rows="3" name="detailsDescription" id="detailsDescription" ng-model="siteConfiguration.details.description" special-chars-validator required></textarea>
         <div class="error-messages" ng-if="!sitedetailsform.detailsDescription.$pristine" ng-messages="sitedetailsform.detailsDescription.$error">
             <div ng-message="required">{{ 'DETAILS_DESCRIPTION_ERR' | translate }}</div>
         </div>
@@ -82,7 +82,7 @@
             <div class="form-group has-feedback" ng-hide="!siteConfiguration.externalSharingEnabled">
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" name="enableExternalSharing" ng-model="siteConfiguration.externalSharing" /> {{ 'DETAILS_ENABLE_EXTERNAL_SHARING' | translate }}
+                        <input type="checkbox" name="enableExternalSharing" ng-model="siteConfiguration.properties.externalsharing" /> {{ 'DETAILS_ENABLE_EXTERNAL_SHARING' | translate }}
                     </label>
                 </div>
 

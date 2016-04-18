@@ -17,45 +17,72 @@
                             </p>
                             <br />
                             <button class="btn btn-default" data-ng-click="open()">{{ 'REQUEST_A_SITE' | translate }}</button>
+                            <button id="cancel_button" class="btn btn-default" data-ng-click="cancel()">{{ 'SITE_EDIT_CANCEL' | translate }}</button>
                         </div>
                     </div>
                     <br />
                     <br />
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-9">
                 <div class="row">
                     <div class="form-group">
-                        <div class="panel panel-success">
+                        <div class="panel panel-default">
                             <div class="panel-heading">
                                 <h3 class="panel-title">{{ 'MY_COMPLETED_REQUESTS' | translate }}</h3>
                                 <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
                             </div>
                             <div class="panel-body" ng-model="vm.existingRequests">
-                                <table class="table table-bordered table-striped">
-
+                                <spinner name="completedRequestsSpinner" img-src="" group="requests" show="loading">
+                                    <div class="spinner">
+                                        <div class="bounce1"></div>
+                                        <div class="bounce2"></div>
+                                        <div class="bounce3"></div>
+                                    </div>
+                                </spinner>
+                                <table class="table table-bordered table-striped" ng-show="!loading">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ 'COLUMNHEADER_SITE_TITLE' | translate }}</th>
+                                            <th>{{ 'COLUMNHEADER_URL' | translate }}</th>
+                                            <th>{{ 'COLUMNHEADER_REQUEST_STATUS' | translate }}</th>
+                                        </tr>
+                                    </thead>
                                     <tbody>
                                         <tr ng-repeat="request in vm.existingRequests | filter:'Complete'">
                                             <td>{{ request.title }}</td>
-                                            <td>{{ request.url }}</td>
+                                            <td><a href="{{ request.url }}" target="_blank">{{ request.url }}</a></td>
                                             <td>{{ request.requestStatus }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div class="panel panel-warning">
+                        <div class="panel panel-default">
                             <div class="panel-heading">
-                                <h3 class="panel-title">{{'MY_NEW_REQUESTS' | translate}}</h3>
+                                <h3 class="panel-title">{{'MY_PENDING_REQUESTS' | translate}}</h3>
                                 <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
                             </div>
                             <div class="panel-body" ng-model="vm.existingRequests">
+                                <spinner name="pendingRequestsSpinner" img-src="" group="requests" show="loading">
+                                    <div class="spinner">
+                                        <div class="bounce1"></div>
+                                        <div class="bounce2"></div>
+                                        <div class="bounce3"></div>
+                                    </div>
+                                </spinner>
                                 <table class="table table-bordered table-striped">
-
+                                    <thead ng-show="!loading">
+                                        <tr>
+                                            <th>{{ 'COLUMNHEADER_SITE_TITLE' | translate }}</th>
+                                            <th>{{ 'COLUMNHEADER_DESCRIPTION' | translate }}</th>
+                                            <th>{{ 'COLUMNHEADER_REQUEST_STATUS' | translate }}</th>
+                                        </tr>
+                                    </thead>
                                     <tbody>
-                                        <tr ng-repeat="request in vm.existingRequests | filter:'New'">
+                                        <tr ng-repeat="request in vm.existingRequests | filter:'Approved'">
                                             <td>{{ request.title }}</td>
-                                            <td>{{ request.url }}</td>
+                                            <td>{{ request.description }}</td>
                                             <td>{{ request.requestStatus }}</td>
                                         </tr>
                                     </tbody>
@@ -67,53 +94,13 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-6">
-                    <div class="panel panel-info">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">{{'MY_APPROVED_REQUESTS' | translate}}</h3>
-                            <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
-                        </div>
-                        <div class="panel-body" ng-model="vm.existingRequests">
-                            <table class="table table-bordered table-striped">
-
-                                <tbody>
-                                    <tr ng-repeat="request in vm.existingRequests | filter:'Approved'">
-                                        <td>{{ request.title }}</td>
-                                        <!--<td>{{ request.url }}</td>-->
-                                        <td>{{ request.requestStatus }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="panel panel-danger">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">{{'MY_FAILED_REQUESTS' | translate}}</h3>
-                            <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
-                        </div>
-                        <div class="panel-body" ng-model="vm.existingRequests">
-                            <table class="table table-bordered table-striped">
-
-                                <tbody>
-                                    <tr ng-repeat="request in vm.existingRequests | filter:'Exception'">
-                                        <td>{{ request.title }}</td>
-                                        <td>{{ request.url }}</td>
-                                        <td>{{ request.requestStatus }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        </
-                        iv
-                    </div>
-
-                </div>
+                <div class="col-sm-9"> </div>
             </div>
 
             <div class="row">
                 <div class="col-sm-6">
                     <!--<p>Once wizard completes, data is returned and shown here:</p>
-                    <pre data-ng-show="completedConfiguration">{{completedConfiguration | json}}</pre>-->
+            <pre data-ng-show="completedConfiguration">{{completedConfiguration | json}}</pre>-->
                 </div>
             </div>
 

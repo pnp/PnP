@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15E56a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="MSGraph_MailClient" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="eek-h6-XWA">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O18-fT-eq1">
+                                <rect key="frame" x="132" y="335" width="110" height="40"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="Ccp-tx-r2Y"/>
+                                    <constraint firstAttribute="width" constant="110" id="E26-K0-52M"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Send me">
+                                    <color key="titleColor" red="0.0" green="0.47058823529999999" blue="0.84313725490000002" alpha="1" colorSpace="calibratedRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="sendMe:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SaI-8M-uBd"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Tap the button down below to sign in and send yourself a mail" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0iV-D5-dnU">
+                                <rect key="frame" x="60" y="283" width="250" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="250" id="7sB-Mh-wOF"/>
+                                    <constraint firstAttribute="height" constant="50" id="Xqd-24-Zhd"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" misplaced="YES" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="GcP-dE-wjM">
+                                <rect key="frame" x="169" y="475" width="37" height="37"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.47058823529999999" blue="0.84313725490000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="GcP-dE-wjM" firstAttribute="centerX" secondItem="eek-h6-XWA" secondAttribute="centerX" id="3h9-87-v3h"/>
+                            <constraint firstItem="O18-fT-eq1" firstAttribute="centerX" secondItem="eek-h6-XWA" secondAttribute="centerX" id="61Z-RQ-2UF"/>
+                            <constraint firstItem="0iV-D5-dnU" firstAttribute="centerY" secondItem="eek-h6-XWA" secondAttribute="centerY" constant="-25" id="DM7-lw-Dvg"/>
+                            <constraint firstItem="GcP-dE-wjM" firstAttribute="top" secondItem="O18-fT-eq1" secondAttribute="bottom" constant="100" id="Eei-AR-UMM"/>
+                            <constraint firstItem="0iV-D5-dnU" firstAttribute="centerX" secondItem="eek-h6-XWA" secondAttribute="centerX" id="g09-Pn-epV"/>
+                            <constraint firstItem="O18-fT-eq1" firstAttribute="top" secondItem="0iV-D5-dnU" secondAttribute="bottom" constant="10" id="uri-Bk-IqZ"/>
+                        </constraints>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="button" destination="O18-fT-eq1" id="K5A-s7-I9F"/>
+                        <outlet property="label" destination="0iV-D5-dnU" id="UiX-TV-n4p"/>
+                        <outlet property="spinner" destination="GcP-dE-wjM" id="ZEB-f9-cMs"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>
