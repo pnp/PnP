@@ -101,8 +101,8 @@ namespace Provisioning.Common
         [JsonProperty(PropertyName = "additionalAdministrators")]
         public List<SiteUser> AdditionalAdministrators
         {
-            get;
-            set;
+            get { return _additionalAdmins; }
+            set { _additionalAdmins = value; }
         }
 
         /// <summary>

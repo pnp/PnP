@@ -330,6 +330,7 @@ namespace Provisioning.Common.Data.SiteRequests.Impl
                                 var _siteInfo = this.GetSiteRequestByUrl(client, _dbCollectionTasks.Result.Result.DocumentsLink, url);
                                 if (_siteInfo != null)
                                 {
+                                    if (statusMessage.Length >= 255) { statusMessage = statusMessage.Substring(0, 252) + "..."; }
                                     var doc = this.UpdateSiteRequestStatusByUrl(client, _dbCollectionTasks.Result.Result.SelfLink, _siteInfo, status, statusMessage);
                                 }
                             }
