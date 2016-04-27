@@ -10,9 +10,9 @@
         .module('app.wizard')
         .controller('WizardController', WizardController);
 
-    WizardController.$inject = ['$rootScope', 'common', 'config', '$scope', '$log', '$modal', 'AppSettings', 'utilservice', '$SharePointProvisioningService'];
+    WizardController.$inject = ['spinnerService', '$rootScope', 'common', 'config', '$scope', '$log', '$modal', 'AppSettings', 'utilservice', '$SharePointProvisioningService'];
 
-    function WizardController($rootScope, common, config, $scope, $log, $modal, AppSettings, $utilservice, $SharePointProvisioningService) {
+    function WizardController(spinnerService, $rootScope, common, config, $scope, $log, $modal, AppSettings, $utilservice, $SharePointProvisioningService) {
         $scope.title = 'WizardController';
         var vm = this;        
         var logSuccess = common.logger.getLogFn(controllerId, 'success');
@@ -22,7 +22,8 @@
 
         $rootScope.userContext = [];
         $scope.user;
-                      
+        $scope.spinnerService = spinnerService;
+        $scope.loading = false;                     
 
         activate();
 
@@ -30,6 +31,7 @@
 
             $log.info($scope.title + ' Activated');         
             $scope.appSettings = {};
+            $scope.loading = true;
 
             // web_url/_layouts/15/resource
             var scriptbase = hostweburl + "/_layouts/15/";
@@ -50,8 +52,6 @@
                 }
             );
 
-            //toggleSpinner(true);
-
             getAppSettings();
             initModal();            
             var promises = [];
@@ -60,7 +60,16 @@
                                    log('Activated Dashboard View');
                                    log('Retrieving request history from source');
                                });
-        }       
+        }
+
+        $scope.cancel = function () {
+            //alert($scope.hostUrl);
+            window.location = $scope.spHostWebUrl;
+        };
+
+        function loadSpinners() {
+            $scope.spinnerService.showGroup('requests');
+        }
         
         function initModal() {
 
@@ -120,6 +129,7 @@
                 $.when($SharePointProvisioningService.getSiteRequestsByOwners(request)).done(function (data) {
                     if(data != null ){
                         vm.existingRequests = data;
+                        $scope.spinnerService.hideGroup('requests');
                         logSuccess('Retrieved user request history');
                     }
                 }).fail(function (err) {

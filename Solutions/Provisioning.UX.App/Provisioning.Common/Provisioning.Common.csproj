@@ -223,6 +223,7 @@
     <Compile Include="ProvisioningTemplateException.cs" />
     <Compile Include="SharePointContext.cs" />
     <Compile Include="SiteClassification.cs" />
+    <Compile Include="SiteEditMetadata.cs" />
     <Compile Include="SiteService.cs" />
     <Compile Include="SiteUser.cs" />
     <Compile Include="SiteInformation.cs" />

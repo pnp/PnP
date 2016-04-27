@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
 using System.Diagnostics;
 using System.Net;
 using System.ServiceModel;
@@ -30,8 +31,7 @@ namespace Provisioning.Common
     public class Office365SiteProvisioningService : AbstractSiteProvisioningService
     {
         #region Private Instance Members
-        private int _retryCount = 3;
-        private bool _isComplete = false;
+        private int _retryCount = 3;        
         #endregion
 
         #region Constructor
@@ -51,8 +51,7 @@ namespace Provisioning.Common
             {
                 try
                 {
-                    Stopwatch _timespan = Stopwatch.StartNew();
-                    bool timeout_detected = false;
+                    Stopwatch _timespan = Stopwatch.StartNew();                    
 
                     Tenant _tenant = new Tenant(ctx);
                     var _newsite = new SiteCreationProperties();
@@ -102,7 +101,21 @@ namespace Provisioning.Common
                     _web.Update();
                     ctx.Load(_web);
                     ctx.ExecuteQuery();
+                    User newOwner = _web.EnsureUser(siteRequest.SiteOwner.Email);
+                    ctx.Load(newOwner);
+                    ctx.ExecuteQuery();
 
+                    if (!newOwner.ServerObjectIsNull.Value)
+                    {
+                        //_site.Owner = newOwner;
+                        //ctx.Load(_site);
+                        //ctx.Load(_site.Owner);
+                        //ctx.ExecuteQuery();
+                        newOwner.IsSiteAdmin = true;
+                        newOwner.Update();
+                        ctx.Load(newOwner);
+                        ctx.ExecuteQuery();
+               }
                     _timespan.Stop();
                     Log.TraceApi("SharePoint", "Office365SiteProvisioningService.CreateSiteCollection", _timespan.Elapsed, "SiteUrl={0}", siteRequest.Url);
                 }
@@ -116,6 +129,69 @@ namespace Provisioning.Common
                 }
                 Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSiteCollection", PCResources.SiteCreation_Creation_Successful, siteRequest.Url);
             }, SPDataConstants.CSOM_WAIT_TIME);
+        }
+
+        public override Web CreateSubSite(SiteInformation siteRequest, Template template)
+        {
+            Web newWeb;
+            int pos = siteRequest.Url.LastIndexOf("/");
+            string parentUrl = siteRequest.Url.Substring(0, pos);
+            string subSiteUrl = siteRequest.Url.Substring(pos + 1);
+
+            Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSubSite", PCResources.SiteCreation_Creation_Starting, siteRequest.Url);
+            Uri siteUri = new Uri(siteRequest.Url);
+            Uri subSiteParent = new Uri(parentUrl);
+
+            string realm = TokenHelper.GetRealmFromTargetUrl(subSiteParent);
+            string accessToken = TokenHelper.GetAppOnlyAccessToken(TokenHelper.SharePointPrincipal, subSiteParent.Authority, realm).AccessToken;
+
+            using (var ctx = TokenHelper.GetClientContextWithAccessToken(parentUrl, accessToken))
+            {
+                try
+                {
+                    Stopwatch _timespan = Stopwatch.StartNew();                  
+
+                    try
+                    {
+                        // Get a reference to the parent Web
+                        Web parentWeb = ctx.Web;
+
+                        // Create the new sub site as a new child Web
+                        WebCreationInformation webinfo = new WebCreationInformation();
+                        webinfo.Description = siteRequest.Description;
+                        webinfo.Language = (int)siteRequest.Lcid;
+                        webinfo.Title = siteRequest.Title;
+                        webinfo.Url = subSiteUrl;
+                        webinfo.UseSamePermissionsAsParentSite = true;
+                        webinfo.WebTemplate = template.RootTemplate;  
+
+                        newWeb = parentWeb.Webs.Add(webinfo);
+                        ctx.ExecuteQueryRetry();
+                        
+                    }
+                    catch (ServerException ex)
+                    {
+                        var _message = string.Format("Error occured while provisioning site {0}, ServerErrorTraceCorrelationId: {1} Exception: {2}", siteRequest.Url, ex.ServerErrorTraceCorrelationId, ex);
+                        Log.Error("Provisioning.Common.Office365SiteProvisioningService.CreateSubSite", _message);
+                        throw;
+                    }
+                    
+                    _timespan.Stop();
+                    Log.TraceApi("SharePoint", "Office365SiteProvisioningService.CreateSubSite", _timespan.Elapsed, "SiteUrl={0}", siteRequest.Url);
+                }
+
+                catch (Exception ex)
+                {
+                    Log.Error("Provisioning.Common.Office365SiteProvisioningService.CreateSubSite",
+                        PCResources.SiteCreation_Creation_Failure,
+                        siteRequest.Url, ex.Message, ex);
+                    throw;
+                }
+                Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSubSite", PCResources.SiteCreation_Creation_Successful, siteRequest.Url);
+                
+            };
+
+            return newWeb;
         }
 
         private void OperationWithRetry(ClientContext ctx, SpoOperation operation, SiteInformation siteRequest)
@@ -178,8 +254,7 @@ namespace Provisioning.Common
                     ctx.Load(_tenant);
                     ctx.Load(_siteProps);
                     ctx.ExecuteQuery();
-                    bool _shouldBeUpdated = false;
-
+                    
                     var _tenantSharingCapability = _tenant.SharingCapability;
                     var _siteSharingCapability = _siteProps.SharingCapability;
                     var _targetSharingCapability = SharingCapabilities.Disabled;
@@ -220,5 +295,7 @@ namespace Provisioning.Common
              
             });
         }
+
+        
     }
 }

@@ -1,0 +1,17 @@
+// Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved.
+// Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+
+// Note: This file will be overwritten by cordova;
+// use 'build-extras.gradle' if you want to modify plugin gradle settings
+
+repositories {
+    mavenCentral()
+}
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    compile('com.microsoft.aad:adal:1.1.12') {}
+}

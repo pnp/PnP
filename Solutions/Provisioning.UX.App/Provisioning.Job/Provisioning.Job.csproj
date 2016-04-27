@@ -213,6 +213,9 @@
     <Content Include="Resources\SiteTemplates\ProvisioningTemplates\siteLogo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\SiteTemplates\ProvisioningTemplates\TeamSiteSubSiteTemplate.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\SiteTemplates\ProvisioningTemplates\TeamSiteTemplate.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

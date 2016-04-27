@@ -40,7 +40,7 @@ namespace UserProfile.BatchUpdate.API
                 /// DO import based on file whcih is already uploaded to tenant
                 /// /// /// /// /// /// /// /// ///
 
-                // Type of user identifier ["PrincipleName", "EmailAddress", "PrincipalName"] 
+                // Type of user identifier ["PrincipleName", "EmailAddress", "CloudId"] 
                 // in the User Profile Service.
                 // In this case we use email as the identifier at the UPA storage
                 ImportProfilePropertiesUserIdType userIdType = 
@@ -51,10 +51,9 @@ namespace UserProfile.BatchUpdate.API
 
                 var propertyMap = new System.Collections.Generic.Dictionary<string, string>();
                 // First one is the file, second is the target at User Profile Service
-                // Notice that we have here 2 custom properties in UPA called 'City' and 'OfficeCode'
-                propertyMap.Add("Title", "Title");
-                propertyMap.Add("City", "City");
-                propertyMap.Add("Office", "OfficeCode");
+                // Notice that we have here 2 custom properties in UPA called 'City' and 'Office'
+                propertyMap.Add("Property1", "City");
+                propertyMap.Add("Property2", "Office");
 
                 // Returns a GUID, which can be used to see the status of the execution and end results
                 var workItemId = tenant.QueueImportProfileProperties(

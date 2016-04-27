@@ -52,14 +52,13 @@ $context.Load($o365)
 $userIdType=[Microsoft.Online.SharePoint.TenantManagement.ImportProfilePropertiesUserIdType]::Email
 
 # Name of user identifier property in the JSON
-$userLookupKey="PrincipalName"
+$userLookupKey="IdName"
 
 # Create property mapping between on-premises name and O365 property name
 # Notice that we have here 2 custom properties in UPA called 'City' and 'OfficeCode'
 $propertyMap = New-Object -type 'System.Collections.Generic.Dictionary[String,String]'
-$propertyMap.Add("Title", "Title")
-$propertyMap.Add("City", "City")
-$propertyMap.Add("Office", "OfficeCode")
+$propertyMap.Add("Property1", "City")
+$propertyMap.Add("Property2", "Office")
 
 # Call to queue UPA property import 
 $workItemId = $o365.QueueImportProfileProperties($userIdType, $userLookupKey, $propertyMap, $importFileUrl);

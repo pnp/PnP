@@ -131,6 +131,7 @@ The first parameter of the Taxonomy Picker sets the options for the control. The
 | isMulti | Boolean indicating if taxonomy picker support multiple value |
 | isReadOnly | Boolean indicating if the taxonomy picker is rendered in read only mode |
 | allowFillIn | Boolean indicating if the control allows fill=ins (Open TermSets only) |
+| enterFillIn | Boolean indicating if the control allows fill=ins using enter or tab instead the button (Open TermSets only) |
 | termSetId | the GUID of the TermSet to bind against (available from Term Mgmt) |
 | useHashtags | Boolean indicating if the default hashtags TermSet should be used |
 | useKeyword | Boolean indicating if the default keywords TermSet should be used |

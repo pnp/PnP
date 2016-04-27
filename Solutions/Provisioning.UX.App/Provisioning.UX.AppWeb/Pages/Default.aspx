@@ -10,6 +10,10 @@
     <title>Dashboard</title>
 
     <!-- CSS -->
+    <!-- Fabric core -->
+    <link href="https://appsforoffice.microsoft.com/fabric/1.0/fabric.min.css" rel="stylesheet" />
+    <link href="https://appsforoffice.microsoft.com/fabric/1.0/fabric.components.min.css" rel="stylesheet" />
+
     <%--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.css"/>--%>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"/>
@@ -19,10 +23,14 @@
     <link rel="stylesheet" href="../styles/peoplepickercontrol.css" />    
 </head>
 <body>    
-    <div id="divSPChrome"></div>            
+    <div class="navBar">
+        <div class="ms-fontWeight-semilight" style="padding: 8px 0px 0px 15px; color: white; font-size: 22px;">Office 365</div>
+        <div class="NavLine"></div><div class="appTitle ms-fontWeight-semilight">Site Provisioning</div>
+   </div>
+    <%--<div id="divSPChrome"></div> --%>           
         
     <!-- Include the Wizard View -->
-    <div data-ng-include="'shell.html'"></div>
+    <div style="margin-top: 100px;" data-ng-include="'shell.html'"></div>
 
     <!-- Vendor JS -->
     <script src="../scripts/vendor/jquery/jquery-2.2.1.min.js"></script>
@@ -32,6 +40,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.6/angular-messages.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.0-beta.6/angular-animate.min.js"></script>
     <script src="../scripts/vendor/angular-ui/ui-bootstrap-tpls-0.12.1.min.js"></script>  
+    <script src="../scripts/vendor/angular-spinners/angular-spinners.min.js"></script> 
     <script src="../scripts/toastr.js"></script>
     <script src="../scripts/spin.js"></script>
     <script src="../scripts/angular-sanitize.min.js"></script>

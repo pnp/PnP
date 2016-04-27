@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved.
+ Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+-->
+<project>
+    <!--
+     This custom step is required to correctly work w/ Cordova Android 3.7.1
+     It has been fixed here: https://github.com/apache/cordova-android/commit/7e9fdb3555dffb155fd1ecb0d99fd49aa9f46108
+    -->
+    <target name="-pre-compile">
+        <echo>Manually add '../../CordovaLib/ant-build/classes.jar' as dependency to correctly work with Android 3.7.x</echo>
+        <path id="project.all.jars.path.hacked">
+            <path path="${toString:project.all.jars.path}"/>
+            <path path="../../CordovaLib/ant-build/classes.jar"/>
+        </path>
+
+        <path id="project.all.jars.path">
+            <path path="${toString:project.all.jars.path.hacked}"/>
+        </path>
+
+    </target>
+</project>

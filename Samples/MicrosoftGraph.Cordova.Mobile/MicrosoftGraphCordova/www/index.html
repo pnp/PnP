@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <!-- Enable all requests, inline styles, and eval() -->
+  <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+  <title>Microsoft Graph Demo</title>
+  <link href="css/index.css" rel="stylesheet" />
+</head>
+<body>
+  <h1>ADAL Cordova plugin test</h1>
+  <button id="loaddata">Load Data</button>
+  <button id="clearCache">Clear Cache</button>
+  <button id="clearOutput">Clear Output</button>
+  <p>
+    Enter tenant name or leave empty to use common endpoint:
+    <input type="text" id="tenantname" placeholder="enter tenant name" />
+  </p>
+  <p>
+    Enter OData Query:
+    <input type="text" list="queries" id="query" value="v1.0/me/contacts?$top=20" />
+    <select id="queries">
+      <option value="v1.0/me/contacts?$top=20" selected="selected">contacts</option>
+      <option value="v1.0/me/messages?$top=20">messages</option>
+      <option value="v1.0/me/mailFolders/Inbox/messages">inbox messages</option>
+      <option value="v1.0/me/drive/root/children">onedrive</option>
+      <option value="v1.0/me/events?$top=10">calendar</option>
+      <option value="v1.0/users">users</option>
+      <option value="v1.0/devices">devices</option>
+      <option value="beta/me/people">people</option>
+      <option value="beta/me/tasks">tasks</option>
+      <option value="beta/me/notes/notebooks">notebooks</option>
+      <option value="beta/me/trendingAround">trendingAround</option>
+      <option value="beta/me/workingWith">workingWith</option>
+    </select>
+  </p>
+  <p>
+    Using the common endpoint means the tenant is determined by the sign-on credentials you use,
+    assuming the app is configured in AzureAD to be multitenant.
+  </p>
+  <h2>Token</h2>
+  <p id="output"></p>
+  <h2>Data</h2>
+  <p id="data"></p>
+
+  <!-- Cordova reference, this is added to your app when it's built. -->
+  <script src="cordova.js"></script>
+  <script src="scripts/platformOverrides.js"></script>
+  <script src="scripts/index.js"></script>
+</body>
+</html>

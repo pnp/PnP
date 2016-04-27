@@ -64,7 +64,7 @@ namespace Provisioning.Common
             }
             catch
             {
-                //Any exception will returns false.
+                //Any exception will return false.
                 return false;
             }
             return response.StatusCode == HttpStatusCode.Found;
@@ -97,6 +97,8 @@ namespace Provisioning.Common
                 
             }
 
+
+
            // Check to see if the site already exists before attempting to create it
             bool siteExists = _siteprovisioningService.SiteExists(siteRequest.Url.ToString());
 
@@ -115,6 +117,58 @@ namespace Provisioning.Common
         }
 
         /// <summary>
+        /// Member to create a sub site
+        /// </summary>
+        /// <param name="siteRequest">The SiteRequest</param>
+        /// <param name="template">The Template</param>
+        public Web CreateSubSite(SiteInformation siteRequest, Template template)
+        {
+            Web newWeb = null;
+
+            _siteprovisioningService.Authentication = new AppOnlyAuthenticationTenant();
+            _siteprovisioningService.Authentication.TenantAdminUrl = template.TenantAdminUrl;
+
+            ReflectionManager rm = new ReflectionManager();
+
+            var siteUrlProvider = rm.GetSiteUrlProvider("SiteUrlProvider");
+            if (siteUrlProvider != null)
+            {
+                var newUrl = siteUrlProvider.GenerateSiteUrl(siteRequest, template);
+                if (!String.IsNullOrEmpty(newUrl))
+                {
+                    Log.Info("SiteProvisioningManager.CreateSiteCollection", "Site {0} was renamed to {1}", siteRequest.Url, newUrl);
+
+                    SiteRequestFactory.GetInstance().GetSiteRequestManager().UpdateRequestUrl(siteRequest.Url, newUrl);
+                    siteRequest.Url = newUrl;
+
+                }
+            }
+
+            // Check to see if the site already exists before attempting to create it
+            bool siteExists = _siteprovisioningService.SubSiteExists(siteRequest.Url.ToString());
+
+            if (!siteExists)
+            {
+                newWeb = _siteprovisioningService.CreateSubSite(siteRequest, template);
+               
+            }
+            else
+            {
+                Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSubSite", PCResources.SiteCreation_Creation_Starting, siteRequest.Url);
+                Uri siteUri = new Uri(siteRequest.Url);                
+                string realm = TokenHelper.GetRealmFromTargetUrl(siteUri);
+                string accessToken = TokenHelper.GetAppOnlyAccessToken(TokenHelper.SharePointPrincipal, siteUri.Authority, realm).AccessToken;
+
+                using (var ctx = TokenHelper.GetClientContextWithAccessToken(siteRequest.Url, accessToken))
+                {
+                    newWeb = ctx.Web;
+                }
+            }
+
+            return newWeb;
+        }
+
+        /// <summary>
         /// Member to apply the Provisioning Tempalte to a site
         /// </summary>
         /// <param name="web"></param>
@@ -125,6 +179,7 @@ namespace Provisioning.Common
             {
                 this._siteprovisioningService.Authentication = new AppOnlyAuthenticationSite();
                 this._siteprovisioningService.Authentication.SiteUrl = siteRequest.Url;
+                this._siteprovisioningService.SetSitePolicy(siteRequest.SitePolicy);
                 var _web = _siteprovisioningService.GetWebByUrl(siteRequest.Url);
                 provisioningTemplate.Connector = this.GetProvisioningConnector();                
                 provisioningTemplate = new TemplateConversion().HandleProvisioningTemplate(provisioningTemplate, siteRequest, template);
