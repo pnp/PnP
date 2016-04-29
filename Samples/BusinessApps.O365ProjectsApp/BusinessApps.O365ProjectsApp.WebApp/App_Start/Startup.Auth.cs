@@ -12,22 +12,12 @@ using Microsoft.Owin.Security.OpenIdConnect;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Owin;
 using BusinessApps.O365ProjectsApp.WebApp.Models;
+using BusinessApps.O365ProjectsApp.WebApp.Components;
 
 namespace BusinessApps.O365ProjectsApp.WebApp
 {
     public partial class Startup
     {
-        private static string clientId = ConfigurationManager.AppSettings["ida:ClientId"];
-        private static string appKey = ConfigurationManager.AppSettings["ida:ClientSecret"];
-        private static string aadInstance = ConfigurationManager.AppSettings["ida:AADInstance"];
-        private static string tenantId = ConfigurationManager.AppSettings["ida:TenantId"];
-        private static string postLogoutRedirectUri = ConfigurationManager.AppSettings["ida:PostLogoutRedirectUri"];
-
-        public static readonly string Authority = aadInstance + tenantId;
-
-        // This is the resource ID of the AAD Graph API.  We'll need this to request a token to call the Graph API.
-        string graphResourceId = "https://graph.windows.net";
-
         public void ConfigureAuth(IAppBuilder app)
         {
             ApplicationDbContext db = new ApplicationDbContext();
@@ -39,22 +29,43 @@ namespace BusinessApps.O365ProjectsApp.WebApp
             app.UseOpenIdConnectAuthentication(
                 new OpenIdConnectAuthenticationOptions
                 {
-                    ClientId = clientId,
-                    Authority = Authority,
-                    PostLogoutRedirectUri = postLogoutRedirectUri,
-
+                    ClientId = MSGraphAPISettings.ClientId,
+                    Authority = MSGraphAPISettings.AADInstance + "common",
+                    PostLogoutRedirectUri = MSGraphAPISettings.PostLogoutRedirectUri,
+                    TokenValidationParameters = new System.IdentityModel.Tokens.TokenValidationParameters
+                    {
+                        // instead of using the default validation (validating against a single issuer value, as we do in line of business apps), 
+                        // we inject our own multitenant validation logic
+                        ValidateIssuer = false,
+                    },
                     Notifications = new OpenIdConnectAuthenticationNotifications()
                     {
                         // If there is a code in the OpenID Connect response, redeem it for an access token and refresh token, and store those away.
                         AuthorizationCodeReceived = (context) =>
                         {
                             var code = context.Code;
-                            ClientCredential credential = new ClientCredential(clientId, appKey);
-                            string signedInUserID = context.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
-                            AuthenticationContext authContext = new AuthenticationContext(Authority, new ADALTokenCache(signedInUserID));
-                            AuthenticationResult result = authContext.AcquireTokenByAuthorizationCode(
-                            code, new Uri(HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path)), credential, graphResourceId);
 
+                            ClientCredential credential = new ClientCredential(
+                                MSGraphAPISettings.ClientId,
+                                MSGraphAPISettings.ClientSecret);
+                            string signedInUserID = context.AuthenticationTicket.Identity.FindFirst(
+                                ClaimTypes.NameIdentifier).Value;
+                            string tenantId = context.AuthenticationTicket.Identity.FindFirst(
+                                "http://schemas.microsoft.com/identity/claims/tenantid").Value;
+
+                            AuthenticationContext authContext = new AuthenticationContext(
+                                MSGraphAPISettings.AADInstance + tenantId,
+                                new SessionADALCache(signedInUserID));
+                            AuthenticationResult result = authContext.AcquireTokenByAuthorizationCode(
+                                code, new Uri(HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path)),
+                                credential, MSGraphAPISettings.MicrosoftGraphResourceId);
+
+                            return Task.FromResult(0);
+                        },
+                        AuthenticationFailed = (context) =>
+                        {
+                            context.OwinContext.Response.Redirect("/Home/Error?message=" + context.Exception.Message);
+                            context.HandleResponse(); // Suppress the exception
                             return Task.FromResult(0);
                         }
                     }

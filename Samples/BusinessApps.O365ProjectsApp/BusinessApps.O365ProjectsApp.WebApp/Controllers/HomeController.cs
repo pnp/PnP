@@ -11,21 +11,26 @@ namespace BusinessApps.O365ProjectsApp.WebApp.Controllers
     {
         public ActionResult Index()
         {
+            ViewBag.Current = "Index";
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult StartNewProcess()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
+            ViewBag.Current = "StartNewProcess";
+            return View("Index");
         }
 
-        public ActionResult Contact()
+        public ActionResult MyProcesses()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Current = "MyProcesses";
+            return View("Index");
+        }
 
-            return View();
+        public ActionResult Settings()
+        {
+            ViewBag.Current = "Settings";
+            return View("Index");
         }
     }
 }
