@@ -53,5 +53,14 @@
     @Scripts.Render("~/bundles/fabric")
     @RenderSection("scripts", required: false)
 
+    <script type="text/javascript">
+
+        // Initialize the NavBar object
+        if ($.fn.NavBar) {
+            $(".ms-NavBar").NavBar();
+        }
+
+    </script>
+
 </body>
 </html>

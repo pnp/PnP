@@ -29,9 +29,9 @@ namespace BusinessApps.O365ProjectsApp.WebApp
             app.UseOpenIdConnectAuthentication(
                 new OpenIdConnectAuthenticationOptions
                 {
-                    ClientId = MSGraphAPISettings.ClientId,
-                    Authority = MSGraphAPISettings.AADInstance + "common",
-                    PostLogoutRedirectUri = MSGraphAPISettings.PostLogoutRedirectUri,
+                    ClientId = O365ProjectsAppSettings.ClientId,
+                    Authority = O365ProjectsAppSettings.AADInstance + "common",
+                    PostLogoutRedirectUri = O365ProjectsAppSettings.PostLogoutRedirectUri,
                     TokenValidationParameters = new System.IdentityModel.Tokens.TokenValidationParameters
                     {
                         // instead of using the default validation (validating against a single issuer value, as we do in line of business apps), 
@@ -46,19 +46,19 @@ namespace BusinessApps.O365ProjectsApp.WebApp
                             var code = context.Code;
 
                             ClientCredential credential = new ClientCredential(
-                                MSGraphAPISettings.ClientId,
-                                MSGraphAPISettings.ClientSecret);
+                                O365ProjectsAppSettings.ClientId,
+                                O365ProjectsAppSettings.ClientSecret);
                             string signedInUserID = context.AuthenticationTicket.Identity.FindFirst(
                                 ClaimTypes.NameIdentifier).Value;
                             string tenantId = context.AuthenticationTicket.Identity.FindFirst(
                                 "http://schemas.microsoft.com/identity/claims/tenantid").Value;
 
                             AuthenticationContext authContext = new AuthenticationContext(
-                                MSGraphAPISettings.AADInstance + tenantId,
+                                O365ProjectsAppSettings.AADInstance + tenantId,
                                 new SessionADALCache(signedInUserID));
                             AuthenticationResult result = authContext.AcquireTokenByAuthorizationCode(
                                 code, new Uri(HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path)),
-                                credential, MSGraphAPISettings.MicrosoftGraphResourceId);
+                                credential, O365ProjectsAppSettings.MicrosoftGraphResourceId);
 
                             return Task.FromResult(0);
                         },

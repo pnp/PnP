@@ -6,7 +6,7 @@ using System.Web;
 
 namespace BusinessApps.O365ProjectsApp.WebApp.Components
 {
-    public static class MSGraphAPIContext
+    public static class O365ProjectsAppContext
     {
         public static String CurrentUserUPN
         {
@@ -63,12 +63,37 @@ namespace BusinessApps.O365ProjectsApp.WebApp.Components
                 return (result.ToUpper());
             }
         }
-        
+
         public static Boolean CurrentUserIsAdmin
         {
             get
             {
                 return (true);
+            }
+        }
+
+        public static String CurrentSiteUrl
+        {
+            get
+            {
+                var siteUrl = HttpContext.Current.Request["SiteUrl"];
+                if (!String.IsNullOrEmpty(siteUrl))
+                {
+                    return (siteUrl);
+                }
+                else
+                {
+                    return (O365ProjectsAppSettings.DefaultSiteUrl);
+                }
+            }
+        }
+
+        public static String CurrentAppSiteUrl
+        {
+            get
+            {
+                Uri appSiteUrl = new Uri($"{HttpContext.Current.Request.Url.Scheme}://{HttpContext.Current.Request.Url.Host}:{HttpContext.Current.Request.Url.Port}/");
+                return (appSiteUrl.ToString());
             }
         }
     }

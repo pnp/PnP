@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BusinessApps.O365ProjectsApp.WebApp.Components;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,6 +12,8 @@ namespace BusinessApps.O365ProjectsApp.WebApp.Controllers
     {
         public ActionResult Index()
         {
+            ProvisionSPOArtifacts.Provision();
+
             ViewBag.Current = "Index";
             return View();
         }

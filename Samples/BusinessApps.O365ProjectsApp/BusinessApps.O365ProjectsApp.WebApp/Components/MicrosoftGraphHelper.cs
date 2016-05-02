@@ -29,20 +29,20 @@ namespace BusinessApps.O365ProjectsApp.WebApp.Components
             String accessToken = null;
             if (String.IsNullOrEmpty(resourceId))
             {
-                resourceId = MSGraphAPISettings.MicrosoftGraphResourceId;
+                resourceId = O365ProjectsAppSettings.MicrosoftGraphResourceId;
             }
 
             try
             {
                 ClientCredential credential = new ClientCredential(
-                    MSGraphAPISettings.ClientId,
-                    MSGraphAPISettings.ClientSecret);
+                    O365ProjectsAppSettings.ClientId,
+                    O365ProjectsAppSettings.ClientSecret);
                 string signedInUserID = System.Security.Claims.ClaimsPrincipal.Current.FindFirst(
                     ClaimTypes.NameIdentifier).Value;
                 string tenantId = System.Security.Claims.ClaimsPrincipal.Current.FindFirst(
                     "http://schemas.microsoft.com/identity/claims/tenantid").Value;
                 AuthenticationContext authContext = new AuthenticationContext(
-                    MSGraphAPISettings.AADInstance + tenantId,
+                    O365ProjectsAppSettings.AADInstance + tenantId,
                     new SessionADALCache(signedInUserID));
 
                 AuthenticationResult result = authContext.AcquireTokenSilent(
@@ -202,10 +202,10 @@ namespace BusinessApps.O365ProjectsApp.WebApp.Components
 
             // Get the OAuth Access Token
             Uri requestUri = new Uri(requestUrl);
-            Uri graphUri = new Uri(MSGraphAPISettings.MicrosoftGraphResourceId);
+            Uri graphUri = new Uri(O365ProjectsAppSettings.MicrosoftGraphResourceId);
             var accessToken =
                 GetAccessTokenForCurrentUser(requestUri.DnsSafeHost != graphUri.DnsSafeHost ?
-                    ($"{requestUri.Scheme}://{requestUri.Host}") : MSGraphAPISettings.MicrosoftGraphResourceId
+                    ($"{requestUri.Scheme}://{requestUri.Host}") : O365ProjectsAppSettings.MicrosoftGraphResourceId
                 );
 
             if (!String.IsNullOrEmpty(accessToken))
