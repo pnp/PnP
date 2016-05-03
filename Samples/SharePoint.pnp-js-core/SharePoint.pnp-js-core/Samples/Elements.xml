@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="Samples">
+    <File Path="Samples\HelloWorld.html" Url="Samples/HelloWorld.html" ReplaceContent="TRUE" />
+    <File Path="Samples\RequireBasic.html" Url="Samples/RequireBasic.html" ReplaceContent="TRUE" />
+    <File Path="Samples\CachingBasic.html" Url="Samples/CachingBasic.html" ReplaceContent="TRUE" />
+    <File Path="Samples\Logging.html" Url="Samples/Logging.html" ReplaceContent="TRUE" />
+    <File Path="Samples\LoggingAdvanced.html" Url="Samples/LoggingAdvanced.html" ReplaceContent="TRUE" />    
+  </Module>
+</Elements>
