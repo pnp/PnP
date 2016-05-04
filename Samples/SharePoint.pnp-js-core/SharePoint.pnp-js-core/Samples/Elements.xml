@@ -5,6 +5,8 @@
     <File Path="Samples\RequireBasic.html" Url="Samples/RequireBasic.html" ReplaceContent="TRUE" />
     <File Path="Samples\CachingBasic.html" Url="Samples/CachingBasic.html" ReplaceContent="TRUE" />
     <File Path="Samples\Logging.html" Url="Samples/Logging.html" ReplaceContent="TRUE" />
-    <File Path="Samples\LoggingAdvanced.html" Url="Samples/LoggingAdvanced.html" ReplaceContent="TRUE" />    
+    <File Path="Samples\LoggingAdvanced.html" Url="Samples/LoggingAdvanced.html" ReplaceContent="TRUE" />
+    <File Path="Samples\Search.html" Url="Samples/Search.html" ReplaceContent="TRUE" />
+    <File Path="Samples\AddListAndItem.html" Url="Samples/AddListAndItem.html" ReplaceContent="TRUE" />
   </Module>
 </Elements>

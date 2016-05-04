@@ -7,5 +7,7 @@
     <ProjectItemFile Source="CachingBasic.html" Target="Samples\" Type="ElementFile" />
     <ProjectItemFile Source="Logging.html" Target="Samples\" Type="ElementFile" />
     <ProjectItemFile Source="LoggingAdvanced.html" Target="Samples\" Type="ElementFile" />
+    <ProjectItemFile Source="Search.html" Target="Samples\" Type="ElementFile" />
+    <ProjectItemFile Source="AddListAndItem.html" Target="Samples\" Type="ElementFile" />
   </Files>
 </ProjectItem>

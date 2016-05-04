@@ -83,6 +83,8 @@
                     <li class="list-group-item"><a href="CachingBasic.html">Caching Basics</a></li>
                     <li class="list-group-item"><a href="Logging.html">Logging</a></li>
                     <li class="list-group-item"><a href="LoggingAdvanced.html">Logging Advanced</a></li>                    
+                    <li class="list-group-item"><a href="Search.html">Search</a></li>      
+                    <li class="list-group-item"><a href="AddListAndItem.html">Add List & Item</a></li>    
                     <li class="list-group-item"><a href="Playground.aspx" class="directLink">API Playground</a></li>
                 </ul>
             </div>

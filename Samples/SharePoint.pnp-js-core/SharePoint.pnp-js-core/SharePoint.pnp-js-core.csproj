@@ -69,6 +69,8 @@
     </None>
     <Content Include="Samples\CachingBasic.html" />
     <Content Include="Samples\Elements.xml" />
+    <Content Include="Samples\AddListAndItem.html" />
+    <Content Include="Samples\Search.html" />
     <Content Include="Samples\LoggingAdvanced.html" />
     <Content Include="Samples\Logging.html" />
     <Content Include="Samples\HelloWorld.html" />

@@ -9,7 +9,7 @@
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", "./ProvisioningStep", "../ObjectHandlers/ObjectNavigation/ObjectNavigation", "../ObjectHandlers/ObjectPropertyBagEntries/ObjectPropertyBagEntries", "../ObjectHandlers/ObjectFeatures/ObjectFeatures", "../ObjectHandlers/ObjectWebSettings/ObjectWebSettings", "../ObjectHandlers/ObjectComposedLook/ObjectComposedLook", "../ObjectHandlers/ObjectCustomActions/ObjectCustomActions", "../ObjectHandlers/ObjectFiles/ObjectFiles", "../ObjectHandlers/ObjectLists/ObjectLists", "../../../sharepoint/util", "../Resources/Resources", "../Provisioning"], factory);
+        define(["require", "exports", "./ProvisioningStep", "../ObjectHandlers/ObjectNavigation/ObjectNavigation", "../ObjectHandlers/ObjectPropertyBagEntries/ObjectPropertyBagEntries", "../ObjectHandlers/ObjectFeatures/ObjectFeatures", "../ObjectHandlers/ObjectWebSettings/ObjectWebSettings", "../ObjectHandlers/ObjectComposedLook/ObjectComposedLook", "../ObjectHandlers/ObjectCustomActions/ObjectCustomActions", "../ObjectHandlers/ObjectFiles/ObjectFiles", "../ObjectHandlers/ObjectLists/ObjectLists", "../../../sharepoint/util", "../Resources/Resources", "../Provisioning", "../../../net/HttpClient"], factory);
     }
 })(function (require, exports) {
     "use strict";
@@ -25,6 +25,7 @@
     var util_1 = require("../../../sharepoint/util");
     var Resources = require("../Resources/Resources");
     var Provisioning_1 = require("../Provisioning");
+    var HttpClient_1 = require("../../../net/HttpClient");
     var Core = (function () {
         function Core() {
             this.handlers = {
@@ -37,22 +38,29 @@
                 "Files": ObjectFiles_1.ObjectFiles,
                 "Lists": ObjectLists_1.ObjectLists,
             };
+            this.httpClient = new HttpClient_1.HttpClient();
         }
         Core.prototype.applyTemplate = function (path, _options) {
             var _this = this;
             var url = util_1.replaceUrlTokens(path);
             this.options = _options || {};
             return new Promise(function (resolve, reject) {
-                jQuery.getJSON(url, function (template) {
-                    _this.start(template, Object.keys(template)).then(resolve, resolve);
-                }).fail(function () {
+                _this.httpClient.get(url).then(function (response) {
+                    if (response.ok) {
+                        response.json().then(function (template) {
+                            _this.start(template, Object.keys(template)).then(resolve, reject);
+                        });
+                    }
+                    else {
+                        reject(response.statusText);
+                    }
+                }, function (error) {
                     Provisioning_1.Log.error("Provisioning", Resources.Template_invalid);
                 });
             });
         };
         Core.prototype.start = function (json, queue) {
             var _this = this;
-            Provisioning_1.Log.info("Provisioning", Resources.Code_execution_started);
             return new Promise(function (resolve, reject) {
                 _this.startTime = new Date().getTime();
                 _this.queueItems = [];
@@ -63,9 +71,9 @@
                     _this.queueItems.push(new ProvisioningStep_1.ProvisioningStep(q, index, json[q], json.Parameters, _this.handlers[q]));
                 });
                 var promises = [];
-                promises.push(jQuery.Deferred());
-                promises[0].resolve();
-                promises[0].promise();
+                promises.push(new Promise(function () {
+                    Provisioning_1.Log.info("Provisioning", Resources.Code_execution_started);
+                }));
                 var index = 1;
                 while (_this.queueItems[index - 1] !== undefined) {
                     var i = promises.length - 1;
@@ -73,10 +81,12 @@
                     index++;
                 }
                 ;
-                Promise.all(promises).then(function () {
+                Promise.all(promises).then(function (value) {
                     Provisioning_1.Log.info("Provisioning", Resources.Code_execution_ended);
-                }, function () {
+                    resolve(value);
+                }, function (error) {
                     Provisioning_1.Log.info("Provisioning", Resources.Code_execution_ended);
+                    reject(error);
                 });
             });
         };
@@ -85,7 +95,7 @@
     exports.Core = Core;
 });
 
-},{"../../../sharepoint/util":68,"../ObjectHandlers/ObjectComposedLook/ObjectComposedLook":4,"../ObjectHandlers/ObjectCustomActions/ObjectCustomActions":5,"../ObjectHandlers/ObjectFeatures/ObjectFeatures":6,"../ObjectHandlers/ObjectFiles/ObjectFiles":7,"../ObjectHandlers/ObjectLists/ObjectLists":9,"../ObjectHandlers/ObjectNavigation/ObjectNavigation":10,"../ObjectHandlers/ObjectPropertyBagEntries/ObjectPropertyBagEntries":11,"../ObjectHandlers/ObjectWebSettings/ObjectWebSettings":12,"../Provisioning":13,"../Resources/Resources":14,"./ProvisioningStep":2}],2:[function(require,module,exports){
+},{"../../../net/HttpClient":46,"../../../sharepoint/util":68,"../ObjectHandlers/ObjectComposedLook/ObjectComposedLook":4,"../ObjectHandlers/ObjectCustomActions/ObjectCustomActions":5,"../ObjectHandlers/ObjectFeatures/ObjectFeatures":6,"../ObjectHandlers/ObjectFiles/ObjectFiles":7,"../ObjectHandlers/ObjectLists/ObjectLists":9,"../ObjectHandlers/ObjectNavigation/ObjectNavigation":10,"../ObjectHandlers/ObjectPropertyBagEntries/ObjectPropertyBagEntries":11,"../ObjectHandlers/ObjectWebSettings/ObjectWebSettings":12,"../Provisioning":13,"../Resources/Resources":14,"./ProvisioningStep":2}],2:[function(require,module,exports){
 (function (factory) {/* istanbul ignore next */
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
@@ -235,7 +245,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 clientContext.load(userCustomActions);
                 clientContext.executeQueryAsync(function () {
                     customactions.forEach(function (obj) {
-                        var objExists = jQuery.grep(userCustomActions.get_data(), function (userCustomAction) {
+                        var objExists = userCustomActions.get_data().filter(function (userCustomAction) {
                             return userCustomAction.get_title() === obj.Title;
                         }).length > 0;
                         if (!objExists) {
@@ -601,15 +611,17 @@ var __extends = (this && this.__extends) || function (d, b) {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", "../../Resources/Resources", "../../Provisioning"], factory);
+        define(["require", "exports", "../../Resources/Resources", "../../Provisioning", "../../../../net/HttpClient"], factory);
     }
 })(function (require, exports) {
     "use strict";
     var Resources = require("../../Resources/Resources");
     var Provisioning_1 = require("../../Provisioning");
+    var HttpClient_1 = require("../../../../net/HttpClient");
     var ObjectHandlerBase = (function () {
         function ObjectHandlerBase(name) {
             this.name = name;
+            this.httpClient = new HttpClient_1.HttpClient();
         }
         ObjectHandlerBase.prototype.ProvisionObjects = function (objects, parameters) {
             return new Promise(function (resolve, reject) { resolve("Not implemented."); });
@@ -625,7 +637,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.ObjectHandlerBase = ObjectHandlerBase;
 });
 
-},{"../../Provisioning":13,"../../Resources/Resources":14}],9:[function(require,module,exports){
+},{"../../../../net/HttpClient":46,"../../Provisioning":13,"../../Resources/Resources":14}],9:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
@@ -657,7 +669,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 clientContext.load(lists);
                 clientContext.executeQueryAsync(function () {
                     objects.forEach(function (obj, index) {
-                        var existingObj = jQuery.grep(lists.get_data(), function (list) {
+                        var existingObj = lists.get_data().filter(function (list) {
                             return list.get_title() === obj.Title;
                         })[0];
                         if (existingObj) {
@@ -950,7 +962,9 @@ var __extends = (this && this.__extends) || function (d, b) {
             });
         };
         ObjectLists.prototype.GetFieldXmlAttr = function (fieldXml, attr) {
-            return jQuery(jQuery.parseXML(fieldXml)).find("Field").attr(attr);
+            var regex = new RegExp(attr + '=[\'|\"](?:(.+?))[\'|\"]');
+            var match = regex.exec(fieldXml);
+            return match[1];
         };
         ObjectLists.prototype.GetFieldXml = function (field, lists, list) {
             var fieldXml = "";
@@ -959,7 +973,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 Object.keys(field).forEach(function (prop) {
                     var value = field[prop];
                     if (prop === "List") {
-                        var targetList = jQuery.grep(lists, function (v) {
+                        var targetList = lists.filter(function (v) {
                             return v.get_title() === value;
                         });
                         if (targetList.length > 0) {
@@ -1047,7 +1061,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                         listViewCollections.push(l.get_views());
                         params.ClientContext.load(listViewCollections[index]);
                         obj.Views.forEach(function (v) {
-                            var viewExists = jQuery.grep(listViewCollections[index].get_data(), function (ev) {
+                            var viewExists = listViewCollections[index].get_data().filter(function (ev) {
                                 if (obj.RemoveExistingViews && obj.Views.length > 0) {
                                     ev.deleteObject();
                                     return false;
@@ -1168,16 +1182,16 @@ var __extends = (this && this.__extends) || function (d, b) {
             var clientContext = SP.ClientContext.get_current();
             var navigation = clientContext.get_web().get_navigation();
             return new Promise(function (resolve, reject) {
-                _this.ConfigureQuickLaunch(object.QuickLaunch, clientContext, navigation).then(function () {
+                _this.ConfigureQuickLaunch(object.QuickLaunch, clientContext, _this.httpClient, navigation).then(function () {
                     _super.prototype.scope_ended.call(_this);
                     resolve();
                 }, function () {
                     _super.prototype.scope_ended.call(_this);
-                    resolve();
+                    reject();
                 });
             });
         };
-        ObjectNavigation.prototype.ConfigureQuickLaunch = function (nodes, clientContext, navigation) {
+        ObjectNavigation.prototype.ConfigureQuickLaunch = function (nodes, clientContext, httpClient, navigation) {
             return new Promise(function (resolve, reject) {
                 if (nodes.length === 0) {
                     resolve();
@@ -1204,18 +1218,12 @@ var __extends = (this && this.__extends) || function (d, b) {
                                 quickLaunchNodeCollection_1.add(newNode);
                             });
                             clientContext.executeQueryAsync(function () {
-                                jQuery.ajax({
-                                    "url": _spPageContextInfo.webAbsoluteUrl + "/_api/web/Navigation/QuickLaunch",
-                                    "type": "get",
-                                    "headers": {
-                                        "accept": "application/json;odata=verbose",
-                                    },
-                                }).done(function (data) {
+                                httpClient.get(_spPageContextInfo.webAbsoluteUrl + "/_api/web/Navigation/QuickLaunch").then(function (data) {
                                     data = data.d.results;
                                     data.forEach(function (d) {
                                         var node = navigation.getNodeById(d.Id);
                                         var childrenNodeCollection = node.get_children();
-                                        var parentNode = jQuery.grep(nodes, function (value) { return value.Title === d.Title; })[0];
+                                        var parentNode = nodes.filter(function (value) { return value.Title === d.Title; })[0];
                                         if (parentNode && parentNode.Children) {
                                             parentNode.Children.forEach(function (n) {
                                                 var existingNode = util_1.getNodeFromCollectionByTitle(temporaryQuickLaunch, n.Title);
@@ -1432,17 +1440,19 @@ var __extends = (this && this.__extends) || function (d, b) {
             var _this = this;
             return new Promise(function (resolve, reject) {
                 var promises = [];
-                promises.push(jQuery.Deferred());
-                promises[0].resolve();
-                promises[0].promise();
                 var index = 1;
+                promises.push(new Promise(function () {
+                    if (index < 1) {
+                        index = 1;
+                    }
+                }));
                 while (_this.functions[index - 1] !== undefined) {
                     var i = promises.length - 1;
                     promises.push(_this.functions[index - 1].execute(promises[i]));
                     index++;
                 }
                 ;
-                Promise.all(promises).then(resolve, resolve);
+                Promise.all(promises).then(resolve, reject);
             });
         };
         Sequencer.prototype.deferredArray = function (__functions) {
@@ -1589,6 +1599,15 @@ var __extends = (this && this.__extends) || function (d, b) {
                 }
                 return parser(response);
             });
+        };
+        Queryable.prototype.getParent = function (factory, baseUrl) {
+            if (baseUrl === void 0) { baseUrl = this.parentUrl; }
+            var parent = new factory(baseUrl);
+            var target = this.query.get("@target");
+            if (target !== null) {
+                parent.query.add("@target", target);
+            }
+            return parent;
         };
         Queryable.prototype.defaultParser = function (r) {
             return r.json().then(function (json) {
@@ -2194,7 +2213,7 @@ var __extends = (this && this.__extends) || function (d, b) {
         Items.prototype.add = function (properties) {
             var _this = this;
             if (properties === void 0) { properties = {}; }
-            var parentList = new Queryable_1.QueryableInstance(this.parentUrl);
+            var parentList = this.getParent(Queryable_1.QueryableInstance);
             return parentList.select("ListItemEntityTypeFullName").get().then(function (d) {
                 var postBody = JSON.stringify(Util.extend({
                     "__metadata": { "type": d.ListItemEntityTypeFullName },
@@ -2274,7 +2293,7 @@ var __extends = (this && this.__extends) || function (d, b) {
         Item.prototype.update = function (properties, eTag) {
             var _this = this;
             if (eTag === void 0) { eTag = "*"; }
-            var parentList = new Queryable_1.QueryableInstance(this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/")));
+            var parentList = this.getParent(Queryable_1.QueryableInstance, this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/")));
             return parentList.select("ListItemEntityTypeFullName").get().then(function (d) {
                 var postBody = JSON.stringify(Util.extend({
                     "__metadata": { "type": d.ListItemEntityTypeFullName },
@@ -2349,7 +2368,9 @@ var __extends = (this && this.__extends) || function (d, b) {
             return new List(this, "getByTitle('" + title + "')");
         };
         Lists.prototype.getById = function (id) {
-            return new List(this.toUrl().concat("(guid'" + id + "')"));
+            var list = new List(this);
+            list.concat("(guid'" + id + "')");
+            return list;
         };
         Lists.prototype.add = function (title, description, template, enableContentTypes, additionalSettings) {
             var _this = this;
@@ -2478,7 +2499,11 @@ var __extends = (this && this.__extends) || function (d, b) {
                     "X-HTTP-Method": "MERGE",
                 },
             }).then(function (data) {
-                var retList = properties.hasOwnProperty("Title") ? new List(_this.parentUrl, "getByTitle('" + properties["Title"] + "')") : _this;
+                var retList = _this;
+                if (properties.hasOwnProperty("Title")) {
+                    retList = _this.getParent(List);
+                    retList.append("getByTitle('" + properties["Title"] + "')");
+                }
                 return {
                     data: data,
                     list: retList,
@@ -2620,9 +2645,14 @@ var __extends = (this && this.__extends) || function (d, b) {
         function Rest() {
         }
         Rest.prototype.search = function (query) {
-            return new search_1.Search("_api/search", query).execute().then(function (results) {
-                return results;
-            });
+            var finalQuery;
+            if (typeof query === "string") {
+                finalQuery = { Querytext: query };
+            }
+            else {
+                finalQuery = query;
+            }
+            return new search_1.Search("_api/search", finalQuery).execute();
         };
         Object.defineProperty(Rest.prototype, "site", {
             get: function () {
@@ -3134,7 +3164,8 @@ var __extends = (this && this.__extends) || function (d, b) {
         };
         Object.defineProperty(ProfileLoader.prototype, "ownerUserProfile", {
             get: function () {
-                var q = new ProfileLoader(this.parentUrl, "sp.userprofiles.profileloader.getowneruserprofile");
+                var q = this.getParent(ProfileLoader);
+                q.append("sp.userprofiles.profileloader.getowneruserprofile");
                 return q.post();
             },
             enumerable: true,
@@ -3533,7 +3564,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     }
     exports.getRelativeUrl = getRelativeUrl;
     function getNodeFromCollectionByTitle(nodeCollection, title) {
-        var f = jQuery.grep(nodeCollection, function (val) {
+        var f = nodeCollection.filter(function (val) {
             return val.get_title() === title;
         });
         return f[0] || null;
@@ -4687,7 +4718,6 @@ arguments[4][39][0].apply(exports,arguments)
             this.subscribers = subscribers;
         }
         LoggerImpl.prototype.subscribe = function (listener) {
-            debugger;
             Args.objectIsNull(listener, "listener");
             this.subscribers.push(listener);
         };
@@ -4709,7 +4739,6 @@ arguments[4][39][0].apply(exports,arguments)
         };
         LoggerImpl.prototype.log = function (entry) {
             Args.objectIsNull(entry, "entry");
-            debugger;
             if (entry.level < this.activeLogLevel) {
                 return;
             }
