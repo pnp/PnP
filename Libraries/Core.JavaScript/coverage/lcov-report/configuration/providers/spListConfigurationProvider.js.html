@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for configuration\providers\spListConfigurationProvider.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">configuration/providers/</a> spListConfigurationProvider.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>36/36</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">92.86% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>13/14</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>11/11</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>33/33</span>
+      </div>
+      <div class='fl pad1y'>
+        <span class="strong">3 statements, 6 branches</span>
+        <span class="quiet">Ignored</span>  &nbsp;&nbsp;&nbsp;&nbsp;
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">(function (factory) {/* istanbul ignore next */
+    <span class="skip-if-branch" title="else path not taken" >E</span>if (typeof module === 'object' &amp;&amp; typeof module.exports === 'object') {
+        var v = factory(require, exports); <span class="skip-if-branch" title="if path not taken" >I</span>if (v !== undefined) <span class="cstat-skip" title="statement not covered" >module.exports = v;</span>
+    }
+    else <span class="cstat-skip" title="statement not covered" >if (typeof define === 'function' &amp;&amp; define.amd) {</span>
+<span class="cstat-skip" title="statement not covered" >        define(["require", "exports", "es6-promise", "./cachingConfigurationProvider", "../../Utils/Ajax"], factory);</span>
+    }
+})(function (require, exports) {
+    "use strict";
+    var es6_promise_1 = require("es6-promise");
+    var cachingConfigurationProvider_1 = require("./cachingConfigurationProvider");
+    var ajax = require("../../Utils/Ajax");
+    var SPListConfigurationProvider = (function () {
+        function SPListConfigurationProvider(webUrl, listTitle) {
+            if (listTitle === void 0) { listTitle = "config"; }
+            this.webUrl = webUrl;
+            this.listTitle = listTitle;
+        }
+        SPListConfigurationProvider.prototype.getWebUrl = function () {
+            return this.webUrl;
+        };
+        SPListConfigurationProvider.prototype.getListTitle = function () {
+            return this.listTitle;
+        };
+        SPListConfigurationProvider.prototype.getConfiguration = function () {
+            var _this = this;
+            return new es6_promise_1.Promise(function (resolve, reject) {
+                var url = _this.webUrl + "/_api/web/lists/getByTitle('" + _this.listTitle + "')/items?$select=Title,Value";
+                ajax.get(url).success(function (data) {
+                    var results = (data.d.hasOwnProperty("results")) ? data.d.results : <span class="branch-1 cbranch-no" title="branch not covered" >data.d;</span>
+                    var configuration = {};
+                    results.forEach(function (i) {
+                        configuration[i.Title] = i.Value;
+                    });
+                    resolve(configuration);
+                });
+            });
+        };
+        SPListConfigurationProvider.prototype.asCaching = function () {
+            var cacheKey = "splist_" + this.webUrl + "+" + this.listTitle;
+            return new cachingConfigurationProvider_1.default(this, cacheKey);
+        };
+        return SPListConfigurationProvider;
+    }());
+    Object.defineProperty(exports, "__esModule", { value: true });
+    exports.default = SPListConfigurationProvider;
+});
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Mar 08 2016 16:02:47 GMT-0500 (Eastern Standard Time)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

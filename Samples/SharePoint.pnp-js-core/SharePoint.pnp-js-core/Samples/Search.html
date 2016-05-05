@@ -1,0 +1,29 @@
+﻿<span id="page-script">
+    <script type="text/javascript" src="../scripts/pnp.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            sample.init(function (hostWebUrl, appWebUrl) {
+
+                // there are two ways to search, the first you can pass a simple string that will be used as the query text
+                $pnp.sp.search("Documents").then(sample.append);
+
+                // the second allows you to specify a plain object containing the search settings
+                $pnp.sp.search({
+                    Querytext: "Documents",
+                    RowLimit: 4
+                }).then(sample.append);
+
+            });//end sample.init
+        });
+    </script>
+</span>
+
+<div class="page-header">
+    <h1>Search</h1>
+</div>
+
+<p>
+    This sample shows the basics of using search, providing a quick and easy way to query your sharepoint site. You can specify your query using a simple string for providing a plain object specifying in detail
+    the parameters you wish for the search. For performance it is always recommended to include at least the row limit parameter to only return the results needed.
+</p>
+

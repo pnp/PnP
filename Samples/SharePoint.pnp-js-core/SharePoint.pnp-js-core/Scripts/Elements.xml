@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="Scripts">
+    <File Path="Scripts\jquery-1.9.1.min.map" Url="Scripts/jquery-1.9.1.min.map" ReplaceContent="TRUE" />
+    <File Path="Scripts\jquery-1.9.1.min.js" Url="Scripts/jquery-1.9.1.min.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\jquery-1.9.1.js" Url="Scripts/jquery-1.9.1.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\jquery-1.9.1.intellisense.js" Url="Scripts/jquery-1.9.1.intellisense.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\fetch.js" Url="Scripts/fetch.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\es6-promise.min.js" Url="Scripts/es6-promise.min.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\pnp.js" Url="Scripts/pnp.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\sample.js" Url="Scripts/sample.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\bootstrap.min.js" Url="Scripts/bootstrap.min.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\require.js" Url="Scripts/require.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\embedsample.js" Url="Scripts/embedsample.js" ReplaceContent="TRUE" />
+  </Module>
+</Elements>
