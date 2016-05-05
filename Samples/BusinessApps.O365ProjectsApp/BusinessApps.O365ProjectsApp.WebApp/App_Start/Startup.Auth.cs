@@ -12,7 +12,7 @@ using Microsoft.Owin.Security.OpenIdConnect;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Owin;
 using BusinessApps.O365ProjectsApp.WebApp.Models;
-using BusinessApps.O365ProjectsApp.WebApp.Components;
+using BusinessApps.O365ProjectsApp.Infrastructure;
 
 namespace BusinessApps.O365ProjectsApp.WebApp
 {

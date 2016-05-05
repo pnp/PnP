@@ -26,14 +26,16 @@
         </li>
 
         <!-- Start New Process menu item -->
-        <li class="ms-NavBar-item @(ViewBag.Current == "StartNewProject" ? "is-selected" : "")"><i class="ms-Icon ms-Icon--onlineAdd" aria-hidden="true"></i> @Html.ActionLink("Start New Project", "StartNewProject", "Project", null, new { @class = "ms-NavBar-link" })</li>
+        <li class="ms-NavBar-item @(ViewBag.Current == "StartNewProject" ? "is-selected" : "")"><i class="ms-Icon ms-Icon--documentAdd" aria-hidden="true"></i> @Html.ActionLink("Start New Project", "StartNewProject", "Project", null, new { @class = "ms-NavBar-link" })</li>
 
         <!-- List My Processes menu item -->
         <li class="ms-NavBar-item @(ViewBag.Current == "MyProjects" ? "is-selected" : "")"><i class="ms-Icon ms-Icon--listCheckbox" aria-hidden="true"></i> @Html.ActionLink("List My Projects", "MyProjects", "Project", null, new { @class = "ms-NavBar-link" })</li>
 
+        <!-- Go back to default Site Collection -->
+        <li class="ms-NavBar-item"><i class="ms-Icon ms-Icon--globe" aria-hidden="true"></i> <a class="ms-NavBar-link" href="@BusinessApps.O365ProjectsApp.Infrastructure.O365ProjectsAppContext.CurrentSiteUrl">Back to Target Site</a></li>
 
         <!-- Settings menu item -->
-        @if (BusinessApps.O365ProjectsApp.WebApp.Components.O365ProjectsAppContext.CurrentUserIsAdmin)
+        @if (BusinessApps.O365ProjectsApp.Infrastructure.O365ProjectsAppContext.CurrentUserIsAdmin)
         {
             <li class="ms-NavBar-item ms-NavBar-item--right"><i class="ms-Icon ms-Icon--gear" aria-hidden="true"></i> @Html.ActionLink("Settings", "Settings", "Home", null, new { @class = "ms-NavBar-link" })</li>
         }

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace BusinessApps.O365ProjectsApp.WebApp.Components
+namespace BusinessApps.O365ProjectsApp.Infrastructure
 {
     public class SessionADALCache : TokenCache
     {

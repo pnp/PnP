@@ -6,7 +6,7 @@ using System.Web;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace BusinessApps.O365ProjectsApp.WebApp.Configuration
+namespace BusinessApps.O365ProjectsApp.Infrastructure.Configuration
 {
     public class O365ProjectsConfigurationSectionHandler : IConfigurationSectionHandler
     {

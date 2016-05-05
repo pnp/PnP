@@ -32,9 +32,9 @@
         <div class="o365cs-nav-topItem o365cs-rsp-tn-hideIfAffordanceOn">
             <div class="ms-Persona ms-Persona--s">
                 <div class="ms-Persona-imageArea">
-                    <div class="ms-Persona-initials ms-Persona-initials--blue">@(BusinessApps.O365ProjectsApp.WebApp.Components.O365ProjectsAppContext.CurrentUserInitials)</div>
-                    <img class="ms-Persona-image" src="/Persona/GetPhoto?upn=@(BusinessApps.O365ProjectsApp.WebApp.Components.O365ProjectsAppContext.CurrentUserUPN)&height=64&width=64"
-                         title="@(BusinessApps.O365ProjectsApp.WebApp.Components.O365ProjectsAppContext.CurrentUserDisplayName)" />
+                    <div class="ms-Persona-initials ms-Persona-initials--blue">@(BusinessApps.O365ProjectsApp.Infrastructure.O365ProjectsAppContext.CurrentUserInitials)</div>
+                    <img class="ms-Persona-image" src="/Persona/GetPhoto?upn=@(BusinessApps.O365ProjectsApp.Infrastructure.O365ProjectsAppContext.CurrentUserUPN)&height=64&width=64"
+                         title="@(BusinessApps.O365ProjectsApp.Infrastructure.O365ProjectsAppContext.CurrentUserDisplayName)" />
                 </div>
                 <div class="ms-Persona--offline"></div>
             </div>

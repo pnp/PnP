@@ -305,16 +305,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Components\LightGraphUser.cs" />
-    <Compile Include="Components\MicrosoftGraphHelper.cs" />
-    <Compile Include="Components\O365ProjectsAppContext.cs" />
-    <Compile Include="Components\O365ProjectsAppSettings.cs" />
-    <Compile Include="Components\ProvisionSPOArtifacts.cs" />
-    <Compile Include="Components\SessionADALCache.cs" />
-    <Compile Include="Configuration\O365ProjectsConfigurationSectionHandler.cs" />
-    <Compile Include="Configuration\O365ProjectsConfiguration.cs">
-      <DependentUpon>O365ProjectsConfiguration.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PersonaController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
@@ -348,6 +338,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="ProvisioningTemplates\O365ProjectsAppSite.xml" />
     <Content Include="ResponsiveGridSample.html" />
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
@@ -395,10 +386,6 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <None Include="Configuration\O365ProjectsConfiguration.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <Content Include="Configuration\refresh-config-schema.bat" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -445,6 +432,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessApps.O365ProjectsApp.Infrastructure\BusinessApps.O365ProjectsApp.Infrastructure.csproj">
+      <Project>{d874e557-943c-45b2-98c8-adc4faeaa991}</Project>
+      <Name>BusinessApps.O365ProjectsApp.Infrastructure</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

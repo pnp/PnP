@@ -1,4 +1,4 @@
-﻿using BusinessApps.O365ProjectsApp.WebApp.Configuration;
+﻿using BusinessApps.O365ProjectsApp.Infrastructure.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Web;
 
-namespace BusinessApps.O365ProjectsApp.WebApp.Components
+namespace BusinessApps.O365ProjectsApp.Infrastructure
 {
     public static class O365ProjectsAppSettings
     {

@@ -1,4 +1,4 @@
-﻿using BusinessApps.O365ProjectsApp.WebApp.Components;
+﻿using BusinessApps.O365ProjectsApp.Infrastructure.MicrosoftGraph;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
