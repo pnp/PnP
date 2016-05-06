@@ -1,5 +1,7 @@
 ﻿var sample = {
 
+    _currentSampleFunction: null,
+
     getUrlParamByName: function (name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
@@ -18,6 +20,8 @@
     init: function (f) {
 
         var self = this;
+
+        self._currentSampleFunction = f;
 
         var hostWebUrl = self.hostWebUrl();
         var appWebUrl = self.appWebUrl();
@@ -39,9 +43,16 @@
 
         // ensure we are showing the sample container
         $("#sampleContainer").show();
+    },
 
-        // execute the example script
-        f(self.hostWebUrl(), self.appWebUrl());
+    run: function(e) {
+        e.preventDefault();
+        $("#sample-show").empty().append("<img src=\"/_layouts/images/gears_an.gif\" />");
+        this._currentSampleFunction(this.hostWebUrl(), this.appWebUrl());
+    },
+
+    removeLoadingImage: function() {
+        $("#sample-show").find("img[src='/_layouts/images/gears_an.gif']").remove();
     },
 
     show: function (data) {
@@ -49,6 +60,7 @@
     },
 
     append: function (data) {
+        this.removeLoadingImage();
         $("#sample-show").append("<hr />").append(JSON.stringify(data));
     },
 

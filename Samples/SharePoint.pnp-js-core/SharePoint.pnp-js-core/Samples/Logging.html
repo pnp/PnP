@@ -7,7 +7,7 @@
                 // we first need to create a logger instance, this can be done using any of the built in loggers:
                 // here we create a function listener, that just passes each message do your function.
                 var logger1 = new $pnp.log.FunctionListener(function (m) {
-                    sample.append(JSON.stringify(m));
+                    sample.show(JSON.stringify(m));
                 });
 
                 // let's also create a console listener

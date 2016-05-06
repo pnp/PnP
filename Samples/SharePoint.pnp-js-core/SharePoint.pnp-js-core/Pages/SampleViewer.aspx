@@ -47,9 +47,12 @@
                 var link = $(e.target);
                 link.closest(".list-group").find(".list-group-item").removeClass("active");
                 link.closest(".list-group-item").addClass("active");
-                window.location.hash = link.attr("href");
                 $.get(sample.appWebUrl() + "\\samples\\" + link.attr("href")).done(function (content) { $("#sample-content").empty().append(content); });
             });
+
+            // bind the button click to run the sample
+
+            $("#sample-run").on("click", function (e) { sample.run(e); });
 
             // set the link to the host web for embed section
             $(".hostWebAddress").attr("href", sample.hostWebUrl());
@@ -107,9 +110,10 @@
                                 </legend>
                                 <p>This the code actually executing on this page.</p>
                                 <pre id="sample-code"></pre>
+                                <button id="sample-run" class="btn btn-primary">Run Sample</button>
                             </fieldset>
 
-                            <fieldset>
+                            <fieldset style="margin-top: 20px;">
                                 <legend>Live Result
                                 </legend>
                                 <p>This is the live result of executing the above code on your host web.</p>
