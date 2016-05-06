@@ -2725,8 +2725,10 @@ var __extends = (this && this.__extends) || function (d, b) {
             return new Promise(function (resolve, reject) {
                 var list = _this.getByTitle(title);
                 list.get().then(function (d) { return resolve({ created: false, list: list, data: d }); }).catch(function () {
-                    _this.add(title, description, template, enableContentTypes, additionalSettings).then(function (r) { return resolve({ created: true, list: _this.getByTitle(title), data: r.data }); });
-                }).catch(function () { return reject(); });
+                    _this.add(title, description, template, enableContentTypes, additionalSettings).then(function (r) {
+                        resolve({ created: true, list: _this.getByTitle(title), data: r.data });
+                    });
+                }).catch(function (e) { return reject(e); });
             });
         };
         Lists.prototype.ensureSiteAssetsLibrary = function () {
@@ -4246,8 +4248,32 @@ arguments[4][36][0].apply(exports,arguments)
             return self.fetchRaw(url, opts);
         };
         HttpClient.prototype.fetchRaw = function (url, options) {
+            var _this = this;
             if (options === void 0) { options = {}; }
-            return this._impl.fetch(url, options);
+            var retry = function (ctx) {
+                _this._impl.fetch(url, options).then(function (response) { return ctx.resolve(response); }).catch(function (response) {
+                    var delay = ctx.delay;
+                    if (response.status !== 429 && response.status !== 503) {
+                        ctx.reject(response);
+                    }
+                    ctx.delay *= 2;
+                    ctx.attempts++;
+                    if (ctx.retryCount <= ctx.attempts) {
+                        ctx.reject(response);
+                    }
+                    setTimeout(util_1.Util.getCtxCallback(_this, retry, ctx), delay);
+                });
+            };
+            return new Promise(function (resolve, reject) {
+                var retryContext = {
+                    attempts: 0,
+                    delay: 100,
+                    reject: reject,
+                    resolve: resolve,
+                    retryCount: 7,
+                };
+                retry.call(_this, retryContext);
+            });
         };
         HttpClient.prototype.get = function (url, options) {
             if (options === void 0) { options = {}; }
