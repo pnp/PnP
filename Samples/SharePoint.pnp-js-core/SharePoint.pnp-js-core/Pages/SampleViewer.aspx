@@ -88,6 +88,7 @@
                     <li class="list-group-item"><a href="LoggingAdvanced.html">Logging Advanced</a></li>                    
                     <li class="list-group-item"><a href="Search.html">Search</a></li>      
                     <li class="list-group-item"><a href="AddListAndItem.html">Add List & Item</a></li>    
+                    <li class="list-group-item"><a href="Configuration.html">Configuration</a></li>                        
                     <li class="list-group-item"><a href="Playground.aspx" class="directLink">API Playground</a></li>
                 </ul>
             </div>

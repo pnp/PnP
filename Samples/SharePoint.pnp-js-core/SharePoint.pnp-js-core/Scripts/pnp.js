@@ -4,187 +4,22 @@
  * MIT
  */
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.$pnp = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
-    if (typeof module === 'object' && typeof module.exports === 'object') {
-        var v = factory(require, exports); if (v !== undefined) module.exports = v;
-    }
-    else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", "./ProvisioningStep", "../ObjectHandlers/ObjectNavigation/ObjectNavigation", "../ObjectHandlers/ObjectPropertyBagEntries/ObjectPropertyBagEntries", "../ObjectHandlers/ObjectFeatures/ObjectFeatures", "../ObjectHandlers/ObjectWebSettings/ObjectWebSettings", "../ObjectHandlers/ObjectComposedLook/ObjectComposedLook", "../ObjectHandlers/ObjectCustomActions/ObjectCustomActions", "../ObjectHandlers/ObjectFiles/ObjectFiles", "../ObjectHandlers/ObjectLists/ObjectLists", "../../../sharepoint/util", "../Resources/Resources", "../Provisioning", "../../../net/HttpClient"], factory);
-    }
-})(function (require, exports) {
-    "use strict";
-    var ProvisioningStep_1 = require("./ProvisioningStep");
-    var ObjectNavigation_1 = require("../ObjectHandlers/ObjectNavigation/ObjectNavigation");
-    var ObjectPropertyBagEntries_1 = require("../ObjectHandlers/ObjectPropertyBagEntries/ObjectPropertyBagEntries");
-    var ObjectFeatures_1 = require("../ObjectHandlers/ObjectFeatures/ObjectFeatures");
-    var ObjectWebSettings_1 = require("../ObjectHandlers/ObjectWebSettings/ObjectWebSettings");
-    var ObjectComposedLook_1 = require("../ObjectHandlers/ObjectComposedLook/ObjectComposedLook");
-    var ObjectCustomActions_1 = require("../ObjectHandlers/ObjectCustomActions/ObjectCustomActions");
-    var ObjectFiles_1 = require("../ObjectHandlers/ObjectFiles/ObjectFiles");
-    var ObjectLists_1 = require("../ObjectHandlers/ObjectLists/ObjectLists");
-    var util_1 = require("../../../sharepoint/util");
-    var Resources = require("../Resources/Resources");
-    var Provisioning_1 = require("../Provisioning");
-    var HttpClient_1 = require("../../../net/HttpClient");
-    var Core = (function () {
-        function Core() {
-            this.handlers = {
-                "Navigation": ObjectNavigation_1.ObjectNavigation,
-                "PropertyBagEntries": ObjectPropertyBagEntries_1.ObjectPropertyBagEntries,
-                "Features": ObjectFeatures_1.ObjectFeatures,
-                "WebSettings": ObjectWebSettings_1.ObjectWebSettings,
-                "ComposedLook": ObjectComposedLook_1.ObjectComposedLook,
-                "CustomActions": ObjectCustomActions_1.ObjectCustomActions,
-                "Files": ObjectFiles_1.ObjectFiles,
-                "Lists": ObjectLists_1.ObjectLists,
-            };
-            this.httpClient = new HttpClient_1.HttpClient();
-        }
-        Core.prototype.applyTemplate = function (path, _options) {
-            var _this = this;
-            var url = util_1.replaceUrlTokens(path);
-            this.options = _options || {};
-            return new Promise(function (resolve, reject) {
-                _this.httpClient.get(url).then(function (response) {
-                    if (response.ok) {
-                        response.json().then(function (template) {
-                            _this.start(template, Object.keys(template)).then(resolve, reject);
-                        });
-                    }
-                    else {
-                        reject(response.statusText);
-                    }
-                }, function (error) {
-                    Provisioning_1.Log.error("Provisioning", Resources.Template_invalid);
-                });
-            });
-        };
-        Core.prototype.start = function (json, queue) {
-            var _this = this;
-            return new Promise(function (resolve, reject) {
-                _this.startTime = new Date().getTime();
-                _this.queueItems = [];
-                queue.forEach(function (q, index) {
-                    if (!_this.handlers[q]) {
-                        return;
-                    }
-                    _this.queueItems.push(new ProvisioningStep_1.ProvisioningStep(q, index, json[q], json.Parameters, _this.handlers[q]));
-                });
-                var promises = [];
-                promises.push(new Promise(function () {
-                    Provisioning_1.Log.info("Provisioning", Resources.Code_execution_started);
-                }));
-                var index = 1;
-                while (_this.queueItems[index - 1] !== undefined) {
-                    var i = promises.length - 1;
-                    promises.push(_this.queueItems[index - 1].execute(promises[i]));
-                    index++;
-                }
-                ;
-                Promise.all(promises).then(function (value) {
-                    Provisioning_1.Log.info("Provisioning", Resources.Code_execution_ended);
-                    resolve(value);
-                }, function (error) {
-                    Provisioning_1.Log.info("Provisioning", Resources.Code_execution_ended);
-                    reject(error);
-                });
-            });
-        };
-        return Core;
-    }());
-    exports.Core = Core;
-});
-
-},{"../../../net/HttpClient":46,"../../../sharepoint/util":68,"../ObjectHandlers/ObjectComposedLook/ObjectComposedLook":4,"../ObjectHandlers/ObjectCustomActions/ObjectCustomActions":5,"../ObjectHandlers/ObjectFeatures/ObjectFeatures":6,"../ObjectHandlers/ObjectFiles/ObjectFiles":7,"../ObjectHandlers/ObjectLists/ObjectLists":9,"../ObjectHandlers/ObjectNavigation/ObjectNavigation":10,"../ObjectHandlers/ObjectPropertyBagEntries/ObjectPropertyBagEntries":11,"../ObjectHandlers/ObjectWebSettings/ObjectWebSettings":12,"../Provisioning":13,"../Resources/Resources":14,"./ProvisioningStep":2}],2:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
-    if (typeof module === 'object' && typeof module.exports === 'object') {
-        var v = factory(require, exports); if (v !== undefined) module.exports = v;
-    }
-    else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports"], factory);
-    }
-})(function (require, exports) {
-    "use strict";
-    var ProvisioningStep = (function () {
-        function ProvisioningStep(name, index, objects, parameters, handler) {
-            this.name = name;
-            this.index = index;
-            this.objects = objects;
-            this.parameters = parameters;
-            this.handler = handler;
-        }
-        ProvisioningStep.prototype.execute = function (dependentPromise) {
-            var _this = this;
-            var _handler = new this.handler();
-            if (!dependentPromise) {
-                return _handler.ProvisionObjects(this.objects, this.parameters);
-            }
-            return new Promise(function (resolve, reject) {
-                dependentPromise.then(function () {
-                    return _handler.ProvisionObjects(_this.objects, _this.parameters).then(resolve, resolve);
-                });
-            });
-        };
-        return ProvisioningStep;
-    }());
-    exports.ProvisioningStep = ProvisioningStep;
-});
-
-},{}],3:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
-    if (typeof module === 'object' && typeof module.exports === 'object') {
-        var v = factory(require, exports); if (v !== undefined) module.exports = v;
-    }
-    else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports"], factory);
-    }
-})(function (require, exports) {
-    "use strict";
-    var Logger = (function () {
-        function Logger() {
-            this.isLoggerDefined = false;
-            if (console && console.log) {
-                this.isLoggerDefined = true;
-            }
-            this.spacing = "\t\t";
-            this.template = "{0} " + this.spacing + " [{1}] " + this.spacing + " [{2}] " + this.spacing + " {3}";
-        }
-        Logger.prototype.info = function (object, message) {
-            this.print(String.format(this.template, new Date(), object, "Information", message));
-        };
-        Logger.prototype.debug = function (object, message) {
-            this.print(String.format(this.template, new Date(), object, "Debug", message));
-        };
-        Logger.prototype.error = function (object, message) {
-            this.print(String.format(this.template, new Date(), object, "Error", message));
-        };
-        Logger.prototype.print = function (msg) {
-            if (this.isLoggerDefined) {
-                console.log(msg);
-            }
-        };
-        return Logger;
-    }());
-    exports.Logger = Logger;
-});
-
-},{}],4:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", "../../../util", "../ObjectHandlerBase/ObjectHandlerBase"], factory);
+        define(["require", "exports", "../../util", "./ObjectHandlerBase"], factory);
     }
 })(function (require, exports) {
     "use strict";
-    var util_1 = require("../../../util");
-    var ObjectHandlerBase_1 = require("../ObjectHandlerBase/ObjectHandlerBase");
+    var util_1 = require("../../util");
+    var ObjectHandlerBase_1 = require("./ObjectHandlerBase");
     var ObjectComposedLook = (function (_super) {
         __extends(ObjectComposedLook, _super);
         function ObjectComposedLook() {
@@ -196,10 +31,10 @@ var __extends = (this && this.__extends) || function (d, b) {
             return new Promise(function (resolve, reject) {
                 var clientContext = SP.ClientContext.get_current();
                 var web = clientContext.get_web();
-                var colorPaletteUrl = object.ColorPaletteUrl ? util_1.replaceUrlTokens(object.ColorPaletteUrl) : "";
-                var fontSchemeUrl = object.FontSchemeUrl ? util_1.replaceUrlTokens(object.FontSchemeUrl) : "";
-                var backgroundImageUrl = object.BackgroundImageUrl ? util_1.replaceUrlTokens(object.BackgroundImageUrl) : null;
-                web.applyTheme(util_1.getRelativeUrl(colorPaletteUrl), util_1.getRelativeUrl(fontSchemeUrl), backgroundImageUrl, true);
+                var colorPaletteUrl = object.ColorPaletteUrl ? util_1.Util.replaceUrlTokens(object.ColorPaletteUrl) : "";
+                var fontSchemeUrl = object.FontSchemeUrl ? util_1.Util.replaceUrlTokens(object.FontSchemeUrl) : "";
+                var backgroundImageUrl = object.BackgroundImageUrl ? util_1.Util.replaceUrlTokens(object.BackgroundImageUrl) : null;
+                web.applyTheme(util_1.Util.getRelativeUrl(colorPaletteUrl), util_1.Util.getRelativeUrl(fontSchemeUrl), backgroundImageUrl, true);
                 web.update();
                 clientContext.executeQueryAsync(function () {
                     _super.prototype.scope_ended.call(_this);
@@ -215,22 +50,22 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.ObjectComposedLook = ObjectComposedLook;
 });
 
-},{"../../../util":40,"../ObjectHandlerBase/ObjectHandlerBase":8}],5:[function(require,module,exports){
+},{"../../util":37,"./ObjectHandlerBase":5}],2:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", "../ObjectHandlerBase/ObjectHandlerBase"], factory);
+        define(["require", "exports", "./ObjectHandlerBase"], factory);
     }
 })(function (require, exports) {
     "use strict";
-    var ObjectHandlerBase_1 = require("../ObjectHandlerBase/ObjectHandlerBase");
+    var ObjectHandlerBase_1 = require("./ObjectHandlerBase");
     var ObjectCustomActions = (function (_super) {
         __extends(ObjectCustomActions, _super);
         function ObjectCustomActions() {
@@ -313,22 +148,22 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.ObjectCustomActions = ObjectCustomActions;
 });
 
-},{"../ObjectHandlerBase/ObjectHandlerBase":8}],6:[function(require,module,exports){
+},{"./ObjectHandlerBase":5}],3:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", "../ObjectHandlerBase/ObjectHandlerBase"], factory);
+        define(["require", "exports", "./ObjectHandlerBase"], factory);
     }
 })(function (require, exports) {
     "use strict";
-    var ObjectHandlerBase_1 = require("../ObjectHandlerBase/ObjectHandlerBase");
+    var ObjectHandlerBase_1 = require("./ObjectHandlerBase");
     var ObjectFeatures = (function (_super) {
         __extends(ObjectFeatures, _super);
         function ObjectFeatures() {
@@ -365,23 +200,23 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.ObjectFeatures = ObjectFeatures;
 });
 
-},{"../ObjectHandlerBase/ObjectHandlerBase":8}],7:[function(require,module,exports){
+},{"./ObjectHandlerBase":5}],4:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", "../../../../sharepoint/util", "../ObjectHandlerBase/ObjectHandlerBase"], factory);
+        define(["require", "exports", "../../../sharepoint/util", "./ObjectHandlerBase"], factory);
     }
 })(function (require, exports) {
     "use strict";
-    var util_1 = require("../../../../sharepoint/util");
-    var ObjectHandlerBase_1 = require("../ObjectHandlerBase/ObjectHandlerBase");
+    var util_1 = require("../../../sharepoint/util");
+    var ObjectHandlerBase_1 = require("./ObjectHandlerBase");
     var ObjectFiles = (function (_super) {
         __extends(ObjectFiles, _super);
         function ObjectFiles() {
@@ -399,7 +234,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     var filename = _this.GetFilenameFromFilePath(obj.Dest);
                     var webServerRelativeUrl = _spPageContextInfo.webServerRelativeUrl;
                     var folder = web.getFolderByServerRelativeUrl(webServerRelativeUrl + "/" + _this.GetFolderFromFilePath(obj.Dest));
-                    promises.push(jQuery.get(util_1.replaceUrlTokens(obj.Src), function (fileContents) {
+                    promises.push(jQuery.get(util_1.Util.replaceUrlTokens(obj.Src), function (fileContents) {
                         var f = {};
                         jQuery.extend(f, obj, { "Filename": filename, "Folder": folder, "Contents": fileContents });
                         fileInfos.push(f);
@@ -468,7 +303,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                     if (wp.Contents.FileUrl) {
                         promises.push((function () {
                             return new Promise(function (res, rej) {
-                                var fileUrl = util_1.replaceUrlTokens(wp.Contents.FileUrl);
+                                var fileUrl = util_1.Util.replaceUrlTokens(wp.Contents.FileUrl);
                                 jQuery.get(fileUrl, function (xml) {
                                     webParts[index].Contents.Xml = xml;
                                     res();
@@ -498,7 +333,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                                 if (!wp.Contents.Xml) {
                                     return;
                                 }
-                                var oWebPartDefinition = limitedWebPartManager.importWebPart(util_1.replaceUrlTokens(wp.Contents.Xml));
+                                var oWebPartDefinition = limitedWebPartManager.importWebPart(util_1.Util.replaceUrlTokens(wp.Contents.Xml));
                                 var oWebPart = oWebPartDefinition.get_webPart();
                                 limitedWebPartManager.addWebPart(oWebPart, wp.Zone, wp.Order);
                             });
@@ -605,19 +440,18 @@ var __extends = (this && this.__extends) || function (d, b) {
     ;
 });
 
-},{"../../../../sharepoint/util":68,"../ObjectHandlerBase/ObjectHandlerBase":8}],8:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{"../../../sharepoint/util":47,"./ObjectHandlerBase":5}],5:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", "../../Resources/Resources", "../../Provisioning", "../../../../net/HttpClient"], factory);
+        define(["require", "exports", "../../../net/HttpClient", "../../../utils/logging"], factory);
     }
 })(function (require, exports) {
     "use strict";
-    var Resources = require("../../Resources/Resources");
-    var Provisioning_1 = require("../../Provisioning");
-    var HttpClient_1 = require("../../../../net/HttpClient");
+    var HttpClient_1 = require("../../../net/HttpClient");
+    var logging_1 = require("../../../utils/logging");
     var ObjectHandlerBase = (function () {
         function ObjectHandlerBase(name) {
             this.name = name;
@@ -627,33 +461,33 @@ var __extends = (this && this.__extends) || function (d, b) {
             return new Promise(function (resolve, reject) { resolve("Not implemented."); });
         };
         ObjectHandlerBase.prototype.scope_started = function () {
-            Provisioning_1.Log.info(this.name, Resources.Code_execution_started);
+            logging_1.Logger.write("Provisioning: " + this.name + " Code execution scope started");
         };
         ObjectHandlerBase.prototype.scope_ended = function () {
-            Provisioning_1.Log.info(this.name, Resources.Code_execution_ended);
+            logging_1.Logger.write("Provisioning: " + this.name + " Code execution scope stopped");
         };
         return ObjectHandlerBase;
     }());
     exports.ObjectHandlerBase = ObjectHandlerBase;
 });
 
-},{"../../../../net/HttpClient":46,"../../Provisioning":13,"../../Resources/Resources":14}],9:[function(require,module,exports){
+},{"../../../net/HttpClient":43,"../../../utils/logging":53}],6:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", "../../Sequencer/Sequencer", "../ObjectHandlerBase/ObjectHandlerBase"], factory);
+        define(["require", "exports", "../Sequencer/Sequencer", "./ObjectHandlerBase"], factory);
     }
 })(function (require, exports) {
     "use strict";
-    var Sequencer_1 = require("../../Sequencer/Sequencer");
-    var ObjectHandlerBase_1 = require("../ObjectHandlerBase/ObjectHandlerBase");
+    var Sequencer_1 = require("../Sequencer/Sequencer");
+    var ObjectHandlerBase_1 = require("./ObjectHandlerBase");
     var ObjectLists = (function (_super) {
         __extends(ObjectLists, _super);
         function ObjectLists() {
@@ -1154,23 +988,23 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.ObjectLists = ObjectLists;
 });
 
-},{"../../Sequencer/Sequencer":15,"../ObjectHandlerBase/ObjectHandlerBase":8}],10:[function(require,module,exports){
+},{"../Sequencer/Sequencer":12,"./ObjectHandlerBase":5}],7:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", "../../../util", "../ObjectHandlerBase/ObjectHandlerBase"], factory);
+        define(["require", "exports", "../../util", "./ObjectHandlerBase"], factory);
     }
 })(function (require, exports) {
     "use strict";
-    var util_1 = require("../../../util");
-    var ObjectHandlerBase_1 = require("../ObjectHandlerBase/ObjectHandlerBase");
+    var util_1 = require("../../util");
+    var ObjectHandlerBase_1 = require("./ObjectHandlerBase");
     var ObjectNavigation = (function (_super) {
         __extends(ObjectNavigation, _super);
         function ObjectNavigation() {
@@ -1191,7 +1025,15 @@ var __extends = (this && this.__extends) || function (d, b) {
                 });
             });
         };
+        ObjectNavigation.prototype.getNodeFromCollectionByTitle = function (nodeCollection, title) {
+            var f = nodeCollection.filter(function (val) {
+                return val.get_title() === title;
+            });
+            return f[0] || null;
+        };
+        ;
         ObjectNavigation.prototype.ConfigureQuickLaunch = function (nodes, clientContext, httpClient, navigation) {
+            var _this = this;
             return new Promise(function (resolve, reject) {
                 if (nodes.length === 0) {
                     resolve();
@@ -1210,10 +1052,10 @@ var __extends = (this && this.__extends) || function (d, b) {
                         }
                         clientContext.executeQueryAsync(function () {
                             nodes.forEach(function (n) {
-                                var existingNode = util_1.getNodeFromCollectionByTitle(temporaryQuickLaunch, n.Title);
+                                var existingNode = _this.getNodeFromCollectionByTitle(temporaryQuickLaunch, n.Title);
                                 var newNode = new SP.NavigationNodeCreationInformation();
                                 newNode.set_title(n.Title);
-                                newNode.set_url(existingNode ? existingNode.get_url() : util_1.replaceUrlTokens(n.Url));
+                                newNode.set_url(existingNode ? existingNode.get_url() : util_1.Util.replaceUrlTokens(n.Url));
                                 newNode.set_asLastNode(true);
                                 quickLaunchNodeCollection_1.add(newNode);
                             });
@@ -1226,10 +1068,10 @@ var __extends = (this && this.__extends) || function (d, b) {
                                         var parentNode = nodes.filter(function (value) { return value.Title === d.Title; })[0];
                                         if (parentNode && parentNode.Children) {
                                             parentNode.Children.forEach(function (n) {
-                                                var existingNode = util_1.getNodeFromCollectionByTitle(temporaryQuickLaunch, n.Title);
+                                                var existingNode = _this.getNodeFromCollectionByTitle(temporaryQuickLaunch, n.Title);
                                                 var newNode = new SP.NavigationNodeCreationInformation();
                                                 newNode.set_title(n.Title);
-                                                newNode.set_url(existingNode ? existingNode.get_url() : util_1.replaceUrlTokens(n.Url));
+                                                newNode.set_url(existingNode ? existingNode.get_url() : util_1.Util.replaceUrlTokens(n.Url));
                                                 newNode.set_asLastNode(true);
                                                 childrenNodeCollection.add(newNode);
                                             });
@@ -1248,23 +1090,23 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.ObjectNavigation = ObjectNavigation;
 });
 
-},{"../../../util":40,"../ObjectHandlerBase/ObjectHandlerBase":8}],11:[function(require,module,exports){
+},{"../../util":37,"./ObjectHandlerBase":5}],8:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", "../../../../sharepoint/util", "../ObjectHandlerBase/ObjectHandlerBase"], factory);
+        define(["require", "exports", "../../../sharepoint/util", "./ObjectHandlerBase"], factory);
     }
 })(function (require, exports) {
     "use strict";
-    var util_1 = require("../../../../sharepoint/util");
-    var ObjectHandlerBase_1 = require("../ObjectHandlerBase/ObjectHandlerBase");
+    var util_1 = require("../../../sharepoint/util");
+    var ObjectHandlerBase_1 = require("./ObjectHandlerBase");
     var ObjectPropertyBagEntries = (function (_super) {
         __extends(ObjectPropertyBagEntries, _super);
         function ObjectPropertyBagEntries() {
@@ -1286,7 +1128,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                         var entry = entries[i];
                         propBag_1.set_item(entry.Key, entry.Value);
                         if (entry.Indexed) {
-                            indexedProperties_1.push(util_1.encodePropertyKey(entry.Key));
+                            indexedProperties_1.push(util_1.Util.encodePropertyKey(entry.Key));
                         }
                         ;
                     }
@@ -1321,22 +1163,22 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.ObjectPropertyBagEntries = ObjectPropertyBagEntries;
 });
 
-},{"../../../../sharepoint/util":68,"../ObjectHandlerBase/ObjectHandlerBase":8}],12:[function(require,module,exports){
+},{"../../../sharepoint/util":47,"./ObjectHandlerBase":5}],9:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", "../ObjectHandlerBase/ObjectHandlerBase"], factory);
+        define(["require", "exports", "./ObjectHandlerBase"], factory);
     }
 })(function (require, exports) {
     "use strict";
-    var ObjectHandlerBase_1 = require("../ObjectHandlerBase/ObjectHandlerBase");
+    var ObjectHandlerBase_1 = require("./ObjectHandlerBase");
     var ObjectWebSettings = (function (_super) {
         __extends(ObjectWebSettings, _super);
         function ObjectWebSettings() {
@@ -1383,30 +1225,98 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.ObjectWebSettings = ObjectWebSettings;
 });
 
-},{"../ObjectHandlerBase/ObjectHandlerBase":8}],13:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{"./ObjectHandlerBase":5}],10:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", "./Core/Core", "./Logger/Logger"], factory);
+        define(["require", "exports", "./ProvisioningStep", "./ObjectHandlers/ObjectNavigation", "./ObjectHandlers/ObjectPropertyBagEntries", "./ObjectHandlers/ObjectFeatures", "./ObjectHandlers/ObjectWebSettings", "./ObjectHandlers/ObjectComposedLook", "./ObjectHandlers/ObjectCustomActions", "./ObjectHandlers/ObjectFiles", "./ObjectHandlers/ObjectLists", "../../sharepoint/util", "../../utils/logging", "../../net/HttpClient"], factory);
     }
 })(function (require, exports) {
     "use strict";
-    var Core_1 = require("./Core/Core");
-    var Logger_1 = require("./Logger/Logger");
+    var ProvisioningStep_1 = require("./ProvisioningStep");
+    var ObjectNavigation_1 = require("./ObjectHandlers/ObjectNavigation");
+    var ObjectPropertyBagEntries_1 = require("./ObjectHandlers/ObjectPropertyBagEntries");
+    var ObjectFeatures_1 = require("./ObjectHandlers/ObjectFeatures");
+    var ObjectWebSettings_1 = require("./ObjectHandlers/ObjectWebSettings");
+    var ObjectComposedLook_1 = require("./ObjectHandlers/ObjectComposedLook");
+    var ObjectCustomActions_1 = require("./ObjectHandlers/ObjectCustomActions");
+    var ObjectFiles_1 = require("./ObjectHandlers/ObjectFiles");
+    var ObjectLists_1 = require("./ObjectHandlers/ObjectLists");
+    var util_1 = require("../../sharepoint/util");
+    var logging_1 = require("../../utils/logging");
+    var HttpClient_1 = require("../../net/HttpClient");
     var Provisioning = (function () {
         function Provisioning() {
-            this.core = new Core_1.Core();
+            this.handlers = {
+                "Navigation": ObjectNavigation_1.ObjectNavigation,
+                "PropertyBagEntries": ObjectPropertyBagEntries_1.ObjectPropertyBagEntries,
+                "Features": ObjectFeatures_1.ObjectFeatures,
+                "WebSettings": ObjectWebSettings_1.ObjectWebSettings,
+                "ComposedLook": ObjectComposedLook_1.ObjectComposedLook,
+                "CustomActions": ObjectCustomActions_1.ObjectCustomActions,
+                "Files": ObjectFiles_1.ObjectFiles,
+                "Lists": ObjectLists_1.ObjectLists,
+            };
+            this.httpClient = new HttpClient_1.HttpClient();
         }
+        Provisioning.prototype.applyTemplate = function (path) {
+            var _this = this;
+            var url = util_1.Util.replaceUrlTokens(path);
+            return new Promise(function (resolve, reject) {
+                _this.httpClient.get(url).then(function (response) {
+                    if (response.ok) {
+                        response.json().then(function (template) {
+                            _this.start(template, Object.keys(template)).then(resolve, reject);
+                        });
+                    }
+                    else {
+                        reject(response.statusText);
+                    }
+                }, function (error) {
+                    logging_1.Logger.write("Provisioning: The provided template is invalid", logging_1.Logger.LogLevel.Error);
+                });
+            });
+        };
+        Provisioning.prototype.start = function (json, queue) {
+            var _this = this;
+            return new Promise(function (resolve, reject) {
+                _this.startTime = new Date().getTime();
+                _this.queueItems = [];
+                queue.forEach(function (q, index) {
+                    if (!_this.handlers[q]) {
+                        return;
+                    }
+                    _this.queueItems.push(new ProvisioningStep_1.ProvisioningStep(q, index, json[q], json.Parameters, _this.handlers[q]));
+                });
+                var promises = [];
+                promises.push(new Promise(function () {
+                    logging_1.Logger.write("Provisioning: Code execution scope started", logging_1.Logger.LogLevel.Info);
+                }));
+                var index = 1;
+                while (_this.queueItems[index - 1] !== undefined) {
+                    var i = promises.length - 1;
+                    promises.push(_this.queueItems[index - 1].execute(promises[i]));
+                    index++;
+                }
+                ;
+                Promise.all(promises).then(function (value) {
+                    logging_1.Logger.write("Provisioning: Code execution scope ended", logging_1.Logger.LogLevel.Info);
+                    resolve(value);
+                }, function (error) {
+                    logging_1.Logger.write("Provisioning: Code execution scope ended" + JSON.stringify(error), logging_1.Logger.LogLevel.Error);
+                    reject(error);
+                });
+            });
+        };
         return Provisioning;
     }());
     exports.Provisioning = Provisioning;
-    exports.Log = new Logger_1.Logger();
 });
 
-},{"./Core/Core":1,"./Logger/Logger":3}],14:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{"../../net/HttpClient":43,"../../sharepoint/util":47,"../../utils/logging":53,"./ObjectHandlers/ObjectComposedLook":1,"./ObjectHandlers/ObjectCustomActions":2,"./ObjectHandlers/ObjectFeatures":3,"./ObjectHandlers/ObjectFiles":4,"./ObjectHandlers/ObjectLists":6,"./ObjectHandlers/ObjectNavigation":7,"./ObjectHandlers/ObjectPropertyBagEntries":8,"./ObjectHandlers/ObjectWebSettings":9,"./ProvisioningStep":11}],11:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -1415,13 +1325,33 @@ var __extends = (this && this.__extends) || function (d, b) {
     }
 })(function (require, exports) {
     "use strict";
-    exports.Code_execution_started = "Code execution scope started";
-    exports.Code_execution_ended = "Code execution scope ended";
-    exports.Template_invalid = "The provided template is invalid";
+    var ProvisioningStep = (function () {
+        function ProvisioningStep(name, index, objects, parameters, handler) {
+            this.name = name;
+            this.index = index;
+            this.objects = objects;
+            this.parameters = parameters;
+            this.handler = handler;
+        }
+        ProvisioningStep.prototype.execute = function (dependentPromise) {
+            var _this = this;
+            var _handler = new this.handler();
+            if (!dependentPromise) {
+                return _handler.ProvisionObjects(this.objects, this.parameters);
+            }
+            return new Promise(function (resolve, reject) {
+                dependentPromise.then(function () {
+                    return _handler.ProvisionObjects(_this.objects, _this.parameters).then(resolve, resolve);
+                });
+            });
+        };
+        return ProvisioningStep;
+    }());
+    exports.ProvisioningStep = ProvisioningStep;
 });
 
-},{}],15:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{}],12:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -1485,13 +1415,13 @@ var __extends = (this && this.__extends) || function (d, b) {
     }());
 });
 
-},{}],16:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -1500,41 +1430,42 @@ var __extends = (this && this.__extends) || function (d, b) {
     }
 })(function (require, exports) {
     "use strict";
-    var Util = require("../../utils/util");
+    var util_1 = require("../../utils/util");
     var collections_1 = require("../../collections/collections");
     var HttpClient_1 = require("../../net/HttpClient");
     var Queryable = (function () {
         function Queryable(baseUrl, path) {
             this._query = new collections_1.Dictionary();
             if (typeof baseUrl === "string") {
-                if (baseUrl.lastIndexOf("/") < 0) {
-                    this._parentUrl = baseUrl;
-                    this._url = Util.combinePaths(baseUrl, path);
+                var urlStr = baseUrl;
+                if (urlStr.lastIndexOf("/") < 0) {
+                    this._parentUrl = urlStr;
+                    this._url = util_1.Util.combinePaths(urlStr, path);
                 }
-                else if (baseUrl.lastIndexOf("/") > baseUrl.lastIndexOf("(")) {
-                    var index = baseUrl.lastIndexOf("/");
-                    this._parentUrl = baseUrl.slice(0, index);
-                    path = Util.combinePaths(baseUrl.slice(index), path);
-                    this._url = Util.combinePaths(this._parentUrl, path);
+                else if (urlStr.lastIndexOf("/") > urlStr.lastIndexOf("(")) {
+                    var index = urlStr.lastIndexOf("/");
+                    this._parentUrl = urlStr.slice(0, index);
+                    path = util_1.Util.combinePaths(urlStr.slice(index), path);
+                    this._url = util_1.Util.combinePaths(this._parentUrl, path);
                 }
                 else {
-                    var index = baseUrl.lastIndexOf("(");
-                    this._parentUrl = baseUrl.slice(0, index);
-                    this._url = Util.combinePaths(baseUrl, path);
+                    var index = urlStr.lastIndexOf("(");
+                    this._parentUrl = urlStr.slice(0, index);
+                    this._url = util_1.Util.combinePaths(urlStr, path);
                 }
             }
             else {
                 var q = baseUrl;
                 this._parentUrl = q._url;
                 this._query.merge(q._query);
-                this._url = Util.combinePaths(this._parentUrl, path);
+                this._url = util_1.Util.combinePaths(this._parentUrl, path);
             }
         }
         Queryable.prototype.concat = function (pathPart) {
             this._url += pathPart;
         };
         Queryable.prototype.append = function (pathPart) {
-            this._url = Util.combinePaths(this._url, pathPart);
+            this._url = util_1.Util.combinePaths(this._url, pathPart);
         };
         Object.defineProperty(Queryable.prototype, "parentUrl", {
             get: function () {
@@ -1551,13 +1482,13 @@ var __extends = (this && this.__extends) || function (d, b) {
             configurable: true
         });
         Queryable.prototype.toUrl = function () {
-            if (!Util.isUrlAbsolute(this._url)) {
+            if (!util_1.Util.isUrlAbsolute(this._url)) {
                 if (typeof _spPageContextInfo !== "undefined") {
                     if (_spPageContextInfo.hasOwnProperty("webAbsoluteUrl")) {
-                        return Util.combinePaths(_spPageContextInfo.webAbsoluteUrl, this._url);
+                        return util_1.Util.combinePaths(_spPageContextInfo.webAbsoluteUrl, this._url);
                     }
                     else if (_spPageContextInfo.hasOwnProperty("webServerRelativeUrl")) {
-                        return Util.combinePaths(_spPageContextInfo.webServerRelativeUrl, this._url);
+                        return util_1.Util.combinePaths(_spPageContextInfo.webServerRelativeUrl, this._url);
                     }
                 }
             }
@@ -1664,13 +1595,13 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.QueryableInstance = QueryableInstance;
 });
 
-},{"../../collections/collections":41,"../../net/HttpClient":46,"../../utils/util":76}],17:[function(require,module,exports){
+},{"../../collections/collections":38,"../../net/HttpClient":43,"../../utils/util":55}],14:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -1741,13 +1672,13 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.QueryableSecurable = QueryableSecurable;
 });
 
-},{"./Queryable":16,"./RoleAssignments":18}],18:[function(require,module,exports){
+},{"./Queryable":13,"./RoleAssignments":15}],15:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -1767,13 +1698,13 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.RoleAssignments = RoleAssignments;
 });
 
-},{"./Queryable":16}],19:[function(require,module,exports){
+},{"./Queryable":13}],16:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -1807,15 +1738,15 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.ContentType = ContentType;
 });
 
-},{"./Queryable":16}],20:[function(require,module,exports){
-arguments[4][19][0].apply(exports,arguments)
-},{"./Queryable":16,"dup":19}],21:[function(require,module,exports){
+},{"./Queryable":13}],17:[function(require,module,exports){
+arguments[4][16][0].apply(exports,arguments)
+},{"./Queryable":13,"dup":16}],18:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -1825,7 +1756,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 })(function (require, exports) {
     "use strict";
     var queryable_1 = require("./queryable");
-    var Util = require("../../utils/util");
+    var util_1 = require("../../utils/util");
     var Types = require("./types");
     var Fields = (function (_super) {
         __extends(Fields, _super);
@@ -1851,7 +1782,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 info = xml;
             }
             var postBody = JSON.stringify({
-                "parameters": Util.extend({
+                "parameters": util_1.Util.extend({
                     "__metadata": {
                         "type": "SP.XmlSchemaFieldCreationInformation",
                     },
@@ -1868,7 +1799,7 @@ var __extends = (this && this.__extends) || function (d, b) {
         Fields.prototype.add = function (title, fieldType, properties) {
             var _this = this;
             if (properties === void 0) { properties = {}; }
-            var postBody = JSON.stringify(Util.extend({
+            var postBody = JSON.stringify(util_1.Util.extend({
                 "__metadata": { "type": fieldType },
                 "Title": title,
             }, properties));
@@ -1884,7 +1815,7 @@ var __extends = (this && this.__extends) || function (d, b) {
             var props = {
                 FieldTypeKind: 2,
             };
-            return this.add(title, "SP.FieldText", Util.extend(props, properties));
+            return this.add(title, "SP.FieldText", util_1.Util.extend(props, properties));
         };
         Fields.prototype.addCalculated = function (title, formula, dateFormat, outputType, properties) {
             if (outputType === void 0) { outputType = Types.FieldTypes.Text; }
@@ -1894,7 +1825,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 Formula: formula,
                 OutputType: outputType,
             };
-            return this.add(title, "SP.FieldCalculated", Util.extend(props, properties));
+            return this.add(title, "SP.FieldCalculated", util_1.Util.extend(props, properties));
         };
         Fields.prototype.addDateTime = function (title, displayFormat, calendarType, friendlyDisplayFormat, properties) {
             if (displayFormat === void 0) { displayFormat = Types.DateTimeFieldFormatType.DateOnly; }
@@ -1906,17 +1837,17 @@ var __extends = (this && this.__extends) || function (d, b) {
                 FieldTypeKind: 4,
                 FriendlyDisplayFormat: friendlyDisplayFormat,
             };
-            return this.add(title, "SP.FieldDateTime", Util.extend(props, properties));
+            return this.add(title, "SP.FieldDateTime", util_1.Util.extend(props, properties));
         };
         Fields.prototype.addNumber = function (title, minValue, maxValue, properties) {
             var props = { FieldTypeKind: 9 };
             if (typeof minValue !== "undefined") {
-                props = Util.extend({ MinimumValue: minValue }, props);
+                props = util_1.Util.extend({ MinimumValue: minValue }, props);
             }
             if (typeof maxValue !== "undefined") {
-                props = Util.extend({ MaximumValue: maxValue }, props);
+                props = util_1.Util.extend({ MaximumValue: maxValue }, props);
             }
-            return this.add(title, "SP.FieldNumber", Util.extend(props, properties));
+            return this.add(title, "SP.FieldNumber", util_1.Util.extend(props, properties));
         };
         Fields.prototype.addCurrency = function (title, minValue, maxValue, currencyLocalId, properties) {
             if (currencyLocalId === void 0) { currencyLocalId = 1033; }
@@ -1925,12 +1856,12 @@ var __extends = (this && this.__extends) || function (d, b) {
                 FieldTypeKind: 10,
             };
             if (typeof minValue !== "undefined") {
-                props = Util.extend({ MinimumValue: minValue }, props);
+                props = util_1.Util.extend({ MinimumValue: minValue }, props);
             }
             if (typeof maxValue !== "undefined") {
-                props = Util.extend({ MaximumValue: maxValue }, props);
+                props = util_1.Util.extend({ MaximumValue: maxValue }, props);
             }
-            return this.add(title, "SP.FieldCurrency", Util.extend(props, properties));
+            return this.add(title, "SP.FieldCurrency", util_1.Util.extend(props, properties));
         };
         Fields.prototype.addMultilineText = function (title, numberOfLines, richText, restrictedMode, appendOnly, allowHyperlink, properties) {
             if (numberOfLines === void 0) { numberOfLines = 6; }
@@ -1946,7 +1877,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 RestrictedMode: restrictedMode,
                 RichText: richText,
             };
-            return this.add(title, "SP.FieldMultiLineText", Util.extend(props, properties));
+            return this.add(title, "SP.FieldMultiLineText", util_1.Util.extend(props, properties));
         };
         Fields.prototype.addUrl = function (title, displayFormat, properties) {
             if (displayFormat === void 0) { displayFormat = Types.UrlFieldFormatType.Hyperlink; }
@@ -1954,7 +1885,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 DisplayFormat: displayFormat,
                 FieldTypeKind: 11,
             };
-            return this.add(title, "SP.FieldUrl", Util.extend(props, properties));
+            return this.add(title, "SP.FieldUrl", util_1.Util.extend(props, properties));
         };
         return Fields;
     }(queryable_1.QueryableCollection));
@@ -1967,7 +1898,7 @@ var __extends = (this && this.__extends) || function (d, b) {
         Field.prototype.update = function (properties, fieldType) {
             var _this = this;
             if (fieldType === void 0) { fieldType = "SP.Field"; }
-            var postBody = JSON.stringify(Util.extend({
+            var postBody = JSON.stringify(util_1.Util.extend({
                 "__metadata": { "type": fieldType },
             }, properties));
             return this.post({
@@ -2006,29 +1937,54 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.Field = Field;
 });
 
-},{"../../utils/util":76,"./queryable":27,"./types":34}],22:[function(require,module,exports){
+},{"../../utils/util":55,"./queryable":24,"./types":31}],19:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", "./Queryable"], factory);
+        define(["require", "exports", "./Queryable", "./items"], factory);
     }
 })(function (require, exports) {
     "use strict";
     var Queryable_1 = require("./Queryable");
+    var items_1 = require("./items");
     var Files = (function (_super) {
         __extends(Files, _super);
-        function Files(baseUrl) {
-            _super.call(this, baseUrl, "files");
+        function Files(baseUrl, path) {
+            if (path === void 0) { path = "files"; }
+            _super.call(this, baseUrl, path);
         }
         Files.prototype.getByName = function (name) {
-            return new File(this.toUrl().concat("(\"" + name + "\")"));
+            var f = new File(this);
+            f.concat("('" + name + "')");
+            return f;
+        };
+        Files.prototype.add = function (url, content, shouldOverWrite) {
+            var _this = this;
+            if (shouldOverWrite === void 0) { shouldOverWrite = true; }
+            return new Files(this, "add(overwrite=" + shouldOverWrite + ",url='" + url + "')")
+                .post({ body: content }).then(function (response) {
+                return {
+                    data: response,
+                    file: _this.getByName(url),
+                };
+            });
+        };
+        Files.prototype.addTemplateFile = function (fileUrl, templateFileType) {
+            var _this = this;
+            return new Files(this, "addTemplateFile(urloffile='" + fileUrl + "',templatefiletype=" + templateFileType + ")")
+                .post().then(function (response) {
+                return {
+                    data: response,
+                    file: _this.getByName(fileUrl),
+                };
+            });
         };
         return Files;
     }(Queryable_1.QueryableCollection));
@@ -2038,30 +1994,156 @@ var __extends = (this && this.__extends) || function (d, b) {
         function File(baseUrl, path) {
             _super.call(this, baseUrl, path);
         }
-        Object.defineProperty(File.prototype, "value", {
+        Object.defineProperty(File.prototype, "author", {
             get: function () {
-                return new Queryable_1.Queryable(this, "$value");
+                return new Queryable_1.Queryable(this, "author");
             },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(File.prototype, "checkedOutByUser", {
             get: function () {
-                return new Queryable_1.Queryable(this, "CheckedOutByUser");
+                return new Queryable_1.Queryable(this, "checkedOutByUser");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(File.prototype, "checkInComment", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "checkInComment");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(File.prototype, "checkOutType", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "checkOutType");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(File.prototype, "contentTag", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "contentTag");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(File.prototype, "customizedPageStatus", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "customizedPageStatus");
             },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(File.prototype, "eTag", {
             get: function () {
-                return new Queryable_1.Queryable(this, "ETag");
+                return new Queryable_1.Queryable(this, "eTag");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(File.prototype, "exists", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "exists");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(File.prototype, "length", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "length");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(File.prototype, "level", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "level");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(File.prototype, "listItemAllFields", {
+            get: function () {
+                return new items_1.Item(this, "listItemAllFields");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(File.prototype, "lockedByUser", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "lockedByUser");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(File.prototype, "majorVersion", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "majorVersion");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(File.prototype, "minorVersion", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "minorVersion");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(File.prototype, "modifiedBy", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "modifiedBy");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(File.prototype, "name", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "name");
             },
             enumerable: true,
             configurable: true
         });
         Object.defineProperty(File.prototype, "serverRelativeUrl", {
             get: function () {
-                return new Queryable_1.Queryable(this, "ServerRelativeUrl");
+                return new Queryable_1.Queryable(this, "serverRelativeUrl");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(File.prototype, "timeCreated", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "timeCreated");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(File.prototype, "timeLastModified", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "timeLastModified");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(File.prototype, "title", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "title");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(File.prototype, "uiVersion", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "uiVersion");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(File.prototype, "uiVersionLabel", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "uiVersionLabel");
             },
             enumerable: true,
             configurable: true
@@ -2073,18 +2155,112 @@ var __extends = (this && this.__extends) || function (d, b) {
             enumerable: true,
             configurable: true
         });
+        Object.defineProperty(File.prototype, "value", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "$value");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        File.prototype.approve = function (comment) {
+            return new File(this, "approve(comment='" + comment + "')").post();
+        };
+        File.prototype.cancelUpload = function (uploadId) {
+            return new File(this, "cancelUpload(uploadId=guid'" + uploadId + "')").post();
+        };
+        File.prototype.checkin = function (comment, checkinType) {
+            if (comment === void 0) { comment = ""; }
+            if (checkinType === void 0) { checkinType = CheckinType.Major; }
+            return new File(this, "checkin(comment='" + comment + "',checkintype=" + checkinType + ")").post();
+        };
+        File.prototype.checkout = function () {
+            return new File(this, "checkout").post();
+        };
+        File.prototype.continueUpload = function (uploadId, fileOffset, fragment) {
+            return new File(this, "continueUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")").post({ body: fragment });
+        };
+        File.prototype.copyTo = function (url, shouldOverWrite) {
+            if (shouldOverWrite === void 0) { shouldOverWrite = true; }
+            return new File(this, "copyTo(strnewurl='" + url + "',boverwrite=" + shouldOverWrite + ")").post();
+        };
+        File.prototype.delete = function (eTag) {
+            if (eTag === void 0) { eTag = "*"; }
+            return new File(this).post({
+                headers: {
+                    "IF-Match": eTag,
+                    "X-HTTP-Method": "DELETE",
+                },
+            });
+        };
+        File.prototype.deny = function (comment) {
+            if (comment === void 0) { comment = ""; }
+            return new File(this, "deny(comment='" + comment + "')").post();
+        };
+        File.prototype.finishUpload = function (uploadId, fileOffset, fragment) {
+            return new File(this, "finishUpload(uploadId=guid'" + uploadId + "',fileOffset=" + fileOffset + ")")
+                .post({ body: fragment }).then(function (response) {
+                return {
+                    data: response,
+                    file: new File(response.ServerRelativeUrl),
+                };
+            });
+        };
+        File.prototype.getLimitedWebPartManager = function (scope) {
+            if (scope === void 0) { scope = WebPartsPersonalizationScope.User; }
+            return new Queryable_1.Queryable(this, "getLimitedWebPartManager(scope=" + scope + ")");
+        };
+        File.prototype.moveTo = function (url, moveOperations) {
+            if (moveOperations === void 0) { moveOperations = MoveOperations.Overwrite; }
+            return new File(this, "moveTo(newurl='" + url + "',flags=" + moveOperations + ")").post();
+        };
+        File.prototype.openBinaryStream = function () {
+            return new Queryable_1.Queryable(this, "openBinaryStream");
+        };
+        File.prototype.publish = function (comment) {
+            if (comment === void 0) { comment = ""; }
+            return new File(this, "publish(comment='" + comment + "')").post();
+        };
+        File.prototype.recycle = function () {
+            return new File(this, "recycle").post();
+        };
+        File.prototype.saveBinaryStream = function (data) {
+            return new File(this, "saveBinary").post({ body: data });
+        };
+        File.prototype.startUpload = function (uploadId, fragment) {
+            return new File(this, "startUpload(uploadId=guid'" + uploadId + "')").post({ body: fragment });
+        };
+        File.prototype.undoCheckout = function () {
+            return new File(this, "undoCheckout").post();
+        };
+        File.prototype.unpublish = function (comment) {
+            if (comment === void 0) { comment = ""; }
+            return new File(this, "unpublish(comment='" + comment + "')").post();
+        };
         return File;
     }(Queryable_1.QueryableInstance));
     exports.File = File;
     var Versions = (function (_super) {
         __extends(Versions, _super);
-        function Versions(baseUrl) {
-            _super.call(this, baseUrl, "versions");
+        function Versions(baseUrl, path) {
+            if (path === void 0) { path = "versions"; }
+            _super.call(this, baseUrl, path);
         }
         Versions.prototype.getById = function (versionId) {
             var v = new Version(this);
             v.concat("(" + versionId + ")");
             return v;
+        };
+        Versions.prototype.deleteAll = function () {
+            return new Versions(this, "deleteAll").post();
+        };
+        Versions.prototype.deleteById = function (versionId) {
+            return new Versions(this, "deleteById(vid=" + versionId + ")").post();
+        };
+        Versions.prototype.deleteByLabel = function (label) {
+            return new Versions(this, "deleteByLabel(versionlabel='" + label + "')").post();
+        };
+        Versions.prototype.restoreByLabel = function (label) {
+            return new Versions(this, "restoreByLabel(versionlabel='" + label + "')").post();
         };
         return Versions;
     }(Queryable_1.QueryableCollection));
@@ -2094,35 +2270,135 @@ var __extends = (this && this.__extends) || function (d, b) {
         function Version(baseUrl, path) {
             _super.call(this, baseUrl, path);
         }
+        Object.defineProperty(Version.prototype, "checkInComment", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "checkInComment");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Version.prototype, "created", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "created");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Version.prototype, "createdBy", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "createdBy");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Version.prototype, "id", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "id");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Version.prototype, "isCurrentVersion", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "isCurrentVersion");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Version.prototype, "size", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "size");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Version.prototype, "url", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "url");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Version.prototype, "versionLabel", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "versionLabel");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Version.prototype.delete = function (eTag) {
+            if (eTag === void 0) { eTag = "*"; }
+            return this.post({
+                headers: {
+                    "IF-Match": eTag,
+                    "X-HTTP-Method": "DELETE",
+                },
+            });
+        };
         return Version;
     }(Queryable_1.QueryableInstance));
     exports.Version = Version;
+    (function (CheckinType) {
+        CheckinType[CheckinType["Minor"] = 0] = "Minor";
+        CheckinType[CheckinType["Major"] = 1] = "Major";
+        CheckinType[CheckinType["Overwrite"] = 2] = "Overwrite";
+    })(exports.CheckinType || (exports.CheckinType = {}));
+    var CheckinType = exports.CheckinType;
+    (function (WebPartsPersonalizationScope) {
+        WebPartsPersonalizationScope[WebPartsPersonalizationScope["User"] = 0] = "User";
+        WebPartsPersonalizationScope[WebPartsPersonalizationScope["Shared"] = 1] = "Shared";
+    })(exports.WebPartsPersonalizationScope || (exports.WebPartsPersonalizationScope = {}));
+    var WebPartsPersonalizationScope = exports.WebPartsPersonalizationScope;
+    (function (MoveOperations) {
+        MoveOperations[MoveOperations["Overwrite"] = 1] = "Overwrite";
+        MoveOperations[MoveOperations["AllowBrokenThickets"] = 8] = "AllowBrokenThickets";
+    })(exports.MoveOperations || (exports.MoveOperations = {}));
+    var MoveOperations = exports.MoveOperations;
+    (function (TemplateFileType) {
+        TemplateFileType[TemplateFileType["StandardPage"] = 0] = "StandardPage";
+        TemplateFileType[TemplateFileType["WikiPage"] = 1] = "WikiPage";
+        TemplateFileType[TemplateFileType["FormPage"] = 2] = "FormPage";
+    })(exports.TemplateFileType || (exports.TemplateFileType = {}));
+    var TemplateFileType = exports.TemplateFileType;
 });
 
-},{"./Queryable":16}],23:[function(require,module,exports){
+},{"./Queryable":13,"./items":21}],20:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", "./Queryable", "./files"], factory);
+        define(["require", "exports", "./Queryable", "./files", "./items"], factory);
     }
 })(function (require, exports) {
     "use strict";
     var Queryable_1 = require("./Queryable");
     var files_1 = require("./files");
+    var items_1 = require("./items");
     var Folders = (function (_super) {
         __extends(Folders, _super);
-        function Folders(baseUrl) {
-            _super.call(this, baseUrl, "folders");
+        function Folders(baseUrl, path) {
+            if (path === void 0) { path = "folders"; }
+            _super.call(this, baseUrl, path);
         }
         Folders.prototype.getByName = function (name) {
-            return new Folder(this.toUrl().concat("('" + name + "')"));
+            var f = new Folder(this);
+            f.concat("('" + name + "')");
+            return f;
+        };
+        Folders.prototype.add = function (url) {
+            var _this = this;
+            return new Folders(this, "add('" + url + "')").post().then(function (response) {
+                return {
+                    data: response,
+                    folder: _this.getByName(url),
+                };
+            });
         };
         return Folders;
     }(Queryable_1.QueryableCollection));
@@ -2132,37 +2408,9 @@ var __extends = (this && this.__extends) || function (d, b) {
         function Folder(baseUrl, path) {
             _super.call(this, baseUrl, path);
         }
-        Object.defineProperty(Folder.prototype, "parentFolder", {
+        Object.defineProperty(Folder.prototype, "contentTypeOrder", {
             get: function () {
-                return new Folder(this, "ParentFolder");
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Folder.prototype, "folders", {
-            get: function () {
-                return new Folders(this);
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Folder.prototype, "name", {
-            get: function () {
-                return new Queryable_1.Queryable(this, "Name");
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Folder.prototype, "properties", {
-            get: function () {
-                return new Queryable_1.QueryableInstance(this, "Properties");
-            },
-            enumerable: true,
-            configurable: true
-        });
-        Object.defineProperty(Folder.prototype, "serverRelativeUrl", {
-            get: function () {
-                return new Queryable_1.Queryable(this, "ServerRelativeUrl");
+                return new Queryable_1.QueryableCollection(this, "contentTypeOrder");
             },
             enumerable: true,
             configurable: true
@@ -2174,18 +2422,93 @@ var __extends = (this && this.__extends) || function (d, b) {
             enumerable: true,
             configurable: true
         });
+        Object.defineProperty(Folder.prototype, "folders", {
+            get: function () {
+                return new Folders(this);
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Folder.prototype, "itemCount", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "itemCount");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Folder.prototype, "listItemAllFields", {
+            get: function () {
+                return new items_1.Item(this, "listItemAllFields");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Folder.prototype, "name", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "name");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Folder.prototype, "parentFolder", {
+            get: function () {
+                return new Folder(this, "parentFolder");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Folder.prototype, "properties", {
+            get: function () {
+                return new Queryable_1.QueryableInstance(this, "properties");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Folder.prototype, "serverRelativeUrl", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "serverRelativeUrl");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Folder.prototype, "uniqueContentTypeOrder", {
+            get: function () {
+                return new Queryable_1.QueryableCollection(this, "uniqueContentTypeOrder");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(Folder.prototype, "welcomePage", {
+            get: function () {
+                return new Queryable_1.Queryable(this, "welcomePage");
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Folder.prototype.delete = function (eTag) {
+            if (eTag === void 0) { eTag = "*"; }
+            return new Folder(this).post({
+                headers: {
+                    "IF-Match": eTag,
+                    "X-HTTP-Method": "DELETE",
+                },
+            });
+        };
+        Folder.prototype.recycle = function () {
+            return new Folder(this, "recycle").post();
+        };
         return Folder;
     }(Queryable_1.QueryableInstance));
     exports.Folder = Folder;
 });
 
-},{"./Queryable":16,"./files":22}],24:[function(require,module,exports){
+},{"./Queryable":13,"./files":19,"./items":21}],21:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -2198,7 +2521,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var QueryableSecurable_1 = require("./QueryableSecurable");
     var folders_1 = require("./folders");
     var contenttypes_1 = require("./contenttypes");
-    var Util = require("../../utils/util");
+    var util_1 = require("../../utils/util");
     var Items = (function (_super) {
         __extends(Items, _super);
         function Items(baseUrl, path) {
@@ -2215,7 +2538,7 @@ var __extends = (this && this.__extends) || function (d, b) {
             if (properties === void 0) { properties = {}; }
             var parentList = this.getParent(Queryable_1.QueryableInstance);
             return parentList.select("ListItemEntityTypeFullName").get().then(function (d) {
-                var postBody = JSON.stringify(Util.extend({
+                var postBody = JSON.stringify(util_1.Util.extend({
                     "__metadata": { "type": d.ListItemEntityTypeFullName },
                 }, properties));
                 return _this.post({ body: postBody }).then(function (data) {
@@ -2295,7 +2618,7 @@ var __extends = (this && this.__extends) || function (d, b) {
             if (eTag === void 0) { eTag = "*"; }
             var parentList = this.getParent(Queryable_1.QueryableInstance, this.parentUrl.substr(0, this.parentUrl.lastIndexOf("/")));
             return parentList.select("ListItemEntityTypeFullName").get().then(function (d) {
-                var postBody = JSON.stringify(Util.extend({
+                var postBody = JSON.stringify(util_1.Util.extend({
                     "__metadata": { "type": d.ListItemEntityTypeFullName },
                 }, properties));
                 return _this.post({
@@ -2336,13 +2659,13 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.Item = Item;
 });
 
-},{"../../utils/util":76,"./Queryable":16,"./QueryableSecurable":17,"./contenttypes":20,"./folders":23}],25:[function(require,module,exports){
+},{"../../utils/util":55,"./Queryable":13,"./QueryableSecurable":14,"./contenttypes":17,"./folders":20}],22:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -2357,7 +2680,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var fields_1 = require("./fields");
     var queryable_1 = require("./queryable");
     var QueryableSecurable_1 = require("./QueryableSecurable");
-    var Util = require("../../utils/util");
+    var util_1 = require("../../utils/util");
     var Lists = (function (_super) {
         __extends(Lists, _super);
         function Lists(baseUrl, path) {
@@ -2378,7 +2701,7 @@ var __extends = (this && this.__extends) || function (d, b) {
             if (template === void 0) { template = 100; }
             if (enableContentTypes === void 0) { enableContentTypes = false; }
             if (additionalSettings === void 0) { additionalSettings = {}; }
-            var postBody = JSON.stringify(Util.extend({
+            var postBody = JSON.stringify(util_1.Util.extend({
                 "__metadata": { "type": "SP.List" },
                 "AllowContentTypes": enableContentTypes,
                 "BaseTemplate": template,
@@ -2391,6 +2714,19 @@ var __extends = (this && this.__extends) || function (d, b) {
                     list: _this.getByTitle(title),
                     data: data
                 };
+            });
+        };
+        Lists.prototype.ensure = function (title, description, template, enableContentTypes, additionalSettings) {
+            var _this = this;
+            if (description === void 0) { description = ""; }
+            if (template === void 0) { template = 100; }
+            if (enableContentTypes === void 0) { enableContentTypes = false; }
+            if (additionalSettings === void 0) { additionalSettings = {}; }
+            return new Promise(function (resolve, reject) {
+                var list = _this.getByTitle(title);
+                list.get().then(function (d) { return resolve({ created: false, list: list, data: d }); }).catch(function () {
+                    _this.add(title, description, template, enableContentTypes, additionalSettings).then(function (r) { return resolve({ created: true, list: _this.getByTitle(title), data: r.data }); });
+                }).catch(function () { return reject(); });
             });
         };
         Lists.prototype.ensureSiteAssetsLibrary = function () {
@@ -2489,7 +2825,7 @@ var __extends = (this && this.__extends) || function (d, b) {
         List.prototype.update = function (properties, eTag) {
             var _this = this;
             if (eTag === void 0) { eTag = "*"; }
-            var postBody = JSON.stringify(Util.extend({
+            var postBody = JSON.stringify(util_1.Util.extend({
                 "__metadata": { "type": "SP.List" },
             }, properties));
             return this.post({
@@ -2520,17 +2856,17 @@ var __extends = (this && this.__extends) || function (d, b) {
             });
         };
         List.prototype.getChanges = function (query) {
-            var postBody = JSON.stringify({ "query": Util.extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
+            var postBody = JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
             var q = new List(this, "getchanges");
             return q.post({ body: postBody });
         };
         List.prototype.getItemsByCAMLQuery = function (query) {
-            var postBody = JSON.stringify({ "query": Util.extend({ "__metadata": { "type": "SP.CamlQuery" } }, query) });
+            var postBody = JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.CamlQuery" } }, query) });
             var q = new List(this, "getitems");
             return q.post({ body: postBody });
         };
         List.prototype.getListItemChangesSinceToken = function (query) {
-            var postBody = JSON.stringify({ "query": Util.extend({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) });
+            var postBody = JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.ChangeLogItemQuery" } }, query) });
             var q = new List(this, "getlistitemchangessincetoken");
             return q.post({ body: postBody }, function (r) { return r.text(); });
         };
@@ -2556,13 +2892,13 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.List = List;
 });
 
-},{"../../utils/util":76,"./QueryableSecurable":17,"./contenttypes":20,"./fields":21,"./items":24,"./queryable":27,"./views":36}],26:[function(require,module,exports){
+},{"../../utils/util":55,"./QueryableSecurable":14,"./contenttypes":17,"./fields":18,"./items":21,"./queryable":24,"./views":33}],23:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -2598,15 +2934,15 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.Navigation = Navigation;
 });
 
-},{"./queryable":27,"./quickLaunch":28,"./topNavigationBar":33}],27:[function(require,module,exports){
-arguments[4][16][0].apply(exports,arguments)
-},{"../../collections/collections":41,"../../net/HttpClient":46,"../../utils/util":76,"dup":16}],28:[function(require,module,exports){
+},{"./queryable":24,"./quickLaunch":25,"./topNavigationBar":30}],24:[function(require,module,exports){
+arguments[4][13][0].apply(exports,arguments)
+},{"../../collections/collections":38,"../../net/HttpClient":43,"../../utils/util":55,"dup":13}],25:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -2626,8 +2962,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.QuickLaunch = QuickLaunch;
 });
 
-},{"./Queryable":16}],29:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{"./Queryable":13}],26:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -2639,7 +2975,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var search_1 = require("./search");
     var site_1 = require("./site");
     var webs_1 = require("./webs");
-    var Util = require("../../utils/util");
+    var util_1 = require("../../utils/util");
     var userprofiles_1 = require("./userprofiles");
     var Rest = (function () {
         function Rest() {
@@ -2682,13 +3018,13 @@ var __extends = (this && this.__extends) || function (d, b) {
             return this._cdImpl(webs_1.Web, addInWebUrl, hostWebUrl, "web");
         };
         Rest.prototype._cdImpl = function (factory, addInWebUrl, hostWebUrl, urlPart) {
-            if (!Util.isUrlAbsolute(addInWebUrl)) {
+            if (!util_1.Util.isUrlAbsolute(addInWebUrl)) {
                 throw "The addInWebUrl parameter must be an absolute url.";
             }
-            if (!Util.isUrlAbsolute(hostWebUrl)) {
+            if (!util_1.Util.isUrlAbsolute(hostWebUrl)) {
                 throw "The hostWebUrl parameter must be an absolute url.";
             }
-            var url = Util.combinePaths(addInWebUrl, "_api/SP.AppContextSite(@target)", urlPart);
+            var url = util_1.Util.combinePaths(addInWebUrl, "_api/SP.AppContextSite(@target)", urlPart);
             var instance = new factory(url);
             instance.query.add("@target", "'" + encodeURIComponent(hostWebUrl) + "'");
             return instance;
@@ -2698,13 +3034,13 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.Rest = Rest;
 });
 
-},{"../../utils/util":76,"./search":30,"./site":31,"./userprofiles":35,"./webs":37}],30:[function(require,module,exports){
+},{"../../utils/util":55,"./search":27,"./site":28,"./userprofiles":32,"./webs":34}],27:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -2809,26 +3145,31 @@ var __extends = (this && this.__extends) || function (d, b) {
     var QueryPropertyValueType = exports.QueryPropertyValueType;
 });
 
-},{"./Queryable":16}],31:[function(require,module,exports){
+},{"./Queryable":13}],28:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", "./Queryable", "./webs"], factory);
+        define(["require", "exports", "./Queryable", "./webs", "../../utils/util"], factory);
     }
 })(function (require, exports) {
     "use strict";
     var Queryable_1 = require("./Queryable");
     var webs_1 = require("./webs");
+    var util_1 = require("../../utils/util");
     var Site = (function (_super) {
         __extends(Site, _super);
         function Site(baseUrl, path) {
+            var urlStr = baseUrl;
+            if (urlStr.indexOf("_api") < 0) {
+                baseUrl = util_1.Util.combinePaths(urlStr, "_api");
+            }
             _super.call(this, baseUrl, path);
         }
         Object.defineProperty(Site.prototype, "rootWeb", {
@@ -2857,13 +3198,13 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.Site = Site;
 });
 
-},{"./Queryable":16,"./webs":37}],32:[function(require,module,exports){
+},{"../../utils/util":55,"./Queryable":13,"./webs":34}],29:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -2883,13 +3224,13 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.SiteUsers = SiteUsers;
 });
 
-},{"./Queryable":16}],33:[function(require,module,exports){
+},{"./Queryable":13}],30:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -2909,8 +3250,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.TopNavigationBar = TopNavigationBar;
 });
 
-},{"./Queryable":16}],34:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{"./Queryable":13}],31:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -2999,13 +3340,13 @@ var __extends = (this && this.__extends) || function (d, b) {
     var UrlFieldFormatType = exports.UrlFieldFormatType;
 });
 
-},{}],35:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -3192,13 +3533,13 @@ var __extends = (this && this.__extends) || function (d, b) {
     }(Queryable_1.Queryable));
 });
 
-},{"../../utils/files":73,"./Queryable":16}],36:[function(require,module,exports){
+},{"../../utils/files":52,"./Queryable":13}],33:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -3208,7 +3549,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 })(function (require, exports) {
     "use strict";
     var Queryable_1 = require("./Queryable");
-    var Util = require("../../utils/util");
+    var util_1 = require("../../utils/util");
     var Views = (function (_super) {
         __extends(Views, _super);
         function Views(baseUrl) {
@@ -3226,7 +3567,7 @@ var __extends = (this && this.__extends) || function (d, b) {
             var _this = this;
             if (personalView === void 0) { personalView = false; }
             if (additionalSettings === void 0) { additionalSettings = {}; }
-            var postBody = JSON.stringify(Util.extend({
+            var postBody = JSON.stringify(util_1.Util.extend({
                 "__metadata": { "type": "SP.View" },
                 "Title": title,
                 "PersonalView": personalView
@@ -3255,7 +3596,7 @@ var __extends = (this && this.__extends) || function (d, b) {
         });
         View.prototype.update = function (properties) {
             var _this = this;
-            var postBody = JSON.stringify(Util.extend({
+            var postBody = JSON.stringify(util_1.Util.extend({
                 "__metadata": { "type": "SP.View" },
             }, properties));
             return this.post({
@@ -3316,13 +3657,13 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.ViewFields = ViewFields;
 });
 
-},{"../../utils/util":76,"./Queryable":16}],37:[function(require,module,exports){
+},{"../../utils/util":55,"./Queryable":13}],34:[function(require,module,exports){
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -3339,7 +3680,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     var contentTypes_1 = require("./contentTypes");
     var folders_1 = require("./folders");
     var files_1 = require("./files");
-    var Util = require("../../utils/util");
+    var util_1 = require("../../utils/util");
     var locale_1 = require("../../types/locale");
     var lists_2 = require("./lists");
     var Webs = (function (_super) {
@@ -3355,7 +3696,7 @@ var __extends = (this && this.__extends) || function (d, b) {
             if (language === void 0) { language = locale_1.Locale.EnglishUnitedStates; }
             if (inheritPermissions === void 0) { inheritPermissions = true; }
             if (additionalSettings === void 0) { additionalSettings = {}; }
-            var props = Util.extend({
+            var props = util_1.Util.extend({
                 Description: description,
                 Language: language,
                 Title: title,
@@ -3364,7 +3705,7 @@ var __extends = (this && this.__extends) || function (d, b) {
                 WebTemplate: template,
             }, additionalSettings);
             var postBody = JSON.stringify({
-                "parameters": Util.extend({
+                "parameters": util_1.Util.extend({
                     "__metadata": { "type": "SP.WebCreationInformation" },
                 }, props),
             });
@@ -3382,6 +3723,10 @@ var __extends = (this && this.__extends) || function (d, b) {
     var Web = (function (_super) {
         __extends(Web, _super);
         function Web(baseUrl, path) {
+            var urlStr = baseUrl;
+            if (urlStr.indexOf("_api") < 0) {
+                baseUrl = util_1.Util.combinePaths(urlStr, "_api");
+            }
             _super.call(this, baseUrl, path);
         }
         Object.defineProperty(Web.prototype, "webs", {
@@ -3434,7 +3779,7 @@ var __extends = (this && this.__extends) || function (d, b) {
         };
         Web.prototype.update = function (properties) {
             var _this = this;
-            var postBody = JSON.stringify(Util.extend({
+            var postBody = JSON.stringify(util_1.Util.extend({
                 "__metadata": { "type": "SP.Web" },
             }, properties));
             return this.post({
@@ -3498,7 +3843,7 @@ var __extends = (this && this.__extends) || function (d, b) {
             });
         };
         Web.prototype.getChanges = function (query) {
-            var postBody = JSON.stringify({ "query": Util.extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
+            var postBody = JSON.stringify({ "query": util_1.Util.extend({ "__metadata": { "type": "SP.ChangeQuery" } }, query) });
             var q = new Web(this, "getchanges");
             return q.post({ body: postBody });
         };
@@ -3523,8 +3868,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     exports.Web = Web;
 });
 
-},{"../../types/locale":69,"../../utils/util":76,"./Queryable":16,"./QueryableSecurable":17,"./contentTypes":19,"./files":22,"./folders":23,"./lists":25,"./navigation":26,"./siteUsers":32}],38:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{"../../types/locale":48,"../../utils/util":55,"./Queryable":13,"./QueryableSecurable":14,"./contentTypes":16,"./files":19,"./folders":20,"./lists":22,"./navigation":23,"./siteUsers":29}],35:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -3534,19 +3879,19 @@ var __extends = (this && this.__extends) || function (d, b) {
 })(function (require, exports) {
     "use strict";
     var Provisioning_1 = require("./Provisioning/Provisioning");
-    var Util = require("./Util");
+    var Util_1 = require("./Util");
     var SharePoint = (function () {
         function SharePoint() {
             this.provisioning = new Provisioning_1.Provisioning();
-            this.util = Util;
+            this.util = Util_1.Util;
         }
         return SharePoint;
     }());
     exports.SharePoint = SharePoint;
 });
 
-},{"./Provisioning/Provisioning":13,"./Util":39}],39:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{"./Provisioning/Provisioning":10,"./Util":36}],36:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -3555,44 +3900,38 @@ var __extends = (this && this.__extends) || function (d, b) {
     }
 })(function (require, exports) {
     "use strict";
-    function getListId() {
-        return _spPageContextInfo.hasOwnProperty("pageListId") ? _spPageContextInfo.pageListId.substring(1, 37) : "";
-    }
-    exports.getListId = getListId;
-    function getRelativeUrl(url) {
-        return url.replace(document.location.protocol + "//" + document.location.hostname, "");
-    }
-    exports.getRelativeUrl = getRelativeUrl;
-    function getNodeFromCollectionByTitle(nodeCollection, title) {
-        var f = nodeCollection.filter(function (val) {
-            return val.get_title() === title;
-        });
-        return f[0] || null;
-    }
-    exports.getNodeFromCollectionByTitle = getNodeFromCollectionByTitle;
-    ;
-    function replaceUrlTokens(url) {
-        return url.replace(/{site}/g, _spPageContextInfo.webAbsoluteUrl)
-            .replace(/{sitecollection}/g, _spPageContextInfo.siteAbsoluteUrl);
-    }
-    exports.replaceUrlTokens = replaceUrlTokens;
-    ;
-    function encodePropertyKey(propKey) {
-        var bytes = [];
-        for (var i = 0; i < propKey.length; ++i) {
-            bytes.push(propKey.charCodeAt(i));
-            bytes.push(0);
+    var Util = (function () {
+        function Util() {
         }
-        var b64encoded = window.btoa(String.fromCharCode.apply(null, bytes));
-        return b64encoded;
-    }
-    exports.encodePropertyKey = encodePropertyKey;
+        Util.getListId = function () {
+            return _spPageContextInfo.hasOwnProperty("pageListId") ? _spPageContextInfo.pageListId.substring(1, 37) : "";
+        };
+        Util.getRelativeUrl = function (url) {
+            return url.replace(document.location.protocol + "//" + document.location.hostname, "");
+        };
+        Util.replaceUrlTokens = function (url) {
+            return url.replace(/{site}/g, _spPageContextInfo.webAbsoluteUrl)
+                .replace(/{sitecollection}/g, _spPageContextInfo.siteAbsoluteUrl);
+        };
+        ;
+        Util.encodePropertyKey = function (propKey) {
+            var bytes = [];
+            for (var i = 0; i < propKey.length; ++i) {
+                bytes.push(propKey.charCodeAt(i));
+                bytes.push(0);
+            }
+            var b64encoded = window.btoa(String.fromCharCode.apply(null, bytes));
+            return b64encoded;
+        };
+        return Util;
+    }());
+    exports.Util = Util;
 });
 
-},{}],40:[function(require,module,exports){
-arguments[4][39][0].apply(exports,arguments)
-},{"dup":39}],41:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{}],37:[function(require,module,exports){
+arguments[4][36][0].apply(exports,arguments)
+},{"dup":36}],38:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -3601,7 +3940,7 @@ arguments[4][39][0].apply(exports,arguments)
     }
 })(function (require, exports) {
     "use strict";
-    var Util = require("../utils/util");
+    var util_1 = require("../utils/util");
     var Dictionary = (function () {
         function Dictionary() {
             this.keys = [];
@@ -3625,7 +3964,7 @@ arguments[4][39][0].apply(exports,arguments)
             }
         };
         Dictionary.prototype.merge = function (source) {
-            if (Util.isFunction(source["getKeys"])) {
+            if (util_1.Util.isFunction(source["getKeys"])) {
                 var sourceAsDictionary = source;
                 var keys = sourceAsDictionary.getKeys();
                 var l = keys.length;
@@ -3670,8 +4009,8 @@ arguments[4][39][0].apply(exports,arguments)
     exports.Dictionary = Dictionary;
 });
 
-},{"../utils/util":76}],42:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{"../utils/util":55}],39:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -3682,9 +4021,9 @@ arguments[4][39][0].apply(exports,arguments)
     "use strict";
     var Collections = require("../collections/collections");
     var providers = require("./providers/providers");
-    exports.Providers = providers;
     var Settings = (function () {
         function Settings() {
+            this.Providers = providers;
             this._settings = new Collections.Dictionary();
         }
         Settings.prototype.add = function (key, value) {
@@ -3694,7 +4033,16 @@ arguments[4][39][0].apply(exports,arguments)
             this._settings.add(key, JSON.stringify(value));
         };
         Settings.prototype.apply = function (hash) {
-            this._settings.merge(hash);
+            var _this = this;
+            return new Promise(function (resolve, reject) {
+                try {
+                    _this._settings.merge(hash);
+                    resolve();
+                }
+                catch (e) {
+                    reject(e);
+                }
+            });
         };
         Settings.prototype.load = function (provider) {
             var _this = this;
@@ -3722,8 +4070,8 @@ arguments[4][39][0].apply(exports,arguments)
     exports.Settings = Settings;
 });
 
-},{"../collections/collections":41,"./providers/providers":44}],43:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{"../collections/collections":38,"./providers/providers":41}],40:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -3775,8 +4123,8 @@ arguments[4][39][0].apply(exports,arguments)
     exports.default = CachingConfigurationProvider;
 });
 
-},{"../../utils/storage":75}],44:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{"../../utils/storage":54}],41:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -3791,34 +4139,39 @@ arguments[4][39][0].apply(exports,arguments)
     exports.SPListConfigurationProvider = spListConfigurationProvider_1.default;
 });
 
-},{"./cachingConfigurationProvider":43,"./spListConfigurationProvider":45}],45:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{"./cachingConfigurationProvider":40,"./spListConfigurationProvider":42}],42:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
     else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", "./cachingConfigurationProvider", "../../sharepoint/rest/webs", "../../utils/util"], factory);
+        define(["require", "exports", "./cachingConfigurationProvider"], factory);
     }
 })(function (require, exports) {
     "use strict";
     var cachingConfigurationProvider_1 = require("./cachingConfigurationProvider");
-    var webs_1 = require("../../sharepoint/rest/webs");
-    var Util = require("../../utils/util");
     var SPListConfigurationProvider = (function () {
-        function SPListConfigurationProvider(webUrl, listTitle) {
-            if (listTitle === void 0) { listTitle = "config"; }
-            this.webUrl = webUrl;
-            this.listTitle = listTitle;
+        function SPListConfigurationProvider(sourceWeb, sourceListTitle) {
+            if (sourceListTitle === void 0) { sourceListTitle = "config"; }
+            this.sourceWeb = sourceWeb;
+            this.sourceListTitle = sourceListTitle;
         }
-        SPListConfigurationProvider.prototype.getWebUrl = function () {
-            return this.webUrl;
-        };
-        SPListConfigurationProvider.prototype.getListTitle = function () {
-            return this.listTitle;
-        };
+        Object.defineProperty(SPListConfigurationProvider.prototype, "web", {
+            get: function () {
+                return this.sourceWeb;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Object.defineProperty(SPListConfigurationProvider.prototype, "listTitle", {
+            get: function () {
+                return this.sourceListTitle;
+            },
+            enumerable: true,
+            configurable: true
+        });
         SPListConfigurationProvider.prototype.getConfiguration = function () {
-            var web = new webs_1.Web(Util.combinePaths(this.webUrl, "_api"));
-            return web.lists.getByTitle(this.listTitle).items.select("Title", "Value").get().then(function (data) {
+            return this.web.lists.getByTitle(this.listTitle).items.select("Title", "Value").get().then(function (data) {
                 var configuration = {};
                 data.forEach(function (i) {
                     configuration[i.Title] = i.Value;
@@ -3827,7 +4180,7 @@ arguments[4][39][0].apply(exports,arguments)
             });
         };
         SPListConfigurationProvider.prototype.asCaching = function () {
-            var cacheKey = "splist_" + this.webUrl + "+" + this.listTitle;
+            var cacheKey = "splist_" + this.web.toUrl() + "+" + this.listTitle;
             return new cachingConfigurationProvider_1.default(this, cacheKey);
         };
         return SPListConfigurationProvider;
@@ -3836,8 +4189,8 @@ arguments[4][39][0].apply(exports,arguments)
     exports.default = SPListConfigurationProvider;
 });
 
-},{"../../sharepoint/rest/webs":67,"../../utils/util":76,"./cachingConfigurationProvider":43}],46:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{"./cachingConfigurationProvider":40}],43:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -3848,7 +4201,7 @@ arguments[4][39][0].apply(exports,arguments)
     "use strict";
     var fetchClient_1 = require("./fetchClient");
     var digestCache_1 = require("./digestCache");
-    var Util = require("../utils/util");
+    var util_1 = require("../utils/util");
     var HttpClient = (function () {
         function HttpClient(_impl) {
             if (_impl === void 0) { _impl = new fetchClient_1.FetchClient(); }
@@ -3858,7 +4211,7 @@ arguments[4][39][0].apply(exports,arguments)
         HttpClient.prototype.fetch = function (url, options) {
             if (options === void 0) { options = {}; }
             var self = this;
-            var opts = Util.extend(options, { cache: "no-cache", credentials: "same-origin" }, true);
+            var opts = util_1.Util.extend(options, { cache: "no-cache", credentials: "same-origin" }, true);
             var headers = new Headers();
             if (typeof options.headers !== "undefined") {
                 var temp = new Request("", { headers: options.headers });
@@ -3875,7 +4228,7 @@ arguments[4][39][0].apply(exports,arguments)
             if (!headers.has("X-ClientService-ClientTag")) {
                 headers.append("X-ClientService-ClientTag", "SharePoint.PnP.JavaScriptCore");
             }
-            opts = Util.extend(opts, { headers: headers });
+            opts = util_1.Util.extend(opts, { headers: headers });
             if (opts.method && opts.method.toUpperCase() !== "GET") {
                 if (!headers.has("X-RequestDigest")) {
                     var index = url.indexOf("/_api/");
@@ -3898,12 +4251,12 @@ arguments[4][39][0].apply(exports,arguments)
         };
         HttpClient.prototype.get = function (url, options) {
             if (options === void 0) { options = {}; }
-            var opts = Util.extend(options, { method: "GET" });
+            var opts = util_1.Util.extend(options, { method: "GET" });
             return this.fetch(url, opts);
         };
         HttpClient.prototype.post = function (url, options) {
             if (options === void 0) { options = {}; }
-            var opts = Util.extend(options, { method: "POST" });
+            var opts = util_1.Util.extend(options, { method: "POST" });
             return this.fetch(url, opts);
         };
         return HttpClient;
@@ -3911,8 +4264,8 @@ arguments[4][39][0].apply(exports,arguments)
     exports.HttpClient = HttpClient;
 });
 
-},{"../utils/util":76,"./digestCache":47,"./fetchClient":48}],47:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{"../utils/util":55,"./digestCache":44,"./fetchClient":45}],44:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -3922,7 +4275,7 @@ arguments[4][39][0].apply(exports,arguments)
 })(function (require, exports) {
     "use strict";
     var collections_1 = require("../collections/collections");
-    var Util = require("../utils/util");
+    var util_1 = require("../utils/util");
     var CachedDigest = (function () {
         function CachedDigest() {
         }
@@ -3944,7 +4297,7 @@ arguments[4][39][0].apply(exports,arguments)
                     return Promise.resolve(cachedDigest.value);
                 }
             }
-            var url = Util.combinePaths(webUrl, "/_api/contextinfo");
+            var url = util_1.Util.combinePaths(webUrl, "/_api/contextinfo");
             return self._httpClient.fetchRaw(url, {
                 cache: "no-cache",
                 credentials: "same-origin",
@@ -3974,9 +4327,9 @@ arguments[4][39][0].apply(exports,arguments)
     exports.DigestCache = DigestCache;
 });
 
-},{"../collections/collections":41,"../utils/util":76}],48:[function(require,module,exports){
+},{"../collections/collections":38,"../utils/util":55}],45:[function(require,module,exports){
 (function (global){
-(function (factory) {/* istanbul ignore next */
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -3997,8 +4350,8 @@ arguments[4][39][0].apply(exports,arguments)
 });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],49:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{}],46:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -4007,20 +4360,20 @@ arguments[4][39][0].apply(exports,arguments)
     }
 })(function (require, exports) {
     "use strict";
-    var Util = require("./utils/Util");
+    var Util_1 = require("./utils/Util");
     var SharePoint_1 = require("./SharePoint/SharePoint");
     var Storage_1 = require("./utils/Storage");
-    var Configuration = require("./configuration/configuration");
+    var configuration_1 = require("./configuration/configuration");
     var logging_1 = require("./utils/logging");
     var rest_1 = require("./SharePoint/Rest/rest");
     var PnP = (function () {
         function PnP() {
         }
-        PnP.util = Util;
+        PnP.util = Util_1.Util;
         PnP.sharepoint = new SharePoint_1.SharePoint();
         PnP.sp = new rest_1.Rest();
         PnP.storage = new Storage_1.PnPClientStorage();
-        PnP.configuration = Configuration;
+        PnP.config = new configuration_1.Settings();
         PnP.log = logging_1.Logger;
         return PnP;
     }());
@@ -4028,46 +4381,10 @@ arguments[4][39][0].apply(exports,arguments)
     return PnP;
 });
 
-},{"./SharePoint/Rest/rest":29,"./SharePoint/SharePoint":38,"./configuration/configuration":42,"./utils/Storage":70,"./utils/Util":71,"./utils/logging":74}],50:[function(require,module,exports){
-arguments[4][16][0].apply(exports,arguments)
-},{"../../collections/collections":41,"../../net/HttpClient":46,"../../utils/util":76,"dup":16}],51:[function(require,module,exports){
-arguments[4][17][0].apply(exports,arguments)
-},{"./Queryable":50,"./RoleAssignments":52,"dup":17}],52:[function(require,module,exports){
-arguments[4][18][0].apply(exports,arguments)
-},{"./Queryable":50,"dup":18}],53:[function(require,module,exports){
-arguments[4][19][0].apply(exports,arguments)
-},{"./Queryable":50,"dup":19}],54:[function(require,module,exports){
-arguments[4][19][0].apply(exports,arguments)
-},{"./Queryable":50,"dup":19}],55:[function(require,module,exports){
-arguments[4][21][0].apply(exports,arguments)
-},{"../../utils/util":76,"./queryable":61,"./types":65,"dup":21}],56:[function(require,module,exports){
-arguments[4][22][0].apply(exports,arguments)
-},{"./Queryable":50,"dup":22}],57:[function(require,module,exports){
-arguments[4][23][0].apply(exports,arguments)
-},{"./Queryable":50,"./files":56,"dup":23}],58:[function(require,module,exports){
-arguments[4][24][0].apply(exports,arguments)
-},{"../../utils/util":76,"./Queryable":50,"./QueryableSecurable":51,"./contenttypes":54,"./folders":57,"dup":24}],59:[function(require,module,exports){
-arguments[4][25][0].apply(exports,arguments)
-},{"../../utils/util":76,"./QueryableSecurable":51,"./contenttypes":54,"./fields":55,"./items":58,"./queryable":61,"./views":66,"dup":25}],60:[function(require,module,exports){
-arguments[4][26][0].apply(exports,arguments)
-},{"./queryable":61,"./quickLaunch":62,"./topNavigationBar":64,"dup":26}],61:[function(require,module,exports){
-arguments[4][16][0].apply(exports,arguments)
-},{"../../collections/collections":41,"../../net/HttpClient":46,"../../utils/util":76,"dup":16}],62:[function(require,module,exports){
-arguments[4][28][0].apply(exports,arguments)
-},{"./Queryable":50,"dup":28}],63:[function(require,module,exports){
-arguments[4][32][0].apply(exports,arguments)
-},{"./Queryable":50,"dup":32}],64:[function(require,module,exports){
-arguments[4][33][0].apply(exports,arguments)
-},{"./Queryable":50,"dup":33}],65:[function(require,module,exports){
-arguments[4][34][0].apply(exports,arguments)
-},{"dup":34}],66:[function(require,module,exports){
+},{"./SharePoint/Rest/rest":26,"./SharePoint/SharePoint":35,"./configuration/configuration":39,"./utils/Storage":49,"./utils/Util":50,"./utils/logging":53}],47:[function(require,module,exports){
 arguments[4][36][0].apply(exports,arguments)
-},{"../../utils/util":76,"./Queryable":50,"dup":36}],67:[function(require,module,exports){
-arguments[4][37][0].apply(exports,arguments)
-},{"../../types/locale":69,"../../utils/util":76,"./Queryable":50,"./QueryableSecurable":51,"./contentTypes":53,"./files":56,"./folders":57,"./lists":59,"./navigation":60,"./siteUsers":63,"dup":37}],68:[function(require,module,exports){
-arguments[4][39][0].apply(exports,arguments)
-},{"dup":39}],69:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{"dup":36}],48:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -4319,8 +4636,8 @@ arguments[4][39][0].apply(exports,arguments)
     var Locale = exports.Locale;
 });
 
-},{}],70:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{}],49:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -4329,7 +4646,7 @@ arguments[4][39][0].apply(exports,arguments)
     }
 })(function (require, exports) {
     "use strict";
-    var Util = require("./Util");
+    var Util_1 = require("./Util");
     var PnPClientStorageWrapper = (function () {
         function PnPClientStorageWrapper(store, defaultTimeoutMinutes) {
             this.store = store;
@@ -4369,7 +4686,7 @@ arguments[4][39][0].apply(exports,arguments)
             if (!this.enabled) {
                 return getter();
             }
-            if (!Util.isFunction(getter)) {
+            if (!Util_1.Util.isFunction(getter)) {
                 throw "Function expected for parameter 'getter'.";
             }
             return new Promise(function (resolve, reject) {
@@ -4398,7 +4715,7 @@ arguments[4][39][0].apply(exports,arguments)
         };
         PnPClientStorageWrapper.prototype.createPersistable = function (o, expire) {
             if (typeof expire === "undefined") {
-                expire = Util.dateAdd(new Date(), "minute", this.defaultTimeoutMinutes);
+                expire = Util_1.Util.dateAdd(new Date(), "minute", this.defaultTimeoutMinutes);
             }
             return JSON.stringify({ expiration: expire, value: o });
         };
@@ -4415,8 +4732,8 @@ arguments[4][39][0].apply(exports,arguments)
     exports.PnPClientStorage = PnPClientStorage;
 });
 
-},{"./Util":71}],71:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{"./Util":50}],50:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -4425,166 +4742,157 @@ arguments[4][39][0].apply(exports,arguments)
     }
 })(function (require, exports) {
     "use strict";
-    function getCtxCallback(context, method) {
-        var params = [];
-        for (var _i = 2; _i < arguments.length; _i++) {
-            params[_i - 2] = arguments[_i];
+    var Util = (function () {
+        function Util() {
         }
-        return function () {
-            method.apply(context, params);
+        Util.getCtxCallback = function (context, method) {
+            var params = [];
+            for (var _i = 2; _i < arguments.length; _i++) {
+                params[_i - 2] = arguments[_i];
+            }
+            return function () {
+                method.apply(context, params);
+            };
         };
-    }
-    exports.getCtxCallback = getCtxCallback;
-    function urlParamExists(name) {
-        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
-        return regex.test(location.search);
-    }
-    exports.urlParamExists = urlParamExists;
-    function getUrlParamByName(name) {
-        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
-        var results = regex.exec(location.search);
-        return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-    }
-    exports.getUrlParamByName = getUrlParamByName;
-    function getUrlParamBoolByName(name) {
-        var p = getUrlParamByName(name);
-        var isFalse = (p === "" || /false|0/i.test(p));
-        return !isFalse;
-    }
-    exports.getUrlParamBoolByName = getUrlParamBoolByName;
-    function stringInsert(target, index, s) {
-        if (index > 0) {
-            return target.substring(0, index) + s + target.substring(index, target.length);
-        }
-        return s + target;
-    }
-    exports.stringInsert = stringInsert;
-    function dateAdd(date, interval, units) {
-        var ret = new Date(date.toLocaleString());
-        switch (interval.toLowerCase()) {
-            case "year":
-                ret.setFullYear(ret.getFullYear() + units);
-                break;
-            case "quarter":
-                ret.setMonth(ret.getMonth() + 3 * units);
-                break;
-            case "month":
-                ret.setMonth(ret.getMonth() + units);
-                break;
-            case "week":
-                ret.setDate(ret.getDate() + 7 * units);
-                break;
-            case "day":
-                ret.setDate(ret.getDate() + units);
-                break;
-            case "hour":
-                ret.setTime(ret.getTime() + units * 3600000);
-                break;
-            case "minute":
-                ret.setTime(ret.getTime() + units * 60000);
-                break;
-            case "second":
-                ret.setTime(ret.getTime() + units * 1000);
-                break;
-            default:
-                ret = undefined;
-                break;
-        }
-        return ret;
-    }
-    exports.dateAdd = dateAdd;
-    function loadStylesheet(path, avoidCache) {
-        if (avoidCache) {
-            path += "?" + encodeURIComponent((new Date()).getTime().toString());
-        }
-        var head = document.getElementsByTagName("head");
-        if (head.length > 1) {
-            var e = document.createElement("link");
-            head[0].appendChild(e);
-            e.setAttribute("type", "text/css");
-            e.setAttribute("rel", "stylesheet");
-            e.setAttribute("href", path);
-        }
-    }
-    exports.loadStylesheet = loadStylesheet;
-    function combinePaths() {
-        var paths = [];
-        for (var _i = 0; _i < arguments.length; _i++) {
-            paths[_i - 0] = arguments[_i];
-        }
-        var parts = [];
-        for (var i = 0; i < paths.length; i++) {
-            if (typeof paths[i] !== "undefined" && paths[i] !== null) {
-                parts.push(paths[i].replace(/^[\\|\/]/, "").replace(/[\\|\/]$/, ""));
+        Util.urlParamExists = function (name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+            return regex.test(location.search);
+        };
+        Util.getUrlParamByName = function (name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)");
+            var results = regex.exec(location.search);
+            return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        };
+        Util.getUrlParamBoolByName = function (name) {
+            var p = this.getUrlParamByName(name);
+            var isFalse = (p === "" || /false|0/i.test(p));
+            return !isFalse;
+        };
+        Util.stringInsert = function (target, index, s) {
+            if (index > 0) {
+                return target.substring(0, index) + s + target.substring(index, target.length);
             }
-        }
-        return parts.join("/").replace(/\\/, "/");
-    }
-    exports.combinePaths = combinePaths;
-    function getRandomString(chars) {
-        var text = "";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        for (var i = 0; i < chars; i++) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
-        return text;
-    }
-    exports.getRandomString = getRandomString;
-    function getGUID() {
-        var d = new Date().getTime();
-        var guid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-            var r = (d + Math.random() * 16) % 16 | 0;
-            d = Math.floor(d / 16);
-            return (c === "x" ? r : (r & 0x3 | 0x8)).toString(16);
-        });
-        return guid;
-    }
-    exports.getGUID = getGUID;
-    function isFunction(candidateFunction) {
-        return typeof candidateFunction === "function";
-    }
-    exports.isFunction = isFunction;
-    function stringIsNullOrEmpty(s) {
-        return typeof s === "undefined" || s === null || s === "";
-    }
-    exports.stringIsNullOrEmpty = stringIsNullOrEmpty;
-    function extend(target, source, noOverwrite) {
-        if (noOverwrite === void 0) { noOverwrite = false; }
-        var result = {};
-        for (var id in target) {
-            result[id] = target[id];
-        }
-        var check = noOverwrite ? function (o, i) { return !o.hasOwnProperty(i); } : function (o, i) { return true; };
-        for (var id in source) {
-            if (check(result, id)) {
-                result[id] = source[id];
+            return s + target;
+        };
+        Util.dateAdd = function (date, interval, units) {
+            var ret = new Date(date.toLocaleString());
+            switch (interval.toLowerCase()) {
+                case "year":
+                    ret.setFullYear(ret.getFullYear() + units);
+                    break;
+                case "quarter":
+                    ret.setMonth(ret.getMonth() + 3 * units);
+                    break;
+                case "month":
+                    ret.setMonth(ret.getMonth() + units);
+                    break;
+                case "week":
+                    ret.setDate(ret.getDate() + 7 * units);
+                    break;
+                case "day":
+                    ret.setDate(ret.getDate() + units);
+                    break;
+                case "hour":
+                    ret.setTime(ret.getTime() + units * 3600000);
+                    break;
+                case "minute":
+                    ret.setTime(ret.getTime() + units * 60000);
+                    break;
+                case "second":
+                    ret.setTime(ret.getTime() + units * 1000);
+                    break;
+                default:
+                    ret = undefined;
+                    break;
             }
-        }
-        return result;
-    }
-    exports.extend = extend;
-    function applyMixins(derivedCtor) {
-        var baseCtors = [];
-        for (var _i = 1; _i < arguments.length; _i++) {
-            baseCtors[_i - 1] = arguments[_i];
-        }
-        baseCtors.forEach(function (baseCtor) {
-            Object.getOwnPropertyNames(baseCtor.prototype).forEach(function (name) {
-                derivedCtor.prototype[name] = baseCtor.prototype[name];
+            return ret;
+        };
+        Util.loadStylesheet = function (path, avoidCache) {
+            if (avoidCache) {
+                path += "?" + encodeURIComponent((new Date()).getTime().toString());
+            }
+            var head = document.getElementsByTagName("head");
+            if (head.length > 1) {
+                var e = document.createElement("link");
+                head[0].appendChild(e);
+                e.setAttribute("type", "text/css");
+                e.setAttribute("rel", "stylesheet");
+                e.setAttribute("href", path);
+            }
+        };
+        Util.combinePaths = function () {
+            var paths = [];
+            for (var _i = 0; _i < arguments.length; _i++) {
+                paths[_i - 0] = arguments[_i];
+            }
+            var parts = [];
+            for (var i = 0; i < paths.length; i++) {
+                if (typeof paths[i] !== "undefined" && paths[i] !== null) {
+                    parts.push(paths[i].replace(/^[\\|\/]/, "").replace(/[\\|\/]$/, ""));
+                }
+            }
+            return parts.join("/").replace(/\\/, "/");
+        };
+        Util.getRandomString = function (chars) {
+            var text = "";
+            var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            for (var i = 0; i < chars; i++) {
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+            }
+            return text;
+        };
+        Util.getGUID = function () {
+            var d = new Date().getTime();
+            var guid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+                var r = (d + Math.random() * 16) % 16 | 0;
+                d = Math.floor(d / 16);
+                return (c === "x" ? r : (r & 0x3 | 0x8)).toString(16);
             });
-        });
-    }
-    exports.applyMixins = applyMixins;
-    function isUrlAbsolute(url) {
-        return /^https?:\/\/|^\/\//i.test(url);
-    }
-    exports.isUrlAbsolute = isUrlAbsolute;
+            return guid;
+        };
+        Util.isFunction = function (candidateFunction) {
+            return typeof candidateFunction === "function";
+        };
+        Util.stringIsNullOrEmpty = function (s) {
+            return typeof s === "undefined" || s === null || s === "";
+        };
+        Util.extend = function (target, source, noOverwrite) {
+            if (noOverwrite === void 0) { noOverwrite = false; }
+            var result = {};
+            for (var id in target) {
+                result[id] = target[id];
+            }
+            var check = noOverwrite ? function (o, i) { return !o.hasOwnProperty(i); } : function (o, i) { return true; };
+            for (var id in source) {
+                if (check(result, id)) {
+                    result[id] = source[id];
+                }
+            }
+            return result;
+        };
+        Util.applyMixins = function (derivedCtor) {
+            var baseCtors = [];
+            for (var _i = 1; _i < arguments.length; _i++) {
+                baseCtors[_i - 1] = arguments[_i];
+            }
+            baseCtors.forEach(function (baseCtor) {
+                Object.getOwnPropertyNames(baseCtor.prototype).forEach(function (name) {
+                    derivedCtor.prototype[name] = baseCtor.prototype[name];
+                });
+            });
+        };
+        Util.isUrlAbsolute = function (url) {
+            return /^https?:\/\/|^\/\//i.test(url);
+        };
+        return Util;
+    }());
+    exports.Util = Util;
 });
 
-},{}],72:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{}],51:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -4593,9 +4901,9 @@ arguments[4][39][0].apply(exports,arguments)
     }
 })(function (require, exports) {
     "use strict";
-    var Util = require("./util");
+    var util_1 = require("./util");
     function stringIsNullOrEmpty(value, parameterName) {
-        if (Util.stringIsNullOrEmpty(value)) {
+        if (util_1.Util.stringIsNullOrEmpty(value)) {
             throw "Parameter '" + parameterName + "' cannot be null or empty.";
         }
     }
@@ -4608,8 +4916,8 @@ arguments[4][39][0].apply(exports,arguments)
     exports.objectIsNull = objectIsNull;
 });
 
-},{"./util":76}],73:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{"./util":55}],52:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -4644,8 +4952,8 @@ arguments[4][39][0].apply(exports,arguments)
     }
 });
 
-},{}],74:[function(require,module,exports){
-(function (factory) {/* istanbul ignore next */
+},{}],53:[function(require,module,exports){
+(function (factory) {
     if (typeof module === 'object' && typeof module.exports === 'object') {
         var v = factory(require, exports); if (v !== undefined) module.exports = v;
     }
@@ -4844,9 +5152,9 @@ arguments[4][39][0].apply(exports,arguments)
     })(Logger = exports.Logger || (exports.Logger = {}));
 });
 
-},{"./args":72}],75:[function(require,module,exports){
-arguments[4][70][0].apply(exports,arguments)
-},{"./Util":71,"dup":70}],76:[function(require,module,exports){
-arguments[4][71][0].apply(exports,arguments)
-},{"dup":71}]},{},[49])(49)
+},{"./args":51}],54:[function(require,module,exports){
+arguments[4][49][0].apply(exports,arguments)
+},{"./Util":50,"dup":49}],55:[function(require,module,exports){
+arguments[4][50][0].apply(exports,arguments)
+},{"dup":50}]},{},[46])(46)
 });

@@ -8,5 +8,6 @@
     <File Path="Samples\LoggingAdvanced.html" Url="Samples/LoggingAdvanced.html" ReplaceContent="TRUE" />
     <File Path="Samples\Search.html" Url="Samples/Search.html" ReplaceContent="TRUE" />
     <File Path="Samples\AddListAndItem.html" Url="Samples/AddListAndItem.html" ReplaceContent="TRUE" />
+    <File Path="Samples\Configuration.html" Url="Samples/Configuration.html" ReplaceContent="TRUE" />    
   </Module>
 </Elements>

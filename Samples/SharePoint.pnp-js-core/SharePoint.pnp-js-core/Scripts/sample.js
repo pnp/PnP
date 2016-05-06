@@ -21,8 +21,10 @@
 
         var self = this;
 
+        // set our current sample function
         self._currentSampleFunction = f;
 
+        // get the current host and app web urls.
         var hostWebUrl = self.hostWebUrl();
         var appWebUrl = self.appWebUrl();
 
@@ -34,7 +36,7 @@
         $("#sample-code").empty().append(pageCode);
 
         // manipulate the embed code so it will work when pasted in
-        var embedCode = rawCode.replace("crossDomainWeb(appWebUrl, hostWebUrl)", "web").replace(/"\.\.\/scripts/g, "\"" + appWebUrl + "/scripts");
+        var embedCode = rawCode.replace(/crossDomainWeb\(appWebUrl, hostWebUrl\)/g, "web").replace(/"\.\.\/scripts/g, "\"" + appWebUrl + "/scripts");
         embedCode = "    &lt;script type=\"text/javascript\" src=\"" + appWebUrl + "/scripts/embedsample.js\"&gt;&lt;/script&gt;" + embedCode;
         embedCode = "    &lt;script type=\"text/javascript\" src=\"" + appWebUrl + "/scripts/jquery-1.9.1.min.js\"&gt;&lt;/script&gt;\n" + embedCode;
         embedCode = embedCode.replace("(hostWebUrl, appWebUrl)", "()");
