@@ -1,6 +1,6 @@
 /* Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See LICENSE in the project root for license information. */
 /**
- * Office UI Fabric 2.4.1
+ * Office UI Fabric 2.5.0
  * The front-end framework for building experiences for Office 365.
  **/
 /*
@@ -874,7 +874,6 @@
   display: inline-block;
   position: absolute;
   top: 4px;
-  right: 0;
   bottom: 0;
   left: 4px;
   width: 11px;

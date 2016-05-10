@@ -12,19 +12,22 @@ namespace BusinessApps.O365ProjectsApp.Infrastructure.MicrosoftGraph
         /// <summary>
         /// Creates a new Office 365 Group for a target Project
         /// </summary>
+        /// <param name="AccessToken">The AccessToken to use for creating the Office 365 Group</param>
         /// <param name="group">The group to create</param>
         /// <param name="membersUPN">An array of users' UPN that will become members of the group</param>
         /// <param name="photo">The photo of the group</param>
         /// <returns>The Office 365 Group created</returns>
-        public static Group CreateOffice365Group(Group group,
+        public static Group CreateOffice365Group(
+            Group group,
             String[] membersUPN,
-            Stream photo = null)
+            Stream photo = null, 
+            String accessToken = null)
         {
             // Create the Office 365 Group
             String jsonResponse = MicrosoftGraphHelper.MakePostRequestForString(
                 String.Format("{0}groups",
                     MicrosoftGraphHelper.MicrosoftGraphV1BaseUri),
-                group, "application/json");
+                group, "application/json", accessToken: accessToken);
 
             var addedGroup = JsonConvert.DeserializeObject<Group>(jsonResponse);
 
@@ -40,7 +43,7 @@ namespace BusinessApps.O365ProjectsApp.Infrastructure.MicrosoftGraph
                         ObjectId = String.Format("{0}users/{1}/id",
                         MicrosoftGraphHelper.MicrosoftGraphV1BaseUri, upn)
                     },
-                    "application/json");
+                    "application/json", accessToken: accessToken);
             }
 
             // Update the group's picture, if any
@@ -67,7 +70,7 @@ namespace BusinessApps.O365ProjectsApp.Infrastructure.MicrosoftGraph
                             String.Format("{0}groups/{1}/photo/$value",
                                 MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
                                 addedGroup.Id),
-                            photoCopy, "image/jpeg");
+                            photoCopy, "image/jpeg", accessToken: accessToken);
 
                         break;
                     }
@@ -100,19 +103,19 @@ namespace BusinessApps.O365ProjectsApp.Infrastructure.MicrosoftGraph
             return (foundGroups != null && foundGroups.Groups.Count > 0);
         }
 
-        public static void SendMessageToGroupConversation(String groupId, Conversation conversation)
+        public static void SendMessageToGroupConversation(String groupId, Conversation conversation, String accessToken = null)
         {
             String jsonResponse = MicrosoftGraphHelper.MakePostRequestForString(
                 String.Format("{0}groups/{1}/conversations",
                     MicrosoftGraphHelper.MicrosoftGraphV1BaseUri, groupId),
-                    conversation, "application/json");
+                    conversation, "application/json", accessToken);
         }
 
         /// <summary>
         /// Creates a new thread in the conversation flow of a target Office 365 Group
         /// </summary>
         /// <param name="groupId">The ID of the target Office 365 Group</param>
-        public static void SendMessageToGroupConversation(String groupId)
+        public static void SendMessageToGroupConversation(String groupId, String accessToken = null)
         {
             var conversation = new Conversation
             {
@@ -141,7 +144,7 @@ namespace BusinessApps.O365ProjectsApp.Infrastructure.MicrosoftGraph
             MicrosoftGraphHelper.MakePostRequest(
                 String.Format("{0}groups/{1}/conversations",
                     MicrosoftGraphHelper.MicrosoftGraphV1BaseUri, groupId),
-                    conversation, "application/json");
+                    conversation, "application/json", accessToken);
         }
     }
 }

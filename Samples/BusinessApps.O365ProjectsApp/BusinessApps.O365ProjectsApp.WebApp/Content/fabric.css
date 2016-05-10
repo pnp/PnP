@@ -1,6 +1,6 @@
 /* Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See LICENSE in the project root for license information. */
 /**
- * Office UI Fabric 2.4.1
+ * Office UI Fabric 2.5.0
  * The front-end framework for building experiences for Office 365.
  **/
 .ms-u-borderBox,
@@ -89,6 +89,11 @@
 .ms-bgColor-neutralPrimary,
 .ms-bgColor-neutralPrimary--hover:hover {
   background-color: #333333;
+}
+
+.ms-bgColor-neutralPrimaryAlt,
+.ms-bgColor-neutralPrimaryAlt--hover:hover {
+  background-color: #3c3c3c;
 }
 
 .ms-bgColor-neutralSecondary,
@@ -232,7 +237,7 @@
 }
 
 .ms-bgColor-alert {
-  background-color: #f4f4f4;
+  background-color: #fed9cc;
 }
 
 .ms-bgColor-error {
@@ -297,6 +302,11 @@
 .ms-borderColor-neutralPrimary,
 .ms-borderColor-neutralPrimary--hover:hover {
   border-color: #333333;
+}
+
+.ms-borderColor-neutralPrimaryAlt,
+.ms-borderColor-neutralPrimaryAlt--hover:hover {
+  border-color: #3c3c3c;
 }
 
 .ms-borderColor-neutralSecondary,
@@ -640,6 +650,11 @@
 .ms-fontColor-neutralPrimary,
 .ms-fontColor-neutralPrimary--hover:hover {
   color: #333333;
+}
+
+.ms-fontColor-neutralPrimaryAlt,
+.ms-fontColor-neutralPrimaryAlt--hover:hover {
+  color: #3c3c3c;
 }
 
 .ms-fontColor-neutralSecondary,

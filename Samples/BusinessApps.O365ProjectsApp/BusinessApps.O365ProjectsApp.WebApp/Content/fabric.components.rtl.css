@@ -1,7 +1,7 @@
 /* Copyright (c) Microsoft. All rights reserved. Licensed under the MIT license. See LICENSE in the project root for license information. */
 
 /**
- * Office UI Fabric 2.4.1
+ * Office UI Fabric 2.5.0
  * The front-end framework for building experiences for Office 365.
  **/
 
@@ -66,7 +66,7 @@
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.4);
   background-color: #ffffff;
   border: 1px solid #c8c8c8;
-  z-index: 105;
+  z-index: 5;
 }
 
 .ms-Breadcrumb-overflowMenu:before {
@@ -471,7 +471,7 @@
 }
 
 .ms-Callout {
-  z-index: 100;
+  z-index: 4;
   margin: 16px auto;
   position: relative;
   width: 288px;
@@ -506,7 +506,7 @@
 .ms-Callout.ms-Callout--arrowLeft:after,
 .ms-Callout.ms-Callout--arrowRight:after,
 .ms-Callout.ms-Callout--arrowTop:after {
-  z-index: 10;
+  z-index: 3;
 }
 
 .ms-Callout.ms-Callout--arrowLeft:after,
@@ -597,7 +597,7 @@
   background-color: #ffffff;
   box-sizing: border-box;
   outline: 1px solid transparent;
-  z-index: 5;
+  z-index: 2;
   box-shadow: 0 0 5px 0 rgba(0,0,0,0.4);
 }
 
@@ -614,7 +614,7 @@
   height: 32px;
   font-size: 14px;
   color: #666666;
-  z-index: 110;
+  z-index: 6;
 }
 
 .ms-Callout-inner {
@@ -623,7 +623,7 @@
 }
 
 .ms-Callout-header {
-  z-index: 105;
+  z-index: 5;
   padding: 18px 24px 12px;
 }
 
@@ -869,7 +869,6 @@
   display: inline-block;
   position: absolute;
   top: 4px;
-  left: 0;
   bottom: 0;
   right: 4px;
   width: 11px;
@@ -1150,7 +1149,7 @@
 @media screen and (-ms-high-contrast:active) {
   .ms-CommandBarSearch {
     border-left: 1px solid #ffffff;
-    z-index: 10;
+    z-index: 3;
   }
 }
 
@@ -1261,7 +1260,7 @@
   display: none;
   top: 1px;
   left: 0;
-  z-index: 10;
+  z-index: 3;
 }
 
 .ms-CommandBarSearch.is-active {
@@ -1273,7 +1272,7 @@
   .ms-CommandBarSearch.is-active {
     width: 100%;
     position: absolute;
-    z-index: 10;
+    z-index: 3;
     max-width: 100%;
   }
 }
@@ -1344,7 +1343,7 @@
   list-style-type: none;
   position: absolute;
   width: 180px;
-  z-index: 105;
+  z-index: 5;
 }
 
 .ms-ContextualMenu-item {
@@ -1586,7 +1585,7 @@
   padding: 0;
   box-shadow: none;
   margin-bottom: 17px;
-  z-index: 300;
+  z-index: 8;
 }
 
 .ms-DatePicker .ms-TextField {
@@ -1609,7 +1608,7 @@
   position: absolute;
   left: 5px;
   bottom: 5px;
-  z-index: 5;
+  z-index: 2;
 }
 
 .ms-DatePicker-holder {
@@ -1640,7 +1639,7 @@
 
 .ms-DatePicker-picker--opened {
   position: relative;
-  z-index: 10;
+  z-index: 3;
 }
 
 .ms-DatePicker-frame {
@@ -1801,7 +1800,7 @@
   position: absolute;
   top: 0;
   width: 140px;
-  z-index: 5;
+  z-index: 2;
   cursor: pointer;
 }
 
@@ -2043,7 +2042,7 @@
   width: 100%;
   top: 0;
   right: 0;
-  z-index: 300;
+  z-index: 8;
   display: block;
   font-size: 0;
   line-height: 100vh;
@@ -2104,7 +2103,7 @@
   top: 12px;
   left: 12px;
   padding: 8px;
-  z-index: 10;
+  z-index: 3;
 }
 
 .ms-Dialog-button.ms-Dialog-button--close .ms-Icon.ms-Icon--x {
@@ -2337,7 +2336,7 @@
   width: 100%;
   max-height: 200px;
   max-width: 268px;
-  z-index: 400;
+  z-index: 10;
   top: 0;
   left: 0;
   bottom: 0;
@@ -3176,7 +3175,7 @@
     left: 0;
     top: 0;
     outline: 1px solid transparent;
-    z-index: 5;
+    z-index: 2;
   }
 
   .ms-NavBar.is-open .ms-NavBar-item .ms-ContextualMenu {
@@ -3314,7 +3313,7 @@
   right: 0;
   left: 0;
   top: 0;
-  z-index: 200;
+  z-index: 7;
 }
 
 .ms-Overlay.ms-Overlay--dark {
@@ -3331,7 +3330,7 @@
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 300;
+  z-index: 8;
 }
 
 .ms-Panel,
@@ -3354,7 +3353,7 @@
   left: 0;
   top: 0;
   display: none;
-  z-index: 10;
+  z-index: 3;
   width: 100%;
 }
 
@@ -3618,23 +3617,23 @@
 }
 
 .ms-Panel.is-open.ms-Panel-animateIn .ms-Panel-main {
-  -webkit-animation-duration: 0.367s;
-          animation-duration: 0.367s;
   -webkit-animation-name: fadeIn;
           animation-name: fadeIn;
-  -webkit-animation-fill-mode: both;
-          animation-fill-mode: both;
   -webkit-animation-duration: 0.167s;
           animation-duration: 0.167s;
 }
 
+.ms-Panel.is-open.ms-Panel-animateIn .ms-Panel-main,
 .ms-Panel.is-open.ms-Panel-animateOut .ms-Panel-main {
   -webkit-animation-duration: 0.367s;
           animation-duration: 0.367s;
-  -webkit-animation-name: fadeOut;
-          animation-name: fadeOut;
   -webkit-animation-fill-mode: both;
           animation-fill-mode: both;
+}
+
+.ms-Panel.is-open.ms-Panel-animateOut .ms-Panel-main {
+  -webkit-animation-name: fadeOut;
+          animation-name: fadeOut;
   -webkit-animation-duration: 0.1s;
           animation-duration: 0.1s;
 }
@@ -3995,7 +3994,7 @@
   max-width: 340px;
   padding-top: 9px;
   position: absolute;
-  z-index: 305;
+  z-index: 9;
 }
 
 .ms-PeoplePicker.is-active .ms-PeoplePicker-results {
@@ -5614,7 +5613,7 @@
   padding: 6px 10px 7px 3px;
   width: 180px;
   background-color: transparent;
-  z-index: 5;
+  z-index: 2;
 }
 
 .ms-SearchBox-field.hovering {
@@ -5653,7 +5652,7 @@
   display: none;
   font-size: 17px;
   color: #ffffff;
-  z-index: 10;
+  z-index: 3;
 }
 
 .ms-SearchBox-label {
