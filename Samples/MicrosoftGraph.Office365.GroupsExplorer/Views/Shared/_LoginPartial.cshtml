@@ -1,0 +1,14 @@
+﻿@if (Request.IsAuthenticated)
+{
+	<text>
+		<li class="ms-NavBar-item ms-NavBar-item--right ms-borderColor-white--hover">
+			@Html.ActionLink("Sign out", "SignOut", "Account", routeValues: null, htmlAttributes: new { @class = "ms-NavBar-link ms-font-l ms-fontColor-white" })
+		</li>
+	</text>
+}
+else
+{
+	<li class="ms-NavBar-item ms-NavBar-item--right">
+		@Html.ActionLink("Sign in", "SignIn", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "ms-NavBar-link ms-font-l ms-fontColor-white" })
+	</li>
+}

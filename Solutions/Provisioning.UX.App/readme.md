@@ -4,6 +4,15 @@
 
 Even with good governance, your sites can proliferate and grow out of control. Sites are created as they are needed, but sites are rarely deleted. Many organization have search crawl burdened by unused site collections, difficulty with outdated and irrelevant results. This Solution shows a reference sample on how to build self-service site collection provisioning solution using the Office 365 Developer PnP provisioning engine, implements additional scenarios and samples to bring together a cohesive governance solution that can be used in your enterprise.
 
+### How does this solution relate to the [PnP Partner Pack](http://aka.ms/OfficeDevPnPpartnerpack)? ###
+Both this solution as the [PnP Partner Pack](http://aka.ms/OfficeDevPnPpartnerpack) are enterprise level implementations of a self service site provisioning solution that's leveraging the PnP Provisioning engine. We see this solution more as a start for your own development efforts whereas the [PnP Partner Pack](http://aka.ms/OfficeDevPnPpartnerpack) is more polished and ready for immediate usage in your environment. 
+
+From a feature perspective both solutions are quite similar with a few exceptions:
+- The [PnP Partner Pack](http://aka.ms/OfficeDevPnPpartnerpack) also supports customized sub site creation
+- The [PnP Partner Pack](http://aka.ms/OfficeDevPnPpartnerpack) only works for SharePoint Online...whereas this solution also work for SharePoint 2013/2016 on-premises
+- The installation of the [PnP Partner Pack](http://aka.ms/OfficeDevPnPpartnerpack) is more polished and easier to use 
+
+
 ### Features ###
 - User Interface to request site collections
 - Capability to store Site Requests in either a SharePoint list or Azure Document DB 
@@ -29,7 +38,7 @@ Even with good governance, your sites can proliferate and grow out of control. S
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Provisioning.UX.App | Frank Marasco, Brian Michely, Steven Follis and Wictor Wilén
+Provisioning.UX.App | Frank Marasco, Brian Michely, Steven Follis and Wictor WilÃ©n
 
 *PnP remote provisioning Core Engine work done by Erwin van Hunen (Knowit AB), Paolo Pialorsi (PiaSys.com), Bert Jansen (Microsoft), Frank Marasco (Microsoft), Vesa Juvonen (Microsoft)*
 
@@ -486,7 +495,7 @@ Defined in the Provisioning.Job in the Resources/SiteTemplates/ProvisioningTempl
 
 #### High-Trust Configuration ####
 
-A high-trust add-in is a provider-hosted add-in for SharePoint that uses the digital certificates to establish trust between the remote web application and SharePoint. "High-trust" is not the same as "full trust". A high-trust add-ins must still request app permissions. The add-in is considered "high-trust" because it is trusted to use any user identity that the app needs, because the add-in is responsible for creating the user portion of the access token that it passes to SharePoint. See [https://msdn.microsoft.com/en-us/library/office/fp179901.aspx](https://msdn.microsoft.com/en-us/library/office/fp179901.aspx "Create high-trust apps for SharePoint 2013") for additional information. 
+A high-trust add-in is a provider-hosted add-in for SharePoint that uses the digital certificates to establish trust between the remote web application and SharePoint. "High-trust" is not the same as "full trust". A high-trust add-in must still request app permissions. The add-in is considered "high-trust" because it is trusted to use any user identity that it needs, because the add-in is responsible for creating the user portion of the access token that it passes to SharePoint. See [https://msdn.microsoft.com/en-us/library/office/fp179901.aspx](https://msdn.microsoft.com/en-us/library/office/fp179901.aspx "Create high-trust apps for SharePoint 2013") for additional information. 
 
 If you are targeting High-Trust Add-ins in on-premises builds you most modify AppOnlyAuthenticationSite.cs and AppOnlyAuthenticationTenant.cs EnsureToken methods in the Provisioning.Common project and replace with the following code.
 

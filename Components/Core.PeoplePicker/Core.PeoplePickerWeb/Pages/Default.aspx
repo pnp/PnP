@@ -7,9 +7,8 @@
     <title></title>
     <link rel="Stylesheet" type="text/css" href="../Styles/peoplepickercontrol.css" />
     <script src="../Scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
-    <script src="../Scripts/app.js?rev=1" type="text/javascript"></script>
-    <script src="../Scripts/peoplepickercontrol.js?rev=3" type="text/javascript"></script>
-    <script src="../Scripts/csompeoplepickercontrol.js?rev=3" type="text/javascript"></script>
+    <script src="../Scripts/app.js?rev=1.1" type="text/javascript"></script>
+    <script src="../Scripts/peoplepickercontrol.js?rev=5" type="text/javascript"></script>
 </head>
 <body style="display: none;">
     <form id="form1" runat="server">
@@ -46,7 +45,7 @@
             <br />
             <br />
 
-            <h2>Peoplepicker using serverside webmethod (CSOM)</h2>
+            <h2>Peoplepicker using code-behind method (CSOM)</h2>
             <div id="divTestCsomPeoplePicker">
                 <h3 class="ms-core-form-line" style="margin-top: 15px !important;">Select a user:</h3>
                 <div class="ms-core-form-line">

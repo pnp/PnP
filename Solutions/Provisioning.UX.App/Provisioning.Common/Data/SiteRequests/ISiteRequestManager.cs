@@ -41,6 +41,12 @@ namespace Provisioning.Common.Data.SiteRequests
         ICollection<SiteInformation> GetApprovedRequests();
 
         /// <summary>
+        /// Returns a collection of all Incomplete Site Requests
+        /// </summary>
+        /// <returns>Will return a collection of incomplete SiteRequests or an empty collection will be returned</returns>
+        ICollection<SiteInformation> GetIncompleteRequests();
+
+        /// <summary>
         /// Returns if there is an existing site request
         /// </summary>
         /// <param name="url">The Url of the Site Collection</param>
@@ -62,5 +68,7 @@ namespace Provisioning.Common.Data.SiteRequests
         /// <param name="statusMessage">Status Message</param>
         void UpdateRequestStatus(string url, SiteRequestStatus status, string statusMessage);
 
+
+        void UpdateRequestUrl(string url, string newUrl);
     }
 }

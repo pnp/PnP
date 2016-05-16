@@ -1,0 +1,74 @@
+﻿#pnp-devdashboard {
+    width: 700px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 9000;
+    background-color: #fff;
+}
+
+#pnp-devdashboard-wrapper {
+    position: relative;
+}
+
+#pnp-devdashboard-content {
+    padding: 4px;
+    float: left;
+    width: 100%;
+}
+
+#pnp-devdashboard-header {
+    background-color: #ECECEC;
+    font-weight: bold;
+    font-size: 1em;
+    padding: 2px;
+}
+
+#pnp-devdashboard-contentRight {
+    margin-left: 200px;
+    max-height: 700px;
+    overflow: auto;
+    padding: 4px;
+}
+
+#pnp-devdashboard-contentLeft {
+    float: left;
+    width: 200px; /*Width of left column*/
+    margin-left: -100%;
+}
+
+.pnp-devdashboard-sectionNav {
+    border: 1px solid #cecece;
+    padding: 4px;
+    margin: 2px;
+    cursor: pointer;
+}
+
+.pnp-devdashboard-sectionNav-active {
+    background-color: #cecece;
+}
+
+.pnp-devdashboard-sectionContent {
+}
+
+.pnp-devdashboard-sectionEntry {
+    padding: 2px;
+    border: 1px solid #cecece;
+    border-radius: 4px;
+    margin: 2px;
+    word-wrap: break-word;
+}
+
+/* controls the location of the launcher icon */
+#pnp-devdashboard-launcher {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 9000;
+    background-color: #cecece;
+    padding: 3px;
+    border: 4px solid #cecece;
+    border-radius: 4px;
+}

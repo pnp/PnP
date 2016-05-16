@@ -395,7 +395,6 @@ However, there are disadvantages as well.
 
 **Design**
 - Making an update to a SharePoint list in the Add-In Web requires making an update to the SharePoint add-in.
-- Data is not searchable with the SharePoint Search Service.
 - Data and query limits exist on lists in an Add-In Web.  
 -- These limits may make this choice of a data storage model an option which does not fit every business scenario.  You should carefully consider how much data you need to store and query before choosing the proper data storage model. This sample illustrates and provides more details about this concept.  It is described in subsequent sections in this document.
 

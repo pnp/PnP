@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<ProjectItem Type="Microsoft.VisualStudio.SharePoint.OfficeApp" DefaultFile="Core.YouTubeApp.xml" SupportedTrustLevels="All" SupportedDeploymentScopes="AppPackage" xmlns="http://schemas.microsoft.com/VisualStudio/2010/SharePointTools/SharePointProjectItemModel">
-  <Files>
-    <ProjectItemFile Source="Core.YouTubeApp.xml" Type="AppPackage" />
-  </Files>
-  <ExtensionData>
-    <ExtensionDataItem Key="OfficeAppManifestRelativePath" Value="Core.YouTubeApp\Core.YouTubeApp.xml" />
-  </ExtensionData>
-</ProjectItem>

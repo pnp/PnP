@@ -1,0 +1,70 @@
+﻿<span id="page-script">
+    <script type="text/javascript" src="../scripts/pnp.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            sample.init(function (hostWebUrl, appWebUrl) {
+
+                function ensureConfigList() {
+                    return new Promise(function (resolve, reject) {
+                        $pnp.sp.crossDomainWeb(appWebUrl, hostWebUrl).lists.ensure("Config").then(function (result) {
+                            if (result.created) {
+                                result.list.fields.addText("Value").then(function () {
+                                    result.list.items.add({
+                                        Title: "Key1",
+                                        Value: "Value1"
+                                    }).then(resolve);
+                                });
+                            } else {
+                                resolve();
+                            }
+                        });
+                    });                   
+                }
+
+                ensureConfigList().then(function () {
+
+                    // create our provider by giving it the web from which to read
+                    var provider = new $pnp.config.Providers.SPListConfigurationProvider($pnp.sp.crossDomainWeb(appWebUrl, hostWebUrl));
+
+                    $pnp.config.load(provider).then(function () {
+                        
+                        sample.append("Key1 after initial load: " + $pnp.config.get("Key1"));
+
+                        // we can also overlay configuration easily using a plain object
+                        // this is helpful when working in a local environment and you need to override a subset of values
+                        return $pnp.config.apply({
+                            Key1: "Changed-Value1",
+                            Key2: "Value2",
+                            Key3: "Value3"
+                        });
+
+                    }).then(function () {
+                        sample.append("Key1: " + $pnp.config.get("Key1"));
+                        sample.append("Key2: " + $pnp.config.get("Key2"));
+                        sample.append("Key3: " + $pnp.config.get("Key3"));
+                    });
+                });               
+
+            });//end sample.init
+        });
+    </script>
+</span>
+
+<div class="page-header">
+    <h1>Configuration</h1>
+</div>
+
+<p>
+    The pnp core provides a way to load and use configuration data for your application. This configuration works on the concept of providers, of which multiple can be applied. You can also overlay configuration from a plain object
+    making it easy to update certain settings in a development or test environment while maintaining the bulk of the application configuration. Additionally, as configuration data often does not change a caching wrapper is provided
+    to allow you to wrap any IConfigurationProvider and store the values in the cache specified (local or session storage).
+</p>
+
+<p>
+    Included currently in the library is a configuration provider that reads from a SharePoint list. This list is expected to have the columns "Title" and "Value" equating to the key and value of the pair. When you create the configuraiton
+    provider you specify the web url and optionally list title, by default the list title should be "Config".
+</p>
+
+<p>
+    The below sample performs some setup tasks by creating the list and adding an item. Then creates a new list configuration provider and adds it to the collection.
+</p>

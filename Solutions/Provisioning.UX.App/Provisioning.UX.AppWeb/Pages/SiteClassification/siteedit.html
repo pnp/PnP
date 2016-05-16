@@ -1,0 +1,201 @@
+﻿<section id="dashboard-view" data-ng-controller="SiteClassificationController as vm">
+    <section class="matter">
+        <!-- Layout Here is purely for deveopment purposes -->
+        <div class="container" ng-form="siteeditform" style="margin-top: 50px;">
+            <div class="row">
+                <div class="col-sm-9">
+                    <div class="form-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading panel-heading-custom">
+                                <h3 class="panel-title"><i class="ms-Icon ms-Icon--metadata" aria-hidden="true"></i>  {{ 'SITE_EDIT_INFORMATION' | translate }}</h3>
+                                <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+                            </div>
+                            <div class="panel-body">                                
+                                <spinner name="siteInformationSpinner" img-src="" group="metadata" show="spinnersON">
+                                    <div class="spinnertext">
+                                        <label class="control-label" for="lblSpinnerLoadingText" ng-show="loading">{{ 'SITE_EDIT_LOADING_TEXT' | translate }}</label>
+                                        <label class="control-label" for="lblSpinnerSavingText" ng-show="saving">{{ 'SITE_EDIT_SAVING_TEXT' | translate }}</label>
+                                    </div>
+                                    <div class="spinner">
+                                        <div class="bounce1"></div>
+                                        <div class="bounce2"></div>
+                                        <div class="bounce3"></div>
+                                    </div>
+                                </spinner>
+                                <div id="information" ng-show="!spinnersON">
+                                    <div class="row">
+                                        <div class="col-sm-9">
+                                            <div class="form-group">
+                                                <label class="control-label">{{ 'SITE_EDIT_CURRENT_DIVISION' | translate }}</label>
+                                                <b><label class="control-label" id="lblDivision" style="color: #0072c6;">{{ vm.division }}</label></b>
+                                                <br />
+                                                <label class="control-label" for="detailsDivision">{{ 'SITE_EDIT_SELECT_DIVISION' | translate }}</label>
+                                                <select name="detailsDivision" id="detailsDivision"
+                                                        class="form-control"
+                                                        style="width: 230px; margin-left: 13px; color: #0072c6;"
+                                                        ng-model="metadata.division"
+                                                        ng-options="d.Value as d.Key for d in divisions | orderBy: 'displayOrder'"></select>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label class="control-label" for="lblFunction">{{ 'SITE_EDIT_CURRENT_FUNCTION' | translate }}</label>
+                                                <b><label class="control-label" id="lblFunction" style="color: #0072c6;">{{ vm.function }}</label></b>
+                                                <br />
+                                                <label class="control-label" for="detailsFunction">{{ 'SITE_EDIT_SELECT_FUNCTION' | translate }}</label>
+                                                <select name="detailsFunction" id="detailsFunction"
+                                                        class="form-control"
+                                                        style="width: 230px; margin-left: 13px; color: #0072c6;"
+                                                        ng-model="metadata.function"
+                                                        ng-options="f.Value as f.Key for f in functions| orderBy: 'displayOrder'"></select>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label class="control-label" for="lblRegion">{{ 'SITE_EDIT_CURRENT_REGION' | translate }}</label>
+                                                <b><label class="control-label" id="lblRegion" style="color: #0072c6;">{{ vm.region }}</label></b>
+                                                <br />
+                                                <label class="control-label" for="detailsRegion">{{ 'SITE_EDIT_SELECT_REGION' | translate }}</label>
+                                                <select name="detailsRegion" id="detailsRegion"
+                                                        class="form-control" 
+                                                        style="width: 230px; margin-left: 13px; color: #0072c6;"
+                                                        ng-model="metadata.region"
+                                                        ng-options="r.Value as r.Key for r in regions| orderBy: 'displayOrder'"></select>
+                                            </div>
+                                           
+                                            <div class="form-group">
+                                                <label class="control-label" for="lblExpirationDate">{{ 'SITE_EDIT_SITE_EXPIRATION' | translate }}</label>
+                                                <b><label class="control-label" id="lblExpirationDate" style="color: #0072c6;">{{ metadata.sitePolicyExpirationDate }}</label></b>
+                                            </div>
+                                        </div>
+                                    </div>                                    
+                                </div>
+                            </div>
+                            <div class="panel-footer panel-footer-custom .ms-bgColor-blueLight">
+                                <label class="requirements">All sites must have site information applied</label>
+                            </div>
+                        </div>                       
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="panel panel-default">
+                            <div class="panel-heading panel-heading-custom">
+                                <h3 class="panel-title"><i class="ms-Icon ms-Icon--protectionCenter" aria-hidden="true"></i>  {{ 'SITE_EDIT_SECURITY_CLASSIFICATION' | translate }}</h3>
+                                <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+                            </div>
+                            <div class="panel-body">
+                                <spinner name="siteClassificationSpinner" img-src="" group="metadata" show="spinnersON">
+                                    <div class="spinnertext">
+                                        <label class="control-label" for="lblSpinnerLoadingText" ng-show="loading">{{ 'SITE_EDIT_LOADING_TEXT' | translate }}</label>
+                                        <label class="control-label" for="lblSpinnerSavingText" ng-show="saving">{{ 'SITE_EDIT_SAVING_TEXT' | translate }}</label>
+                                    </div>
+                                    <div class="spinner">
+                                        <div class="bounce1"></div>
+                                        <div class="bounce2"></div>
+                                        <div class="bounce3"></div>
+                                    </div>
+                                </spinner>
+                                <div id="classification" ng-show="!spinnersON">
+                                    <div class="row">
+                                        <div class="col-sm-9">
+                                            <div class="form-group">
+                                                <label class="control-label" for="lblPolicy">{{ 'SITE_EDIT_CURRENT_POLICY' | translate }}</label>
+                                                <b><label class="control-label" id="lblPolicy" style="color: #0072c6;">{{ vm.sitePolicyName }}</label></b>
+                                                <br />
+                                                <label class="control-label" for="BusinessImpact">{{ 'SITE_EDIT_SELECT_POLICY' | translate }}</label>
+                                                <select name="BusinessImpact" id="BusinessImpact"
+                                                        class="form-control"
+                                                        style="width: 230px; margin-left: 13px; color: #0072c6;"
+                                                        data-val-required="The BusinessImpact field is required."
+                                                        data-val-length-max="128"
+                                                        data-val-length="Security Classification must be a string with a maximum length of 128."
+                                                        data-val="true"
+                                                        ng-model="metadata.sitePolicyName"
+                                                        ng-options="c.key as c.key for c in siteclassifications | orderBy: 'displayOrder'"></select>
+                                                <!--<script type="text/javascript" charset="utf-8">
+                                                    $(document).ready(function () {
+                                                        $('#BusinessImpact').prepend($("<option></option>").val("Select...").html("Select..."));
+                                                        setTimeout(function () { $('#BusinessImpact option:first').attr('selected', 'selected'); }, 100);
+                                                    });
+                                                </script>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-footer panel-footer-custom">
+                                <label class="requirements">All sites must have a security classification. Learn more about  <a href="https://www.contoso.com/sites/information-security/" style="color:white; font-size:small; text-decoration:underline;" target="_blank">information classification</a>.</label>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading panel-heading-custom">
+                                <h3 class="panel-title"><i class="ms-Icon ms-Icon--share" aria-hidden="true"></i>  {{'SITE_EDIT_EXTERNAL_SHARING' | translate}}</h3>
+                                <span class="pull-right clickable"><i class="glyphicon glyphicon-chevron-up"></i></span>
+                            </div>
+                            <div class="panel-body">
+                                <spinner name="externalSharingSpinner" img-src="" group="metadata" show="spinnersON">
+                                    <div class="spinnertext">
+                                        <label class="control-label" for="lblSpinnerLoadingText" ng-show="loading">{{ 'SITE_EDIT_LOADING_TEXT' | translate }}</label>
+                                        <label class="control-label" for="lblSpinnerSavingText" ng-show="saving">{{ 'SITE_EDIT_SAVING_TEXT' | translate }}</label>
+                                    </div>
+                                    <div class="spinner">
+                                        <div class="bounce1"></div>
+                                        <div class="bounce2"></div>
+                                        <div class="bounce3"></div>
+                                    </div>
+                                </spinner>
+                                <div id="externalsharing" ng-show="!spinnersON">
+                                    <div class="ms-Toggle" style="padding-left: 10px;">
+                                        <!-- Toggle Partner sharing goes here -->
+                                        <span class="ms-Toggle-description">Turn On/Off External Sharing for this site.</span>
+                                        <input class="ms-Toggle-input" id="toggleSharing" style="margin-left: 23px;" onchange="" name="toggleSharing" type="checkbox" ng-model="metadata.enableExternalSharing" />
+                                        <label class="ms-Toggle-field" id="lblSharingToggle" for="toggleSharing">
+                                            <span class="ms-Label ms-Label--off">OFF</span>
+                                            <span class="ms-Label ms-Label--on">ON</span>
+                                        </label>
+                                    </div>                                    
+                                </div>
+                            </div>
+                            <div class="panel-footer panel-footer-custom">
+                                <label class="requirements">Site Owners accept the responsibility of enabling this option. Learn more about  <a href="https://team.contoso.com/sites/information-security/" style="color:white; font-size:small; text-decoration:underline;" target="_blank">Information Handling Guidelines</a></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-9">
+                    <br />
+                    <button id="save_button" class="btn btn-default" data-ng-click="save()">{{ 'SITE_EDIT_SAVE' | translate }}</button>
+                    <button id="cancel_button" class="btn btn-default" data-ng-click="cancel()">{{ 'SITE_EDIT_CANCEL' | translate }}</button>
+                </div>
+            </div>
+            <input id="Url" name="Url" type="hidden" value="" ng-model="hostUrl"/>
+            <script type="text/javascript">
+              $(function () {
+                  $('#save_button').click(function () {
+                      //$.ajax({
+                      //    success: function () {
+                      //    }
+                      //});
+                  });
+                  $('#cancel_button').click(function () {
+                      //window.location = $('#Url').val();                      
+                      //alert(window.location);
+                  });
+              });
+            </script>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <!--<p>Once wizard completes, data is returned and shown here:</p>
+                    <pre data-ng-show="completedConfiguration">{{completedConfiguration | json}}</pre>-->
+                </div>
+            </div>
+        </div>
+    </section>
+</section>

@@ -160,12 +160,15 @@
         //gets a term parent collection based on the path passed in (ex: World;Europe;Finland would return the Europe term)
         getTermParentCollectionByPath: function (path) {
             var term = null;
+            var termPath = null;
             var parts = path.split(';');
             var termList = this.Terms;
+
             for (var i = 0; i < parts.length - 1; i++) {
                 for (var j = 0; j < termList.length; j++) {
-                    if (parts[i] == termList[j].Name) {
-                        term = termList[j];
+                    term = termList[j];
+                    termPath = term.PathOfTerm.split(';')
+                    if (termPath.length > 0 && parts[i] == termPath[termPath.length - 1]) {
                         termList = term.Children;
                         break;
                     }
@@ -781,7 +784,6 @@
                     else {
                         this._suggestionContainer.hide();
                     }
-                    
                 }
                 else {
                     this._suggestionContainer.hide();

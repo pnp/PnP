@@ -103,8 +103,8 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="OfficeDevPnP.Core, Version=1.5.915.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\OfficeDevPnPCore16.1.4.0815.1\lib\net45\OfficeDevPnP.Core.dll</HintPath>
+    <Reference Include="OfficeDevPnP.Core, Version=1.6.915.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\OfficeDevPnPCore16.1.6.0915.0\lib\net45\OfficeDevPnP.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System.IdentityModel" />

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Provisioning.Common.Metadata;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,12 @@ namespace Provisioning.Common.Data.Metadata
         /// </summary>
         /// <returns></returns>
         ICollection<SiteClassification> GetAvailableSiteClassifications();
+
+        /// <summary>
+        /// Returns a collection of the available site classification
+        /// </summary>
+        /// <returns></returns>
+        SiteEditMetadata SetSitePolicy(SiteEditMetadata metadata);
 
         /// <summary>
         /// Gets a site classification by name
@@ -32,5 +39,33 @@ namespace Provisioning.Common.Data.Metadata
         /// </summary>
         /// <param name="classification"></param>
         void UpdateSiteClassification(SiteClassification classification);
+
+        /// <summary>
+        /// Checks to see if user has permissions
+        /// </summary>
+        /// <returns>bool</returns>
+        bool DoesUserHavePermissions();        
+
+        /// <summary>
+        /// Get site metadata
+        /// </summary>
+        /// <returns>bool</returns>
+        SiteEditMetadata GetSiteMetadata(SiteEditMetadata metadata);
+
+        /// <summary>
+        /// Set site metadata
+        /// </summary>
+        /// <returns>bool</returns>
+        SiteEditMetadata SetSiteMetadata(SiteEditMetadata metadata);
+
+        ICollection<SiteMetadata> GetAvailableOrganizationalFunctions();
+        ICollection<SiteMetadata> GetAvailableRegions();
+        ICollection<SiteMetadata> GetAvailableDivisions();
+        ICollection<SiteMetadata> GetAvailableBusinessUnits();
+        ICollection<SiteMetadata> GetAvailableTimeZones();
+        ICollection<SiteMetadata> GetAvailableSiteRegions();        
+        ICollection<SiteMetadata> GetAvailableLanguages();
+
+
     }
 }

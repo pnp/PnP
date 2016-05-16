@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+<h2>@ViewBag.Title</h2>
+
+<p>Get started by registering a subscription for notifications by clicking the button down below. You will need to host and deploy your Web API, for instance to a web app on Microsoft Azure: <a href="https://azure.microsoft.com/en-us/documentation/scenarios/web-app/">https://azure.microsoft.com/en-us/documentation/scenarios/web-app/</a></p>
+
+<p>You can use Visual Studio 2015 to attach a debugger to your Azure web app (see <a href="https://azure.microsoft.com/sv-se/documentation/articles/web-sites-dotnet-troubleshoot-visual-studio/#remotedebug">https://azure.microsoft.com/sv-se/documentation/articles/web-sites-dotnet-troubleshoot-visual-studio/#remotedebug</a>). Configure a breakpoint to catch and validate the flow in the Web API (NotifyController). After the validation occurs, you will receive notifications and be able to investigate the responses.</p>
+
+<p>
+    <img src="http://simonjaeger.com/wp-content/uploads/2015/12/notificationsresponse1.png" />
+</p>
+
+<p>Learn more about this sample at: <a href="http://simonjaeger.com/call-me-back-outlook-notifications-rest-api/">http://simonjaeger.com/call-me-back-outlook-notifications-rest-api/</a></p>
+
+<p>
+    @using (Html.BeginForm("Register", "Home", FormMethod.Post))
+    {
+        <input type="hidden" name="notificationUrl" value="@Url.Action("", "api/notify", null, Request.Url.Scheme)"/>
+        <button type="submit" class="btn btn-default">Register Subscription</button>
+    }
+</p>
+

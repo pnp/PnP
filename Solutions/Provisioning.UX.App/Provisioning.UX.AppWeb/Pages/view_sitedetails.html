@@ -5,61 +5,75 @@
 
     <div class="form-group has-feedback" ng-class="{ 'has-error' : sitedetailsform.detailsName.$invalid && !sitedetailsform.detailsName.$pristine, 'has-success' : sitedetailsform.detailsName.$valid && !sitedetailsform.detailsName.$pristine }">
         <label class="control-label" for="detailsName">{{ 'DETAILS_TITLE' | translate }}</label>
-        <input type="text" name="detailsName" class="form-control" id="detailsName" ng-model="siteConfiguration.details.title" required />
+        <input type="text" name="detailsName" class="form-control" id="detailsName" ng-model="siteConfiguration.details.title" special-chars-validator required />
         <div class="error-messages" ng-if="!sitedetailsform.detailsName.$pristine" ng-messages="sitedetailsform.detailsName.$error">
             <div ng-message="required">{{ 'DETAILS_TITLE_ERR' | translate }}</div>
         </div>
     </div>
-    <div class="form-group form-inline has-feedback" ng-class="{ 'has-error' : sitedetailsform.detailsUrl.$invalid && !sitedetailsform.detailsUrl.$pristine, 'has-success' : sitedetailsform.detailsUrl.$valid && !sitedetailsform.detailsUrl.$pristine }">
+    <div class="form-group form-inline has-feedback" 
+         ng-class="{ 'has-error' : sitedetailsform.detailsUrl.$invalid && !sitedetailsform.detailsUrl.$pristine, 'has-success' : sitedetailsform.detailsUrl.$valid && !sitedetailsform.detailsUrl.$pristine }"
+         ng-hide="siteConfiguration.allowCustomUrl">
         <label class="control-label" for="detailsUrl">{{ 'DETAILS_TITLE_URL' | translate }}</label><br />
         <span>{{siteConfiguration.spNewSitePrefix}} </span><span ng-show="siteConfiguration.spNewSitePrefix === undefined" ng-click="setCurrentStep(4)" class="shortcut-message">{{ 'SITE_TEMPLATE_ERR' | translate }}</span>
-        <input type="text" name="detailsUrl" class="form-control" id="detailsUrl" ng-model="siteConfiguration.details.url" ng-minlength="3" ng-maxlength="50" ng-model-options="{ debounce: 2000 }" site-availability-validator required />
+        <input type="text" name="detailsUrl" class="form-control" id="detailsUrl" ng-model="siteConfiguration.details.url" ng-minlength="3" ng-maxlength="50" ng-model-options="{ debounce: 2000 }" site-availability-validator ng-required="!siteConfiguration.allowCustomUrl" />
         <div class="error-messages" ng-if="!sitedetailsform.detailsUrl.$pristine" ng-messages="sitedetailsform.detailsUrl.$error">
             <div ng-message="required">{{ 'DETAILS_TITLE_URL_ERR' | translate }}</div>
-            <div ng-message="minlength">{{ 'ERR_TO_SHORT' | translate }}<</div>
+            <div ng-message="minlength">{{ 'ERR_TO_SHORT' | translate }}</div>
             <div ng-message="maxlength">{{ 'ERR_TO_LONG' | translate }}</div>
             <div ng-message="site-loading">{{ 'DETAILS_CHECKING' | translate }}</div>
             <div ng-message="site-available">{{ 'DETAILS_URL_TAKEN' | translate }}</div>
         </div>
     </div>
     <div class="form-group has-feedback" ng-class="{ 'has-error' : sitedetailsform.detailsDescription.$invalid && !sitedetailsform.detailsDescription.$pristine, 'has-success' : sitedetailsform.detailsDescription.$valid && !sitedetailsform.detailsDescription.$pristine }">
-        <label class="control-label" for="detailsDescription">{{ 'DETAILS_DESCRIPTION' | translate }}/label>
-        <textarea class="form-control" rows="3" name="detailsDescription" id="detailsDescription" ng-model="siteConfiguration.details.description" required></textarea>
+        <label class="control-label" for="detailsDescription">{{ 'DETAILS_DESCRIPTION' | translate }}</label>
+        <textarea class="form-control" rows="3" name="detailsDescription" id="detailsDescription" ng-model="siteConfiguration.details.description" special-chars-validator required></textarea>
         <div class="error-messages" ng-if="!sitedetailsform.detailsDescription.$pristine" ng-messages="sitedetailsform.detailsDescription.$error">
             <div ng-message="required">{{ 'DETAILS_DESCRIPTION_ERR' | translate }}</div>
         </div>
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <div class="form-group">
+            <div class="form-group" ng-hide="regions.length == 1">
                 <label class="control-label" for="detailsRegion">{{ 'DETAILS_REGION' | translate }}</label>
-                <select class="form-control" name="detailsRegion" id="detailsRegion" ng-model="siteConfiguration.properties.region" required>
-                    <option ng-repeat="region in regions | orderBy: 'displayOrder'" value="{{region.value}}">{{region.key}}</option>
+                <select class="form-control" name="detailsRegion" id="detailsRegion" 
+                        ng-model="siteConfiguration.properties.region" 
+                        required
+                        ng-options="r.Value as r.Key for r in regions| orderBy: 'displayOrder'">     
                 </select>
             </div>
-            <div class="form-group">
+            <div class="form-group" ng-hide="functions.length == 1">
                 <label class="control-label" for="detailsFunction">{{ 'DETAILS_FUNCTION' | translate }}</label>
-                <select class="form-control" name="detailsFunction" id="detailsFunction" ng-model="siteConfiguration.properties.function" required>
-                    <option ng-repeat="function in functions | orderBy: 'displayOrder'" value="{{function.value}}">{{function.key}}</option>
+                <select class="form-control" name="detailsFunction" id="detailsFunction" 
+                        ng-model="siteConfiguration.properties.function" 
+                        required
+                        ng-options="f.Value as f.Key for f in functions | orderBy: 'displayOrder'">
                 </select>
             </div>
         </div>
         <div class="col-sm-6">
-            <div class="form-group">
+            <div class="form-group" ng-hide="divisions.length == 1">
                 <label class="control-label" for="detailsDivision">{{ 'DETAILS_DIVISION' | translate }}</label>
-                <select class="form-control" name="detailsDivision" id="detailsDivision" ng-model="siteConfiguration.properties.division" required>
-                    <option ng-repeat="division in divisions | orderBy: 'displayOrder'" value="{{division.value}}">{{division.key}}</option>
+                <select class="form-control" name="detailsDivision" id="detailsDivision" 
+                        ng-model="siteConfiguration.properties.division" 
+                        required 
+                        ng-options="d.Value as d.Key for d in divisions | orderBy: 'displayOrder'">                    
                 </select>
             </div>
-            <div class="form-group">
+            <div class="form-group" ng-hide="languages.length == 1">
                 <label class="control-label" for="detailsLanguage">{{ 'DETAILS_LANGUAGE' | translate }}</label>
-                <select class="form-control" name="detailsLanguage" id="detailsLanguage" ng-model="siteConfiguration.language" ng-options="l.value as l.key for l in languages" required></select>
+                <select class="form-control" name="detailsLanguage" id="detailsLanguage" 
+                        ng-model="siteConfiguration.language" 
+                        ng-options="l.Value as l.Key for l in languages | orderBy: 'displayOrder'" 
+                        required></select>
             </div>
         </div>
         <div class="col-sm-6">
-            <div class="form-group has-feedback">
+            <div class="form-group has-feedback" ng-hide="timezones.length == 1">
                 <label class="control-label" for="detailsTimezone">{{ 'DETAILS_TIMEZONE' | translate }}</label>
-                <select class="form-control" name="detailsTimezone" id="detailsTimezone" ng-model="siteConfiguration.timezone" ng-options="tz.value as tz.key for tz in timezones" required></select>
+                <select class="form-control" name="detailsTimezone" id="detailsTimezone" 
+                        ng-model="siteConfiguration.timezone" 
+                        ng-options="tz.Value as tz.Key for tz in timezones | orderBy: 'displayOrder'" 
+                        required></select>
             </div>
         </div>
     </div>
@@ -68,7 +82,7 @@
             <div class="form-group has-feedback" ng-hide="!siteConfiguration.externalSharingEnabled">
                 <div class="checkbox">
                     <label>
-                        <input type="checkbox" name="enableExternalSharing" ng-model="siteConfiguration.externalSharing" /> {{ 'DETAILS_ENABLE_EXTERNAL_SHARING' | translate }}
+                        <input type="checkbox" name="enableExternalSharing" ng-model="siteConfiguration.properties.externalsharing" /> {{ 'DETAILS_ENABLE_EXTERNAL_SHARING' | translate }}
                     </label>
                 </div>
 

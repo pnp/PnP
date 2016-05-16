@@ -1,0 +1,8 @@
+﻿{
+  "$schema": "http://schemastore.org/schemas/json/webjobs-list.json",
+  "WebJobs": [
+    {
+      "filePath": "../Diagnostics.LoggingWebJob/Diagnostics.LoggingWebJob.csproj"
+    }
+  ]
+}

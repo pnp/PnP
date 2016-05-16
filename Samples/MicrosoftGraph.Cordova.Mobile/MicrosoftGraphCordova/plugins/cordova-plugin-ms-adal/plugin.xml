@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!--
+ Copyright (c) Microsoft Open Technologies, Inc.  All Rights Reserved.
+ Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+-->
+<plugin id="cordova-plugin-ms-adal" version="0.6.2" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>ADAL for Cordova</name>
+    <description>Provides Microsoft Azure Active Directory (ADAL) OAuth client.</description>
+
+    <license>Apache 2.0</license>
+    <keywords>microsoft, azure, adal, activedirectory</keywords>
+    <repo>https://github.com/AzureAD/azure-activedirectory-library-for-cordova</repo>
+    <issue>https://github.com/AzureAD/azure-activedirectory-library-for-cordova/issues</issue>
+
+    <js-module name="utility" src="www/utility.js">
+        <runs />
+    </js-module>
+
+    <js-module name="AuthenticationContext" src="www/AuthenticationContext.js">
+        <clobbers target="Microsoft.ADAL.AuthenticationContext" />
+    </js-module>
+
+    <js-module name="CordovaBridge" src="www/CordovaBridge.js"/>
+    <js-module name="AuthenticationResult" src="www/AuthenticationResult.js"/>
+    <js-module name="TokenCache" src="www/TokenCache.js"/>
+    <js-module name="TokenCacheItem" src="www/TokenCacheItem.js"/>
+    <js-module name="UserInfo" src="www/UserInfo.js"/>
+
+    <platform name="android">
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="ADALProxy">
+                <param name="android-package" value="com.microsoft.aad.adal.CordovaAdalPlugin"/>
+            </feature>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <uses-permission android:name="android.permission.INTERNET" />
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+            <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+            <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
+            <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <activity android:name="com.microsoft.aad.adal.AuthenticationActivity" ></activity>
+        </config-file>
+
+        <framework src="src/android/CordovaADAL" custom="true" />
+
+        <hook type="after_plugin_install" src="scripts/afterPluginInstall-android.js" />
+    </platform>
+
+    <platform name="ios">
+        <config-file target="config.xml" parent="/*">
+            <feature name="ADALProxy">
+                <param name="ios-package" value="CordovaAdalPlugin" />
+            </feature>
+        </config-file>
+
+        <header-file src="src/ios/CordovaAdalPlugin.h" />
+        <source-file src="src/ios/CordovaAdalPlugin.m" />
+
+        <header-file src="src/ios/CordovaAdalUtils.h" />
+        <source-file src="src/ios/CordovaAdalUtils.m" />
+
+        <framework src="src/ios/ADALiOS.framework" custom="true"/>
+        <resource-file src="src/ios/ADAL_iPhone_Storyboard.storyboard" />
+        <resource-file src="src/ios/ADAL_iPad_Storyboard.storyboard" />
+
+        <resource-file src="src/ios/ADALiOS.entitlements" />
+        <hook type="after_plugin_install" src="scripts/configureEntitlementsIos.js" />
+        <hook type="before_plugin_uninstall" src="scripts/configureEntitlementsIos.js" />
+    </platform>
+
+    <platform name="windows">
+        <js-module src="src/windows/ADALProxy.js" name="ADALProxy">
+            <runs />
+        </js-module>
+
+<!--
+        We use 'afterPluginInstall-windows.js' instead of logic below since both Phone
+        and PC/Tablet ADALnative libraries for Windows have the same name so if we use
+        default Cordova logic they are placed to the same folder and overwrite each other.
+
+        <framework src="src/windows/lib/wpa/Microsoft.IdentityModel.Clients.ActiveDirectory.winmd" target="phone" custom="true" />
+        <framework src="src/windows/lib/netcore45/Microsoft.IdentityModel.Clients.ActiveDirectory.winmd" target="windows" custom="true" /> 
+-->
+
+        <hook type="after_plugin_install" src="scripts/afterPluginInstall-windows.js" />
+
+        <!-- Needed to patch projitems so that the solution is correct right after plugin install -->
+        <hook type="after_plugin_install" src="scripts/prePackage-windows.js" />
+        
+        <hook type="pre_package" src="scripts/prePackage-windows.js" />
+        <hook type="before_plugin_uninstall" src="scripts/beforeUninstall-windows.js" />
+    </platform>
+</plugin>

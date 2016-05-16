@@ -40,10 +40,11 @@ namespace Core.ListRatingSettings
              *  1. Library name as per locale
              *  2. Experience Ratings/Likes
             */  
-            ratingEnabler.Enable("listtoconfigure",VotingExperience.Likes);
+            ratingEnabler.Enable("Documents",VotingExperience.Likes);
 
-
-
+            // Disable rating option 
+            // - Right now does not however remove fields from the list using CSOM - disables though the option. 
+            // ratingEnabler.Disable("Documents");
         }
 
         static SecureString GetPassword()

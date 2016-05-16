@@ -1,0 +1,383 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		04786150C1B5C6E71164872E /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B686DB87294E987CC0C55D08 /* libPods.a */; };
+		F09E295C1C8DD6CA0029C461 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E295B1C8DD6CA0029C461 /* AppDelegate.swift */; };
+		F09E295E1C8DD6CA0029C461 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E295D1C8DD6CA0029C461 /* ViewController.swift */; };
+		F09E29611C8DD6CA0029C461 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F09E295F1C8DD6CA0029C461 /* Main.storyboard */; };
+		F09E29631C8DD6CA0029C461 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F09E29621C8DD6CA0029C461 /* Assets.xcassets */; };
+		F09E29661C8DD6CA0029C461 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F09E29641C8DD6CA0029C461 /* LaunchScreen.storyboard */; };
+		F09E296E1C8DD7270029C461 /* MailClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F09E296D1C8DD7270029C461 /* MailClient.swift */; };
+		F09E29711C8DDC800029C461 /* adal_settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = F09E29701C8DDC7E0029C461 /* adal_settings.plist */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		47A1F69F3B494DAC27AC1BF5 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		89EC949C743E7EF761AC9BFF /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		B686DB87294E987CC0C55D08 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F09E29581C8DD6CA0029C461 /* MSGraph.MailClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MSGraph.MailClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F09E295B1C8DD6CA0029C461 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		F09E295D1C8DD6CA0029C461 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		F09E29601C8DD6CA0029C461 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F09E29621C8DD6CA0029C461 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F09E29651C8DD6CA0029C461 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		F09E29671C8DD6CA0029C461 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F09E296D1C8DD7270029C461 /* MailClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MailClient.swift; sourceTree = "<group>"; };
+		F09E296F1C8DD7770029C461 /* MSGraph.MailClient-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MSGraph.MailClient-Bridging-Header.h"; sourceTree = "<group>"; };
+		F09E29701C8DDC7E0029C461 /* adal_settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = adal_settings.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F09E29551C8DD6CA0029C461 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04786150C1B5C6E71164872E /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		49AD100F4626E88A7A5A8598 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B686DB87294E987CC0C55D08 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		644DE0509CB8D1CFC90B8872 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				47A1F69F3B494DAC27AC1BF5 /* Pods.debug.xcconfig */,
+				89EC949C743E7EF761AC9BFF /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		F09E294F1C8DD6CA0029C461 = {
+			isa = PBXGroup;
+			children = (
+				F09E295A1C8DD6CA0029C461 /* MSGraph.MailClient */,
+				F09E29591C8DD6CA0029C461 /* Products */,
+				644DE0509CB8D1CFC90B8872 /* Pods */,
+				49AD100F4626E88A7A5A8598 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		F09E29591C8DD6CA0029C461 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F09E29581C8DD6CA0029C461 /* MSGraph.MailClient.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F09E295A1C8DD6CA0029C461 /* MSGraph.MailClient */ = {
+			isa = PBXGroup;
+			children = (
+				F09E295B1C8DD6CA0029C461 /* AppDelegate.swift */,
+				F09E295D1C8DD6CA0029C461 /* ViewController.swift */,
+				F09E295F1C8DD6CA0029C461 /* Main.storyboard */,
+				F09E29621C8DD6CA0029C461 /* Assets.xcassets */,
+				F09E29641C8DD6CA0029C461 /* LaunchScreen.storyboard */,
+				F09E29671C8DD6CA0029C461 /* Info.plist */,
+				F09E296D1C8DD7270029C461 /* MailClient.swift */,
+				F09E296F1C8DD7770029C461 /* MSGraph.MailClient-Bridging-Header.h */,
+				F09E29701C8DDC7E0029C461 /* adal_settings.plist */,
+			);
+			path = MSGraph.MailClient;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F09E29571C8DD6CA0029C461 /* MSGraph.MailClient */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F09E296A1C8DD6CA0029C461 /* Build configuration list for PBXNativeTarget "MSGraph.MailClient" */;
+			buildPhases = (
+				3E05B7137088E91459859624 /* Check Pods Manifest.lock */,
+				F09E29541C8DD6CA0029C461 /* Sources */,
+				F09E29551C8DD6CA0029C461 /* Frameworks */,
+				F09E29561C8DD6CA0029C461 /* Resources */,
+				865246ECDDFDCE88908EC457 /* Embed Pods Frameworks */,
+				8CBBABB2DF55BF841ACE5C4A /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MSGraph.MailClient;
+			productName = MSGraph.MailClient;
+			productReference = F09E29581C8DD6CA0029C461 /* MSGraph.MailClient.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F09E29501C8DD6CA0029C461 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "Office 365 Development Patterns and Practises";
+				TargetAttributes = {
+					F09E29571C8DD6CA0029C461 = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
+				};
+			};
+			buildConfigurationList = F09E29531C8DD6CA0029C461 /* Build configuration list for PBXProject "MSGraph.MailClient" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F09E294F1C8DD6CA0029C461;
+			productRefGroup = F09E29591C8DD6CA0029C461 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F09E29571C8DD6CA0029C461 /* MSGraph.MailClient */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F09E29561C8DD6CA0029C461 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F09E29661C8DD6CA0029C461 /* LaunchScreen.storyboard in Resources */,
+				F09E29631C8DD6CA0029C461 /* Assets.xcassets in Resources */,
+				F09E29611C8DD6CA0029C461 /* Main.storyboard in Resources */,
+				F09E29711C8DDC800029C461 /* adal_settings.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3E05B7137088E91459859624 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		865246ECDDFDCE88908EC457 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8CBBABB2DF55BF841ACE5C4A /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F09E29541C8DD6CA0029C461 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F09E295E1C8DD6CA0029C461 /* ViewController.swift in Sources */,
+				F09E295C1C8DD6CA0029C461 /* AppDelegate.swift in Sources */,
+				F09E296E1C8DD7270029C461 /* MailClient.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		F09E295F1C8DD6CA0029C461 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F09E29601C8DD6CA0029C461 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		F09E29641C8DD6CA0029C461 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F09E29651C8DD6CA0029C461 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F09E29681C8DD6CA0029C461 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F09E29691C8DD6CA0029C461 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F09E296B1C8DD6CA0029C461 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 47A1F69F3B494DAC27AC1BF5 /* Pods.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = MSGraph.MailClient/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.officedev.pnp.MSGraph-MailClient";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "MSGraph.MailClient/MSGraph.MailClient-Bridging-Header.h";
+			};
+			name = Debug;
+		};
+		F09E296C1C8DD6CA0029C461 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 89EC949C743E7EF761AC9BFF /* Pods.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = MSGraph.MailClient/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.officedev.pnp.MSGraph-MailClient";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "MSGraph.MailClient/MSGraph.MailClient-Bridging-Header.h";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F09E29531C8DD6CA0029C461 /* Build configuration list for PBXProject "MSGraph.MailClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F09E29681C8DD6CA0029C461 /* Debug */,
+				F09E29691C8DD6CA0029C461 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F09E296A1C8DD6CA0029C461 /* Build configuration list for PBXNativeTarget "MSGraph.MailClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F09E296B1C8DD6CA0029C461 /* Debug */,
+				F09E296C1C8DD6CA0029C461 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F09E29501C8DD6CA0029C461 /* Project object */;
+}

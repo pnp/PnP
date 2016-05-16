@@ -57,7 +57,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             }
             catch(JsonException _ex)
             {
-                var _message = string.Format("There was an error with the data. Exeception {0}", _ex.Message);
+                var _message = string.Format("There was an error with the data. Exception {0}", _ex.Message);
                 Log.Error("SiteRequestController.GetSiteRequest",
                      "There was an error processing the request. Error Message {0} Error Stack {1}",
                      _ex.Message,
@@ -67,7 +67,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             }
             catch (Exception _ex)
             {
-                var _message = string.Format("There was an error with the data. Exeception {0}", _ex.Message);
+                var _message = string.Format("There was an error with the data. Exception {0}", _ex.Message);
                 Log.Error("SiteRequestController.GetSiteRequest",
                     "There was an error processing your request. Error Message {0} Error Stack {1}",
                     _ex.Message,
@@ -94,16 +94,23 @@ namespace Provisioning.UX.AppWeb.Controllers
                 _data = JsonConvert.DeserializeObject<SiteRequest>(value);
                 var _newRequest = ObjectMapper.ToSiteRequestInformation(_data);
 
+                // Handle the case when the URL is null - ie, were going to generate the URL later 
+                if (_newRequest.Url == null)
+                {
+                    _newRequest.Url = "uri://autogenerate/" + Guid.NewGuid().ToString("N");
+                }
+
                 ///Save the Site Request
                 ISiteRequestFactory _srf = SiteRequestFactory.GetInstance();
                 var _manager = _srf.GetSiteRequestManager();
+                
                 _manager.CreateNewSiteRequest(_newRequest);
                  return Request.CreateResponse<SiteRequest>(HttpStatusCode.Created, _data);
 
             }
             catch (JsonSerializationException _ex)
             {
-                var _message = string.Format("There was an error with the data. Exeception {0}", _ex.Message);
+                var _message = string.Format("There was an error with the data. Exception {0}", _ex.Message);
                
                 Log.Error("SiteRequestController.CreateSiteRequest",
                      "There was an error creating the new site request. Error Message {0} Error Stack {1}",
@@ -116,7 +123,7 @@ namespace Provisioning.UX.AppWeb.Controllers
 
             catch (Exception _ex)
             {
-                var _message = string.Format("There was an error processing the request. Exeception {0}", _ex.Message);
+                var _message = string.Format("There was an error processing the request. Exception {0}", _ex.Message);
                 HttpResponseMessage _response = Request.CreateResponse(HttpStatusCode.InternalServerError, _message);
 
                 Log.Error("SiteRequestController.CreateSiteRequest",
@@ -148,7 +155,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             }
             catch (JsonSerializationException _ex)
             {
-                var _message = string.Format("There was an error with the data. Exeception {0}", _ex.Message);
+                var _message = string.Format("There was an error with the data. Exception {0}", _ex.Message);
 
                 Log.Error("SiteRequestController.GetOwnerRequestsByEmail",
                      "There was an error get site requests by email. Error Message {0} Error Stack {1}",

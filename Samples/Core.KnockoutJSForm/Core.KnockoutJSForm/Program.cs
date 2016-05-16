@@ -11,19 +11,16 @@ namespace Core.KnockoutJSForm
 {
     class Program
     {
-        // TODO: update values before running the sample
-        static string siteUrl = "https://[tenant].sharepoint.com/sites/[sitename]";
-        static string username = "[admin]@[tenant].onmicrosoft.com";
-        static string password = "[password]";
+        // TODO: update values before running the sample or blank them which 
+        // triggers a prompt to ask for the value
+        static string siteUrl = "https://<tenant>.sharepoint.com/sites/dev";
+        static string username = "<user>@<tenant>.onmicrosoft.com";
+        static SecureString password = null;
 
         private static ClientContext CreateContext()
         {
-            SecureString pwd = new SecureString();
-            foreach (char c in (password).ToCharArray())
-                pwd.AppendChar(c);
-
             ClientContext ctx = new ClientContext(siteUrl);
-            ctx.Credentials = new SharePointOnlineCredentials(username, pwd);
+            ctx.Credentials = new SharePointOnlineCredentials(username, password);
             ctx.ExecuteQuery();
 
             Console.WriteLine("Connected to {0}", siteUrl);
@@ -124,9 +121,97 @@ namespace Core.KnockoutJSForm
             Console.WriteLine("");
         }
 
+        private static SecureString GetPassword()
+        {
+            SecureString sStrPwd = new SecureString();
+            try
+            {
+                Console.Write("SharePoint Password : ");
+
+                for (ConsoleKeyInfo keyInfo = Console.ReadKey(true); keyInfo.Key != ConsoleKey.Enter; keyInfo = Console.ReadKey(true))
+                {
+                    if (keyInfo.Key == ConsoleKey.Backspace)
+                    {
+                        if (sStrPwd.Length > 0)
+                        {
+                            sStrPwd.RemoveAt(sStrPwd.Length - 1);
+                            Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                            Console.Write(" ");
+                            Console.SetCursorPosition(Console.CursorLeft - 1, Console.CursorTop);
+                        }
+                    }
+                    else if (keyInfo.Key != ConsoleKey.Enter)
+                    {
+                        Console.Write("*");
+                        sStrPwd.AppendChar(keyInfo.KeyChar);
+                    }
+
+                }
+                Console.WriteLine("");
+            }
+            catch (Exception e)
+            {
+                sStrPwd = null;
+                Console.WriteLine(e.Message);
+            }
+
+            return sStrPwd;
+        }
+
+        private static string GetUserName()
+        {
+            string strUserName = string.Empty;
+            try
+            {
+                Console.Write("SharePoint User Name : ");
+                strUserName = Console.ReadLine();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                strUserName = string.Empty;
+            }
+            return strUserName;
+        }
+
+        private static string GetSite()
+        {
+            string siteUrl = string.Empty;
+            try
+            {
+                Console.Write("Give Office365 site URL : ");
+                siteUrl = Console.ReadLine();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                siteUrl = string.Empty;
+            }
+            return siteUrl;
+        }
+
+
         static void Main(string[] args)
         {
             Console.WriteLine("Provisioning OfficeDevPnPCore.KnockoutJSForm sample started...");
+
+            // Request Office365 site from the user
+            if (String.IsNullOrEmpty(siteUrl))
+            {
+                siteUrl = GetSite();
+            }
+
+            /* Prompt for Credentials */
+            if (String.IsNullOrEmpty(username))
+            {
+                username = GetUserName();
+            }
+
+            if (password == null || password.Length == 0)
+            {
+                password = GetPassword();
+            }
+
             ClientContext ctx = CreateContext();
             
             ProvisionAssets(ctx);

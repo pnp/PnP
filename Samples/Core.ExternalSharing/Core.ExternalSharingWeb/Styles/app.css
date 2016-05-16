@@ -1,0 +1,34 @@
+﻿
+#update {
+    overflow: auto;
+}
+
+#header {
+
+        padding-left: 20px;
+}
+
+#left {
+    width: 250px;
+    float: left;
+        padding-left: 20px;
+}
+
+#right {
+    width: 250px;
+    float: left;
+}
+
+#footer {
+    clear: both;
+    padding-left: 20px;
+}
+
+#actions {
+    clear: both;
+    margin: 20px;
+    border: 1px;
+    padding-left: 20px;
+    border-style:solid;
+    border-color: #a9a9a9
+}

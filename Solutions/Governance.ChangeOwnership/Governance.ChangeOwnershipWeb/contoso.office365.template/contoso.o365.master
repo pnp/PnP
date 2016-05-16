@@ -1,0 +1,487 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="contoso.o365.master.cs" Inherits="Contoso.Office365.common.contoso_o365" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>contoso SP Tools</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <link rel="stylesheet" type="text/css" href="contoso.o365.master.css" />
+    <link rel="stylesheet" type="text/css" href="corev15.css" />
+    <script type="text/javascript" src="../contoso.office365.template/jquery-1.9.1.min.js" ></script>
+    <script type="text/javascript" src="../contoso.office365.template/contoso.o365.master.js" ></script>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+        <!--Header here-->
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server">
+
+        <!--Hidden field for master page links -->
+        <asp:HiddenField ID="HiddenField_Master_CurrentUserName" runat="server" Value="User" />
+        <asp:HiddenField ID="HiddenField_Master_CurrentUserEmail" runat="server" Value="" />
+        <asp:HiddenField ID="HiddenField_Master_CurrentSiteUrl" runat="server" Value="" /> 
+        <asp:HiddenField ID="HiddenField_Master_CurrentSiteTitle" runat="server" Value="Home" />
+        <asp:HiddenField ID="HiddenField_Master_PageTitle" runat="server" Value="" /> 
+        <asp:HiddenField ID="HiddenField_Master_ShortPageTitle" runat="server" Value="" /> 
+
+        <div id="suiteBarDelta" class="ms-dialogHidden ms-fullWidth noindex">
+            <div id="suiteBarTop" class="ms-fullWidth removeFocusOutline" style="height:50px; position:relative;">
+                <div class="o365cs-nav-header16 o365cs-topnavBGColor-2 o365cs-base o365cst">
+                    <div class="o365cs-nav-leftAlign">
+                        <div style="width: 50px;" class="o365cs-nav-topItem o365cs-nav-button ms-Icon-base ms-Icon--waffle2 ms-bgc-tdr ms-bgc-tdr-h" id="O365_MainLink_NavMenu" title="Go to my personal site."></div>
+                        <div style="border-left: 1px solid #fff; border-left-color: rgba(255,255,255, 0.3); padding-left: 20px; padding-right: 20px;" class="o365cs-nav-topItem">
+                            <a class="o365button o365cs-nav-header16" style="color: #fff; text-decoration: none" id="O365_MainLink_Logo" href="https://portal.office.com/Default.aspx">
+                                <span class="o365cs-nav-brandingText">Office 365</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="o365cs-nav-centerAlign">
+                        <div class="o365cs-nav-tenantLogo o365button" onclick="javacript:window.location.replace('https://portal.office.com/Default.aspx');"></div>
+                    </div>
+                    <div class="o365cs-nav-rightAlign">
+                        <div style="width: 50px; border-left: 1px solid #fff; border-left-color: rgba(255,255,255, 0.3);" id="O365_MainLink_Settings" class="o365cs-nav-topItem o365cs-nav-button ms-Icon-base ms-Icon--gear" ></div>
+                        <div style="width: 50px; border-left: 1px solid #fff; border-left-color: rgba(255,255,255, 0.3);" id="O365_MainLink_Help" class="o365cs-nav-topItem o365cs-nav-button ms-Icon-base ms-Icon--question"></div>
+                        <div style="border-left: 1px solid #fff; border-left-color: rgba(255,255,255, 0.3); " id="O365_MainLink_UserProfile" class="o365cs-nav-topItem o365cs-nav-button ms-Icon-base ms-Icon--userprofile">
+                            <%--a class="o365button o365cs-nav-header16" style="color: #fff; text-decoration: none" id="O365_UserLink" target="_blank" >--%>
+                                <div class="o365cs-me-tile-nophoto-username-container">
+                                    <span class="o365cs-me-tile-nophoto-username" id="o365_current_user">User</span>
+                                </div>
+                            <%--</a>--%>
+                        </div>
+                    </div>
+
+                    <div id="o365cs-flexpane-overlay" style="display:none;">
+                        <div class="o365cs-flexPane-panel o365cs-flexPane-overlay ms-bcl-nta ms-bgc-nlr">
+                            <div class="o365cs-nfd o365cs-nfd-normal-fontsize">
+                                <span class="o365cs-lightFont o365-help-flex-pane-label">Help</span> 
+                                <div class="o365cs-nfd-content">
+                                    <div class="ms-fcl-tp o365cs-nfd-normal-lineheight">
+                                        <a class="ms-fcl-tp o365cs-nfd-normal-fontsize o365button" target="_blank">
+                                            <span class="_fc_4 o365buttonLabel">Help</span>
+                                        </a>
+                                    </div>
+                                    <div class="ms-fcl-tp o365cs-nfd-normal-lineheight">
+                                        <a class="ms-fcl-tp o365cs-nfd-normal-fontsize o365button" href="http://g.microsoftonline.com/0BX20en/142">
+                                            <span class="_fc_4 o365buttonLabel">Community</span>
+                                        </a>
+                                    </div>
+                                    <div class="ms-fcl-tp o365cs-nfd-normal-lineheight">
+                                        <a class="ms-fcl-tp o365cs-nfd-normal-fontsize o365button" href="http://g.microsoftonline.com/0BX20en/721">
+                                            <span class="_fc_4 o365buttonLabel">Legal</span>
+                                        </a>
+                                    </div>
+                                    <div class="ms-fcl-tp o365cs-nfd-normal-lineheight">
+                                        <a class="ms-fcl-tp o365cs-nfd-normal-fontsize o365button" href="http://g.microsoftonline.com/0BX20en/138">
+                                            <span class="_fc_4 o365buttonLabel">Privacy</span>
+                                        </a>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+
+                    </div> 
+                    
+                    <div class="o365cs-nav-contextMenu o365spo contextMenuPopup removeFocusOutline" style="min-width: 150px; position: absolute; box-sizing: border-box; outline: 0px; z-index: 2001; top: 50px; display: none;" id="O365_MainLink_Settings_ContextMenu">
+                        <div class="o365cs-base o365cst o365cs-contextMenu"> 
+                            <div class="_fce_M _fce_w customScrollBar scrollContainer"> 
+                                <div role="menu" autoid="_fce_5" class="_fce_x" tabindex="0">
+                                    <div>
+                                        <div tabindex="0" class="_fce_y ms-font-s ms-fwt-sl" aria-selected="true">
+                                            <a class="o365button o365cs-contextMenuItem ms-fcl-b" role="link" href="https://portal.office.com/settings/" id="O365_SubLink_ShellO365Settings" aria-label="Office 365 settings">
+                                                <div class="_fce_F">
+                                                    <span autoid="_fce_9" aria-label="Office 365 settings">Office 365 settings</span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div tabindex="-1" class="_fce_y ms-font-s ms-fwt-sl">
+                                            <div class="o365cs-contextMenuSeparator ms-bcl-nl"></div>
+                                        </div>                                        
+                                        <div tabindex="-1" class="_fce_y ms-font-s ms-fwt-sl" aria-selected="false">
+                                            <a class="o365button o365cs-contextMenuInactiveItem ms-fcl-b" role="link" href='javascript:SuiteOnClick("EnsureScriptFunc\u0028\u0027sharing.js\u0027, \u0027DisplaySharedWithDialog\u0027, function \u0028\u0029 { DisplaySharedWithDialog\u0028\u0027\\u002fteams\\u002fdevelopersite\\u002f\u0027\u0029; }\u0029")' id="O365_SubLink_SuiteMenu_zz5_MenuItem_ShareThisSite" aria-label="Shared with...">
+                                                <div class="_fce_F">
+                                                    <span role="presentation" class="owaimg _fce_G" style="display: none;"> </span>
+                                                    <span autoid="_fce_9" aria-label="Shared with...">Shared with...</span>
+                                                </div>
+                                            </a>
+                                        </div>                                        
+                                        <div tabindex="-1" class="_fce_y ms-font-s ms-fwt-sl">
+                                            <div class="o365cs-contextMenuSeparator ms-bcl-nl"></div>
+                                        </div>                                        
+                                        <div tabindex="-1" class="_fce_y ms-font-s ms-fwt-sl">
+                                            <a class="o365button o365cs-contextMenuInactiveItem ms-fcl-b" role="link" href='javascript:SuiteOnClick("window.location = \u0027javascript:{EnsureScriptParams\u0028\\\u0027ribbon\\\u0027, \\\u0027ChangeWikiPageMode\\\u0027, true\u0029;}\u0027;")' id="O365_SubLink_SuiteMenu_ctl00_SiteActionsMenuMainData_ctl00_MenuItem_EditPage" aria-label="Edit page">
+                                                <div class="_fce_F">
+                                                    <span role="presentation" class="owaimg _fce_G" style="display: none;"> </span>
+                                                    <span autoid="_fce_9" aria-label="Edit page">Edit page</span>
+                                                </div>
+                                            </a>
+                                        </div>                                        
+                                        <div tabindex="-1" class="_fce_y ms-font-s ms-fwt-sl">                                            
+                                            <a class="o365button o365cs-contextMenuInactiveItem ms-fcl-b" role="link" href='javascript:SuiteOnClick("OpenCreateWebPageDialog\u0028\u0027\\u002fteams\\u002fdevelopersite\\u002f_layouts\\u002f15\\u002fcreatewebpage.aspx\u0027\u0029")' id="O365_SubLink_SuiteMenu_zz6_MenuItem_CreatePage" aria-label="Add a page">
+                                                <div class="_fce_F">
+                                                    <span role="presentation" class="owaimg _fce_G" style="display: none;"> </span>
+                                                    <span autoid="_fce_9" aria-label="Add a page">Add a page</span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div tabindex="-1" class="_fce_y ms-font-s ms-fwt-sl">
+                                            <a class="o365button o365cs-contextMenuItem ms-fcl-b" id="O365_SubLink_SuiteMenu_zz7_MenuItem_Create">
+                                                <div class="_fce_F">
+                                                    <span role="presentation" class="owaimg _fce_G" style="display: none;"> </span>
+                                                    <span autoid="_fce_9" aria-label="Add an app">Add an app</span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div tabindex="-1" class="_fce_y ms-font-s ms-fwt-sl">
+                                            <a class="o365button o365cs-contextMenuItem ms-fcl-b" id="O365_SubLink_SuiteMenu_zz8_MenuItem_ViewAllSiteContents">
+                                                <div class="_fce_F">
+                                                    <span role="presentation" class="owaimg _fce_G" style="display: none;"> </span>
+                                                    <span autoid="_fce_9" aria-label="Site contents">Site contents</span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div tabindex="-1" class="_fce_y ms-font-s ms-fwt-sl">
+                                            <div class="o365cs-contextMenuSeparator ms-bcl-nl"></div>
+                                        </div>
+                                        <div tabindex="-1" class="_fce_y ms-font-s ms-fwt-sl">
+                                            <a class="o365button o365cs-contextMenuItem ms-fcl-b" id="O365_SubLink_SuiteMenu_zz9_MenuItem_ChangeTheLook">
+                                                <div class="_fce_F">
+                                                    <span role="presentation" class="owaimg _fce_G" style="display: none;"> </span>
+                                                    <span autoid="_fce_9" aria-label="Change the look">Change the look</span>
+                                                </div>
+                                            </a>
+                                        </div>  
+                                        <div tabindex="-1" class="_fce_y ms-font-s ms-fwt-sl">
+                                            <a class="o365button o365cs-contextMenuItem ms-fcl-b" id="O365_SubLink_SuiteMenu_zz10_MenuItem_Settings">
+                                                <div class="_fce_F">
+                                                    <span role="presentation" class="owaimg _fce_G" style="display: none;"> </span>
+                                                    <span autoid="_fce_9" aria-label="Site settings">Site settings</span>
+                                                </div>
+                                            </a>
+                                        </div>                                        
+                                        <div tabindex="-1" class="_fce_y ms-font-s ms-fwt-sl">
+                                            <div class="o365cs-contextMenuSeparator ms-bcl-nl"></div>
+                                        </div>
+                                        <div tabindex="-1" class="_fce_y ms-font-s ms-fwt-sl">
+                                            <a class="o365button o365cs-contextMenuItem ms-fcl-b" id="O365_SubLink_SuiteMenu_ctl00_SiteActionsMenuMainData_ctl00_ctl04">
+                                                <div class="_fce_F">
+                                                    <span role="presentation" class="owaimg _fce_G" style="display: none;"> </span>
+                                                    <span autoid="_fce_9" aria-label="Getting started">Getting started</span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+
+                    <div class="o365cs-nav-contextMenu o365spo contextMenuPopup removeFocusOutline" role="menu" tabindex="-1" style="min-width: 150px; position: absolute; box-sizing: border-box; outline: 0px; z-index: 2004; top: 50px; left:0px; display: none;" id="O365_MainLink_CurrentUser_ContextMenu">
+                        <div class="o365cs-base ms-bgc-w o365cst o365cs-context-font o365cs-segoeRegular o365cs-me-contextMenu"> 
+                            <div class="o365cs-me-itemsList" tabindex="-1">
+                                <div>
+                                    <div tabindex="0">
+                                        <div class="o365cs-userInfo o365button selectedMenuItem" role="group" tabindex="0">
+                                            <div class="o365cs-me-persona o365cs-me-nophoto">
+                                                <div class="o365cs-me-personaView">
+                                                    <div class="o365cs-me-personaPhoto" style="display: none;"></div>
+                                                    <div class="o365cs-me-personaDetails"> 
+                                                        <span class="o365cs-me-userDisplayName o365cs-display-Block o365cs-me-bidi o365cs-segoeSemiLight" tabindex="0" id="o365_current_user_name">User</span> 
+                                                        <span class="o365cs-me-userEmail o365cs-display-Block o365cs-me-bidi o365cs-segoeRegular" tabindex="0" id="o365_current_user_email">user@demo.com</span> 
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div tabindex="-1" aria-label="Go to the My profile page" title="Go to the My profile page">
+                                        <a class="o365button o365cs-contextMenuItem ms-fcl-b" role="link" href="https://portal.office.com/profile/" id="O365_SubLink_ShellAboutMe" aria-label="Go to the My profile page">
+                                            <div class="_fce_F"><span role="presentation" class="owaimg _fce_G" style="display: none;"> </span>
+                                                <span aria-label="Go to the My profile page">About me</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div tabindex="-1">
+                                        <div class="o365cs-contextMenuSeparator ms-bcl-nl"></div>
+                                    </div>
+                                    <div tabindex="-1" aria-label="View account" title="View account">
+                                        <a class="o365button o365cs-contextMenuItem ms-fcl-b" role="link" href="https://portal.office.com/account/" target="_self" id="O365_SubLink_ViewAccount" aria-label="View account">
+                                            <div class="_fce_F">
+                                                <span role="presentation" class="owaimg _fce_G" style="display: none;"> </span>
+                                                <span aria-label="View account">View account</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div tabindex="-1">
+                                        <div class="o365cs-contextMenuSeparator ms-bcl-nl"></div>
+                                    </div>
+                                    <div tabindex="-1" aria-label="Sign out of Office 365 and return to the Sign-in page" title="Sign out of Office 365 and return to the Sign-in page">
+                                        <a class="o365button o365cs-contextMenuItem ms-fcl-b" role="link" id="O365_SubLink_ShellSignout" aria-label="Sign out of Office 365 and return to the Sign-in page">
+                                            <div class="_fce_F">
+                                                <span role="presentation" class="owaimg _fce_G" style="display: none;"> </span>
+                                                <span aria-label="Sign out of Office 365 and return to the Sign-in page">Sign out</span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                    </div>
+                
+                </div>
+            </div>
+
+        </div>
+
+        <div id="s4-ribbonrow" style="height:35px;">
+            <div id="globalNavBox" class="noindex"></div>
+        </div>
+
+        <div id="s4-workspace" class="ms-core-overlay">
+            <div id="s4-bodyContainer">
+                <div id="s4-titlerow" class="ms-dialogHidden " style="display: block;">
+                    <div id="titleAreaBox" class="ms-noList ms-table ms-core-tableNoSpace">                        
+                        <div id="titleAreaRow" class="ms-tableRow">
+                            <div id="siteIcon" class="ms-tableCell ms-verticalAlignTop">
+                                <div id="DeltaSiteLogo">
+                                    <a id="siteicon_onetidProjectPropertyTitleGraphic" class="ms-siteicon-a">
+                                        <img class="ms-siteicon-img" src="../contoso.office365.template/siteIcon.png?rev=41"/>
+                                    </a>
+                                </div>
+
+                            </div>
+                            <div class="ms-breadcrumb-box ms-tableCell ms-verticalAlignTop">
+                                <div class="ms-breadcrumb-top">
+                                    <%--<div class="ms-breadcrumb-dropdownBox" style="display:none;">
+                                        <span id="DeltaBreadcrumbDropdown"></span>
+                                    </div>--%>
+                                    <div id="DeltaTopNavigation" class="ms-displayInline ms-core-navigation" role="navigation">
+                                        <div id="zz12_TopNavigationMenuV4" class="s4-tn noindex ms-core-listMenu-horizontalBox">
+                                            <ul id="zz13_RootAspMenu" class="root ms-core-listMenu-root static">
+                                                <li class="static selected">
+                                                    <a class="static selected menu-item ms-core-listMenu-item ms-displayInline ms-core-listMenu-selected ms-navedit-linkNode" title="Back to site" >
+                                                        <span class="additional-background ms-navedit-flyoutArrow">
+                                                            <span class="menu-item-text" id="TopNavigationMenuV4_NavMenu_RootSite">Home</span>
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <%--<li class="static ms-verticalAlignTop ms-listMenu-editLink ms-navedit-editArea">
+                                                    <span class="ms-navedit-editSpan" id="zz12_TopNavigationMenuV4_NavMenu_Edit">
+                                                        <a id="zz12_TopNavigationMenuV4_NavMenu_EditLinks" class="ms-navedit-editLinksText" href="#" onclick="g_QuickLaunchMenu = null; EnsureScriptParams('quicklaunch.js', 'QuickLaunchInitEditMode', 'zz12_TopNavigationMenuV4', 1, 2, 0, 'sid:1002'); cancelDefault(event); return false;" title="Edit Links">
+                                                            <span class="ms-displayInlineBlock">
+                                                                <span class="ms-navedit-editLinksIconWrapper ms-verticalAlignMiddle">
+                                                                    <img class="ms-navedit-editLinksIcon" src="../contoso.office365.template/spcommon.png?rev=41" alt="Edit Links"/></span>
+                                                                <span class="ms-metadata ms-verticalAlignMiddle">Edit Links</span>
+
+                                                            </span>
+                                                        </a>
+                                                        <span id="zz12_TopNavigationMenuV4_NavMenu_Loading" class="ms-navedit-menuLoading ms-hide">
+                                                            <a id="zz12_TopNavigationMenuV4_NavMenu_GearsLink" href="#" onclick="HideGears(); return false;" title="This animation indicates the operation is in progress. Click to remove this animated image.">
+                                                                <img id="zz12_TopNavigationMenuV4_NavMenu_GearsImage" src="../contoso.office365.template/loadingcirclests16.gif?rev=41" alt="This animation indicates the operation is in progress. Click to remove this animated image."/>
+                                                            </a>
+                                                        </span>
+                                                        <div id="zz12_TopNavigationMenuV4_NavMenu_ErrorMsg" class="ms-navedit-errorMsg"></div>
+                                                    </span>
+                                                </li>--%>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h1 id="pageTitle" class="ms-core-pageTitle">
+                                    <span id="DeltaPlaceHolderPageTitleInTitleArea">
+                                        <span>
+                                            <span>
+                                                <a title="Site Settings" id="DeltaPlaceHolderPageTitleInTitleArea_SiteSettings_Link" >Site Settings</a>
+                                            </span>
+                                            <span> 
+                                                <span>
+                                                    <span style="height:16px;width:16px;position:relative;display:inline-block;overflow:hidden;">
+                                                        <img src="../contoso.office365.template/spcommon.png?rev=41" alt=":" style="position:absolute;left:-109px !important;top:-232px !important;"/>
+                                                    </span>
+                                                </span>
+                                            </span>
+                                            <span><!--App Title here-->Change Site Collection Ownership</span>
+                                        </span>
+                                    </span>
+                                    <div id="DeltaPlaceHolderPageDescription" class="ms-displayInlineBlock ms-normalWrap">
+                                        <a id="ms-pageDescriptionDiv" style="" data-accessibility-nocheck="true" title="Use this page to change the ownership of the site collection." class="js-callout-launchPoint">
+                                            <span id="ms-pageDescriptionImage">&nbsp;</span>
+                                        </a>
+                                        <span class="ms-accessible" id="ms-pageDescription" style="display:none"><!--App Description here-->Use this page to change the ownership of the site collection.</span>
+                                    </div>
+                                </h1>
+                            </div>                            
+<%--                            <div class="ms-tableCell ms-verticalAlignTop">
+                                <div id="DeltaPlaceHolderGroupActionsArea" class="ms-floatRight ms-noWrap"></div>
+                            </div>
+                            <div class="ms-tableCell ms-verticalAlignTop">
+                                <div id="DeltaPlaceHolderSearchArea" class="ms-mpSearchBox ms-floatRight">
+                                    <div id="searchInputBox">
+                                        <div class="ms-webpart-chrome ms-webpart-chrome-fullWidth ">
+                                            <div webpartid="00000000-0000-0000-0000-000000000000" haspers="true" id="WebPartWPQ1" width="100%" class="ms-WPBody noindex " onlyformepart="true" allowdelete="false" style=""><div componentid="ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr" id="ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr"><div id="SearchBox" name="Control">
+                                                <div class="ms-srch-sb ms-srch-sb-border" id="ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr_sboxdiv">
+                                                    <input type="text" value="Search this site" maxlength="2048" accesskey="S" title="Search this site" id="ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr_sbox" autocomplete="off" autocorrect="off" onkeypress="EnsureScriptFunc('Search.ClientControls.js', 'Srch.U', function() {if (Srch.U.isEnterKey(String.fromCharCode(event.keyCode))) {$find('ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr').search($get('ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr_sbox').value);return Srch.U.cancelEvent(event);}})" onkeydown="EnsureScriptFunc('Search.ClientControls.js', 'Srch.U', function() {var ctl = $find('ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr');ctl.activateDefaultQuerySuggestionBehavior();})" onfocus="EnsureScriptFunc('Search.ClientControls.js', 'Srch.U', function() {var ctl = $find('ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr');ctl.hidePrompt();ctl.setBorder(true);})" onblur="EnsureScriptFunc('Search.ClientControls.js', 'Srch.U', function() {var ctl = $find('ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr'); if (ctl){ ctl.showPrompt(); ctl.setBorder(false);}})" class="ms-textSmall ms-srch-sb-prompt ms-helperText"/>
+                                                    <a title="Navigation" id="ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr_NavButton" onclick="EnsureScriptFunc('Search.ClientControls.js', 'Srch.U', function() {$find('ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr').activateDefaultNavigationBehavior();return Srch.U.cancelEvent(event);})" href="javascript: {}" class="ms-srch-sb-navLink">
+                                                        <img src="../contoso.office365.template/searchresultui.png?rev=41" class="ms-srch-sb-navImg" id="navImg" alt="Navigation"/>
+                                                    </a>
+                                                    <a title="Search" role="button" class="ms-srch-sb-searchLink" id="ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr_SearchLink" onclick="EnsureScriptFunc('Search.ClientControls.js', 'Srch.U', function() {$find('ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr').search($get('ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr_sbox').value);})" href="javascript: {}">
+                                                        <img src="../contoso.office365.template/searchresultui.png?rev=41" class="ms-srch-sb-searchImg" id="searchImg" alt="Search"/>
+
+                                                    </a>
+                                                    <div class="ms-qSuggest-container ms-shadow" id="AutoCompContainer">
+                                                        <div id="ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr_AutoCompList"></div>
+
+                                                    </div>
+                                                    <div class="ms-qSuggest-container ms-shadow" id="NavDropdownListContainer">
+                                                        <div id="ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_csr_NavDropdownList"></div>
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            </div>
+                                                <noscript>
+                                                    <div id="ctl00_PlaceHolderSearchArea_SmallSearchInputBox1_noscript">It looks like your browser does not have JavaScript enabled. Please turn on JavaScript and try again.</div>
+                                            </noscript>
+                                            <div id="ctl00_PlaceHolderSearchArea_SmallSearchInputBox1"></div>
+                                            <div class="ms-clear"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>--%>
+                    
+                        </div>
+                    </div>
+                </div>
+
+                <div id="contentRow">
+                    <div id="sideNavBox" class="ms-dialogHidden ms-forceWrap ms-noList">
+                        <div id="DeltaPlaceHolderLeftNavBar" class="ms-core-navigation" role="navigation">
+                            <a id="startNavigation" name="startNavigation" tabindex="-1"></a>
+                            <div class="ms-core-sideNavBox-removeLeftMargin">
+                                <div id="LeftNavBar_QuickLaunchNavigationManager">
+                                    <div id="zz14_V4QuickLaunchMenu" class=" noindex ms-core-listMenu-verticalBox" >
+                                        <ul id="zz15_RootAspMenu" class="root ms-core-listMenu-root static">
+                                            <li class="static">
+                                                <a class="static menu-item ms-core-listMenu-item ms-displayInline ms-navedit-linkNode" title="Home" id="LeftNavBar_QuickLaunchNavigationManager_Home_Link">
+                                                    <span class="additional-background ms-navedit-flyoutArrow">
+                                                        <span class="menu-item-text">Home</span>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <%--<li class="static">
+                                                <a class="static menu-item ms-core-listMenu-item ms-displayInline ms-navedit-linkNode" title="Notebook" id="LeftNavBar_QuickLaunchNavigationManager_Notebook_Link">
+                                                    <span class="additional-background ms-navedit-flyoutArrow">
+                                                        <span class="menu-item-text">Notebook</span>
+                                                    </span>
+                                                </a>
+                                            </li>--%>
+                                            <li class="static">                                                
+                                                <a class="static ms-quicklaunch-dropNode menu-item ms-core-listMenu-item ms-displayInline ms-navedit-linkNode ms-droppable" title="Documents" id="LeftNavBar_QuickLaunchNavigationManager_Document_Link">
+                                                    <span class="additional-background ms-navedit-flyoutArrow">
+                                                        <span class="menu-item-text">Documents</span>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <%--<li class="static">
+                                                <a class="static menu-item ms-core-listMenu-item ms-displayInline ms-navedit-linkNode" title="Apps in Testing" href="/teams/developersite/Lists/DraftApps/AllItems.aspx">
+                                                    <span class="additional-background ms-navedit-flyoutArrow">
+                                                        <span class="menu-item-text">Apps in Testing</span>
+                                                    </span>
+                                                </a>
+                                            </li>--%>
+                                            <%--<li class="static">
+                                                <a class="static menu-item ms-core-listMenu-item ms-displayInline ms-navedit-linkNode" title="Samples" href="http://go.microsoft.com/fwlink/?LinkID=234388">
+                                                    <span class="additional-background ms-navedit-flyoutArrow">
+                                                        <span class="menu-item-text">Samples</span>
+                                                    </span>
+                                                </a>
+                                            </li>--%>
+                                            <%--<li class="static">
+                                                <a class="static menu-item ms-core-listMenu-item ms-displayInline ms-navedit-linkNode" title="Developer Center" href="http://go.microsoft.com/fwlink/?LinkID=228251">
+                                                    <span class="additional-background ms-navedit-flyoutArrow">
+                                                        <span class="menu-item-text">Developer Center</span>
+                                                    </span>
+                                                </a>
+                                            </li>--%>
+                                            <li class="static">
+                                                <a class="static menu-item ms-core-listMenu-item ms-displayInline ms-navedit-linkNode" title="Site Contents" id="LeftNavBar_QuickLaunchNavigationManager_SiteConetent_Link">
+                                                    <span class="additional-background ms-navedit-flyoutArrow">
+                                                        <span class="menu-item-text">Site Contents</span>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <li class="static">
+                                                <a class="static menu-item ms-core-listMenu-item ms-displayInline ms-navedit-linkNode" title="Recycle Bin" id="LeftNavBar_QuickLaunchNavigationManager_RecycleBin_Link">
+                                                    <span class="additional-background ms-navedit-flyoutArrow">
+                                                        <span class="menu-item-text">Recycle Bin</span>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <!--Your App name here-->
+                                            <li class="static selected">
+                                                <a class="static selected menu-item ms-core-listMenu-item ms-displayInline ms-core-listMenu-selected ms-navedit-linkNode" title="">
+                                                    <span class="additional-background ms-navedit-flyoutArrow">
+                                                        <span class="menu-item-text">Change Ownership</span>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                            <%--<li class="static ms-verticalAlignTop ms-listMenu-editLink ms-navedit-editArea">
+                                                <span class="ms-navedit-editSpan" id="zz14_V4QuickLaunchMenu_NavMenu_Edit">
+                                                    <a id="zz14_V4QuickLaunchMenu_NavMenu_EditLinks" class="ms-navedit-editLinksText" href="#" onclick="g_QuickLaunchMenu = null; EnsureScriptParams('quicklaunch.js', 'QuickLaunchInitEditMode', 'zz14_V4QuickLaunchMenu', 2, 0, 1, 'sid:1025'); cancelDefault(event); return false;" title="Edit Links">
+                                                        <span class="ms-displayInlineBlock">
+                                                            <span class="ms-navedit-editLinksIconWrapper ms-verticalAlignMiddle">
+                                                                <img class="ms-navedit-editLinksIcon" src="../contoso.office365.template/spcommon.png?rev=41" alt="Edit Links"/>
+                                                            </span>
+                                                            <span class="ms-metadata ms-verticalAlignMiddle">Edit Links</span>
+
+                                                        </span>
+
+                                                    </a>
+                                                    <span id="zz14_V4QuickLaunchMenu_NavMenu_Loading" class="ms-navedit-menuLoading ms-hide">
+                                                        <a id="zz14_V4QuickLaunchMenu_NavMenu_GearsLink" href="#" onclick="HideGears(); return false;" title="This animation indicates the operation is in progress. Click to remove this animated image.">
+                                                            <img id="zz14_V4QuickLaunchMenu_NavMenu_GearsImage" src="../contoso.office365.template/loadingcirclests16.gif?rev=41" alt="This animation indicates the operation is in progress. Click to remove this animated image."/>
+
+                                                        </a>
+                                                    </span>
+                                                    <div id="zz14_V4QuickLaunchMenu_NavMenu_ErrorMsg" class="ms-navedit-errorMsg"></div>
+                                                </span>
+                                            </li>--%>
+                                        </ul>
+                                    </div>
+
+                                </div>
+                                
+                                <div class="ms-core-listMenu-verticalBox">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="contentBox">
+
+                        <div id="notificationArea" class="ms-notif-box" aria-live="polite" aria-relevant="all" style="display: none;">
+                            <div class="ms-trcnoti-border">
+                                <div class="ms-fullWidth">
+                                    <div class="ms-trcnoti-host ms-fullWidth"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="DeltaPageStatusBar"><div id="pageStatusBar"></div></div>
+
+                        <!--Content here-->
+                        <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+                            Content here
+                        </asp:ContentPlaceHolder>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </form>
+</body>
+</html>

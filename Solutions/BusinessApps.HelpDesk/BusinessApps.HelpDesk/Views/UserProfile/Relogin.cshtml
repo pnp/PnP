@@ -1,0 +1,11 @@
+﻿@using Microsoft.Azure.ActiveDirectory.GraphClient
+
+@{
+    ViewBag.Title = "User Profile";
+}
+<h2>@ViewBag.Title.</h2>
+
+<p>
+    The token for accessing the Graph API has expired.
+    Click @Html.ActionLink("here", "RefreshSession", "UserProfile", null, null) to sign-in and get a new access token.
+</p>

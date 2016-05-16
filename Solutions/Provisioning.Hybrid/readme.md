@@ -20,6 +20,7 @@ Provisioning.Hybrid | Vesa Juvonen, Bert Jansen (**Microsoft**)
 Version  | Date | Comments
 ---------| -----| --------
 1.0  | March 13th 2014 | Initial release
+1.1  | October 8th 2015 | Updated Nuget packages and references. Using Azure SDK 2.7.
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**

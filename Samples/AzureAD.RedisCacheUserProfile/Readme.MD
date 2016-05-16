@@ -1,4 +1,4 @@
-# Use Azure RedisCache to Cache Office 365 User Profile Information in an Office 365 App #
+# Use Azure RedisCache to Cache Office 365 User Profile Information in an Office 365 Add-in #
 
 ### Summary ###
 This sample shows how to use windows Azure Active directory to get user profile information
@@ -25,7 +25,7 @@ Version  | Date | Comments
 
 ----------
 
-# Use Azure RedisCache to Cache Office 365 User Profile Information in an Office 365 App #
+# Use Azure RedisCache to Cache Office 365 User Profile Information in an Office 365 Add-in #
 
 This sample shows how to use Azure Redis Cache to put user profile information from Azure Active Directory.
 
