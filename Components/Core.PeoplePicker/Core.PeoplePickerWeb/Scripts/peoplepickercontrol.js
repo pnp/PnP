@@ -308,7 +308,7 @@
                             loginNameDisplay = loginNameDisplay + " " + segs[segs.length - 1];
                             loginNameDisplay = loginNameDisplay.trim();
                         }
-                        txtResults += this.Format(displayTemplate, this.InstanceName, loginName.replace("\\", "\\\\"), this.HtmlEncode(displayName), email, displayName, loginNameDisplay, title);
+                        txtResults += this.Format(displayTemplate, this.InstanceName, loginName.replace("\\", "\\\\"), this.HtmlEncode(displayName), this.HtmlEncode(email), displayName, loginNameDisplay, title);
                     }
                     var resultDisplay = '';
                     txtResults += '<div class=\'ms-emphasisBorder\' style=\'width: 400px; padding: 4px; border-left: none; border-bottom: none; border-right: none; cursor: default;\'>';
