@@ -83,7 +83,7 @@ namespace Provisioning.Extensibility.Providers
         {
             List<PublishingPage> pages = new List<PublishingPage>();
 
-            XNamespace ns = "http://schemas.clearpeople.com/PublishingPageProvisioningExtensibilityProviderConfiguration";
+            XNamespace ns = "http://schemas.somecompany.com/PublishingPageProvisioningExtensibilityHandlerConfiguration";
             XDocument doc = XDocument.Parse(configurationXml);
 
             foreach (var p in doc.Root.Descendants(ns + "Page"))

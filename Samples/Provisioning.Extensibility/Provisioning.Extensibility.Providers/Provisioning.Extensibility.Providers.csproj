@@ -158,7 +158,7 @@
     <Compile Include="Helpers\PageHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\PublishingPage.cs" />
-    <Compile Include="Providers\PublishingPageProvisioningExtensibilityProvider.cs" />
+    <Compile Include="Providers\PublishingPageProvisioningExtensibilityHandler.cs" />
     <Compile Include="Model\PublishingPageWebPart.cs" />
     <Compile Include="SharePointContext.cs" />
     <Compile Include="TokenHelper.cs" />
