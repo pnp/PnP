@@ -9,18 +9,20 @@ using OfficeDevPnP.Core.Framework.Provisioning.Model;
 using OfficeDevPnP.Core.Diagnostics;
 using System.Xml.Linq;
 using Provisioning.Extensibility.Providers.Helpers;
+using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers.TokenDefinitions;
+using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 
 namespace Provisioning.Extensibility.Providers
 {
-    public class PublishingPageProvisioningExtensibilityProvider : IProvisioningExtensibilityProvider
+    public class PublishingPageProvisioningExtensibilityHandler : IProvisioningExtensibilityHandler
     {
-        private readonly string logSource = "Provisioning.Extensibility.Providers.PublishingPageProvisioningExtensibilityProvider";
+        private readonly string logSource = "Provisioning.Extensibility.Providers.PublishingPageProvisioningExtensibilityHandler";
         private ClientContext clientContext;
         private Web web;
         private string configurationXml;
 
-        #region IProvisioningExtensibilityProvider implementation
-        public void ProcessRequest(ClientContext ctx, ProvisioningTemplate template, string configurationData)
+        #region IProvisioningExtensibilityHandler Implementation
+        public void Provision(ClientContext ctx, ProvisioningTemplate template, ProvisioningTemplateApplyingInformation applyingInformation, TokenParser tokenParser, PnPMonitoredScope scope, string configurationData)
         {
             Log.Info(
                 logSource,
@@ -33,6 +35,16 @@ namespace Provisioning.Extensibility.Providers
             configurationXml = configurationData;
 
             AddPublishingPages();
+        }
+
+        public ProvisioningTemplate Extract(ClientContext ctx, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInformation, PnPMonitoredScope scope, string configurationData)
+        {
+            return template;
+        }
+
+        public IEnumerable<TokenDefinition> GetTokens(ClientContext ctx, ProvisioningTemplate template, string configurationData)
+        {
+            return new List<TokenDefinition>();
         }
         #endregion
 
@@ -71,7 +83,7 @@ namespace Provisioning.Extensibility.Providers
         {
             List<PublishingPage> pages = new List<PublishingPage>();
 
-            XNamespace ns = "http://schemas.somecompany.com/PublishingPageProvisioningExtensibilityProviderConfiguration";
+            XNamespace ns = "http://schemas.clearpeople.com/PublishingPageProvisioningExtensibilityProviderConfiguration";
             XDocument doc = XDocument.Parse(configurationXml);
 
             foreach (var p in doc.Root.Descendants(ns + "Page"))

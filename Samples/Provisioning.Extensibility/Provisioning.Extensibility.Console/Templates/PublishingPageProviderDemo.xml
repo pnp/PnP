@@ -31,7 +31,7 @@
 			
 			<pnp:Providers>
 				<pnp:Provider Enabled="true" 
-							  HandlerType="Provisioning.Extensibility.Providers.PublishingPageProvisioningExtensibilityProvider, Provisioning.Extensibility.Providers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+							  HandlerType="Provisioning.Extensibility.Providers.PublishingPageProvisioningExtensibilityHandler, Provisioning.Extensibility.Providers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
 					<pnp:Configuration>
 						<PublishingPageProvider id="PublishingPageProviderConfig" xmlns="http://schemas.somecompany.com/PublishingPageProvisioningExtensibilityProviderConfiguration">
 							<Page Overwrite="true"
