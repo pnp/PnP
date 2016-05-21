@@ -10,7 +10,7 @@
     "web": {
       "commandName": "web",
       "launchBrowser": true,
-      "launchUrl": "https://localhost:44300",
+      "launchUrl": "https://localhost:44379",
       "environmentVariables": {
         "Hosting:Environment": "Development"
       }
