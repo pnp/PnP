@@ -41,15 +41,16 @@ This library/solution has the following goals in mind (some still not achieved!)
 
 
 ## Getting Started ##
+1. Build the OfficeDevPnP.Core.Framework.Authentication project and add a reference to the output NuGet package.
 
-The following must be added to the Startup.cs Configure method:
+2. The following must be added to the Startup.cs Configure method in your ASP.NET Core web application:
 ```C#
             app.UseSharePointAuthentication(
                 new SharePointAuthenticationOptions()
                 {
                     AutomaticChallenge = false,
                     CookieAuthenticationScheme = "AspNet.ApplicationCookie",
-                    ClientId = Configuration["SharePointAuthentication:ClientId"], //TODO: take out
+                    ClientId = Configuration["SharePointAuthentication:ClientId"],
                     ClientSecret = Configuration["SharePointAuthentication:ClientSecret"],
                     Events = new SharePointAuthenticationEvents()
                     {
@@ -65,7 +66,7 @@ The following must be added to the Startup.cs Configure method:
                 }
             );
 ```
-The library needs Session and Cookies in order to keep track of the client requests during redirects. Add the following to the Configure method:
+3. The library needs Session and Cookies in order to keep track of the client requests during redirects. Add the following to the Configure method:
 ```C#
 	app.UseSession();
         
@@ -80,14 +81,15 @@ The library needs Session and Cookies in order to keep track of the client reque
                 }
         );
 ```
-For the above pipeline additions to work, the following needs to be added to the ConfigureServices method of Startup.cs"
+4. For the Session & Cookie pipeline additions to work, the following needs to be added to the ConfigureServices method of Startup.cs"
 ```C#
             services.AddCaching();
             services.AddSession(o => { o.IdleTimeout = TimeSpan.FromSeconds(3600); });
 ```
+5. You might need to restore your Bower and Nuget packages if they are not present on your machine.
 
 ## Release Notes ##
-- RC1 working and ready for use
-- RC2 port in testing
+- RC1 is working and ready for use
+- RC2 port is currently in testing
 - This only works with ACS, High Trust is still not supported/developed yet :(
 - Remote Event Receivers not tested yet
