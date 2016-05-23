@@ -1,4 +1,4 @@
-﻿# The Help Desk Demo #
+# The Help Desk Demo #
 
 ### Summary ###
 This solution demonstrates combining various Office 365 and Azure resources into a single application that can be consumed simultaneously.  The application includes functionality and data from
@@ -38,7 +38,7 @@ The user interface combines data directly from Microsoft Graph, SQL Azure, Yamme
 information to a user on a single screen, in the form of a dashboard.  The application is a single page application and is completely driven by MVC, JavaScript and AJAX.
 As the users navigate through the application, various AJAX calls are made into the MVC controllers.  In most cases, the data is return in JSON format.
 
-![](http://blog.jonathanhuss.com/wp-content/uploads/2015/12/image66.png)
+![Web page with four areas. One for emails, one for tickets, one for Yammer feed and one for announcements](http://blog.jonathanhuss.com/wp-content/uploads/2015/12/image66.png)
 
 ### Authentication Bits ###
 
@@ -261,7 +261,7 @@ simply displaying a group feed in the website doesn't require the API.  Yammer p
 generates HTML and JavaScript to display the feed.  Navigating to the Yammer group and selecting 'Embed this feed in your site',
 opens a window containing the necessary bits:
 
-![](http://blog.jonathanhuss.com/wp-content/uploads/2015/12/image18.png)
+![SharePoint's Embed This Feed in your site UI with Yammer embed information](http://blog.jonathanhuss.com/wp-content/uploads/2015/12/image18.png)
 
 The JavaScript provided looks like this:
 
