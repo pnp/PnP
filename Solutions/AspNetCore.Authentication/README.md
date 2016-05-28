@@ -81,7 +81,7 @@ This library/solution has the following goals in mind (some still not achieved!)
                 }
         );
 ```
-4. For the Session & Cookie pipeline additions to work, the following needs to be added to the ConfigureServices method of Startup.cs"
+4. For the Session & Cookie pipeline additions to work, the following needs to be added to the ConfigureServices method of Startup.cs:
 ```C#
             services.AddCaching();
             services.AddSession(o => { o.IdleTimeout = TimeSpan.FromSeconds(3600); });

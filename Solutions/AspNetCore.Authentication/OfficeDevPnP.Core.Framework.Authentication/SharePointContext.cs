@@ -427,8 +427,6 @@ namespace OfficeDevPnP.Core.Framework.Authentication
         {
             if (httpRequest == null) { throw new ArgumentNullException(nameof(httpRequest)); }
 
-            //TODO: null checks are not really needed here as the SharePointContext constructor handles its validation
-
             // SPHostUrl
             Uri spHostUrl = SharePointContext.GetUriFromQueryStringParameter(httpRequest, SharePointContext.SPHostUrlKey);
             if (spHostUrl == null) { return null; }
@@ -688,11 +686,11 @@ namespace OfficeDevPnP.Core.Framework.Authentication
             {
                 contextToken = TokenHandler.ReadAndValidateContextToken(contextTokenString, httpRequest.Host.Value);
             }
-            catch (WebException ex)
+            catch (WebException)
             {
                 return null;
             }
-            catch (AudienceUriValidationFailedException aex)
+            catch (AudienceUriValidationFailedException)
             {
                 return null;
             }
@@ -711,6 +709,7 @@ namespace OfficeDevPnP.Core.Framework.Authentication
                     (httpContext.Request, SharePointContext.SPHostUrlKey);
 
                 string contextToken = TokenHandler.GetContextTokenFromRequest(httpContext.Request);
+                //read the cookie value
                 HttpCookie spCacheKeyCookie = new HttpCookie(SPCacheKeyKey, httpContext.Request.Cookies[SPCacheKeyKey]);
                 string spCacheKey = spCacheKeyCookie != null ? spCacheKeyCookie.Value : null;
 
@@ -748,6 +747,7 @@ namespace OfficeDevPnP.Core.Framework.Authentication
             //creates a cookie to store the SPCacheKey
             if (spAcsContext != null)
             {
+                //The following code generates a cookie in the response with the SPCacheKey as a value
                 var options = new CookieOptions() { HttpOnly = true, Secure = true };
                 httpContext.Response.Cookies.Append(SPCacheKeyKey, spAcsContext.CacheKey, options);
             }

@@ -29,10 +29,7 @@ namespace AspNet5.Mvc6.StarterWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCaching();
-            services.AddSession(o =>
-            {
-                o.IdleTimeout = TimeSpan.FromSeconds(3600);
-            });
+            services.AddSession(o => { o.IdleTimeout = TimeSpan.FromSeconds(3600); });
 
             // Add framework services.
             services.AddMvc();
@@ -85,10 +82,11 @@ namespace AspNet5.Mvc6.StarterWeb
             app.UseSharePointAuthentication(
                 new SharePointAuthenticationOptions()
                 {
-                    AutomaticChallenge = false,
                     CookieAuthenticationScheme = "AspNet.ApplicationCookie",
+                    //I really don't like how config settings are retrieved, but that is how the ASP.NET guys do it in their samples
                     ClientId = Configuration["SharePointAuthentication:ClientId"],
                     ClientSecret = Configuration["SharePointAuthentication:ClientSecret"],
+                    //Handle events thrown by the auth handler
                     Events = new SharePointAuthenticationEvents()
                     {
                         OnAuthenticationSucceeded = succeededContext =>

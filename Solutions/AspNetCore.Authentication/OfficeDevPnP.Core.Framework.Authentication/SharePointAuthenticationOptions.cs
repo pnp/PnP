@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNet.Authentication;
-using Microsoft.AspNet.Authentication.Cookies;
-using OfficeDevPnP.Core.Framework.Authentication.Events;
-
-namespace OfficeDevPnP.Core.Framework.Authentication
+﻿namespace OfficeDevPnP.Core.Framework.Authentication
 {
+    using Microsoft.AspNet.Authentication;
+    using OfficeDevPnP.Core.Framework.Authentication.Events;
+
     /// <summary>
     /// Creates an instance and sets default values of the Authentication Options for the middleware
     /// </summary>
@@ -16,7 +15,7 @@ namespace OfficeDevPnP.Core.Framework.Authentication
         {
             // Sets automatic challenge to default.
             AutomaticAuthenticate = true;
-            AutomaticChallenge = true;
+            AutomaticChallenge = false;
             AuthenticationScheme = GetType().Assembly.FullName;
         }
 

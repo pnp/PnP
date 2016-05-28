@@ -9,6 +9,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.Mvc.SharePointAp
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNetCore.Mvc.StarterWeb", "AspNetCore.Mvc.StarterWeb\AspNetCore.Mvc.StarterWeb.xproj", "{97F83AE2-9FC7-49BD-B95D-FBBE7993C033}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8625A035-3800-470A-9EEC-A23750CB05AB}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
