@@ -57,7 +57,7 @@
                                 <div class="caption">
                                     <h3>View Samples</h3>
                                     <p>Browse the sample gallery and see examples of using the library live.</p>
-                                    <p><a href="sampleviewer.aspx#helloworld.html" class="btn btn-primary" role="button">Button</a></p>
+                                    <p><a href="sampleviewer.aspx#helloworld.html" class="btn btn-primary" role="button">Samples</a></p>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                                 <div class="caption">
                                     <h3>API Playground</h3>
                                     <p>Interact directly with the API from your browser with real-time results.</p>
-                                    <p><a href="playground.aspx" class="btn btn-primary" role="button">Button</a></p>
+                                    <p><a href="playground.aspx" class="btn btn-primary" role="button">Playground</a></p>
                                 </div>
                             </div>
                         </div>
@@ -79,7 +79,7 @@
                                 <div class="caption">
                                     <h3>Behind the scenes</h3>
                                     <p>Gain some insight into the plumbing to make the samples work.</p>
-                                    <p><a href="bts.aspx" class="btn btn-primary" role="button">Button</a></p>
+                                    <p><a href="bts.aspx" class="btn btn-primary" role="button">Behind the Scenes</a></p>
                                 </div>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                                 <div class="caption">
                                     <h3>Help</h3>
                                     <p>Get answers to some common questions with the samples.</p>
-                                    <p><a href="help.aspx" class="btn btn-primary" role="button">Button</a></p>
+                                    <p><a href="help.aspx" class="btn btn-primary" role="button">Help</a></p>
                                 </div>
                             </div>
                         </div>

@@ -37,7 +37,7 @@
 
         // manipulate the embed code so it will work when pasted in
         var embedCode = rawCode.replace(/crossDomainWeb\(appWebUrl, hostWebUrl\)/g, "web").replace(/"\.\.\/scripts/g, "\"" + appWebUrl + "/scripts");
-        embedCode = "    &lt;script type=\"text/javascript\" src=\"" + appWebUrl + "/scripts/embedsample.js\"&gt;&lt;/script&gt;" + embedCode;
+        embedCode = "    &lt;script type=\"text/javascript\" src=\"" + appWebUrl + "/scripts/embedsample.js\"&gt;&lt;/script&gt;\n" + embedCode;
         embedCode = "    &lt;script type=\"text/javascript\" src=\"" + appWebUrl + "/scripts/jquery-1.9.1.min.js\"&gt;&lt;/script&gt;\n" + embedCode;
         embedCode = embedCode.replace("(hostWebUrl, appWebUrl)", "()");
         embedCode += "   &lt;div id=\"pnp-sample-result\"&gt;&lt;/div&gt;";
@@ -47,23 +47,42 @@
         $("#sampleContainer").show();
     },
 
-    run: function(e) {
+    run: function (e) {
         e.preventDefault();
         $("#sample-show").empty().append("<img src=\"/_layouts/images/gears_an.gif\" />");
         this._currentSampleFunction(this.hostWebUrl(), this.appWebUrl());
     },
 
-    removeLoadingImage: function() {
+    removeLoadingImage: function () {
         $("#sample-show").find("img[src='/_layouts/images/gears_an.gif']").remove();
     },
 
     show: function (data) {
-        $("#sample-show").empty().append(JSON.stringify(data));
+        $("#sample-show").empty().append('<pre>' + sample.syntaxHighlight(JSON.stringify(data)) + '</pre>');
     },
 
     append: function (data) {
-        this.removeLoadingImage();
-        $("#sample-show").append("<hr />").append(JSON.stringify(data));
+        sample.removeLoadingImage();
+        $("#sample-show").append("<hr />").append('<pre>' + sample.syntaxHighlight(JSON.stringify(data)) + '</pre>');
+    },
+
+    syntaxHighlight: function (json) {
+        json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            var cls = 'number';
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'key';
+                } else {
+                    cls = 'string';
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'boolean';
+            } else if (/null/.test(match)) {
+                cls = 'null';
+            }
+            return '<span class="' + cls + '">' + match + '</span>';
+        });
     },
 
     appendSPQueryToUrl: function (/*string*/ url) {
@@ -81,8 +100,8 @@
         urlPart += '&SPClientTag=' + encodeURIComponent(this.getUrlParamByName('SPClientTag'));
         urlPart += '&SPProductNumber=' + encodeURIComponent(this.getUrlParamByName('SPProductNumber'));
 
-        var index = url.indexOf("#") 
-        if (index> -1) {
+        var index = url.indexOf("#")
+        if (index > -1) {
             url = url.substring(0, index) + urlPart + url.substring(index, url.length);
         } else {
             url += urlPart;

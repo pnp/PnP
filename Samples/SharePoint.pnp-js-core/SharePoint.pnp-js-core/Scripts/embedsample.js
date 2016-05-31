@@ -19,5 +19,5 @@
 
     append: function (data) {
         $("#pnp-sample-result").append("<hr />").append(JSON.stringify(data));
-    },
+    }
 };

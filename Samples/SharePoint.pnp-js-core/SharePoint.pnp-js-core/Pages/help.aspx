@@ -56,13 +56,10 @@
 
             <div class="col-md-10">
                 <div class="page-header">
-                    <h1>Help</h1>
+                    <h1>Help + FAQ</h1>
                 </div>
 
-
-
-
-
+                <p>As we gather common questions and areas of concern we will note them here. If you have found an issue please do report an issue for us to have a look.
 
             </div>
         </div>
