@@ -106,7 +106,7 @@ namespace BusinessApps.O365ProjectsApp.Infrastructure
             // Create a PnP AuthenticationManager object
             AuthenticationManager am = new AuthenticationManager();
 
-            // Authenticate against SPO with an App-Only access token
+            // Authenticate against SPO with a delegated access token
             using (ClientContext context = am.GetAzureADWebApplicationAuthenticatedContext(
                 O365ProjectsAppContext.CurrentSiteUrl, (url) => {
                     return (MicrosoftGraphHelper.GetAccessTokenForCurrentUser(url));
@@ -122,7 +122,7 @@ namespace BusinessApps.O365ProjectsApp.Infrastructure
 
                 foreach (var file in targetLibrary.RootFolder.Files)
                 {
-                    // Handle each file object
+                    // Handle each file object ... this is just a sample ...
                 }
             }
         }
