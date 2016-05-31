@@ -31,76 +31,73 @@ namespace MicrosoftGraph.Office365.DotNetSDK.ConsoleApp
                 new DelegateAuthenticationProvider(
                     async (requestMessage) =>
                     {
-                        if (String.IsNullOrEmpty(MSAL_AccessToken))
-                        {
-                            // Configure the permissions
-                            String[] scopes = {
-                            "User.Read",
-                            "User.ReadBasic.All",
-                            "Mail.Send",
-                            "Mail.Read",
-                            "Group.ReadWrite.All",
-                            "Sites.Read.All",
-                            "Directory.AccessAsUser.All",
-                            "Files.ReadWrite",
+                        // Configure the permissions
+                        String[] scopes = {
+                        "User.Read",
+                        "User.ReadBasic.All",
+                        "Mail.Send",
+                        "Mail.Read",
+                        "Group.ReadWrite.All",
+                        "Sites.Read.All",
+                        "Directory.AccessAsUser.All",
+                        "Files.ReadWrite",
                         };
 
-                            // Acquire an access token for the given scope.
-                            MSAL_clientApplication.RedirectUri = "urn:ietf:wg:oauth:2.0:oob";
-                            var authenticationResult = await MSAL_clientApplication.AcquireTokenAsync(scopes);
+                        // Acquire an access token for the given scope.
+                        MSAL_clientApplication.RedirectUri = "urn:ietf:wg:oauth:2.0:oob";
+                        var authenticationResult = await MSAL_clientApplication.AcquireTokenAsync(scopes);
 
-                            // Get back the access token.
-                            MSAL_AccessToken = authenticationResult.Token;
-                        }
+                        // Get back the access token.
+                        MSAL_AccessToken = authenticationResult.Token;
 
                         // Configure the HTTP bearer Authorization Header
                         requestMessage.Headers.Authorization = new AuthenticationHeaderValue("bearer", MSAL_AccessToken);
                     }));
 
-            //await ShowMyDisplayName(graphClient);
+            await ShowMyDisplayName(graphClient);
 
-            //await SelectUsers(graphClient);
+            await SelectUsers(graphClient);
 
-            //await FilterUsers(graphClient);
+            await FilterUsers(graphClient);
 
-            //await FilterAndOrderUsers(graphClient);
+            await FilterAndOrderUsers(graphClient);
 
-            //await PartitionInboxMessages(graphClient);
+            await PartitionInboxMessages(graphClient);
 
-            //await ExpandFiles(graphClient);
+            await ExpandFiles(graphClient);
 
-            //await BrowseUsersPages(graphClient);
+            await BrowseUsersPages(graphClient);
 
-            //await CreateUnifiedGroup(graphClient);
+            await CreateUnifiedGroup(graphClient);
 
-            //await SendMail(graphClient, "paolo@pialorsi.com", "Paolo Pialorsi");
+            await SendMail(graphClient, "paolo@pialorsi.com", "Paolo Pialorsi");
 
-            //await ListUnifiedGroups(graphClient);
+            await ListUnifiedGroups(graphClient);
 
-            //await GetGroupFiles(graphClient);
+            await GetGroupFiles(graphClient);
 
-            //await SearchGroupFiles(graphClient, "sample");
+            await SearchGroupFiles(graphClient, "sample");
 
-            //await GetGroupConversations(graphClient);
+            await GetGroupConversations(graphClient);
 
-            //await GetGroupEvents(graphClient);
+            await GetGroupEvents(graphClient);
 
-            //await AddGroupConversationThread(graphClient);
+            await AddGroupConversationThread(graphClient);
 
-            //await AddGroupEvent(graphClient);
+            await AddGroupEvent(graphClient);
 
-            //await ManageCurrentUserPicture(graphClient);
+            await ManageCurrentUserPicture(graphClient);
 
-            //await RetrieveCurrentUserManagerAndReports(graphClient);
+            await RetrieveCurrentUserManagerAndReports(graphClient);
 
             await UploadFileToOneDriveForBusiness(graphClient);
 
-            //await SearchForFilesInOneDriveForBusiness(graphClient, "contract");
+            await SearchForFilesInOneDriveForBusiness(graphClient, "contract");
         }
 
         private static async Task ShowMyDisplayName(GraphServiceClient graphClient)
         {
-            var me = await graphClient.Me.Request().Select("DisplayName").GetAsync();
+            var me = await graphClient.Me.Request().Select("Dis8playName").GetAsync();
             Console.WriteLine("Your ID is: {0}", me.DisplayName);
         }
 
