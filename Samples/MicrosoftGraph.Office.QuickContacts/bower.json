@@ -1,0 +1,14 @@
+{
+  "name": "quick-contacts",
+  "version": "0.1.0",
+  "dependencies": {
+    "adal-angular": "~1.0.5",
+    "jquery": "~1.9.1",
+    "angular": "~1.4.4",
+    "angular-route": "~1.4.4",
+    "angular-touch": "^1.5.0"
+  },
+  "resolutions": {
+    "angular": "1.5.0"
+  }
+}

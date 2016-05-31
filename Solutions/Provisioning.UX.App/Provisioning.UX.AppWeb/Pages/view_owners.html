@@ -5,14 +5,10 @@
 <div class="modal-right-body" ng-controller="SiteOwnersPeoplePickerController">
 
     <div id="divFieldOwners" class="form-group">
-        <label for="inputAdditionalOwnersPrimary" class="control-label" style="margin-top: 15px !important;">{{ 'ADDITIONAL_OWNERS' | translate }}</label>
-        <div class="ms-core-form-line">
-            <div id="divAdditionalOwnersPrimary" class="form-control">
-                <span id="spanAdditionalOwnersPrimary"></span>
-                <input type="text" id="inputAdditionalOwnersPrimary" name="inputAdditionalOwnersPrimary" class="cam-peoplepicker-edit" placeholder="{{ 'NAME_OR_EMAIL' | translate }}" required>
-            </div>
-            <div id="divAdditionalOwnersPrimarySearch" class="cam-peoplepicker-usersearch ms-emphasisBorder"></div>
-            <input type="hidden" id="hdnAdditionalOwnersPrimary" name="hdnAdditionalOwnersPrimary" />
-        </div>
+        <p>You are automatically selected as the Primary Owner of the site. You must also choose a secondary owner to server as backup.</p>
+        <div id="divFieldOwners" class="form-group">
+            <label for="inputAdditionalOwnersPrimary" class="control-label" style="margin-top: 15px !important;">Add additional owner (everyone can use a backup)</label>
+            <div id="ppSecondaryOwners"></div>
+        </div>        
     </div>
 </div>

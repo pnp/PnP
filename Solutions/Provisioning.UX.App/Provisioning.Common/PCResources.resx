@@ -162,6 +162,9 @@
   <data name="SiteCreation_Creation_Successful" xml:space="preserve">
     <value>Site Collection {0} created:</value>
   </data>
+  <data name="SiteExternalSharing_Enabled_Error_Message" xml:space="preserve">
+    <value>There was an error checking if Site External Sharing is enabled. Site Url {0}, Exception {1}</value>
+  </data>
   <data name="SiteRequestNew_Successful" xml:space="preserve">
     <value>New Site Request Submitted for URL {0} successfull</value>
   </data>
@@ -179,6 +182,12 @@
   </data>
   <data name="SiteTemplate_Factory_Created_Instance_Exception" xml:space="preserve">
     <value>Unable to create instance {0} exception {1}</value>
+  </data>
+  <data name="Site_Description_Update_Failure" xml:space="preserve">
+    <value>Unable to site description on Site {0}, Exception is {1}</value>
+  </data>
+  <data name="Site_Descrption_Update_Successful" xml:space="preserve">
+    <value>Site Description updated on Site Url {0}</value>
   </data>
   <data name="Site_Web_DefaultGroups_Created" xml:space="preserve">
     <value>Default Groups for site {0} created</value>

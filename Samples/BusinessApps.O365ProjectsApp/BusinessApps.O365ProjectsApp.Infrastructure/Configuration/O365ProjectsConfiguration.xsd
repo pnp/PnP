@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema id="O365ProjectsConfiguration"
+    targetNamespace="http://schemas.programming-office365.com/Office365/Projects/Configuration"
+    elementFormDefault="qualified"
+    xmlns="http://schemas.programming-office365.com/Office365/Projects/Configuration"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <xsd:element name="O365ProjectsConfiguration">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        This is the base element of the configuration.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="CertificateSettings" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              Certificate location settings section.
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:attribute name="storeName" type="xsd:string" use="required">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  The name of the session certificate storage
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="storeLocation" type="xsd:string" use="required">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  The location of the session certificate storage
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:attribute>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="GeneralSettings">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              Defines the tenant-level general configuration settings
+            </xsd:documentation>
+          </xsd:annotation>
+          <xsd:complexType>
+            <xsd:attribute name="defaultSiteUrl" type="xsd:string" use="required">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  The URL of the default Site Collection.
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="libraryTitle" type="xsd:string" use="required">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  The Title of the target library in the Site Collection.
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:attribute>
+            <xsd:attribute name="appOnlyCertificateThumbprint" type="xsd:string" use="required">
+              <xsd:annotation>
+                <xsd:documentation xml:lang="en">
+                  The thumbprint of the X.509 Certificate used for AppOnly Authentication against SharePoint Online.
+                </xsd:documentation>
+              </xsd:annotation>
+            </xsd:attribute>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+
+</xsd:schema>

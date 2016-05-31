@@ -188,5 +188,68 @@ namespace Provisioning.Common
             Log.Warning("Provisioning.Common.OnPremSiteProvisioningService.SetExternalSharing", PCResources.ExternalSharing_NotSupported, siteInfo.Url);
             return;
         }
+
+        public override Web CreateSubSite(SiteInformation siteRequest, Template template)
+        {
+            Web newWeb;
+            int pos = siteRequest.Url.LastIndexOf("/");
+            string parentUrl = siteRequest.Url.Substring(0, pos);
+            string subSiteUrl = siteRequest.Url.Substring(pos + 1, siteRequest.Url.Length);
+
+            Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSubSite", PCResources.SiteCreation_Creation_Starting, siteRequest.Url);
+            Uri siteUri = new Uri(siteRequest.Url);
+            Uri subSiteParent = new Uri(parentUrl);
+
+            string realm = TokenHelper.GetRealmFromTargetUrl(subSiteParent);
+            string accessToken = TokenHelper.GetAppOnlyAccessToken(TokenHelper.SharePointPrincipal, subSiteParent.Authority, realm).AccessToken;
+
+            using (var ctx = TokenHelper.GetClientContextWithAccessToken(parentUrl, accessToken))
+            {
+                try
+                {
+                    Stopwatch _timespan = Stopwatch.StartNew();
+
+                    try
+                    {
+                        // Get a reference to the parent Web
+                        Web parentWeb = ctx.Web;
+
+                        // Create the new sub site as a new child Web
+                        WebCreationInformation webinfo = new WebCreationInformation();
+                        webinfo.Description = siteRequest.Description;
+                        webinfo.Language = (int)siteRequest.Lcid;
+                        webinfo.Title = siteRequest.Title;
+                        webinfo.Url = subSiteUrl;
+                        webinfo.UseSamePermissionsAsParentSite = true;
+                        webinfo.WebTemplate = template.RootTemplate;
+
+                        newWeb = parentWeb.Webs.Add(webinfo);
+                        ctx.ExecuteQueryRetry();
+
+                    }
+                    catch (ServerException ex)
+                    {
+                        var _message = string.Format("Error occured while provisioning site {0}, ServerErrorTraceCorrelationId: {1} Exception: {2}", siteRequest.Url, ex.ServerErrorTraceCorrelationId, ex);
+                        Log.Error("Provisioning.Common.Office365SiteProvisioningService.CreateSubSite", _message);
+                        throw;
+                    }
+
+                    _timespan.Stop();
+                    Log.TraceApi("SharePoint", "Office365SiteProvisioningService.CreateSubSite", _timespan.Elapsed, "SiteUrl={0}", siteRequest.Url);
+                }
+
+                catch (Exception ex)
+                {
+                    Log.Error("Provisioning.Common.Office365SiteProvisioningService.CreateSubSite",
+                        PCResources.SiteCreation_Creation_Failure,
+                        siteRequest.Url, ex.Message, ex);
+                    throw;
+                }
+                Log.Info("Provisioning.Common.Office365SiteProvisioningService.CreateSubSite", PCResources.SiteCreation_Creation_Successful, siteRequest.Url);
+
+            };
+
+            return newWeb;
+        }
     }
 }

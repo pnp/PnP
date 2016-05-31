@@ -1,0 +1,24 @@
+{
+    "value": [
+        {
+            "IdName": "VesaJ@veskuonline.com",
+			"Property1": "Espoo",
+			"Property2": "Viper"
+        },
+        {
+            "IdName": "BelindaN@vesaj.onmicrosoft.com",
+			"Property1": "None",
+			"Property2": ""
+        },
+		{
+            "IdName": "unknown@vesaj.onmicrosoft.com",
+			"Property1": "None",
+			"Property2": ""
+        },
+        {
+            "IdName": "DenisD@vesaj.onmicrosoft.com",
+			"Property1": "Stockholm",
+			"Property2": "Elite"
+        }
+    ]
+}

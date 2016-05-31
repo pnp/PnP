@@ -22,7 +22,7 @@
     <WorkflowPartId>{5a5b75a7-80a3-4d58-a873-a950bce85085}</WorkflowPartId>
     <CspkgPartId>{e4521710-5487-45c8-96aa-841c42635037}</CspkgPartId>
     <SqlPackagePartId>{8d53d0b6-4db2-410d-9548-5344a913b327}</SqlPackagePartId>
-    <ActivePublishProfile>sbspositeprovisioning - Web Deploy</ActivePublishProfile>
+    <ActivePublishProfile>createasite</ActivePublishProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>

@@ -1,0 +1,43 @@
+﻿@{
+	ViewBag.Title = "Home Page";
+}
+
+<div class="ms-Grid-row ms-bgColor-themeDark ms-fontColor-white intro">
+	@if (Request.IsAuthenticated)
+	{
+		<div class="login-as ms-font-m ms-fontColor-neutralLight">
+			Logged in as: @User.Identity.Name!
+		</div>
+	}
+			<div class="ms-Grid-col ms-u-lg10 ms-u-xl8 ms-u-xlPush2 ms-u-lgPush1">
+				<h2 class="ms-font-su ms-fontColor-white">Deep Dive into the Office 365 Groups API</h2>
+				<p class="ms-font-xl ms-fontColor-white">This application will show how to interact with Office 365 Groups using the Microsoft Graph API.</p>
+				<a href="https://graph.microsoft.io/docs/api-reference/v1.0/resources/group" class="ms-Button"><span class="ms-Button-label">Learn more &raquo;</span></a>
+			</div>
+		</div>
+
+		<div class="ms-Grid-row ms-Grid spacer">
+
+			<div class="ms-Grid-row">
+				<div class="ms-Grid-col ms-u-lg10 ms-u-xl8 ms-u-xlPush2 ms-u-lgPush1">
+
+					<div class="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg6">
+						<h2 class="ms-font-xl ms-fontWeight-semibold">All Groups in your organization</h2>
+						<p class="ms-font-m">
+							The directory contains groups of many different types (Security groups, Dynamic groups, Office 365 groups).
+							They are all accessible via /myorganization/groups
+						</p>
+						<p class="ms-Button">@Html.ActionLink("Go", "Index", "Groups", null, new { @class = "ms-Button-label" })</p>
+					</div>
+
+
+					<div class="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg6">
+						<h2 class="ms-font-xl ms-fontWeight-semibold">Groups I've Joined</h2>
+						<p class="ms-font-m">
+							Office 365 Groups joined by the current user are accessible off the /me endoint.
+						</p>
+						<p class="ms-Button">@Html.ActionLink("Go", "MyGroups", "Me", null, new { @class = "ms-Button-label" })</p>
+					</div>
+				</div>
+			</div>
+		</div>

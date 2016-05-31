@@ -1,0 +1,5 @@
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Private" "${PODS_ROOT}/Headers/Private/orc" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/ADALiOS" "${PODS_ROOT}/Headers/Public/LiveSDK" "${PODS_ROOT}/Headers/Public/MSGraph-SDK-iOS" "${PODS_ROOT}/Headers/Public/orc"
+PODS_ROOT = ${SRCROOT}
+SKIP_INSTALL = YES
+USER_HEADER_SEARCH_PATHS = "${PODS_ROOT}/orc"

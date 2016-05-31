@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="Pages">
+    <File Path="Pages\SampleViewer.aspx" Url="Pages/SampleViewer.aspx" ReplaceContent="TRUE" />
+    <File Path="Pages\Playground.aspx" Url="Pages/Playground.aspx" ReplaceContent="TRUE" />
+    <File Path="Pages\Default.aspx" Url="Pages/Default.aspx" ReplaceContent="TRUE" />
+    <File Path="Pages\bts.aspx" Url="Pages/bts.aspx" ReplaceContent="TRUE" />
+    <File Path="Pages\help.aspx" Url="Pages/help.aspx" ReplaceContent="TRUE" />
+  </Module>
+</Elements>

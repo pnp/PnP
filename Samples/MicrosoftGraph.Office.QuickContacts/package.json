@@ -1,0 +1,12 @@
+{
+  "name": "quick-contacts",
+  "version": "1.0.0",
+  "scripts": {
+    "postinstall": "bower install"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.11.1",
+    "gulp": "^3.9.0",
+    "gulp-webserver": "^0.9.1"
+  }
+}

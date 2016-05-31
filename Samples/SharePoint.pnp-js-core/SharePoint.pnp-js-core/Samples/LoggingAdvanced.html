@@ -1,0 +1,62 @@
+﻿<span id="page-script">
+    <script type="text/javascript" src="../scripts/pnp.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            sample.init(function (hostWebUrl, appWebUrl) {
+
+                // we first need to create a logger instance, this can be done using any of the built in loggers:
+                // here we create a function listener, that just passes each message do your function.
+                var logger = {
+                    log: function (m) {
+                        // we will alert the message, no matter the level
+                        alert(JSON.stringify(m));
+                    }
+                }
+
+                // the next step is to subscribe our listeners to the log, which we can do by passing them to subscribe.
+                $pnp.log.subscribe(logger);
+
+                // by default our messages won't be logged unless they are of a sufficient level, so let's reduce the default level of our logger
+                $pnp.log.activeLogLevel = $pnp.log.LogLevel.Verbose; // verbose
+
+                // now we log something - you'll have to check the console to see the value there.
+                $pnp.log.write("My first log message!");
+
+            });//end sample.init
+        });
+    </script>
+</span>
+
+<div class="page-header">
+    <h1>Logging, Advanced</h1>
+</div>
+
+<p>
+    It is also possible to create your own log listener classes. This can be done easily as show by creating an object with a "log" method that takes a single parameter and subscribing that to the log. That 
+    single parameter will be a log message object having the following properties:
+
+    <table class="table table-striped">
+        <tr>
+            <th>Property</th>
+            <th>Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>message</td>
+            <td>string</td>
+            <td>The main message to be logged</td>
+        </tr>
+        <tr>
+            <td>level</td>
+            <td>Verbose = 0, Info = 1, Warning = 2, Error = 3</td>
+            <td>The level of information this message represents</td>
+        </tr>
+        <tr>
+            <td>data</td>
+            <td>string hash</td>
+            <td>Any associated data that a given logging listener may choose to log or ignore</td>
+        </tr>
+    </table>
+
+</p>
+

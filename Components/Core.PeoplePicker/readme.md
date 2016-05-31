@@ -67,7 +67,7 @@ $(document).ready(function () {
         function () {
             $.getScript(layoutsRoot + 'SP.js',
                 function () {
-                    //Load the SP.UI.Controls.js file to render the App Chrome
+                    //Load the SP.UI.Controls.js file to render the Add-in Chrome
                     $.getScript(layoutsRoot + 'SP.UI.Controls.js', renderSPChrome);
 
                     //load scripts for cross site calls (needed to use the people

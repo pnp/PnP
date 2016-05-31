@@ -1,0 +1,32 @@
+﻿@model bool?
+
+@{
+	var notSet = "";
+	var setTrue = "";
+	var setFalse = "";
+
+	if (Model.HasValue)
+	{
+		setTrue = Model.Value ? "selected" : "";
+		setFalse = Model.Value ? "" : "selected";
+		notSet = "";
+	}
+	else
+	{
+		notSet = "selected";
+	}
+}
+<div class="ms-Dropdown is-disabled" tabindex="0">
+	<i class="ms-Dropdown-caretDown ms-Icon ms-Icon--caretDown"></i>
+	<select class="ms-Dropdown-select">
+		<option value="Not set" @notSet>
+			Not set
+		</option>
+		<option value="True" @setTrue>
+			True
+		</option>
+		<option value="False" @setFalse>
+			False
+		</option>
+	</select>
+</div>

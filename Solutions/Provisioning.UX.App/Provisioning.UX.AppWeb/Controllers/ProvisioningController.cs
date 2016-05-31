@@ -81,7 +81,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             catch(Exception _ex)
             {
                _request.ErrorMessage = _ex.Message;
-                OfficeDevPnP.Core.Utilities.Log.Error("ProvisioningController.IsExternalSharingEnabled", 
+                OfficeDevPnP.Core.Diagnostics.Log.Error("ProvisioningController.IsExternalSharingEnabled", 
                    "There was an error processing the request. Exception: {0}", 
                    _ex);
                return _request;

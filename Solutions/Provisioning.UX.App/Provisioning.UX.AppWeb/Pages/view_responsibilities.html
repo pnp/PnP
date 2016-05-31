@@ -2,18 +2,21 @@
     <h1>{{ 'SITE_OWNER_RESPONSIBILITIES' | translate }}</h1>
 </div>
 
-<div class="modal-right-body">
+<div class="modal-right-body" ng-form="siteResponsibilitiesform">
     <p>
         {{ 'SITE_OWNER_RESPONSIBILITIES_TEXT' | translate }}
-        
-    </p>
 
-    <div class="form-group" ng-class="{'has-success': siteConfiguration.responsibilities.read }">
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" value="" ng-model="siteConfiguration.responsibilities.read" required>
+    </p>
+    
+    <div class="row">
+        <div class="col-sm-9">
+            <div class="form-group">
+                <div> 
+                <input type="checkbox" value="" ng-model="siteConfiguration.properties.termsaccepted" required="" class="ng-pristine ng-untouched ng-invalid ng-invalid-required">
                 {{ 'ACCEPT' | translate }}
-            </label>
+                </div>
+            </div>
         </div>
     </div>
+
 </div>

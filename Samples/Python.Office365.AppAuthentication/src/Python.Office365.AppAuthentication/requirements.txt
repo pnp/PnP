@@ -1,0 +1,3 @@
+Flask<1
+requests[security]==2.7
+PyJWT==1.4.0

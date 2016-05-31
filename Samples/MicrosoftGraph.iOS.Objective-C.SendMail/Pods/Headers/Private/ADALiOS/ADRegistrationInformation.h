@@ -1,0 +1,1 @@
+../../../ADALiOS/ADALiOS/ADALiOS/ADRegistrationInformation.h

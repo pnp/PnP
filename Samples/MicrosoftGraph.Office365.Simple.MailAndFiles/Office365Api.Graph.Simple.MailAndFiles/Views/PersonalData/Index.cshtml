@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="dashboard-tile float-left">
+    <h3>
+        My Emails
+    </h3>
+    <div class="dashboard-tile-content" id="email-content">
+    </div>
+</div>
+
+<div class="dashboard-tile float-right">
+    <h3>
+        My Files
+    </h3>
+    <div class="dashboard-tile-content" id="file-content">
+    </div>
+</div>
+
+@section scripts
+{
+    <script src="~/Scripts/PersonalData.js"></script>
+}

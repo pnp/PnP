@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Microsoft Graph API Demo</title>
+    <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/4.0/1/MicrosoftAjax.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/1.0/fabric.min.css" />
+    <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/1.0/fabric.components.min.css" />
+
+</head>
+<body>
+
+    @Html.Partial("~/Views/Shared/_Office365SuiteBar.cshtml")
+    @Html.Partial("~/Views/Shared/_Office365NavBar.cshtml")
+
+    <div class="scrollableContent">
+
+        <img src="/AppIcon.png" class="siteIcon" />
+        <h1>@ViewBag.Title</h1>
+
+        <div id="mainContent">
+
+            <div class="container body-content">
+                @RenderBody()
+                <hr />
+                <footer>
+                    These samples are related to the book <a target="_blank" href="http://www.amazon.com/gp/product/1509300910/">"Programming Microsoft Office 365"</a> written by <a target="_blank" href="https://www.twitter.com/PaoloPia">Paolo Pialorsi</a> for Microsoft Press.
+                </footer>
+
+            </div>
+        </div>
+
+    </div>
+
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
