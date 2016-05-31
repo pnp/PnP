@@ -15,6 +15,8 @@ namespace Contoso.Core.ProfilePictureUploader
         public string PictureSourceCsv;
         [System.Xml.Serialization.XmlElementAttribute("thumbs")]
         public Thumbs Thumbs;
+        [System.Xml.Serialization.XmlElementAttribute("targetLibraryPath")]
+        public string TargetLibraryPath;
         [System.Xml.Serialization.XmlElementAttribute("additionalProfileProperties")]
         public AdditionalProfileProperties AdditionalProfileProperties;
         [System.Xml.Serialization.XmlElementAttribute("logFile")]

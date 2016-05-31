@@ -2,6 +2,7 @@
 <configuration>
   <tenantName>contoso.onmicrosoft.com</tenantName>
   <pictureSourceCsv>c:\temp\userlist.csv</pictureSourceCsv>
+  <targetLibraryPath>/User Photos/Profile Pictures</targetLibraryPath>
   <thumbs upload3Thumbs="true" createSMLThumbs="true"/> 
   <additionalProfileProperties />
   <logFile path="c:\temp\log.txt" enableLogging="true" loggingLevel="verbose" />
