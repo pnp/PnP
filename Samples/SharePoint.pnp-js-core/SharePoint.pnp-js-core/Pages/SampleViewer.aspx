@@ -83,6 +83,8 @@
                     <li class="list-group-item"><a href="default.aspx" class="directLink">Home</a></li>
                     <li class="list-group-item"><a href="helloworld.html">Hello World</a></li>
                     <li class="list-group-item"><a href="RequireBasic.html">Hello World (requireJS)</a></li>
+                    <li class="list-group-item"><a href="ReadListItems.html">Read List Items</a></li>
+                    <li class="list-group-item"><a href="ReadListItemsPaged.html">List Item Paging</a></li>
                     <li class="list-group-item"><a href="CachingBasic.html">Caching Basics</a></li>
                     <li class="list-group-item"><a href="Logging.html">Logging</a></li>
                     <li class="list-group-item"><a href="LoggingAdvanced.html">Logging Advanced</a></li>                    
@@ -118,7 +120,7 @@
                                 <legend>Live Result
                                 </legend>
                                 <p>This is the live result of executing the above code on your host web.</p>
-                                <pre id="sample-show"></pre>
+                                <div id="sample-show"></div>
                             </fieldset>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="embed">

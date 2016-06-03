@@ -1,4 +1,4 @@
-﻿HeaderFooter = {
+HeaderFooter = {
     GetInit: function () {
         PnPGlobal.CreateStyle();
         _spBodyOnLoadFunctionNames.push("PnPGlobal.CreateFooter");
@@ -7,7 +7,7 @@
     CreateFooter: function () {
             var headID = document.getElementsByTagName("body")[0];
             var FooterNode = document.createElement('div');
-            FooterNode.innerHTML = '<div id="PnPFooter" class="PnPFooter ms-ContentAccent1-bgColor"></div>';
+            FooterNode.innerHTML = '<div id="PnPFooter" class="PnPFooter ms-ContentAccent1-bgColor s4-notdlg"></div>';
             headID.appendChild(FooterNode);
             PnPGlobal.CreateBreadcrumb();
             PnPGlobal.LoadSiteBreadcrumb();
@@ -28,7 +28,7 @@
             context.load(web)
             context.executeQueryAsync(function () {
                 var results = JSON.parse(web.get_item('vti_GlobalBreadcrumbRibbon'));
-                var breadcrumb = '<ol class="breadcrumb">';
+                var breadcrumb = '<ol class="breadcrumb s4-notdlg">';
 
                 for (var i = 0; i < results.Breadcrumb.length; i++) {
                     breadcrumb = breadcrumb + '<li><a href="' + results.Breadcrumb[i].url + '">' + results.Breadcrumb[i].title + '</a></li>';
@@ -36,7 +36,9 @@
                 breadcrumb = breadcrumb + '</ol>';
                 element.innerHTML = breadcrumb;
                 var Custombreadcrumb = document.getElementById("s4-bodyContainer");
-                Custombreadcrumb.insertBefore(element, Custombreadcrumb.childNodes[0]);
+                if (Custombreadcrumb != null) {
+                    Custombreadcrumb.insertBefore(element, Custombreadcrumb.childNodes[0]);
+                }
 
             }, function () { });
 
@@ -54,18 +56,22 @@
 
                 var element = document.createElement('ol');
                 element.id = "breadcrumbSite";
-                element.className = "breadcrumb";
+                element.className = "breadcrumb s4-notdlg";
                 var Footerelement = document.createElement('ol');
                 Footerelement.id = "footerbreadcrumbSite";
                 Footerelement.className = "breadcrumb";
                 var Custombreadcrumb = document.getElementById("s4-bodyContainer");
-                Custombreadcrumb.insertBefore(element, Custombreadcrumb.childNodes[0]);
+                if (Custombreadcrumb != null) {
+                    Custombreadcrumb.insertBefore(element, Custombreadcrumb.childNodes[0]);
+                }
                 var CustomFooterbreadcrumb = document.getElementById("PnPFooter");
                 CustomFooterbreadcrumb.insertBefore(Footerelement, CustomFooterbreadcrumb.childNodes[0]);
                 var li = document.createElement('li');
                 li.innerHTML = '<a href="' + currentWeb.get_url() + '">' + currentWeb.get_title() + '</a>';
                 Custombreadcrumb = document.getElementById("breadcrumbSite");
-                Custombreadcrumb.insertBefore(li.cloneNode(true), Custombreadcrumb.childNodes[0]);
+                if (Custombreadcrumb != null) {
+                    Custombreadcrumb.insertBefore(li.cloneNode(true), Custombreadcrumb.childNodes[0]);
+                }
                 CustomFooterbreadcrumb = document.getElementById("footerbreadcrumbSite");
                 CustomFooterbreadcrumb.insertBefore(li.cloneNode(true), CustomFooterbreadcrumb.childNodes[0]);
                 if (site.get_serverRelativeUrl() !== currentWeb.get_serverRelativeUrl()) {

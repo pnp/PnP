@@ -1,0 +1,40 @@
+﻿  <CommandUIExtension>
+    <CommandUIDefinitions>
+      <CommandUIDefinition Location="Ribbon.Documents.Copies.Controls._children">
+        <Button
+          Id="Ribbon.Documents.Copies.OfficeDevPnPDownloadAll"
+          Command="OfficeDevPnP.Cmd.DownloadAll"
+          Image16by16="~sitecollection/SiteAssets/icons/DownloadAll16x16.png"
+          Image32by32="~sitecollection/SiteAssets/icons/DownloadAll32x32.png"
+          LabelText="Download All"
+          Description="Download all files separately"
+          ToolTipTitle="Download All"
+          ToolTipDescription="Download all files separately"
+          TemplateAlias="o1"
+          Sequence="15"/>
+      </CommandUIDefinition>
+      <CommandUIDefinition Location="Ribbon.Documents.Copies.Controls._children">
+        <Button
+          Id="Ribbon.Documents.Copies.OfficeDevPnPDownloadAllAsZip"
+          Command="OfficeDevPnP.Cmd.DownloadAllAsZip"
+          Image16by16="~sitecollection/SiteAssets/icons/DownloadAllAsZip16x16.png"
+          Image32by32="~sitecollection/SiteAssets/icons/DownloadAllAsZip32x32.png"
+          LabelText="Download All as Zip"
+          Description="Download all files as single Zip"
+          ToolTipTitle="Download All as Zip"
+          ToolTipDescription="Download all files as single Zip archive"
+          TemplateAlias="o1"
+          Sequence="20" />
+      </CommandUIDefinition>
+    </CommandUIDefinitions>
+    <CommandUIHandlers>
+      <CommandUIHandler
+        Command="OfficeDevPnP.Cmd.DownloadAll"
+CommandAction="javascript:OfficeDevPnP.Core.RibbonManager.invokeCommand('DownloadAll');"
+        EnabledScript="javascript:OfficeDevPnP.Core.RibbonManager.isListViewButtonEnabled('DownloadAll');"/>
+      <CommandUIHandler
+        Command="OfficeDevPnP.Cmd.DownloadAllAsZip"
+        CommandAction="javascript:OfficeDevPnP.Core.RibbonManager.invokeCommand('DownloadAllAsZip');"
+        EnabledScript="javascript:OfficeDevPnP.Core.RibbonManager.isListViewButtonEnabled('DownloadAllAsZip');"/>
+    </CommandUIHandlers>
+  </CommandUIExtension>

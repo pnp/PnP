@@ -61,7 +61,7 @@ namespace Provisioning.Framework
 
                 // Create FileSystemConnector, so that we can store composed files temporarely somewhere 
                 ptci.FileConnector = new FileSystemConnector(@"c:\temp\pnpprovisioningdemo", "");
-                ptci.PersistComposedLookFiles = true;
+                ptci.PersistBrandingFiles = true;
                 ptci.ProgressDelegate = delegate (String message, Int32 progress, Int32 total)
                 {
                     // Only to output progress for console UI
