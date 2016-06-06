@@ -59,6 +59,15 @@
                     <h1>Behind the Scenes</h1>
                 </div>
 
+                <p>If you are trying to migrate some of the concepts you see in these samples we have noted a few thing that might help:</p>
+
+                <ul>
+                    <li><b>Include Polyfills:</b> to ensure the samples work across the largest number of browsers we are including two polyfills to ensure fetch and promises are 
+                        supported. Depending on your browser support profile you may need to include these too - they are not built into the library.</li>
+                    <li><b>Test using Playground:</b> make use of the playground to ensure that your queries work before moving to production.</li>
+                    <li><b>Start Simple:</b> often queries can be very complex. Start small and build slowly checking each step of the way that things are working as you expect.</li>
+                    <li><b>Remember Timing:</b> because many of the actions excuted by the library are asynchronous you need to ensure you chain things appropriately using "then".</li>
+                </ul>
 
 
             </div>

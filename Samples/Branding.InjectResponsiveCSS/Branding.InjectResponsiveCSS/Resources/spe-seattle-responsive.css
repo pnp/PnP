@@ -14,7 +14,7 @@ For more details see the related blog post at http://blog.sharepointexperience.c
 /* Font Awesome is a free font. http://fontawesome.io  
 Check for latest version at http://fontawesome.io/get-started 
 This should be moved to the top of your CSS file, irregardless of media queries */
-@import "//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css";
+@import "//netdna.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.css";
 
 
 @media screen and (max-width: 1044px) {

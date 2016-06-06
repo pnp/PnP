@@ -67,6 +67,8 @@
     <None Include="Scripts\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{89f5c036-1b39-4cc4-a35e-3dedbf66c15d}</SharePointProjectItemId>
     </None>
+    <Content Include="Samples\ReadListItemsPaged.html" />
+    <Content Include="Samples\ReadListItems.html" />
     <Content Include="Samples\CachingBasic.html" />
     <Content Include="Samples\Elements.xml" />
     <Content Include="Samples\AddListAndItem.html" />

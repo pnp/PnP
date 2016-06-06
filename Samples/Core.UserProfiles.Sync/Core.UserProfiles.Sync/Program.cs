@@ -51,7 +51,15 @@ namespace Core.UserProfiles.Sync
             }
 
             Console.WriteLine("Application finished...");
-            Console.ReadKey();
+
+            bool notClose = true;
+            bool.TryParse(ConfigurationManager.AppSettings["DoNotCloseConsole"], out notClose);
+
+            if (notClose)
+            {
+                Console.ReadKey();
+            }
+            
         }
 
         /// <summary>
