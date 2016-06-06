@@ -65,7 +65,7 @@ Version  | Date | Comments
 
 # Conceptual design #
 
-![](http://i.imgur.com/sQQ6JUX.png)
+![Step-by-step process of the provisioning steps](http://i.imgur.com/sQQ6JUX.png)
 
 
 # Solution description #
@@ -87,32 +87,32 @@ The interface is launched from default.aspx and the wizard itself is modal based
 
 Landing Page:
 
-![](http://i.imgur.com/31bshhW.png)
+![Page with Get a site button. Lists requests also in the page](http://i.imgur.com/31bshhW.png)
 
 Clicking the "Get a site" button above launches the Wizard:
 
-![](http://i.imgur.com/zEGbZ6K.png)
+![Welcome page of the provisioning wizard](http://i.imgur.com/zEGbZ6K.png)
 
 #### Navigation ####
 The wizard can be navigated either via left side navigation or arrow based navigation on the bottom right. The navigation and views are defined in the wizard.modal.html file. Note - next release will most likely load this from a configuration source, but for now, it's a simple modification to the html file to edit your navigation.
 
-![](http://i.imgur.com/uYwJ0ac.png)
+![ul and li definitions for the navigation](http://i.imgur.com/uYwJ0ac.png)
 
 #### Services ####
 There are some services exposed that can be used to get template and other data from the back-end, and a service for submitting that data. For PnP sample purposes, the the reference data for the sample meta-data fields gets loaded from .json files. There is a **BusinessMetadata factory** that loads the data from the JSON files and is invoked from the **wizard.modal.controller** script and the HTML fields bind to the model and the data is loaded via a repeater in most cases. This is only for sample purposes and for a real implementation this data may be list driven or from some other source and can be retrieved via other appropriate methods
 
-![](http://i.imgur.com/9hkCeFf.png)
+![Angular service definitions in code](http://i.imgur.com/9hkCeFf.png)
 
 These services use the CSOM controller **provisioning.controller.cs** which uses **OfficeDevPnP.Core.WebAPI**.
 
 #### The Details ####
 The details page provides a way to capture additional meta-data for the site request. Which are then added to the property bag of the site. 
 
-![](http://i.imgur.com/Rd7lh5y.png)
+![Details picture for asking URL and other site creation properties](http://i.imgur.com/Rd7lh5y.png)
 
 The Region, Division, Function, Languages, and Time Zones are configurable and can be customized to meet your business requirements. Each corresponding file is stored in the Provisioning.UX.AppWeb project as depicted below. Notice the External Sharing option, this is only available in Office 365 MT and if you have External Sharing enabled in the tenant.
 
-![](http://i.imgur.com/Bs6NaVh.png)
+![Picture of JSON folder content in the Provisioning.UX.AppWeb project](http://i.imgur.com/Bs6NaVh.png)
 
 Ensure that if you are running the solution in on-premises builds that you have the appropriate language packs installed in your farm.
 
@@ -120,7 +120,7 @@ Ensure that if you are running the solution in on-premises builds that you have 
 #### People Picker ####
 This solution also leverages the PnP JSOM version of the PeoplePicker. 
 
-![](http://i.imgur.com/drQDLsP.png)
+![People picker picture for user selection](http://i.imgur.com/drQDLsP.png)
 
 #### Site Availability Checking ####
 The site details view contains a field where the user specifies the url of their new site. The solution implements an angular directive that fires off and calls the sitequeryservice.js script which does the site availability check. If the site is available, the solution will set the field to validated, and if the site is not available, there will be a message displayed stating this.
@@ -143,11 +143,11 @@ See **Overview of site policies in SharePoint 2013** at http://technet.microsoft
 
 Create three site policies, HBI, MBI and then LBI.  Create an HBI Policy based on your requirements.
 
-![](http://i.imgur.com/sKI5csC.png)
+![Creating HBI policy in the content type hub](http://i.imgur.com/sKI5csC.png)
 
 Repeat the above setup two more times for MBI and LBI. You should end up with the below:
 
-![](http://i.imgur.com/lrw7nQD.png)
+![All three policies present in the page](http://i.imgur.com/lrw7nQD.png)
 
 Once we have the policies created we are going to publish the Site Policies from the content type hub so they will be available to all the sites.
 
@@ -158,7 +158,7 @@ If you will be hosting the Site Requests in SharePoint list you will have to pre
 
 You should use AppRegNew.aspx to register the SharePoint Add-in. 
 
-![](http://i.imgur.com/e6kIBzD.png)
+![Appregnew.aspx with sample values](http://i.imgur.com/e6kIBzD.png)
 	
 This solution uses app only permissions so you will have to navigate to http://[Tenant]/_layouts/15/appinv.aspx and grant the application the following permissions.Use the Appinv.aspx page to lookup the add-in created in the previous step and then specify the permission XML. 
 
@@ -274,7 +274,7 @@ ProvisioningConnectors | PnP Core Provisioning Connectors that contain the imple
 
 Note. The out of box configuration is configured to use a SharePoint List as the site request repository.The Site Request List is created at run time the first time a user tries to save a site request in the UX.
 
-![](http://i.imgur.com/KQ4JvAb.png)
+![Content type and site column listing of the list](http://i.imgur.com/KQ4JvAb.png)
 
 
 The following example configuration file shows how you can use the Azure Document DB to store the Site Requests. This gives us the capability to customer our Site Request Domain Model in a schema-free with native JSON support. 
@@ -314,15 +314,15 @@ The following example configuration file shows how you can use the Azure Documen
 
 Notice container for the RepositoryManager. This is the Azure Document Database. The implementation creates the database and collection at runtime. 
 
-![](http://i.imgur.com/U402PK5.png)
+![Azure DB creation](http://i.imgur.com/U402PK5.png)
 
 In order to use Azure Document DB you must first create a new DocumentDB Account in the [Microsoft Azure Preview Portal](https://portal.azure.com/).
 
-![](http://i.imgur.com/SLb3KAm.png)
+![Create Azure DocumentDB from Azure portal](http://i.imgur.com/SLb3KAm.png)
 
 Copy the Primary or Secondary Connection string and update the connectionString in your RepositoryManager connectionString
 
-![](http://i.imgur.com/uhStvV6.png)
+![URI, Primary and secondary keys for the created DocumentDB](http://i.imgur.com/uhStvV6.png)
 
 
 ##### Templates.config #####
@@ -398,7 +398,7 @@ Enabled | Controls if the Template is available in the user interface.
 
 The below images display the template selection that is available to the user.
 
-![](http://i.imgur.com/Tq63tq9.png)
+![List of templates available for user selection](http://i.imgur.com/Tq63tq9.png)
 
 ##### TeamSiteTemplate.xml #####
 
@@ -482,15 +482,15 @@ Defined in the Provisioning.Job in the Resources/SiteTemplates/ProvisioningTempl
 
 ##### External Sharing Notification Banner #####
 
-![](http://i.imgur.com/Kd65FNs.png)
+![External sharing notification banner shown in team site](http://i.imgur.com/Kd65FNs.png)
 
 ##### Site Classification Custom Action  #####
 
-![](http://i.imgur.com/INzEnv5.png)
+![Site classification visible in site actions menu](http://i.imgur.com/INzEnv5.png)
 
 ##### Site Classification Edit Screen  #####
 
-![](http://i.imgur.com/OPwyx9H.png)
+![UI for setting site classification for the site](http://i.imgur.com/OPwyx9H.png)
 
 
 #### High-Trust Configuration ####

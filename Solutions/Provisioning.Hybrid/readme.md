@@ -31,7 +31,7 @@ Version  | Date | Comments
 # INTRODUCTION #
 This reference implementation shows how one can use the add-in model to provision site collections in SharePoint Online and in SharePoint on-premises. The same code base is used for both options: depending on the choice the user makes in the provisioning form the solution will either create the site collection in SharePoint Online or in SharePoint on-premises. The SharePoint provisioning add-in in this sample is designed to run in Azure cloud services which will result in cloud driven solution. In order to provision sites collections on-premises the add-in running on Windows Azure cloud services uses Windows Azure service bus to make the connection to an on-premises component. Below schema shows the above flows in action:
 
-![](http://i.imgur.com/7IK5mio.png)
+![Logical architecture design](http://i.imgur.com/7IK5mio.png)
 
 ## REFERENCES TO OTHER OFFICE AMS SAMPLES ##
 This sample must be seen a reference implementation that makes use of some of the other Office AMS samples. Therefore we would like to refer to the documentation of these samples for the following elements:
@@ -44,7 +44,7 @@ This sample must be seen a reference implementation that makes use of some of th
 # SOLUTION SETUP #
 The solution contains 10 projects:
 
-![](http://i.imgur.com/96f5nFG.png)
+![Project list from VS solution](http://i.imgur.com/96f5nFG.png)
 
 Below you can find a short description of each of the projects:
 -  **Provisioning.Hybrid:** this is the Azure cloud services project that holds the configuration data for three cloud services: one web role (Provisioning.Hybrid.Web) and one worker role named Provisioning.Hybrid.Worker
@@ -68,7 +68,7 @@ The actual site provisioning code is running in the ContosoCollaboration and Con
 
 Below picture shows the important code in the Provisioning.Hybrid.Core project:
 
-![](http://i.imgur.com/2BgHc43.png)
+![Class structure for the solution](http://i.imgur.com/2BgHc43.png)
 
 If we take a deeper look at such a site provisioning class then we can see only one method named Execute. All the site provisioning logic that you need must be triggered from this method call. A typical Excute method contains the following structure:
 1.	Read configuration data, decrypt when needed
@@ -92,15 +92,15 @@ Off course these steps can be expanded with other steps such as there are:
 # SECURITY CONCEPTS #
 From a security perspective this sample application actually consists out of 2 apps: there the SharePoint add-in that contains the UI (default.aspx) and there’s the SharePoint add-in that’s being used for the site collection creation in the Azure worker role. The SharePoint add-in for the UI is regular SharePoint add-in with basic permissions as you can see in the below screenshot of the add-in manifest:
 
-![](http://i.imgur.com/SfQEPmS.png)
+![Permissions assigned for the add-in](http://i.imgur.com/SfQEPmS.png)
 
 The SharePoint add-in for the site collection creation however is different: there’s no appmanifest.xml file for this add-in, so the creation of the add-in always need to happen via the appregnew.aspx page. Once the add-in is created via the appregnew.aspx page you can provide it the add-in with the needed permissions via the appinv.aspx page. Below screenshots show these two pages. First screenshot shows the appregnew.aspx page where you can generate a client ID (aka add-in ID) and a client secret (aka add-in Secret), provide a title and domain. Note that the domain you specify here does not have to be a real existing domain, just a string that’s formatted as a domain name is good enough:
 
-![](http://i.imgur.com/X9AMdcS.png)
+![Creation of client id and secret from appregnew.aspx page](http://i.imgur.com/X9AMdcS.png)
 
 Use the Appinv.aspx page to lookup the add-in created in the previous step and then specify the permission XML. Given that this add-in will be used in a worker role it’s important that you don’t forget to set the AllowAppOnlyPolicy to true:
 
-![](http://i.imgur.com/OTjI9Cq.png)
+![Setting permissions using appinv.aspx page](http://i.imgur.com/OTjI9Cq.png)
 
 # DEPLOYMENT #
 
@@ -108,15 +108,15 @@ Use the Appinv.aspx page to lookup the add-in created in the previous step and t
 
 ### CREATE A CLOUD SERVICE IN YOUR AZURE TENANT ###
 
-![](http://i.imgur.com/sMJJ96U.png)
+![New cloud service creation wizard from Azure](http://i.imgur.com/sMJJ96U.png)
 
 ### CREATE A SERVICE BUS NAMESPACE IN YOUR AZURE TENANT (OR REUSE AN EXISTING ONE) ###
 
-![](http://i.imgur.com/sVLfYXe.png)
+![New service bus creation wizard in Azure](http://i.imgur.com/sVLfYXe.png)
 
 Click on connection information and copy the default issuer (owner = default), the default key and your service bus namespace (bjansen2).
 
-![](http://i.imgur.com/CHOI6WD.png)
+![Getting default key from the service bus](http://i.imgur.com/CHOI6WD.png)
 
 ### CERTIFICATE ###
 Ensure you either have a self-signed certificate for your cloud add-in name (bjansen-provisioning.cloudapp.net in the sample) or that you have public trusted certificate linked to your own DNS (e.g. *.set1.bertonline.info certificate linked to bertonline.info domain name). The latter option is the preferred one and will be used in the remainder of the deployment steps.
@@ -127,14 +127,14 @@ If you’re using a non cloudapp.net certificate then you’ll need to setup DNS
 ### DEPLOY THE CERTIFICATE TO YOUR AZURE CLOUD SERVICE ###
 Use the Upload button in the Certificates section of the Azure cloud service you’ve created.
 
-![](http://i.imgur.com/U9LcVSV.png)
+![Deployment of certificate to Azure](http://i.imgur.com/U9LcVSV.png)
 
 ## PREPARATION OF THE SHAREPOINT ONLINE TENANT ##
 
 ### REGISTER THE PROVISIONING SCREEN ADD-IN IN SHAREPOINT USING APPREGNEW.ASPX ###
 Your add-in domain will be the tied to the certificate as it needs to match. In this case the add-in domain is prov.set1.bertonline.info which matches the *.set1.bertonline.info certificate. If you use a self-signed cert for bjansen-provisioning.cloudapp.net then that’s your add-in domain.
 
-![](http://i.imgur.com/KweDAHf.png)
+![Registration of client id and secret](http://i.imgur.com/KweDAHf.png)
 
 ### REGISTER THE “ACTUAL” PROVISIONING ADD-IN IN SHAREPOINT USING APPREGNEW.ASPX AND APPINV.ASPX ###
 Do the same as in previous step, but in this case when entering appregnew.aspx a dummy appdomain (www.contoso.com) will be ok. Redirect URL can be left empty. Copy the ClientID and ClientSecret. Once that’s done use the appinv.aspx page to perform look of the created add-in and grant it tenant level permissions by pasting the following permission XML and press create to confirm:
@@ -156,7 +156,7 @@ The site directory is not (yet) created automatically as part of the add-in as t
 ### DEPLOY THE CONTOSO.SERVICES.SITEMANAGER SOLUTION PACKAGE ###
 This solution package can be obtained from Office Dev PnP sample “Provisioning.Services.SiteManager”:
 
-![](http://i.imgur.com/COPGBdd.png)
+![Deployment of on-premises farm solution to local farm](http://i.imgur.com/COPGBdd.png)
 
 ## PREPARATION OF THE VISUAL STUDIO SOLUTION ##
 Before the solution can be deployed a number of settings have to be set correctly.
@@ -164,18 +164,18 @@ Before the solution can be deployed a number of settings have to be set correctl
 ### WEB.CONFIG OF PROVISIONING.HYBRID.WEB ###
 Ensure the right **provisioning screen add-in** clientID and clientSecret are set. Also comment HostedAppHostNameOverride before you deploy.
 
-![](http://i.imgur.com/7NqQc3h.png)
+![Web config definitions](http://i.imgur.com/7NqQc3h.png)
 
 Set the correct WCF endpoint URL:
 
-![](http://i.imgur.com/ljS0tSF.png)
+![WCF configuration in web config](http://i.imgur.com/ljS0tSF.png)
 
 ### PROVISIONING.HYBRID” CLOUD SERVICE SETTINGS ###
 
 #### PROVISIONING.HYBRID.WEB ####
 Go to the settings of the cloud service where you’ll see this:
 
-![](http://i.imgur.com/MwgpRmk.png)
+![VS settings options for hte project](http://i.imgur.com/MwgpRmk.png)
 
 NOTE:
 Some of the values are encrypted in the settings file. To encrypt your own take the following steps:
@@ -192,13 +192,13 @@ Update following values:
 
 Switch the service configuration to cloud:
 
-![](http://i.imgur.com/dEzWYk6.png)
+![Certificates options in the Visual Studio](http://i.imgur.com/dEzWYk6.png)
 
 Update the general.sitedirectoryListName to point to the site collection you’ve created earlier.
 
 Go to certificates and ensure that the entry SSL points to the thumbprint of the certificate you’re using for SSL and encryption. If you’ve a separate encryption certificate then you’ll need to add a line here and also reference the encryption certificate:
 
-![](http://i.imgur.com/d9zp5eK.png)
+![Certificates options in the Visual Studio](http://i.imgur.com/d9zp5eK.png)
 
 #### PROVISIONING.HYBRID.WORKER ####
 This is identical to the previous chapter with additional of following “All Configurations” settings:
@@ -230,7 +230,7 @@ Right click the “Provisioning.Hybrid” project and choose “Publish”. Crea
 ## INSTALLATION OF THE SHAREPOINT ADD-IN AND TESTING ##
 Go the site collection created earlier on (https://bertonline.sharepoint.com/sites/spc) and install the provisioning add-in you’ve added to the add-in catalog. After installation clicking on the add-in should give this:
 
-![](http://i.imgur.com/Od0aTEq.png)
+![Using application in SharePoint](http://i.imgur.com/Od0aTEq.png)
 
 ## HOOKING UP THE ON-PREMISES PART ##
 For testing purposes the on-premises farm should also have VS2013 installed. In that case the solution you’ve just created can be copied to the on-premises SharePoint 2013 server. Open the solution in VS2013 and set the Provisioning.Hybrid.Console project as start project. 

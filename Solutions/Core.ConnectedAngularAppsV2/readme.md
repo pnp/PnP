@@ -7,7 +7,7 @@ This solution takes the concept of master/detail add-in part communication and m
 
 These add-in parts contain two properties that can be set in edit mode and will allow for flexible configuration of add-in part communication scenarios.
 
-![](http://i.imgur.com/gg6fQGq.jpg)
+![Add-in part property](http://i.imgur.com/gg6fQGq.jpg) 
 
 The session key allows other add-in parts to participate in that session and is used for a SignalR group identifier. Combining session key with the user id will make the SignalR group identifier specific to the logged in user and the specified session name. If no session name is specified, a session with the name of "Default" will be used.
 
@@ -45,13 +45,13 @@ Version  | Date | Comments
 
 ## Setup and Configuration ##
 This is a semi-complex solution with a number of moving parts. This section explains how to get it running fast, and what is created from the configuration process. The default page of web application will present you with instructions and "Configure" button as shown below which will set up the site columns, content types and lists. It will then inject sample data into the lists.
-![](http://i.imgur.com/ONIhhoW.jpg)
+![Add-in UI for enabling sample](http://i.imgur.com/ONIhhoW.jpg)
 
 The configuration will create a Corporate Events list with data, an Event Sessions list with data, and a Speakers list with data. Once done, create a new page, add an html table to position add-in parts, then add the Corporate Events, Event Sessions and Speakers add-in parts to the page. Once you have added the add-in parts, set your desired add-in part properties to your desired session scenario. Below is an example showing the add-in parts layout. You may have to adjust the layout, add-in part height and width to your liking.
-![](http://i.imgur.com/xNHjUgc.jpg)
+![Setting corporate events add-in part properties](http://i.imgur.com/xNHjUgc.jpg)
 
 Once configured, your page would look something like this with your add-in parts using SignalR to communicate with each other:
-![](http://i.imgur.com/jxWAc86.jpg)
+![Configured UI with three add-in parts](http://i.imgur.com/jxWAc86.jpg)
 
 ## How it all works ##
 This section will describe the components of the solution and give a high level of how it works.
@@ -59,7 +59,7 @@ This section will describe the components of the solution and give a high level 
 ### SignalR ###
 There is a SignalR hub which is the server-side code, and this concept is described in Vesa's blog post referenced above. In order to call the CorporateEventsHub from AngularJS, the JavaScript can reference the hub, and a proxy will be generated automatically, however, issues with that were encountered, so there is a SignalR utility that will generate a proxy based on the Hub. You can then save this file and add it to your solution, then reference it instead. This is the approach taken for this sample solution. The name of the file is highlighted in the image shown below.
 
-![](http://i.imgur.com/7xzdI3F.png)
+![Visual Studio project UI with script folders expanded](http://i.imgur.com/7xzdI3F.png)
 
 A SignalR Group is created based upon your session configuration in your add-in parts. 
 
@@ -101,7 +101,7 @@ The angular code uses callbacks and does not use $scope or $rootscope.
 
 ### Putting it all together ###
 
-![](http://i.imgur.com/htNrj4J.png)
+![Conceptual UI with lot of arrows pointing cross boxes](http://i.imgur.com/htNrj4J.png)
 
 1. App action invokes controller
 2. If data action, set promises, invoke data service

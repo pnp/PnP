@@ -1,5 +1,7 @@
 # OneDrive for Business customization (async) #
 
+*Notice.* This solution **ONLY** works when you use so called "Classic" option for OneDrive for Business. New experiences do **NOT** support any level of branding in OneDrive for Business sites.
+
 ### Summary ###
 This is an enhanced add-in part based customization for applying and managing needed customizations to the OD4B sites. 
 
@@ -36,18 +38,18 @@ Solution demonstrates how to apply customizations to Office 365 OneDrive for Bus
 
 Here’s an example of OD4B site, which has been customized using this solution. In this case the end result has been achieved with combination of Office 365 themes, site theme and usage of so called JavaScript injection pattern. You can obviously add and modify the applied customizations as needed.
 
-![](http://blogs.msdn.com/cfs-file.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-00-81-08-metablogapi/3286.image_5F00_thumb_5F00_20BE5FEA.png)
+![Picture of OneDrive for Business site with custom branding](http://blogs.msdn.com/cfs-file.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-00-81-08-metablogapi/3286.image_5F00_thumb_5F00_20BE5FEA.png)
 
 # Solution structure  #
 This Visual Studio solution consists from quite a few solutions, but each of them have pretty reasonable reason to be there. Here’s introduction to each of the projects in the solution and why they exists or what they are for.
 
-![](http://blogs.msdn.com/cfs-file.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-00-81-08-metablogapi/0246.image_5F00_thumb_5F00_192C9789.png)
+![List of projects in Visual Studio solution](http://blogs.msdn.com/cfs-file.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-00-81-08-metablogapi/0246.image_5F00_thumb_5F00_192C9789.png)
 
 ## OD4B.Configuration.Async ##
 
 This is the actual SharePoint add-in project, which will introduce the provider hosted add-in to SharePoitn and will ask the needed permissions. Notice that even though we do not actually perform tenant level operations from the add-in part it self, we are asking pretty high permissions for the add-in. This is because we will use the same  client ID and secret from this add-in file in our WebJob execution. Using this approach, you do not have to manually register add-in id and secret to the SharePoint, we rather just use the same identifier and secret cross solution. 
 
-![](http://blogs.msdn.com/cfs-file.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-00-81-08-metablogapi/3302.image_5F00_thumb_5F00_2726198A.png)
+![Permission configuration for the add-in](http://blogs.msdn.com/cfs-file.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-00-81-08-metablogapi/3302.image_5F00_thumb_5F00_2726198A.png)
 
 This project also contains the add-in part definition which will be then deployed to the host web. 
 
@@ -98,7 +100,7 @@ You can easily execute the project by right clicking the project and choosing De
 
 This is the actual WebJob project, which was created using WebJob project template, introduced in the Visual Studio 2013 Update 4. This template makes it easier to create WebJob projects by adding right references in place and it also provides nice deployment automation with right click support for the project. You can simply deploy initial version or new version of the project to the Azure by right clicking and selecting *Publish as Azure Web Job…* which will open up the publishing wizard.
 
-![](http://blogs.msdn.com/cfs-file.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-00-81-08-metablogapi/6406.SNAGHTML1f4a2e81_5F00_thumb_5F00_382CD81E.png)
+![Publish web option in Visual Studio wizards](http://blogs.msdn.com/cfs-file.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-00-81-08-metablogapi/6406.SNAGHTML1f4a2e81_5F00_thumb_5F00_382CD81E.png)
 
 This WebJob is created as a continuous WebJob, which is needed for the queue based processing. This means that in the Main method, we only set the process to be executing continuous like follows.
 
