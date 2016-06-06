@@ -3,7 +3,7 @@
 <App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest"
      Name="CoreEmbedJavaScript"
      ProductID="{5083a58f-ba1b-47d6-84bd-7ee8c5c0583e}"
-     Version="1.0.0.0"
+     Version="1.0.0.1"
      SharePointMinVersion="16.0.0.0"
 >
   <Properties>
