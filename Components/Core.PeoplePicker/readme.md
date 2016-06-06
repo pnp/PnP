@@ -32,9 +32,9 @@ Version  | Date | Comments
 Using the people picker in your provider hosted add-in does not require many steps :-)
 
 ## ENSURE YOU TRIGGER THE CREATION OF AN ADD-IN WEB ##
-When you build a provider hosted add-in it does not necessarily have an add-in web associated with it whereas a SharePoint hosted add-in always has an add-in web. Since the people picker control uses the CSOM object model from JavaScript it’s required to have an add-in web. To ensure you have an add-in web you can just add a dummy module to your SharePoint add-in as shown below:
+When you build a provider hosted add-in it does not necessarily have an add-in web associated with it whereas a SharePoint hosted add-in always has an add-in web. Since the people picker control uses the CSOM object model from JavaScript it’s required to have an add-in web. To ensure you have an add-in web you can just add a dummy module to your SharePoint add-in as shown below: 
 
-![](http://i.imgur.com/EUDXrvo.png)
+![Visual Studio project structure](http://i.imgur.com/EUDXrvo.png)
 
 ## DEFINING JAVASCRIPT GLOBAL VARIABLES ##
 Your add-in should have a JavaScript file that’s being loaded by your add-in pages (app.js in the sample) and in this JavaScript file you should define a context variable for the SharePoint ClientContext and one variable for the people picker:
@@ -128,13 +128,13 @@ peoplePicker.Language = spLanguage;
 
 If you would like to add additional languages you need to create the appropriate JavaScript language resource files:
 
-![](http://i.imgur.com/dxKRUNS.png)
+![Resource JS file list](http://i.imgur.com/dxKRUNS.png)
 
 Such a resource file is simple collection of global variables:
 
-![](http://i.imgur.com/YdoBzaJ.png)
+![JS content in English](http://i.imgur.com/YdoBzaJ.png)
 
-![](http://i.imgur.com/qYcBb6w.png)
+![JS content in Dutch](http://i.imgur.com/qYcBb6w.png)
 
 ## MAXENTRIESSHOWN ##
 This setting determines how many entries the user will see in the people picker control. If the control finds more entries than this value it will tell the user to further refine the search. Default value is 4.
@@ -152,16 +152,16 @@ How many characters need to be entered by the user before the control issues its
 ## SHOWLOGINNAME AND SHOWTITLE ##
 These two settings determine how the user drop down looks like. By default both are true and you’ll see the following:
 
-![](http://i.imgur.com/OXftpp9.png)
+![Show title and login name in the list](http://i.imgur.com/OXftpp9.png)
 
 Putting both values on false gives you a people picker control that mimics the OOB look and feel:
 
-![](http://i.imgur.com/ZOFYq4e.png)
+![Show only name](http://i.imgur.com/ZOFYq4e.png)
 
 # APPENDIX A: ADDING MULTIPLE PEOPLE PICKERS ON A FORM (BY KARIM KAMEKA) #
 While the people picker control above is great for adding and selecting multiple users there are times when you might need more than 1 people picker on a page. This can be done with a few additions to the code in the sample. In the end you will get something similar to the following:
 
-![](http://i.imgur.com/e2HR7Pz.png)
+![Two people pickers in the UI](http://i.imgur.com/e2HR7Pz.png)
 
 ## ADDING HTML TO THE FORM & UPDATING JS INSTANTIATION ##
 Following the instructions above you will need to add a second block of HTML and a second variable to the JS file used to instantiate the people picker (this is `app.js` in this sample).

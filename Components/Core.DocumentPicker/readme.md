@@ -25,11 +25,11 @@ Version  | Date | Comments
 # HOW DOES THE DOCUMENT PICKER WORK? #
 The document picker control makes it possible to browse one or more document libraries and select documents. An examle would be a provider hosted application in which create PDF's from existing documents: you could then use this document picker control to select the needed documents. Below picture shows the control on the page:
 
-![](http://i.imgur.com/OmGyuNE.png)
+![Document picker UI](http://i.imgur.com/OmGyuNE.png)
 
 One you click on the *document* icon right to the control a dialog opens in which you select documents:
 
-![](http://i.imgur.com/gvVLyJj.png)
+![Selection of documents from library](http://i.imgur.com/gvVLyJj.png)
 
 # HOW TO USE THE DOCUMENT PICKER IN YOUR PROVIDER HOSTED SP ADD-IN? #
 Below you can find the steps needed to get the control working
@@ -37,7 +37,7 @@ Below you can find the steps needed to get the control working
 ## ENSURE YOU TRIGGER THE CREATION OF AN ADD-In WEB ##
 When you build a provider hosted add-in it does not necessarily have an add-in web associated with it whereas a SharePoint hosted add-in always has an add-in web. Since the document picker control uses the CSOM object model from JavaScript it’s required to have an add-in web. To ensure you have an add-in web you can just add a empty element to your SharePoint add-in as shown below:
 
-![](http://i.imgur.com/DYnXn5E.png)
+![Visual Studio project UI with an arrow pointing to element.xml](http://i.imgur.com/DYnXn5E.png)
 
 ## SETTING UP THE HTML ##
 Add refences to javascript and css files to make the control work. The app.js file will be used to write our app specific code.
@@ -121,13 +121,13 @@ documentPickerWithOptions.Language = "en-us";
 
 If you would like to add additional languages you need to create the appropriate JavaScript language resource files:
 
-![](http://i.imgur.com/umTeI0h.png)
+![Resource JS list](http://i.imgur.com/umTeI0h.png)
 
 Such a resource file is simple collection of global variables:
 
-![](http://i.imgur.com/rLG8HbO.png)
+![English variables](http://i.imgur.com/rLG8HbO.png)
 
-![](http://i.imgur.com/SVQmC4f.png)
+![Dutch variables](http://i.imgur.com/SVQmC4f.png)
 
 ## SHOW MULTIPLE DOCUMENT LIBRARIES IN ONE TREE ##
 The control is able to show multiple document libraries in the same treeview. Just pass a array of the list titles or id's to the documentpickerdatasource. Be sure to specify in the last parameter that you are passing ID's or Titles.

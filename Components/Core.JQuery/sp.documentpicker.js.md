@@ -8,7 +8,7 @@ This extension allows for the inclusion of a client side document picker in your
 
 The relevant files from the example solution are:
 
-- [sp.documentpicker.js](Core.JQueryWeb/Scripts/PnP/sp.documentpicker.js) : the jQuery extension
+- [sp.documentpicker.js](Core.JQueryWeb/Scripts/PnP/sp.documentpicker.js) : the jQuery extensionDc
 - [app.js](Core.JQueryWeb/Scripts/PnP/app.js) : supporting functions
 - [Index.cshtml](Core.JQueryWeb/Views/Home/Index.cshtml) : example usage
 - [Site.css](Core.JQueryWeb/Content/Site.css) : control styles
@@ -50,7 +50,7 @@ $(function() {
 
 Once complete you should see a document picker control.
 
-![](http://i.imgur.com/eBFmjwq.png)
+![Document picker UI](http://i.imgur.com/eBFmjwq.png)
 
 ----------
 
