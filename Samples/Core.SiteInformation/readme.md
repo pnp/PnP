@@ -36,6 +36,7 @@ The add-in has several sample components:
 - a simple default.aspx page with code-behind logic to get the data
 
 Sample interface:
+
 ![](http://i.imgur.com/fffDVVu.png)
 
 
