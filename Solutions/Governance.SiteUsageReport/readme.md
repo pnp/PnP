@@ -69,17 +69,17 @@ Permission Request XML:
 </AppPermissionRequests>
 ```
 Start by getting and registering a ClientId and ClientSecret through /_layouts/15/AppRegNew.aspx
-![](http://i.imgur.com/qjzXtwD.png)
+![Creation of ID and secret](http://i.imgur.com/qjzXtwD.png)
 Make sure you copy the ClientId and ClientSecret and plug them in the app.config. Notice how the add-in Domain and Redirect URI are not required in this case beacuse we have no URL interaction
 
 When done you will get a confirmation message:
-![](http://i.imgur.com/sWwsXDk.png)
+![Confirmation on created entry](http://i.imgur.com/sWwsXDk.png)
 
 Continue by giving it permissions through /_layouts/15/AppInv.aspx
-![](http://i.imgur.com/F7TloiO.png)
+![UI for providing permissions](http://i.imgur.com/F7TloiO.png)
 
 You will then be asked to confirm the trust and assign the add-in permissions:
-![](http://i.imgur.com/s1G5MNX.png)
+![Accept the given permissions for the app](http://i.imgur.com/s1G5MNX.png)
 
 
 ## Application Settings ##

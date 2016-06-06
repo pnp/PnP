@@ -16,7 +16,7 @@ Code also stores the version of the used branding, so that changes are only appl
 
 Visit the video on Channel 9 - [http://channel9.msdn.com/Blogs/Office-365-Dev/Branding-OneDrive-for-Business-with-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practice](http://channel9.msdn.com/Blogs/Office-365-Dev/Branding-OneDrive-for-Business-with-an-App-for-SharePoint-Office-365-Developer-Patterns-and-Practice)
 
-![](http://i.imgur.com/kWyLYet.png)
+![Channel 9 video landing page](http://i.imgur.com/kWyLYet.png)
 
 
 ### Applies to ###
