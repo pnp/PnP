@@ -52,19 +52,19 @@ Please check Heather's blog post for detailed information on the CSS design at [
 
 Here's three pictures which are showing how the responsive CSS will behave when screen size is adjusted.
 
-![](http://i.imgur.com/I0PR6Qj.png)
+![Normal sized team site](http://i.imgur.com/I0PR6Qj.png)
 
 Notice how the left navigation is removed the search box has been relocated. 
 
-![](http://i.imgur.com/iyAHWFh.png)
+![Tablet sized team site](http://i.imgur.com/iyAHWFh.png)
 
 Notice how the top navigation is rendered completely differently
 
-![](http://i.imgur.com/u9yYn8V.png)
+![Mobile sized team site](http://i.imgur.com/u9yYn8V.png)
 
 If navigation control is clicked, user is presented the same list of navigation options
 
-![](http://i.imgur.com/BRtYm79.png)
+![Menu shown after click](http://i.imgur.com/BRtYm79.png)
 
 
 # Attaching custom css to site #
