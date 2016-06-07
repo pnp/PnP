@@ -1,10 +1,12 @@
 # OD4B Secondary Navigation Bar #
 
+*Notice.* This solution **ONLY** works when you use so called "Classic" option for OneDrive for Business. New experiences do **NOT** support any level of branding in OneDrive for Business sites.
+
 ### Summary ###
 This sample shows how to a secondary level of navigation under the suite bar on a OneDrive or to any other site. Typical business case would be to add custom navigation links to the OneDrive sites in hybrid situation where the end user is moving from on-premises to OneDrive for Business site and needs to find easily route back to on-prem sites. 
 
 ### Applies to ###
--  Office 365 Multi Tenant (MT)
+-  Office 365 Multi Tenant (MT) - Classic experience
 -  Office 365 Dedicated
 -  SharePoint 2013 on-premises
 
