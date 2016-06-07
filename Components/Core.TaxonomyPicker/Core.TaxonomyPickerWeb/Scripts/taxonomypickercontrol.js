@@ -23,7 +23,7 @@
         //converts a term to an html tree node
         toHtmlLabel: function () {
             var addlClass = (this.Children.length > 0) ? 'collapsed' : '';
-            return jQuery('<li class="cam-taxpicker-treenode-li"><div class="cam-taxpicker-treenode"><div class="cam-taxpicker-expander ' + addlClass + '"></div><img src="../styles/images/EMMTerm.png" alt=""/><span class="cam-taxpicker-treenode-title"  data-item="' + this.Name + '|' + this.Id + '">' + this.Name + '</span></div></li>');
+            return jQuery('<li class="cam-taxpicker-treenode-li"><div class="cam-taxpicker-treenode"><div class="cam-taxpicker-expander ' + addlClass + '"></div><img src="' + this.TermSet.TermSetImageUrl + '/EMMTerm.png" alt=""/><span class="cam-taxpicker-treenode-title"  data-item="' + this.Name + '|' + this.Id + '">' + this.Name + '</span></div></li>');
         }
     });
     //********************** END Term Class **********************
@@ -39,14 +39,17 @@
         this.FlatTermsForSuggestions = new Array();
         this.RawTerms = null; //Raw terms returned from CSOM
         this.TermsLoaded = false; //boolean indicating if the terms have been returned and loaded from CSOM
-        this.OnTermsLoaded = null; //optional callback when terms are loaded
-        this.Name; //name of the termset
+        this.OnTermsLoaded = null; //optional internal callback when terms are loaded
+        this.TermsLoadedCallback = options.termsLoadedCallback; //optional external callback when terms are loaded
+        this.KeyDownCallback = options.keyDownCallback; // optional external callback when term set text updated
         this.RawTermSet = null; //Raw termset returned from CSOM
         this.TermSetLoaded = false; //boolean indicating if the termset details are loaded
         this.IsOpenForTermCreation = false; //bool indicating if the termset is open for new term creation
         this.NewTerm = null; //the new term being added
 
         //TODO NEW STUFF HERE
+        this.Name = options.termSetName; //name of the termset so we can retrive by name instead of id
+        this.TermSetImageUrl = options.termSetImageUrl; //url of the termset image
         this.FilterTermId = options.filterTermId; // To support filter terms based on Id
         this.LevelToShowTerms = options.levelToShowTerms; // show terms only till the specified level
         this.UseTermSetasRootNode = options.useTermSetasRootNode //bool indicating if termset to be shown as root node or not
@@ -62,6 +65,10 @@
             //get the termset based on the properties of the termset
             if (this.Id != null)
                 this.RawTermSet = termStore.getTermSet(this.Id); //get termset by id
+            else if (this.Name) {
+                var rawTermSets = termStore.getTermSetsByName(this.Name, 1033); //get termset by name via english language
+                this.RawTermSet = rawTermSets.getByName(this.Name); //get termset by id
+            }
             else if (this.UseHashtags)
                 this.RawTermSet = termStore.get_hashTagsTermSet(); //get the hashtags termset
             else if (this.UseKeywords)
@@ -70,7 +77,7 @@
             //get ALL terms for the termset and we will organize them in the async callback
             this.RawTerms = this.RawTermSet.getAllTerms();
             spContext.load(this.RawTermSet);
-            spContext.load(this.RawTerms, 'Include(Id,Name,PathOfTerm,Labels)');
+            spContext.load(this.RawTerms, 'Include(Id,Name,PathOfTerm,Labels,CustomProperties,LocalCustomProperties)');
             spContext.executeQueryAsync(Function.createDelegate(this, this.termsLoadedSuccess), Function.createDelegate(this, this.termsLoadedFailed));
         },
         //internal callback when terms are returned from CSOM
@@ -140,6 +147,10 @@
             //call OnTermsLoaded event if not null
             if (this.OnTermsLoaded != null)
                 this.OnTermsLoaded();
+
+            //call TermsLoadedCallback event if not null
+            if (this.TermsLoadedCallback != null)
+                this.TermsLoadedCallback();
         },
         //internal callback when failed CSOM query occurs getting terms
         termsLoadedFailed: function (event, args) {
@@ -265,11 +276,13 @@
         this.LCID = (options.lcid) ? options.lcid : 1033; //the locale id for term creation (default is 1033)
         this.Language = (options.language) ? options.language : 'en-us'; //the language code for the control (default is en-us)
         this.MarkerMarkup = '<span id="caretmarker"></span>'; //the marketup const
+        this._taxPickerIndex = options.taxPickerIndex; //the index within the jQuery.taxpicker array
         this._isMulti = options.isMulti; //specifies if the user can select multiple terms
         this._isReadOnly = options.isReadOnly; //specifies whether the control is used for display purposes 
         this._allowFillIn = options.allowFillIn; //specifies if the user can add new terms (only applies to Open Termsets)
         this._enterFillIn = options.enterFillIn; //specifies if the user can add new terms just click on enter (not taxonomy picker dialog needed)
         this._termSetId = options.termSetId; //the termset id to bind the control to
+        this._termSetName = options.termSetName; //the termset id to bind the control to
         this._useHashtags = options.useHashtags; //indicates that the hashtags termset should be used tp bind the control
         this._useKeywords = options.useKeywords; //indicates that the keywords termset should be used to bind the control
         this._initialValue = control.val(); //the initial value of the control
@@ -392,7 +405,7 @@
 
             //get all parameters to deal with the key event
             var caret = this.getCaret(this._editor[0]); //the cursor position
-            var rawText = this._editor.text(); //the raw text in the editor (html stripped out)
+            var rawText = this._editor.text(); //the raw text in the editor (html stripped out)        
             var selection = '';
             if (window.getSelection) //get selection (highlighted text)
                 selection = window.getSelection().toString(); //modern browser
@@ -439,6 +452,10 @@
                     var textValidation = this.validateText(newText);
                     this._editor.html(textValidation.html);
 
+                    //call keyDownCallback event if not null
+                    if (this.TermSet.KeyDownCallback != null)
+                        this.TermSet.KeyDownCallback();
+
                     //set the cursor position at the marker
                     this.setCaret();
 
@@ -470,6 +487,10 @@
                 //get text validation and set html in editor
                 var textValidation = this.validateText(newText);
                 this._editor.html(textValidation.html);
+
+                //call keyDownCallback event if not null
+                if (this.TermSet.KeyDownCallback != null)
+                    this.TermSet.KeyDownCallback();
 
                 //set the cursor position at the marker
                 this.setCaret();
@@ -527,7 +548,7 @@
                         sel.addClass('selected');
                     }
                 }
-            }
+            }           
         },
         //get the cursor position in a content editable div
         getCaret: function (target) {
@@ -763,7 +784,6 @@
                     else {
                         this._suggestionContainer.hide();
                     }
-                    
                 }
                 else {
                     this._suggestionContainer.hide();
@@ -861,7 +881,7 @@
                 return;
 
             this._dlgNewNodeEditor = jQuery('<div class="cam-taxpicker-treenode-newnode" style="min-width: 100px;" contenteditable="true"></div>');
-            this._dlgNewNode = jQuery('<li class="cam-taxpicker-treenode-li newNode"></li>').append(jQuery('<div class="cam-taxpicker-treenode"></div>').append('<div class="cam-taxpicker-expander"></div><img src="../styles/images/EMMTerm.png" alt=""/>').append(this._dlgNewNodeEditor));
+            this._dlgNewNode = jQuery('<li class="cam-taxpicker-treenode-li newNode"></li>').append(jQuery('<div class="cam-taxpicker-treenode"></div>').append('<div class="cam-taxpicker-expander"></div><img src="' + this.TermSet.TermSetImageUrl + '/EMMTerm.png" alt=""/>').append(this._dlgNewNodeEditor));
 
             // only one level allowed for keywords, so always add to the root
             if (this.TermSet.UseKeywords || this._dlgCurrTerm == null) {
@@ -1014,7 +1034,7 @@
                     dlg.append(dlgHeader);
 
                     //build dialog body
-                    var dlgSubheader = jQuery('<div class="cam-taxpicker-dialog-content-subheader"><img class="cam-taxpicker-dialog-content-subheader-img" src="../styles/images/EMMDoubleTag.png" alt="" /></div>');
+                    var dlgSubheader = jQuery('<div class="cam-taxpicker-dialog-content-subheader"><img class="cam-taxpicker-dialog-content-subheader-img" src="' + this.TermSet.TermSetImageUrl + '/EMMDoubleTag.png" alt="" /></div>');
                     this._dlgAddNewTermButton = jQuery('<a style="cursor: pointer;">' + TaxonomyPickerConsts.DIALOG_ADD_LINK + '</a>');
                     if (this.TermSet.IsOpenForTermCreation) {
                         dlgSubheader.append(jQuery('<div class="cam-taxpicker-dialog-content-subheader-title">' + TaxonomyPickerConsts.DIALOG_ADD_TITLE + '&nbsp;</div>'));
@@ -1053,12 +1073,14 @@
 
                 var that = this;
 
-                var outHtml = buildTermSetTreeLevel(this.TermSet.Terms, true, "", function (html) {
+                var termImageUrl = this.TermSet.TermSetImageUrl;
+
+                var outHtml = buildTermSetTreeLevel(termImageUrl, this.TermSet.Terms, true, "", function (html) {
                     document.getElementById('rootNode').innerHTML =
                                        '<li class="cam-taxpicker-treenode-li">' +
                                            '<div class="cam-taxpicker-treenode">' +
                                                '<div class="cam-taxpicker-expander expanded">' + '</div>' +
-                                               '<img src="../styles/images/EMMTermSet.png" alt=""/>' +
+                                               '<img src="' + termImageUrl + '/EMMTermSet.png" alt=""/>' +
                                                '<span id="currNode" class="cam-taxpicker-treenode-title root selected">' + termName + '</span>' +
                                             '</div>' +
                                             '<ul class="cam-taxpicker-treenode-ul" style="display: block;">' +
@@ -1176,7 +1198,7 @@
     //********************** END TaxonomyPicker Class **********************
 
     //called recursively to build a treeview of terms for a termset
-    function buildTermSetTreeLevel(termList, show, outHtml, cb) {
+    function buildTermSetTreeLevel(termImageUrl, termList, show, outHtml, cb) {
 
         var addlStyle = (show) ? 'style="display: block;"' : '';
 
@@ -1193,13 +1215,13 @@
                          '<div class="cam-taxpicker-treenode">' +
                              '<div class="cam-taxpicker-expander ' + addlClass + '">' +
                              '</div>' +
-                             '<img src="../styles/images/EMMTerm.png" alt=""/>' +
+                             '<img src="' + termImageUrl + '/EMMTerm.png" alt=""/>' +
                              '<span class="cam-taxpicker-treenode-title"  data-item="' + term.Name + '|' + term.Id + '">' + term.Name + '</span>' +
                          '</div>';
 
             //add children if they exist
             if (term.Children.length > 0) {
-                buildTermSetTreeLevel(term.Children, false, "", function (html) {
+                buildTermSetTreeLevel(termImageUrl, term.Children, false, "", function (html) {
                     tHtml += '<ul class="cam-taxpicker-treenode-ul">' + html + "</ul></li>";
                 });
             }
@@ -1284,6 +1306,8 @@
             jQuery.taxpicker = [];
 
         //create new TaxonomyPicker instance and increment index (in case we need to re-reference)
+        options.taxPickerIndex = taxIndex;
         jQuery.taxpicker[taxIndex] = new TaxonomyPicker(this, options, ctx, changeCallback);
+        taxIndex++;
     };
 })(CAMControl || (CAMControl = {}));
