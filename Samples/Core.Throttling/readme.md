@@ -32,7 +32,7 @@ Version  | Date | Comments
 # Introduction #
 Following picture explains the key elements in the throttling. 
 
-![](http://i.imgur.com/mlxg5wx.png)
+![Throttling elements](http://i.imgur.com/mlxg5wx.png)
 
 1. All CSOM, REST and web services calls are under the monitoring
 2. If there are too many requests coming from one account in certain time period, request could get throttled. During this time all requests will fail with http status 429. 

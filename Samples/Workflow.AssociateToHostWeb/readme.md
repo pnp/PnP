@@ -59,7 +59,7 @@ Once the .app file has been modified to include the WorkflowManifest.xml change:
 - Go to workflow settings -> Add a workflow in the list to which workflow has to be associated. 
 - Now you will see add-in Selection options similar to this:
 
-![](http://i.imgur.com/tUADxZ9.png)
+![Add a workflow UI](http://i.imgur.com/tUADxZ9.png)
 
 - Select your workflow add-in and continue as you would for normal workflow association
 - Trigger a new workflow either by a manual start process and selecting the workflow add-in or other preferred start options.

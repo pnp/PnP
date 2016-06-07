@@ -38,12 +38,12 @@ When running the uploader, you will need to specify a minimum of three command l
 There are two optional parameters, which are a username and password, which should be used if your image source location requires authentication, and you don’t want to connect to the source as the user account which is executing the ProfilePictureUploader executable. Note: if the source is an HTTP(s) Uri, then this will only work if the authentication method is NTLM or basic authentication, not forms authentication. 
 The screen shot below shows the two examples for running this command.
 
-![](http://i.imgur.com/5wx33eX.png)
+![Console outpu](http://i.imgur.com/5wx33eX.png)
 
 ## CONFIGURATION OPTIONS ##
 The configuration.xml file allows you to control the upload process, and is required. Below is a sample configuration.
 
-![](http://i.imgur.com/zvnRS8w.png)
+![Configuration options as xml image](http://i.imgur.com/zvnRS8w.png)
 
 1.	tenantName – required. Office 365 tenant name. Used by the utility to connect to the correct SPO web service endpoints during the upload of images, and editing of user profile properties.
 2.	pictureSourceCSV – required. This is the path to a CSV file which contains a mapping of SPO user to source image location. More information and examples are detailed in the next section.
@@ -63,7 +63,7 @@ The configuration.xml file allows you to control the upload process, and is requ
 ## SOURCE CSV FILE EXAMPLES ##
 The source CSV file maps SPO user profile to source image path. A sample CSV file is shown below.
 
-![](http://i.imgur.com/gT53PGX.png)
+![Source file examples](http://i.imgur.com/gT53PGX.png)
 
 The first column is required, and must be the SPO User Name (in Office 365 this is the user name found in the users and groups section in the Office 365 admin center). The second column is the path to the source picture to upload for the user. From the sample above, you will see that file shares, local files and web locations are supported. 
 

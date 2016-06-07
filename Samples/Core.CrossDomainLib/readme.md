@@ -30,7 +30,7 @@ With the cross site domain library you can combine javascript and C# code, givin
         It is even possible to show views with javascript on your SharePoint page, rendered by the provider hosted app. (app part behaviour, without Iframes)
 
 Example:
-![](http://i.imgur.com/D63WcPd.png?1)
+![Add-in part UI in SharePoint page](http://i.imgur.com/D63WcPd.png?1)
 
 # How to use the cross domain lib #
 

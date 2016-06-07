@@ -35,7 +35,7 @@ Two new buttons are added to the ribbon:
 - Download All – initiates separate downloads for selected files (including files in subfolders);
 - Download All as Zip – generates ZIP file containing all files and subfolders, and initiates download.
 
-![](http://i.imgur.com/xAYoQ6F.png)
+![Document library view with two custom buttons](http://i.imgur.com/xAYoQ6F.png)
 
 This functionality is built using JavaScript only approach. Obviously, this brings some limitations, as ZIP files are generated in memory on the client machine. However, it allows the customers having no app hosting environment to introduce this functionality. In addition, comparing to provider-hosted model (for example, on Azure), it allows to avoid additional charges for outgoing traffic.
 

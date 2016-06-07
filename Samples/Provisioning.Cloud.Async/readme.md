@@ -6,7 +6,7 @@ Demonstrates how to create site collections in Office 365/SharePoint asynchronou
 ### Walk-through Video ###
 Visit the video on Channel 9 - [http://channel9.msdn.com/Blogs/Office-365-Dev/Asynchronious-site-collection-creation-for-cloud-Office-365-Developer-Patterns-and-Practices](http://channel9.msdn.com/Blogs/Office-365-Dev/Asynchronious-site-collection-creation-for-cloud-Office-365-Developer-Patterns-and-Practices)
 
-![](http://i.imgur.com/BEm4VQh.png)
+![Video UI from Channel 9](http://i.imgur.com/BEm4VQh.png)
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)

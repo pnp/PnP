@@ -18,7 +18,7 @@ Visit the video on Channel 9  [http://channel9.msdn.com/Blogs/Office-365-Dev/Set
 
 
 ### Prerequisites ###
-N/A
+N/A 
 
 ### Solution ###
 Solution | Author(s)

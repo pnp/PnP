@@ -37,20 +37,20 @@ This sample is based on Visual Studio 2015 in combination with the Azure SDK ver
 ## CREATE AN AZURE CLOUD SERVICES PROJECT ##
 Open VS2013 and create a new Azure Cloud Services project with a web role and a worker role:
 
-![](http://i.imgur.com/O1ggSsr.png)
+![Project template selection in Visual Studio](http://i.imgur.com/O1ggSsr.png)
 
-![](http://i.imgur.com/eJseiWO.png)
+![Template selection for Azure Cloud Service](http://i.imgur.com/eJseiWO.png)
 
-![](http://i.imgur.com/C75QohE.png)
+![New ASP.NET MVC template dialog](http://i.imgur.com/C75QohE.png)
 
 ## CONVERT TO AZURE WEB ROLE TO A SHAREPOINT APP PROJECT ##
 Right click the Azure web role project and use the convert menu to “transform” it into a SharePoint App project:
 
-![](http://i.imgur.com/se8K5lf.png)
+![Convert option from project context menu](http://i.imgur.com/se8K5lf.png)
 
 After the conversion completed you should see a similar project structure in your solution. Notice the WebRole1.SharePoint project that has been added:
 
-![](http://i.imgur.com/1ZUIdyJ.png)
+![Visual Studio Solution structure](http://i.imgur.com/1ZUIdyJ.png)
 
 ## ENSURE BOTH THE AZURE PROJECT AS THE SHAREPOINT PROJECT ARE STARTUP PROJECTS ##
 To make the F5 experience work it’s important that the SharePoint App and the Azure project are starting on F5. This can be configured via the solution properties:
@@ -60,15 +60,15 @@ To make the F5 experience work it’s important that the SharePoint App and the 
 ## IMPORTANT: ENSURE YOU’VE A SHAREPOINT PUBLISHING PROFILE BEFORE PUBLISHING YOUR SHAREPOINT APP ##
 If you’ve created the solution as described above and you do want to “Publish” your SharePoint app then this seems to work, but it’s not working correctly since the publishing wizard will not substitute your client ID and remoteAppUrl token because it’s lacking a SharePoint publishing profile. 
 
-![](http://i.imgur.com/gUJXDdk.png)
+![PUblish selection in context menu](http://i.imgur.com/gUJXDdk.png)
 
 This is due to a bug in Visual Studio 2013, but luckily there’s an easy workaround. The very first time you do want to publish your app you should follow below steps, subsequent publishing actions will just work fine. First we “unload” the Azure project:
 
-![](http://i.imgur.com/vRdnOUX.png)
+![Unload option in project context menu](http://i.imgur.com/vRdnOUX.png)
 
 Once this is done publish your SharePoint app by creating a publishing profile and packaging your app. After publishing you should see a folder named PublishProfiles with a pubxml file in the web project of your SharePoint App:
 
-![](http://i.imgur.com/Youz0XH.png)
+![Created publishing profile file](http://i.imgur.com/Youz0XH.png)
 
 Once this is done you can reload the Azure project and you’re fine for all future publish actions.
 
@@ -102,7 +102,7 @@ In this model we’re going to work with a SharePoint tenant administrator accou
 ### INSTALLATION OF ONLINE SERVICES SIGN-IN ASSISTANT AND SHAREPOINT CSOM LIBRARIES IS REQUIRED ###
 To install these two components we’ve added the installation packages to the project (notice the build action and copy to output directory settings):
 
-![](http://i.imgur.com/UODVckE.png)
+![MSI installer in project](http://i.imgur.com/UODVckE.png)
 
 Next we’ve foreseen a startup section in the servicedefinition.csdef file in the Azure project:
 
@@ -195,18 +195,18 @@ In the above samples you really would want to secure your password or clientsecr
 ## SETUP THE CERTIFICATE IN AZURE AND IN YOUR SOLUTION ##
 First you need to have a certificate in PFX format which contains a private key. You’ll need to go to your cloud service in the Azure management portal (https://manage.windowsazure.com), click on certificates and upload your certificate:
 
-![](http://i.imgur.com/aF436Ym.png)
+![Azure Portal UI](http://i.imgur.com/aF436Ym.png)
 
-![](http://i.imgur.com/G89KL8x.png)
+![Upload certificate UI](http://i.imgur.com/G89KL8x.png)
 
 Next to that you should also install the certificate on your local machine. Once that’s done you can link your azure web and worker projects to the certificate by updating the relevant settings (notice the SSL entry):
 
-![](http://i.imgur.com/7tGhPf2.png)
+![Certificates option in VS project properties](http://i.imgur.com/7tGhPf2.png)
 
 ## ENCRYPT/DECRYPT DATA USING THE CERTIFICATE ##
 To encrypt data the sample contains a very simple winforms application (Core.CloudServices.Encryptor) that allows you to specify the thumbprint of the certificate to use, the value to encrypt and then shows the resulting encrypted text:
 
-![](http://i.imgur.com/V9RyYKr.png)
+![Custom UI for certificate encrypt or decrypt](http://i.imgur.com/V9RyYKr.png)
 
 ### Note: ###
 To decrypt the data the process doing the decryption needs to have access to the private key of the certificate. Inside a deployed Azure role this is taken care of by Azure, but in your development environment this means that you **do need to Visual Studio as administrator.**

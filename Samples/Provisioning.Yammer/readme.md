@@ -55,21 +55,21 @@ Sample provides simple provisioning UI for sub sites where you are able to defin
 
 ----------
 
-![](http://i.imgur.com/n7G6tUJ.png)
+![Add-in UI for site collection creation](http://i.imgur.com/n7G6tUJ.png)
 
 Once the provisioning is completed, you will see the following type of a site with associated Yammer feed running in it. Notice that you will need to be logged to the particular Yammer network in the browser session to show the news feed, since integration of the yammer feed happens in browser side. 
 
-![](http://i.imgur.com/NH4WMdL.png)
+![Custom branded site - orange](http://i.imgur.com/NH4WMdL.png)
 
 *Notice that by default feed is added without header or footer elements from the Yammer, but that can be controlled from the code which is calling the embed capability.*
 
 This is how the UI looks if you have not signed to the Yammer network. You can click the login button, which will make the yammer feed to work again as expected.
 
-![](http://i.imgur.com/ITVpzXL.png)
+![Site UI with login button in the Yammer section](http://i.imgur.com/ITVpzXL.png)
 
 This example creates new Yammer group for each of the team site. We could actually also create new OpenGraph objects if that’s preferred. Either way the group or OpenGraph object is visible also on the Yammer side as follows and any updates from either side is updated to the feed. Here’s what gets created to the Yammer side as result of the site provisioning. 
 
-![](http://i.imgur.com/FwMqzxY.png)
+![Yammer group created for the site](http://i.imgur.com/FwMqzxY.png)
 
 Notice also that since this configuration is dynamically applied during provisioning time, there’s no impact on removing the provisioning add-in away from the SharePoint side.
 

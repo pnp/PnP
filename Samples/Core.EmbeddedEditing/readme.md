@@ -57,7 +57,7 @@ a.	When the add-in part is loaded check the status of the editMode property, if 
 
 2.	How can we store properties specific to this instance of the add-in part?
 a.	When the user saves the edit form, save the property names and values along with the web part id (wpId value) into a local list (list located on the add-in web) so that we can retrieve them later.
-i.	We must have logic to know when to create new items in the list for properties that do not have values yet, or to update list items with new property values.
+i.	We must have logic to know when to create new items in the list for properties that do not have values yet, or to update list items with new property values. 
 
 ***Note:*** The downside of this approach is that there is no way to know if an add-in part is removed from a page in order to remove/clean-up its information from the configuration list. For more information review the first link in the references section.
 

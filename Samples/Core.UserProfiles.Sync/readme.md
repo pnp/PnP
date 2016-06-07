@@ -50,7 +50,7 @@ Version  | Date | Comments
 Given that it is a console app, Visual Studio will not register a ClientId/Secret and put them in the web.config for you. You need to do this yourself.
 
 Start by getting and registering a ClientId and ClientSecret through /_layouts/15/AppRegNew.aspx:
-![](http://i.imgur.com/FrgFeht.png)
+![Registration of ClientId and Secret](http://i.imgur.com/FrgFeht.png)
 
 1. Generate your ClientId & ClientSecret and save them
 2. Use a title of your choice

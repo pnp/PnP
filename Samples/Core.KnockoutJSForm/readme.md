@@ -31,7 +31,7 @@ Version  | Date | Comments
 # Overview #
 This sample demonstrates customizing standard SharePoint forms by using Knockout.js. It extends standard display form in Events list to allow users registering for events. 
 
-![](http://i.imgur.com/qHWv4Y8.png)
+![Presentation of list view with custom UI](http://i.imgur.com/qHWv4Y8.png)
 
 This is achieved by applying the following configurations to standard Team site:
 

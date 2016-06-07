@@ -7,7 +7,7 @@ You can learn more about the Outlook Notifications REST API and its operations a
 
 Using this event driven approach is a much more solid way of dealing with changes in the resources and entities in Outlook. As opposed to polling the Outlook REST APIs directly, this is much more lightweight (especially when the amount of items is large). With scale, this approach becomes essential for a sustainable service architecture.
 
-![](http://i.imgur.com/r3rNNGV.png)
+![Add-in UI and details on received token from Office 365](http://i.imgur.com/r3rNNGV.png)
 
 Read more about this sample at: <http://simonjaeger.com/call-me-back-outlook-notifications-rest-api>
 

@@ -78,7 +78,7 @@ var tenant = new Tenant(adminContext);
 ```
 
 # SOLUTION #
-![](http://i.imgur.com/6i04oFS.png)
+![Visual Studio Solution structure](http://i.imgur.com/6i04oFS.png)
 
 SiteColectionCreation – SharePoint Application 
 

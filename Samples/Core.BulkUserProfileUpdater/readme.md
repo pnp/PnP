@@ -34,7 +34,7 @@ The user profile bulk property utility is designed to replicate the synchronisat
 The single input file to the utility is **UserProfilePropertyMapper.xml** which defines the profile property mappings and connection details for the entire utility. The file is derived from an accompanying XSD schema. 
 The two primary root elements for the file are ```<loggers>``` and ```<actions>```:
 
-![](http://i.imgur.com/PNvYEkx.png)
+![XML configuration for PropertyMapper element](http://i.imgur.com/PNvYEkx.png)
 
 ## Loggers ##
 Encapsulates the series of logging objects created by the utility through a subset of <Log> elements. There are three options to select from through the xsi:type attribute: 
@@ -90,7 +90,7 @@ To allow for future scalability and modification of the mappings between LDAP di
 ## Running the application ##
 Navigate to the directory of the **Contoso.BulkUserProfileUpdater.exe**, the executable requires a single input parameter which is the UserProfilePropertyMapper.xml
 
-![](http://i.imgur.com/qZHmyZz.png)
+![Console application execution fo application](http://i.imgur.com/qZHmyZz.png)
 
 # SCENARIO 2: CUSTOMISING THE PROFILE MAPPINGS #
 The framework on which the BulkUserProfileUpdater allows you to create custom property mappers these are defined by the xsi:type on the Property node. By default the property mapper used is ```ProfilePropertyMapper```. 
@@ -99,10 +99,10 @@ For example, there maybe a scanerio whereby you might need to add custom logic b
 
 Create a class and inherit ```PropertyBase```. Override the ‘Process’ method.
 
-![](http://i.imgur.com/sFqi1BM.png)
+![Inherited property mapper code](http://i.imgur.com/sFqi1BM.png)
 
 Within the UserProfilePropertyMapper.xml, for the property which requires the custom logic above to execute map the property to the class above. In the example below, when ‘WorkPhone’ property is mapped to the ‘CustomProfilePropertyMapper’ the custom logic will be executed.
 
-![](http://i.imgur.com/SVNVbr7.png)
+![XML configuration options](http://i.imgur.com/SVNVbr7.png)
 
 

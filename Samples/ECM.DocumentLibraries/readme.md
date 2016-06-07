@@ -33,7 +33,7 @@ Version  | Date | Comments
 # Overview #
 This sample scenario shows how one can implement Document Library templates using a provider hosted application instead of the feature framework or sandbox solutions.  This sample demonstrates creating Site columns, Site Content Types, Creation of Taxonomy fields, the removal of the Default Document Content Type from the created library, and versioning settings of the library. To make this application available to all site collections, you can deploy the add-in a tenant scope application, which would make this application available in all site collections.
 
-![](http://i.imgur.com/F5TTvik.png)  
+![Add-in UI with new document library view](http://i.imgur.com/F5TTvik.png)  
 
 # Permissions #
 AppOnly Permissions are used in this solution
@@ -44,18 +44,18 @@ AppOnly Permissions are used in this solution
 # Set Up  #
 Since this assumes that the Term Store is available and a Term Group named “Enterprise” is created as well as a Term set named “Classification” is already created as depicted below
 
-![](http://i.imgur.com/HjDiVEX.png)
+![Taxonomy store](http://i.imgur.com/HjDiVEX.png)
  
 # Adding Fields #
 Now when working with Taxonomy fields from a user point of view,  it looks like there is only one field type that creates only a single taxonomy field in SharePoint; but there is actual two fields. With that said, if you go and delete the Taxonomy Column, the hidden field still exists and you will review an exception when trying to recreate the taxonomy field. This hidden field will have an internal name of the GUID assigned to the Taxonomy Field that you are creating. 
 
 ## Taxonomy Field  ##
 
-![](http://i.imgur.com/FFJWPgN.png)
+![Taxonomy field ID in Visual Studio](http://i.imgur.com/FFJWPgN.png)
 
 ## Taxonomy Hidden Field  ##
 
-![](http://i.imgur.com/XNF8SST.png)
+![Taxonomy hidden field in Visual Studio](http://i.imgur.com/XNF8SST.png)
 
 In order to handle this situation and prevent an error doing your testing we should delete the hidden Taxonomy field if an exception occurs.
 
@@ -186,7 +186,7 @@ using (var ctx = spContext.CreateUserClientContextForSPHost())
 }
 ```
 
-![](http://i.imgur.com/A4a7tbs.png)
+![UI when there's no permissions for library creation](http://i.imgur.com/A4a7tbs.png)
 
 ## Dependencies ##
 - 	Microsoft.SharePoint.Client

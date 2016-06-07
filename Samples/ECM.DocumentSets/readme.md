@@ -30,7 +30,7 @@ Version  | Date | Comments
 
 # Running the application #
 
-![](http://i.imgur.com/cjKhxDh.png)
+![Add-in UI](http://i.imgur.com/cjKhxDh.png)
 
 ## Retrieving information about the default DocumentSet ##
 When the MVC add-in loads it fetches information about the "Document Set" content type and shows it: 

@@ -27,7 +27,7 @@ Version  | Date | Comments
 # Introduction #
 This sample is demonstrating simplistic connectivity to the Microsoft Graph to show emails and files of the particular user. UI will automatically refresh the different parts of the UI, if there's new items arriving to email inbox or added to user's OneDrive for Business site.
 
-![](http://i.imgur.com/Rt4d8Py.png)
+![App UI](http://i.imgur.com/Rt4d8Py.png)
 
 # Azure Active Directory Setup #
 Before this sample can be executed, you will need to register application to Azure AD and provide needed permissions for the Graph queires to work. We will create an application entry to Azure Active Directory and configure the needed permissions.
@@ -37,48 +37,48 @@ Before this sample can be executed, you will need to register application to Azu
 - Click **Add** to start the creation of a new app
 - Click **Add application my organization is developing**
 
-![](http://i.imgur.com/dNtLtnl.png)
+![What do you want to do UI in Azure AD](http://i.imgur.com/dNtLtnl.png)
 
 - Provide your application a **name** and select **Web Application and Web API** as the type
 
-![](http://i.imgur.com/BrxalG7.png)
+![Add application UI](http://i.imgur.com/BrxalG7.png)
 
 - Update app properties as follows for debugging
 	- **URL** - https://localhost:44301/
 	- **APP ID URL** - valid URI like http://pnpemailfiles.contoso.local - this is just an identier, so it does not have to be actual valid URL
 
-![](http://i.imgur.com/1IaNxLm.png)
+![App details UI](http://i.imgur.com/1IaNxLm.png)
 
 - Move to **configure** page and section around keys
 - Select 1 or 2 year during for the generated secret
 
-![](http://i.imgur.com/7kX396J.png)
+![Secret life cycle setting](http://i.imgur.com/7kX396J.png)
 
 - Click **Save** and copy the generated secret for future usage from the page - notice that the secret is ONLY visible during this time, so you will need to secure that to some other location.
 
-![](http://i.imgur.com/5vnkkTA.png)
+![Client Secret](http://i.imgur.com/5vnkkTA.png)
 
 - Scroll down for the permission configuration
 
-![](http://i.imgur.com/tF4R75w.png)
+![Permissions to other applications](http://i.imgur.com/tF4R75w.png)
 
 - Select Office 365 Exchange Online and Office 365 SharePoint Online as the applications to which you want to assign permissions
 
-![](http://i.imgur.com/XGOba3Y.png)
+![Permission assigning](http://i.imgur.com/XGOba3Y.png)
 
 - Give "**Read User Mail**" permission under Exchange Online permissions
 
-![](http://i.imgur.com/CyH9gg2.png)
+![Selection of needed permissions for Exchange](http://i.imgur.com/CyH9gg2.png)
 
 - Give "**Read user files**" permission under SharePoint Online permissions
 
-![](http://i.imgur.com/NSZiHsh.png)
+![Selection of needed permissions for SharePoint](http://i.imgur.com/NSZiHsh.png)
 
 - Click **Save** 
 
 You have now completed the the needed configuration at the Azure Active Directory part. Notice that you will need to still configure client id and secret to web.config file in the project. Update the client ID and ClientSecret keys properly.
 
-![](http://i.imgur.com/pihBvR5.png)
+![Configuration of web.config](http://i.imgur.com/pihBvR5.png)
 
 # Run the solution #
 Whenever you have configured the Azure AD side and updated the web.config based on your environmental values, you can run the sample properly.
@@ -86,12 +86,12 @@ Whenever you have configured the Azure AD side and updated the web.config based 
 - Press F5 in the Visual Studio
 - Click **Connect to Office 365** or **Sign-in** from the suite bar, which will show the AAD concent UI to sign-in to the right Azure AD
 
-![](http://i.imgur.com/YMCrG4O.png)
+![App UI](http://i.imgur.com/YMCrG4O.png)
 
 - Sign-in with the right Azure Active Directory credentials to the application
 
-![](http://i.imgur.com/gNz5Wgz.png)
+![Sign-in to Azure AD - Consent UI](http://i.imgur.com/gNz5Wgz.png)
 
 - You will be shown the UI of the application
 
-![](http://i.imgur.com/Rt4d8Py.png)
+![UI of application with your personal data](http://i.imgur.com/Rt4d8Py.png)

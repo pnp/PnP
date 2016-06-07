@@ -6,7 +6,7 @@ This sample demonstrates two basic techniques for provisioning wiki pages: creat
 ### Walkthrough Video ###
 Visit the video on Channel 9 - [http://channel9.msdn.com/Blogs/Office-365-Dev/Provisioning-SharePoint-Wiki-Pages-in-Apps-for-SharePoint-Office-365-Developer-Patterns-and-Practice](http://channel9.msdn.com/Blogs/Office-365-Dev/Provisioning-SharePoint-Wiki-Pages-in-Apps-for-SharePoint-Office-365-Developer-Patterns-and-Practice)
 
-![](http://i.imgur.com/IBMsNa0.png)
+![Video image from Channel 9](http://i.imgur.com/IBMsNa0.png)
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)

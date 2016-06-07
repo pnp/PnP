@@ -34,10 +34,10 @@ Version  | Date | Comments
 
 # Scenario 1: Basic Wiki page manipulation #
 This scenario shows two basic steps: first step is creating a wiki page in a wiki library. The sample uses the SitePages library which is default available in non-publishing sites, but the same sample can be easily adapted to create pages in a custom wiki page library. In the last step the empty wiki page is filled with HTML content. In the sample you can specify your HTML content and then click the “Run scenario 1” button to create the wiki page and add the HTML:
-![](http://i.imgur.com/FX5KtQX.png)
+![Add-in UI for scenario 1](http://i.imgur.com/FX5KtQX.png)
 
 Once the page has been created the “here” link points to the created page. Clicking on the link brings you to the created page:
-![](http://i.imgur.com/sudk0er.png)
+![UI of the newly created page](http://i.imgur.com/sudk0er.png)
 
 ## Create Wiki page ##
 To create a wiki page the following code is used:
@@ -58,7 +58,7 @@ listItem["WikiField"] = html;
 
 # Scenario 2: Advanced Wiki page manipulation #
 
-![](http://i.imgur.com/pTg47rx.png)
+![Add-in UI for scenario 2](http://i.imgur.com/pTg47rx.png)
 
 This scenario further extends the scenario 1 with the option to create wiki pages using different layouts:
 -  One column
@@ -75,7 +75,7 @@ In the sample the existing OOB layouts are reused, but it’s perfectly possible
 -  If there are two or more colums than the HTML content listed for scenario 1 will be inserted in the column next to the web part
 
 Once the page is created you can use the here link to show the created page. Below screenshot shows the page in edit mode so that you can see the used layout:
-![](http://i.imgur.com/Jw5A4RO.png)
+![UI of newly created page](http://i.imgur.com/Jw5A4RO.png)
 
 Once a page has been created the button “Remove webpart from the last page created during scenario 2 run” is enabled. Clicking on this button removes the XsltListViewWebPart web part from the page.
 
@@ -85,7 +85,7 @@ Below sample shows how to insert a two columns with header and footer layout int
 cc.Web.AddLayoutToWikiPage("SitePages", WikiPageLayout.TwoColumnsHeaderFooter, scenario2Page);
 ```
 Technically this is nothing more than inserting the correct HTML table structure as HTML content. The HTML table structure for the OOB layouts is included in the Office 365 PnP Core library:
-![](http://i.imgur.com/ezwBsPv.png)
+![Text layout options in code](http://i.imgur.com/ezwBsPv.png)
 
 ## Inserting a web part ##
 To insert a web part you need to create a webpartentity class instance, fill it with the web part data and insert it:
@@ -222,5 +222,5 @@ This sample removes the “About this blog” web part from the blog site home p
 # Scenario cleanup #
 If you play around with this sample you’ll have created a collection of pages in the sitepages library. Clicking on the “Cleanup created pages” button removes all these pages. Note that the created Promoted Links list will not be automatically deleted.
 
-![](http://i.imgur.com/TihwUb0.png)
+![Cleanup created pages button](http://i.imgur.com/TihwUb0.png)
 

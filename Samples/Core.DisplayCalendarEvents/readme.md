@@ -27,7 +27,7 @@ Version  | Date | Comments
 
 
 # Introduction #
-![](http://i.imgur.com/yHSpcgb.png)
+![UI  with custom recurrent entries](http://i.imgur.com/yHSpcgb.png)
 
 Imagine you are tasked with creating an add-in that displays calendars from SharePoint.
 At first this add-in seems rather straight forward.  As with most apps the logic would be similar to the following:
