@@ -11,7 +11,7 @@ This sample applications allows you to bulk upload user profile pictures to Shar
 Solution | Author(s)
 ---------|----------
 Core.ProfilePictureUploader | Michael O’Donovan (Microsoft)
- - Multilingual support| Massimo Prota (Rapid Circle)
+Multilingual support| Massimo Prota (Rapid Circle)
 
 ### Version history ###
 Version  | Date | Comments
@@ -40,12 +40,12 @@ When running the uploader, you will need to specify a minimum of three command l
 There are two optional parameters, which are a username and password, which should be used if your image source location requires authentication, and you don’t want to connect to the source as the user account which is executing the ProfilePictureUploader executable. Note: if the source is an HTTP(s) Uri, then this will only work if the authentication method is NTLM or basic authentication, not forms authentication. 
 The screen shot below shows the two examples for running this command.
 
-![Console outpu](http://i.imgur.com/5wx33eX.png)
+![Console output](http://i.imgur.com/5wx33eX.png)
 
 ## CONFIGURATION OPTIONS ##
 The configuration.xml file allows you to control the upload process, and is required. Below is a sample configuration.
 
-![](http://imgur.com/6meHVRW.png)
+![Configuration options](http://imgur.com/6meHVRW.png)
 
 1.	tenantName – required. Office 365 tenant name. Used by the utility to connect to the correct SPO web service endpoints during the upload of images, and editing of user profile properties.
 2.	pictureSourceCSV – required. This is the path to a CSV file which contains a mapping of SPO user to source image location. More information and examples are detailed in the next section.
