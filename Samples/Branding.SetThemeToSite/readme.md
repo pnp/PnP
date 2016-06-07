@@ -6,7 +6,7 @@ This sample shows how to connect to Office 365 and set a theme for a site.
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
 -  Office 365 Dedicated (D)
--  SharePoint 2013 on-premises
+-  SharePoint 2013 on-premises 
 
 
 ### Prerequisites ###

@@ -6,7 +6,7 @@ This sample demonstrates common tasks related on the publishing features, like h
 ### Walkthrough Video ###
 Visit the video on Channel 9 - [http://channel9.msdn.com/Blogs/Office-365-Dev/Applying-Branding-to-SharePoint-Sites-with-an-App-for-SharePoint-Office-365-Developer-Patterns-and-P](http://channel9.msdn.com/Blogs/Office-365-Dev/Applying-Branding-to-SharePoint-Sites-with-an-App-for-SharePoint-Office-365-Developer-Patterns-and-P)
 
-![](http://i.imgur.com/lvyDtQB.png)
+![Picture of the video in Channel 9](http://i.imgur.com/lvyDtQB.png)
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)

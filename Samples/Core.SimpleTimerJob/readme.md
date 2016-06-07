@@ -9,7 +9,7 @@ For more information on this scenario, see the blog post: [http://blogs.msdn.com
 ### Walk-through Video ###
 Visit the video on Channel 9 - [http://channel9.msdn.com/Blogs/Office-365-Dev/Simple-remote-timer-job-that-interacts-with-SharePoint-Online-Office-365-Developer-Patterns-and-Prac](http://channel9.msdn.com/Blogs/Office-365-Dev/Simple-remote-timer-job-that-interacts-with-SharePoint-Online-Office-365-Developer-Patterns-and-Prac)
 
-![](http://i.imgur.com/VL82DfK.png)
+![Channel 9 video page](http://i.imgur.com/VL82DfK.png)
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)

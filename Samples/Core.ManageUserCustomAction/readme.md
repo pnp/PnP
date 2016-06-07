@@ -34,7 +34,7 @@ The Solution is an SharePoint Add-In that can be deployed in the app catalog sit
 
 The app manages SharePoint Site "SP.Web" UserCustomActions from and Custom Form created in an SharePoint Add-In.
 
-![](http://i.imgur.com/sfvGTuv.png)
+![Add-in UI](http://i.imgur.com/sfvGTuv.png)
 
 The idea is integrate Power User "Business decision" and Developer work using existing SharePoint Objects "UserCustomAction" with user friendy interface to remove the current complexity of this objects management.
 This sample explains how is possible to create a split between Power Users and Developer's.
@@ -44,7 +44,7 @@ This sample explains how is possible to create a split between Power Users and D
 ### Power Users ###
 - Integration of Developer's work into SharePoint Site, using Scriptlinks or Custom Ribbons with actions.
 
-![](http://i.imgur.com/J6fzFru.png)
+![Process picture on the action management](http://i.imgur.com/J6fzFru.png)
 
 ## Manage UserCustomAction SharePoint Add-In functionalities ##
 

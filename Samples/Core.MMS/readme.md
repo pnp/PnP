@@ -27,7 +27,7 @@ Developing customizations with CSOM is very similar to developing .NET server si
 
 High level process as follows.
 
-![](http://i.imgur.com/LottPge.png)
+![High level process](http://i.imgur.com/LottPge.png)
 
 1. SharePoint hosted in the Office 365 or in on-premises
 2. Remote solution using CSOM to manipulate the taxonomy store based on business requirements. Taxonomy CSOM operations are identical cross different environments, only the authentication model is slightly different depending on SharePoint hosting platform.

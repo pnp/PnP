@@ -31,7 +31,7 @@ This provider-hosted sample application for SharePoint demonstrates using the Cl
 
 You can use the SharePoint Color Palette Tool to create you the needed theme files. This is free tool, which is downloadable from the [Microsoft download site](http://www.microsoft.com/en-us/download/details.aspx?id=38182). Here's a screen shot of the tool with custom theme setup.
 
-![](http://i.imgur.com/SLVqOsZ.png)
+![SharePoint Color Palette Tool v1.00 UI](http://i.imgur.com/SLVqOsZ.png)
 
 
 ## DEPLOYING THE THEME  1.1 ##

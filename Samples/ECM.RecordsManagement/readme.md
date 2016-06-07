@@ -34,7 +34,7 @@ Version  | Date | Comments
 # Scenario 1: Enable In Place Records Management + Site scoped settings #
 This scenario will show you how to enable in place records management for a site collection. Once in place records management is enabled you can control the in place record management settings via this SharePoint add-in. The add-in UI is similar to the out of the box settings page for in place records management:
 
-![](http://i.imgur.com/r34VIAj.png)
+![App UI to enable settings](http://i.imgur.com/r34VIAj.png)
 
 ## Enable in place records management ##
 If in place records management was not yet enabled the add-in will allow you to enable it. Enabling is done via an extension method from the OfficeDevPnP core library as shown in below code snippet:
@@ -93,7 +93,7 @@ public static void SetRecordRestrictions(this Site site, EcmSiteRecordRestrictio
 # Scenario 2: List scoped settings #
 Once site scoped in place records management is active you do have the option to define list specific in place records management settings. This scenario shows you how to do this using an add-in UI that's similar to the out of the box SharePoint UI:
 
-![](http://i.imgur.com/zLtHnAO.png)
+![App UI to enable settings](http://i.imgur.com/zLtHnAO.png)
 
 ## Settings list specific in place records management settings ##
 Like for site scoped settings we've again implemented OfficeDevPnP core extension methods that will make this task very easy.

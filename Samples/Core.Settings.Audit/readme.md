@@ -31,7 +31,7 @@ Version  | Date | Comments
 # Introduction #
 Sample shows how to control the auditing settings in the site collection level using client side object model.
 
-![](http://i.imgur.com/oYakX68.png)
+![Add-in UI](http://i.imgur.com/oYakX68.png)
 
 ## Enabling auditing in site collection level ##
 Following code example shows how to enable all auditing setting in site collection level and how to adjust audit log trimming.

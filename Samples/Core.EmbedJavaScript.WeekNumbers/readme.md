@@ -65,7 +65,7 @@ Secondly using JQuery we can find all TH elements and add week numbers.
 
 Result should look something like the image below.
 
-![](http://i.imgur.com/tJNFtYL.png)
+![Calendar view with week numbers](http://i.imgur.com/tJNFtYL.png)
 
 #NOTE#
 A function that returns the week numbers according to the Gregorian calendar is used but that could be replaced by any other calculation. Also this example takes some dependencies on both how the HTML in a SharePoint calendar is structured and also on the calendar scripts. So updates to how SharePoint renders a calendar can affect this sample.

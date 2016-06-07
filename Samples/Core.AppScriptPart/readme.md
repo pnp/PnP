@@ -6,7 +6,7 @@ This sample shows how to provide add-in script part to SharePoint, which is usin
 ### Walkthrough Video ###
 Visit the video on Channel 9 - [http://channel9.msdn.com/Blogs/Office-365-Dev/App-Script-Parts-in-SharePoint-Office-365-Developer-Patterns-and-Practices](http://channel9.msdn.com/Blogs/Office-365-Dev/App-Script-Parts-in-SharePoint-Office-365-Developer-Patterns-and-Practices)
 
-![](http://i.imgur.com/cpZnC76.png)
+![Video UI from Channel 9](http://i.imgur.com/cpZnC76.png)
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
@@ -62,23 +62,23 @@ In production we could be running these scripts easily from Windows Azure or fro
 ##  ADD APP SCRIPT PART TO THE WEB ##
 This scenario shows how to modify host web by adding new option as app script part. App script part is out of the box script web part which has been however configured to reference script from the provider hosted app side. In this sample scenario we reference script from the IIS express, so functionality only works when you’re running the Visual Studio debugger, but in real production usage you’d be using some specific URL for the provider hosted add-in for example hosted from Microsoft Azure platform.
 
-![](http://i.imgur.com/zyrDWtv.png)
+![Add-in UI](http://i.imgur.com/zyrDWtv.png)
 
 Once the modification has been executed, we can move to the host web and start editing the page for adding a Web Part. Notice that we have new category called “App Script Part” and we can locate new “User Profile Information” web part under that category.
 
-![](http://i.imgur.com/MGVhj3I.png)
+![Add web part UI in host web](http://i.imgur.com/MGVhj3I.png)
 
 After adding the add-in script part to the page, we are able to see some user profile information from the particular user like in following picture.
 
-![](http://i.imgur.com/i3YlWrk.png)
+![App script part rendering in UI](http://i.imgur.com/i3YlWrk.png)
 
 Notice that since we are actually executing the JavaScript from provider hosted add-in in context of the page, we have full control of the page layout. This means that output can be used with responsive sites or it scales in general based on the layout it is used. This is obviously completely up to the JavaScript which is responsible of rendering the output.
 
-![](http://i.imgur.com/jS7HzCK.png)
+![App script part rendering on horizontally](http://i.imgur.com/jS7HzCK.png)
 
 If we take the page in edit mode and have a closer look on what is that add-in script part, we are able to see that it’s actually a predefined script web part, which has simply a reference to the JavaScript located in the provider hosted add-in side.
 
-![](http://i.imgur.com/GdCpRHf.png)
+![Script Web Part properties with dev and reference to JS file](http://i.imgur.com/GdCpRHf.png)
 
 Liked noted already, usage of the local host is not obviously something which would work in the production. You could deploy your JavaScript file to accessible location similarly as how Yammer or Bing maps works
 

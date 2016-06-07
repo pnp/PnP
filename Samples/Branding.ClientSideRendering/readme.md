@@ -44,29 +44,29 @@ In order for the Client Side Rendering sample to render correctly, you must firs
 1)  Navigate to your SharePoint tenancy and create a new site collection using the Developer Site template in the Collaboration tab.
 
 
-![](http://i.imgur.com/MDvG8Vr.png)
+![Creation of dev site collection](http://i.imgur.com/MDvG8Vr.png)
 
 2)  Once the site collection is created, open the Branding.ClientSideRendering.sln file with Visual Studio 2013.
 
 3)  If the Branding.ClientSideRendering project isn’t the StartUp project, set it as the StartUp project.
 
-![](http://i.imgur.com/b6whnvz.png)
+![Setting start up project in Visual Studio](http://i.imgur.com/b6whnvz.png)
 
 4)  In the Solution Explorer, select the Branding.ClientSideRendering project.
 
 5)  In the Properties window, set the “Site URL” property to the site collection you previously created and configured.
 
-![](http://i.imgur.com/jrxn4Zv.png)
+![Setting site URL accordingly](http://i.imgur.com/jrxn4Zv.png)
 
 6)  Press F5 or click the Start button in Visual Studio 2013.
 
 7)  Enter you user name and password to connect to your SharePoint site collection. 
 
-![](http://i.imgur.com/pzygqkL.png)
+![Signing in to your tenant](http://i.imgur.com/pzygqkL.png)
 
 8)  After your username and password have been verified, the trust dialog is displayed. Click the “Trust It” button. 
 
-![](http://i.imgur.com/p9fQUTp.png)
+![Trust add-in](http://i.imgur.com/p9fQUTp.png)
 
 9)  After add-in installation, a new page will be displayed.  Click the Provision Samples button to create the list columns, lists, list views, initialize the lists with data, and upload the Client Side Rendering JavaScript and image files that support the samples.  The provisioning code registers the Client Side Rendering JavaScript files with the list forms and views via the JSLink property.
 
@@ -230,7 +230,7 @@ function RegisterInMDS() {
 ## SAMPLE 1 – TASK PRIORITY COLOR ##
 This sample demonstrates how to apply formatting to a list column based on the column value.  In this sample, list items which have a Priority column value of (1) High are indicated in red, items which have a Priority column value of (2) Normal are indicated in orange, and items which have a Priority column value of (3) Low are indicated in yellow.
 
-![](http://i.imgur.com/p7v03KF.png)
+![Colored column values](http://i.imgur.com/p7v03KF.png)
 
 The following code illustrates how the Priority column is formatted based on the column’s value.
 
@@ -271,7 +271,7 @@ function priorityFiledTemplate(ctx) {
 ## SAMPLE 2 – SUBSTRING LONG TEXT ##
 This sample demonstrates how to make the Announcements list’s Body column text display shorter in the All Items view than it does out of the box.  It also demonstrates how to display the entire Body column’s text as a tooltip for each list item.  In the screenshot below you can see the Body column has been truncated so it only displays a subset of the text in the Body column. You can also see the tooltip which displays the entire Body column text for the first announcement in the list.  This tooltip appears when you mouse over items in the list.
 
-![](http://i.imgur.com/rOrEg8C.png)
+![Substring presentation of string field value](http://i.imgur.com/rOrEg8C.png)
 
 The following code illustrates how the Body column is truncated and how the tooltip is added via the title attribute.
 
@@ -315,7 +315,7 @@ function bodyFiledTemplate(ctx) {
 ## SAMPLE 3 – CONFIDENTIAL DOCUMENTS ##
 This sample demonstrates how to display an image next to a document’s Name in a document library based on a field value associated with the document.  In the screenshot below you can see the red badge image displayed next to each document whose Confidential column value is Yes.
 
-![](http://i.imgur.com/j81TpVS.png)
+![Additional icon presentation](http://i.imgur.com/j81TpVS.png)
 
 The following code illustrates how the Confidential column is evaluated to see if the document is marked as confidential.  It also demonstrates how the Title column is modified to display the red badge image accordingly.
 
@@ -359,19 +359,19 @@ This sample demonstrates how to display a bar chart in the % Complete column in 
 
 This is how the column appears in the list view. (View)
 
-![](http://i.imgur.com/CAlaZ4H.png)
+![View mode of percent presentation in list](http://i.imgur.com/CAlaZ4H.png)
 
 This is how the column appears when viewing a list item. (DisplayForm)
 
-![](http://i.imgur.com/80N3WG3.png)
+![View mode of percent presentation in item](http://i.imgur.com/80N3WG3.png)
 
 This is how the column appears when editing a list item. (EditForm)  The red arrows indicate how you can slide the black box to select the value and the tool tip which appears over the currently selected value.
 
-![](http://i.imgur.com/PG5WWJy.png)
+![Edit experience with custom JS editor](http://i.imgur.com/PG5WWJy.png)
 
 This is how the column appears when creating a new list item. (NewForm)  The red arrows indicate how you can slide the black box to select the value and the tool tip which appears over the currently selected value.
 
-![](http://i.imgur.com/9SblMgn.png)
+![New form editor](http://i.imgur.com/9SblMgn.png)
 
 The following code illustrates how the bar charts are created in the % Complete column and registered with the View and DisplayForms.  It also demonstrates how the input controls for the % Complete column and created and registered with the New and Edit forms.
 
@@ -424,7 +424,7 @@ function percentCompleteEditFiledTemplate(ctx) {
 ## SAMPLE 5 – ACCORDION ##
 This sample demonstrates how to change the rendering template for an entire list view.  In the screenshot below you can see list items when they are collapsed and how they appear once expanded.  Clicking on a list item expands and collapses it.
 
-![](http://i.imgur.com/Joqqub3.png)
+![Accordion presentation of field value](http://i.imgur.com/Joqqub3.png)
 
 The following code illustrates how the accordion functionality is implemented and registered with the list Template.  The header, footer, and item properties are set to define the overall layout of the items in the list.  The onPostRender property registers the JavaScript function to execute when the list is rendered.  This function hooks up the click events and the CSS code necessary to implement the expand and collapse functionality.
 
@@ -478,7 +478,7 @@ This sample demonstrates how to use regular expressions to validate column input
 
 This is how the column appears when editing a list item (EditForm) or creating a new list item (NewForm).  Notice a red error message appears when an invalid email address is entered into the Email column input textbox.
 
-![](http://i.imgur.com/AHlTAsg.png)
+![Validation entry when email is not valid](http://i.imgur.com/AHlTAsg.png)
 
 The following code illustrates how the email validation for the Email column is implemented and registered with the New and Edit forms.  The registerGetCallback function registers a call back function the form will fire before submittal, in this scenario the callback function returns the value in the input control for the Email column.  The code also registers a validator with the form (emailValidator) as well as the callback method to handle validation errors.  The validator function uses a regular expression to validate the email format.  If the email format is invalid it returns the error message.  The HTML in the field template contains a placeholder <span id='spnError' class='ms-formvalidation ms-csrformvalidation'></span> to display the error message.
 
@@ -555,7 +555,7 @@ This sample demonstrates how to make some fields read only in SharePoint list it
 
 This is how the form appears when editing a list item (EditForm).  The red arrows indicate the read only columns in the form.
 
-![](http://i.imgur.com/wc1wBcd.png)
+![Read-only presentation](http://i.imgur.com/wc1wBcd.png)
 
 The following code illustrates how the Title, AssignedTo, and Priority columns have their field templates modified to display just the field value instead of the out of the box input controls.  Notice how different types of parsing must occur to extract a field’s value and display it depending on what type of field it is.
 
@@ -686,7 +686,7 @@ function prepareNoteFieldValue(ctx) {
 This sample demonstrates how to make some fields hidden in SharePoint list item New and Edit forms.
 This is screenshots below indicate how the form appears when editing a list item (EditForm).  The view on the right is the out of the box Edit form for the Tasks list, it includes the Predecessors column.  The view on the left is the customized Edit form for the Tasks list, it hides the Predecessors column.
 
-![](http://i.imgur.com/ltiFSjc.png)
+![Hiding field in edit form](http://i.imgur.com/ltiFSjc.png)
 
 When the sample is deployed it shows the customized Edit form.  To see the default Edit form follow these steps:
 
@@ -696,21 +696,21 @@ When the sample is deployed it shows the customized Edit form.  To see the defau
 
 3) In the Ribbon, click **Form Web Parts** and select **Default Edit Form**.
 
-![](http://i.imgur.com/4xeNW0q.png)
+![Ribbon button for Default Edit Form](http://i.imgur.com/4xeNW0q.png)
 
 4) In the Ribbon, click **Web Part Properties**.
 
-![](http://i.imgur.com/WHMA5DC.png)
+![Ribbon button for web part properties](http://i.imgur.com/WHMA5DC.png)
 
 5) In the CSR-Hide-Controls Web Part Toolpane, expand the **Miscellaneous** section and delete the text in the **JS Link** textbox.
 
-![](http://i.imgur.com/ypyOI6g.png)
+![JS Link property in web part properties](http://i.imgur.com/ypyOI6g.png)
 
 6) Click OK.
 
 7) In the Ribbon, click Stop Editing.
 
-![](http://i.imgur.com/ZngPaL1.png)
+![Ribbon button for Stop Editing](http://i.imgur.com/ZngPaL1.png)
 
 8) Edit an existing list item.
 
@@ -722,7 +722,7 @@ The following code illustrates how the Predecessors column is hidden in the New 
 **Note: **
 This client side method does not remove the column from the HTML.  If you inspect the HTML you will see the Predecessors control is still part of the DOM, although it is not visible in the web browser.
 
-![](http://i.imgur.com/c8FF9zv.png)
+![HTML structure with display:none entry for tr element](http://i.imgur.com/c8FF9zv.png)
 
 ```JavaScript
 function RegisterHiddenFiledContext () {
@@ -763,15 +763,15 @@ This sample demonstrates how to make some fields dependent from each other in Sh
 
 Screenshot below indicates, that edit control for Color field is initially empty:
 
-![](http://i.imgur.com/LpcTcDX.png)
+![Color field not visible since car is not selected](http://i.imgur.com/LpcTcDX.png)
 
 However, if we select a Car, then we will see that now Color field provides some variants:
 
-![](http://i.imgur.com/uEICdMV.png)
+![Color field visible when car is selected](http://i.imgur.com/uEICdMV.png)
 
 Better yet, if we select a different car, available Color variants will be different:
 
-![](http://i.imgur.com/DWKHn0V.png)
+![Different color options based on selected car](http://i.imgur.com/DWKHn0V.png)
 
 So as you can see, it is possible to create a dependency between fields based on a custom logic. This custom logic might even include asynchronous ajax calls.
 

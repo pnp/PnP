@@ -65,12 +65,12 @@ The workflow calls this Web API method via a Web Proxy. The Web Proxy adds the *
 ### WORKFLOW ARGUMENTS ###
 The workflow needs to send the *add-in web URL* to the web API.  When the workflow starts the *add-in web URL* is passed to it. The *Web API’s URL* is also passed to the workflow.  Two arguments are created in the workflow to receive these values. 
 
-![](http://i.imgur.com/c1j2UsL.png)
+![Arguments](http://i.imgur.com/c1j2UsL.png)
 
 ### CALL NORTHWIND ODATA SERVICE ###
 The [Northwind OData Service](http://services.odata.org/V3/Northwind/Northwind.svc/Suppliers) supports anonymous access, therefore it may be called without authenticating.
 
-![](http://i.imgur.com/uf6bItN.png)
+![Nortwind service](http://i.imgur.com/uf6bItN.png)
 
 To call the Northwind OData Service, the *HttpSend* activity is used.  The **Uri** is:
 
@@ -80,11 +80,11 @@ To call the Northwind OData Service, the *HttpSend* activity is used.  The **Uri
 
 The *Get **Method*** is used to return data from the Northwind Odata Service.
 
-![](http://i.imgur.com/exO6dn5.png)
+![Selecting Get method](http://i.imgur.com/exO6dn5.png)
 
 To handle the response, an Accept header is added to the **RequestHeaders**:
 
-![](http://i.imgur.com/UiJvgNL.png)
+![Adding request headers](http://i.imgur.com/UiJvgNL.png)
 
 After the call to the Northwind OData Service, the response looks like this:
 
@@ -104,7 +104,7 @@ After the call to the Northwind OData Service, the response looks like this:
 
 A **GetDynamicValueProperty<DynamicValue>** Activity is added to the workflow to handle the response.  It’s **PropertyName** to ‘value’.
 
-![](http://i.imgur.com/PYE6Dgj.png)
+![Property window](http://i.imgur.com/PYE6Dgj.png)
 
 The **suppliers** variable value looks like this:
 
@@ -129,7 +129,7 @@ appWebUrl + "/_api/SP.WebProxy.invoke"
 #### Create Custom Service Payload ####
 To call the Web Proxy, the workflow uses a **BuildDynamicValue** Activity to build the payload. 
 
-![](http://i.imgur.com/UKlWKPO.png)
+![Activity](http://i.imgur.com/UKlWKPO.png)
 
 The variable **customServicePayload**’s value looks like this:
 
@@ -150,9 +150,9 @@ The variable **customServicePayload**’s value looks like this:
 #### Create Web Proxy Payload ####
 A **BuildDynamicValue** Activity builds the payload.
 
-![](http://i.imgur.com/owP6DOU.png)
+![Payload activity](http://i.imgur.com/owP6DOU.png)
 
-![](http://i.imgur.com/MmfVcIw.png)
+![Payload details](http://i.imgur.com/MmfVcIw.png)
 
 Its value looks like this:
 
@@ -206,13 +206,13 @@ Its value looks like this:
 
 #### Call Web API via Web Proxy ####
 
-![](http://i.imgur.com/TpkoK2R.png)
+![HttpSend Activity](http://i.imgur.com/TpkoK2R.png)
 
 Set **Method** to POST. Set **RequestContent** to webProxyPayload. Set Uri to webProxyUrl.
 
 Then set **RequestHeaders** as below.
 
-![](http://i.imgur.com/Twn7LdO.png)
+![Request header settings](http://i.imgur.com/Twn7LdO.png)
 
 ### START THE WORKFLOW ###
 In the *PartSuppliersController*, the add-in web URL and web service URL are set to a variable named payload. 
@@ -269,15 +269,15 @@ public void StartWorkflow(Guid subscriptionId, int itemId, Dictionary<string, ob
 ### CREATE A WEB SITE IN MICROSOFT AZURE ###
 Open https://manage.windowsazure.com.
 
-![](http://i.imgur.com/OUQTmQu.png)
+![Signing in to Azure Portal](http://i.imgur.com/OUQTmQu.png)
 
 Login in to you Microsoft azure account.
 
-![](http://i.imgur.com/jKXv1Oy.png)
+![Login UI](http://i.imgur.com/jKXv1Oy.png)
 
 Click **+New** at the bottom left.
 
-![](http://i.imgur.com/VIm3JYA.png)
+![New option](http://i.imgur.com/VIm3JYA.png)
  
 Click **Computer**, click **WEB SITE**, click **QUICK CREATE**, and input a URL. 
 
@@ -290,30 +290,30 @@ Click **CREATE WEB SITE** at the bottom right.
 Wait for a while, the new web site will be created.
 Click the name of the web site.
 
-![](http://i.imgur.com/LDfyOnM.png)
+![Web site listed under web sites](http://i.imgur.com/LDfyOnM.png)
  
 Click **DOWNLOAD THE PUBLISH PROFILE** under the **PUBLISH YOUR ADD-IN**.
 
-![](http://i.imgur.com/u9MLFbK.png)
+![Download the publishign profile UI button](http://i.imgur.com/u9MLFbK.png)
 
 Save the file.
 
-![](http://i.imgur.com/SySE5bP.png)
+![Saving the file](http://i.imgur.com/SySE5bP.png)
 
 ### PUBLISH ADD-IN WEB SITE ###
 Open the *Workflow.CallServiceUpdateSPViaProxy.sln* file with Visual Studio 2013. In Solution Explorer, right click the *Workflow.CallServiceUpdateSPViaProxy* project.
 
-![](http://i.imgur.com/3eOSe1E.png)
+![Publish option](http://i.imgur.com/3eOSe1E.png)
 
 Click **Publish…**
 
-![](http://i.imgur.com/3OnWwFJ.png)
+![Current profile section](http://i.imgur.com/3OnWwFJ.png)
 
 Click the drop down button, then click **New…**
 
 Select **Import publishing profile**, then click **Browse...**. Choose the publish settings file you previously downloaded. Click **Next.**
 
-![](http://i.imgur.com/2s9HxFL.png)
+![Chosing right file](http://i.imgur.com/2s9HxFL.png)
 
 Input the **Client ID** and **Client Secret** shown below:
 -  **Client Id:** 7ad98516-2cdb-48a3-9238-ce369da3a46d
@@ -321,45 +321,45 @@ Input the **Client ID** and **Client Secret** shown below:
 
 Click **Finish**.
 
-![](http://i.imgur.com/w2rKZvb.png)
+![Imported profile](http://i.imgur.com/w2rKZvb.png)
 
 Click **Deploy your web project**.
 
-![](http://i.imgur.com/jCOwBdq.png)
+![Deployment of web project](http://i.imgur.com/jCOwBdq.png)
 
 Click **Publish**. 
 
-![](http://i.imgur.com/4kWII2B.png)
+![Status of deployment](http://i.imgur.com/4kWII2B.png)
 
-![](http://i.imgur.com/tej60oa.png)
+![Finished](http://i.imgur.com/tej60oa.png)
 
 In a few minutes, the site will be published to Microsoft Azure. 
 
 ## DEPLOY THE ADD-IN ##
 ### ADD REMOTE ENDPOINT ###
 
-![](http://i.imgur.com/chqi6uO.png)
+![AppManifest xml selection](http://i.imgur.com/chqi6uO.png)
 
 In the **Soluction Explorer**, click **AppManifest.xml**.
 
-![](http://i.imgur.com/VtphdOo.png)
+![Add URL](http://i.imgur.com/VtphdOo.png)
 
 Input the url of your Microsoft Azure website that you previously created.
 Make sure the URL starts with **‘https’**. Then click **Add.**
 
-![](http://i.imgur.com/AY5Vlwn.png)
+![Set URL as deployed add-in](http://i.imgur.com/AY5Vlwn.png)
 
 ### PACKAGE THE ADD-IN ###
 Click **Package the add-in**.
 
-![](http://i.imgur.com/gXtk1FI.png)
+![Package wizard](http://i.imgur.com/gXtk1FI.png)
 
 Modify the URL, add the letter **‘s’** after ‘http’.
 Click **Finish**. A Windows Explorer window will pop up and display the .app file you just generated.
 
-![](http://i.imgur.com/TyudQux.png)
+![Target option](http://i.imgur.com/TyudQux.png)
 
-![](http://i.imgur.com/qKQNJAG.png)
+![Finish deployment](http://i.imgur.com/qKQNJAG.png)
 
 ### REGISTER THE ADD-IN ###
 Login to the O365 site where you want to install the add-in.
@@ -368,7 +368,7 @@ https://tenancy.sharepoint.com/sites/site/_layouts/15/appregnew.aspx
 Replace the **tenancy** placeholder in the URL with your tenancy name.
 Replace the **site** placeholder with your site collection name.
 
-![](http://i.imgur.com/GoOR6xr.png)
+![Appregnew.asxp page](http://i.imgur.com/GoOR6xr.png)
 
 In this step, ```you should use the domain of your Windows Azure web site, and add the prefix “https” to the Redirect URL```.
 Input these values in the form:
@@ -380,7 +380,7 @@ Input these values in the form:
 
 Then, click **Create**.
 
-![](http://i.imgur.com/iRkck9z.png)
+![Registration of add-in](http://i.imgur.com/iRkck9z.png)
 
 ### CREATE AN ADD-IN CATALOG SITE ###
 If you don’t have an add-in catalog site in your SharePoint Online tenant, you should create one. If there’s already an add-in catalog in your tenant, please skip this step.
@@ -388,19 +388,19 @@ If you don’t have an add-in catalog site in your SharePoint Online tenant, you
 Sign in to the Office 365 admin center with your SharePoint Online admin user name and password.
 Click **apps**.
 
-![](http://i.imgur.com/3DbIvth.png)
+![Signing in to admin center](http://i.imgur.com/3DbIvth.png)
 
 Click **Add-In Catalog**.
 
-![](http://i.imgur.com/vbHieZc.png)
+![Add-in catalog creation](http://i.imgur.com/vbHieZc.png)
 
 Click **OK**.
 
-![](http://i.imgur.com/uOVxPiB.png)
+![Cofnirmation of add-in catalog creation](http://i.imgur.com/uOVxPiB.png)
 
 Input the required fields. Click **OK**.
 
-![](http://i.imgur.com/nzcc5An.png)
+![Catalog created](http://i.imgur.com/nzcc5An.png)
 
 A few minutes later, the add-in catalog site will be ready.
 
@@ -408,40 +408,40 @@ A few minutes later, the add-in catalog site will be ready.
 Login to the add-in catalog site.
 Click **Add-Ins for SharePoint**.
 
-![](http://i.imgur.com/2BBp4FS.png)
+![Catalog UI](http://i.imgur.com/2BBp4FS.png)
 
 Click **upload**.
 
-![](http://i.imgur.com/5XEAsUO.png)
+![Upload UI](http://i.imgur.com/5XEAsUO.png)
 
 Click **Browse…**, and choose the .app file you previously created. Then click **OK**.
 
-![](http://i.imgur.com/zaxYUQV.png)
+![Selection of .app file](http://i.imgur.com/zaxYUQV.png)
 
 Click **Save**.
 
-![](http://i.imgur.com/kfHqtzh.png)
+![Uploaded add-in](http://i.imgur.com/kfHqtzh.png)
 
 ### INSTALL THE ADD-IN ###
 Login to the O365 site where you want to install the add-in.
 Click at the wheel at the top right, then click **Add an add-in**.
 
-![](http://i.imgur.com/VMKt9Ab.png)
+![Add-in add](http://i.imgur.com/VMKt9Ab.png)
 
 Click **Workflow.CallServiceUpdateSPViaProxy**.
 
-![](http://i.imgur.com/uJUkmVw.png)
+![Selection of right add-in](http://i.imgur.com/uJUkmVw.png)
 
 Click **Trust It**. 
 
-![](http://i.imgur.com/Iptta5s.png)
+![Trust consent](http://i.imgur.com/Iptta5s.png)
 
 The add-in will be installed in a few minutes.
 
-![](http://i.imgur.com/S5u464d.png)
+![Installation](http://i.imgur.com/S5u464d.png)
 
 Once the add-in is installed, click the add-in to load it and follow the instructions in the add-in to run the sample.
 
-![](http://i.imgur.com/SII5XvH.png)
+![Add-in UI](http://i.imgur.com/SII5XvH.png)
 
 

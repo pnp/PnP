@@ -31,7 +31,7 @@ Version  | Date | Comments
 # Controlling regional settings and languages #
 Sample shows simple API calls to control these required settings. 
 
-![](http://i.imgur.com/dbXy4Cf.png)
+![Add-in UI](http://i.imgur.com/dbXy4Cf.png)
 
 ## Controlling regional settings ##
 You can control regional settings by using LocaleId property in the regional settings object. 

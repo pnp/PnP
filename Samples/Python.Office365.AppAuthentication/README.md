@@ -45,28 +45,28 @@ For these tasks to succeed you need to do additional setups explained below.
 - Generate a client secret
 - Grant the following permission to the Python Flask app: Office 365 SharePoint Online > Delegated Permissions > Read user profiles
 
-![](https://lh3.googleusercontent.com/-LxhYrbik6LQ/VrnZD-0Uf0I/AAAAAAAACaQ/jsUjHDQlmd4/s732-Ic42/office365-python-app2.PNG)
+![Azure portal permission setting](https://lh3.googleusercontent.com/-LxhYrbik6LQ/VrnZD-0Uf0I/AAAAAAAACaQ/jsUjHDQlmd4/s732-Ic42/office365-python-app2.PNG)
 
 - Copy the client secret and the client id from the Azure portal and replace them into the Python Flask config file
 - Assign URL to the SharePoint site you are going to access to the RESOURCE config variable.
 
-![](https://lh3.googleusercontent.com/-ETtW5MBuOcA/VrnZDQBAxQI/AAAAAAAACaY/ppp4My1JTlE/s616-Ic42/office365-python-app-config.PNG)
+![App details in config file](https://lh3.googleusercontent.com/-ETtW5MBuOcA/VrnZDQBAxQI/AAAAAAAACaY/ppp4My1JTlE/s616-Ic42/office365-python-app-config.PNG)
 
 - Open the sample in Visual Studio 2015
 - Go to Project > Properties > Debug and dedicate 5555 for Port Number
 
-![](https://lh3.googleusercontent.com/-M3upxeCKBN0/VrnZDSHnDoI/AAAAAAAACaA/BF4CTeKlUMs/s426-Ic42/office365-python-app-vs-config.PNG)
+![Change port in debug option](https://lh3.googleusercontent.com/-M3upxeCKBN0/VrnZDSHnDoI/AAAAAAAACaA/BF4CTeKlUMs/s426-Ic42/office365-python-app-vs-config.PNG)
 
 - Go to Python environments > your active python environment > execute "Install from requirements.txt". This will ensure that all the required Python packages are installed.
 
-![](https://lh3.googleusercontent.com/-At6Smrxg9DQ/VrnZD6KMvfI/AAAAAAAACaM/gcgJUATPigE/s479-Ic42/office365-python-packages.png)
+![Selection of menu option](https://lh3.googleusercontent.com/-At6Smrxg9DQ/VrnZD6KMvfI/AAAAAAAACaM/gcgJUATPigE/s479-Ic42/office365-python-packages.png)
 
 ## Run the Office 365 Python Flask app sample ##
 When you run the sample you'll see the title and login url.
 
-![](https://lh3.googleusercontent.com/-GDdAcmYylZE/VrnZD8sVGwI/AAAAAAAACaI/1gB0jvULLBo/s438-Ic42/office365-python-app.PNG)
+![Add-in UI](https://lh3.googleusercontent.com/-GDdAcmYylZE/VrnZD8sVGwI/AAAAAAAACaI/1gB0jvULLBo/s438-Ic42/office365-python-app.PNG)
 
 
 Once you've clicked the sign-in link, the Office 365 API will go through the authentication handshake and the Python Flask home screen will reload with the logged in user title and access token displayed:
 
-![](https://lh3.googleusercontent.com/-44rsAE2uGFQ/VrnZDdJAseI/AAAAAAAACaE/70N8UX8ErIk/s569-Ic42/office365-python-app-result.PNG)
+![Signing in UI](https://lh3.googleusercontent.com/-44rsAE2uGFQ/VrnZDdJAseI/AAAAAAAACaE/70N8UX8ErIk/s569-Ic42/office365-python-app-result.PNG)

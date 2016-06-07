@@ -46,7 +46,7 @@ This scenario is handles by the Contoso.ProfileProperty.Migration.Extract, versi
 
 *Note*: you will have to change the following values in the app.config file to suit your environment before proceeding further:
 
-![](http://i.imgur.com/jvfY26z.png)
+![Setting options as picture](http://i.imgur.com/jvfY26z.png)
 
 
 ## INITIALIZATION ##
@@ -67,17 +67,17 @@ foreach (UserProfile spUser in profileManager)
 
 
 ## READ A SIMPLE USER PROFILE PROPERTY ##
-![](http://i.imgur.com/MfGhSsP.png)
+![UI of needed code](http://i.imgur.com/MfGhSsP.png)
 
 ## READ A COMPLEX USER PROFILE PROPERTY ##
-![](http://i.imgur.com/1sKb9fM.png)
+![UI of used code](http://i.imgur.com/1sKb9fM.png)
 
 ## OUTPUT ##
 Program Output:
-![](http://i.imgur.com/CypFjV8.png)
+![Console application output](http://i.imgur.com/CypFjV8.png)
 
 Output file:
-![](http://i.imgur.com/5ZGRh7x.png)
+![Output xml from solution](http://i.imgur.com/5ZGRh7x.png)
 
 
 
@@ -87,15 +87,15 @@ This scenario shows how to user profile properties via an XML file. To make this
 This scenario is handled by the Contoso.ProfileProperty.Migration.Import, version 1.0 console application.
 Note: you will have to change the following values in the app.config file to suit your environment before proceeding further:
 
-![](http://i.imgur.com/ZH3wzYK.png)
+![Configuration properties as a table](http://i.imgur.com/ZH3wzYK.png)
 
 ## INITIALIZATION ##
 
-![](http://i.imgur.com/N2zGQG4.png)
+![Code for initialization](http://i.imgur.com/N2zGQG4.png)
 
 ## WRITE A SIMPLE USER PROFILE PROPERTY ##
 
-![](http://i.imgur.com/UOrKZVv.png)
+![Code for updating user profile property](http://i.imgur.com/UOrKZVv.png)
 
 ## WRITE A COMPLEX USER PROFILE PROPERTY ##
-![](http://i.imgur.com/dxSQdJU.png)
+![Code for updating complex user profile property](http://i.imgur.com/dxSQdJU.png)

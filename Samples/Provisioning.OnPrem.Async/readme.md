@@ -32,7 +32,7 @@ Version  | Date | Comments
 # Building a async provisioning model #
 Since provisioning of site collections can take a quite a long time, you really don't want end user to be waiting this time while gif animation is running in browser. Much better approach is to use async patter and notify the requestor whenever the provisioning is completed.
 
-![](http://blogs.msdn.com/cfs-file.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-00-81-08-metablogapi/6644.image_5F00_505B73EC.png)
+![Process picture with 5 steps](http://blogs.msdn.com/cfs-file.ashx/__key/communityserver-blogs-components-weblogfiles/00-00-00-81-08-metablogapi/6644.image_5F00_505B73EC.png)
 
 1. When new site collection is needed, users can go to self service site collection form for filling the needed metadata for the upcoming site collection. 
 1. Request of the new site collection is stored to specific list located for example in root site collection of the web application or tenant (if in Office365) 

@@ -48,9 +48,9 @@ context.ExecuteQuery();
 
 Once authenticated, the add-in will use CSOM to either Import or Export by calling the appropriate method. The methods use the [SearchConfigurationPortability](http://msdn.microsoft.com/en-us/library/office/microsoft.sharepoint.client.search.portability.searchconfigurationportability(v=office.15).aspx) and [SeachObjectOwner](http://msdn.microsoft.com/en-us/library/office/microsoft.office.server.search.administration.searchobjectowner(v=office.15).aspx) objects and the code executes either the **ExportSearchSettings** method or **ImportSearchSettings** method to perform the action requested by the user in the console.
 
-![](http://i.imgur.com/UgjWZi2.png)
+![ExportSearchSettings method code](http://i.imgur.com/UgjWZi2.png)
 
-![](http://i.imgur.com/KguZrmy.png)
+![ImportSearchSettings method code](http://i.imgur.com/KguZrmy.png)
 
 Example of the Import method
 The end result from an export is a search settings .xml file that can be use elsewhere by performing the import shown above.

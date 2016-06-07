@@ -32,7 +32,7 @@ Using CSOM for updating user profile properties was introduced in November 2014.
 
 Here's typical process of synchronizing additional attributes from on-premises to the Office 365.
 
-![](http://i.imgur.com/Jt4miQJ.png)
+![Process picture with 4 steps](http://i.imgur.com/Jt4miQJ.png)
 
 1. You can control what attributes are synchronized from the local AD to the Azure AD
 2. Standardized set of attributes are synchronized from Azure AD to the SharePoint User Profile. You cannot modify this mapping in Office 365

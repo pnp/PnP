@@ -35,9 +35,9 @@ Version  | Date | Comments
 This sample scenario uses the OfficeDevPnP core library to inject links for opening a SharePoint add-in inside a dialog. We’ll show how to open the add-in inside a dialog from a custom action and how to do the same from a link on a SharePoint wiki page. The add-in that will be shown in a dialog is the same add-in that you’ll use to setup the demo, meaning that you’ll be able to experience how one and the same add-in can be used in a full page immersive experience (using the chromecontrol) and in a modal dialog experience. Some special attention has been given to the button click handling: the same OK and Cancel buttons behave differently when the add-in is shown in a dialog or as a full page immersive experience. Finally the add-in shows how you can use JSOM to obtain data from the host web regardless of the whether the add-in is shown in a dialog (=uses iframe) or not. Next chapters provide more details on this.
 
 ## ISDLG URL PARAMETER ##
-To specify whether the add-in is shown in a dialog or not we’ve foreseen an additional URL parameter named IsDlg. If this one has a value of 1 then this is an indication that the add-in is shown in a dialog, value 0 indicates the default full page experience. This IsDlg parameter is added as additional query string:
+To specify whether the add-in is shown in a dialog or not we’ve foreseen an additional URL parameter named IsDlg. If this one has a value of 1 then this is an indication that the add-in is shown in a dialog, value 0 indicates the default full page experience. This IsDlg parameter is added as additional query string: 
 
-![](http://i.imgur.com/GFWpp7m.png)
+![AppManifest editor with URL parameter](http://i.imgur.com/GFWpp7m.png)
 
 # SCENARIO 1: INSERT A CUSTOM ACTION TO OPEN THE ADD-IN IN A DIALOG FROM THE SITE SETTINGS MENU #
 

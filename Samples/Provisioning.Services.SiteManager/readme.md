@@ -39,7 +39,7 @@ Site collection creation remotely is natively supported in the Office365 (MT), b
 # Solution Setup #
 The solution contains 4 projects:
 
-![](http://i.imgur.com/I2lIMRf.png)
+![Visual Studio solution structure](http://i.imgur.com/I2lIMRf.png)
 
 Below you can find a short description of each of the projects:
 

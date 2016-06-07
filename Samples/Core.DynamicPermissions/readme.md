@@ -30,15 +30,15 @@ Version  | Date | Comments
 # SCENARIO: DYNAMICALLY REQUEST ADD-IN PERMISSIONS #
 This scenario shows how an add-in can be used to dynamically request permissions to access SharePoint resources from any web site.
 
-![](http://i.imgur.com/7Dnd75t.png)
+![App UI with Connect button](http://i.imgur.com/7Dnd75t.png)
 
 After entering the URL for the SharePoint site and clicking the Connect button, the user is redirected to sign into Office 365.
 
-![](http://i.imgur.com/zYs8EDJ.png)
+![Sign-in to Office 365](http://i.imgur.com/zYs8EDJ.png)
 
 Once signed in, the user is prompted to trust the add-in.
 
-![](http://i.imgur.com/psJXcqu.png)
+![Trust dialog for add-in permissions](http://i.imgur.com/psJXcqu.png)
 
 ### Note:###
 This type of add-in can only be run by users who have Manage permissions to the resources the add-in wants to access, because only they have sufficient rights to grant the add-in the permissions that it requests. For example, if an add-in requests only Read permission to a website, a user who has Read, but not Manage, rights to the website cannot run the add-in.  For more information, see http://msdn.microsoft.com/en-us/library/office/jj687470.aspx. 
