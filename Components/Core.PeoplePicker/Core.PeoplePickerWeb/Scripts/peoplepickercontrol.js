@@ -297,10 +297,10 @@
 
                     for (var i = 0; i < displayCount; i++) {
                         var item = results[i];
-                        var loginName = item['Key'];
-                        var displayName = item['DisplayText'];
-                        var title = item['EntityData']['Title'];
-                        var email = item['EntityData']['Email'];
+                        var loginName = item['Key'] || '';
+                        var displayName = item['DisplayText'] || '';
+                        var title = item['EntityData']['Title'] || '';
+                        var email = item['EntityData']['Email'] || '';
 
                         var loginNameDisplay = email;
                         if (loginName && loginName.indexOf('|') > -1) {
