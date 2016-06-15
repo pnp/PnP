@@ -77,7 +77,7 @@
             //get ALL terms for the termset and we will organize them in the async callback
             this.RawTerms = this.RawTermSet.getAllTerms();
             spContext.load(this.RawTermSet);
-            spContext.load(this.RawTerms, 'Include(Id,Name,PathOfTerm,Labels,CustomProperties,LocalCustomProperties)');
+            spContext.load(this.RawTerms, 'Include(Id,Name,PathOfTerm,Labels,CustomProperties,LocalCustomProperties,IsDeprecated)');
             spContext.executeQueryAsync(Function.createDelegate(this, this.termsLoadedSuccess), Function.createDelegate(this, this.termsLoadedFailed));
         },
         //internal callback when terms are returned from CSOM
@@ -98,8 +98,10 @@
 
             while (termEnumerator.moveNext()) {
                 var currentTerm = termEnumerator.get_current();
-                var term = new Term(currentTerm);
-                this.FlatTerms.push(term);
+                if (!currentTerm.get_isDeprecated()) {
+                    var term = new Term(currentTerm);
+                    this.FlatTerms.push(term);
+                }
             }
 
             //get the custom sort order of the termset
