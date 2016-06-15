@@ -112,6 +112,7 @@
                 sortOrder = sortOrder.split(':');
 
                 this.FlatTerms.sort(function (a, b) {
+                    if (a.Level > topLevel) { topLevel = a.Level; }
                     // finding the index of GUID in array, and using it to sort
                     var indexA = sortOrder.indexOf(a.guid);
                     var indexB = sortOrder.indexOf(b.guid);
