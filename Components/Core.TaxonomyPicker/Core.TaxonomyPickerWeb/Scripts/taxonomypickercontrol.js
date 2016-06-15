@@ -465,6 +465,13 @@
                     newText = rawText.substring(0, caret - selection.length) + this.MarkerMarkup + rawText.substring(caret, rawText.length);
                     var textValidation = this.validateText(newText);
                     this._editor.html(textValidation.html);
+                    
+                    if (newText === '<span id="caretmarker"></span>') {
+                        //empty the selected term from hidden field
+                        this._hiddenValidated.val("");
+                        //added to trigger the change event 
+                        this._hiddenValidated.trigger('change');
+                    }
 
                     //set the cursor position at the marker
                     this.setCaret();
@@ -479,6 +486,13 @@
                     newText = firstPart + this.MarkerMarkup + rawText.substring(caret, rawText.length);
                     var textValidation = this.validateText(newText);
                     this._editor.html(textValidation.html);
+                    
+                    if (newText === '<span id="caretmarker"></span>') {
+                        //empty the selected term from hidden field
+                        this._hiddenValidated.val("");
+                        //added to trigger the change event 
+                        this._hiddenValidated.trigger('change');
+                    }
 
                     //call keyDownCallback event if not null
                     if (this.TermSet.KeyDownCallback != null)
@@ -1167,6 +1181,8 @@
                 //add the term to the selected terms array            
                 this._selectedTerms.push(clonedTerm);
                 this._hiddenValidated.val(JSON.stringify(this._selectedTerms));
+                //added to trigger change event 
+                this._hiddenValidated.trigger('change');
             }
         },
         //if the term already exists in the selected terms then don't add it
@@ -1183,6 +1199,8 @@
             //remove the last selected term
             this._selectedTerms.pop();
             this._hiddenValidated.val(JSON.stringify(this._selectedTerms));
+            //added to trigger change event 
+            this._hiddenValidated.trigger('change');
         },
         //converts this._selectedTerms to html for an editor field
         selectedTermsToHtml: function () {
