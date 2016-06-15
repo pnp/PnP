@@ -91,22 +91,47 @@
 
             //get flat list of terms
             this.FlatTerms = new Array();
+                        
+            var sortOrder = null;
+
+            var topLevel = 0;
+
             while (termEnumerator.moveNext()) {
                 var currentTerm = termEnumerator.get_current();
                 var term = new Term(currentTerm);
                 this.FlatTerms.push(term);
             }
 
-            var topLevel = 0;
-            //sort by Name that all of the choice will return alphabetically
-            this.FlatTerms.sort(function (a, b) {
-                if (a.Level > topLevel) { topLevel = a.Level; }
-                a = a.Name.toLowerCase();
-                b = b.Name.toLowerCase();
-                if (a < b) return -1;
-                if (a > b) return 1;
-                return 0;
-            });
+            //get the custom sort order of the termset
+            if (this.RawTermSet.get_customSortOrder()) {
+                sortOrder = this.RawTermSet.get_customSortOrder();
+            }
+
+            if (sortOrder) {
+                //the custom sort order is a GUID string, separated by :
+                sortOrder = sortOrder.split(':');
+
+                this.FlatTerms.sort(function (a, b) {
+                    // finding the index of GUID in array, and using it to sort
+                    var indexA = sortOrder.indexOf(a.guid);
+                    var indexB = sortOrder.indexOf(b.guid);
+
+                    if (indexA > indexB) { return 1; }
+                    else if (indexA < indexB) { return -1; }
+                    return 0;
+                });
+            }
+            else {
+                //sort by Name that all of the choice will return alphabetically
+                this.FlatTerms.sort(function (a, b) {
+                    if (a.Level > topLevel) { topLevel = a.Level; }
+                    a = a.Name.toLowerCase();
+                    b = b.Name.toLowerCase();
+                    if (a < b) return -1;
+                    else if (a > b) return 1;
+                    return 0;
+                });
+            }
 
 
             var filterTerm;
