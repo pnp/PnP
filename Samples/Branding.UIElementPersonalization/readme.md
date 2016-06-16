@@ -29,7 +29,7 @@ Version  | Date | Comments
 
 # General comments #
 This sample shows how one can personalize elements within the UI by the use of some javascript injection (derives from the javascript injection sample), as well as using values from the user profile and SharePoint lists. This example also shows the use of some HTML5 local storage to reduce round trips to target services. 
-![](http://i.imgur.com/3RRVCbt.png)
+![SharePoint site which shows a personalized embedded or injected image based on profile, About Me. (BusinessUnit=YY).](http://i.imgur.com/3RRVCbt.png)
 
 # SCENARIO: UI ELEMENT PERSONALIZATION #
 The add-in page does a few things up front to support the sample. It uploads three images into the Site Assets library as well as creates a list named “CodesList”, and then creates three list items that contains a title and a URL to one of the three images that were uploaded to the Site Assets library. The list items are titled as “XX”, “YY” and “ZZ” as fictitious business unit codes.
@@ -40,7 +40,7 @@ The last task the add-in page performs, is the javascript injection.
 
 Once these tasks are done, the user clicks the ‘Back to Site’ link, and their site will load, and that when the injected javascript kicks in and check local storage for a saved profile value. If it does not exist, or is expired, the javascript will query the user profile and look for one of the codes above. It then stores it into local storage and queries the CodesList to find the matching code’s image URL to the Site Assets library. If it is found, the image will be rendered in the Head section within the Page Title area.
 
-![](http://i.imgur.com/fAfN0xR.png)
+![Text in the image. Scenario: Personalizing User Interface Elements. In this scenario, you'll see how to personalize UI elements. This sample renders an image next to the site title that is determined by a value in your About Me section of your profile. The value in your profile is matched up with a value in the sample codes list. The codes in the list have an associated link to an image stored in the Site Assets library. The app will deploy a sample codes list and upload some sample images to the Site Assets library. It will then do the JavaScript injection to inject the link to the personalize.js file which gets executed when your page loads. The sample also uses HTML5 localstorage to store the value retrieved from your About Me section in your profile so that this user profile query does not happen each time the page loads. Step 1: Edit your profile's About Me section and add one of the following: XX, YY, or ZZ. Step 2: Inject the customization to your current site using the button in the Demo section. Step 3: Check out the changes by clicking on Back to Site in the top navigation. Click the buttons below to inject or remove the customization to your current site. Button: Inject customization. Button: Remove customization.](http://i.imgur.com/fAfN0xR.png)
 
 Code for the Inject Customization button:
 
