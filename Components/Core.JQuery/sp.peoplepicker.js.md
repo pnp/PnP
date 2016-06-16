@@ -51,7 +51,7 @@ $(function() {
 
 Once complete you should see a people picker control.
 
-![](http://i.imgur.com/cpeP4aS.png)
+![The people picker control, which consists of a text box and a drop down. The text box contains the text patr and the text cursor. The drop down contains the name Patrick, followed by the text, Showing 1 items of 1.](http://i.imgur.com/cpeP4aS.png)
 
 ----------
 
