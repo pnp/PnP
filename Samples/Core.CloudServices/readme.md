@@ -55,7 +55,7 @@ After the conversion completed you should see a similar project structure in you
 ## ENSURE BOTH THE AZURE PROJECT AS THE SHAREPOINT PROJECT ARE STARTUP PROJECTS ##
 To make the F5 experience work it’s important that the SharePoint App and the Azure project are starting on F5. This can be configured via the solution properties:
 
-![](http://i.imgur.com/Jlj1KUo.png)
+![The property page for the solution Windows Azure1. Under Common Properties, Startup Project is selected. The radio button Multiple startup projects is selected.](http://i.imgur.com/Jlj1KUo.png)
 
 ## IMPORTANT: ENSURE YOU’VE A SHAREPOINT PUBLISHING PROFILE BEFORE PUBLISHING YOUR SHAREPOINT APP ##
 If you’ve created the solution as described above and you do want to “Publish” your SharePoint app then this seems to work, but it’s not working correctly since the publishing wizard will not substitute your client ID and remoteAppUrl token because it’s lacking a SharePoint publishing profile. 
