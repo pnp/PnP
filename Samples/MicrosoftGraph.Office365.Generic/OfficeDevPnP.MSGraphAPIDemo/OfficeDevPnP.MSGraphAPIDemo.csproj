@@ -195,6 +195,7 @@
     <Compile Include="Models\Contacts\ContactList.cs" />
     <Compile Include="Models\Converters\DateOnlyConverter.cs" />
     <Compile Include="Models\Files\DriveItemList.cs" />
+    <Compile Include="Models\Files\PermissionList.cs" />
     <Compile Include="Models\Files\SharingLinkScope.cs" />
     <Compile Include="Models\Files\SharingLinkType.cs" />
     <Compile Include="Models\Files\ThumbnailSetResponse.cs" />
