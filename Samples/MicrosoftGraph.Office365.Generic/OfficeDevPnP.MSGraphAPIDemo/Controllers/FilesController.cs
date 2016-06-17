@@ -93,7 +93,8 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             {
                 try
                 {
-                    var permission = FilesHelper.GetDriveItemPermission(newFileOnRoot.Id, "0");
+                    var permissions = FilesHelper.GetDriveItemPermissions(newFileOnRoot.Id);
+                    var permission = FilesHelper.GetDriveItemPermission(newFileOnRoot.Id, permissions[0].Id);
                 }
                 catch (Exception)
                 {
@@ -143,7 +144,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
                 if (memPhoto.Length > 0)
                 {
                     String contentType = "image/png";
-                    result = FilesHelper.UploadFile(drive.Id, newFolder.Id,
+                    result = FilesHelper.UploadFileDirect(drive.Id, newFolder.Id,
                         new Models.DriveItem
                         {
                             File = new Models.File { },

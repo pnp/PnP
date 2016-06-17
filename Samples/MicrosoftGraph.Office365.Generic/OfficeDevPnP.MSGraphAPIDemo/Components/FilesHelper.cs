@@ -252,6 +252,32 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         }
 
         /// <summary>
+        /// This method creates and uploads a file into a parent folder with a unique request
+        /// </summary>
+        /// <param name="driveId">The ID of the target drive</param>
+        /// <param name="parentFolderId">The ID of the parent folder</param>
+        /// <param name="file">The file object</param>
+        /// <param name="content">The binary stream of the file content</param>
+        /// <param name="contentType">The content type of the file</param>
+        /// <returns>The just created and uploaded file object</returns>
+        public static DriveItem UploadFileDirect(String driveId, String parentFolderId,
+            DriveItem file, Stream content, String contentType)
+        {
+            var jsonResponse = MicrosoftGraphHelper.MakePutRequestForString(
+                String.Format("{0}drives/{1}/items/{2}/children/{3}/content",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    driveId,
+                    parentFolderId,
+                    file.Name),
+                    content,
+                    contentType);
+
+            var uploadedFile = JsonConvert.DeserializeObject<DriveItem>(jsonResponse);
+
+            return (uploadedFile);
+        }
+
+        /// <summary>
         /// This method deletes a file in OneDrive for Business
         /// </summary>
         /// <param name="driveId">The ID of the target drive</param>
@@ -337,6 +363,22 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         }
 
         /// <summary>
+        /// This method returns a list of permissions for a specific DriveItem in OneDrive for Business
+        /// </summary>
+        /// <param name="driveItemId">The ID of the DriveItem</param>
+        /// <returns>The list of permissions for the object</returns>
+        public static List<Permission> GetDriveItemPermissions(String driveItemId)
+        {
+            var jsonResponse = MicrosoftGraphHelper.MakeGetRequestForString(
+                String.Format("{0}me/drive/items/{1}/permissions",
+                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
+                    driveItemId));
+
+            var permissions = JsonConvert.DeserializeObject<PermissionList>(jsonResponse);
+            return (permissions.Permissions);
+        }
+
+        /// <summary>
         /// This method returns a permission of a specific DriveItem in OneDrive for Business
         /// </summary>
         /// <param name="driveItemId">The ID of the DriveItem</param>
@@ -352,26 +394,6 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
 
             var permission = JsonConvert.DeserializeObject<Permission>(jsonResponse);
             return (permission);
-        }
-
-        /// <summary>
-        /// This method adds a new permission to a target DriveItem
-        /// </summary>
-        /// <param name="driveItemId">The ID of the DriveItem</param>
-        /// <param name="permission">The permission to add</param>
-        /// <returns>The just added permission object</returns>
-        public static Permission AddDriveItemPermission(String driveItemId, Permission permission)
-        {
-            var jsonResponse = MicrosoftGraphHelper.MakePostRequestForString(
-                String.Format("{0}me/drive/items/{1}/permissions",
-                    MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
-                    driveItemId),
-                    permission,
-                    "application/json"
-                );
-
-            var addedPermission = JsonConvert.DeserializeObject<Permission>(jsonResponse);
-            return (addedPermission);
         }
 
         /// <summary>
@@ -398,7 +420,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         public static Permission CreateSharingLink(String driveItemId, SharingLinkType type, SharingLinkScope scope)
         {
             var jsonResponse = MicrosoftGraphHelper.MakePostRequestForString(
-                String.Format("{0}me/drive/items/{1}/microsoft.graph.createLink",
+                String.Format("{0}me/drive/items/{1}/createLink",
                     MicrosoftGraphHelper.MicrosoftGraphV1BaseUri,
                     driveItemId),
                     new {
