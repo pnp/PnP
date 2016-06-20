@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<Features>
+  <Set Name="ActiveView">
+    <Version Value="1.1">
+      <Method Name="Document.getActiveViewAsync" />
+    </Version>
+  </Set>
+  <Set Name="BindingEvents">
+    <Version Value="1.1">
+      <Method Name="Binding.addHandlerAsync" />
+      <Method Name="Binding.removeHandlerAsync" />
+    </Version>
+  </Set>
+  <Methods>
+    <Method Name="Bindings.addFromPromptAsync" />
+    <Method Name="Document.getFilePropertiesAsync" />
+    <Method Name="Document.getProjectFieldAsync" />
+    <Method Name="Document.getResourceFieldAsync" />
+    <Method Name="Document.getSelectedResourceAsync" />
+    <Method Name="Document.getSelectedTaskAsync" />
+    <Method Name="Document.getSelectedViewAsync" />
+    <Method Name="Document.getTaskAsync" />
+    <Method Name="Document.getTaskFieldAsync" />
+    <Method Name="Document.getWSSUrlAsync" />
+    <Method Name="Document.goToByIdAsync" />
+    <Method Name="Settings.addHandlerAsync" />
+    <Method Name="Settings.refreshAsync" />
+    <Method Name="Settings.removeHandlerAsync" />
+    <Method Name="TableBinding.clearFormatsAsync" />
+    <Method Name="TableBinding.setFormatsAsync" />
+    <Method Name="TableBinding.setTableOptionsAsync" />
+  </Methods>
+  <Set Name="MatrixBindings">
+    <Version Value="1.1">
+      <Method Name="Bindings.addFromNamedItemAsync" />
+      <Method Name="Bindings.addFromSelectionAsync" />
+      <Method Name="Bindings.getAllAsync" />
+      <Method Name="Bindings.getByIdAsync" />
+      <Method Name="Bindings.releaseByIdAsync" />
+      <Method Name="MatrixBinding.getDataAsync" />
+      <Method Name="MatrixBinding.setDataAsync" />
+    </Version>
+  </Set>
+  <Set Name="TableBindings">
+    <Version Value="1.1">
+      <Method Name="Bindings.addFromNamedItemAsync" />
+      <Method Name="Bindings.addFromSelectionAsync" />
+      <Method Name="Bindings.getAllAsync" />
+      <Method Name="Bindings.getByIdAsync" />
+      <Method Name="Bindings.releaseByIdAsync" />
+      <Method Name="TableBinding.addColumnsAsync" />
+      <Method Name="TableBinding.addRowsAsync" />
+      <Method Name="TableBinding.deleteAllDataValuesAsync" />
+      <Method Name="TableBinding.getDataAsync" />
+      <Method Name="TableBinding.setDataAsync" />
+    </Version>
+  </Set>
+  <Set Name="TextBindings">
+    <Version Value="1.1">
+      <Method Name="Bindings.addFromNamedItemAsync" />
+      <Method Name="Bindings.addFromSelectionAsync" />
+      <Method Name="Bindings.getAllAsync" />
+      <Method Name="Bindings.getByIdAsync" />
+      <Method Name="Bindings.releaseByIdAsync" />
+      <Method Name="TextBinding.getDataAsync" />
+      <Method Name="TextBinding.setDataAsync" />
+    </Version>
+  </Set>
+  <Set Name="CustomXmlParts">
+    <Version Value="1.1">
+      <Method Name="CustomXmlNode.getNodesAsync" />
+      <Method Name="CustomXmlNode.getNodeValueAsync" />
+      <Method Name="CustomXmlNode.getXmlAsync" />
+      <Method Name="CustomXmlNode.setNodeValueAsync" />
+      <Method Name="CustomXmlNode.setXmlAsync" />
+      <Method Name="CustomXmlPart.addHandlerAsync" />
+      <Method Name="CustomXmlPart.deleteAsync" />
+      <Method Name="CustomXmlPart.getNodesAsync" />
+      <Method Name="CustomXmlPart.getXmlAsync" />
+      <Method Name="CustomXmlPart.removeHandlerAsync" />
+      <Method Name="CustomXmlParts.addAsync" />
+      <Method Name="CustomXmlParts.getByIdAsync" />
+      <Method Name="CustomXmlParts.getByNamespaceAsync" />
+      <Method Name="CustomXmlPrefixMappings.addNamespaceAsync" />
+      <Method Name="CustomXmlPrefixMappings.getNamespaceAsync" />
+      <Method Name="CustomXmlPrefixMappings.getPrefixAsync" />
+    </Version>
+    <version Value="1.2">
+      <Method Name="CustomXmlNode.getNamespaceAsync" />
+      <Method Name="CustomXmlNode.getPrefixAsync" />
+    </version>
+  </Set>
+  <Set Name="DocumentEvents">
+    <Version Value="1.1">
+      <Method Name="Document.addHandlerAsync" />
+      <Method Name="Document.removeHandlerAsync" />
+    </Version>
+  </Set>
+  <Set Name="File">
+    <Version Value="1.1">
+      <Method Name="Document.getFileAsync" />
+      <Method Name="File.closeAsync" />
+      <Method Name="File.getSliceAsync" />
+    </Version>
+  </Set>
+  <Set Name="PdfFile">
+    <Version Value="1.1" />
+  </Set>
+  <Set Name="TextFile">
+    <Version Value="1.1" />
+  </Set>
+  <Set Name="CompressedFile">
+    <Version Value="1.1" />
+  </Set>
+  <Set Name="TextCoercion">
+    <Version Value="1.1" />
+  </Set>
+  <Set Name="ImageCoercion">
+    <Version Value="1.1" />
+  </Set>
+  <Set Name="MatrixCoercion">
+    <Version Value="1.1" />
+  </Set>
+  <Set Name="TableCoercion">
+    <Version Value="1.1" />
+  </Set>
+  <Set Name="HtmlCoercion">
+    <Version Value="1.1" />
+  </Set>
+  <Set Name="OoxmlCoercion">
+    <Version Value="1.1" />
+  </Set>
+  <Set Name="Selection">
+    <Version Value="1.1">
+      <Method Name="Document.getSelectedDataAsync" />
+      <Method Name="Document.setSelectedDataAsync" />
+    </Version>
+  </Set>
+  <Set Name="Settings">
+    <Version Value="1.1">
+      <Method Name="Settings.get" />
+      <Method Name="Settings.remove" />
+      <Method Name="Settings.saveAsync" />
+      <Method Name="Settings.set" />
+    </Version>
+  </Set>
+  <Set Name="Mailbox">
+    <Version Value="1.1" />
+    <Version Value="1.2" />
+    <Version Value="1.3" />
+  </Set>
+  <Set Name="PartialTableBindings">
+    <Version Value="1.1" />
+  </Set>
+  <Set Name="ExcelApi">
+    <Version Value="1.1" />
+  </Set>
+  <Set Name="WordApi">
+    <Version Value="1.1" />
+    <Version Value="1.2" />
+  </Set>
+</Features>

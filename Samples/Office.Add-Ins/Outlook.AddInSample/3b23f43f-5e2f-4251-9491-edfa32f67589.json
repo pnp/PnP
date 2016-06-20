@@ -1,0 +1,84 @@
+{
+  "appId": "3b23f43f-5e2f-4251-9491-edfa32f67589",
+  "appRoles": [],
+  "availableToOtherTenants": false,
+  "displayName": "Outlook.AddInSampleWeb",
+  "errorUrl": null,
+  "groupMembershipClaims": null,
+  "homepage": "https://localhost:44338/",
+  "identifierUris": [
+    "https://PiaSysDev.onmicrosoft.com/Outlook.AddInSampleWeb"
+  ],
+  "keyCredentials": [],
+  "knownClientApplications": [],
+  "logoutUrl": null,
+  "oauth2AllowImplicitFlow": true,
+  "oauth2AllowUrlPathMatching": false,
+  "oauth2Permissions": [
+    {
+      "adminConsentDescription": "Allow the application to access Outlook.AddInSampleWeb on behalf of the signed-in user.",
+      "adminConsentDisplayName": "Access Outlook.AddInSampleWeb",
+      "id": "e60c5c87-a1ca-465c-b937-ae1463d8b706",
+      "isEnabled": true,
+      "type": "User",
+      "userConsentDescription": "Allow the application to access Outlook.AddInSampleWeb on your behalf.",
+      "userConsentDisplayName": "Access Outlook.AddInSampleWeb",
+      "value": "user_impersonation"
+    }
+  ],
+  "oauth2RequirePostResponse": false,
+  "passwordCredentials": [
+    {
+      "customKeyIdentifier": null,
+      "endDate": "2017-06-20T15:40:24.0078707Z",
+      "keyId": "3daa9211-c64d-401a-b992-871f3824dea6",
+      "startDate": "2016-06-20T15:40:24.0078707Z",
+      "value": null
+    }
+  ],
+  "publicClient": false,
+  "replyUrls": [
+    "https://localhost:44338/"
+  ],
+  "requiredResourceAccess": [
+    {
+      "resourceAppId": "00000003-0000-0000-c000-000000000000",
+      "resourceAccess": [
+        {
+          "id": "10465720-29dd-4523-a11a-6a75c743c9d9",
+          "type": "Scope"
+        },
+        {
+          "id": "ff74d97f-43af-4b68-9f2a-b77ee6968c5d",
+          "type": "Scope"
+        }
+      ]
+    },
+    {
+      "resourceAppId": "00000002-0000-0000-c000-000000000000",
+      "resourceAccess": [
+        {
+          "id": "311a71cc-e848-46a1-bdf8-97ff7156d8e6",
+          "type": "Scope"
+        },
+        {
+          "id": "5778995a-e1bf-45b8-affa-663a9f3f4d04",
+          "type": "Scope"
+        }
+      ]
+    }
+  ],
+  "samlMetadataUrl": null,
+  "extensionProperties": [],
+  "objectType": "Application",
+  "objectId": "03d78899-665f-4e3e-b153-5d0482d9d0aa",
+  "deletionTimestamp": null,
+  "createdOnBehalfOf": null,
+  "createdObjects": [],
+  "manager": null,
+  "directReports": [],
+  "members": [],
+  "memberOf": [],
+  "owners": [],
+  "ownedObjects": []
+}
