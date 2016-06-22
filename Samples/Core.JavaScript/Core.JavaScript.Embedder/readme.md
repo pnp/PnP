@@ -29,19 +29,19 @@ Version  | Date | Comments
 
 
 
-####1. Determine the local IIS Express address for the Core.JavaScript.CDN project. You can do this by selecting the project and pressing "F4" to see the properties window, note the https address, here "https://localhost:44324/"
+#### 1. Determine the local IIS Express address for the Core.JavaScript.CDN project. You can do this by selecting the project and pressing "F4" to see the properties window, note the https address, here "https://localhost:44324/"
 
-![](http://i.imgur.com/8EBraLo.png)
-
-----------
-
-####2. Determine the url to your SharePoint development site, this will be something in your company farm, or perhaps something like https://mycompany.sharepoint.com
+![The SSL URL field contains the text https://localhost:44324/](http://i.imgur.com/8EBraLo.png)
 
 ----------
 
-####3. In the Core.JavaScript.Embedder.ContextManager.cs file you need to update the variables as appropriate for your environment. You always need to update the "mySite" variable with your SharePoint dev site url.
+#### 2. Determine the url to your SharePoint development site, this will be something in your company farm, or perhaps something like https://mycompany.sharepoint.com
 
-![](http://imgur.com/eUqFBjM.png)
+----------
+
+#### 3. In the Core.JavaScript.Embedder.ContextManager.cs file you need to update the variables as appropriate for your environment. You always need to update the "mySite" variable with your SharePoint dev site url.
+
+![A screenshot of the ContextManager.cs file showing the placeholder values for the variables mySite, myLogin, and myPassword, and the value of true for isOnline, false for hasPartnerAccess, and true for useDefault.](http://imgur.com/eUqFBjM.png)
 
  Variable | Description
 ---------|----------
@@ -54,45 +54,45 @@ useDefault | If you connect to a site where you use your default credentials set
 
 These are the values I use to connect to my dev tenant located in SharePoint online, note the blacked out boxes cover my login and password:
 
-![](http://i.imgur.com/3FEQYPY.png)
+![var mySite = https://318studios.sharepoint.com/sites/dev, var myLogin is redacted, var myPassword is redacted, var isOnline = true, var hasPartnerAccess = false, var useDefault = false.](http://i.imgur.com/3FEQYPY.png)
 
 ----------
 
-####4. Next, update the Core.JavaScript.Embedder.Program.cs to ensure that the file references to localhost match the value from step 1. You will need to update the script block you are using, without making changes you will use script2 as a default, this is the one that handles MDS.
+#### 4. Next, update the Core.JavaScript.Embedder.Program.cs to ensure that the file references to localhost match the value from step 1. You will need to update the script block you are using, without making changes you will use script2 as a default, this is the one that handles MDS.
 
-![](http://i.imgur.com/kFWECOR.png)
-
-----------
-
-####5. Execute the console application by selecting the project, right clicking, selecting Debug -> Start New Instance. This will create the user custom action in your site.
-
-![](http://i.imgur.com/UCITZkm.png)
+![Screenshot of the code which shows that the JavaScript in variable script2 has been modified so that every URL begins with https://localhost:44324/](http://i.imgur.com/kFWECOR.png)
 
 ----------
 
-####6. In the Core.JavaScript.CDN project, set the Start URL to your development site url:
+#### 5. Execute the console application by selecting the project, right clicking, selecting Debug -> Start New Instance. This will create the user custom action in your site.
 
-![](http://i.imgur.com/Ch18z8B.png)
-
+![Screenshot of the context menu, highlighting Debug -> Start new instance.](http://i.imgur.com/UCITZkm.png)
 
 ----------
 
-####7. Create a list named "Config" in your dev site and add a column named "Value". Add an item with a Title of "ClientCDNUrlBase" and a value matching the absolute url from step 1. You can also add any other configuration required by your applications to this centralized store - which can be accessed from both client and managed code.
+#### 6. In the Core.JavaScript.CDN project, set the Start URL to your development site url:
 
-![](http://i.imgur.com/edijvUz.png)
+![The project properties, Web tab are displayed with the Start URL field set to https://318studios.sharepoint.com/sites/dev/](http://i.imgur.com/Ch18z8B.png)
 
 
 ----------
 
+#### 7. Create a list named "Config" in your dev site and add a column named "Value". Add an item with a Title of "ClientCDNUrlBase" and a value matching the absolute url from step 1. You can also add any other configuration required by your applications to this centralized store - which can be accessed from both client and managed code.
 
-####8. Update the pnp-settings.js file, modifying the configLoadUrl value to point to your dev site where you created the config list in step 7. Ensure you leave the _api part unchanged so that the REST query will work.
-
-![](http://i.imgur.com/iyj4yNt.png)
+![A screenshot of the SharePoint site showing the Config list, the title ClientCDNUrlBase and value https://localhost:44324](http://i.imgur.com/edijvUz.png)
 
 
 ----------
 
 
-####9. Set a break point in one of the JS files, for example pnp-uimods.js and hit F5. You should see your breakpoint get hit. You should also see the dev dashboard icon in the very bottom right of your page, clicking this will open the dev dashboard.
+#### 8. Update the pnp-settings.js file, modifying the configLoadUrl value to point to your dev site where you created the config list in step 7. Ensure you leave the _api part unchanged so that the REST query will work.
 
-![](http://i.imgur.com/dCUHnDX.png)
+![A screenshot of the pnp-settings.js file, showing that the configLoadUrl value has been modified to begin with the text https://318studios.sharepoint.com/sites/dev/_api/lists/getbytitle](http://i.imgur.com/iyj4yNt.png)
+
+
+----------
+
+
+#### 9. Set a break point in one of the JS files, for example pnp-uimods.js and hit F5. You should see your breakpoint get hit. You should also see the dev dashboard icon in the very bottom right of your page, clicking this will open the dev dashboard.
+
+![Screenshot of a breakpoint set at a line which reads, modifications.push(new modification(Remove New Site Link](http://i.imgur.com/dCUHnDX.png)
