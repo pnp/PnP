@@ -38,7 +38,7 @@ As we’re hooking up the list to the host web we’ll need to programmatically 
 ## ENSURING APPINSTALLED AND APPUNINSTALLING EVENTS FIRE ##
 The add-in events are set as properties of the SharePoint project:
 
-![](http://i.imgur.com/QKqjPQt.png)
+![The Core.EventReceiverBasedModifications Project Properties](http://i.imgur.com/QKqjPQt.png)
 
 ## HOOKING UP THE LISTADDED EVENT ##
 The remote event receiver that gets executed on add-in install will dynamically add the ListAdded event receiver. Below code snippet shows how this is done:

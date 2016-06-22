@@ -39,7 +39,7 @@ input box, and send button.  As messages are received from SignalR, they're adde
 also added to the messages that are localized to the client's timezone via JavaScript.  Deployed as a web part, the rendered 
 user interface looks like this:
 
-![](http://blog.jonathanhuss.com/wp-content/uploads/2015/04/image_thumb29.png)
+![The web page which shows the chat interface](http://blog.jonathanhuss.com/wp-content/uploads/2015/04/image_thumb29.png)
 
 ### SignalR Bits ###
 The SignalR components in this solution consist of a server and a client.  The server is contained in the ChatHub.cs C# class

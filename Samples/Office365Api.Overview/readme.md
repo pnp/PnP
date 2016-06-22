@@ -97,7 +97,7 @@ To run the ASP.NET MVC sample you can you use the development Azure AD tenant wh
 To Sign Up a new Office 365 tenant, or at least a single Office 365 user of another tenant, for the sample application, start the Web Application (Office365Api.MVCDemo) and choose the "Sign Up" menu item.
 You will be prompted with the following screen:
 
-![](http://i.imgur.com/KbakAEe.png)
+![The Sign Up Tenant page](http://i.imgur.com/KbakAEe.png)
 
 Provide the name of your tenant (something like <tenant>.onmicrosoft.com) and, if you are a Tenant Global Administrator and you want to make the web application available to all the users of your tenant, check the "Check this if you are an administrator and you want to enable the app for all your users" option.
 You will have to login through Azure AD using an authorized account for the tenant you selected.

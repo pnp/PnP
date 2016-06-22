@@ -3,14 +3,14 @@
 ### Summary ###
 This scenario shows how an add-in can use the add-in Installed event to perform additional work in the host web, such as attaching event receivers to lists in the host web.
 
-![](http://i.imgur.com/ZvzkKJD.png)
+![A diagram of an add-in installed event with the messages, App Installed, Attach ItemAdded, and ItemAdded.](http://i.imgur.com/ZvzkKJD.png)
  
 For more information on this scenario, see the blog post: [http://blogs.msdn.com/b/kaevans/archive/2014/02/26/attaching-remote-event-receivers-to-lists-in-the-host-web.aspx](http://blogs.msdn.com/b/kaevans/archive/2014/02/26/attaching-remote-event-receivers-to-lists-in-the-host-web.aspx). 
 
 ### Walkthrough Video ###
 Visit the video on Channel 9 - [http://channel9.msdn.com/Blogs/Office-365-Dev/Using-appinstalled-events-to-attach-remote-event-receivers-to-SharePoint-Host-Webs-Office-365-Develo](http://channel9.msdn.com/Blogs/Office-365-Dev/Using-appinstalled-events-to-attach-remote-event-receivers-to-SharePoint-Host-Webs-Office-365-Develo)
 
-![](http://i.imgur.com/ASdp83p.png)
+![An image of the video.](http://i.imgur.com/ASdp83p.png)
 
 
 ### Applies to ###
@@ -44,7 +44,7 @@ The solution is a provider-hosted add-in (remote event receivers are not support
 
 This sample shows adding the remote event receiver to the host web by clicking button in the provider hosted add-in, but this could be done also automatically either when the site or site collection is provisioned; or when the add-in is installed by using add-in Installed and Handle add-in Uninstalling properties of the Visual Studio solution.
 
-![](http://i.imgur.com/PbnYf3t.png)
+![The project properties, showing Active Deployment C as Deploy app for Share, Handle App Installed as true, and Handle app uninstalling as true.](http://i.imgur.com/PbnYf3t.png)
 
 Visual Studio will then add a new WCF service to your web application project named AppEventReceiver.cs.
 
@@ -106,33 +106,33 @@ Once this code executes and a call to clientContext.ExecuteQuery() is made, the 
 # EXECUTING THE SAMPLE ADD-IN #
 To execute the sample, first change the SharePoint URL to a valid SharePoint environment configured for apps.  Next, go to the Contoso.EventReceivers add-in project and choose Properties to reveal the SharePoint tab.  Scroll down to ensure a Windows Azure Service Bus connection string is configured. This is needed for proper debugging of the add-in.
 
-![](http://i.imgur.com/AtcfB3T.png)
+![A screenshot which shows a checked check box next to Enable debugging via Windows Azure Service Bus, a Windows Azure Service Bus connection string, and a checked check box next to Notify me if Windows Azure Service Bus debugging is not configured.](http://i.imgur.com/AtcfB3T.png)
 
 For more information on Remote Event Receiver debugging, see the section “Debugging Remote Events” at [http://msdn.microsoft.com/en-us/library/office/jj220047.aspx#DebugRER](http://msdn.microsoft.com/en-us/library/office/jj220047.aspx#DebugRER).  
 
 Once the Windows Azure Service Bus connection string is configured, simply press F5 in Visual Studio.  The web project will run in IIS Express, while the add-in is deployed to SharePoint.  Add a break-point in the ProcessEvent method to debug the add-in. When the add-in is run, you must click Trust It in order to grant the necessary permissions.
 
-![](http://i.imgur.com/1MfAFV9.png)
+![A dialog box with the title Do you trust Contoso.EventReceivers? and a highlighted button labeled Trust it.](http://i.imgur.com/1MfAFV9.png)
 
 The add-in begins to install, and the break-point will be hit.
 
-![](http://i.imgur.com/YQHRadM.png)
+![A screenshot of the breakpoint being hit.](http://i.imgur.com/YQHRadM.png)
 
 Continue debugging, and the add-in will finally render the full-page experience.
 
-![](http://i.imgur.com/W8LUyMI.png)
+![A screenshot of the full page entitled, Remote Event Receiver. A link, Back to Site, is in the upper left corner.](http://i.imgur.com/W8LUyMI.png)
 
 Click the “Back to Site” link in the top left to go back to the SharePoint site.  Notice that the add-in now shows in the Recent navigation heading, as does the newly added list “Remote Event Receiver Jobs”.
 
-![](http://i.imgur.com/S9JOZNe.png)
+![A screenshot of the navigation heading, Recent, with a list of two items, Contoso.EventReceivers, and Remote Event Receiver Jobs.](http://i.imgur.com/S9JOZNe.png)
 
 Open the Remote Event Receiver Jobs list and add a new item.
 
-![](http://i.imgur.com/mm00KKy.png)
+![A dialog which contains the field Title with the text This list item is in the host web, a field Description with the text Saving this new item will cause an event to fire, and a field AssignedTo with the text Kirk Evans.](http://i.imgur.com/mm00KKy.png)
 
 Clicking Save will cause the remote event receiver endpoint to be called.  The sample code in this solution simply appends text to the Description field.
 
-![](http://i.imgur.com/2Las9nf.png)
+![A dialog which contains the field Title with the text This list item is in the host web, a field Description with the text Saving this new item will cause an event to fire Updated by RER 4:22:39 PM, and a field AssignedTo with the text Kirk Evans. Below this is text which reads Created at 2/22/2014 2:22 PM by MOD Administrator. Last modified at 2/22/2014 2:22 PM by Contoso.EventRecievers on behalf of MOD Administrator, and a button labeled Close.](http://i.imgur.com/2Las9nf.png)
 
 # Handling add-in Uninstalling and Debugging #
 
