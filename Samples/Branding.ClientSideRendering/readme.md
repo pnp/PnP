@@ -70,7 +70,7 @@ In order for the Client Side Rendering sample to render correctly, you must firs
 
 9)  After add-in installation, a new page will be displayed.  Click the Provision Samples button to create the list columns, lists, list views, initialize the lists with data, and upload the Client Side Rendering JavaScript and image files that support the samples.  The provisioning code registers the Client Side Rendering JavaScript files with the list forms and views via the JSLink property.
 
-![](http://i.imgur.com/LGC32Fc.png)
+![Client Side Rendering -- JSlink page, with button for Provision Samples](http://i.imgur.com/LGC32Fc.png)
 
 10)  After you have successfully configured your SharePoint environment and deployed the artifacts via the add-in, you can view the Client Side Rendering samples by clicking on the links in the add-in.
 

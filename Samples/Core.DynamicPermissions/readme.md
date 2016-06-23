@@ -64,7 +64,7 @@ TokenHelper will read the client ID from web.config and append it to the URL.
 
 As a demonstration, I register the add-in using AppRegNew.aspx.  The client ID identifies the add-in, and the Redirect URL provides the URL to redirect the browser to once the permissions are granted.
 
-![](http://i.imgur.com/FGkEat5.png)
+![The App Id and Title page. The App Id field contains a GUID. The Title contains DynamicPermissions. The App Domain contains localhost. The Redirect URL contains https://localhost:44363/Home/Callback](http://i.imgur.com/FGkEat5.png)
 
 Once the add-in has been granted permissions, it redirects to the registered Redirect URL (https://localhost:44363/Home/Callback) and passes an authorization code.  This code is handed in the Home controller in the Callback action:
 
@@ -87,10 +87,10 @@ Use the refresh token and access token in order to create a ClientContext with t
 
 The add-in can now obtain the SharePoint site’s title (notice the “Successfully connected to” in the screen shot below shows the site’s title).
 
-![](http://i.imgur.com/Kk8As9F.png)
+![The text in the image: Successfully connected to Dev. Now that you dynamically requested permissions, test it out by creating a list. A text box contains the text, A Test List. Followed by a button, Create List.](http://i.imgur.com/Kk8As9F.png)
 
 To test that our provider-hosted add-in actually was granted Manage permissions for the web, we can create a new list by providing the list title.  Click Create List and we see the new list is created.
 
-![](http://i.imgur.com/yUFp74h.png)
+![The text in the image: Lists in Dev. A Test List. App Packages.](http://i.imgur.com/yUFp74h.png)
 
 
