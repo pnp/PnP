@@ -1,4 +1,4 @@
-﻿'use strict';
+'use strict';
 
 // This code runs when the DOM is ready and creates a context object which is needed to use the SharePoint object model
 $(document).ready(function () {
@@ -9,7 +9,7 @@ $(document).ready(function () {
     });
 
     //JSOM call
-    $("#btnREST").click(function(){
+    $("#btnJSOM").click(function () {
         JSOM();
     });
     
@@ -26,15 +26,15 @@ function REST() {
     var listServices = new SharePointClient.Services.REST.ListServices();
 
      //REST Listservices class for accessing list services
-    var listServices = new Cognizant.SharePointClient.Services.REST.ListServices();
+    var listServices = new SharePointClient.Services.REST.ListServices();
 
     //Set response type
-    var responseType = Cognizant.SharePointClient.Constants.REST.HTTP.DATA_TYPE.JSON;
+    var responseType = SharePointClient.Constants.REST.HTTP.DATA_TYPE.JSON;
 
     var listTitle = "xyz";
     //Create Caml object
-    var camlConstant = Cognizant.SharePointClient.Constants.CAML_CONSTANT;
-    var camlQuery = new Cognizant.SharePointClient.CamlExtension.REST.CamlQuery();
+    var camlConstant = SharePointClient.Constants.CAML_CONSTANT;
+    var camlQuery = new SharePointClient.CamlExtension.REST.CamlQuery();
     camlQuery.SetViewScopeAttribute(camlConstant.CAML_QUERY_SCOPE.RECURSIVE_ALL)
     .SetViewFieldsXml("<FieldRef Name='ID'/><FieldRef Name='Title'/>")
     .SetQuery("<Where><Geq><FieldRef Name=\"Modified\" /><Value Type=\"DateTime\" IncludeTimeValue=\"TRUE\""
@@ -64,8 +64,8 @@ function JSOM() {
 
         var listTitle = "xyz";
         //Create Caml object
-        var camlConstant = Cognizant.SharePointClient.Constants.CAML_CONSTANT;
-        var camlQuery = new Cognizant.SharePointClient.CamlExtension.JSOM.CamlQuery();
+        var camlConstant = SharePointClient.Constants.CAML_CONSTANT;
+        var camlQuery = new SharePointClient.CamlExtension.JSOM.CamlQuery();
         camlQuery.ViewAttribute(camlConstant.CAML_QUERY_SCOPE.RECURSIVE_ALL)
         .Query("<Where><Geq><FieldRef Name=\"Modified\" /><Value Type=\"DateTime\" IncludeTimeValue=\"TRUE\""
         + "StorageTZ=\"TRUE\">2015-08-05T15:50:08</Value></Geq></Where>")
