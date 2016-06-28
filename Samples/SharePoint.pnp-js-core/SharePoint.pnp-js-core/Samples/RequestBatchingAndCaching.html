@@ -1,0 +1,36 @@
+﻿<span id="page-script">
+    <script type="text/javascript" src="../scripts/pnp.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            sample.init(function (hostWebUrl, appWebUrl) {
+
+                sample.show("");
+
+                var batch = $pnp.sp.createBatch();
+
+                $pnp.sp.web.usingCaching().inBatch(batch).get().then(function (d) {
+                    sample.append(d);
+                });
+
+                $pnp.sp.web.lists.inBatch(batch).usingCaching().get().then(function (d) {
+                    sample.append(d);
+                });
+
+                batch.execute();
+            });
+        });
+
+    </script>
+</span>
+
+<div class="page-header">
+    <h1>Request Batching with Caching</h1>
+</div>
+
+<p>
+    This sample demonstrates how to use REST batching with caching. This is achieved by chaining both methods immediately before the action method, however order of these two methods
+    does not matter as shown in the example. Any get requests that are part of a batch may be cached, and you can specify the per request caching paramters if needed. The results of 
+    the batched call will then be cached as expected - even though they are part of the batch. For subsequent batches those requests which are cached will not be included, instead
+    those promises will resolve immediately with the cached data.
+</p>

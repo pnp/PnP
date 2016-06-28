@@ -12,5 +12,8 @@
     <ProjectItemFile Source="Configuration.html" Target="Samples\" Type="ElementFile" />
     <ProjectItemFile Source="ReadListItems.html" Target="Samples\" Type="ElementFile" />
     <ProjectItemFile Source="ReadListItemsPaged.html" Target="Samples\" Type="ElementFile" />
+    <ProjectItemFile Source="RequestCaching.html" Target="Samples\" Type="ElementFile" />
+    <ProjectItemFile Source="RequestBatching.html" Target="Samples\" Type="ElementFile" />
+    <ProjectItemFile Source="RequestBatchingAndCaching.html" Target="Samples\" Type="ElementFile" />
   </Files>
 </ProjectItem>

@@ -1,0 +1,39 @@
+﻿<span id="page-script">
+    <script type="text/javascript" src="../scripts/pnp.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            sample.init(function (hostWebUrl, appWebUrl) {
+
+                sample.show("");
+
+                var batch = $pnp.sp.createBatch();
+
+                $pnp.sp.web.inBatch(batch).get().then(function (d) {
+                    sample.append(d);
+                });
+
+                $pnp.sp.web.lists.inBatch(batch).get().then(function (d) {
+                    sample.append(d);
+                });
+
+                batch.execute();
+            });
+        });
+
+    </script>
+</span>
+
+<div class="page-header">
+    <h1>Request Batching</h1>
+</div>
+
+<p>
+    This sample demonstrates how to use REST batching with the library. Adding batch support is as easy as creating a batch and adding the inBatch() call to your method chain. The inBatch call should be
+    chained immediately before the action method (get, update, add, etc). Both get and post requests can be batched, and your promises will resolve as expected once the batch is complete. To run a batch
+    you must call the execute method as shown on the batch object.
+</p>
+
+<p>
+    If you look at the browser tools network report or use a tool such as fiddler you will see that the above requests are combined and executed in a single batch.
+</p>
