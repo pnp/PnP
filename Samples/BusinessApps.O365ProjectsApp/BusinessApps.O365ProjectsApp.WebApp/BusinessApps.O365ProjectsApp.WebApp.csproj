@@ -425,6 +425,7 @@
     <Content Include="Views\Shared\_Office365NavBar.cshtml" />
     <Content Include="Views\Shared\_Office365SuiteBar.cshtml" />
     <Content Include="Views\Project\Index.cshtml" />
+    <Content Include="Views\Project\StartNewProject.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
