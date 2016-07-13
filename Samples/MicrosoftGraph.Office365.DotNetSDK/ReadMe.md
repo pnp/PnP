@@ -8,7 +8,7 @@ authenticate against the new v2 Authentication endpoint
 * An ASP.NET MVC web application, which uses the ADAL (Azure Active Directory Authentication Library) to
 authenticate against the Azure AD endpoint
 
-This sample is part of the code samples related to the book ["Programming Office 365"](https://www.microsoftpressstore.com/store/programming-microsoft-office-365-includes-current-book-9781509300914) written by [Paolo Pialorsi](https://twitter.com/PaoloPia) and published by Microsoft Press.
+This sample is part of the code samples related to the book ["Programming Microsoft Office 365"](https://www.microsoftpressstore.com/store/programming-microsoft-office-365-includes-current-book-9781509300914) written by [Paolo Pialorsi](https://twitter.com/PaoloPia) and published by Microsoft Press.
 
 ### Applies to ###
 -  Microsoft Office 365
