@@ -39,7 +39,7 @@ Next chapters describe the steps taken to realize this.
 ## Setup of your WebAPI service ##
 This solution contains a provider hosted SharePoint add-in (Core.Services.Authenticate.SharePoint and Core.Services.Authenticate.SharePointWeb) and a WebAPI project (Core.Services.Authenticate.WebAPI). In both these projects a WebAPI service has been added by creating a folder named **"Controller"**, right clicking it, choosing **Add** and selecting **"Controller..."**:
 
-![](http://i.imgur.com/M7oS3m8.png)
+![Add scaffold dialog from Visual Studio](http://i.imgur.com/M7oS3m8.png)
 
 We then selected the WebAPI 2 controller to get an empty controller added to the project.
 

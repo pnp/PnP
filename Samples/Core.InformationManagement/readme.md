@@ -50,9 +50,9 @@ In order to use Site Policies within your environment you must use the Content T
 ### Note: ###
 Creating Site Policies programmatically is not available today using add-in model. 
 
-![](http://i.imgur.com/njiTUNy.png)
+![Site policy list](http://i.imgur.com/njiTUNy.png)
 
-![](http://i.imgur.com/DeMfdG5.png)
+![Creating new site policy from UI](http://i.imgur.com/DeMfdG5.png)
 
 # SCENARIO: FETCH SITE POLICY INFORMATION #
 This include sample demonstrates a pattern on how to work with the SharePoint CSOM ClientContext to retrieve site policy settings for the current site collection.

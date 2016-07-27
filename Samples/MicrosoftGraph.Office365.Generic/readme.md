@@ -40,4 +40,4 @@ High level configuration details as follows:
 - Configure needed permissions for the application
 - Configure web.config file accordingly with registered app information 
 
-![](http://i.imgur.com/POSJqD7.png)
+![Setup details in web.config](http://i.imgur.com/POSJqD7.png)

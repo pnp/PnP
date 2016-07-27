@@ -30,5 +30,5 @@ Version | Date | Comments
 ## General Comments ##
 This sample shows how one can use JavaScript to perform basic updates to a SharePoint site.  In this sample we will modify the Status Bar for all pages. 
 
-![](http://i.imgur.com/xpL9UGb.png)
+![Picture showing additional message in header of the page](http://i.imgur.com/xpL9UGb.png)
 

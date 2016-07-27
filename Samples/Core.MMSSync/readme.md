@@ -30,7 +30,7 @@ Have you ever wanted to move Taxonomy items from one term store to another? With
 
 Here's the high level process for the MMS synchronization tooling.
 
-![](http://i.imgur.com/CpWRWOL.png)
+![Process picture with 4 steps](http://i.imgur.com/CpWRWOL.png)
 
 1. One farm has to act as the primary farm, which is used as the location where changes are applied. 
 2. MMS synchronization tooling will access the primary MMS/taxonomy store and will query changes applied to taxonomy after certain time period. Tool will synchronize or repeat the operations also against the other SharePoint services, like Office 365

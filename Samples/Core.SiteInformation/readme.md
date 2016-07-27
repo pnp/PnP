@@ -36,12 +36,13 @@ The add-in has several sample components:
 - a simple default.aspx page with code-behind logic to get the data
 
 Sample interface:
-![](http://i.imgur.com/fffDVVu.png)
+
+![Site information UI](http://i.imgur.com/fffDVVu.png)
 
 
 Sample menu:
 
-![](http://i.imgur.com/WavCqoC.png)
+![Custom menu option in site actions](http://i.imgur.com/WavCqoC.png)
 
 Most calls can only be performed with Site Collection permissions, however some require access to the tenant. Review the code to follow the required tenant permissions calls.
 

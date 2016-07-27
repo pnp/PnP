@@ -8,7 +8,7 @@ This sample shows how to provision site columns, content types and views using x
 ### Walkthrough Video ###
 Visit the video on Channel 9 - [http://channel9.msdn.com/Blogs/Office-365-Dev/Create-SharePoint-fields-and-content-types-based-on-element-XML-in-Apps-for-SharePoint-Office-365-De](http://channel9.msdn.com/Blogs/Office-365-Dev/Create-SharePoint-fields-and-content-types-based-on-element-XML-in-Apps-for-SharePoint-Office-365-De)
 
-![](http://i.imgur.com/IBMsNa0.png)
+![Channel 9 video landing page](http://i.imgur.com/IBMsNa0.png)
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)

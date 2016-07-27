@@ -41,7 +41,7 @@ Version  | Date | Comments
 # Use case description #
 The use case for this sample is showing how you can leverage your AD information, even when your app is running in Microsoft Azure. Once you're running in Microsoft Azure there's no direct connection anymore to your local on-premises Active Directory which prevents scenarios like checking if a user is member of an AD group. Luckily most SharePoint Online customers do sync their on-premises Active Directory with Azure AD...which gives us the opportunity to query Azure AD instead of the on-premises Active Directory. Below diagram shows all components together:
 
-![](http://i.imgur.com/tPzGRCC.png)
+![Logical Design of the solution](http://i.imgur.com/tPzGRCC.png)
 
 An example use to leverage the Azure AD could be a provisioning app that depending on the group membership of a user provisions a site collection using additional elements.
 
@@ -119,7 +119,9 @@ Given that the sample is a console app, Visual Studio will not register a Client
 You need to do this yourself. In a production environment you don't even have Visual Studio, this is how you would deploy this in production.
 
 Start by getting and registering a ClientId and ClientSecret through /_layouts/15/AppRegNew.aspx:
-[](http://i.imgur.com/IznipPJ.png)
+
+![Registration of teh client id and secret in appregnew.aspx](http://i.imgur.com/IznipPJ.png)
+
 Put a useful 'Title'. I use "localhost" for the App Domain and "https://localhost" for the Redirect UI. In the case of a console app you don't need niether of those.
 
 When you click 'Create', this form will do some magic - it will register a service principal with Azure AD (check it with Get-MsolServicePrincipal).

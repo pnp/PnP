@@ -97,7 +97,7 @@ namespace MicrosoftGraph.Office365.DotNetSDK.ConsoleApp
 
         private static async Task ShowMyDisplayName(GraphServiceClient graphClient)
         {
-            var me = await graphClient.Me.Request().Select("Dis8playName").GetAsync();
+            var me = await graphClient.Me.Request().Select("DisplayName").GetAsync();
             Console.WriteLine("Your ID is: {0}", me.DisplayName);
         }
 

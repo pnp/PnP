@@ -69,19 +69,19 @@ protected void Application_Error(object sender, EventArgs e)
 ## STEP 3: where can I find the error ##
 The error is logged in the add-in details page. You can get there by the following steps:
 
-![](http://i.imgur.com/SnMcwfw.png)
+![Details page for add-in](http://i.imgur.com/SnMcwfw.png)
 
 Go to site contents. Click on the ... next to your add-in. Click details
 
-![](http://i.imgur.com/n6lshti.png)
+![Add-in details page](http://i.imgur.com/n6lshti.png)
 
 Here you can see the number of runtime errors. Click on the link to see the error.
 
-![](http://i.imgur.com/vFrJiYx.png)
+![Example runtime error](http://i.imgur.com/vFrJiYx.png)
 
 The error will also show up in the add-in tracing. More info about how to get to this tracing is in the next section.
 
-![](http://i.imgur.com/x80isGy.png)
+![Trace information](http://i.imgur.com/x80isGy.png)
 
 # How to use tracing #
 
@@ -158,15 +158,15 @@ protected void TraceMethods_Click(object sender, EventArgs e)
 ## How to view tracing ##
 Go to pages/trace.axd. If tracing is enabled, you will get the following screen:
 
-![](http://i.imgur.com/ekp1vgH.png)
+![Application Trace view](http://i.imgur.com/ekp1vgH.png)
 
 This screen shows all the requests to your web application, with their status. If you click on View Details, you can see detailed information about the request, including the tracing.
 
 This screen shows custom trace messages.
 
-![](http://i.imgur.com/QVGTOS1.png)
+![Request details](http://i.imgur.com/QVGTOS1.png)
 
 This screen shows method tracing.
 
-![](http://i.imgur.com/7cb3795.png)
+![Method tracing](http://i.imgur.com/7cb3795.png)
 

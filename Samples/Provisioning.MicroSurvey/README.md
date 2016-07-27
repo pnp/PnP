@@ -35,7 +35,7 @@ This is a "microsurvey" web part, which will display a single question and
 gather up the answers. The app provisions SharePoint lists to hold the questions
 and answers, including custom New, Display, and Edit forms for one of the lists.
 
-![](http://i.imgur.com/AGGFagj.png)
+![Add-in UI](http://i.imgur.com/AGGFagj.png)
 
 In addition to providing a useful "microsurvey", this Visual Studio solution demonstrates how to build
 widgets and forms that provision their own content and are flexible to be deployed in more than one way.

@@ -30,10 +30,10 @@ This SharePoint-hosted sample application for SharePoint demonstrates how to cre
 
 Below screenshot shows the custom initiation form:
 
-![](http://i.imgur.com/nx2jK1V.png)
+![Add-in UI with custom form](http://i.imgur.com/nx2jK1V.png)
 
 And this is the custom approval form:
-![](http://i.imgur.com/bQN4qiO.png)
+![Custom approval form](http://i.imgur.com/bQN4qiO.png)
 
 ## WORKFLOW ##
 ### WORKFLOW ARGUMENTS ###

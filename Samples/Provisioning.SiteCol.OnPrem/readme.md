@@ -39,7 +39,7 @@ Required steps to enable the sample are following.
 1. Choose one site collection to act as "Tenant ddmin site" and execute SetSiteColAdministrationSiteType.ps1
 1. Ensure that you use 15 version of the Microsoft.Online.SharePoint.Client.Tenant assembly
 
-Check detailed documentation from [hhttp://blogs.msdn.com/b/vesku/archive/2014/06/09/provisioning-site-collections-using-sp-app-model-in-on-premises-with-just-csom.aspx](hhttp://blogs.msdn.com/b/vesku/archive/2014/06/09/provisioning-site-collections-using-sp-app-model-in-on-premises-with-just-csom.aspx).
+Check detailed documentation from [http://blogs.msdn.com/b/vesku/archive/2014/06/09/provisioning-site-collections-using-sp-app-model-in-on-premises-with-just-csom.aspx](http://blogs.msdn.com/b/vesku/archive/2014/06/09/provisioning-site-collections-using-sp-app-model-in-on-premises-with-just-csom.aspx).
 
 You should also have a look on how you can perform similar capability using asynchronous pattern, which is much more end user friendlier way to provide this functionality. Details on this pattern are available from following blog post: [http://blogs.msdn.com/b/vesku/archive/2014/08/29/async-site-collection-provisioning-with-app-model-for-on-prem-and-office-365-dedicated.aspx](http://blogs.msdn.com/b/vesku/archive/2014/08/29/async-site-collection-provisioning-with-app-model-for-on-prem-and-office-365-dedicated.aspx)
 

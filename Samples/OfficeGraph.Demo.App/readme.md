@@ -29,7 +29,7 @@ Version  | Date | Comments
 
 The App queries the Office Graph for the colleagues with whom you closely work with and displays them. Basically, it does the same thing which you see on the left hand side when you log in to Delve. This app can be a good starting point if you want to further develop apps which consume the Office Graph API. You can pick and choose the Delve elements which you want in your app. Also, you can create customized scenarios which leverage the Office Graph and deliver them as Apps for SharePoint. 
 
-![](http://i.imgur.com/MHTSLS5.png)
+![Add-in UI](http://i.imgur.com/MHTSLS5.png)
 
 
 # Required Details #

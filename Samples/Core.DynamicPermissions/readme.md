@@ -30,15 +30,15 @@ Version  | Date | Comments
 # SCENARIO: DYNAMICALLY REQUEST ADD-IN PERMISSIONS #
 This scenario shows how an add-in can be used to dynamically request permissions to access SharePoint resources from any web site.
 
-![](http://i.imgur.com/7Dnd75t.png)
+![App UI with Connect button](http://i.imgur.com/7Dnd75t.png)
 
 After entering the URL for the SharePoint site and clicking the Connect button, the user is redirected to sign into Office 365.
 
-![](http://i.imgur.com/zYs8EDJ.png)
+![Sign-in to Office 365](http://i.imgur.com/zYs8EDJ.png)
 
 Once signed in, the user is prompted to trust the add-in.
 
-![](http://i.imgur.com/psJXcqu.png)
+![Trust dialog for add-in permissions](http://i.imgur.com/psJXcqu.png)
 
 ### Note:###
 This type of add-in can only be run by users who have Manage permissions to the resources the add-in wants to access, because only they have sufficient rights to grant the add-in the permissions that it requests. For example, if an add-in requests only Read permission to a website, a user who has Read, but not Manage, rights to the website cannot run the add-in.  For more information, see http://msdn.microsoft.com/en-us/library/office/jj687470.aspx. 
@@ -64,7 +64,7 @@ TokenHelper will read the client ID from web.config and append it to the URL.
 
 As a demonstration, I register the add-in using AppRegNew.aspx.  The client ID identifies the add-in, and the Redirect URL provides the URL to redirect the browser to once the permissions are granted.
 
-![](http://i.imgur.com/FGkEat5.png)
+![The App Id and Title page. The App Id field contains a GUID. The Title contains DynamicPermissions. The App Domain contains localhost. The Redirect URL contains https://localhost:44363/Home/Callback](http://i.imgur.com/FGkEat5.png)
 
 Once the add-in has been granted permissions, it redirects to the registered Redirect URL (https://localhost:44363/Home/Callback) and passes an authorization code.  This code is handed in the Home controller in the Callback action:
 
@@ -87,10 +87,10 @@ Use the refresh token and access token in order to create a ClientContext with t
 
 The add-in can now obtain the SharePoint site’s title (notice the “Successfully connected to” in the screen shot below shows the site’s title).
 
-![](http://i.imgur.com/Kk8As9F.png)
+![The text in the image: Successfully connected to Dev. Now that you dynamically requested permissions, test it out by creating a list. A text box contains the text, A Test List. Followed by a button, Create List.](http://i.imgur.com/Kk8As9F.png)
 
 To test that our provider-hosted add-in actually was granted Manage permissions for the web, we can create a new list by providing the list title.  Click Create List and we see the new list is created.
 
-![](http://i.imgur.com/yUFp74h.png)
+![The text in the image: Lists in Dev. A Test List. App Packages.](http://i.imgur.com/yUFp74h.png)
 
 

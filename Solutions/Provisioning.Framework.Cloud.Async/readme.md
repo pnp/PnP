@@ -44,7 +44,7 @@ Version  | Date | Comments
 # Conceptual design #
 Following picture shows the conceptual design of this solution.
 
-![](http://i.imgur.com/3S21w53.png)
+![Logical design of the solution with 5 steps](http://i.imgur.com/3S21w53.png)
 
 1. Business users will modify actual agreed sites using their browser for needed changes, like site columns, content types, list/libraries and branding
 2. There could be one or more template sites, which could be for example divided between organizations and each of them could have separate content editors. This obviously depends on the exact business requirements for each customer
@@ -58,7 +58,7 @@ Following picture shows the conceptual design of this solution.
 # Code level approach #
 Here's logical design from code perspective.
 
-![](http://i.imgur.com/jEsw6uB.png)
+![Logica design for the code with 4 steps](http://i.imgur.com/jEsw6uB.png)
 
 1. We can extract the delta changes compared to out of the box site definitions by executing *Web.GetProvisioningTemplate()* extension method. This will return us a domain object, which we can optionally also modify in code, if needed
 2. You can serialize the domain object to different formats. Main format is PnP provisioning xml, but also JSOM is already supported. PnP provisioning XML uses community standardize schema available from own [repository](https://github.com/OfficeDev/PnP-Provisioning-Schema) under Office Dev in the GitHub
@@ -70,7 +70,7 @@ Here's logical design from code perspective.
 # Solution description #
 Here's individual projects what are included in the solution and the needed configuration for them. 
 
-![](http://i.imgur.com/6HgFECj.png)
+![List of projects in Visual Studio solution](http://i.imgur.com/6HgFECj.png)
 
 ### Helper.ApplyCustomTemplate ###
 Helper project to test the configuration apply logic. You will need to update the add-in ID information in app.config to make this work properly. 
@@ -101,4 +101,4 @@ This is the actual web UI for self-service site collection creation. Notice agai
 
 You will need to update correct Azure storage key for the web.config.
 
-![](http://i.imgur.com/mmiuWFA.png)
+![UI of the site request form](http://i.imgur.com/mmiuWFA.png)

@@ -41,7 +41,7 @@ Version  | Date | Comments
 - Azure subscription and existing SQL Azure database to store site information records
 
 ## Conceptual design ##
-![](https://raw.githubusercontent.com/LiyeXu/PnP-Governance-Assets/master/Governance.png)
+![Conceptual design and processes cross elements](https://raw.githubusercontent.com/LiyeXu/PnP-Governance-Assets/master/Governance.png)
 
 ## Solution Description ##
 Projects what are included in the solution.
@@ -136,7 +136,7 @@ repository.UsingContext(context => {
 ### Governance.TimerJobs.Policy ###
 A set of reusable abstract or concrete site management policies.
 
-![](https://raw.githubusercontent.com/LiyeXu/PnP-Governance-Assets/master/policy.png)
+![Policy classes](https://raw.githubusercontent.com/LiyeXu/PnP-Governance-Assets/master/policy.png)
 
 - [AdministratorPolicy](https://github.com/OfficeDev/PnP/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs.Policy/Samples/AdministratorsPolicy.cs): marks site information record as in-compliant if there is less than 2 site collection administrators
 - [MembershipReviewPolicy](https://github.com/OfficeDev/PnP/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs.Policy/Samples/MembershipReviewPolicy.cs): marks site information record as in-compliant if the latest external user membership review date in DB repository is earlier than 1 month ago
@@ -146,7 +146,7 @@ A set of reusable abstract or concrete site management policies.
 ### Governance.TimerJobs ###
 This project contains a set of PnP timer jobs. It is responsible of the SPO site status synchronization and site policy enforcement / notification works.
 
-![](https://raw.githubusercontent.com/LiyeXu/PnP-Governance-Assets/master/TimerJobs.png)
+![Time job classes](https://raw.githubusercontent.com/LiyeXu/PnP-Governance-Assets/master/TimerJobs.png)
 
 - [TenantManagementTimerJob](https://github.com/OfficeDev/PnP/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs/TenantManagementTimerJob%20.cs) is an abstract class inherits [OfficeDevPnP.Core.Framework.TimerJobs](https://github.com/OfficeDev/PnP-Sites-Core/blob/dev/Core/OfficeDevPnP.Core/Framework/TimerJobs/TimerJob.cs), which is designed to be used as the base class of all tenant management related timer jobs. It outputs the current job progress to the console.
 - [SynchronizationJob](https://github.com/OfficeDev/PnP/blob/master/Solutions/Governance.TimerJobs/Governance.TimerJobs/SynchronizationJob.cs) is a concrete TenantManagementTimerJob which iterates thru all SharePoint site collections to keep the DB repository being up to date.
@@ -223,21 +223,21 @@ headID.appendChild(iframe);
 #### UX for site life cycle policy ####
 Governance Solution should provide a page for administrators to either extend or decommission the site collection at the end of a default site life cycle.
 
-![](https://raw.githubusercontent.com/LiyeXu/PnP-Governance-Assets/master/ExtendSite.png)
+![UI for extending a site life time](https://raw.githubusercontent.com/LiyeXu/PnP-Governance-Assets/master/ExtendSite.png)
 
 #### UX for membership review policy ####
 Governance Solution should provide a page for administrators to review each external users membership and update the last review date in DB repository once it's confirmed the review process is done.
 
-![](https://raw.githubusercontent.com/LiyeXu/PnP-Governance-Assets/master/MembershipReview.png)
+![UI for seeing shares done externally](https://raw.githubusercontent.com/LiyeXu/PnP-Governance-Assets/master/MembershipReview.png)
 
 #### UX for HBI broad access detection policy ####
 Governance Solution should provide a page for administrators to reclassify or update permissions for in-compliant sites.
 
-![](https://raw.githubusercontent.com/LiyeXu/PnP-Governance-Assets/master/hbi_access.png)
+![UI for fixing issues on HBI sites](https://raw.githubusercontent.com/LiyeXu/PnP-Governance-Assets/master/hbi_access.png)
  
 #### UX for site collection lockup ####
 Governance Solution should provide a page for administrators to restore a locked up site collection back to its active status.
 
 The unlock page url should be assigned to the property [Tenant.NoAccessRedirectUrl](https://msdn.microsoft.com/en-us/library/office/microsoft.online.sharepoint.tenantadministration.tenant.noaccessredirecturl(v=office.15).aspx) with related tenant CSOM API.
 
-![](https://raw.githubusercontent.com/LiyeXu/PnP-Governance-Assets/master/UnlockSite.png)
+![UI when site is locked](https://raw.githubusercontent.com/LiyeXu/PnP-Governance-Assets/master/UnlockSite.png)

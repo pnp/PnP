@@ -40,7 +40,7 @@ Version  | Date | Comments
 # Introduction #
 Following picture explains the logical architecture for this pattern. 
 
-![](http://i.imgur.com/EGLm9Tw.png)
+![Logical design of the solution with Azure storage queues](http://i.imgur.com/EGLm9Tw.png)
 
 1. User operates in the SharePoint and starts provider hosted add-in UI one way or another (full page, pop up, add-in part etc.)
 1. Actual operations are performed in the provider hosted add-in side which is collecting needed parameters and other settings for the processing
@@ -59,7 +59,7 @@ Typical use cases for long lasting asynchronous operations would be for example 
 # Solution structure #
 Here's the solution structure in Visual Studio solution
 
-![](http://i.imgur.com/qVIdv3s.png)
+![Visual Studio solutions structure](http://i.imgur.com/qVIdv3s.png)
 
 ## Core.QueueWebJobUsage.Console.SendMessage ##
 This is helper project, which can be used to test the storage queue behavior and send messages to the queue for processing without the need for user interface operations. Purpose is simply to ensure that the storage account information and queue creation works as expected. 
@@ -123,11 +123,11 @@ Notice also that you need to update the storage account information accordingly,
 
 This is typical Office 365 Developer Patterns and Practices sample, which is concentrating on demonstrating the pattern or functional model, but does not concentrate on anything else. This way you can easily learn or adapt only on the key functionality without any additional distractors. 
 
-![](http://i.imgur.com/Bx2oFGA.png)
+![Add-in UI](http://i.imgur.com/Bx2oFGA.png)
 
 This add-in has two different buttons, one for synchronous and one for asynchronous operation. Both buttons will create new document library to the host web, but asynchronous operation will take advantage of the Azure WebJob based execution. Here’s example of the library created by using this code. Notice that the description for the library is also dynamic and the requestor name is added there for demonstration purposes. This was just done to show how to provide complex data types cross storage queues. 
 
-![](http://i.imgur.com/CAnZ5Ac.png)
+![List settings](http://i.imgur.com/CAnZ5Ac.png)
 
 # Key areas of the code #
 

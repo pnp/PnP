@@ -149,6 +149,24 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Components
         }
 
         /// <summary>
+        /// This helper method makes an HTTP PUT request and returns the result as a String
+        /// </summary>
+        /// <param name="requestUrl">The URL of the request</param>
+        /// <param name="content">The content of the request</param>
+        /// <param name="contentType">The content/type of the request</param>
+        /// <returns>The String value of the result</returns>
+        public static String MakePutRequestForString(String requestUrl,
+            Object content = null,
+            String contentType = null)
+        {
+            return(MakeHttpRequest<String>("PUT",
+                requestUrl,
+                content: content,
+                contentType: contentType,
+                resultPredicate: r => r.Content.ReadAsStringAsync().Result));
+        }
+
+        /// <summary>
         /// This helper method makes an HTTP PATCH request and returns the result as a String
         /// </summary>
         /// <param name="requestUrl">The URL of the request</param>

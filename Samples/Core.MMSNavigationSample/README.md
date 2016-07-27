@@ -34,17 +34,17 @@ This sample adds new MMS hierarchy and set each term to be used as simple link.
 
 ## Term Set Settings ##
 
-![](http://i.imgur.com/91AgSrN.png)
+![Term set settings](http://i.imgur.com/91AgSrN.png)
 
 ## Term ‘Bing’ Navigation settings ##
 
-![](http://i.imgur.com/IzftABj.png)
+![Settings for 'Bing' term](http://i.imgur.com/IzftABj.png)
 
 ## Term ‘Workflow’ settings on navigation tab ##
 
-![](http://i.imgur.com/6IQfR2Q.png)
+![Settings for 'workflow' term](http://i.imgur.com/6IQfR2Q.png)
 
 ## Term ‘Workflow’ settings on term-driven pages tab ##
 
-![](http://i.imgur.com/9op6VV3.png)
+![Settings for 'workflow' term](http://i.imgur.com/9op6VV3.png)
 

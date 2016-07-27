@@ -41,18 +41,18 @@ See **Overview of site policies in SharePoint 2013** at http://technet.microsoft
 
 We are going to create three site policies, HBI, MBI and then LBI.  Create an HBI Policy that mimics the below screen.
 
-![](http://i.imgur.com/sKI5csC.png)
+![Creation of new policies](http://i.imgur.com/sKI5csC.png)
 
 Repeat the above setup 2 more times for MBI and LBI. You should end up with the below:
 
-![](http://i.imgur.com/QUqir7I.png)
+![List of policy entries](http://i.imgur.com/QUqir7I.png)
 
 Once we have the policies we are going to publish the Site Policies. 
 
 # SCENARIO 1: INSERT A CUSTOM ACTION #
 Here we are going to add the custom action to the Settings page and the SharePoint gear. That is only available to users with ManageWeb Permission.
 
-![](http://i.imgur.com/ix5lU4b.png)
+![Custom option in the site actions menu](http://i.imgur.com/ix5lU4b.png)
 
 ```C#
 /// <summary>
@@ -98,11 +98,11 @@ See [here](http://msdn.microsoft.com/en-us/library/office/bb802730(v=office.15).
 
 # SCENARIO 2: CUSTOM SITE CLASSIFICATION #
 
-![](http://i.imgur.com/MKETcx9.png)
+![Policy option](http://i.imgur.com/MKETcx9.png)
 
 This pages defines the necessary options that are available. Here we define the intended Audience reach of the Site as well as the defined Site Policy. We also show the Expiration date of the site, which is based on the site policy that you created earlier. Both the audience reach and Site classification are searchable and will have managed properties associated after a crawl has taken place. You can then use these properties to search for specific types of sites from. 
 
-![](http://i.imgur.com/rfCqoyW.png)
+![UI of policy options](http://i.imgur.com/rfCqoyW.png)
 
 These are searchable via a custom hidden list that is implemented in the Site Collection. This implement in the Core.SiteClassification.Common project in the SiteManagerImpl class.
 
@@ -233,15 +233,15 @@ In the final scenario, we are going to add an indicator. I chose to inject an im
 
 ## LBI ##
 
-![](http://i.imgur.com/yMpuyhR.png)
+![LBI icon in the site welcome page](http://i.imgur.com/yMpuyhR.png)
 
 ## MBI ##
 
-![](http://i.imgur.com/abGbUMk.png)
+![MBI icon in the site welcome page](http://i.imgur.com/abGbUMk.png)
 
 ## HBI ##
 
-![](http://i.imgur.com/rpDpO6K.png)
+![HBI icon in the site welcome page](http://i.imgur.com/rpDpO6K.png)
 
 The below method is defined in the Core.SiteClassificationWeb project, scripts and classifier.js. I chose to store the images in an Azure Web Site, so you will have to change the URL’s to match your environment. Maybe in the next release I can remove the hard-coded urls. 
 

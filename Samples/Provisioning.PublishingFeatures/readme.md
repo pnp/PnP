@@ -8,7 +8,7 @@ This sample demonstrates common tasks related on the publishing features, like h
 ### Walkthrough Video ###
 Visit the video on Channel 9 - [http://channel9.msdn.com/Blogs/Office-365-Dev/Provisioning-SharePoint-Publishing-Features-Office-365-Developer-Patterns-and-Practices](http://channel9.msdn.com/Blogs/Office-365-Dev/Provisioning-SharePoint-Publishing-Features-Office-365-Developer-Patterns-and-Practices)
 
-![](http://i.imgur.com/kSjVvSl.png)
+![Video picture from Channel 9](http://i.imgur.com/kSjVvSl.png)
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)

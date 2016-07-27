@@ -31,7 +31,7 @@ Reading of the user profile properties using CSOM has been supported since the R
 
 In this sample we are calling into the user profile CSOM to list all the user profile properties from current user. If user has specific access rights, you can also request or read properties from other profiles.
 
-![](http://i.imgur.com/RnIBWv5.png)
+![Add-in UI](http://i.imgur.com/RnIBWv5.png)
 
 
 Code for reading the user profile properties is pretty straight forward. You will need to have reference to Microsoft.SharePoint.Client.UserProfiles assembly which is providing the needed objects for accessing user profile capabilities in the SharePoint.
@@ -61,7 +61,7 @@ Updating of the user profile properties using CSOM is really straight forward wi
 
 Here's the UI for the single value property update. In this sample we are updating the *About me* property, but code is identical with any other property as well.
 
-![](http://i.imgur.com/We6lHkM.png)
+![Add-in UI for scenario 2](http://i.imgur.com/We6lHkM.png)
 
 Actual code is pretty simple. We will just need to use the *PeopleManager* object, which is exposing needed method called *SetSingleValueProfileProperty* for property update.
 
@@ -88,7 +88,7 @@ using (var clientContext = spContext.CreateUserClientContextForSPHost())
 # Updating multi-value user profile property #
 This code is pretty much identical as for the single value update, we are just bypassing list of values, which CSOM API will update for the property in the SharePoint side. Here's the sample UI for this scenario.
 
-![](http://i.imgur.com/5rRLUAw.png)
+![Add-in UI for scenario 3](http://i.imgur.com/5rRLUAw.png)
 
 
 Below code example shows how to update multi-value property called skills. 

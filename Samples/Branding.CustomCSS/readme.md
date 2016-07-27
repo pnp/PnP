@@ -34,11 +34,11 @@ Version  | Date | Comments
 # INJECT CUSTOM CSS FROM ADD-IN TO HOST WEB #
 This scenario shows how to modify host web branding or rending by injecting custom CSS on the site using JavaScript injection pattern. This is one way to modify the host web branding without providing a custom master page on the site.
 
-![](http://i.imgur.com/ZY34zMB.png)
+![Add-in UI](http://i.imgur.com/ZY34zMB.png)
 
 Once the modification has been injected, we can see the host web to have centralized alignment.
 
-![](http://i.imgur.com/z2JUjDu.png)
+![Re-aligned UI in host web](http://i.imgur.com/z2JUjDu.png)
 
 
 ## INJECTING CSS TO THE HOST WEB ##

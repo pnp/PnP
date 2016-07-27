@@ -3,7 +3,7 @@
 ### Summary ###
 This scenario shows how you can refresh the branding of existing sites collections and sites.
 
-*Notice*: This sample uses [PnP Core Nuget package](https://github.com/OfficeDev/PnP-sites-core) for the needed API operations.
+*Notice*: This sample uses [PnP Core Nuget package](https://github.com/OfficeDev/PnP-sites-core) for the needed API operations. 
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)

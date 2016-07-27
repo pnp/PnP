@@ -37,7 +37,7 @@ Version  | Date | Comments
 As part of the new Client Side Object Model (CSOM) version (4622.1208 and newer), SharePoint has new capability for bulk importing user profile properties. Previously you could have taken advantage of the user profile CSOM operations for updating specific properties for user profiles, but this is not that performant and in case of thousands of profiles, operation is too time consuming.
 Since many enterprises have however business requirements to replicate custom attributes to SharePoint user profile service, addition and more performant user profile bulk API has been released. This capability is available in newer version of the CSOM redistributable, which has been also released as Nuget package for developers. 
 
-![](http://i.imgur.com/f0bUVto.png)
+![Process picture with 6 steps](http://i.imgur.com/f0bUVto.png)
 
 1. User attributes are synchronized from the corporate Active Directory to the Azure Active Directory. You can select which attributes are being replicated cross on-premises and Azure
 2.	Standardized set of attributes are being replicated from the Azure Active Directory to SharePoint user profile store at Office 365. This cannot be controlled like in the on-premises.

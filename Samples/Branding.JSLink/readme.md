@@ -53,52 +53,52 @@ The drop-down values will automatically populate based on the hierarchy of the t
 
 You can see below the field in action using a "Microsoft Products" term set (which is included in the source code of the sample)
 
-![](readme-images/Taxonomy_Edit.png)
+![Shows the drop down options](readme-images/Taxonomy_Edit.png)
 
 ## Related Lookup Fields - Cascading Dropdowns and Checkboxes ##
 This sample consists of a reusable library where you can change the rendering of lookup fields.
 
 I allows you to change how the views render (removing the clickable links on lookup fields, and changing the multi-select lookups to a list (instead of a ";" delimited block of text)
 
-![](readme-images/Lookups_View.png)
+![Read only field presentation](readme-images/Lookups_View.png)
 
 The editing interface allows you to perform cascading drop-downs (some limitations apply, see the [reusable framework(#reusable-framework) section below) and you can change a multi-select lookup to render as checkboxes.
 
-![](readme-images/Lookups_Edit.png)
+![Custom check box experience when editing](readme-images/Lookups_Edit.png)
 
 ## Google Maps fields ##
 These can be applied to any text fields (for points) or multi-line text fields (for area selection).
 
 This will automatically render thumbnail images in list views...
 
-![](readme-images/GoogleMaps.png)
+![Picture of google map presentation](readme-images/GoogleMaps.png)
 
 .. an inline editing experience showing a larger thumbnail ..
 
-![](readme-images/GoogleMaps_Edit.png)
+![Large thumbnail image on pointing location in Google map](readme-images/GoogleMaps_Edit.png)
 
 .. and dialogs allowing the editing to take place ..
 
-![](readme-images/GoogleMaps_Shape_Edit.png)
+![Edit experience on the map selection](readme-images/GoogleMaps_Shape_Edit.png)
 
 
 ## Colour Picker ##
 This is a simple colour picker scenario with all of the HTML colours rendering in a drop-down list, with the actual colour being shown in the View and Display Form. 
 
-![](readme-images/Fav_Colours.png)
+![Read only presentation of colors](readme-images/Fav_Colours.png)
 
 ..
 
-![](readme-images/Fav_Colours_Edit.png)
+![Drop bown presentation of color picker](readme-images/Fav_Colours_Edit.png)
 
 This also includes an example of a "Validator" where you can control validation of data entry through the SharePoint CSR techniques
 
-![](readme-images/Fav_Colours_Validate.png)
+![Presentation of validator providing not valid option](readme-images/Fav_Colours_Validate.png)
 
 ## Announcements Accordion ##
 This is a sample that will transform your announcements list into an accordion.
 
-![](readme-images/AnnouncementsAccordion.png)
+![List items listed using accordion mode](readme-images/AnnouncementsAccordion.png)
 
 You can apply the jslink onto an existing announcements list by changing the jslink property of the listview webpart to:
 ~sitecollection/Style Library/OfficeDevPnP/Branding.JSLink/jquery-1.10.2.min.js|~sitecollection/Style Library/OfficeDevPnP/Branding.JSLink/Generics/AnnouncementAccordion.js|~sitecollection/Style Library/OfficeDevPnP/Branding.JSLink/TemplateOverrides/AnnouncementAccordionView.js
@@ -202,6 +202,3 @@ After deployment you should find that the following sample lists have been creat
 
 At the moment th Announcments View and Taxonomy samples need to be manually created after deployment (more details on that can be found in the [Samples](#jslink-samples) section above.
 
-# How to use JSLink #
-
-**Coming Soon**

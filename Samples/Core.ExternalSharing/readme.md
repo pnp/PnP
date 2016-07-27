@@ -39,7 +39,7 @@ Example scenarios with these APIs
 
 Actual sample is pretty simplistic and is meant to be used as "stepping stone" to understand how the external sharing APIs actually work. This way you can more easily adapt the models to your own solutions. When you start the provider hosted sample, you'll see following UI for different options.
 
-![](http://i.imgur.com/zyZw9yx.png)
+![Add-in UI](http://i.imgur.com/zyZw9yx.png)
 
 Sample app/add-in is using extension methods for simplifying the API calls from managed code. This means that as long as you add using statement for ffjfjfjf, you will see these additional methods for the Web object. Notice also that these extension are included in the [PnP Core component](https://www.nuget.org/packages/OfficeDevPnPCore16) starting from October 2015 release.
 
@@ -65,7 +65,7 @@ Sample app/add-in is using extension methods for simplifying the API calls from 
 **Q** - What if I try to share a site or document wiht insufficient permissions?
 **A** - You will get AccessRequestsQueued as the return value for the sharing request, which means that your request is queued for the site owner for verification. This is similar behaviour as with the UI based sharing using browser. See below picture for the the entry added in the queue for site owner processing.
 
-![](http://i.imgur.com/BQu8o48.png)
+![UI with pending request status](http://i.imgur.com/BQu8o48.png)
 
 
 # Controlling tenant and site collection setting with CSOM
@@ -100,15 +100,15 @@ switch (tenantSharing)
 
 You can also control this tenant level setting from the tenant administration UIs. Here's the setting under SharePoint Online admin UIs.
 
-![](http://i.imgur.com/uTpFunu.png)
+![Sharing option in tenant admin UI](http://i.imgur.com/uTpFunu.png)
 
 By default all SharePoint site collection shave external sharing disabled, so you'll need to explicitly enable that as needed. You can easily automate this as part of your site collection provisioning tooling or manually by modifying *Sharing* settings from the SharePoint online tenant UIs. 
 
-![](http://i.imgur.com/OSsfyus.png)
+![Sharing button in the SharePoint site collection list](http://i.imgur.com/OSsfyus.png)
 
 Here's the actual popup for changing sharing settings.
 
-![](http://i.imgur.com/UyAf6lI.png)
+![Sharing options for specific site collection](http://i.imgur.com/UyAf6lI.png)
 
 You can also adjust this setting using CSOM APIs. Here's a code snippet from the sample to adjust site collection level setting around sharing.
 
@@ -175,7 +175,7 @@ SharingResult result = ctx.Web.ShareSite("someone@example.com", ExternalSharingS
 # External sharing of documents with CSOM
 Sample includes few different options for the document sharing, like shown in teh below picture.
 
-![](http://i.imgur.com/nPCX4ak.png)
+![Add-in UI for sharing files](http://i.imgur.com/nPCX4ak.png)
 
 Original API for the document sharing with authentication is the same API in the MSDN which is used for site sharing - https://msdn.microsoft.com/en-us/library/office/microsoft.sharepoint.client.web.shareobject.aspx.
 

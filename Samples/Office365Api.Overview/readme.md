@@ -44,27 +44,27 @@ The WPF application will use the new Office 365 API's to perform the following l
 
 For these tasks to succeed you need to provide some input before you run the application. This is done by changing the text fields in the UI, just after launching the WPF project + by registering an application in Azure AD. You can do this by right-clicking the **Office365Api.Demo** project -> **Add** -> **Connected Service**. Select **Office 365 APIs** and click on **Register your App**:
 
-![](http://i.imgur.com/vksc2KD.png)
+![Connected Service UI](http://i.imgur.com/vksc2KD.png)
 
 Click **Yes** to register an Azure AD App and then give it the permissions as shown below:
 
-![](http://i.imgur.com/uhQpqHt.png)
+![Permission list](http://i.imgur.com/uhQpqHt.png)
 
 
 ## Run the WPF sample ##
 When you run the sample you'll see some text fields, a window with a big button named "Run demo" and a black output section. Fill out the text fields with proper values, select a file to upload by browsing the file system, and click on the "Run demo" button to trigger the demo. What will first happen is that you need to logon with an Office 365 user account.
 
-![](http://i.imgur.com/852IH4o.png)
+![Signing in to Azure AD](http://i.imgur.com/852IH4o.png)
 
 
 Once you've logged on the Office 365 API will ask you for permissions: you need to consent that the app access your data for the listed categories:
 
-![](http://i.imgur.com/M9D343S.png)
+![Consent permissions](http://i.imgur.com/M9D343S.png)
 
 
 After those 2 steps are done the app can run and use all the API's to do it's work. The output is shown in console style:
 
-![](http://i.imgur.com/vLcdlrL.png)
+![App running in console](http://i.imgur.com/vLcdlrL.png)
 
 ----------
 
@@ -97,26 +97,26 @@ To run the ASP.NET MVC sample you can you use the development Azure AD tenant wh
 To Sign Up a new Office 365 tenant, or at least a single Office 365 user of another tenant, for the sample application, start the Web Application (Office365Api.MVCDemo) and choose the "Sign Up" menu item.
 You will be prompted with the following screen:
 
-![](http://i.imgur.com/KbakAEe.png)
+![The Sign Up Tenant page](http://i.imgur.com/KbakAEe.png)
 
 Provide the name of your tenant (something like <tenant>.onmicrosoft.com) and, if you are a Tenant Global Administrator and you want to make the web application available to all the users of your tenant, check the "Check this if you are an administrator and you want to enable the app for all your users" option.
 You will have to login through Azure AD using an authorized account for the tenant you selected.
 After that, you will have to "accept" the disclaimer that will show up, informing you about the permissions that the web application requires against your account and/or tenant. Click "Accept" to proceed.
 
-![](http://i.imgur.com/O7YzigB.png)
+![App UI](http://i.imgur.com/O7YzigB.png)
 
 You will be redirected back to the web application. And you will have the confirmation that you properly signed up.
 
-![](http://i.imgur.com/j6OX3KU.png)
+![Consent permissions](http://i.imgur.com/j6OX3KU.png)
 
 Now you can click the "Office 365 API" menu item. You will see the following page:
 
-![](http://i.imgur.com/24DwisF.png)
+![Office 365 API menu option](http://i.imgur.com/24DwisF.png)
 
 Press each of the buttons, in order to play with the capabilites demonstrated by the web application.
 Here you can see the sample result of pressing the "Send Mail" button.
 
-![](http://i.imgur.com/9BpMZZG.png)
+![UI options to execute](http://i.imgur.com/9BpMZZG.png)
 
 
 ----------

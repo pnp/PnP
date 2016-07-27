@@ -56,7 +56,7 @@ $(function() {
 
 Once complete the SharePoint chrome control and host styles should be loaded in your site
 
-![](http://i.imgur.com/rlHatmn.png)
+![Chrome ui the add-in](http://i.imgur.com/rlHatmn.png)
 
 ----------
 
@@ -95,4 +95,4 @@ $(function () {
 });
 ```
 
-![](http://i.imgur.com/Q7LYZOn.png)
+![Settings links in the chrome](http://i.imgur.com/Q7LYZOn.png)

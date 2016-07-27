@@ -71,7 +71,7 @@ Permission Request XML:
 ```
 
 Example of Configuration in /_layouts/15/AppInv.aspx
-![](http://i.imgur.com/rhfQQQh.png)
+![Permissions provided for the app with appinv.aspx page](http://i.imgur.com/rhfQQQh.png)
 
 ## Database Deployment ##
 For the purpose of debugging, the solution can leverage Local DB, which is included with Visual Studio. Complete the following steps to deploy the solution:
@@ -82,7 +82,7 @@ For the purpose of debugging, the solution can leverage Local DB, which is inclu
        - Server name: **(localdb)\v11.0**
        - Select or enter a database name: **ExternalSharingData**
 4. Finally, click the **Publish** button in the **Publish Database** dialog to publish the database to local DB
-![](http://i.imgur.com/roSHnoJ.png)
+![Publish Database UI](http://i.imgur.com/roSHnoJ.png)
 
 Both the configuration files (console app and MVC app) are pre-configured to use this connection information.
 

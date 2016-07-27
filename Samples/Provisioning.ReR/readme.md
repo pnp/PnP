@@ -102,7 +102,7 @@ var tenantStr = hostWebUrl.ToLower().Replace("-my", "").Substring(8);
 ```
 
 # Solution #
-![](http://i.imgur.com/fnh9LY9.png)
+![Visual Studio solution pcture](http://i.imgur.com/fnh9LY9.png)
 
 Provisioning.SiteCollectionReRWeb– SharePoint Provider Hosted Application 
 Because the add-in needs the ability to create site collections anywhere in the tenancy, it will need FullControl permission on the entire tenancy.  The add-in will also need to make add-in only calls to SharePoint, so it can work with tenant objects or sites outside the context.  Both these settings can be configured in the Permissions tab of the AppManifest.xml.
@@ -113,11 +113,11 @@ Because the add-in needs the ability to create site collections anywhere in the 
 # RUNNING THE SAMPLE #
 Navigate to the Application and fill in the supplied form. The Site information will be saved to the Site Requests list in the host web.
 
-![](http://i.imgur.com/TcD3OMd.png)
+![Add-in UI for creating new site collection](http://i.imgur.com/TcD3OMd.png)
 
 Navigate to the Site Request List and you may change the State of the given item from New to “Approved”
 
-![](http://i.imgur.com/olcECBg.png)
+![Site request list in SharePoint](http://i.imgur.com/olcECBg.png)
 
 Once the item has been set to approved, this will invoke the remote event receiver to handle the provisioning logical.
 

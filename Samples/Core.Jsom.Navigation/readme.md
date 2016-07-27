@@ -30,7 +30,7 @@ Version  | Date | Comments
 # Sample Add-In #
 The provided SharePoint-hosted sample add-in uses JavaScript promises to control the flow of navigation updates.
 
-![](https://raw.githubusercontent.com/pefilice/PnP-Support/master/Core.Jsom.Navigation.png)
+![Add-in UI](https://raw.githubusercontent.com/pefilice/PnP-Support/master/Core.Jsom.Navigation.png)
 
 ## Initialize ##
 Description:

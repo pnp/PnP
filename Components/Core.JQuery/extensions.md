@@ -19,7 +19,7 @@ It's important that the provider hosted Add-In that's running the document picke
 
 Adds the SharePoint chrome control and host site styles to a provider hosted add-in.[Full details](sp.addChrome.js.md)
 
-![](http://i.imgur.com/rlHatmn.png)
+![Chrome UI](http://i.imgur.com/rlHatmn.png)
 
 ----------
 
@@ -27,7 +27,7 @@ Adds the SharePoint chrome control and host site styles to a provider hosted add
 
 Provides a customizable people picker control using jQuery and Bootstrap. [Full details](sp.peoplepicker.js.md)
 
-![](http://i.imgur.com/cpeP4aS.png)
+![People picker UI](http://i.imgur.com/cpeP4aS.png)
 
 ----------
 
@@ -35,7 +35,7 @@ Provides a customizable people picker control using jQuery and Bootstrap. [Full 
 
 Provides a customizable document picker control using jQuery and Bootstrap. [Full details](sp.documentpicker.js.md)
 
-![](http://i.imgur.com/eBFmjwq.png)
+![Document picker UI](http://i.imgur.com/eBFmjwq.png)
 
 
 

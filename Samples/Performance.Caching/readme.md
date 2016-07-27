@@ -39,7 +39,7 @@ Be mindful of what you store in these different mechanisms. You don’t want to 
 # SCENARIO: CACHING WITH HTML5 LOCALSTORAGE #
 As mentioned, the sample just reads your ‘About Me’ data from your user profile and loads it into a text area where you can make changes and ‘Save’ it for later without writing it back to your profile. This sample does not update your profile.  Once you ‘Save’ it for later, the text gets stored into either a local storage key/value pair, or if using the cookies sample, it stores it into a cookie. 
 
-![](http://i.imgur.com/E6wtIS4.png)
+![Add-in UI](http://i.imgur.com/E6wtIS4.png)
 
 The Cache Expiration setting will set the default number of seconds for the localStorage items. When there is a value specified, and the text in the box is saved, two keys are created/updated -> ‘aboutMe’ & ‘aboutMeTimeStamp’. When the add-in checks localStorage (before a service call is made), it checks to see if the key exists, and checks for and retrieves the timestamp key. It compares the time stamp against expiration settings, and if the key is expired, it makes a call to get the user profile data and refreshes/creates the two keys. If there is no value set in the Cache Expiration, the ‘aboutMe’ key does not expire.
 
@@ -95,7 +95,7 @@ function isKeyExpired(TimeStampKey) {
 # SCENARIO: CACHING WITH HTTP COOKIES #
 As mentioned above, the sample just reads your ‘About Me’ data from your user profile and loads it into a text area where you can make changes and ‘Save’ it for later without writing it back to your profile. This sample does not update your profile.  Once you ‘Save’ it for later, the text gets stored into either a local storage key/value pair, or if using the cookies sample, it stores it into a cookie. The screenshot below shows the http cookies sample UI.
 
-![](http://i.imgur.com/UrDk8a1.png)
+![Add-in UI with cookie information](http://i.imgur.com/UrDk8a1.png)
 
 This sample will first check to see if cookies are enabled, then it will check to see if the cookie exists. If it does, it will retrieve the value from it and render in the text area. If not, it will pull from the profile, populate the cookie, set expiration and then render in UI.
 

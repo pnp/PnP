@@ -21,6 +21,11 @@ namespace Provisioning.Job
 {
     public class SiteProvisioningJob
     {
+        // Notes: 
+        // Recent: Cleanup activity - Removed unnecessary code
+        // Previous: updates were made in processing site requests that include handling timeouts in provisioning the site itself
+        // as well as updates to handle failed site provisioning attempts such as retries and picking up where it left off.
+
         #region Instance Members
         ISiteRequestFactory _requestFactory;
         IConfigurationFactory _configFactory;
@@ -169,39 +174,7 @@ namespace Provisioning.Job
             }
         }
 
-        protected string CheckReservedNamespaces(SiteInformation siteRequest)
-        {
-            string returnValue = string.Empty;
-            string siteUri = siteRequest.Url;
-            //   string realm = TokenHelper.GetRealmFromTargetUrl(siteUri);
-            //   string accessToken = TokenHelper.GetAppOnlyAccessToken(TokenHelper.SharePointPrincipal, siteUri.Authority, realm).AccessToken;
-
-            siteUri = siteUri.Replace("https://cocacola.sharepoint.com/teams", "https://teams.coca-cola.com/sites");
-            siteUri = siteUri.Replace("https://cocacola.sharepoint.com/sites", "https://partner.coca-cola.com/sites");
-
-
-            using (var ctx = new ClientContext("https://teams.coca-cola.com/sites/MTMigration"))
-            {
-                ctx.AuthenticationMode = ClientAuthenticationMode.Default;
-
-                System.Net.NetworkCredential cred = new System.Net.NetworkCredential("na\\X30965", "Friday$123456789");
-                ctx.Credentials = cred;
-                List oList = ctx.Web.Lists.GetByTitle("SiteInventory");
-
-                CamlQuery camlQuery = new CamlQuery();
-                camlQuery.ViewXml = "<View><Query><Where><And><Eq><FieldRef Name='Title' /><Value Type='Text'>" + siteUri.Trim() + "</Value></Eq><Eq><FieldRef Name='MigrateSite' /><Value Type='Boolean'>1</Value></Eq></And></Where></Query><RowLimit>1</RowLimit></View>";
-
-                ListItemCollection collListItem = oList.GetItems(camlQuery);
-                ctx.Load(collListItem);
-                ctx.Load(oList);
-                ctx.ExecuteQuery();
-                if (collListItem.Count > 0)
-                {
-                    returnValue = siteUri;
-                }
-            }
-            return returnValue;
-        }
+        
 
         /// <summary>
         /// Sends a Notification that the Site was created

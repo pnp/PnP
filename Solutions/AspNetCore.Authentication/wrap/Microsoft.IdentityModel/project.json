@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0-*",
+  "frameworks": {
+    "dnx451": {
+      "bin": {
+        "assembly": "../../Mvc5.StarterWeb/bin/Microsoft.IdentityModel.dll"
+      }
+    }
+  }
+}

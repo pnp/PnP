@@ -39,18 +39,18 @@ Version  | Date | Comments
 - Choose the scope as Local Machine (this is the default value)
 - Click Encrypt button to get the encrypted text value and hit copy text to copy the values. 
 
-![](http://i.imgur.com/dWBFuZP.png)
+![UI for providing client ID and secret](http://i.imgur.com/dWBFuZP.png)
 
 
-![](http://i.imgur.com/bhGB5Rg.png)
+![Text is copied message shown when encryption is done](http://i.imgur.com/bhGB5Rg.png)
  
 
 ### Validation ###
 
 To validate the encrypted text, without altering any values, click the Decrypt button and you should see the original value of the ID/Secret given. 
 
-![](http://i.imgur.com/S8WciiJ.png)
+![Decryp option](http://i.imgur.com/S8WciiJ.png)
 
 If the value is tampered or if you try to use the encrypted text value in a different machine, the decryption will fail. 
 
-![](http://i.imgur.com/HHWKQ5d.png)
+![Show the decrypted value](http://i.imgur.com/HHWKQ5d.png)
