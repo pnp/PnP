@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="Scripts">
+    <File Path="Scripts\App.js" Url="Scripts/App.js" />
+    <File Path="Scripts\jquery-1.7.1.min.js" Url="Scripts/jquery-1.7.1.min.js" />
+    <File Path="Scripts\jquery-1.7.1.js" Url="Scripts/jquery-1.7.1.js" />
+    <File Path="Scripts\jquery-1.7.1.intellisense.js" Url="Scripts/jquery-1.7.1.intellisense.js" />
+    <File Path="Scripts\REST-APIs-Examples.js" Url="Scripts/REST-APIs-Examples.js" />
+  </Module>
+</Elements>
