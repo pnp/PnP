@@ -30,7 +30,7 @@ High level process as follows.
 ![High level process](http://i.imgur.com/LottPge.png)
 
 1. SharePoint hosted in the Office 365 or in on-premises
-2. Remote solution using CSOM to manipulate the taxonomy store based on business requirements. Taxonomy CSOM operations are identical cross different environments, only the authentication model is slightly different depending on SharePoint hosting platform.
+2. Remote solution using CSOM to manipulate the taxonomy store based on business requirements. Taxonomy CSOM operations are identical cross different environments, only the authentication model is slightly different depending on SharePoint hosting platform
 
 
 # Retrieve MMS terms #
