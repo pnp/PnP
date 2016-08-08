@@ -3,12 +3,12 @@
 <App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest"
      Name="OfficeDevPnPAspNetCoreAuthentication"
      ProductID="{72672cae-eea7-4201-8d34-38480ff70a4c}"
-     Version="1.0.0.10"
+     Version="1.0.0.11"
      SharePointMinVersion="16.0.0.0"
 >
   <Properties>
     <Title>OfficeDev PnP AspNetCore Authentication</Title>
-    <StartPage>~remoteAppUrl/?{StandardTokens}</StartPage>
+    <StartPage>https://localhost:44379?{StandardTokens}</StartPage>
   </Properties>
 
   <AppPrincipal>
