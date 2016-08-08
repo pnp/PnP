@@ -104,25 +104,7 @@
             $scope.saving = true;
             $scope.spinnersON = true;
             $scope.spinnerService.showGroup('metadata');
-
-            var siteMetadata = $scope.metadata;
-            //alert($scope.metadata.sitePolicyName);
-
-            //siteMetadata.Url = $scope.hostUrl;
-            //siteMetadata.TenantAdminUrl = $scope.metadata.TenantAdminUrl;
-            //siteMetadata.Title = $scope.metadata.Title;
-            //siteMetadata.Description = $scope.metadata.Description;
-            //siteMetadata.TimeZoneId = $scope.metadata.TimeZoneID;
-            //siteMetadata.Lcid = $scope.metadata.lcid;
-            //siteMetadata.SitePolicy = request.SitePolicy;
-            //siteMetadata.SiteOwner = $scope.metadata.SiteOwner;
-            //siteMetadata.SitePolicy = $scope.metadata.SitePolicy;;
-            //siteMetadata.SharePointOnPremises = $scope.metadata.SharePointOnPremises;
-            //siteMetadata.EnableExternalSharing = $scope.metadata.EnableExternalSharing;
-            //siteMetadata.BusinessUnit = $scope.metadata.BusinessUnit;
-            //siteMetadata.Division = $scope.metadata.Division;
-            //siteMetadata.Function = $scope.metadata.Function;
-            //siteMetadata.Region = $scope.metadata.Region;
+            var siteMetadata = $scope.metadata;           
 
             $.when($SiteMetadataEditService.SetSiteMetadata(siteMetadata)).done(function (metadata) {
                 if (metadata != null) {
