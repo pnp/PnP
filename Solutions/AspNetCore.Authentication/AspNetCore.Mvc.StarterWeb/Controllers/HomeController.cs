@@ -11,19 +11,27 @@ namespace AspNet5.Mvc6.StarterWeb.Controllers
             //get a SharePoint context
             var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
 
-            //build a client context to work with data
-            using (var clientContext = spContext.CreateUserClientContextForSPHost())
+            if (spContext != null)
             {
-                if (clientContext != null)
+                //build a client context to work with data
+                using (var clientContext = spContext.CreateUserClientContextForSPHost())
                 {
-                    User spUser = clientContext.Web.CurrentUser;
+                    if (clientContext != null)
+                    {
+                        User spUser = clientContext.Web.CurrentUser;
 
-                    clientContext.Load(spUser, user => user.Title);
+                        clientContext.Load(spUser, user => user.Title);
 
-                    clientContext.ExecuteQuery();
+                        clientContext.ExecuteQuery();
 
-                    ViewBag.UserName = spUser.Title;
+                        ViewBag.UserName = spUser.Title;
+                    }
                 }
+            }
+            else //no SP Context, which means there is no SP auth tokens and handshaking
+            {
+                ViewData["Message"] = "You must access this app from SharePoint.";
+                ViewBag.UserName = "Unauthorised."; 
             }
 
             return View();
