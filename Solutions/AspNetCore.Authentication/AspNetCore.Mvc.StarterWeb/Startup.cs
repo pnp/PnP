@@ -44,7 +44,6 @@ namespace AspNet5.Mvc6.StarterWeb
 
             if (env.IsDevelopment())
             {
-                app.UseBrowserLink();
                 app.UseDeveloperExceptionPage();
             }
             else
