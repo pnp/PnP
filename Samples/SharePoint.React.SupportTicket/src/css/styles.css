@@ -1,0 +1,241 @@
+.ms-TextField-field {
+  width: auto;
+  min-width: 250px;
+}
+.ms-Grid-col {
+    position: relative;
+    min-height: 1px;
+    padding-left: 0px !important;
+    padding-right: 8px;
+    box-sizing: border-box;
+    float: left;
+    max-width: 800px;
+    
+}
+.ms-Grid-col-default {
+    background: #0072c6; 
+    font-size: 14px; 
+    color: white;
+    min-width: 310px !important;
+    border-radius: 1px ;
+    border-color: blue;
+}
+.ms-Grid-col ms-u-sm8-header {
+    background: #0072c6; 
+    font-size: 14px; 
+    color: white;
+    min-width: 310px !important;
+       
+}
+.ms-Grid-col ms-u-sm8-body {
+    border-color:#0072c6;
+    min-width: 310px !important;
+}
+.ms-TextField.ms-TextField--multiline .ms-TextField-field {
+    color: #333333;
+    font-family: 'Segoe UI Regular WestEuropean', 'Segoe UI', Tahoma, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 17px;
+    min-height: 60px;
+    min-width: 250px !important;
+    padding-top: 6px;
+    overflow: auto;
+}
+.ms-Callout {
+    z-index: 100;    
+    position: relative;
+    width: 400px !important;
+    float: right !important;
+    margin: 0 !important;
+}
+.ms-Callout-title {
+    margin: 0;
+    font-family: 'Segoe UI Semilight WestEuropean', 'Segoe UI Semilight', 'Segoe UI', Tahoma, Arial, sans-serif;
+    font-size: 16px !important;
+}
+.ms-MessageBanner {
+    color: #FFF !important;
+    font-family: 'Segoe UI Regular WestEuropean', 'Segoe UI', Tahoma, Arial, sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    position: relative;
+    border-bottom: 1px solid #0078d7 !important;
+    background-color: #0078d7 !important;
+    min-width: 310px;
+    width: 100%;
+    height: 40px !important;
+    text-align: left;
+    overflow: hidden;
+    animation-name: fadeIn, slideDownIn20;
+    -webkit-animation-duration: 0.367s;
+    -moz-animation-duration: 0.367s;
+    -ms-animation-duration: 0.367s;
+    -o-animation-duration: 0.367s;
+    animation-timing-function: cubic-bezier(0.1, 0.9, 0.2, 1);
+    animation-fill-mode: both;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.form-control {
+    display: block;    
+    height: 34px;
+    padding: 6px 12px;
+    font-size: 12px;
+    line-height: 1.42857143;
+    color: #0072c6;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    
+}
+input.form-control {
+    color: #0072c6;
+}
+label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 12px;
+    line-height: 1.42857143;
+    color: #333;
+    background-color: #fff;
+}
+textarea {
+    margin: 0;
+    font: inherit;
+    color: inherit;    
+    padding: 6px 12px;
+    font-size: 12px;
+    line-height: 1.42857143;
+}
+.btn {
+    background: #FFF;
+    border: 1px solid #CCC;
+    padding: 10px 25px 10px 25px;
+    color: #333;
+    border-radius: 4px;
+}
+.panel-title {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    color: #FFF;
+    
+}
+
+.panel-default > .panel-heading {
+    background: #0078d7 !important;
+    font-size: 14px; 
+    color: white !important;
+    min-width: 310px !important;
+    height: 40px !important
+    
+}
+.panel-body-custom {
+    text-align: left;     
+    padding-top: 15px;
+    padding-left: 15px;  
+    padding-right: 15px;  
+    padding-bottom: 10px; 
+    border-color:#0072c6;
+    font-size: 14px; 
+    color: white;
+    background-color: #0072c6 !important;
+    min-width: 310px !important;
+}
+.panel-footer-custom {
+    text-align: left; 
+    background: #0072c6; 
+    font-size: 12px; 
+    color: white;
+    min-height: 30px;
+}
+.panel-body {
+    border-color:#0072c6;
+    min-width: 310px !important;
+}
+.btn-success, .btn-success:focus {
+    background: #FFF;
+    border: 1px solid #CCC;
+    padding: 10px 25px 10px 25px;
+    color: #333;
+    border-radius: 4px;
+}
+.btn-success:hover {
+    background-color: whitesmoke;
+    background-position: 0 -15px;
+    color: #0072c6;
+    border-color: #0072c6;
+}
+
+.col-sm-9, .col-sm-6 {
+    position: relative;
+    min-height: 1px;
+    padding-right: 0px; 
+    padding-left: 0px; 
+    min-width: 310px !important;
+    width: 100% !important;
+}
+input::-webkit-input-placeholder {
+color: black !important;
+}
+ 
+input:-moz-placeholder { /* Firefox 18- */
+color: black !important;  
+}
+ 
+input::-moz-placeholder {  /* Firefox 19+ */
+color: black !important;  
+}
+ 
+input:-ms-input-placeholder {  
+color: black !important;
+}
+
+textarea::-webkit-input-placeholder {
+color: black !important;
+}
+ 
+textarea:-moz-placeholder { /* Firefox 18- */
+color: black !important;
+}
+ 
+textarea::-moz-placeholder {  /* Firefox 19+ */
+color: black !important;  
+}
+ 
+textarea:-ms-input-placeholder {  
+color: black !important;  
+}
+option::-webkit-input-placeholder {
+color: black !important;
+}
+ 
+option:-moz-placeholder { /* Firefox 18- */
+color: black !important; 
+}
+ 
+option::-moz-placeholder {  /* Firefox 19+ */
+color: black !important; 
+}
+ 
+option:-ms-input-placeholder {  
+color: black !important;  
+}
+
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+    background-color: rgb(250, 255, 189);
+    background-image: none;
+    color: rgb(0,0,0);    
+}
