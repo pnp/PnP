@@ -1,5 +1,7 @@
 # OFFICE PNP: PREVENT SITE DELETION 
 
+**Note.** This sample does not work in SharePoint Online after the sandbox solution code-based solution support has been removed.
+
 # Solution #
 Provisioning.PreventDeleteSites
 

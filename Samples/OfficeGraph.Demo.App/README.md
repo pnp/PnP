@@ -36,7 +36,7 @@ The App queries the Office Graph for the colleagues with whom you closely work w
 Since the App requires Search permissions to be granted in the AppManifest, you will need to have the Tenant Admin credentials to install the App. I think this might be a blocker for some people in installing the App. Now fortunately, if you just want to test the functionality out, you can take all the code in the App.js and run it from inside a SharePoint Online page. You do not need tenant admin permissions to execute the code in the page.
 
 
-# Searh Query to get the closest Colleagues of the current user  #
+# Search Query to get the closest Colleagues of the current user  #
 
 ```JS
 
