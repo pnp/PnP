@@ -31,6 +31,8 @@ Following are just a few quick steps that you need to complete in order to see t
 
 The deployment for this uses a variant of the PnP APP SCRIPT PART sample to modify the host web by adding a new option as app script part that is preconfigured to use the React app scripts. 
 
+Once you have done the above, run the console app (change the url in the Program.cs file to point to your site collection). This will create the necessary artifacts, as well as add the app script part (pre-configued script editor web part). Then just create a new page, add the app script part and test.
+
 
 ##  Adding an Add-In Script Part To Web Part Gallery ##
 Adding of the web part to the host web is simply implemented by uploading the web part to web part gallery using the FileCreationInformation object. In this sample implementation this is done on request when button is pressed, but we could automate this as part of the add-in installation or simply push the web part to web part gallery from remotely location using similar CSOM logic for example during site collection provisioning. In the code we also set the group attribute properly for the item in the web part gallery, so that web parts are grouped under Add-in Script Part group.
