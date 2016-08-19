@@ -1,0 +1,40 @@
+﻿<webParts>
+  <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+    <metaData>
+      <type name="Microsoft.SharePoint.WebPartPages.ScriptEditorWebPart, Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+      <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
+    </metaData>
+    <data>
+      <properties>
+        <property name="ExportMode" type="exportmode">None</property>
+        <property name="HelpUrl" type="string" />
+        <property name="Hidden" type="bool">False</property>
+        <property name="Description" type="string">Create support ticket using React</property>
+        <property name="Content" type="string">
+          &lt;br/&gt;
+          &lt;br/&gt;
+          &lt;div id=&quot;app&quot;&gt;&lt;/div&gt;
+          &lt;script type=&quot;text/javascript&quot; src=&quot;//cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js&quot;&gt;&lt;/script&gt;
+          &lt;script src=&quot;//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;
+          &lt;script src=&quot;/sites/support/style%20library/OfficeDevPnP/app.dist.js&quot;&gt;&lt;/script&gt;
+        </property>
+        <property name="CatalogIconImageUrl" type="string"></property>
+        <property name="Title" type="string">Create Support Ticket</property>
+        <property name="AllowHide" type="bool">False</property>
+        <property name="AllowMinimize" type="bool">False</property>
+        <property name="AllowZoneChange" type="bool">True</property>
+        <property name="TitleUrl" type="string" />
+        <property name="ChromeType" type="chrometype">None</property>
+        <property name="AllowConnect" type="bool">True</property>
+        <property name="Width" type="unit" />
+        <property name="Height" type="unit" />
+        <property name="HelpMode" type="helpmode">Navigate</property>
+        <property name="AllowEdit" type="bool">False</property>
+        <property name="TitleIconImageUrl" type="string" />
+        <property name="Direction" type="direction">NotSet</property>
+        <property name="AllowClose" type="bool">False</property>
+        <property name="ChromeState" type="chromestate">Normal</property>
+      </properties>
+    </data>
+  </webPart>
+</webParts>
