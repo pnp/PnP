@@ -1,0 +1,153 @@
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"> 
+<head>
+<title>Intranet - MUI Slider Bar Graph</title>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:CompatibleManagedProperties msdt:dt="string"></mso:CompatibleManagedProperties>
+<mso:TemplateHidden msdt:dt="string">0</mso:TemplateHidden>
+<mso:CompatibleSearchDataTypes msdt:dt="string">;#DateTime;#Integer;#Decimal;#</mso:CompatibleSearchDataTypes>
+<mso:MasterPageDescription msdt:dt="string"></mso:MasterPageDescription>
+<mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106604</mso:ContentTypeId>
+<mso:TargetControlType msdt:dt="string">;#Refinement;#</mso:TargetControlType>
+<mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>
+<body>
+    <div id="DateExponentialSliderRefinementItem">
+
+<!--#_
+      var sliderMin = 0;
+      var sliderMax = 6;
+      var sliderType = "dateRangeExponential";
+
+      var maxPixelWidth = 160;
+      var histogramHeight = 60;
+
+      var hasControl = true;
+      if($isNull(ctx.RefinementControl) || $isNull(ctx.ClientControl)) hasControl = false;
+      var hasNoListData = ($isEmptyArray(ctx.ListData));
+
+      if(hasControl)
+      { 
+          var rc = ctx.RefinementControl; rc.MinValue = sliderMin; rc.MaxValue = sliderMax; rc.SliderType = sliderType; 
+          var idPrefix = $htmlEncode(rc.containerId);
+          var idSliderDeferredLoadContainer = idPrefix + "_SliderLoadContainer";
+
+        if(hasNoListData)
+        {
+_#-->
+          <div id="EmptyContainer"></div>
+<!--#_
+        }
+        else
+        {
+          var isExpanded = Srch.Refinement.getExpanded(ctx.RefinementControl.propertyName);
+          var displayStyle = (isExpanded == "true"? "" : "none");
+          var iconClass = (isExpanded == "true"? "ms-ref-uparrow" : "ms-ref-downarrow");
+          var refinerCatTitle = Srch.Refinement.getRefinementTitle(rc);
+
+          // Get the translated label if exists
+          refinerCatTitle = Intranet.Main.getResource(refinerCatTitle);
+
+_#-->
+          <div id='Container' class="display-template">
+                _#= Srch.U.collapsibleRefinerTitle(ctx.RefinementControl.propertyName, ctx.ClientControl.get_id(), refinerCatTitle, iconClass) =#_
+
+                <div id="_#= idSliderDeferredLoadContainer =#_">
+                </div>
+
+          </div>
+
+<!--#_
+          var sliderInitCallback = function() {
+
+              var sliderContainerElement = $get(idSliderDeferredLoadContainer);
+
+              if($isNull(sliderContainerElement)) return;
+
+              ctx.BucketedFilterData = AjaxControlToolkit.SliderRefinementControl.GetDefaultBuckets(ctx);
+
+              // Translate with the correct label according to the page language
+              // Thanks to this post http://matthewyarlett.blogspot.ca/2016_03_01_archive.html for reference
+
+              if (ctx.BucketedFilterData.BoundaryValues.length > 0) {
+
+                ctx.BucketedFilterData.BoundaryValues[0].Label = Intranet.Main.getResource("rf_EarlierThan");
+                ctx.BucketedFilterData.BoundaryValues[0].NextIntervalLabel = Intranet.Main.getResource("rf_EarlierThanOneYearAgo");
+                ctx.BucketedFilterData.BoundaryValues[1].Label = Intranet.Main.getResource("rf_OneYearAgo");
+                ctx.BucketedFilterData.BoundaryValues[1].NextIntervalLabel = Intranet.Main.getResource("rf_OneYearAgoOneMonthAgo");
+                ctx.BucketedFilterData.BoundaryValues[2].Label = Intranet.Main.getResource("rf_OneMonthAgo");
+                ctx.BucketedFilterData.BoundaryValues[2].NextIntervalLabel = Intranet.Main.getResource("rf_OneMonthAgoOneWeekAgo");
+                ctx.BucketedFilterData.BoundaryValues[3].Label = Intranet.Main.getResource("rf_OneWeekAgo");
+                ctx.BucketedFilterData.BoundaryValues[3].NextIntervalLabel = Intranet.Main.getResource("rf_OneWeekAgoToday");
+                ctx.BucketedFilterData.BoundaryValues[4].Label = Intranet.Main.getResource("rf_Today");
+                ctx.BucketedFilterData.BoundaryValues[4].NextIntervalLabel = Intranet.Main.getResource("rf_Today");
+
+                ctx.BucketedFilterData.Intervals[0].Label = Intranet.Main.getResource("rf_EarlierThanOneYearAgo");
+                ctx.BucketedFilterData.Intervals[1].Label = Intranet.Main.getResource("rf_OneYearAgoOneMonthAgo");
+                ctx.BucketedFilterData.Intervals[2].Label = Intranet.Main.getResource("rf_OneMonthAgoOneWeekAgo");
+                ctx.BucketedFilterData.Intervals[3].Label = Intranet.Main.getResource("rf_OneWeekAgoToday");
+                ctx.BucketedFilterData.Intervals[4].Label = Intranet.Main.getResource("rf_Today");
+
+                ctx.BucketedFilterData.Labels["0"] = Intranet.Main.getResource("rf_OneYearAgo");
+                ctx.BucketedFilterData.Labels["1"] = Intranet.Main.getResource("rf_OneMonthAgo");
+                ctx.BucketedFilterData.Labels["2"]= Intranet.Main.getResource("rf_OneWeekAgo");
+                ctx.BucketedFilterData.Labels["3"] = Intranet.Main.getResource("rf_Today");              
+                ctx.BucketedFilterData.Labels.min = Intranet.Main.getResource("rf_EarlierThan");
+              }
+                  
+              ctx.FilterLabelMarkup = AjaxControlToolkit.SliderRefinementControl.GetDefaultFilterLabelMarkupAndOptions(
+                ctx,
+                idPrefix,
+                ctx.BucketedFilterData);
+
+              ctx.SliderMarkup = AjaxControlToolkit.SliderRefinementControl.GetDefaultSliderMarkupAndOptions(
+                ctx,
+                idPrefix,
+                sliderMin,
+                sliderMax,
+                maxPixelWidth,
+                ctx.BucketedFilterData);
+
+              ctx.HistogramMarkup = AjaxControlToolkit.SliderRefinementControl.GetDefaultHistogramMarkupAndOptions(
+                ctx,
+                idPrefix, 
+                histogramHeight,
+                maxPixelWidth,
+                ctx.BucketedFilterData);
+
+              var ms_outSliderHtml = [];
+ms_outSliderHtml.push(''
+,'                <span class="ms-ref-unselSec" style="display: ', displayStyle ,';">'
+,'                    ', ctx.HistogramMarkup ,''
+,''
+,'                    ', ctx.SliderMarkup ,''
+,'                </span>'
+,''
+,'                ', ctx.FilterLabelMarkup ,''
+);
+               sliderContainerElement.innerHTML = ms_outSliderHtml.join('');
+
+               AjaxControlToolkit.SliderRefinementControl.OnPostRenderInitSliderForElement(ctx);
+
+               ctx.BucketedFilterData = null;
+               ctx.FilterLabelOptions = null;
+               ctx.SliderOptions = null;
+               ctx.HistogramOptions = null;
+               ctx.FilterLabelMarkup = null;
+               ctx.SliderMarkup = null;
+               ctx.HistogramMarkup = null;
+          };
+
+          $addRenderContextCallback(ctx, "OnPostRender", function(){
+            EnsureScriptFunc('ajaxtoolkit.js', 'AjaxControlToolkit.SliderRefinementControl', sliderInitCallback);
+          });
+        }
+      }
+_#-->
+
+    </div>
+</body>
+</html>

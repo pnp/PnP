@@ -1,0 +1,61 @@
+<div id="translation-control">
+
+    <span class="ms-fontSize-m" data-bind="text: translationComponentTitle"></span>
+
+    <div id="selection-area">
+        <label class="ms-Label" data-bind="text: selectLanguageMessage"></label>
+        <!-- ko foreach: availableLanguages -->
+            <input type="radio" data-bind="attr: { value: $data }, checked: $parent.selectedLanguage"/> 
+            <label>
+                <span class="ms-Label" data-bind="text: $data"></span>
+            </label>    
+        <!-- /ko -->
+    </div>
+
+    <div id="action-area">
+
+        <!-- ko if: wait -->
+        <div class="spinner" style="width: 100%;height: 100px">
+
+        </div>
+        <!-- /ko -->
+
+        <!-- ko ifnot: wait -->
+            <!-- ko if: (isTranslationExist() || isError()) -->
+                <div class="ms-MessageBar" data-bind="css: messageStatusClass">
+                    <div class="ms-MessageBar-content">
+                        <div class="ms-MessageBar-icon"><i class="ms-Icon" data-bind="css: messageStatusIcon"></i></div>
+                        <div class="ms-MessageBar-text">
+                            <span data-bind="text: infoMessage"></span>
+                            <ul id="translation-list">
+                            <!-- ko foreach: existingTranslations -->
+                                <li>
+                                    <i class="ms-Icon ms-Icon--document" aria-hidden="true"></i> 
+                                    <a data-bind="attr: { href: $data.FileRef }, text: $data.FileLeafRef" target="_blank"></a>
+                                </li>
+                            <!-- /ko -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            <!-- /ko -->
+
+            <!-- ko ifnot: (isTranslationExist() || isError())  -->
+
+                <span class="ms-Label" data-bind="text: selectPageNameMessage"></span>
+                <input id="pagename" type="text" data-bind="textInput: inputDestinationFileName, disable: isTranslationExist"/>
+                <label class="ms-Label">.aspx</label>
+
+                <div class="ms-fontColor-error ms-font-xs" data-bind="visible: !isFileNameValid(), text: invalidFilenameMessage"></div>
+                
+                <div>
+                    <button class="ms-Button ms-Button--command" data-bind="click: createPageTranslation, disable: !isFileNameValid()"> 
+                        <span class="ms-Button-icon"><i class="ms-Icon ms-Icon--plus"></i></span>
+                        <span class="ms-Button-label" data-bind="text: buttonLabel"></span> 
+                    </button>
+                </div>
+
+            <!-- /ko -->
+        <!-- /ko -->
+    </div>
+</div>
