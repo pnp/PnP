@@ -60,7 +60,7 @@ if ($Prod.IsPresent) {
 		
 } else {
 
-	Write-Host "Bundling the application (development mode)..." -ForegroundColor Magenta
+	Write-Host "1# Bundling the application (development mode)..." -ForegroundColor Magenta
 	
 	# Bundle the project in dev mode
 	webpack 2>$null
@@ -89,20 +89,20 @@ Pop-Location
 # -------------------------------------------------------------------------------------
 Write-Host "3# Apply the provisioning template to the root site..." -ForegroundColor Magenta
 
-# Create news folders in the "Pages" library
+# Create news folder in the "Pages" library
 Ensure-SPOFolder -SiteRelativePath "Pages/News" | Out-Null
 
 # Load the custom extensibility provider type in the current PS session
 Add-Type -Path $CustomProviderDllPath 
 
-# Apply column default values first (without files)
-Apply-SPOProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -ExcludeHandlers Files,WebSettings -Parameters @{ "CompanyName"=$AppFolderName }
+# Apply the root site provisioning template and set column default values (without files)
+Apply-SPOProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -ExcludeHandlers Files,WebSettings -Parameters @{ "CompanyName" = $AppFolderName }
 
 # Enable Item Scheduling feature on the "Pages" library
 Enable-CustomItemScheduling -Web (Get-SPOWeb) -PagesLibraryName "Pages"
 
 # Apply the global template for the root site (to get the right pages auto tagging)
-Apply-SPOProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -Handlers Files,WebSettings -Parameters @{ "CompanyName"=$AppFolderName }
+Apply-SPOProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -Handlers Files,WebSettings -Parameters @{ "CompanyName" = $AppFolderName }
  
 # Content Types order
 $ContentTypesOrderRoot = @(
@@ -194,7 +194,7 @@ $SiteMapTermSetId_EN = $SiteMapTermSet_EN.Id
 $SiteMapTermSet_FR = Get-SPOTaxonomyItem -Term "$IntranetTermGroupName|$SiteMapTermSetName_FR"
 $SiteMapTermSetId_FR = $SiteMapTermSet_FR.Id
 
-# Duplicate the Site Map EN into Site Map FR to have mirror structure (i.e pin with children)
+# Duplicate the Site Map EN into Site Map FR to have a mirror structure (i.e pin terms with children)
 $SiteMapTermSetTerms_EN = Get-SPOProperty -ClientObject $SiteMapTermSet_EN -Property Terms
 
 $SiteMapTermSetTerms_EN | ForEach-Object {
@@ -254,7 +254,7 @@ $ConfigurationItems | ForEach-Object {
 # -------------------------------------------------------------------------------------
 Write-Host "7# Configure image renditions..." -ForegroundColor Magenta
 
-# http://www.eliostruyf.com/provision-image-renditions-to-your-sharepoint-2013-site/
+# Thanks to http://www.eliostruyf.com/provision-image-renditions-to-your-sharepoint-2013-site/
 Add-SPOFile -Path $ImageRenditionsConfigurationFilePath -Folder "_catalogs\masterpage\" -Checkout
 
 Write-Host "Done!" -ForegroundColor Green
