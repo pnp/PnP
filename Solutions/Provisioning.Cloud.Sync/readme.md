@@ -10,7 +10,7 @@ If you are looking into site collection provisioning, you should be looking into
 
 - [Provisioning.Framework.Cloud.Async](https://github.com/OfficeDev/PnP/tree/master/Solutions/Provisioning.Framework.Cloud.Async) - Simplified solution around PnP remote provisioning engine usage asynchroniously based on Azure WebJobs
 - [PnP Partner Pack](http://aka.ms/officedevpnppartnerpack) - Start kit for solution providing UI and automated asynchronious creation of site collection.
-- [Provisionign.UX.App](https://github.com/OfficeDev/PnP/tree/master/Solutions/Provisioning.Framework.Cloud.Async) - Most comprehensive solution with multi-lingual and branding configuration support
+- [Provisioning.UX.App](https://github.com/OfficeDev/PnP/tree/master/Solutions/Provisioning.UX.App) - Most comprehensive solution with multi-lingual and branding configuration support
 
 
 ----------
