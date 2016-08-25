@@ -52,7 +52,7 @@ The entire solution is "site collection self-contained" to not interfer with the
 A blog series will come soon to explain how we did this solution in details. Here is the provided plan:
 
 * [Part 1: Functional overview (How to use the solution?)](http://thecollaborationcorner.com/2016/08/22/part-1-functional-overview-how-to-use-the-solution/)
-* Part 2: Solution architecture, frameworks and patterns used (How it is implemented?)
+* [Part 2: Frameworks and libraries used (How it is implemented?)](http://thecollaborationcorner.com/2016/08/25/part-2-frameworks-and-libraries-used-how-it-is-implemented)
 * Part 3: Design an mobile considerations
 * Part 4: The navigation system
 * Part 5: The authoring experience
