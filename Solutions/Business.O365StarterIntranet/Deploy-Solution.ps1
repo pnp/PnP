@@ -31,8 +31,7 @@ $ProvisioningRootSiteTemplateFile = ($CommandDirectory  + ".\Provisioning\RootSi
 $SearchConfigurationFilePath = ($CommandDirectory  + ".\Provisioning\SearchConfiguration.xml")
 $ImageRenditionsConfigurationFilePath = ($CommandDirectory + ".\Provisioning\PublishingImageRenditions.xml")
 
-# Change to the "Release"" folder for a production deployment
-$CustomProviderDllPath = ($CommandDirectory + ".\Provisioning\Intranet.Providers\Intranet.Providers\bin\Debug\Intranet.Providers.dll")
+$CustomProviderDllPath = ($CommandDirectory + ".\Provisioning\Intranet.Providers\Intranet.Providers\bin\Release\Intranet.Providers.dll")
 
 # This name will be used to create a separated folder in the style library and the master page catalog.
 # If you change this name, don't forget to update :
