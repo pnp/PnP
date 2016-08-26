@@ -78,6 +78,10 @@ Before starting, you'll need to install some prerequisites:
 - Check if everything is OK by running the "`webpack`" cmd from the ".\App" folder. We shouldn't any errors here (just warnings)
 - Create a site collection with the publishing template. We don't manage the site collection creation process in the deployment procedure because it takes too much time with SharePoint Online.
 
+<p align="center">
+  <img width="600" src="http://thecollaborationcorner.com/wp-content/uploads/2016/08/create-new-site-collection.png">
+</p>
+
 ### Solution ###
 Solution                | Author(s)
 ------------------------|----------
@@ -105,7 +109,7 @@ $UserName = "username@<your_tenant>.onmicrosoft.com"
 $Password = "<your_password>"
 $SiteUrl = "https://<your_tenant>.sharepoint.com/sites/<your_site_collection>"
 
-Set-Location "<your_installation_folder>\PnP\O365 Starter Intranet"
+Set-Location "<your_pnp_installation_folder>\Solutions\Business.O365StarterIntranet"
 
 $Script = ".\Deploy-Solution.ps1" 
 & $Script -SiteUrl $SiteUrl -UserName $UserName -Password $Password
