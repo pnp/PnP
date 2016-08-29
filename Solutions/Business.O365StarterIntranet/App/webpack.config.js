@@ -36,7 +36,6 @@ module.exports = validate({
 
         // Expose the entry point as the 'Intranet' global var. 
         // We need this to be able to apply Knockout JS bindings manually for SharePoint display templates (the 'ko' variable is not exposed in the global context)
-        // By this way we can call Intranet.Main.applyBindings() from the global context or use any static method to "communicate" outside of the application.
         library: ['Intranet']
     },
     
