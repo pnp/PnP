@@ -54,11 +54,10 @@ A blog series will come soon to explain how we did this solution in details. Her
 * [Part 1: Functional overview (How to use the solution?)](http://thecollaborationcorner.com/2016/08/22/part-1-functional-overview-how-to-use-the-solution/)
 * [Part 2: Frameworks and libraries used (How it is implemented?)](http://thecollaborationcorner.com/2016/08/25/part-2-frameworks-and-libraries-used-how-it-is-implemented)
 * [Part 3: Design and mobile implementation](http://thecollaborationcorner.com/2016/08/29/part-3-design-and-mobile-implementation)
-* Part 4: The navigation system
-* Part 5: The authoring experience
-* Part 6: The multilingual features
-* Part 7: The search experience 
-* Part 8: Analytics with Azure
+* [Part 4: The navigation implementation](http://thecollaborationcorner.com/2016/08/31/part-4-the-navigation-implementation)
+* Part 5: The multilingual implementation
+* Part 6: The search implementation 
+* Part 7: Analytics with Azure
 
 What's next?
 
