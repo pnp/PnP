@@ -30,6 +30,20 @@
             float:right;
         }
     }
+
+    .nav > li.parent-section {
+
+        font-weight: bold;
+        color: $primary-color;
+
+        i {
+            float: none;
+        }
+
+        a {
+            color: $primary-color;
+        }
+    }
     
     .nav > li.is-child {
         padding-left:30px;

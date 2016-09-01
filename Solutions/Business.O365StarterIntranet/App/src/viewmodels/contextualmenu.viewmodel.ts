@@ -12,6 +12,7 @@ export class ContextualMenuViewModel extends NavigationViewModel {
 
     public siteMapFieldName: string;
     public utilityModule: UtilityModule;
+    public parentSection: KnockoutObservable<NavigationNode>;
     public wait: KnockoutObservable<boolean>;
 
     constructor(params: any) {
@@ -23,6 +24,7 @@ export class ContextualMenuViewModel extends NavigationViewModel {
         // The internal name for the site map taxonomy field
         this.siteMapFieldName = params.siteMapFieldName;
 
+        this.parentSection = ko.observable(null);
         this.wait = ko.observable(true);
 
         // Collapse events
@@ -50,7 +52,7 @@ export class ContextualMenuViewModel extends NavigationViewModel {
         // Subscribe to the main menu nodes
         PubSub.subscribe("navigationNodes", (msg, data) => {
 
-            let navigationTree = data.nodes;
+            let navigationTree: Array<NavigationNode> = data.nodes;
 
             pnp.sp.web.lists.getByTitle("Pages").items.getById(_spPageContextInfo.pageItemId).select(this.siteMapFieldName).get().then((item) => {
 
@@ -74,13 +76,20 @@ export class ContextualMenuViewModel extends NavigationViewModel {
                         // If there is no 'ParentId', this is a root term
                         if (currentNode.ParentId !== null) {
 
-                            navigationTree = this.utilityModule.getNodeByTermId(navigationTree, new SP.Guid(currentNode.ParentId));
 
-                            if (navigationTree.ChildNodes.length > 0) {
+                            let parentNode = this.utilityModule.getNodeByTermId(navigationTree, new SP.Guid(currentNode.ParentId));
+
+                            // Set the parent section
+                            this.parentSection(parentNode);
+
+                            if (parentNode.ChildNodes.length > 0) {
 
                                 // Display all siblings and child nodes from the current node (just like the CSOM results)
                                 // Siblings = children of my own parent ;)
-                                navigationTree = navigationTree.ChildNodes;
+                                navigationTree = parentNode.ChildNodes;
+
+                                // Set the current node as first item
+                                navigationTree = this.utilityModule.moveItem(navigationTree, navigationTree.indexOf(currentNode), 0);
                             }
                         }
 

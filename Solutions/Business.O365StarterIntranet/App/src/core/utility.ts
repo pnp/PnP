@@ -157,4 +157,24 @@ export class UtilityModule {
         l.href = url;
         return l;
     };
+
+    /**
+     * Move an item inside an array by changing its index
+     * @param  {number} oldIndex The index of the item to move
+     * @param  {number} newIndex The new desired index in the array
+     * @return {Array<any>}       The modified array
+     */
+    public moveItem (array: Array<any>, oldIndex: number, newIndex: number): Array<any> {
+
+        if (newIndex >= array.length) {
+            let k = newIndex - array.length;
+            while ((k--) + 1) {
+                array.push(undefined);
+            }
+        }
+
+        array.splice(newIndex, 0, array.splice(oldIndex, 1)[0]);
+
+        return array;
+    };
 }
