@@ -1,5 +1,5 @@
 /**
- * sp-pnp-js v1.0.3 - A reusable JavaScript library targeting SharePoint client-side development.
+ * sp-pnp-js v1.0.4 - A reusable JavaScript library targeting SharePoint client-side development.
  * MIT (https://github.com/OfficeDev/PnP-JS-Core/blob/master/LICENSE)
  * Copyright (c) 2016 Microsoft
  * docs: http://officedev.github.io/PnP-JS-Core
@@ -76,7 +76,7 @@ var Dictionary = (function () {
 }());
 exports.Dictionary = Dictionary;
 
-},{"../utils/util":42}],2:[function(require,module,exports){
+},{"../utils/util":41}],2:[function(require,module,exports){
 "use strict";
 var Collections = require("../collections/collections");
 var providers = require("./providers/providers");
@@ -129,6 +129,7 @@ var Settings = (function () {
 exports.Settings = Settings;
 
 },{"../collections/collections":1,"./providers/providers":5}],3:[function(require,module,exports){
+(function (global){
 "use strict";
 var RuntimeConfigImpl = (function () {
     function RuntimeConfigImpl() {
@@ -158,6 +159,9 @@ var RuntimeConfigImpl = (function () {
             this._useNodeClient = true;
             this._useSPRequestExecutor = false;
             this._nodeClientData = config.nodeClientOptions;
+            global._spPageContextInfo = {
+                webAbsoluteUrl: config.nodeClientOptions.siteUrl,
+            };
         }
     };
     Object.defineProperty(RuntimeConfigImpl.prototype, "headers", {
@@ -219,6 +223,8 @@ function setRuntimeConfig(config) {
 }
 exports.setRuntimeConfig = setRuntimeConfig;
 
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
 },{}],4:[function(require,module,exports){
 "use strict";
 var storage = require("../../utils/storage");
@@ -263,7 +269,7 @@ var CachingConfigurationProvider = (function () {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = CachingConfigurationProvider;
 
-},{"../../utils/storage":41}],5:[function(require,module,exports){
+},{"../../utils/storage":40}],5:[function(require,module,exports){
 "use strict";
 var cachingConfigurationProvider_1 = require("./cachingConfigurationProvider");
 var spListConfigurationProvider_1 = require("./spListConfigurationProvider");
@@ -314,6 +320,77 @@ exports.default = SPListConfigurationProvider;
 
 },{"./cachingConfigurationProvider":4}],7:[function(require,module,exports){
 "use strict";
+var collections_1 = require("../collections/collections");
+var util_1 = require("../utils/util");
+var odata_1 = require("../sharepoint/rest/odata");
+var CachedDigest = (function () {
+    function CachedDigest() {
+    }
+    return CachedDigest;
+}());
+exports.CachedDigest = CachedDigest;
+var DigestCache = (function () {
+    function DigestCache(_httpClient, _digests) {
+        if (_digests === void 0) { _digests = new collections_1.Dictionary(); }
+        this._httpClient = _httpClient;
+        this._digests = _digests;
+    }
+    DigestCache.prototype.getDigest = function (webUrl) {
+        var self = this;
+        var cachedDigest = this._digests.get(webUrl);
+        if (cachedDigest !== null) {
+            var now = new Date();
+            if (now < cachedDigest.expiration) {
+                return Promise.resolve(cachedDigest.value);
+            }
+        }
+        var url = util_1.Util.combinePaths(webUrl, "/_api/contextinfo");
+        return self._httpClient.fetchRaw(url, {
+            cache: "no-cache",
+            credentials: "same-origin",
+            headers: {
+                "Accept": "application/json;odata=verbose",
+                "Content-type": "application/json;odata=verbose;charset=utf-8",
+            },
+            method: "POST",
+        }).then(function (response) {
+            var parser = new odata_1.ODataDefaultParser();
+            return parser.parse(response).then(function (d) { return d.GetContextWebInformation; });
+        }).then(function (data) {
+            var newCachedDigest = new CachedDigest();
+            newCachedDigest.value = data.FormDigestValue;
+            var seconds = data.FormDigestTimeoutSeconds;
+            var expiration = new Date();
+            expiration.setTime(expiration.getTime() + 1000 * seconds);
+            newCachedDigest.expiration = expiration;
+            self._digests.add(webUrl, newCachedDigest);
+            return newCachedDigest.value;
+        });
+    };
+    DigestCache.prototype.clear = function () {
+        this._digests.clear();
+    };
+    return DigestCache;
+}());
+exports.DigestCache = DigestCache;
+
+},{"../collections/collections":1,"../sharepoint/rest/odata":22,"../utils/util":41}],8:[function(require,module,exports){
+(function (global){
+"use strict";
+var FetchClient = (function () {
+    function FetchClient() {
+    }
+    FetchClient.prototype.fetch = function (url, options) {
+        return global.fetch(url, options);
+    };
+    return FetchClient;
+}());
+exports.FetchClient = FetchClient;
+
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+
+},{}],9:[function(require,module,exports){
+"use strict";
 var fetchclient_1 = require("./fetchclient");
 var digestcache_1 = require("./digestcache");
 var util_1 = require("../utils/util");
@@ -339,7 +416,7 @@ var HttpClient = (function () {
             headers.append("Content-Type", "application/json;odata=verbose;charset=utf-8");
         }
         if (!headers.has("X-ClientService-ClientTag")) {
-            headers.append("X-ClientService-ClientTag", "SharePoint.PnP.JavaScriptCore");
+            headers.append("X-ClientService-ClientTag", "PnPCoreJS:1.0.4");
         }
         opts = util_1.Util.extend(opts, { headers: headers });
         if (opts.method && opts.method.toUpperCase() !== "GET") {
@@ -423,80 +500,7 @@ var HttpClient = (function () {
 }());
 exports.HttpClient = HttpClient;
 
-},{"../configuration/pnplibconfig":3,"../utils/util":42,"./digestcache":8,"./fetchclient":9,"./nodefetchclient":11,"./sprequestexecutorclient":12}],8:[function(require,module,exports){
-"use strict";
-var collections_1 = require("../collections/collections");
-var util_1 = require("../utils/util");
-var odata_1 = require("../sharepoint/rest/odata");
-var CachedDigest = (function () {
-    function CachedDigest() {
-    }
-    return CachedDigest;
-}());
-exports.CachedDigest = CachedDigest;
-var DigestCache = (function () {
-    function DigestCache(_httpClient, _digests) {
-        if (_digests === void 0) { _digests = new collections_1.Dictionary(); }
-        this._httpClient = _httpClient;
-        this._digests = _digests;
-    }
-    DigestCache.prototype.getDigest = function (webUrl) {
-        var self = this;
-        var cachedDigest = this._digests.get(webUrl);
-        if (cachedDigest !== null) {
-            var now = new Date();
-            if (now < cachedDigest.expiration) {
-                return Promise.resolve(cachedDigest.value);
-            }
-        }
-        var url = util_1.Util.combinePaths(webUrl, "/_api/contextinfo");
-        return self._httpClient.fetchRaw(url, {
-            cache: "no-cache",
-            credentials: "same-origin",
-            headers: {
-                "Accept": "application/json;odata=verbose",
-                "Content-type": "application/json;odata=verbose;charset=utf-8",
-            },
-            method: "POST",
-        }).then(function (response) {
-            var parser = new odata_1.ODataDefaultParser();
-            return parser.parse(response).then(function (d) { return d.GetContextWebInformation; });
-        }).then(function (data) {
-            var newCachedDigest = new CachedDigest();
-            newCachedDigest.value = data.FormDigestValue;
-            var seconds = data.FormDigestTimeoutSeconds;
-            var expiration = new Date();
-            expiration.setTime(expiration.getTime() + 1000 * seconds);
-            newCachedDigest.expiration = expiration;
-            self._digests.add(webUrl, newCachedDigest);
-            return newCachedDigest.value;
-        });
-    };
-    DigestCache.prototype.clear = function () {
-        this._digests.clear();
-    };
-    return DigestCache;
-}());
-exports.DigestCache = DigestCache;
-
-},{"../collections/collections":1,"../sharepoint/rest/odata":23,"../utils/util":42}],9:[function(require,module,exports){
-(function (global){
-"use strict";
-var FetchClient = (function () {
-    function FetchClient() {
-    }
-    FetchClient.prototype.fetch = function (url, options) {
-        return global.fetch(url, options);
-    };
-    return FetchClient;
-}());
-exports.FetchClient = FetchClient;
-
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-
-},{}],10:[function(require,module,exports){
-arguments[4][7][0].apply(exports,arguments)
-},{"../configuration/pnplibconfig":3,"../utils/util":42,"./digestcache":8,"./fetchclient":9,"./nodefetchclient":11,"./sprequestexecutorclient":12,"dup":7}],11:[function(require,module,exports){
+},{"../configuration/pnplibconfig":3,"../utils/util":41,"./digestcache":7,"./fetchclient":8,"./nodefetchclient":10,"./sprequestexecutorclient":11}],10:[function(require,module,exports){
 "use strict";
 var NodeFetchClient = (function () {
     function NodeFetchClient(siteUrl, _clientId, _clientSecret, _realm) {
@@ -513,8 +517,9 @@ var NodeFetchClient = (function () {
 }());
 exports.NodeFetchClient = NodeFetchClient;
 
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 "use strict";
+var util_1 = require("../utils/util");
 var SPRequestExecutorClient = (function () {
     function SPRequestExecutorClient() {
         this.convertToResponse = function (spResponse) {
@@ -550,8 +555,7 @@ var SPRequestExecutorClient = (function () {
             headers = options.headers;
         }
         return new Promise(function (resolve, reject) {
-            executor.executeAsync({
-                body: options.body,
+            var requestOptions = {
                 error: function (error) {
                     reject(_this.convertToResponse(error));
                 },
@@ -561,14 +565,21 @@ var SPRequestExecutorClient = (function () {
                     resolve(_this.convertToResponse(response));
                 },
                 url: url,
-            });
+            };
+            if (options.body) {
+                util_1.Util.extend(requestOptions, { body: options.body });
+            }
+            else {
+                util_1.Util.extend(requestOptions, { binaryStringRequestBody: true });
+            }
+            executor.executeAsync(requestOptions);
         });
     };
     return SPRequestExecutorClient;
 }());
 exports.SPRequestExecutorClient = SPRequestExecutorClient;
 
-},{}],13:[function(require,module,exports){
+},{"../utils/util":41}],12:[function(require,module,exports){
 "use strict";
 var util_1 = require("./utils/util");
 var storage_1 = require("./utils/storage");
@@ -593,7 +604,7 @@ var Def = {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = Def;
 
-},{"./configuration/configuration":2,"./configuration/pnplibconfig":3,"./sharepoint/rest/rest":27,"./utils/logging":40,"./utils/storage":41,"./utils/util":42}],14:[function(require,module,exports){
+},{"./configuration/configuration":2,"./configuration/pnplibconfig":3,"./sharepoint/rest/rest":26,"./utils/logging":39,"./utils/storage":40,"./utils/util":41}],13:[function(require,module,exports){
 "use strict";
 var storage_1 = require("../../utils/storage");
 var util_1 = require("../../utils/util");
@@ -628,7 +639,9 @@ var CachingParserWrapper = (function () {
     CachingParserWrapper.prototype.parse = function (response) {
         var _this = this;
         return this._parser.parse(response).then(function (data) {
-            _this._cacheOptions.store.put(_this._cacheOptions.key, data, _this._cacheOptions.expiration);
+            if (_this._cacheOptions.store !== null) {
+                _this._cacheOptions.store.put(_this._cacheOptions.key, data, _this._cacheOptions.expiration);
+            }
             return data;
         });
     };
@@ -636,7 +649,7 @@ var CachingParserWrapper = (function () {
 }());
 exports.CachingParserWrapper = CachingParserWrapper;
 
-},{"../../configuration/pnplibconfig":3,"../../utils/storage":41,"../../utils/util":42}],15:[function(require,module,exports){
+},{"../../configuration/pnplibconfig":3,"../../utils/storage":40,"../../utils/util":41}],14:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -835,7 +848,7 @@ var ContentType = (function (_super) {
 }(queryable_1.QueryableInstance));
 exports.ContentType = ContentType;
 
-},{"./queryable":24}],16:[function(require,module,exports){
+},{"./queryable":23}],15:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -853,6 +866,9 @@ var Fields = (function (_super) {
     }
     Fields.prototype.getByTitle = function (title) {
         return new Field(this, "getByTitle('" + title + "')");
+    };
+    Fields.prototype.getByInternalNameOrTitle = function (name) {
+        return new Field(this, "getByInternalNameOrTitle('" + name + "')");
     };
     Fields.prototype.getById = function (id) {
         var f = new Field(this);
@@ -1219,7 +1235,7 @@ var Field = (function (_super) {
 }(queryable_1.QueryableInstance));
 exports.Field = Field;
 
-},{"../../utils/util":42,"./queryable":24,"./types":34}],17:[function(require,module,exports){
+},{"../../utils/util":41,"./queryable":23,"./types":33}],16:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1635,7 +1651,7 @@ var MoveOperations = exports.MoveOperations;
 })(exports.TemplateFileType || (exports.TemplateFileType = {}));
 var TemplateFileType = exports.TemplateFileType;
 
-},{"./items":20,"./queryable":24}],18:[function(require,module,exports){
+},{"./items":19,"./queryable":23}],17:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1766,7 +1782,7 @@ var Folder = (function (_super) {
 }(queryable_1.QueryableInstance));
 exports.Folder = Folder;
 
-},{"./files":17,"./items":20,"./queryable":24}],19:[function(require,module,exports){
+},{"./files":16,"./items":19,"./queryable":23}],18:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -1797,7 +1813,7 @@ var Form = (function (_super) {
 }(queryable_1.QueryableInstance));
 exports.Form = Form;
 
-},{"./queryable":24}],20:[function(require,module,exports){
+},{"./queryable":23}],19:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2005,7 +2021,7 @@ var PagedItemCollection = (function () {
 }());
 exports.PagedItemCollection = PagedItemCollection;
 
-},{"../../utils/util":42,"./contenttypes":15,"./folders":18,"./odata":23,"./queryable":24,"./queryablesecurable":25}],21:[function(require,module,exports){
+},{"../../utils/util":41,"./contenttypes":14,"./folders":17,"./odata":22,"./queryable":23,"./queryablesecurable":24}],20:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2051,10 +2067,7 @@ var Lists = (function (_super) {
             "Title": title,
         }, additionalSettings));
         return this.post({ body: postBody }).then(function (data) {
-            return {
-                list: _this.getByTitle(title),
-                data: data
-            };
+            return { data: data, list: _this.getByTitle(title) };
         });
     };
     Lists.prototype.ensure = function (title, description, template, enableContentTypes, additionalSettings) {
@@ -2068,9 +2081,9 @@ var Lists = (function (_super) {
         }
         return new Promise(function (resolve, reject) {
             var list = _this.getByTitle(title);
-            list.get().then(function (d) { return resolve({ created: false, list: list, data: d }); }).catch(function () {
+            list.get().then(function (d) { return resolve({ created: false, data: d, list: list }); }).catch(function () {
                 _this.add(title, description, template, enableContentTypes, additionalSettings).then(function (r) {
-                    resolve({ created: true, list: _this.getByTitle(title), data: r.data });
+                    resolve({ created: true, data: r.data, list: _this.getByTitle(title) });
                 });
             }).catch(function (e) { return reject(e); });
         });
@@ -2278,7 +2291,7 @@ var List = (function (_super) {
 }(queryablesecurable_1.QueryableSecurable));
 exports.List = List;
 
-},{"../../utils/util":42,"./contenttypes":15,"./fields":16,"./forms":19,"./items":20,"./odata":23,"./queryable":24,"./queryablesecurable":25,"./usercustomactions":35,"./views":37}],22:[function(require,module,exports){
+},{"../../utils/util":41,"./contenttypes":14,"./fields":15,"./forms":18,"./items":19,"./odata":22,"./queryable":23,"./queryablesecurable":24,"./usercustomactions":34,"./views":36}],21:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2286,8 +2299,8 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var queryable_1 = require("./queryable");
-var quickLaunch_1 = require("./quickLaunch");
-var topNavigationBar_1 = require("./topNavigationBar");
+var quicklaunch_1 = require("./quicklaunch");
+var topnavigationbar_1 = require("./topnavigationbar");
 var Navigation = (function (_super) {
     __extends(Navigation, _super);
     function Navigation(baseUrl) {
@@ -2295,14 +2308,14 @@ var Navigation = (function (_super) {
     }
     Object.defineProperty(Navigation.prototype, "quicklaunch", {
         get: function () {
-            return new quickLaunch_1.QuickLaunch(this);
+            return new quicklaunch_1.QuickLaunch(this);
         },
         enumerable: true,
         configurable: true
     });
     Object.defineProperty(Navigation.prototype, "topNavigationBar", {
         get: function () {
-            return new topNavigationBar_1.TopNavigationBar(this);
+            return new topnavigationbar_1.TopNavigationBar(this);
         },
         enumerable: true,
         configurable: true
@@ -2311,7 +2324,7 @@ var Navigation = (function (_super) {
 }(queryable_1.Queryable));
 exports.Navigation = Navigation;
 
-},{"./queryable":24,"./quickLaunch":26,"./topNavigationBar":33}],23:[function(require,module,exports){
+},{"./queryable":23,"./quicklaunch":25,"./topnavigationbar":32}],22:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2477,17 +2490,19 @@ var ODataBatch = (function () {
     };
     ODataBatch.prototype.execute = function () {
         var _this = this;
-        if (this._batchDepCount > 0) {
-            setTimeout(function () { return _this.execute(); }, 100);
-        }
-        else {
-            this.executeImpl();
-        }
+        return new Promise(function (resolve, reject) {
+            if (_this._batchDepCount > 0) {
+                setTimeout(function () { return _this.execute(); }, 100);
+            }
+            else {
+                _this.executeImpl().then(function () { return resolve(); }).catch(reject);
+            }
+        });
     };
     ODataBatch.prototype.executeImpl = function () {
         var _this = this;
         if (this._requests.length < 1) {
-            return;
+            return new Promise(function (r) { return r(); });
         }
         var batchBody = [];
         var currentChangeSetId = "";
@@ -2545,28 +2560,31 @@ var ODataBatch = (function () {
             currentChangeSetId = "";
         }
         batchBody.push("--batch_" + this._batchId + "--\n");
-        var batchHeaders = new Headers();
-        batchHeaders.append("Content-Type", "multipart/mixed; boundary=batch_" + this._batchId);
+        var batchHeaders = {
+            "Content-Type": "multipart/mixed; boundary=batch_" + this._batchId,
+        };
         var batchOptions = {
             "body": batchBody.join(""),
             "headers": batchHeaders,
         };
         var client = new httpclient_1.HttpClient();
-        client.post(util_1.Util.makeUrlAbsolute("/_api/$batch"), batchOptions)
+        return client.post(util_1.Util.makeUrlAbsolute("/_api/$batch"), batchOptions)
             .then(function (r) { return r.text(); })
             .then(this._parseResponse)
             .then(function (responses) {
             if (responses.length !== _this._requests.length) {
                 throw new Error("Could not properly parse responses to match requests in batch.");
             }
+            var resolutions = [];
             for (var i = 0; i < responses.length; i++) {
                 var request = _this._requests[i];
                 var response = responses[i];
                 if (!response.ok) {
                     request.reject(new Error(response.statusText));
                 }
-                request.parser.parse(response).then(request.resolve).catch(request.reject);
+                resolutions.push(request.parser.parse(response).then(request.resolve).catch(request.reject));
             }
+            return Promise.all(resolutions);
         });
     };
     ODataBatch.prototype._parseResponse = function (body) {
@@ -2633,7 +2651,7 @@ var ODataBatch = (function () {
 }());
 exports.ODataBatch = ODataBatch;
 
-},{"../../configuration/pnplibconfig":3,"../../net/httpclient":10,"../../utils/logging":40,"../../utils/util":42}],24:[function(require,module,exports){
+},{"../../configuration/pnplibconfig":3,"../../net/httpclient":9,"../../utils/logging":39,"../../utils/util":41}],23:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2642,7 +2660,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var util_1 = require("../../utils/util");
 var collections_1 = require("../../collections/collections");
-var HttpClient_1 = require("../../net/HttpClient");
+var httpclient_1 = require("../../net/httpclient");
 var odata_1 = require("./odata");
 var caching_1 = require("./caching");
 var pnplibconfig_1 = require("../../configuration/pnplibconfig");
@@ -2781,14 +2799,16 @@ var Queryable = (function () {
             if (typeof this._cachingOptions !== "undefined") {
                 options = util_1.Util.extend(options, this._cachingOptions);
             }
-            var data_1 = options.store.get(options.key);
-            if (data_1 !== null) {
-                return new Promise(function (resolve) { return resolve(data_1); });
+            if (options.store !== null) {
+                var data_1 = options.store.get(options.key);
+                if (data_1 !== null) {
+                    return new Promise(function (resolve) { return resolve(data_1); });
+                }
             }
             parser = new caching_1.CachingParserWrapper(parser, options);
         }
         if (this._batch === null) {
-            var client = new HttpClient_1.HttpClient();
+            var client = new httpclient_1.HttpClient();
             return client.get(this.toUrlAndQuery(), getOptions).then(function (response) {
                 if (!response.ok) {
                     throw "Error making GET request: " + response.statusText;
@@ -2802,7 +2822,7 @@ var Queryable = (function () {
     };
     Queryable.prototype.postImpl = function (postOptions, parser) {
         if (this._batch === null) {
-            var client = new HttpClient_1.HttpClient();
+            var client = new httpclient_1.HttpClient();
             return client.post(this.toUrlAndQuery(), postOptions).then(function (response) {
                 if (!response.ok) {
                     throw "Error making POST request: " + response.statusText;
@@ -2897,7 +2917,7 @@ var QueryableInstance = (function (_super) {
 }(Queryable));
 exports.QueryableInstance = QueryableInstance;
 
-},{"../../collections/collections":1,"../../configuration/pnplibconfig":3,"../../net/HttpClient":7,"../../utils/util":42,"./caching":14,"./odata":23}],25:[function(require,module,exports){
+},{"../../collections/collections":1,"../../configuration/pnplibconfig":3,"../../net/httpclient":9,"../../utils/util":41,"./caching":13,"./odata":22}],24:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2965,7 +2985,7 @@ var QueryableSecurable = (function (_super) {
 }(queryable_1.QueryableInstance));
 exports.QueryableSecurable = QueryableSecurable;
 
-},{"./queryable":24,"./roles":28}],26:[function(require,module,exports){
+},{"./queryable":23,"./roles":27}],25:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -2982,7 +3002,7 @@ var QuickLaunch = (function (_super) {
 }(queryable_1.Queryable));
 exports.QuickLaunch = QuickLaunch;
 
-},{"./queryable":24}],27:[function(require,module,exports){
+},{"./queryable":23}],26:[function(require,module,exports){
 "use strict";
 var search_1 = require("./search");
 var site_1 = require("./site");
@@ -3049,7 +3069,7 @@ var Rest = (function () {
 }());
 exports.Rest = Rest;
 
-},{"../../utils/util":42,"./odata":23,"./search":29,"./site":30,"./userprofiles":36,"./webs":38}],28:[function(require,module,exports){
+},{"../../utils/util":41,"./odata":22,"./search":28,"./site":29,"./userprofiles":35,"./webs":37}],27:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -3194,7 +3214,7 @@ var RoleDefinitionBindings = (function (_super) {
 }(queryable_1.QueryableCollection));
 exports.RoleDefinitionBindings = RoleDefinitionBindings;
 
-},{"../../utils/util":42,"./queryable":24,"./sitegroups":31}],29:[function(require,module,exports){
+},{"../../utils/util":41,"./queryable":23,"./sitegroups":30}],28:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -3297,7 +3317,7 @@ var ReorderingRuleMatchType = exports.ReorderingRuleMatchType;
 })(exports.QueryPropertyValueType || (exports.QueryPropertyValueType = {}));
 var QueryPropertyValueType = exports.QueryPropertyValueType;
 
-},{"./queryable":24}],30:[function(require,module,exports){
+},{"./queryable":23}],29:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -3368,7 +3388,7 @@ var Site = (function (_super) {
 }(queryable_1.QueryableInstance));
 exports.Site = Site;
 
-},{"./queryable":24,"./usercustomactions":35,"./webs":38}],31:[function(require,module,exports){
+},{"./queryable":23,"./usercustomactions":34,"./webs":37}],30:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -3441,7 +3461,7 @@ var SiteGroup = (function (_super) {
             body: JSON.stringify(postBody),
             headers: {
                 "X-HTTP-Method": "MERGE",
-            }
+            },
         }).then(function (data) {
             var retGroup = _this;
             if (properties.hasOwnProperty("Title")) {
@@ -3457,7 +3477,7 @@ var SiteGroup = (function (_super) {
 }(queryable_1.QueryableInstance));
 exports.SiteGroup = SiteGroup;
 
-},{"../../utils/util":42,"./queryable":24,"./siteusers":32}],32:[function(require,module,exports){
+},{"../../utils/util":41,"./queryable":23,"./siteusers":31}],31:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -3540,7 +3560,7 @@ var SiteUser = (function (_super) {
 }(queryable_1.QueryableInstance));
 exports.SiteUser = SiteUser;
 
-},{"../../utils/util":42,"./queryable":24,"./sitegroups":31}],33:[function(require,module,exports){
+},{"../../utils/util":41,"./queryable":23,"./sitegroups":30}],32:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -3557,7 +3577,7 @@ var TopNavigationBar = (function (_super) {
 }(queryable_1.QueryableInstance));
 exports.TopNavigationBar = TopNavigationBar;
 
-},{"./queryable":24}],34:[function(require,module,exports){
+},{"./queryable":23}],33:[function(require,module,exports){
 "use strict";
 (function (ControlMode) {
     ControlMode[ControlMode["Display"] = 1] = "Display";
@@ -3663,7 +3683,7 @@ var PrincipalType = exports.PrincipalType;
 })(exports.PageType || (exports.PageType = {}));
 var PageType = exports.PageType;
 
-},{}],35:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -3724,7 +3744,7 @@ var UserCustomAction = (function (_super) {
 }(queryable_1.QueryableInstance));
 exports.UserCustomAction = UserCustomAction;
 
-},{"../../utils/util":42,"./queryable":24}],36:[function(require,module,exports){
+},{"../../utils/util":41,"./queryable":23}],35:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -3908,7 +3928,7 @@ var ProfileLoader = (function (_super) {
     return ProfileLoader;
 }(queryable_1.Queryable));
 
-},{"../../utils/files":39,"./odata":23,"./queryable":24}],37:[function(require,module,exports){
+},{"../../utils/files":38,"./odata":22,"./queryable":23}],36:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -3937,12 +3957,12 @@ var Views = (function (_super) {
         var postBody = JSON.stringify(util_1.Util.extend({
             "__metadata": { "type": "SP.View" },
             "Title": title,
-            "PersonalView": personalView
+            "PersonalView": personalView,
         }, additionalSettings));
         return this.postAs({ body: postBody }).then(function (data) {
             return {
+                data: data,
                 view: _this.getById(data.Id),
-                data: data
             };
         });
     };
@@ -4023,7 +4043,7 @@ var ViewFields = (function (_super) {
 }(queryable_1.QueryableCollection));
 exports.ViewFields = ViewFields;
 
-},{"../../utils/util":42,"./queryable":24}],38:[function(require,module,exports){
+},{"../../utils/util":41,"./queryable":23}],37:[function(require,module,exports){
 "use strict";
 var __extends = (this && this.__extends) || function (d, b) {
     for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
@@ -4260,7 +4280,7 @@ var Web = (function (_super) {
 }(queryablesecurable_1.QueryableSecurable));
 exports.Web = Web;
 
-},{"../../utils/util":42,"./contenttypes":15,"./fields":16,"./files":17,"./folders":18,"./lists":21,"./navigation":22,"./odata":23,"./queryable":24,"./queryablesecurable":25,"./roles":28,"./sitegroups":31,"./siteusers":32,"./usercustomactions":35}],39:[function(require,module,exports){
+},{"../../utils/util":41,"./contenttypes":14,"./fields":15,"./files":16,"./folders":17,"./lists":20,"./navigation":21,"./odata":22,"./queryable":23,"./queryablesecurable":24,"./roles":27,"./sitegroups":30,"./siteusers":31,"./usercustomactions":34}],38:[function(require,module,exports){
 "use strict";
 function readBlobAsText(blob) {
     return readBlobAs(blob, "string");
@@ -4287,7 +4307,7 @@ function readBlobAs(blob, mode) {
     });
 }
 
-},{}],40:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 "use strict";
 var Logger = (function () {
     function Logger() {
@@ -4474,7 +4494,7 @@ var Logger;
     Logger.FunctionListener = FunctionListener;
 })(Logger = exports.Logger || (exports.Logger = {}));
 
-},{}],41:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 "use strict";
 var util_1 = require("./util");
 var PnPClientStorageWrapper = (function () {
@@ -4561,7 +4581,7 @@ var PnPClientStorage = (function () {
 }());
 exports.PnPClientStorage = PnPClientStorage;
 
-},{"./util":42}],42:[function(require,module,exports){
+},{"./util":41}],41:[function(require,module,exports){
 (function (global){
 "use strict";
 var Util = (function () {
@@ -4736,7 +4756,7 @@ exports.Util = Util;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 
-},{}]},{},[13])(13)
+},{}]},{},[12])(12)
 });
 
 
