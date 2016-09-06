@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>Microsoft.IdentityModel.Extensions</id>
+        <version>1.0.0</version>
+        <authors>Radi Atanassov</authors>
+        <owners>Radi Atanassov</owners>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>A NuGet package wrapping the Microsoft.IdentityModel.Extensions.dll assembly for use in the OfficeDev PnP Core Authentication library. Contains the S2S classes needed to compile modified versions of the SharePointContext.cs and TokenHelper.cs</description>
+        <summary>A NuGet package wrapping the Microsoft.IdentityModel.Extensions.dll assembly for use in the OfficeDev PnP Core Authentication library.</summary>
+        <releaseNotes>Unofficial package, not from Microsoft.</releaseNotes>
+    </metadata>
+    <files>
+        <file src="lib\net451\Microsoft.IdentityModel.Extensions.dll" target="lib\net451\Microsoft.IdentityModel.Extensions.dll" />
+    </files>
+</package>
