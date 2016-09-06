@@ -69,3 +69,5 @@ Contoso.Core.OneDriveDocumentMigration.exe
 	"password"
 	false
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.OneDriveDocumentMigration" />

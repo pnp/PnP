@@ -112,5 +112,4 @@ Before | After
 -------|------
 ![Before](http://i.imgur.com/8Cy2UWH.png) | ![After](http://i.imgur.com/4i2bBz6.png)
 
-
-
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.SPD" />

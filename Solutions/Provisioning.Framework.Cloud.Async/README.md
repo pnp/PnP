@@ -102,3 +102,5 @@ This is the actual web UI for self-service site collection creation. Notice agai
 You will need to update correct Azure storage key for the web.config.
 
 ![UI of the site request form](http://i.imgur.com/mmiuWFA.png)
+
+<img src="https://telemetry.sharepointpnp.com/pnp/solutions/Provisioning.Framework.Cloud.Async" />

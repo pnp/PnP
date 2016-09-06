@@ -46,3 +46,6 @@ Since provisioning of site collections can take a quite a long time, you really 
 This sample contains two solutions. One for web UI, which is optional, but does ask the needed permissions which we can then also use for the actual "remote timer job" process.
 
 Second solution is the actual "remote timer job", which can be scheduled for example using windows scheduler and could be running in the on-premises provider hosted add-in environment servers.
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.OnPrem.Async" />

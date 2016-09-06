@@ -245,8 +245,9 @@ The important elements in above sample are:
 
 When using the sliced upload you'll need to be aware of:
 - Internal testing has shown that a **slice size of 8 MB works best**, but off course this depends on the network connection you're using
-- When an upload is interupted or stopped the server has an **unfinished file**. This file will be **cleaned up by the server after 6 to 24 hours**...this model is meant to immediately restart a failed upload, not restart it the day after. Keep in mind that that the current cleanup interval can be changed without upfront notice.
+- When an upload is interrupted or stopped the server has an **unfinished file**. This file will be **cleaned up by the server after 6 to 24 hours**...this model is meant to immediately restart a failed upload, not restart it the day after. Keep in mind that that the current cleanup interval can be changed without upfront notice.
 - Slices of data have to be **uploaded in the right order**, doing a parallel multi-threaded upload will not work
 - When an upload starts the **file gets locked for 15 minutes**...if there's no new slice of data within that timeframe someone else can start an upload for that same file and your upload will be cancelled. Keep in mind that that the current file lock interval can be changed without upfront notice.
 
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.LargeFileUpload" />

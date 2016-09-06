@@ -161,3 +161,4 @@ If this setting is set to true, the folders will be expanded by default. If set 
 documentPickerWithOptions.ExpandFolders = false; //show the folders collapsed when dialog is opened
 ```
 
+<img  src="https://telemetry.sharepointpnp.com/pnp/components/Core.DocumentPicker" />

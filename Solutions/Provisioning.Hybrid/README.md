@@ -239,3 +239,5 @@ For testing purposes the on-premises farm should also have VS2013 installed. In 
 Ensure that the certificate used to encrypt sensitive data is deployed on the machine hosting the on-premises component. Deployment via PFX file as we need to the private key.
 
 Press F5 to run. The Provisioning.Hybrid.Console project will now connect to Service Bus and wait for a “HBI” site creation from the SharePoint Online provisioning add-in.
+
+<img src="https://telemetry.sharepointpnp.com/pnp/solutions/Provisioning.Hybrid" />

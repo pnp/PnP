@@ -170,3 +170,4 @@ _Connecting to HostWeb from AppWeb_
     });
     
 ```
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.ListViewThreshold.JSOMAndREST" />

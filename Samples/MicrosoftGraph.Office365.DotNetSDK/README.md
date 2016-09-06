@@ -34,3 +34,4 @@ In order to play with this sample, you need to:
 -  Configure the .config file of the console application with proper settings (MSAL_ClientID)
 
  
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/MicrosoftGraph.Office365.DotNetSDK" />

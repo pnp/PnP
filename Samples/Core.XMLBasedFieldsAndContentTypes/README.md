@@ -39,3 +39,4 @@ This sample demonstrates how to use feature framework element xml files defining
 
 All implementation is based on the code located in the OfficeDevPnP core component, which encapsulates the processing completely. Developer will just need to provide the element xml file and call the right method. 
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.XMLBasedFieldsAndContentTypes" />

@@ -12,15 +12,15 @@
     "Microsoft.AspNet.Authentication": "1.0.0-rc1-final",
     "Microsoft.SharePointOnline.CSOM": "16.1.4727.1200",
     "Microsoft.AspNet.Authentication.OAuth": "1.0.0-rc1-final",
-    "Microsoft.IdentityModel": "6.1.7600.16394",
     "Microsoft.AspNet.Http.Extensions": "1.0.0-rc1-final",
     "Microsoft.AspNet.Server.Kestrel.Https": "1.0.0-rc1-final",
     "Microsoft.AspNet.Authentication.Cookies": "1.0.0-rc1-final"
   },
 
   "frameworks": {
-    "net451": {
+    "dnx451": {
       "dependencies": {
+        "Microsoft.IdentityModel": "1.0.0-*",
         "Microsoft.IdentityModel.Extensions": "1.0.0-*"
       },
       "frameworkAssemblies": {

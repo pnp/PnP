@@ -297,10 +297,10 @@
 
                     for (var i = 0; i < displayCount; i++) {
                         var item = results[i];
-                        var loginName = item['Key'];
-                        var displayName = item['DisplayText'];
-                        var title = item['EntityData']['Title'];
-                        var email = item['EntityData']['Email'];
+                        var loginName = item['Key'] || '';
+                        var displayName = item['DisplayText'] || '';
+                        var title = item['EntityData']['Title'] || '';
+                        var email = item['EntityData']['Email'] || '';
 
                         var loginNameDisplay = email;
                         if (loginName && loginName.indexOf('|') > -1) {
@@ -493,10 +493,86 @@
                 else if (keynum === 9 || keynum === 27) {
                     //hide the suggestion box
                     parent.HideSelectionBox();
+                    parent.Unselect();
+                }
+                // up arrow
+                else if (keynum === 38) {
+                    if (parent.SelectUp())
+                        event.preventDefault();
+                }
+                // down arrow
+                else if (keynum === 40) {
+                    if (parent.SelectDown())
+                        event.preventDefault();
+                }
+                // enter
+                else if (keynum === 13) {
+                    if (parent.EnterSelected())
+                        event.preventDefault();
                 }
             });
 
         };
+
+        PeoplePicker.prototype.Unselect = function () {
+            if (!this.PeoplePickerDisplay) return;
+            this.PeoplePickerDisplay.find('.ms-bgHoverable.selected').removeClass('selected');
+        }
+
+        PeoplePicker.prototype.SelectUp = function () {
+            if (!this.PeoplePickerDisplay) return false;
+
+            var elements = this.PeoplePickerDisplay.find('.ms-bgHoverable');
+            if (elements.length !== 0) {
+                var selectedElementIndex = -1;
+
+                elements.each(function (index) {
+                    if ($(this).hasClass('selected')) {
+                        selectedElementIndex = index;
+                    }
+                });
+
+                if (selectedElementIndex >= 0) $(elements[selectedElementIndex]).removeClass('selected');
+                var newSelectedElementIndex = selectedElementIndex - 1;
+                if (newSelectedElementIndex < 0) newSelectedElementIndex = elements.length - 1;
+
+                $(elements[newSelectedElementIndex]).addClass('selected');
+            }
+            return true;
+        };
+
+        PeoplePicker.prototype.SelectDown = function () {
+            if (!this.PeoplePickerDisplay) return false;
+
+            var elements = this.PeoplePickerDisplay.find('.ms-bgHoverable');
+            if (elements.length !== 0) {
+                var selectedElementIndex = -1;
+
+                elements.each(function (index) {
+                    if ($(this).hasClass('selected')) {
+                        selectedElementIndex = index;
+                    }
+                });
+
+                if (selectedElementIndex >= 0) $(elements[selectedElementIndex]).removeClass('selected');
+                var newSelectedElementIndex = selectedElementIndex + 1;
+                if (newSelectedElementIndex >= elements.length) newSelectedElementIndex = 0;
+
+                $(elements[newSelectedElementIndex]).addClass('selected');
+            }
+            return true;
+        };
+
+        PeoplePicker.prototype.EnterSelected = function () {
+            if (!this.PeoplePickerDisplay) return false;
+
+            var selectedElement = this.PeoplePickerDisplay.find('.ms-bgHoverable.selected');
+            if (selectedElement.length > 0) {
+                selectedElement[0].onclick.apply(selectedElement[0]);
+                return true;
+            }
+            return false;
+        }
 
         return PeoplePicker;
     })();

@@ -3,6 +3,8 @@
 ### Summary ###
 This sample demonstrates how to access an end-user's OneDrive for Business site and apply custom branding to it automatically.
 
+> Note. This only works with Classic mode and not with modern OneDrive for Business experiences.
+
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
 -  Office 365 Dedicated (D)
@@ -80,3 +82,4 @@ Now we need to grant permissions to the add-in principal.  You will have to navi
 </AppPermissionRequests>
 ```
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.OneDriveCustomization" />

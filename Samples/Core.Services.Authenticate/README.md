@@ -219,3 +219,5 @@ function getCookie(cname) {
 
 ### Testing ###
 This solution hardcodes https://bjansencorswebapi.azurewebsites.net as host for the cross domain call. If you want to test this then you'll need to deploy the Core.Services.Authenticate.WebAPI project to your host. Point is that you cannot test cross domain calls when testing on localhost.
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.Services.Authenticate" />

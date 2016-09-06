@@ -19,3 +19,5 @@ Includes extensions to the core jQuery library to ease DOM manipulation and prov
 
 ### [jQuery Promises](promises.md) ###
 Includes sample code demonstrating using the jQuery Deferred object to manage Async requests using [SP.ClientContext.executeQueryAsync](https://msdn.microsoft.com/en-us/library/office/dn168907.aspx).
+
+<img  src="https://telemetry.sharepointpnp.com/pnp/components/Core.JQuery" />

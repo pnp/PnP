@@ -274,3 +274,5 @@ The JavaScript provided looks like this:
 	feedId: "6791432"});
 </script>
 ```
+
+<img  src="https://telemetry.sharepointpnp.com/pnp/solutions/BusinessApps.HelpDesk" />

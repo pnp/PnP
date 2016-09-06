@@ -415,3 +415,4 @@ The configuration file that belongs to this is the following:
 </configuration>
 ```
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.MMSSync" />

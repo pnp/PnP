@@ -175,3 +175,5 @@ private static void DeployTheme(ClientContext cc, string themeName)
     }
 }
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Branding.Refresh" />

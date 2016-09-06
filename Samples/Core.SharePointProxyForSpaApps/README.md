@@ -95,5 +95,4 @@ This 'api/sharepoint' endpoint must be the relative path to our proxy controller
 }
 ```
 
-
-
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.SharePointProxyForSpaApps" />

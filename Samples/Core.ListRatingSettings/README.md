@@ -57,3 +57,5 @@ Steps Performed:
 
 
 **Note:** The RatingsEnabler (constructor) takes dependency on Logger which for the sake of sample uses ConsoleLogger. You can implement your own logger as far as it is implementing ILogger interface. 
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.ListRatingSettings" />

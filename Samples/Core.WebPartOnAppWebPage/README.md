@@ -40,11 +40,6 @@ We'd love to get your feedback on this sample. You can send your questions and s
 * In the [Issues](https://github.com/OfficeDev/SP-WebPart-Page/issues) section of this repository.
 * On [Stack Overflow](http://stackoverflow.com/questions/tagged/Office365+API). 
   Make sure that your questions or comments are tagged with either [Office365] or [SharePoint], and with [API].
-  
-### Copyright ###
-
-Copyright (c) Microsoft. All rights reserved.
 
 
-
-
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.WebPartOnAppWebPage" />

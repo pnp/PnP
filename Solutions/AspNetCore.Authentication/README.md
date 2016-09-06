@@ -93,3 +93,5 @@ This library/solution has the following goals in mind (some still not achieved!)
 - RC2 port is currently in testing
 - This only works with ACS, High Trust is still not supported/developed yet :(
 - Remote Event Receivers not tested yet
+
+<img  src="https://telemetry.sharepointpnp.com/pnp/solutions/AspNetCore.Authentication" />

@@ -57,3 +57,8 @@
     outline-style: none !important; 
     outline-width: 0px !important;
 }
+
+.cam-peoplepicker-usersearch .ms-bgHoverable .selected {
+    background: beige;
+    border: 1px dotted black;
+}

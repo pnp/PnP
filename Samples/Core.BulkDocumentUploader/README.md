@@ -106,3 +106,4 @@ FileUploadName | n/a | Attribute to allow the files to be renamed to something a
 Navigate to the directory of the **Contoso.BulkDocumentUploader.exe**, the executable requires a single input parameter which is the ContosoOneDriveUploader.xml
 
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.BulkDocumentUploader" />

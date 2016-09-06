@@ -101,3 +101,4 @@ Because the solution has two interface, application settings need to be configur
   <add key="TargetEmail" value="admin@onebitdev2015.onmicrosoft.com" />
 </appSettings>
 ```
+<img src="https://telemetry.sharepointpnp.com/pnp/solutions/Governance.SiteUsageReport" />

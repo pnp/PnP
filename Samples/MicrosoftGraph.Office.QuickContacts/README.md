@@ -106,3 +106,5 @@ $ gulp serve
 to start the application
 
 ![Application started in the browser](assets/app.png) 
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/MicrosoftGraph.Office.QuickContacts" />

@@ -2,7 +2,7 @@
   "locked": false,
   "version": 2,
   "targets": {
-    ".NETFramework,Version=v4.5.1": {
+    "DNX,Version=v4.5.1": {
       "Microsoft.AspNet.Authentication/1.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -184,13 +184,14 @@
           "Microsoft.CSharp",
           "mscorlib",
           "System",
-          "System.Core"
+          "System.Core",
+          "System.Runtime"
         ],
         "compile": {
-          "lib/net451/Microsoft.AspNet.Hosting.dll": {}
+          "lib/dnx451/Microsoft.AspNet.Hosting.dll": {}
         },
         "runtime": {
-          "lib/net451/Microsoft.AspNet.Hosting.dll": {}
+          "lib/dnx451/Microsoft.AspNet.Hosting.dll": {}
         }
       },
       "Microsoft.AspNet.Hosting.Abstractions/1.0.0-rc1-final": {
@@ -322,10 +323,10 @@
           "System.Core"
         ],
         "compile": {
-          "lib/net451/Microsoft.AspNet.Server.Kestrel.dll": {}
+          "lib/dnx451/Microsoft.AspNet.Server.Kestrel.dll": {}
         },
         "runtime": {
-          "lib/net451/Microsoft.AspNet.Server.Kestrel.dll": {}
+          "lib/dnx451/Microsoft.AspNet.Server.Kestrel.dll": {}
         }
       },
       "Microsoft.AspNet.Server.Kestrel.Https/1.0.0-rc1-final": {
@@ -664,14 +665,9 @@
           "lib/net451/Microsoft.Extensions.WebEncoders.Core.dll": {}
         }
       },
-      "Microsoft.IdentityModel/6.1.7600.16394": {
-        "type": "package",
-        "compile": {
-          "lib/net35/Microsoft.IdentityModel.dll": {}
-        },
-        "runtime": {
-          "lib/net35/Microsoft.IdentityModel.dll": {}
-        }
+      "Microsoft.IdentityModel/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1"
       },
       "Microsoft.IdentityModel.Extensions/1.0.0": {
         "type": "project",
@@ -787,7 +783,7 @@
         }
       }
     },
-    ".NETFramework,Version=v4.5.1/win7-x86": {
+    "DNX,Version=v4.5.1/win7-x86": {
       "Microsoft.AspNet.Authentication/1.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -969,13 +965,14 @@
           "Microsoft.CSharp",
           "mscorlib",
           "System",
-          "System.Core"
+          "System.Core",
+          "System.Runtime"
         ],
         "compile": {
-          "lib/net451/Microsoft.AspNet.Hosting.dll": {}
+          "lib/dnx451/Microsoft.AspNet.Hosting.dll": {}
         },
         "runtime": {
-          "lib/net451/Microsoft.AspNet.Hosting.dll": {}
+          "lib/dnx451/Microsoft.AspNet.Hosting.dll": {}
         }
       },
       "Microsoft.AspNet.Hosting.Abstractions/1.0.0-rc1-final": {
@@ -1107,10 +1104,10 @@
           "System.Core"
         ],
         "compile": {
-          "lib/net451/Microsoft.AspNet.Server.Kestrel.dll": {}
+          "lib/dnx451/Microsoft.AspNet.Server.Kestrel.dll": {}
         },
         "runtime": {
-          "lib/net451/Microsoft.AspNet.Server.Kestrel.dll": {}
+          "lib/dnx451/Microsoft.AspNet.Server.Kestrel.dll": {}
         },
         "native": {
           "runtimes/win7-x86/native/libuv.dll": {}
@@ -1452,14 +1449,9 @@
           "lib/net451/Microsoft.Extensions.WebEncoders.Core.dll": {}
         }
       },
-      "Microsoft.IdentityModel/6.1.7600.16394": {
-        "type": "package",
-        "compile": {
-          "lib/net35/Microsoft.IdentityModel.dll": {}
-        },
-        "runtime": {
-          "lib/net35/Microsoft.IdentityModel.dll": {}
-        }
+      "Microsoft.IdentityModel/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1"
       },
       "Microsoft.IdentityModel.Extensions/1.0.0": {
         "type": "project",
@@ -1575,7 +1567,7 @@
         }
       }
     },
-    ".NETFramework,Version=v4.5.1/win7-x64": {
+    "DNX,Version=v4.5.1/win7-x64": {
       "Microsoft.AspNet.Authentication/1.0.0-rc1-final": {
         "type": "package",
         "dependencies": {
@@ -1757,13 +1749,14 @@
           "Microsoft.CSharp",
           "mscorlib",
           "System",
-          "System.Core"
+          "System.Core",
+          "System.Runtime"
         ],
         "compile": {
-          "lib/net451/Microsoft.AspNet.Hosting.dll": {}
+          "lib/dnx451/Microsoft.AspNet.Hosting.dll": {}
         },
         "runtime": {
-          "lib/net451/Microsoft.AspNet.Hosting.dll": {}
+          "lib/dnx451/Microsoft.AspNet.Hosting.dll": {}
         }
       },
       "Microsoft.AspNet.Hosting.Abstractions/1.0.0-rc1-final": {
@@ -1895,10 +1888,10 @@
           "System.Core"
         ],
         "compile": {
-          "lib/net451/Microsoft.AspNet.Server.Kestrel.dll": {}
+          "lib/dnx451/Microsoft.AspNet.Server.Kestrel.dll": {}
         },
         "runtime": {
-          "lib/net451/Microsoft.AspNet.Server.Kestrel.dll": {}
+          "lib/dnx451/Microsoft.AspNet.Server.Kestrel.dll": {}
         },
         "native": {
           "runtimes/win7-x64/native/libuv.dll": {}
@@ -2240,14 +2233,9 @@
           "lib/net451/Microsoft.Extensions.WebEncoders.Core.dll": {}
         }
       },
-      "Microsoft.IdentityModel/6.1.7600.16394": {
-        "type": "package",
-        "compile": {
-          "lib/net35/Microsoft.IdentityModel.dll": {}
-        },
-        "runtime": {
-          "lib/net35/Microsoft.IdentityModel.dll": {}
-        }
+      "Microsoft.IdentityModel/1.0.0": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5.1"
       },
       "Microsoft.IdentityModel.Extensions/1.0.0": {
         "type": "project",
@@ -2365,6 +2353,10 @@
     }
   },
   "libraries": {
+    "Microsoft.IdentityModel/1.0.0": {
+      "type": "project",
+      "path": "../wrap/Microsoft.IdentityModel/project.json"
+    },
     "Microsoft.IdentityModel.Extensions/1.0.0": {
       "type": "project",
       "path": "../wrap/Microsoft.IdentityModel.Extensions/project.json"
@@ -2896,16 +2888,6 @@
         "Microsoft.Extensions.WebEncoders.Core.nuspec"
       ]
     },
-    "Microsoft.IdentityModel/6.1.7600.16394": {
-      "type": "package",
-      "sha512": "qsst2HALUxXdDVmOEk6GJ8U7LNbrQIpIiPesdD+k99TuRc5zy+J4zK4fNpiX+hiMd4cCGoY9WIT3f021Syocdw==",
-      "files": [
-        "lib/net35/Microsoft.IdentityModel.dll",
-        "Microsoft.IdentityModel.6.1.7600.16394.nupkg",
-        "Microsoft.IdentityModel.6.1.7600.16394.nupkg.sha512",
-        "Microsoft.IdentityModel.nuspec"
-      ]
-    },
     "Microsoft.Net.Http.Headers/1.0.0-rc1-final": {
       "type": "package",
       "serviceable": true,
@@ -3215,12 +3197,12 @@
       "Microsoft.AspNet.Authentication >= 1.0.0-rc1-final",
       "Microsoft.SharePointOnline.CSOM >= 16.1.4727.1200",
       "Microsoft.AspNet.Authentication.OAuth >= 1.0.0-rc1-final",
-      "Microsoft.IdentityModel >= 6.1.7600.16394",
       "Microsoft.AspNet.Http.Extensions >= 1.0.0-rc1-final",
       "Microsoft.AspNet.Server.Kestrel.Https >= 1.0.0-rc1-final",
       "Microsoft.AspNet.Authentication.Cookies >= 1.0.0-rc1-final"
     ],
-    ".NETFramework,Version=v4.5.1": [
+    "DNX,Version=v4.5.1": [
+      "Microsoft.IdentityModel >= 1.0.0-*",
       "Microsoft.IdentityModel.Extensions >= 1.0.0-*",
       "fx/System.IdentityModel >= 4.0.0",
       "fx/System.IdentityModel.Selectors >= 4.0.0",

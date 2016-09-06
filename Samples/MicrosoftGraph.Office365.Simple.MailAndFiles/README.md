@@ -95,3 +95,6 @@ Whenever you have configured the Azure AD side and updated the web.config based 
 - You will be shown the UI of the application
 
 ![UI of application with your personal data](http://i.imgur.com/Rt4d8Py.png)
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/MicrosoftGraph.Office365.Simple.MailAndFiles" />

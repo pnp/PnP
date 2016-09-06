@@ -93,3 +93,5 @@ peopleManager.SetMultiValuedProfileProperty(UserAccountName, "SPS-Skills", skill
 clientContext.ExecuteQuery();
 
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/UserProfile.Manipulation.CSOM.Console" />
