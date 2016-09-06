@@ -85,3 +85,5 @@ ClientContext cc = new AuthenticationManager().GetNetworkCredentialAuthenticated
 ```
 
 The actual search options are the same as explained in the previous chapter.
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.SiteEnumeration" />

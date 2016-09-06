@@ -390,3 +390,4 @@ And properly define them in the aspx page:
 </body>
 ```
 
+<img  src="https://telemetry.sharepointpnp.com/pnp/components/Core.TaxonomyPicker" />

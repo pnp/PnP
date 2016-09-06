@@ -116,3 +116,5 @@ Any updates to this sample will include:
 - using Flux for two-way data floW additional CRUD operations (searching, editing, etc) 
 - It will also show an example for sending data to a WebAPI class, which will in turn, leverage a CSOM common library in a provider hosted add-in scenario, as well as leveraging the PnP.js Core Library.
 
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.React.SupportTicket" />

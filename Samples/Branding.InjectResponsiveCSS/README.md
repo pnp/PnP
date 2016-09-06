@@ -123,3 +123,6 @@ After setting the CSS Url, the viewport meta tag will be added to the "Search En
         allProperties["seocustommetatagpropertyname"] = "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\" />";
     }
 ```
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Branding.InjectResponsiveCSS" />

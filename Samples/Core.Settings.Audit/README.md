@@ -64,6 +64,4 @@ site.TrimAuditLog = false;
 clientContext.ExecuteQuery();
 ```
 
-
-
-
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.Settings.Audit" />

@@ -81,3 +81,6 @@ The key source code files in this project are the following:
 - Get started on Microsoft Azure at: <https://azure.microsoft.com/en-us/>
 - Explore the Microsoft Graph and its operations at: <http://graph.microsoft.io/en-us/> 
 - Read more about this sample at: <http://simonjaeger.com/get-going-swiftly-with-the-microsoft-sdk-for-ios/>
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/MicrosoftGraph.iOS.Swift.SendMail" />

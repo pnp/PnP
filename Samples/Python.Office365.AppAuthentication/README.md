@@ -70,3 +70,5 @@ When you run the sample you'll see the title and login url.
 Once you've clicked the sign-in link, the Office 365 API will go through the authentication handshake and the Python Flask home screen will reload with the logged in user title and access token displayed:
 
 ![Signing in UI](https://lh3.googleusercontent.com/-44rsAE2uGFQ/VrnZDdJAseI/AAAAAAAACaE/70N8UX8ErIk/s569-Ic42/office365-python-app-result.PNG)
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.Office365.AppAuthentication" />

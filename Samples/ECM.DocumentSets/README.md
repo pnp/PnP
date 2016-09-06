@@ -116,3 +116,6 @@ if (template != null)
     clientContext.ExecuteQuery();
 }
 ```
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/ECM.DocumentSets" />

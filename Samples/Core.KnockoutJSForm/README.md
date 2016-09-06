@@ -45,7 +45,7 @@ This is achieved by applying the following configurations to standard Team site:
   - event-registration-form-template.js - implements UI of the component;
   - event-registration-form.js - implements data model;
 8. JavaScript files are deployed to Style Library;
-9. UI component is embeded on display form of the Events list via Content Editor web part with ContentLink pointing to event-registration-form-template.js.
+9. UI component is embedded on display form of the Events list via Content Editor web part with ContentLink pointing to event-registration-form-template.js.
 
 # Running the sample #
 The sample is implemented as a console application that automates deployment. The following steps must be completed in order to run the sample:
@@ -61,3 +61,5 @@ You should note the following implementation details:
 - Knockout.js form implementation is split into two files in order to clearly separate UI from data model.
 - Additional variables are introduced in data model, in order to track loading status of the form. It allows to show smooth "Loading..." message, when the form is querying data from SharePoint, instead of half-loaded UI.
 - JavaScript and Web Part files included in the project contain "~sitecollection" token that is replaced by server relative  URL during provisioning. This is required in order to enable smooth deployment in separate site collections for test and production environments. This also enables deploying the sample on sub sites.
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.KnockoutJSForm" />

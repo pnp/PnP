@@ -39,3 +39,6 @@ Please see following blog posts for details
 We have also video explaining this sample at Office 365 Developer Patterns and Practices Channel 9 site. 
 
 - [Hybrid site collection provisioning from Azure to on-premises](http://channel9.msdn.com/blogs/OfficeDevPnP/Hybrid-site-collection-provisioning-from-Azure-to-on-premises)
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.Hybrid.Simple" />

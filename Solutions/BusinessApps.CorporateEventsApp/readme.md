@@ -140,3 +140,6 @@ The user experience for the Corporate Events add-in uses both SharePoint to be t
 ![Event Registration](http://i.imgur.com/dMAaZb6.png)
 
 # DEPENDENCIES #
+
+
+<img  src="https://telemetry.sharepointpnp.com/pnp/solutions/BusinessApps.CorporateEvents" />

@@ -99,3 +99,5 @@ Note: you will have to change the following values in the app.config file to sui
 
 ## WRITE A COMPLEX USER PROFILE PROPERTY ##
 ![Code for updating complex user profile property](http://i.imgur.com/dxSQdJU.png)
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.ProfileProperty.Migration" />

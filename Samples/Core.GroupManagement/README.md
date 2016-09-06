@@ -101,3 +101,4 @@ Microsoft.SharePoint.Client.User currentUser = cc.Web.CurrentUser;
 cc.Web.RemovePermissionLevelFromUser(currentUser.LoginName, RoleType.Reader);
 ```
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.GroupManagement" />

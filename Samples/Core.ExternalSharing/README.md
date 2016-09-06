@@ -191,3 +191,4 @@ SharingResult result = ctx.Web.ShareDocument("https://tenant.sharepoint.com/docs
 
 *Notice* - This capability is also available with RESTful interfaces.
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.ExternalSharing" />

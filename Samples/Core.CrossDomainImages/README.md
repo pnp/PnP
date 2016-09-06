@@ -71,3 +71,5 @@ This scenario shows how to get the encoded image client-side:
 	        });
 	    });
 	</script>
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.CrossDomainImages" />

@@ -94,3 +94,4 @@ To test that our provider-hosted add-in actually was granted Manage permissions 
 ![The text in the image: Lists in Dev. A Test List. App Packages.](http://i.imgur.com/yUFp74h.png)
 
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.DynamicPermissions" />

@@ -34,3 +34,4 @@ Version  | Date | Comments
 
     
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.EmbedJavaScript" />

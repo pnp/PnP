@@ -46,4 +46,4 @@ Code is having reference to following CSOM assemblies.
 - Microsoft.SharePoint.Client.UserProfiles
 
 
-
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.OneDriveProvisioning" />

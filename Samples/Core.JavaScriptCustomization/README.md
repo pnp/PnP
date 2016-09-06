@@ -231,3 +231,5 @@ $("a.ms-ellipsis-a").each(function (i, v) {
 
 # Important: #
 The above type of complex JavaScript customizations are very depending on the actual implementation of SharePoint. If Microsoft decides to change the implementation (e.g. other control names) then the code might break. Only use this technique when there's no CSOM equivalent and when there's a clear business need.
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.JavaScriptCustomization" />

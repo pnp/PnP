@@ -71,3 +71,5 @@ using (var clientContext = spContext.CreateUserClientContextForSPHost())
     }
 }
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.UploadWebPart" />

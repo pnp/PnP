@@ -361,3 +361,5 @@ In my example I am using an Angular component built on the full calendar widget.
 
 - [https://github.com/angular-ui/ui-calendar](https://github.com/angular-ui/ui-calendar)
 - [http://fullcalendar.io/](http://fullcalendar.io/)
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.DisplayCalendarEvents" />

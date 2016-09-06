@@ -129,3 +129,5 @@ The end result should look like this:
 Or like this when setting French as preferred language:
 
 ![Screenshot of navigation](http://i.imgur.com/RREfJeT.png "Screenshot of navigation")
+
+<img  src="https://telemetry.sharepointpnp.com/pnp/components/Core.TaxonomyMenu" />
