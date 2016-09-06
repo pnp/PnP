@@ -19,3 +19,6 @@ BusinessApps.O365ProjectsApp.sln | Paolo Pialorsi (PiaSys.com) | [@PaoloPia](htt
 Version  | Date | Comments
 ---------| -----| --------
 1.0  | May 05th 2016 | Initial release
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/BusinessApps.O365ProjectsApp" />

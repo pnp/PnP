@@ -122,3 +122,4 @@ The Events add-in part also has the capability to delete events and it basically
 Obviously not too much effort was put into jazzing up the UI, but can be done later.
 Not all the CRUD operations are there for everything, but all the methods are there in the Hub to support adding more operations.
 
+<img src="https://telemetry.sharepointpnp.com/pnp/solutions/Core.ConnectedAngularAppsV2" />

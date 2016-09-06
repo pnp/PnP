@@ -190,3 +190,5 @@ function isKeyExpired(TimeStampKey) {
     }
 }
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Branding.UIElementPersonalization" />

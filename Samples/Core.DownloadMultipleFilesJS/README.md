@@ -53,3 +53,5 @@ The sample is implemented as a console application that automates deployment. Th
 2. Open Visual Studio project and update values for `siteUrl`, `username` and `password` variables in `Program.cs`.
 3. Run the project.
 4. Check new ribbon buttons in document libraries.
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.DownloadMultipleFilesJS" />

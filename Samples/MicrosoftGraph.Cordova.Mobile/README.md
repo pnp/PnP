@@ -105,3 +105,6 @@ with Prompt Behaviour set to "auto", which means prompt the user only if necessa
 design of the Cordova plugin is that acquireTokenAsync will always prompt. 
 
 Note: I understand that the rest of the ADAL libraries will be adopting this pattern moving forward. 
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/MicrosoftGraph.Cordova.Mobile" />

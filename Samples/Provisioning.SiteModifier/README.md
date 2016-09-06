@@ -119,3 +119,4 @@ When the add-in is uninstalled we’re also removing the event receiver. In orde
 When a user uninstalls a deployed add-in this moves the add-in to the site's recycle bin and will NOT trigger the appuninstalling event handler. The add-in needs to be removed from all recycle bins in order to trigger the appuninstalled event.
 
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.SiteModifier" />

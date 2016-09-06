@@ -27,3 +27,6 @@ We have an active [Yammer Group](http://aka.ms/OfficeDevPnPSIGJavaScriptYammer) 
 
 
 ###"Sharing is Caring"###
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/SharePoint.pnp-js-core" />

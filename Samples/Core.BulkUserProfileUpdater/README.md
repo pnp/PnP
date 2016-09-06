@@ -106,3 +106,4 @@ Within the UserProfilePropertyMapper.xml, for the property which requires the cu
 ![XML configuration options](http://i.imgur.com/SVNVbr7.png)
 
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.BulkUserProfileUpdater" />

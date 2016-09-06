@@ -118,3 +118,5 @@ List<ExternalUserEntity> externalUsers = ccTenant.Web.GetExternalUsersForSiteTen
 
 List<ExternalUserEntity> externalUsers = ccTenant.Web.GetExternalUsersTenant();
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.SitePermissions" />

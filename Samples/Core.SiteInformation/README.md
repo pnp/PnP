@@ -59,3 +59,5 @@ Because the solution has two interface, application settings need to be configur
   <add key="TenantName" value="onebitdev2015" /> 
 </appSettings>
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.SiteInformation" />

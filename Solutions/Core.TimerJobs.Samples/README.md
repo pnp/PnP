@@ -484,3 +484,5 @@ public ChainingJob(): base("ChainingJob")
 
 ## Timer job host implementation ##
 Identical to sample 1.
+
+<img src="https://telemetry.sharepointpnp.com/pnp/solutions/Core.TimerJobs.Samples" />

@@ -58,3 +58,5 @@ string filePath = "";
 
 var fileUrl = UploadRest(url, folderUrl, filePath);
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.RestFileUpload" />

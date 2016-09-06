@@ -48,3 +48,4 @@ This sample adds new MMS hierarchy and set each term to be used as simple link.
 
 ![Settings for 'workflow' term](http://i.imgur.com/9op6VV3.png)
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.MMSNavigationSample" />

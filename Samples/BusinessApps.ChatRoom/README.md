@@ -208,3 +208,6 @@ much like the idea of a [heartbeat](http://en.wikipedia.org/wiki/Heartbeat_%28co
 for a 3 minute sliding expiration.  When the ping is received, the sliding expiration window in the cache is extended.  
 Depending on the exact sliding window, if 8 or 9 consecutive pings are missed, the server expires the cache entry and assumes
 that the user has left the chat room, resulting in a leaveRoom SignalR message being sent.
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/BusinessApps.ChatRoom" />

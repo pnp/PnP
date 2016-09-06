@@ -170,3 +170,5 @@ This screen shows method tracing.
 
 ![Method tracing](http://i.imgur.com/7cb3795.png)
 
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Debug.Tracing" />

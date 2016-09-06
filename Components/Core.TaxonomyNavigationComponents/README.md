@@ -140,3 +140,5 @@ The SharePoint Online taxonomy term store may be sometimes capricious ;)
 Enjoy!
 
 ----------
+
+<img  src="https://telemetry.sharepointpnp.com/pnp/components/Core.TaxonomyNavigationComponents" />
