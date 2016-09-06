@@ -1,5 +1,5 @@
 # What is PNP.Deployer?
-`PNP.Deployer.exe` is a console application that makes it easy to deploy artifacts to SharePoint OnPremise/Online. Based on the [PnP Provisioning Engine](https://github.com/OfficeDev/PnP-Guidance/blob/551b9f6a66cf94058ba5497e310d519647afb20c/articles/Introducing-the-PnP-Provisioning-Engine.md), it wraps the engine's main functionnalities and provides a new layer responsible for handling [tokens](https://github.com/spplante/PnP/tree/Provisioning.PnPDeployer.Console/Samples/Provisioning.PnPDeployer.Console#tokens-accross-any-files), [authentication](https://github.com/spplante/PnP/tree/Provisioning.PnPDeployer.Console/Samples/Provisioning.PnPDeployer.Console#authentication-made-simple), [sequences](https://github.com/spplante/PnP/tree/Provisioning.PnPDeployer.Console/Samples/Provisioning.PnPDeployer.Console#sequences-for-a-configurable-deployment) and [logging](https://github.com/spplante/PnP/tree/Provisioning.PnPDeployer.Console/Samples/Provisioning.PnPDeployer.Console#easy-logging). Provide the `PnP templates`, define `sequences` in which you want the templates to be executed, specify whether you want to deploy everything `OnPrem` or `Online`, and your good to go.
+`PNP.Deployer.exe` is a console application that makes it easy to deploy artifacts to SharePoint OnPremise/Online. Based on the [PnP Provisioning Engine](https://github.com/OfficeDev/PnP-Guidance/blob/551b9f6a66cf94058ba5497e310d519647afb20c/articles/Introducing-the-PnP-Provisioning-Engine.md), it wraps the engine's main functionnalities and provides a new layer responsible for handling [tokens](#tokens-accross-any-files), [authentication](#authentication-made-simple), [sequences](#sequences-for-a-configurable-deployment) and [logging](#easy-logging). Provide the `PnP templates`, define `sequences` in which you want the templates to be executed, specify whether you want to deploy everything `OnPrem` or `Online`, and your good to go.
 
 <br>
 # How it works
@@ -10,10 +10,10 @@ Place the `PNP.Deployer` package in a location of your choice and configure the 
 
 Provide a package with the following elements and call the deployer with the proper parameters: 
 
-* The [artifact(s)](https://github.com/spplante/PnP/tree/Provisioning.PnPDeployer.Console/Samples/Provisioning.PnPDeployer.Console#files) that needs to be deployed (page layouts, images, css, js, etc)
-* The [template(s)](https://github.com/spplante/PnP/tree/Provisioning.PnPDeployer.Console/Samples/Provisioning.PnPDeployer.Console#templates) referencing those previous artifacts (XML templates based on the [PnP Schema](https://github.com/OfficeDev/PnP-Provisioning-Schema))
-* A [sequences](https://github.com/spplante/PnP/tree/Provisioning.PnPDeployer.Console/Samples/Provisioning.PnPDeployer.Console#sequences-file) file that tells the deployer the templates to apply in the desired order
-* Optionnaly, a [tokens](https://github.com/spplante/PnP/tree/Provisioning.PnPDeployer.Console/Samples/Provisioning.PnPDeployer.Console#tokens-file) file used for "tokenizing" the whole working directory before deploying
+* The [artifact(s)](#files) that needs to be deployed (page layouts, images, css, js, etc)
+* The [template(s)](#templates) referencing those previous artifacts (XML templates based on the [PnP Schema](https://github.com/OfficeDev/PnP-Provisioning-Schema))
+* A [sequences](#sequences-file) file that tells the deployer the templates to apply in the desired order
+* Optionnaly, a [tokens](#tokens-file) file used for "tokenizing" the whole working directory before deploying
 
 <img src="http://i63.tinypic.com/35krjoj.png" alt="" />
 
@@ -84,7 +84,7 @@ Customize the different output sources and the overall behavior of the logging e
 
 <br>
 ## Supports ".pnp" packages
-While supporting regular `.xml` templates, the deployer also supports the new `.pnp` open xml format. Specify a `.pnp` package just like a standard template within the [sequences.xml](https://github.com/spplante/PnP/tree/Provisioning.PnPDeployer.Console/Samples/Provisioning.PnPDeployer.Console#sequences-for-a-configurable-deployment) file and everything within the `.pnp` package will be deployed.
+While supporting regular `.xml` templates, the deployer also supports the new `.pnp` open xml format. Specify a `.pnp` package just like a standard template within the [sequences.xml](#sequences-for-a-configurable-deployment) file and everything within the `.pnp` package will be deployed.
 
 ```xml
 ...
