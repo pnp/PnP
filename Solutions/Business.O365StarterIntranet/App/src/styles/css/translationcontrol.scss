@@ -1,0 +1,29 @@
+@import 'variables';
+
+#translation-control {
+
+    border: 1px solid #ababab;
+    padding: 10px;
+
+    label {       
+        margin-bottom: 0 ;
+    }
+
+    .ms-MessageBar-text, .ms-Label {
+
+        font-family: inherit;
+    }
+
+    #action-area div.ms-MessageBar {
+        width: 100%;
+    }
+
+    #pagename {
+        float: left;
+    }
+
+    #translation-list {
+        list-style: none;
+        padding: 0;
+    }
+}

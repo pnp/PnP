@@ -1,0 +1,86 @@
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"> 
+<head>
+<title>Intranet Document Item</title>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:TemplateHidden msdt:dt="string">0</mso:TemplateHidden>
+<mso:ManagedPropertyMapping msdt:dt="string">'Link URL'{Link URL}:'Path','Title'{Title}:'Title','Description'{Description}:'IntranetDocumentDescription','SecondaryFileExtension','ContentTypeId','FileExtension','ServerRedirectedEmbedURL'</mso:ManagedPropertyMapping>
+<mso:MasterPageDescription msdt:dt="string">Displays document items in a list format.</mso:MasterPageDescription>
+<mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106603</mso:ContentTypeId>
+<mso:TargetControlType msdt:dt="string">;#Content Web Parts;#</mso:TargetControlType>
+<mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+<mso:HtmlDesignConversionSucceeded msdt:dt="string">True</mso:HtmlDesignConversionSucceeded>
+<mso:CrawlerXSLFile msdt:dt="string"></mso:CrawlerXSLFile>
+<mso:HtmlDesignPreviewUrl msdt:dt="string"></mso:HtmlDesignPreviewUrl>
+<mso:DisplayTemplateLevel msdt:dt="string">Item</mso:DisplayTemplateLevel>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+
+</head>
+
+<body>
+
+    <div id="Item_Document">
+
+    <!--#_
+        var encodedId = $htmlEncode(ctx.ClientControl.get_nextUniqueId());
+        var containerId = "NewsItem_" + encodedId;
+        var currentItem = ctx.CurrentItem;
+        ctx.CurrentItem.csr_Icon = Srch.U.getIconUrlByFileExtension(ctx.CurrentItem);
+        var currentItemId = ctx.CurrentItemIdx + 1;
+        var groupRowCount = ctx.CurrentGroup.RowCount;
+        
+        AddPostRenderCallback(ctx, function() {
+
+            Intranet.Main.initDocumentDisplayTemplateItemViewModel(currentItem, document.getElementById(containerId));
+        });
+        
+    _#-->
+
+    <div data-bind="stopBinding: true">
+        <div class="display-template">
+            <div id="_#=containerId=#_" class="document-item">
+                        
+                <!-- ko with: item -->
+
+                    <div class="item-icon">
+                        <img src="_#= ctx.CurrentItem.csr_Icon  =#_"/>
+                    </div>
+                                      
+                    <div class="item-title">  
+                        <a data-bind="attr: { href: ServerRedirectedEmbedURL ? ServerRedirectedEmbedURL : Path }, text: Title? Title: Name"> </a>
+                    </div>
+                    
+                    <div class="item-excerpt">
+                       
+                        <!-- ko if: $data.IntranetDocumentDescription-->
+                        <div data-bind="summarize: { html: IntranetDocumentDescription }"></div>
+                        <!-- /ko -->
+                       
+                    </div>            
+
+                <!-- /ko -->
+
+                <!--#_
+                
+                // Check if it is the last item to process
+                var currentItemIdx = ctx.CurrentItemIdx + 1;
+                
+                if(currentItemIdx === ctx.CurrentGroup.RowCount) {
+                _#-->
+                    <div class="all-items-link">
+                        <a data-bind="text: allDocumentsLabel, attr: { href: searchPageUrl }, visible: searchPageUrl, getDocumentsSearchUrl: true"></a>
+                    </div>
+                <!--#_
+                }
+                _#-->
+        
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+</body>
+</html>

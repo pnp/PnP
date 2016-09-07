@@ -1,0 +1,64 @@
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"> 
+<head>
+<title>Intranet - Search Document Hover Panel</title>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:TemplateHidden msdt:dt="string">0</mso:TemplateHidden>
+<mso:MasterPageDescription msdt:dt="string">Displays a result hover panel tailored for documents.</mso:MasterPageDescription>
+<mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106603</mso:ContentTypeId>
+<mso:TargetControlType msdt:dt="string">;#SearchHoverPanel;#</mso:TargetControlType>
+<mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+<mso:ManagedPropertyMapping msdt:dt="string">'Title':'Title','Path':'Path','Description':'Description','EditorOWSUSER':'EditorOWSUSER','LastModifiedTime':'LastModifiedTime','CollapsingStatus':'CollapsingStatus','DocId':'DocId','HitHighlightedSummary':'HitHighlightedSummary','HitHighlightedProperties':'HitHighlightedProperties','FileExtension':'FileExtension','ViewsLifeTime':'ViewsLifeTime','ParentLink':'ParentLink','FileType':'FileType','IsContainer':'IsContainer','ServerRedirectedURL':'ServerRedirectedURL','ServerRedirectedEmbedURL':'ServerRedirectedEmbedURL','ServerRedirectedPreviewURL':'ServerRedirectedPreviewURL'</mso:ManagedPropertyMapping>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>
+<body>
+    <div id="Item_Intranet-Document_HoverPanel">
+<!--#_
+        var i = 0;
+        var id = ctx.CurrentItem.csr_id;
+        ctx.CurrentItem.csr_ShowFollowLink = false;
+        ctx.CurrentItem.csr_ShowViewLibrary = false;
+        ctx.currentItem_IsOfficeDocument = true;
+        ctx.currentItem_ShowChangedBySnippet = false;
+_#-->
+        <div class="ms-srch-hover-innerContainer ms-srch-hover-wacSize" id="_#= $htmlEncode(id + HP.ids.inner) =#_">
+            <div class="ms-srch-hover-arrowBorder" id="_#= $htmlEncode(id + HP.ids.arrowBorder) =#_"></div>
+            <div class="ms-srch-hover-arrow" id="_#= $htmlEncode(id + HP.ids.arrow) =#_"></div>
+            <div class="ms-srch-hover-content" id="_#= $htmlEncode(id + HP.ids.content) =#_" data-displaytemplate="DocumentHoverPanel">
+            <div id="_#= $htmlEncode(id + HP.ids.header) =#_" class="ms-srch-hover-header">
+                _#= ctx.RenderHeader(ctx) =#_
+            </div>
+            <div id="_#= $htmlEncode(id + HP.ids.body) =#_" class="ms-srch-hover-body">
+<!--#_
+        if(!Srch.U.n(ctx.CurrentItem.ServerRedirectedEmbedURL)) {
+            ctx.CurrentItem.csr_DataShown = true;
+_#-->	
+                <div class="ms-srch-hover-viewerContainer" style="height:345px">
+                    <iframe id="_#= $htmlEncode(id + HP.ids.viewer) =#_" scrolling="no" frameborder="0px" class="ms-srch-hover-viewer"></iframe>
+                </div>
+                <div class="ms-srch-hover-wacImageContainer">
+                    <img id="_#= $htmlEncode(id + HP.ids.preview) =#_" alt="_#= $htmlEncode(Srch.Res.item_Alt_Preview) =#_" onload="this.parentNode.style.display='block';" />
+                </div>
+<!--#_						
+        }
+_#-->				
+
+                    _#= ctx.RenderBody(ctx) =#_
+                    </div>
+            <div id="_#= $htmlEncode(id + HP.ids.actions) =#_" class="ms-srch-hover-actions">
+                _#= ctx.RenderFooter(ctx) =#_
+            </div>
+        </div>
+<!--#_			
+    if(!Srch.U.n(ctx.CurrentItem.ServerRedirectedEmbedURL)){
+        AddPostRenderCallback(ctx, function(){
+            HP.loadViewer(ctx.CurrentItem.id, ctx.CurrentItem.id + HP.ids.inner, ctx.CurrentItem.id + HP.ids.viewer, ctx.CurrentItem.id + HP.ids.preview, ctx.CurrentItem.ServerRedirectedEmbedURL + '&wdTOC=1', ctx.CurrentItem.ServerRedirectedPreviewURL);
+        });
+    }
+_#-->	
+    </div>
+    </div>
+</body>
+</html>

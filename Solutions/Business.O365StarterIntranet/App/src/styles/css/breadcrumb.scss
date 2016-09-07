@@ -1,0 +1,43 @@
+@import 'variables';
+
+#breadcrumb {
+
+    .ms-MessageBar {
+        width: 100%;
+    }
+
+    .nav {
+
+        margin-top: 0px;
+
+        > li > {
+
+            a {
+                text-decoration: none;
+            }
+
+            a:hover {
+                background-color: transparent;
+                text-decoration: underline;
+            }
+
+            a:focus{
+                background-color: transparent;
+            }
+        }
+    }
+    
+    ul {
+
+        height: 35px;
+
+        li {
+            float: left;
+
+            a.chevron {
+                padding-left: 0px;
+                padding-right: 0px;
+            }
+        }
+    }
+}

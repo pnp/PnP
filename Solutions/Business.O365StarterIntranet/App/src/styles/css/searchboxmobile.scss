@@ -1,0 +1,43 @@
+@import 'variables';
+
+#searchbox-mobile {
+
+    button, input {
+        float: left;
+        height: 40px;
+        background-color: transparent;
+        background-image: none;
+        border-color: transparent;
+        min-width: 2em;
+    }
+
+    input:focus, button:focus {
+        outline: none;
+    }
+
+    button {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    button.error {
+        border-color: $error-color;
+        background-color: $error-color;
+    }
+
+    input {
+        font-style: italic;
+        min-width: 200px; 
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    input.error {
+        border-color: $error-color;
+        outline-color: transparent;
+    }
+
+    input, i {
+        color: $navbar-l1-link-color;
+    }
+}

@@ -1,0 +1,853 @@
+<SearchConfigurationSettings xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Portability">
+	<SearchQueryConfigurationSettings>
+		<SearchQueryConfigurationSettings>
+			<BestBets xmlns:d4p1="http://www.microsoft.com/sharepoint/search/KnownTypes/2008/08" />
+			<DefaultSourceId>00000000-0000-0000-0000-000000000000</DefaultSourceId>
+			<DefaultSourceIdSet>true</DefaultSourceIdSet>
+			<DeployToParent>false</DeployToParent>
+			<DisableInheritanceOnImport>false</DisableInheritanceOnImport>
+			<QueryRuleGroups xmlns:d4p1="http://www.microsoft.com/sharepoint/search/KnownTypes/2008/08" />
+			<QueryRules xmlns:d4p1="http://www.microsoft.com/sharepoint/search/KnownTypes/2008/08">
+				<d4p1:QueryRule>
+					<d4p1:AssignBestBetsAction i:nil="true" />
+					<d4p1:ChangeQueryAction>
+						<d4p1:Id>af5290f6-277e-45b8-871a-b8ceb748baa4</d4p1:Id>
+						<d4p1:LicenseRequired>Enterprise</d4p1:LicenseRequired>
+						<d4p1:_EnableOnClickThroughOptions>NextPage Refinement</d4p1:_EnableOnClickThroughOptions>
+						<d4p1:_ResultTableType i:nil="true" />
+						<d4p1:_QueryTransform>
+							<d4p1:Id>59577770-0578-4689-ab73-d02c4cd08ad5</d4p1:Id>
+							<d4p1:IsSystem>false</d4p1:IsSystem>
+							<d4p1:OverridePropertiesForSeralization xmlns:d8p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+							<d4p1:OwnerId i:nil="true" />
+							<d4p1:ParentId i:nil="true" />
+							<d4p1:ParentType>Action</d4p1:ParentType>
+							<d4p1:QueryPropertyExpressions>
+								<d4p1:MaxSize>2147483647</d4p1:MaxSize>
+								<d4p1:OrderedItems />
+							</d4p1:QueryPropertyExpressions>
+							<d4p1:_IsReadOnly>false</d4p1:_IsReadOnly>
+							<d4p1:_QueryTemplate>ContentTypeId:0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C02* (IsDocument:"True" OR contentclass:"STS_ListItem") IntranetContentLanguageOWSCHCS:{Page.IntranetContentLanguage} Path:{SiteCollection.URL}</d4p1:_QueryTemplate>
+							<d4p1:_SourceId>8413cd39-2156-4e00-b54d-11efd9abdb89</d4p1:_SourceId>
+						</d4p1:_QueryTransform>
+					</d4p1:ChangeQueryAction>
+					<d4p1:Consumer xmlns:d6p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration">
+						<d6p1:DatabaseId>00000000-0000-0000-0000-000000000000</d6p1:DatabaseId>
+						<d6p1:DisableInheritance>false</d6p1:DisableInheritance>
+						<d6p1:SPFarmId>baa1b08f-cbca-4af8-95fe-67ba9526f9b6</d6p1:SPFarmId>
+						<d6p1:SPSiteId>993b48ff-adb6-4530-9f18-b48888353c18</d6p1:SPSiteId>
+						<d6p1:SPSiteSubscriptionId>be47e632-2ba0-4369-bae4-ba90e624c97b</d6p1:SPSiteSubscriptionId>
+						<d6p1:SPWebId>00000000-0000-0000-0000-000000000000</d6p1:SPWebId>
+					</d4p1:Consumer>
+					<d4p1:ContextConditions>
+						<d4p1:MaxSize>2147483647</d4p1:MaxSize>
+						<d4p1:OrderedItems>
+							<d4p1:ContextCondition i:type="d4p1:SourceContextCondition">
+								<d4p1:Id>23f47f33-573a-488c-926e-a24ab94a9608</d4p1:Id>
+								<d4p1:SourceId>d26bee49-6393-40a1-ab76-1012f1ae4b2a</d4p1:SourceId>
+							</d4p1:ContextCondition>
+						</d4p1:OrderedItems>
+					</d4p1:ContextConditions>
+					<d4p1:CreateResultBlockActions>
+						<d4p1:MaxSize>2147483647</d4p1:MaxSize>
+						<d4p1:OrderedItems />
+					</d4p1:CreateResultBlockActions>
+					<d4p1:CreationDate>2016-08-17T19:28:27.363Z</d4p1:CreationDate>
+					<d4p1:DefaultLanguageLCID>1033</d4p1:DefaultLanguageLCID>
+					<d4p1:GroupId i:nil="true" />
+					<d4p1:IsActive>true</d4p1:IsActive>
+					<d4p1:IsStoredInSql>true</d4p1:IsStoredInSql>
+					<d4p1:IsSystem>false</d4p1:IsSystem>
+					<d4p1:LastModified>2016-08-17T19:28:27.36Z</d4p1:LastModified>
+					<d4p1:OrderInGroup>0</d4p1:OrderInGroup>
+					<d4p1:QueryConditions>
+						<d4p1:MaxSize>16</d4p1:MaxSize>
+						<d4p1:OrderedItems>
+							<d4p1:QueryCondition i:type="d4p1:KeywordCondition">
+								<d4p1:CreatedWithSimpleUI>false</d4p1:CreatedWithSimpleUI>
+								<d4p1:id>f9dd494f-9186-4398-9cac-da3e6a3d1658</d4p1:id>
+								<d4p1:matchingOptions>FullQuery</d4p1:matchingOptions>
+								<d4p1:subjectTermsOrigin>FullQuery</d4p1:subjectTermsOrigin>
+								<d4p1:LCID>127</d4p1:LCID>
+								<d4p1:TermsCollection xmlns:d9p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+									<d9p1:string>all news</d9p1:string>
+								</d4p1:TermsCollection>
+								<d4p1:resourceStringName i:nil="true" />
+							</d4p1:QueryCondition>
+						</d4p1:OrderedItems>
+					</d4p1:QueryConditions>
+					<d4p1:_Contact />
+					<d4p1:_DisplayName>All news</d4p1:_DisplayName>
+					<d4p1:_EndDate i:nil="true" />
+					<d4p1:_Id>b1d8a142-e15e-4739-a88c-32c2edd9b495</d4p1:_Id>
+					<d4p1:_IsActive>true</d4p1:_IsActive>
+					<d4p1:_IsBestBetOnly>false</d4p1:_IsBestBetOnly>
+					<d4p1:_IsDeactivatedAtHigherLevel>false</d4p1:_IsDeactivatedAtHigherLevel>
+					<d4p1:_IsReadOnlyExplicit>false</d4p1:_IsReadOnlyExplicit>
+					<d4p1:_Owner xmlns:d6p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration">
+						<d6p1:DatabaseId>d3419be6-55d5-458a-8812-2ccf2be8e073</d6p1:DatabaseId>
+						<d6p1:DisableInheritance>false</d6p1:DisableInheritance>
+						<d6p1:SPFarmId>baa1b08f-cbca-4af8-95fe-67ba9526f9b6</d6p1:SPFarmId>
+						<d6p1:SPSiteId>993b48ff-adb6-4530-9f18-b48888353c18</d6p1:SPSiteId>
+						<d6p1:SPSiteSubscriptionId>be47e632-2ba0-4369-bae4-ba90e624c97b</d6p1:SPSiteSubscriptionId>
+						<d6p1:SPWebId>00000000-0000-0000-0000-000000000000</d6p1:SPWebId>
+					</d4p1:_Owner>
+					<d4p1:_ProcessingDirective>Stop</d4p1:_ProcessingDirective>
+					<d4p1:_ReviewDate i:nil="true" />
+					<d4p1:_StartDate i:nil="true" />
+				</d4p1:QueryRule>
+			</QueryRules>
+			<ResultTypes xmlns:d4p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration">
+				<d4p1:ResultItemType>
+					<d4p1:BuiltIn>false</d4p1:BuiltIn>
+					<d4p1:DisplayProperties>Title,Path,HitHighlightedSummary,HitHighlightedProperties,ContentTypeId</d4p1:DisplayProperties>
+					<d4p1:DisplayTemplateUrl>~sitecollection/_catalogs/masterpage/Display Templates/Search/PnP/Item_Intranet-Page_Search.js</d4p1:DisplayTemplateUrl>
+					<d4p1:ID>196</d4p1:ID>
+					<d4p1:InternalID>5af4e141-46c7-43c4-b239-85a50baee41a</d4p1:InternalID>
+					<d4p1:IsDeleted>false</d4p1:IsDeleted>
+					<d4p1:LastModifiedDate>2016-08-17T19:28:27.343</d4p1:LastModifiedDate>
+					<d4p1:Name>Intranet Page</d4p1:Name>
+					<d4p1:OptimizeForFrequentUse>false</d4p1:OptimizeForFrequentUse>
+					<d4p1:Owner>
+						<d4p1:DatabaseId>00000000-0000-0000-0000-000000000000</d4p1:DatabaseId>
+						<d4p1:DisableInheritance>false</d4p1:DisableInheritance>
+						<d4p1:SPFarmId>baa1b08f-cbca-4af8-95fe-67ba9526f9b6</d4p1:SPFarmId>
+						<d4p1:SPSiteId>993b48ff-adb6-4530-9f18-b48888353c18</d4p1:SPSiteId>
+						<d4p1:SPSiteSubscriptionId>be47e632-2ba0-4369-bae4-ba90e624c97b</d4p1:SPSiteSubscriptionId>
+						<d4p1:SPWebId>00000000-0000-0000-0000-000000000000</d4p1:SPWebId>
+					</d4p1:Owner>
+					<d4p1:RulePriority>7</d4p1:RulePriority>
+					<d4p1:Rules>
+						<d4p1:PropertyRules>
+							<d4p1:PropertyRule>
+								<d4p1:PropertyName>ContentTypeId</d4p1:PropertyName>
+								<d4p1:PropertyOperator>
+									<d4p1:DescriptionLSID>ManageResultTypes_Conditions_Contains</d4p1:DescriptionLSID>
+									<d4p1:IsFunction>true</d4p1:IsFunction>
+									<d4p1:IsQuoted>true</d4p1:IsQuoted>
+									<d4p1:JoinedByOr>true</d4p1:JoinedByOr>
+									<d4p1:Name i:nil="true" />
+									<d4p1:NameLSID>ResultType_RuleOperator_Contains</d4p1:NameLSID>
+									<d4p1:Representation>Contains</d4p1:Representation>
+								</d4p1:PropertyOperator>
+								<d4p1:PropertyValues xmlns:d9p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+									<d9p1:string>0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C01</d9p1:string>
+								</d4p1:PropertyValues>
+								<d4p1:RuleNameLSID i:nil="true" />
+							</d4p1:PropertyRule>
+						</d4p1:PropertyRules>
+					</d4p1:Rules>
+					<d4p1:SourceID>00000000-0000-0000-0000-000000000000</d4p1:SourceID>
+				</d4p1:ResultItemType>
+				<d4p1:ResultItemType>
+					<d4p1:BuiltIn>false</d4p1:BuiltIn>
+					<d4p1:DisplayProperties>Title,Path,HitHighlightedSummary,HitHighlightedProperties,PublishingImage,IntranetContentPublishingDateOWSDATE,ContentTypeId </d4p1:DisplayProperties>
+					<d4p1:DisplayTemplateUrl>~sitecollection/_catalogs/masterpage/Display Templates/Search/PnP/Item_Intranet-News_Search.js</d4p1:DisplayTemplateUrl>
+					<d4p1:ID>194</d4p1:ID>
+					<d4p1:InternalID>87185f56-1a92-42d3-91c9-47c92bd4d36f</d4p1:InternalID>
+					<d4p1:IsDeleted>false</d4p1:IsDeleted>
+					<d4p1:LastModifiedDate>2016-08-17T19:28:27.33</d4p1:LastModifiedDate>
+					<d4p1:Name>Intranet News</d4p1:Name>
+					<d4p1:OptimizeForFrequentUse>false</d4p1:OptimizeForFrequentUse>
+					<d4p1:Owner>
+						<d4p1:DatabaseId>00000000-0000-0000-0000-000000000000</d4p1:DatabaseId>
+						<d4p1:DisableInheritance>false</d4p1:DisableInheritance>
+						<d4p1:SPFarmId>baa1b08f-cbca-4af8-95fe-67ba9526f9b6</d4p1:SPFarmId>
+						<d4p1:SPSiteId>993b48ff-adb6-4530-9f18-b48888353c18</d4p1:SPSiteId>
+						<d4p1:SPSiteSubscriptionId>be47e632-2ba0-4369-bae4-ba90e624c97b</d4p1:SPSiteSubscriptionId>
+						<d4p1:SPWebId>00000000-0000-0000-0000-000000000000</d4p1:SPWebId>
+					</d4p1:Owner>
+					<d4p1:RulePriority>1</d4p1:RulePriority>
+					<d4p1:Rules>
+						<d4p1:PropertyRules>
+							<d4p1:PropertyRule>
+								<d4p1:PropertyName>ContentTypeId</d4p1:PropertyName>
+								<d4p1:PropertyOperator>
+									<d4p1:DescriptionLSID>ManageResultTypes_Conditions_Contains</d4p1:DescriptionLSID>
+									<d4p1:IsFunction>true</d4p1:IsFunction>
+									<d4p1:IsQuoted>true</d4p1:IsQuoted>
+									<d4p1:JoinedByOr>true</d4p1:JoinedByOr>
+									<d4p1:Name i:nil="true" />
+									<d4p1:NameLSID>ResultType_RuleOperator_Contains</d4p1:NameLSID>
+									<d4p1:Representation>Contains</d4p1:Representation>
+								</d4p1:PropertyOperator>
+								<d4p1:PropertyValues xmlns:d9p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+									<d9p1:string>0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C02</d9p1:string>
+								</d4p1:PropertyValues>
+								<d4p1:RuleNameLSID i:nil="true" />
+							</d4p1:PropertyRule>
+						</d4p1:PropertyRules>
+					</d4p1:Rules>
+					<d4p1:SourceID>00000000-0000-0000-0000-000000000000</d4p1:SourceID>
+				</d4p1:ResultItemType>
+				<d4p1:ResultItemType>
+					<d4p1:BuiltIn>false</d4p1:BuiltIn>
+					<d4p1:DisplayProperties>Title,Path,Description,EditorOWSUSER,LastModifiedTime,CollapsingStatus,DocId,HitHighlightedSummary,HitHighlightedProperties,FileExtension,ViewsLifeTime,ParentLink,FileType,IsContainer,ServerRedirectedURL,ServerRedirectedEmbedURL,ServerRedirectedPreviewURL</d4p1:DisplayProperties>
+					<d4p1:DisplayTemplateUrl>~sitecollection/_catalogs/masterpage/Display Templates/Search/PnP/Item_Intranet-Document_Search.js</d4p1:DisplayTemplateUrl>
+					<d4p1:ID>195</d4p1:ID>
+					<d4p1:InternalID>8fd45768-dcd7-4777-aeb8-3df4b4ea47bf</d4p1:InternalID>
+					<d4p1:IsDeleted>false</d4p1:IsDeleted>
+					<d4p1:LastModifiedDate>2016-08-17T19:28:27.337</d4p1:LastModifiedDate>
+					<d4p1:Name>Intranet Document</d4p1:Name>
+					<d4p1:OptimizeForFrequentUse>false</d4p1:OptimizeForFrequentUse>
+					<d4p1:Owner>
+						<d4p1:DatabaseId>00000000-0000-0000-0000-000000000000</d4p1:DatabaseId>
+						<d4p1:DisableInheritance>false</d4p1:DisableInheritance>
+						<d4p1:SPFarmId>baa1b08f-cbca-4af8-95fe-67ba9526f9b6</d4p1:SPFarmId>
+						<d4p1:SPSiteId>993b48ff-adb6-4530-9f18-b48888353c18</d4p1:SPSiteId>
+						<d4p1:SPSiteSubscriptionId>be47e632-2ba0-4369-bae4-ba90e624c97b</d4p1:SPSiteSubscriptionId>
+						<d4p1:SPWebId>00000000-0000-0000-0000-000000000000</d4p1:SPWebId>
+					</d4p1:Owner>
+					<d4p1:RulePriority>9</d4p1:RulePriority>
+					<d4p1:Rules>
+						<d4p1:PropertyRules>
+							<d4p1:PropertyRule>
+								<d4p1:PropertyName>ContentTypeId</d4p1:PropertyName>
+								<d4p1:PropertyOperator>
+									<d4p1:DescriptionLSID>ManageResultTypes_Conditions_Contains</d4p1:DescriptionLSID>
+									<d4p1:IsFunction>true</d4p1:IsFunction>
+									<d4p1:IsQuoted>true</d4p1:IsQuoted>
+									<d4p1:JoinedByOr>true</d4p1:JoinedByOr>
+									<d4p1:Name i:nil="true" />
+									<d4p1:NameLSID>ResultType_RuleOperator_Contains</d4p1:NameLSID>
+									<d4p1:Representation>Contains</d4p1:Representation>
+								</d4p1:PropertyOperator>
+								<d4p1:PropertyValues xmlns:d9p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+									<d9p1:string>0x01010092206821AFF2CF42B50BA968DA7AE9E9</d9p1:string>
+								</d4p1:PropertyValues>
+								<d4p1:RuleNameLSID i:nil="true" />
+							</d4p1:PropertyRule>
+						</d4p1:PropertyRules>
+					</d4p1:Rules>
+					<d4p1:SourceID>00000000-0000-0000-0000-000000000000</d4p1:SourceID>
+				</d4p1:ResultItemType>
+			</ResultTypes>
+			<Sources xmlns:d4p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration.Query">
+				<d4p1:Source>
+					<d4p1:Active>true</d4p1:Active>
+					<d4p1:AuthInfo xmlns:d6p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration" i:nil="true" />
+					<d4p1:BuiltIn>false</d4p1:BuiltIn>
+					<d4p1:ConnectionTimeout>15000</d4p1:ConnectionTimeout>
+					<d4p1:ConnectionUrlTemplate />
+					<d4p1:CreatedDate>2016-08-11T15:29:37.46</d4p1:CreatedDate>
+					<d4p1:Description />
+					<d4p1:HasPermissionToReadAuthInfo>true</d4p1:HasPermissionToReadAuthInfo>
+					<d4p1:Id>acb1acf6-fb6c-4d95-b009-d4bf6755cb15</d4p1:Id>
+					<d4p1:IndexOffset>0</d4p1:IndexOffset>
+					<d4p1:LastModifiedDate>2016-08-17T19:57:38.667</d4p1:LastModifiedDate>
+					<d4p1:MaximumResponseLength>64</d4p1:MaximumResponseLength>
+					<d4p1:Name>Home - Site Documents</d4p1:Name>
+					<d4p1:Owner xmlns:d6p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration">
+						<d6p1:DatabaseId>00000000-0000-0000-0000-000000000000</d6p1:DatabaseId>
+						<d6p1:DisableInheritance>false</d6p1:DisableInheritance>
+						<d6p1:SPFarmId>baa1b08f-cbca-4af8-95fe-67ba9526f9b6</d6p1:SPFarmId>
+						<d6p1:SPSiteId>993b48ff-adb6-4530-9f18-b48888353c18</d6p1:SPSiteId>
+						<d6p1:SPSiteSubscriptionId>be47e632-2ba0-4369-bae4-ba90e624c97b</d6p1:SPSiteSubscriptionId>
+						<d6p1:SPWebId>00000000-0000-0000-0000-000000000000</d6p1:SPWebId>
+					</d4p1:Owner>
+					<d4p1:ProviderId>fa947043-6046-4f97-9714-40d4c113963d</d4p1:ProviderId>
+					<d4p1:QueryTransform xmlns:d6p1="http://www.microsoft.com/sharepoint/search/KnownTypes/2008/08">
+						<d6p1:Id>3eae40e1-675f-45cb-a8c0-3db8dd0ddc45</d6p1:Id>
+						<d6p1:IsSystem>false</d6p1:IsSystem>
+						<d6p1:OverridePropertiesForSeralization xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+						<d6p1:OwnerId i:nil="true" />
+						<d6p1:ParentId>acb1acf6-fb6c-4d95-b009-d4bf6755cb15</d6p1:ParentId>
+						<d6p1:ParentType>Source</d6p1:ParentType>
+						<d6p1:QueryPropertyExpressions>
+							<d6p1:MaxSize>2147483647</d6p1:MaxSize>
+							<d6p1:OrderedItems />
+						</d6p1:QueryPropertyExpressions>
+						<d6p1:_IsReadOnly>true</d6p1:_IsReadOnly>
+						<d6p1:_QueryTemplate>(FileExtension:doc OR FileExtension:docx OR FileExtension:xls OR FileExtension:xlsx OR FileExtension:ppt OR FileExtension:pptx OR FileExtension:pdf OR FileExtension:one OR FileExtension:txt) (IsDocument:"True" OR contentclass:"STS_ListItem") Path:{Site.URL}  {searchTerms}</d6p1:_QueryTemplate>
+						<d6p1:_SourceId i:nil="true" />
+					</d4p1:QueryTransform>
+				</d4p1:Source>
+				<d4p1:Source>
+					<d4p1:Active>true</d4p1:Active>
+					<d4p1:AuthInfo xmlns:d6p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration" i:nil="true" />
+					<d4p1:BuiltIn>false</d4p1:BuiltIn>
+					<d4p1:ConnectionTimeout>15000</d4p1:ConnectionTimeout>
+					<d4p1:ConnectionUrlTemplate />
+					<d4p1:CreatedDate>2016-07-19T14:54:30.573</d4p1:CreatedDate>
+					<d4p1:Description />
+					<d4p1:HasPermissionToReadAuthInfo>true</d4p1:HasPermissionToReadAuthInfo>
+					<d4p1:Id>c1044739-8fd7-47e4-b79f-bb34355a129c</d4p1:Id>
+					<d4p1:IndexOffset>0</d4p1:IndexOffset>
+					<d4p1:LastModifiedDate>2016-08-17T19:57:24.35</d4p1:LastModifiedDate>
+					<d4p1:MaximumResponseLength>64</d4p1:MaximumResponseLength>
+					<d4p1:Name>Home - Site News</d4p1:Name>
+					<d4p1:Owner xmlns:d6p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration">
+						<d6p1:DatabaseId>00000000-0000-0000-0000-000000000000</d6p1:DatabaseId>
+						<d6p1:DisableInheritance>false</d6p1:DisableInheritance>
+						<d6p1:SPFarmId>baa1b08f-cbca-4af8-95fe-67ba9526f9b6</d6p1:SPFarmId>
+						<d6p1:SPSiteId>993b48ff-adb6-4530-9f18-b48888353c18</d6p1:SPSiteId>
+						<d6p1:SPSiteSubscriptionId>be47e632-2ba0-4369-bae4-ba90e624c97b</d6p1:SPSiteSubscriptionId>
+						<d6p1:SPWebId>00000000-0000-0000-0000-000000000000</d6p1:SPWebId>
+					</d4p1:Owner>
+					<d4p1:ProviderId>fa947043-6046-4f97-9714-40d4c113963d</d4p1:ProviderId>
+					<d4p1:QueryTransform xmlns:d6p1="http://www.microsoft.com/sharepoint/search/KnownTypes/2008/08">
+						<d6p1:Id>31978a88-e337-4d8d-8c78-41ae3fdddb77</d6p1:Id>
+						<d6p1:IsSystem>false</d6p1:IsSystem>
+						<d6p1:OverridePropertiesForSeralization xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+							<d7p1:KeyValueOfstringanyType>
+								<d7p1:Key>RankingModelId</d7p1:Key>
+								<d7p1:Value xmlns:d9p1="http://www.w3.org/2001/XMLSchema" i:type="d9p1:string">8f6fd0bc-06f9-43cf-bbab-08c377e083f4</d7p1:Value>
+							</d7p1:KeyValueOfstringanyType>
+							<d7p1:KeyValueOfstringanyType>
+								<d7p1:Key>SortList</d7p1:Key>
+								<d7p1:Value i:type="d6p1:SortCollection">
+									<d6p1:m_elements>
+										<d6p1:Sort>
+											<d6p1:direction>Descending</d6p1:direction>
+											<d6p1:strProperty>RefinableInt00</d6p1:strProperty>
+										</d6p1:Sort>
+										<d6p1:Sort>
+											<d6p1:direction>Descending</d6p1:direction>
+											<d6p1:strProperty>RefinableDate00</d6p1:strProperty>
+										</d6p1:Sort>
+									</d6p1:m_elements>
+								</d7p1:Value>
+							</d7p1:KeyValueOfstringanyType>
+						</d6p1:OverridePropertiesForSeralization>
+						<d6p1:OwnerId i:nil="true" />
+						<d6p1:ParentId>c1044739-8fd7-47e4-b79f-bb34355a129c</d6p1:ParentId>
+						<d6p1:ParentType>Source</d6p1:ParentType>
+						<d6p1:QueryPropertyExpressions>
+							<d6p1:MaxSize>2147483647</d6p1:MaxSize>
+							<d6p1:OrderedItems />
+						</d6p1:QueryPropertyExpressions>
+						<d6p1:_IsReadOnly>true</d6p1:_IsReadOnly>
+						<d6p1:_QueryTemplate>ContentTypeId:0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C02* (IsDocument:"True" OR contentclass:"STS_ListItem")  IntranetContentLanguageOWSCHCS:{Page.IntranetContentLanguage} Path:{SiteCollection.URL}</d6p1:_QueryTemplate>
+						<d6p1:_SourceId i:nil="true" />
+					</d4p1:QueryTransform>
+				</d4p1:Source>
+				<d4p1:Source>
+					<d4p1:Active>true</d4p1:Active>
+					<d4p1:AuthInfo xmlns:d6p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration" i:nil="true" />
+					<d4p1:BuiltIn>false</d4p1:BuiltIn>
+					<d4p1:ConnectionTimeout>15000</d4p1:ConnectionTimeout>
+					<d4p1:ConnectionUrlTemplate />
+					<d4p1:CreatedDate>2016-07-20T16:13:15.547</d4p1:CreatedDate>
+					<d4p1:Description />
+					<d4p1:HasPermissionToReadAuthInfo>true</d4p1:HasPermissionToReadAuthInfo>
+					<d4p1:Id>d26bee49-6393-40a1-ab76-1012f1ae4b2a</d4p1:Id>
+					<d4p1:IndexOffset>0</d4p1:IndexOffset>
+					<d4p1:LastModifiedDate>2016-08-17T19:28:27.4</d4p1:LastModifiedDate>
+					<d4p1:MaximumResponseLength>64</d4p1:MaximumResponseLength>
+					<d4p1:Name>Search - Intranet</d4p1:Name>
+					<d4p1:Owner xmlns:d6p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration">
+						<d6p1:DatabaseId>00000000-0000-0000-0000-000000000000</d6p1:DatabaseId>
+						<d6p1:DisableInheritance>false</d6p1:DisableInheritance>
+						<d6p1:SPFarmId>baa1b08f-cbca-4af8-95fe-67ba9526f9b6</d6p1:SPFarmId>
+						<d6p1:SPSiteId>993b48ff-adb6-4530-9f18-b48888353c18</d6p1:SPSiteId>
+						<d6p1:SPSiteSubscriptionId>be47e632-2ba0-4369-bae4-ba90e624c97b</d6p1:SPSiteSubscriptionId>
+						<d6p1:SPWebId>00000000-0000-0000-0000-000000000000</d6p1:SPWebId>
+					</d4p1:Owner>
+					<d4p1:ProviderId>fa947043-6046-4f97-9714-40d4c113963d</d4p1:ProviderId>
+					<d4p1:QueryTransform xmlns:d6p1="http://www.microsoft.com/sharepoint/search/KnownTypes/2008/08">
+						<d6p1:Id>7772c2d0-4673-4987-930f-5c74629cf884</d6p1:Id>
+						<d6p1:IsSystem>false</d6p1:IsSystem>
+						<d6p1:OverridePropertiesForSeralization xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+						<d6p1:OwnerId>d3419be6-55d5-458a-8812-2ccf2be8e073</d6p1:OwnerId>
+						<d6p1:ParentId>d26bee49-6393-40a1-ab76-1012f1ae4b2a</d6p1:ParentId>
+						<d6p1:ParentType>Source</d6p1:ParentType>
+						<d6p1:QueryPropertyExpressions>
+							<d6p1:MaxSize>2147483647</d6p1:MaxSize>
+							<d6p1:OrderedItems />
+						</d6p1:QueryPropertyExpressions>
+						<d6p1:_IsReadOnly>true</d6p1:_IsReadOnly>
+						<d6p1:_QueryTemplate>{SearchBoxQuery} (ContentTypeId:0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C01* OR ContentTypeId:0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C02*)  (IsDocument:"True" OR contentclass:"STS_ListItem")  IntranetContentLanguageOWSCHCS:{Page.IntranetContentLanguage}  Path:{SiteCollection.URL}</d6p1:_QueryTemplate>
+						<d6p1:_SourceId i:nil="true" />
+					</d4p1:QueryTransform>
+				</d4p1:Source>
+				<d4p1:Source>
+					<d4p1:Active>true</d4p1:Active>
+					<d4p1:AuthInfo xmlns:d6p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration" i:nil="true" />
+					<d4p1:BuiltIn>false</d4p1:BuiltIn>
+					<d4p1:ConnectionTimeout>15000</d4p1:ConnectionTimeout>
+					<d4p1:ConnectionUrlTemplate />
+					<d4p1:CreatedDate>2016-08-08T14:27:11.23</d4p1:CreatedDate>
+					<d4p1:Description />
+					<d4p1:HasPermissionToReadAuthInfo>true</d4p1:HasPermissionToReadAuthInfo>
+					<d4p1:Id>fed5347c-81d2-481a-96bc-1516f0dc2b46</d4p1:Id>
+					<d4p1:IndexOffset>0</d4p1:IndexOffset>
+					<d4p1:LastModifiedDate>2016-08-17T19:28:27.4</d4p1:LastModifiedDate>
+					<d4p1:MaximumResponseLength>64</d4p1:MaximumResponseLength>
+					<d4p1:Name>Search - Documents</d4p1:Name>
+					<d4p1:Owner xmlns:d6p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration">
+						<d6p1:DatabaseId>00000000-0000-0000-0000-000000000000</d6p1:DatabaseId>
+						<d6p1:DisableInheritance>false</d6p1:DisableInheritance>
+						<d6p1:SPFarmId>baa1b08f-cbca-4af8-95fe-67ba9526f9b6</d6p1:SPFarmId>
+						<d6p1:SPSiteId>993b48ff-adb6-4530-9f18-b48888353c18</d6p1:SPSiteId>
+						<d6p1:SPSiteSubscriptionId>be47e632-2ba0-4369-bae4-ba90e624c97b</d6p1:SPSiteSubscriptionId>
+						<d6p1:SPWebId>00000000-0000-0000-0000-000000000000</d6p1:SPWebId>
+					</d4p1:Owner>
+					<d4p1:ProviderId>fa947043-6046-4f97-9714-40d4c113963d</d4p1:ProviderId>
+					<d4p1:QueryTransform xmlns:d6p1="http://www.microsoft.com/sharepoint/search/KnownTypes/2008/08">
+						<d6p1:Id>df0a30c4-c373-4041-bbc2-ad161f07cb05</d6p1:Id>
+						<d6p1:IsSystem>false</d6p1:IsSystem>
+						<d6p1:OverridePropertiesForSeralization xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+						<d6p1:OwnerId>d3419be6-55d5-458a-8812-2ccf2be8e073</d6p1:OwnerId>
+						<d6p1:ParentId>fed5347c-81d2-481a-96bc-1516f0dc2b46</d6p1:ParentId>
+						<d6p1:ParentType>Source</d6p1:ParentType>
+						<d6p1:QueryPropertyExpressions>
+							<d6p1:MaxSize>2147483647</d6p1:MaxSize>
+							<d6p1:OrderedItems />
+						</d6p1:QueryPropertyExpressions>
+						<d6p1:_IsReadOnly>true</d6p1:_IsReadOnly>
+						<d6p1:_QueryTemplate>{SearchBoxQuery} (FileExtension:doc OR FileExtension:docx OR FileExtension:xls OR FileExtension:xlsx OR FileExtension:ppt OR FileExtension:pptx OR FileExtension:pdf OR FileExtension:one OR FileExtension:txt) (IsDocument:"True" OR contentclass:"STS_ListItem") Path:{SiteCollection.URL} </d6p1:_QueryTemplate>
+						<d6p1:_SourceId i:nil="true" />
+					</d4p1:QueryTransform>
+				</d4p1:Source>
+			</Sources>
+			<UserSegments xmlns:d4p1="http://www.microsoft.com/sharepoint/search/KnownTypes/2008/08" />
+		</SearchQueryConfigurationSettings>
+	</SearchQueryConfigurationSettings>
+	<SearchRankingModelConfigurationSettings>
+		<RankingModels xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+	</SearchRankingModelConfigurationSettings>
+	<SearchSchemaConfigurationSettings>
+		<Aliases xmlns:d3p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration">
+			<d3p1:LastItemName>IntranetIsNewsOnTop</d3p1:LastItemName>
+			<d3p1:dictionary xmlns:d4p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+				<d4p1:KeyValueOfstringAliasInfoy6h3NzC8>
+					<d4p1:Key>IntranetContentCategory</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>IntranetContentCategory</d3p1:Name>
+						<d3p1:ManagedPid>1000000000</d3p1:ManagedPid>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringAliasInfoy6h3NzC8>
+				<d4p1:KeyValueOfstringAliasInfoy6h3NzC8>
+					<d4p1:Key>IntranetContentAuthor</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>IntranetContentAuthor</d3p1:Name>
+						<d3p1:ManagedPid>1000000001</d3p1:ManagedPid>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringAliasInfoy6h3NzC8>
+				<d4p1:KeyValueOfstringAliasInfoy6h3NzC8>
+					<d4p1:Key>IntranetContentType</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>IntranetContentType</d3p1:Name>
+						<d3p1:ManagedPid>1000000002</d3p1:ManagedPid>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringAliasInfoy6h3NzC8>
+				<d4p1:KeyValueOfstringAliasInfoy6h3NzC8>
+					<d4p1:Key>IntranetKeywords</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>IntranetKeywords</d3p1:Name>
+						<d3p1:ManagedPid>1000000003</d3p1:ManagedPid>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringAliasInfoy6h3NzC8>
+				<d4p1:KeyValueOfstringAliasInfoy6h3NzC8>
+					<d4p1:Key>IntranetDocumentDescription</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>IntranetDocumentDescription</d3p1:Name>
+						<d3p1:ManagedPid>1000000004</d3p1:ManagedPid>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringAliasInfoy6h3NzC8>
+				<d4p1:KeyValueOfstringAliasInfoy6h3NzC8>
+					<d4p1:Key>IntranetIsNewsOnTop</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>IntranetIsNewsOnTop</d3p1:Name>
+						<d3p1:ManagedPid>1000000500</d3p1:ManagedPid>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringAliasInfoy6h3NzC8>
+			</d3p1:dictionary>
+		</Aliases>
+		<CategoriesAndCrawledProperties xmlns:d3p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+			<d3p1:KeyValueOfguidCrawledPropertyInfoCollectionaSYUqUE_P>
+				<d3p1:Key>00130329-0000-0130-c000-000000131346</d3p1:Key>
+				<d3p1:Value xmlns:d5p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration">
+					<d5p1:LastItemName>ows_IntranetDocumentDescription</d5p1:LastItemName>
+					<d5p1:dictionary>
+						<d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+							<d3p1:Key>ows_IntranetContentAuthor</d3p1:Key>
+							<d3p1:Value>
+								<d5p1:Name>ows_IntranetContentAuthor</d5p1:Name>
+								<d5p1:CategoryName>SharePoint</d5p1:CategoryName>
+								<d5p1:IsImplicit>false</d5p1:IsImplicit>
+								<d5p1:IsMappedToContents>true</d5p1:IsMappedToContents>
+								<d5p1:IsNameEnum>false</d5p1:IsNameEnum>
+								<d5p1:MappedManagedProperties />
+								<d5p1:Propset>00130329-0000-0130-c000-000000131346</d5p1:Propset>
+								<d5p1:Samples />
+								<d5p1:SchemaId>111</d5p1:SchemaId>
+							</d3p1:Value>
+						</d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+						<d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+							<d3p1:Key>ows_IntranetContentCategory</d3p1:Key>
+							<d3p1:Value>
+								<d5p1:Name>ows_IntranetContentCategory</d5p1:Name>
+								<d5p1:CategoryName>SharePoint</d5p1:CategoryName>
+								<d5p1:IsImplicit>false</d5p1:IsImplicit>
+								<d5p1:IsMappedToContents>true</d5p1:IsMappedToContents>
+								<d5p1:IsNameEnum>false</d5p1:IsNameEnum>
+								<d5p1:MappedManagedProperties />
+								<d5p1:Propset>00130329-0000-0130-c000-000000131346</d5p1:Propset>
+								<d5p1:Samples />
+								<d5p1:SchemaId>111</d5p1:SchemaId>
+							</d3p1:Value>
+						</d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+						<d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+							<d3p1:Key>ows_IntranetContentPublishingDate</d3p1:Key>
+							<d3p1:Value>
+								<d5p1:Name>ows_IntranetContentPublishingDate</d5p1:Name>
+								<d5p1:CategoryName>SharePoint</d5p1:CategoryName>
+								<d5p1:IsImplicit>false</d5p1:IsImplicit>
+								<d5p1:IsMappedToContents>true</d5p1:IsMappedToContents>
+								<d5p1:IsNameEnum>false</d5p1:IsNameEnum>
+								<d5p1:MappedManagedProperties />
+								<d5p1:Propset>00130329-0000-0130-c000-000000131346</d5p1:Propset>
+								<d5p1:Samples />
+								<d5p1:SchemaId>111</d5p1:SchemaId>
+							</d3p1:Value>
+						</d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+						<d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+							<d3p1:Key>ows_IntranetDocumentDescription</d3p1:Key>
+							<d3p1:Value>
+								<d5p1:Name>ows_IntranetDocumentDescription</d5p1:Name>
+								<d5p1:CategoryName>SharePoint</d5p1:CategoryName>
+								<d5p1:IsImplicit>false</d5p1:IsImplicit>
+								<d5p1:IsMappedToContents>true</d5p1:IsMappedToContents>
+								<d5p1:IsNameEnum>false</d5p1:IsNameEnum>
+								<d5p1:MappedManagedProperties />
+								<d5p1:Propset>00130329-0000-0130-c000-000000131346</d5p1:Propset>
+								<d5p1:Samples />
+								<d5p1:SchemaId>111</d5p1:SchemaId>
+							</d3p1:Value>
+						</d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+					</d5p1:dictionary>
+				</d3p1:Value>
+			</d3p1:KeyValueOfguidCrawledPropertyInfoCollectionaSYUqUE_P>
+			<d3p1:KeyValueOfguidCrawledPropertyInfoCollectionaSYUqUE_P>
+				<d3p1:Key>ed280121-b677-4e2a-8fbc-0d9e2325b0a2</d3p1:Key>
+				<d3p1:Value xmlns:d5p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration">
+					<d5p1:LastItemName>ows_q_DATE_IntranetContentPublishingDate</d5p1:LastItemName>
+					<d5p1:dictionary>
+						<d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+							<d3p1:Key>ows_q_BOOL_IntranetIsNewsOnTop</d3p1:Key>
+							<d3p1:Value>
+								<d5p1:Name>ows_q_BOOL_IntranetIsNewsOnTop</d5p1:Name>
+								<d5p1:CategoryName>SharePoint</d5p1:CategoryName>
+								<d5p1:IsImplicit>false</d5p1:IsImplicit>
+								<d5p1:IsMappedToContents>false</d5p1:IsMappedToContents>
+								<d5p1:IsNameEnum>false</d5p1:IsNameEnum>
+								<d5p1:MappedManagedProperties />
+								<d5p1:Propset>ed280121-b677-4e2a-8fbc-0d9e2325b0a2</d5p1:Propset>
+								<d5p1:Samples />
+								<d5p1:SchemaId>111</d5p1:SchemaId>
+							</d3p1:Value>
+						</d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+						<d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+							<d3p1:Key>ows_q_USER_IntranetContentAuthor</d3p1:Key>
+							<d3p1:Value>
+								<d5p1:Name>ows_q_USER_IntranetContentAuthor</d5p1:Name>
+								<d5p1:CategoryName>SharePoint</d5p1:CategoryName>
+								<d5p1:IsImplicit>false</d5p1:IsImplicit>
+								<d5p1:IsMappedToContents>false</d5p1:IsMappedToContents>
+								<d5p1:IsNameEnum>false</d5p1:IsNameEnum>
+								<d5p1:MappedManagedProperties />
+								<d5p1:Propset>ed280121-b677-4e2a-8fbc-0d9e2325b0a2</d5p1:Propset>
+								<d5p1:Samples />
+								<d5p1:SchemaId>111</d5p1:SchemaId>
+							</d3p1:Value>
+						</d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+						<d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+							<d3p1:Key>ows_q_DATE_IntranetContentPublishingDate</d3p1:Key>
+							<d3p1:Value>
+								<d5p1:Name>ows_q_DATE_IntranetContentPublishingDate</d5p1:Name>
+								<d5p1:CategoryName>SharePoint</d5p1:CategoryName>
+								<d5p1:IsImplicit>false</d5p1:IsImplicit>
+								<d5p1:IsMappedToContents>false</d5p1:IsMappedToContents>
+								<d5p1:IsNameEnum>false</d5p1:IsNameEnum>
+								<d5p1:MappedManagedProperties />
+								<d5p1:Propset>ed280121-b677-4e2a-8fbc-0d9e2325b0a2</d5p1:Propset>
+								<d5p1:Samples />
+								<d5p1:SchemaId>53</d5p1:SchemaId>
+							</d3p1:Value>
+						</d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+					</d5p1:dictionary>
+				</d3p1:Value>
+			</d3p1:KeyValueOfguidCrawledPropertyInfoCollectionaSYUqUE_P>
+			<d3p1:KeyValueOfguidCrawledPropertyInfoCollectionaSYUqUE_P>
+				<d3p1:Key>fea84df6-a0fc-492c-9aa7-d28b8dcb08b3</d3p1:Key>
+				<d3p1:Value xmlns:d5p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration">
+					<d5p1:LastItemName>ows_r_MTXT_IntranetDocumentDescription</d5p1:LastItemName>
+					<d5p1:dictionary>
+						<d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+							<d3p1:Key>ows_r_MTXT_IntranetDocumentDescription</d3p1:Key>
+							<d3p1:Value>
+								<d5p1:Name>ows_r_MTXT_IntranetDocumentDescription</d5p1:Name>
+								<d5p1:CategoryName>SharePoint</d5p1:CategoryName>
+								<d5p1:IsImplicit>false</d5p1:IsImplicit>
+								<d5p1:IsMappedToContents>false</d5p1:IsMappedToContents>
+								<d5p1:IsNameEnum>false</d5p1:IsNameEnum>
+								<d5p1:MappedManagedProperties />
+								<d5p1:Propset>fea84df6-a0fc-492c-9aa7-d28b8dcb08b3</d5p1:Propset>
+								<d5p1:Samples />
+								<d5p1:SchemaId>111</d5p1:SchemaId>
+							</d3p1:Value>
+						</d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+					</d5p1:dictionary>
+				</d3p1:Value>
+			</d3p1:KeyValueOfguidCrawledPropertyInfoCollectionaSYUqUE_P>
+			<d3p1:KeyValueOfguidCrawledPropertyInfoCollectionaSYUqUE_P>
+				<d3p1:Key>158d7563-aeff-4dbf-bf16-4a1445f0366c</d3p1:Key>
+				<d3p1:Value xmlns:d5p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration">
+					<d5p1:LastItemName>ows_taxId_IntranetKeywords</d5p1:LastItemName>
+					<d5p1:dictionary>
+						<d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+							<d3p1:Key>ows_taxId_IntranetContentCategory</d3p1:Key>
+							<d3p1:Value>
+								<d5p1:Name>ows_taxId_IntranetContentCategory</d5p1:Name>
+								<d5p1:CategoryName>SharePoint</d5p1:CategoryName>
+								<d5p1:IsImplicit>false</d5p1:IsImplicit>
+								<d5p1:IsMappedToContents>true</d5p1:IsMappedToContents>
+								<d5p1:IsNameEnum>false</d5p1:IsNameEnum>
+								<d5p1:MappedManagedProperties />
+								<d5p1:Propset>158d7563-aeff-4dbf-bf16-4a1445f0366c</d5p1:Propset>
+								<d5p1:Samples />
+								<d5p1:SchemaId>111</d5p1:SchemaId>
+							</d3p1:Value>
+						</d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+						<d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+							<d3p1:Key>ows_taxId_IntranetContentType</d3p1:Key>
+							<d3p1:Value>
+								<d5p1:Name>ows_taxId_IntranetContentType</d5p1:Name>
+								<d5p1:CategoryName>SharePoint</d5p1:CategoryName>
+								<d5p1:IsImplicit>false</d5p1:IsImplicit>
+								<d5p1:IsMappedToContents>true</d5p1:IsMappedToContents>
+								<d5p1:IsNameEnum>false</d5p1:IsNameEnum>
+								<d5p1:MappedManagedProperties />
+								<d5p1:Propset>158d7563-aeff-4dbf-bf16-4a1445f0366c</d5p1:Propset>
+								<d5p1:Samples />
+								<d5p1:SchemaId>111</d5p1:SchemaId>
+							</d3p1:Value>
+						</d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+						<d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+							<d3p1:Key>ows_taxId_IntranetKeywords</d3p1:Key>
+							<d3p1:Value>
+								<d5p1:Name>ows_taxId_IntranetKeywords</d5p1:Name>
+								<d5p1:CategoryName>SharePoint</d5p1:CategoryName>
+								<d5p1:IsImplicit>false</d5p1:IsImplicit>
+								<d5p1:IsMappedToContents>true</d5p1:IsMappedToContents>
+								<d5p1:IsNameEnum>false</d5p1:IsNameEnum>
+								<d5p1:MappedManagedProperties />
+								<d5p1:Propset>158d7563-aeff-4dbf-bf16-4a1445f0366c</d5p1:Propset>
+								<d5p1:Samples />
+								<d5p1:SchemaId>111</d5p1:SchemaId>
+							</d3p1:Value>
+						</d3p1:KeyValueOfstringCrawledPropertyInfoy6h3NzC8>
+					</d5p1:dictionary>
+				</d3p1:Value>
+			</d3p1:KeyValueOfguidCrawledPropertyInfoCollectionaSYUqUE_P>
+		</CategoriesAndCrawledProperties>
+		<CrawledProperties xmlns:d3p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration" i:nil="true" />
+		<ManagedProperties xmlns:d3p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration">
+			<d3p1:LastItemName i:nil="true" />
+			<d3p1:dictionary xmlns:d4p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+			<d3p1:TotalCount>0</d3p1:TotalCount>
+		</ManagedProperties>
+		<Mappings xmlns:d3p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration">
+			<d3p1:LastItemName>ed280121-b677-4e2a-8fbc-0d9e2325b0a2:ows_q_DATE_IntranetContentPublishingDate-&gt;1000000600</d3p1:LastItemName>
+			<d3p1:dictionary xmlns:d4p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+				<d4p1:KeyValueOfstringMappingInfoy6h3NzC8>
+					<d4p1:Key>158d7563-aeff-4dbf-bf16-4a1445f0366c:ows_taxId_IntranetContentCategory-&gt;1000000000</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>158d7563-aeff-4dbf-bf16-4a1445f0366c:ows_taxId_IntranetContentCategory-&gt;1000000000</d3p1:Name>
+						<d3p1:CrawledPropertyName>ows_taxId_IntranetContentCategory</d3p1:CrawledPropertyName>
+						<d3p1:CrawledPropset>158d7563-aeff-4dbf-bf16-4a1445f0366c</d3p1:CrawledPropset>
+						<d3p1:ManagedPid>1000000000</d3p1:ManagedPid>
+						<d3p1:MappingOrder>100</d3p1:MappingOrder>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringMappingInfoy6h3NzC8>
+				<d4p1:KeyValueOfstringMappingInfoy6h3NzC8>
+					<d4p1:Key>00130329-0000-0130-c000-000000131346:ows_IntranetContentAuthor-&gt;1000000001</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>00130329-0000-0130-c000-000000131346:ows_IntranetContentAuthor-&gt;1000000001</d3p1:Name>
+						<d3p1:CrawledPropertyName>ows_IntranetContentAuthor</d3p1:CrawledPropertyName>
+						<d3p1:CrawledPropset>00130329-0000-0130-c000-000000131346</d3p1:CrawledPropset>
+						<d3p1:ManagedPid>1000000001</d3p1:ManagedPid>
+						<d3p1:MappingOrder>100</d3p1:MappingOrder>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringMappingInfoy6h3NzC8>
+				<d4p1:KeyValueOfstringMappingInfoy6h3NzC8>
+					<d4p1:Key>158d7563-aeff-4dbf-bf16-4a1445f0366c:ows_taxId_IntranetContentType-&gt;1000000002</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>158d7563-aeff-4dbf-bf16-4a1445f0366c:ows_taxId_IntranetContentType-&gt;1000000002</d3p1:Name>
+						<d3p1:CrawledPropertyName>ows_taxId_IntranetContentType</d3p1:CrawledPropertyName>
+						<d3p1:CrawledPropset>158d7563-aeff-4dbf-bf16-4a1445f0366c</d3p1:CrawledPropset>
+						<d3p1:ManagedPid>1000000002</d3p1:ManagedPid>
+						<d3p1:MappingOrder>100</d3p1:MappingOrder>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringMappingInfoy6h3NzC8>
+				<d4p1:KeyValueOfstringMappingInfoy6h3NzC8>
+					<d4p1:Key>158d7563-aeff-4dbf-bf16-4a1445f0366c:ows_taxId_IntranetKeywords-&gt;1000000003</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>158d7563-aeff-4dbf-bf16-4a1445f0366c:ows_taxId_IntranetKeywords-&gt;1000000003</d3p1:Name>
+						<d3p1:CrawledPropertyName>ows_taxId_IntranetKeywords</d3p1:CrawledPropertyName>
+						<d3p1:CrawledPropset>158d7563-aeff-4dbf-bf16-4a1445f0366c</d3p1:CrawledPropset>
+						<d3p1:ManagedPid>1000000003</d3p1:ManagedPid>
+						<d3p1:MappingOrder>100</d3p1:MappingOrder>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringMappingInfoy6h3NzC8>
+				<d4p1:KeyValueOfstringMappingInfoy6h3NzC8>
+					<d4p1:Key>fea84df6-a0fc-492c-9aa7-d28b8dcb08b3:ows_r_MTXT_IntranetDocumentDescription-&gt;1000000004</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>fea84df6-a0fc-492c-9aa7-d28b8dcb08b3:ows_r_MTXT_IntranetDocumentDescription-&gt;1000000004</d3p1:Name>
+						<d3p1:CrawledPropertyName>ows_r_MTXT_IntranetDocumentDescription</d3p1:CrawledPropertyName>
+						<d3p1:CrawledPropset>fea84df6-a0fc-492c-9aa7-d28b8dcb08b3</d3p1:CrawledPropset>
+						<d3p1:ManagedPid>1000000004</d3p1:ManagedPid>
+						<d3p1:MappingOrder>100</d3p1:MappingOrder>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringMappingInfoy6h3NzC8>
+				<d4p1:KeyValueOfstringMappingInfoy6h3NzC8>
+					<d4p1:Key>ed280121-b677-4e2a-8fbc-0d9e2325b0a2:ows_q_BOOL_IntranetIsNewsOnTop-&gt;1000000500</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>ed280121-b677-4e2a-8fbc-0d9e2325b0a2:ows_q_BOOL_IntranetIsNewsOnTop-&gt;1000000500</d3p1:Name>
+						<d3p1:CrawledPropertyName>ows_q_BOOL_IntranetIsNewsOnTop</d3p1:CrawledPropertyName>
+						<d3p1:CrawledPropset>ed280121-b677-4e2a-8fbc-0d9e2325b0a2</d3p1:CrawledPropset>
+						<d3p1:ManagedPid>1000000500</d3p1:ManagedPid>
+						<d3p1:MappingOrder>100</d3p1:MappingOrder>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringMappingInfoy6h3NzC8>
+				<d4p1:KeyValueOfstringMappingInfoy6h3NzC8>
+					<d4p1:Key>ed280121-b677-4e2a-8fbc-0d9e2325b0a2:ows_q_DATE_IntranetContentPublishingDate-&gt;1000000600</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>ed280121-b677-4e2a-8fbc-0d9e2325b0a2:ows_q_DATE_IntranetContentPublishingDate-&gt;1000000600</d3p1:Name>
+						<d3p1:CrawledPropertyName>ows_q_DATE_IntranetContentPublishingDate</d3p1:CrawledPropertyName>
+						<d3p1:CrawledPropset>ed280121-b677-4e2a-8fbc-0d9e2325b0a2</d3p1:CrawledPropset>
+						<d3p1:ManagedPid>1000000600</d3p1:ManagedPid>
+						<d3p1:MappingOrder>100</d3p1:MappingOrder>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringMappingInfoy6h3NzC8>
+			</d3p1:dictionary>
+		</Mappings>
+		<Overrides xmlns:d3p1="http://schemas.datacontract.org/2004/07/Microsoft.Office.Server.Search.Administration">
+			<d3p1:LastItemName>1000000600</d3p1:LastItemName>
+			<d3p1:dictionary xmlns:d4p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+				<d4p1:KeyValueOfstringOverrideInfoy6h3NzC8>
+					<d4p1:Key>1000000000</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>1000000000</d3p1:Name>
+						<d3p1:AliasesOverridden>true</d3p1:AliasesOverridden>
+						<d3p1:ExtraProperties i:nil="true" />
+						<d3p1:ManagedPid>1000000000</d3p1:ManagedPid>
+						<d3p1:MappingsOverridden>true</d3p1:MappingsOverridden>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+						<d3p1:TokenNormalization>true</d3p1:TokenNormalization>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringOverrideInfoy6h3NzC8>
+				<d4p1:KeyValueOfstringOverrideInfoy6h3NzC8>
+					<d4p1:Key>1000000001</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>1000000001</d3p1:Name>
+						<d3p1:AliasesOverridden>true</d3p1:AliasesOverridden>
+						<d3p1:ExtraProperties i:nil="true" />
+						<d3p1:ManagedPid>1000000001</d3p1:ManagedPid>
+						<d3p1:MappingsOverridden>true</d3p1:MappingsOverridden>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+						<d3p1:TokenNormalization>true</d3p1:TokenNormalization>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringOverrideInfoy6h3NzC8>
+				<d4p1:KeyValueOfstringOverrideInfoy6h3NzC8>
+					<d4p1:Key>1000000002</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>1000000002</d3p1:Name>
+						<d3p1:AliasesOverridden>true</d3p1:AliasesOverridden>
+						<d3p1:ExtraProperties i:nil="true" />
+						<d3p1:ManagedPid>1000000002</d3p1:ManagedPid>
+						<d3p1:MappingsOverridden>true</d3p1:MappingsOverridden>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+						<d3p1:TokenNormalization>true</d3p1:TokenNormalization>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringOverrideInfoy6h3NzC8>
+				<d4p1:KeyValueOfstringOverrideInfoy6h3NzC8>
+					<d4p1:Key>1000000003</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>1000000003</d3p1:Name>
+						<d3p1:AliasesOverridden>true</d3p1:AliasesOverridden>
+						<d3p1:ExtraProperties i:nil="true" />
+						<d3p1:ManagedPid>1000000003</d3p1:ManagedPid>
+						<d3p1:MappingsOverridden>true</d3p1:MappingsOverridden>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+						<d3p1:TokenNormalization>true</d3p1:TokenNormalization>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringOverrideInfoy6h3NzC8>
+				<d4p1:KeyValueOfstringOverrideInfoy6h3NzC8>
+					<d4p1:Key>1000000004</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>1000000004</d3p1:Name>
+						<d3p1:AliasesOverridden>true</d3p1:AliasesOverridden>
+						<d3p1:ExtraProperties i:nil="true" />
+						<d3p1:ManagedPid>1000000004</d3p1:ManagedPid>
+						<d3p1:MappingsOverridden>true</d3p1:MappingsOverridden>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+						<d3p1:TokenNormalization>true</d3p1:TokenNormalization>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringOverrideInfoy6h3NzC8>
+				<d4p1:KeyValueOfstringOverrideInfoy6h3NzC8>
+					<d4p1:Key>1000000005</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>1000000005</d3p1:Name>
+						<d3p1:AliasesOverridden>true</d3p1:AliasesOverridden>
+						<d3p1:ExtraProperties i:nil="true" />
+						<d3p1:ManagedPid>1000000005</d3p1:ManagedPid>
+						<d3p1:MappingsOverridden>true</d3p1:MappingsOverridden>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+						<d3p1:TokenNormalization>true</d3p1:TokenNormalization>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringOverrideInfoy6h3NzC8>
+				<d4p1:KeyValueOfstringOverrideInfoy6h3NzC8>
+					<d4p1:Key>1000000006</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>1000000006</d3p1:Name>
+						<d3p1:AliasesOverridden>true</d3p1:AliasesOverridden>
+						<d3p1:ExtraProperties i:nil="true" />
+						<d3p1:ManagedPid>1000000006</d3p1:ManagedPid>
+						<d3p1:MappingsOverridden>true</d3p1:MappingsOverridden>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+						<d3p1:TokenNormalization>true</d3p1:TokenNormalization>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringOverrideInfoy6h3NzC8>
+				<d4p1:KeyValueOfstringOverrideInfoy6h3NzC8>
+					<d4p1:Key>1000000500</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>1000000500</d3p1:Name>
+						<d3p1:AliasesOverridden>true</d3p1:AliasesOverridden>
+						<d3p1:ExtraProperties i:nil="true" />
+						<d3p1:ManagedPid>1000000500</d3p1:ManagedPid>
+						<d3p1:MappingsOverridden>true</d3p1:MappingsOverridden>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+						<d3p1:TokenNormalization>true</d3p1:TokenNormalization>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringOverrideInfoy6h3NzC8>
+				<d4p1:KeyValueOfstringOverrideInfoy6h3NzC8>
+					<d4p1:Key>1000000600</d4p1:Key>
+					<d4p1:Value>
+						<d3p1:Name>1000000600</d3p1:Name>
+						<d3p1:AliasesOverridden>false</d3p1:AliasesOverridden>
+						<d3p1:ExtraProperties i:nil="true" />
+						<d3p1:ManagedPid>1000000600</d3p1:ManagedPid>
+						<d3p1:MappingsOverridden>true</d3p1:MappingsOverridden>
+						<d3p1:SchemaId>111</d3p1:SchemaId>
+						<d3p1:TokenNormalization>true</d3p1:TokenNormalization>
+					</d4p1:Value>
+				</d4p1:KeyValueOfstringOverrideInfoy6h3NzC8>
+			</d3p1:dictionary>
+		</Overrides>
+	</SearchSchemaConfigurationSettings>
+</SearchConfigurationSettings>

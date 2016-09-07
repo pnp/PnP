@@ -1,0 +1,86 @@
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"> 
+<head>
+<title>Intranet Search Document Item</title>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:TemplateHidden msdt:dt="string">0</mso:TemplateHidden>
+<mso:MasterPageDescription msdt:dt="string">Displays a result tailored for documents. (MUI version).</mso:MasterPageDescription>
+<mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106603</mso:ContentTypeId>
+<mso:TargetControlType msdt:dt="string">;#SearchResults;#</mso:TargetControlType>
+<mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+<mso:ManagedPropertyMapping msdt:dt="string">'Title':'Title','Path':'Path','Description':'Description','EditorOWSUSER':'EditorOWSUSER','LastModifiedTime':'LastModifiedTime','CollapsingStatus':'CollapsingStatus','DocId':'DocId','HitHighlightedSummary':'HitHighlightedSummary','HitHighlightedProperties':'HitHighlightedProperties','FileExtension':'FileExtension','ViewsLifeTime':'ViewsLifeTime','ParentLink':'ParentLink','FileType':'FileType','IsContainer':'IsContainer','ServerRedirectedURL':'ServerRedirectedURL','ServerRedirectedEmbedURL':'ServerRedirectedEmbedURL','ServerRedirectedPreviewURL':'ServerRedirectedPreviewURL'</mso:ManagedPropertyMapping>
+<mso:HtmlDesignConversionSucceeded msdt:dt="string">True</mso:HtmlDesignConversionSucceeded>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>
+<body>
+    <div id="Item_Document">
+<!--#_ 
+        if(!$isNull(ctx.CurrentItem) && !$isNull(ctx.ClientControl)){
+            var id = ctx.ClientControl.get_nextUniqueId();
+            var itemId = id + Srch.U.Ids.item;
+			var hoverId = id + Srch.U.Ids.hover;
+			var hoverUrl = "~sitecollection/_catalogs/masterpage/Display Templates/Search/PnP/Item_Intranet-Document_HoverPanel.js";
+            $setResultItem(itemId, ctx.CurrentItem);
+            ctx.CurrentItem.csr_Icon = Srch.U.getIconUrlByFileExtension(ctx.CurrentItem);
+            ctx.currentItem_ShowHoverPanelCallback = Srch.U.getShowHoverPanelCallback(itemId, hoverId, hoverUrl);
+            ctx.currentItem_HideHoverPanelCallback = Srch.U.getHideHoverPanelCallback();
+
+            var encodedId = $htmlEncode(ctx.ClientControl.get_nextUniqueId());
+            var containerId = "DocumentItem_" + encodedId;
+            var currentItem = ctx.CurrentItem;
+
+            // Highlight property in the title
+            var hhProps = Srch.U.createXMLDocument("<root>" + ctx.CurrentItem.HitHighlightedProperties + "</root>");
+            var encodedTitle = $htmlEncode(ctx.CurrentItem.Title);
+            var displayTitle = Srch.U.getSingleHHXMLNodeValue(hhProps, "HHTitle")
+            if ($isEmptyString(displayTitle)) { displayTitle = encodedTitle }
+
+            AddPostRenderCallback(ctx, function() {			
+                Intranet.Main.initDefaultDisplayTemplateItemViewModel(currentItem, document.getElementById(containerId));
+            });
+_#-->
+            <div id="_#= $htmlEncode(itemId) =#_" name="Item" data-displaytemplate="DocumentItem" class="search-item" onmouseover="_#= ctx.currentItem_ShowHoverPanelCallback =#_" onmouseout="_#= ctx.currentItem_HideHoverPanelCallback =#_">
+				
+                <div class="display-template">			
+					<div data-bind="stopBinding: true">
+						<div id="_#=containerId=#_" class="document-item">
+											
+                            <!-- ko with: item -->
+
+                                <div class="item-icon">
+                                    <img src="_#= ctx.CurrentItem.csr_Icon  =#_"/>
+                                </div>
+                                
+                                <div class="item-title">
+                                    <!-- ko if: $data.Title -->
+                                    <a data-bind="attr: { href: ServerRedirectedEmbedURL }">_#= displayTitle =#_</a>
+                                    <!-- /ko -->
+                                </div>
+                                
+                                <div class="item-download">
+                                    <a data-bind="attr: { href: Path }" download="">
+                                    	<i class="ms-Icon ms-Icon--download ms-font-s" aria-hidden="true"></i>
+                                    </a>                                  
+                                </div>
+                                                       
+                                <div class="item-excerpt">
+                                    <!-- ko if: $data.HitHighlightedSummary-->
+                                    <div data-bind='summarize: { hitHighlightedSummary: HitHighlightedSummary }'></div>
+                                    <!-- /ko -->
+                                </div>            
+            
+                            <!-- /ko -->
+						</div>
+					</div>
+				</div>
+
+                <div id="_#= $htmlEncode(hoverId) =#_" class="ms-srch-hover-outerContainer hidden-sm hidden-xs"></div>
+            </div>
+<!--#_ 
+        } 
+_#-->
+    </div>
+</body>
+</html>
