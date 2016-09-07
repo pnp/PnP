@@ -1,8 +1,35 @@
-# What is PNP.Deployer?
+# PNP.Deployer #
+
+### Summary ###
 `PNP.Deployer.exe` is a console application that makes it easy to deploy artifacts to SharePoint OnPremise/Online. Based on the [PnP Provisioning Engine](https://github.com/OfficeDev/PnP-Guidance/blob/551b9f6a66cf94058ba5497e310d519647afb20c/articles/Introducing-the-PnP-Provisioning-Engine.md), it wraps the engine's main functionnalities and provides a new layer responsible for handling [tokens](#tokens-accross-any-files), [authentication](#authentication-made-simple), [sequences](#sequences-for-a-configurable-deployment) and [logging](#easy-logging). Provide the `PnP templates`, define `sequences` in which you want the templates to be executed, specify whether you want to deploy everything `OnPrem` or `Online`, and your good to go.
 
-<br>
-# How it works
+### Applies to ###
+-  Office 365 Multi Tenant (MT)
+-  Office 365 Dedicated (D)
+-  SharePoint 2013 on-premises
+
+### Prerequisites ###
+The projects within the Visual Studio solution have a dependency on the `PnP Core library`. By default, they are all configured for using the [SharePoint PnP Core library for SharePoint 2013](#sequences-for-a-configurable-deployment) nugget package, but feel free to change the nugget package for the one that suits your needs :
+* [SharePoint PnP Core library for SharePoint 2013 (SharePointPnPCore2013)](https://www.nuget.org/packages/SharePointPnPCore2013)
+* [SharePoint PnP Core library for SharePoint 2016 (SharePointPnPCore2016)](https://www.nuget.org/packages/SharePointPnPCore2016)
+* [SharePoint PnP Core library for SharePoint 2013 (SharePointPnPCoreOnline)](https://www.nuget.org/packages/SharePointPnPCoreOnline)
+
+### Solution ###
+Solution | Author(s)
+---------|----------
+PNP.Deployer | Simon-Pierre Plante
+
+### Version history ###
+Version  | Date | Comments
+---------| -----| --------
+1.0  | September 7th 2016 | Initial release
+
+### Disclaimer ###
+**THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
+
+<hr>
+
+# How it works #
 
 Place the `PNP.Deployer` package in a location of your choice and configure the `PNP.Deployer.exe.config` file located in the `bin\release` folder.
 
@@ -18,17 +45,16 @@ Provide a package with the following elements and call the deployer with the pro
 <img src="http://i63.tinypic.com/35krjoj.png" alt="" />
 
 <br>
-# Features
+# Features #
 
-## Command line parser for a better user experience
+### Command line parser for a better user experience ###
 The console application uses the [Command Line Parser Library](https://commandline.codeplex.com) in order to provide named arguments, a custom '--help' interface, and userfriendly command line argument exceptions.
 
 <img src="http://i67.tinypic.com/bhinna.jpg" width="500" alt="Help Screen" />
 
 <img src="http://i67.tinypic.com/29ynuww.jpg" width="500" alt="Help Sceen On Error" />
 
-<br>
-## Tokens accross any files
+### Tokens accross any files ###
 The [PnP Provisioning Engine](https://github.com/OfficeDev/PnP-Guidance/blob/551b9f6a66cf94058ba5497e310d519647afb20c/articles/Introducing-the-PnP-Provisioning-Engine.md) already supports tokens within template files, but what if you need tokens accross static files such as `CSS` files or a simple `Page Layout`? The deployer uses a `Tokenizer` that copies the whole working directory and generates a `tokenized` version of it (MyDirectory_Tokenized), which becomes the final working directory used by the deployer. The fact that tokens can be used accross the whole working directory makes the `Tokenizer` really powerfull, allowing the user to use tokens in any static files that aren't necessarily loaded in memory by the deployer.
 
 ```xml
@@ -46,12 +72,10 @@ The [PnP Provisioning Engine](https://github.com/OfficeDev/PnP-Guidance/blob/551
 }
 ```
 
-<br>
-## Authentication made simple
+### Authentication made simple ###
 No need to handle the different types of authentication methods for `on-premise` and `online` environments, the deployer will automatically use the current user's credentials or prompt for a specific user's credential based on the specified `Environment` and `PromptCredentials` parameters.
 
-<br>
-## Sequences for a configurable deployment
+### Sequences for a configurable deployment ###
 `Sequences` makes it easy to orchestrate the different templates and their firing order. The `xml` syntax allows the user to easily `ignore` a specific sequence or a specific template within a sequence. 
 
 ```xml
@@ -72,8 +96,7 @@ No need to handle the different types of authentication methods for `on-premise`
 </sequencesConfiguration>
 ```
 
-<br>
-## Easy logging
+### Easy logging ###
 The deployer uses [NLog](http://nlog-project.org/) for logging, which provides an easy way to configure the different output sources and their properties to the user's liking.
 
 <img src="http://i65.tinypic.com/15o6wau.jpg" width="700" alt="Logging example" />
@@ -82,8 +105,7 @@ Customize the different output sources and the overall behavior of the logging e
 
 <img src="http://i67.tinypic.com/28rgmpy.jpg" width="700" alt="NLog.config" />
 
-<br>
-## Supports ".pnp" packages
+### Supports ".pnp" packages ###
 While supporting regular `.xml` templates, the deployer also supports the new `.pnp` open xml format. Specify a `.pnp` package just like a standard template within the [sequences.xml](#sequences-for-a-configurable-deployment) file and everything within the `.pnp` package will be deployed.
 
 ```xml
@@ -96,15 +118,15 @@ While supporting regular `.xml` templates, the deployer also supports the new `.
 ```
 
 <br>
-# Project Structure
+# Project Structure #
 
 <img src="http://i65.tinypic.com/359n5ag.jpg" alt="" />
 
 
 <br>
-# Getting Started
+# Getting Started #
 
-## 1 - Configuring the deployer
+### 1 - Configuring the deployer ###
 The configuration of the deployer is stored within the `PNP.Deployer.exe.config` file located in the `bin\release` folder. The \<appSettings\> section of the configuration file stores 3 kinds of information :
 * `clientSequencesFile` : 
     - The name of the sequences file that the deployer needs to look for (relative to the `WorkingDirectory` specified by the caller)
@@ -135,15 +157,15 @@ The configuration of the deployer is stored within the `PNP.Deployer.exe.config`
 ```
 
 <br>
-## 2 - Configuring the client package
+### 2 - Configuring the client package ###
 
-### Files
+#### Files ####
 The files can be organized as the user whishes, with as much folders as needed, as long as they are properly referenced by the `templates`. File references within `templates` are always relative to the `WorkingDirectory` specified while calling the deployer.
 
-### Templates
+#### Templates ####
 The templates can be organized as the user whishes, with as much folders as needed, as long as they are properly referenced by the `sequences` file. Template references within `sequences` are always relative to the `WorkingDirectory` specified while calling the deployer.
 
-### Sequences file
+#### Sequences file ####
 The `sequences` file must reflect the deployer's configuration by having the same name and being at the same location, which is once again relative to the `WorkingDirectory` specified while calling the deployer.
 
 ```xml
@@ -164,7 +186,7 @@ The `sequences` file must reflect the deployer's configuration by having the sam
 </sequencesConfiguration>
 ```
 
-### Tokens file
+#### Tokens file ####
 While being optional, in order for the `tokens` file to be recognised, it also needs to reflect the deployer's configuration by having the same name and being at the same location, which is once again relative to the `WorkingDirectory` specified while calling the deployer.
 
 ```xml
@@ -178,7 +200,7 @@ While being optional, in order for the `tokens` file to be recognised, it also n
 ```
 
 <br>
-## 3 - Calling the deployer
+### 3 - Calling the deployer ###
 Once the deployer is in place and the client package is ready, simply call the deployer using the following syntax :
 
 ```powershell
