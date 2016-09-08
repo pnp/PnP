@@ -33,6 +33,8 @@
         {
             Uri redirectUrl;
 
+            if (string.IsNullOrEmpty(Options.ClientId)) return AuthenticateResult.Fail("ClientId is not configured in the appsettings.json file.");
+
             //Set the default error message when no SP Auth is attempted
             AuthenticateResult result = AuthenticateResult.Fail("Could not handle SharePoint authentication.");
 

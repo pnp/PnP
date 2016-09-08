@@ -77,29 +77,30 @@ namespace AspNetCore.Mvc.StarterWeb
             //must also call AddSession in the IServiceCollection
             app.UseSession();
 
-            //UseCookieAuthentication is required to do client session management
-            app.UseCookieAuthentication(
-                new CookieAuthenticationOptions()
-                {
-                    AutomaticAuthenticate = false,
-                    CookieHttpOnly = false, //set to false so we can read it from JavaScript
-                    AutomaticChallenge = false,
-                    AuthenticationScheme = "AspNet.ApplicationCookie",
-                    ExpireTimeSpan = System.TimeSpan.FromDays(14),
-                    LoginPath = "/account/login"
-                }
-            );
+            //OPTIONAL
+            //app.UseCookieAuthentication(
+            //    new CookieAuthenticationOptions()
+            //    {
+            //        AutomaticAuthenticate = false,
+            //        CookieHttpOnly = false, //set to false so we can read it from JavaScript
+            //        AutomaticChallenge = false,
+            //        AuthenticationScheme = "AspNet.ApplicationCookie",
+            //        ExpireTimeSpan = System.TimeSpan.FromDays(14),
+            //        LoginPath = "/account/login"
+            //    }
+            //);
 
             //Add SharePoint authentication capabilities
             app.UseSharePointAuthentication(
                 new SharePointAuthenticationOptions()
                 {
-                    AutomaticAuthenticate = true,
-                    CookieAuthenticationScheme = "AspNet.ApplicationCookie",
-                    
                     ClientId = Configuration["SharePointAuthentication:ClientId"],
                     ClientSecret = Configuration["SharePointAuthentication:ClientSecret"],
-                    
+
+                    AutomaticAuthenticate = true, //set to false if you prefer to manually call Authenticate on the handler.
+
+                    //OPTIONAL: CookieAuthenticationScheme = "AspNet.ApplicationCookie",
+
                     //Handle events thrown by the auth handler
                     SharePointAuthenticationEvents = new SharePointAuthenticationEvents()
                     {
