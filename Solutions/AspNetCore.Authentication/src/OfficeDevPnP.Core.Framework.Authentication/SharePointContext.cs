@@ -404,14 +404,6 @@ namespace OfficeDevPnP.Core.Framework.Authentication
         private static string GetCurrentUrl(HttpContext httpContext)
         {
             var url = httpContext.Request.GetDisplayUrl();
-
-            //TODO: fix HTTPS detection logic
-
-            //if (httpContext.Request.Scheme != serverScheme)
-            //{
-            //    url = url.Replace(httpContext.Request.Scheme, serverScheme);
-            //}
-
             return url;
         }
 
@@ -457,12 +449,6 @@ namespace OfficeDevPnP.Core.Framework.Authentication
             if (httpContext == null)
             {
                 throw new ArgumentNullException(nameof(httpContext));
-            }
-
-            Uri spHostUrl = SharePointContext.GetUriFromQueryStringParameter(httpContext.Request, SharePointContext.SPHostUrlKey);
-            if (spHostUrl == null)
-            {
-                return null;
             }
 
             SharePointContext spContext = LoadSharePointContext(httpContext);
@@ -703,8 +689,8 @@ namespace OfficeDevPnP.Core.Framework.Authentication
             //Checks for the SPCacheKey cookie and gets the value
             if (spAcsContext != null)
             {
-                Uri spHostUrl = SharePointContext.GetUriFromQueryStringParameter
-                    (httpContext.Request, SharePointContext.SPHostUrlKey);
+                //Uri spHostUrl = SharePointContext.GetUriFromQueryStringParameter
+                //    (httpContext.Request, SharePointContext.SPHostUrlKey);
 
                 string contextToken = TokenHandler.GetContextTokenFromRequest(httpContext.Request);
                 //read the cookie value
@@ -715,7 +701,8 @@ namespace OfficeDevPnP.Core.Framework.Authentication
                 var spCacheKeyCookieValue = httpContext.Request.Cookies[SPCacheKeyKey];
                 string spCacheKey = spCacheKeyCookieValue != null ? spCacheKeyCookieValue : null;
 
-                return spHostUrl == spAcsContext.SPHostUrl &&
+                //return spHostUrl == spAcsContext.SPHostUrl && (taken out)
+                return 
                        !string.IsNullOrEmpty(spAcsContext.CacheKey) &&
                        spCacheKey == spAcsContext.CacheKey &&
                        !string.IsNullOrEmpty(spAcsContext.ContextToken) &&

@@ -1,12 +1,15 @@
 ﻿namespace OfficeDevPnP.Core.Framework.Authentication
 {
-    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.Extensions.Options;
     using OfficeDevPnP.Core.Framework.Authentication.Events;
 
     /// <summary>
     /// Creates an instance and sets default values of the Authentication Options for the middleware
     /// </summary>
-    public class SharePointAuthenticationOptions : Microsoft.AspNetCore.Builder.AuthenticationOptions
+    public class SharePointAuthenticationOptions : 
+        RemoteAuthenticationOptions,
+        IOptions<SharePointAuthenticationOptions>
     {
         /// <summary>
         /// Sets default options.
@@ -14,9 +17,9 @@
         public SharePointAuthenticationOptions()
         {
             // Sets automatic challenge to default.
-            AutomaticAuthenticate = true;
-            AutomaticChallenge = false;
-            AuthenticationScheme = GetType().Assembly.FullName;
+            AutomaticAuthenticate = SharePointAuthenticationDefaults.AutomaticAuthenticate;
+            AutomaticChallenge = SharePointAuthenticationDefaults.AutomaticChallenge;
+            AuthenticationScheme = SharePointAuthenticationDefaults.AuthenticationScheme;
         }
 
         /// <summary>
@@ -81,6 +84,14 @@
         /// The application may implement the interface fully, or it may create an instance of AuthenticationEvents  
         /// and assign delegates only to the events it wants to process.  
         /// </summary>  
-        public ISharePointAuthenticationEvents Events { get; set; } = new SharePointAuthenticationEvents();
+        public ISharePointAuthenticationEvents SharePointAuthenticationEvents { get; set; } = new SharePointAuthenticationEvents();
+
+        public SharePointAuthenticationOptions Value
+        {
+            get
+            {
+                return this;
+            }
+        }
     }
 }

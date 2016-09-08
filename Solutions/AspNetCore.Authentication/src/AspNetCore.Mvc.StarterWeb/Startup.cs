@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using OfficeDevPnP.Core.Framework.Authentication;
 using OfficeDevPnP.Core.Framework.Authentication.Events;
+using System.Text;
 
 namespace AspNetCore.Mvc.StarterWeb
 {
@@ -31,11 +32,21 @@ namespace AspNetCore.Mvc.StarterWeb
         {
             // Add framework services.
             services.AddMvc();
+
+            //Add Session to the service collection
+            services.AddSession();
+
+            services.AddAuthentication(sharedOptions =>
+                  sharedOptions.SignInScheme = SharePointAuthenticationDefaults.AuthenticationScheme);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            //Added to enable SharePoint authentication
+            ConfigureSharePointAuthentication(app);
+
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
@@ -58,47 +69,44 @@ namespace AspNetCore.Mvc.StarterWeb
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            //Added to enable SharePoint authentication
-            ConfigureSharePointAuthentication(app);
         }
 
         private void ConfigureSharePointAuthentication(IApplicationBuilder app)
         {
             //required to store SP Cache Key session data
+            //must also call AddSession in the IServiceCollection
             app.UseSession();
 
             //UseCookieAuthentication is required to do client session management
-            //It is set to use the Authentication schema of our middleware
-            app.UseCookieAuthentication(new CookieAuthenticationOptions()
-            {
-                AutomaticAuthenticate = true,
-                CookieHttpOnly = false, //set to false so we can read it from JavaScript
-                AutomaticChallenge = false,
-                AuthenticationScheme = "AspNet.ApplicationCookie",
-                ExpireTimeSpan = System.TimeSpan.FromDays(14),
-                LoginPath = "/account/login"
-            }
+            app.UseCookieAuthentication(
+                new CookieAuthenticationOptions()
+                {
+                    AutomaticAuthenticate = false,
+                    CookieHttpOnly = false, //set to false so we can read it from JavaScript
+                    AutomaticChallenge = false,
+                    AuthenticationScheme = "AspNet.ApplicationCookie",
+                    ExpireTimeSpan = System.TimeSpan.FromDays(14),
+                    LoginPath = "/account/login"
+                }
             );
 
             //Add SharePoint authentication capabilities
             app.UseSharePointAuthentication(
                 new SharePointAuthenticationOptions()
                 {
+                    AutomaticAuthenticate = true,
                     CookieAuthenticationScheme = "AspNet.ApplicationCookie",
-                    //I really don't like how config settings are retrieved, but that is how the ASP.NET guys do it in their samples
+                    
                     ClientId = Configuration["SharePointAuthentication:ClientId"],
                     ClientSecret = Configuration["SharePointAuthentication:ClientSecret"],
+                    
                     //Handle events thrown by the auth handler
-                    Events = new SharePointAuthenticationEvents()
+                    SharePointAuthenticationEvents = new SharePointAuthenticationEvents()
                     {
-                        OnAuthenticationSucceeded = succeededContext =>
-                        {
-                            return Task.FromResult<object>(null);
-                        },
-                        OnAuthenticationFailed = failedContext =>
-                        {
-                            return Task.FromResult<object>(null);
-                        }
+                        OnAuthenticationSucceeded = succeededContext => {
+                            return Task.FromResult<object>(null); },
+                        OnAuthenticationFailed = failedContext => {
+                            return Task.FromResult<object>(null); }
                     }
                 }
             );

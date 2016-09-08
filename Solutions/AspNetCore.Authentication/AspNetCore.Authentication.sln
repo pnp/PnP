@@ -14,6 +14,8 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "OfficeDevPnP.Core.Framework
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNetCore.Mvc.StarterWeb", "src\AspNetCore.Mvc.StarterWeb\AspNetCore.Mvc.StarterWeb.xproj", "{81D023B2-DCD8-4887-9D48-FD47A87E00E4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.Mvc.SharePointApp", "src\AspNetCore.Mvc.SharePointApp\AspNetCore.Mvc.SharePointApp.csproj", "{ADD1CD0C-2E98-4BFD-B695-C60029FA3E18}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,6 +30,12 @@ Global
 		{81D023B2-DCD8-4887-9D48-FD47A87E00E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81D023B2-DCD8-4887-9D48-FD47A87E00E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81D023B2-DCD8-4887-9D48-FD47A87E00E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADD1CD0C-2E98-4BFD-B695-C60029FA3E18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADD1CD0C-2E98-4BFD-B695-C60029FA3E18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADD1CD0C-2E98-4BFD-B695-C60029FA3E18}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{ADD1CD0C-2E98-4BFD-B695-C60029FA3E18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADD1CD0C-2E98-4BFD-B695-C60029FA3E18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADD1CD0C-2E98-4BFD-B695-C60029FA3E18}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -35,5 +43,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{57A3EE4D-ED11-42A4-808F-DD30C097146A} = {A58128DC-FDCB-49E1-BF44-1D4AAEB147C2}
 		{81D023B2-DCD8-4887-9D48-FD47A87E00E4} = {A58128DC-FDCB-49E1-BF44-1D4AAEB147C2}
+		{ADD1CD0C-2E98-4BFD-B695-C60029FA3E18} = {A58128DC-FDCB-49E1-BF44-1D4AAEB147C2}
 	EndGlobalSection
 EndGlobal

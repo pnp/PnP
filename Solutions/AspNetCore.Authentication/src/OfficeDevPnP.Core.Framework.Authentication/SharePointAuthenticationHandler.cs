@@ -7,18 +7,29 @@
     using Microsoft.AspNetCore.Http.Authentication;
     using Microsoft.AspNetCore.Http.Features.Authentication;
     using System.Linq;
+    using System.Net.Http;
+    using Microsoft.AspNetCore.Http;
 
     /// <summary>
     /// Handles the authentication mechanism for SP Provider Hosted Apps
     /// </summary>
-    public class SharePointAuthenticationHandler : AuthenticationHandler<SharePointAuthenticationOptions>
+    public class SharePointAuthenticationHandler : RemoteAuthenticationHandler<SharePointAuthenticationOptions>
     {
+        private const string SPCacheKeyKey = "SPCacheKey";
+
+        public SharePointAuthenticationHandler(HttpClient backchannel)
+        {
+            Backchannel = backchannel;
+        }
+
+        protected HttpClient Backchannel { get; private set; }
+
         /// <summary>
         /// RedirectionStatus would decide if we contunue to the next middleware in the pipe.
         /// </summary>
         private RedirectionStatus _redirectionStatus;
 
-        protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
+        protected override async Task<AuthenticateResult> HandleRemoteAuthenticateAsync()
         {
             Uri redirectUrl;
 
@@ -89,7 +100,7 @@
                     result = AuthenticateResult.Success(ticket);
 
                     //Throw auth ticket success event
-                    await Options.Events.AuthenticationSucceeded(
+                    await Options.SharePointAuthenticationEvents.AuthenticationSucceeded(
                         new Events.AuthenticationSucceededContext(Context, Options)
                         {
                             Ticket = ticket, //pass the ticket 
@@ -115,16 +126,13 @@
                 case RedirectionStatus.CanNotRedirect:
                     _redirectionStatus = RedirectionStatus.CanNotRedirect;
 
-                    //There's a potential issue here if this is not the only auth middleware
-                    //setting the response to 401 might not be safe for the other middlewares
-                    Response.StatusCode = 401;
-                    result = AuthenticateResult.Fail("CanNotRedirect");
+                    result = AuthenticateResult.Fail("No SPHostUrl to build a SharePoint Context, but Authenticate was called on the SharePoint middleware.");
 
                     //Log that we cannot redirect
                     LoggingExtensions.CannotRedirect(this.Logger);
 
                     //Throw failed event
-                    await Options.Events.AuthenticationFailed(new Events.AuthenticationFailedContext(Context, Options));
+                    await Options.SharePointAuthenticationEvents.AuthenticationFailed(new Events.AuthenticationFailedContext(Context, Options));
 
                     break;
             }
@@ -132,11 +140,22 @@
             return result;
         }
 
-        protected override async Task HandleSignInAsync(SignInContext context)
+        protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            //no real need to call base as it doesn't do anything
-            await base.HandleSignInAsync(context);
+            //var baseResult = await base.HandleAuthenticateAsync();
+            var baseRemoteResult = await HandleRemoteAuthenticateAsync();
+            return baseRemoteResult;
+        }
+
+        protected override Task<bool> HandleRemoteCallbackAsync()
+        {
+            return base.HandleRemoteCallbackAsync();
+        }
+
+        protected override Task HandleSignInAsync(SignInContext context)
+        {
             SignInAccepted = true;
+            return Task.FromResult<object>(null);
         }
 
         /// <summary>
@@ -145,13 +164,31 @@
         /// <returns></returns>
         public override async Task<bool> HandleRequestAsync()
         {
-            if (_redirectionStatus == RedirectionStatus.ShouldRedirect)
+            var user = Context.User;
+            var userIsAnonymous =
+                user?.Identity == null ||
+                !user.Identities.Any(i => i.IsAuthenticated);
+
+            var userIsAuthenticatedWithSharePoint =
+                user.Identities.Any(i => i.AuthenticationType == GetType().Assembly.GetName().Name);
+
+            if (!userIsAnonymous && userIsAuthenticatedWithSharePoint) return false; //do not re-authenticate if authenticated
+
+            bool requestFromSharePoint = RequestFromSharePoint(Context);
+            bool spCacheCookieExists = CookieExists(Context, SPCacheKeyKey);
+
+            if (!spCacheCookieExists && !requestFromSharePoint)
             {
-                // Stops the execution of next middlewares since redirect to SharePoint is required.
-                return await Task.FromResult(true);
+                //return Handled, but not authenticated...
+                return false; // continue the middleware pipeline
             }
 
-            return await base.HandleRequestAsync();
+            if (userIsAnonymous)
+            {
+                await HandleRemoteAuthenticateAsync();
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -164,10 +201,43 @@
             if (!string.IsNullOrWhiteSpace(this.Options.CookieAuthenticationScheme))
             {
                 await Context.Authentication.SignOutAsync(this.Options.CookieAuthenticationScheme);
-                await base.HandleSignOutAsync(context);
             }
 
             SignOutAccepted = true;
         }
+
+        public new bool ShouldHandleScheme(string authenticationScheme, bool handleAutomatic)
+        {
+            return string.Equals(Options.AuthenticationScheme, authenticationScheme, StringComparison.Ordinal) ||
+                (handleAutomatic && string.Equals(authenticationScheme, AuthenticationManager.AutomaticScheme, StringComparison.Ordinal));
+        }
+
+        /// <summary>
+        /// Checks if the incoming request is coming from SharePoint for the purpose of Add-in authentication
+        /// </summary>
+        /// <param name="context">The HttpContext object with information about the request</param>
+        /// <returns>True if coming from SharePoint</returns>
+        private bool RequestFromSharePoint(HttpContext context)
+        {
+            var hasSPHostUrl = (context.Request.QueryString.HasValue && context.Request.QueryString.Value.ToLowerInvariant().Contains("sphosturl"));
+            return hasSPHostUrl;
+        }
+
+        /// <summary>
+        /// Checks if the current request contains an Cookie by key
+        /// </summary>
+        /// <param name="context">The HttpContext object with information about the request</param>
+        /// <returns>True if Cookie with the provided key is found.</returns>
+        private bool CookieExists(HttpContext context, string key)
+        {
+            var requestCookies = context.Request.Cookies;
+            var cookieExists = requestCookies.ContainsKey(key);
+            if (cookieExists)
+            {
+                return true;
+            }
+            return false;
+        }
+       
     }
 }
