@@ -219,3 +219,6 @@ Another option is to use the benefits of an environment variable in order to avo
 ```powershell
 PNP.Deployer.exe --WorkingDirectory "[...]\MyPackage" --Environment "OnPrem|Online" [--PromptCredentials]
 ```
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.PnPDeployer.Console" />
