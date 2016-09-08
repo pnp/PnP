@@ -113,3 +113,4 @@ $Script = ".\Deploy-Solution.ps1"
 - Use the "`-Prod`" switch for the `Deploy-Solution.ps1` script to use a production bundled version of the code.
 
 ----------
+<img  src="https://telemetry.sharepointpnp.com/pnp/solutions/Business.O365StarterIntranet" />
