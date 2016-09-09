@@ -56,8 +56,7 @@ A blog series will come soon to explain how we did this solution in details. Her
 * [Part 3: Design and mobile implementation](http://thecollaborationcorner.com/2016/08/29/part-3-design-and-mobile-implementation)
 * [Part 4: The navigation implementation](http://thecollaborationcorner.com/2016/08/31/part-4-the-navigation-implementation)
 * [Part 5: Localization](http://thecollaborationcorner.com/2016/09/02/part-5-localization)
-* Part 6: The search implementation 
-* Part 7: Analytics with Azure
+* [Part 6: The search implementation](http://thecollaborationcorner.com/2016/09/08/part-6-the-search-implementation)
 
 ### Set up your environment ###
 
