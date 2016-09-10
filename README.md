@@ -15,7 +15,8 @@ PnP initiative has numerous GitHub repositories, so that you can more easily fin
 - [PnP PowerShell](http://aka.ms/officedevpnppowershell) - GitHub repository
 - [PnP Partner Pack](https://github.com/OfficeDev/PnP-partner-pack) - Reusable starter kit for typical enterprise requirements
 - [PnP Guidance](http://aka.ms/OfficeDevPnPGuidance) - GitHub repository
-- [PnP Office-Addins](http://aka.ms/officedevpnpofficeaddins) - GitHub repository 
+<<<<<<< HEAD
+- [PnP Office-Addins](http://aka.ms/officedevpnpofficeaddins) - GitHub repository
 - [PnP Tools](https://github.com/OfficeDev/PnP-Tools) - GitHub repository
 - [PnP Transformation](https://github.com/OfficeDev/PnP-Transformation) - GitHub repository
 - [PnP Provisioning Schema](https://github.com/OfficeDev/PnP-provisioning-schema) - GitHub repository
