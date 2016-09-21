@@ -64,7 +64,7 @@
     <s:color name="HeaderDisabledBackground" value="FDFDFD" />
     <s:color name="HeaderFlyoutBorder" value="D1D1D1" />
     <s:color name="HeaderSiteTitle" value="262626" />
-    <s:color name="SuiteBarBackground" value="EA4300" />
+    <s:color name="SuiteBarBackground" value="0072C6" />
     <s:color name="SuiteBarHoverBackground" value="4B9BD7" />
     <s:color name="SuiteBarText" value="FFFFFF" />
     <s:color name="SuiteBarDisabledText" value="92C0E0" />

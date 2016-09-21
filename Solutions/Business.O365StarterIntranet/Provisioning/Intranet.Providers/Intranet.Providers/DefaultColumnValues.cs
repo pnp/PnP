@@ -16,12 +16,12 @@ namespace Intranet.Providers
     {
         public ProvisioningTemplate Extract(ClientContext ctx, ProvisioningTemplate template, ProvisioningTemplateCreationInformation creationInformation, PnPMonitoredScope scope, string configurationData)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public IEnumerable<TokenDefinition> GetTokens(ClientContext ctx, ProvisioningTemplate template, string configurationData)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public void Provision(ClientContext ctx, ProvisioningTemplate template, ProvisioningTemplateApplyingInformation applyingInformation, TokenParser tokenParser, PnPMonitoredScope scope, string configurationData)

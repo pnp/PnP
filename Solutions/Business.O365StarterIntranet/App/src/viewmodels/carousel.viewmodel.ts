@@ -41,6 +41,7 @@ export class CarouselViewModel {
                     this.items(elements);
 
                     // Setup the carousels
+                    // See http://flickity.metafizzy.co/ for more customizations
                     let flkty = new Flickity(".carousel", {
                         prevNextButtons: false,
                         setGallerySize: true,
