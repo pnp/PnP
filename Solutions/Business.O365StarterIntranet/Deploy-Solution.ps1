@@ -168,6 +168,17 @@ Get-SPOListItem -List Pages | ForEach-Object {
 
 Execute-SPOQuery
 
+# Reset the theme
+Set-SPOTheme
+
+# Set the theme
+$Web = Get-SPOWeb
+$bgImageUrl = Out-Null
+$fontScheme = Out-Null
+$Web.ApplyTheme("$SiteServerRelativeUrl/_catalogs/theme/15/intranet.spcolor", $fontScheme, $bgImageUrl, $true)
+
+Execute-SPOQuery
+
 # -------------------------------------------------------------------------------------
 # 3) Taxonomy setup
 # -------------------------------------------------------------------------------------

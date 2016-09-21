@@ -16,6 +16,7 @@ declare var require: {
 // View models for components
 import { BreadcrumbViewModel } from "./viewmodels/breadcrumb.viewmodel";
 import { ContextualMenuViewModel } from "./viewmodels/contextualmenu.viewmodel";
+import { CarouselViewModel } from "./viewmodels/carousel.viewmodel";
 import { DefaultDisplayTemplateItemViewModel } from "./viewmodels/defaultdisplaytemplateitem.viewmodel";
 import { DefaultFilterViewModel } from "./viewmodels/defaultfilter-mui.viewmodel";
 import { DocumentDisplayTemplateItemViewModel } from "./viewmodels/documentitem.viewmodel";
@@ -53,6 +54,7 @@ require("./styles/css/images/favicon_intranet.ico");
 require("./styles/css/bootstrap/bootstrap-prefix.less");
 
 // Resources
+require("moment/locale/fr");
 let enUSResources = require("./resources/en-US.json");
 let frFRResources = require("./resources/fr-FR.json");
 
@@ -153,6 +155,12 @@ export class Main {
         let searchboxMobileTemplate = require("./templates/searchboxmobile.template.html");
         require("./styles/css/searchboxmobile.scss");
         let searchboxMobileComponent = new KnockoutComponent("component-searchboxmobile", SearchBoxMobileViewModel, searchboxMobileTemplate);
+
+        // Component: "Carousel"
+        let carouselTemplate = require("./templates/carousel.template.html");
+        require("./styles/css/carousel.scss");
+        require("flickity/dist/flickity.css")
+        let carouselComponent = new KnockoutComponent("component-carousel", CarouselViewModel, carouselTemplate);
     }
 
     public init() {
