@@ -15,7 +15,7 @@ Here is what you get with this sample:
 <p align="center">Home Page</p>
 <p align="center">
   <img width="600" 
-  src="http://thecollaborationcorner.com/wp-content/uploads/2016/08/o365_starterintranet_hp.png"/>
+  src="http://thecollaborationcorner.com/wp-content/uploads/2016/09/homepage.png"/>
   
 </p>
 
@@ -112,7 +112,7 @@ $SiteUrl = "https://<your_tenant>.sharepoint.com/sites/<your_site_collection>"
 Set-Location "<your_pnp_installation_folder>\Solutions\Business.O365StarterIntranet"
 
 $Script = ".\Deploy-Solution.ps1" 
-& $Script -SiteUrl $SiteUrl -UserName $UserName -Password $Password
+& $Script -SiteUrl $SiteUrl -UserName $UserName -Password $Password -IncludeData
 
 ```
 - Use the "`-Prod`" switch parameter for the `Deploy-Solution.ps1` script to use a production bundled version of the code.
