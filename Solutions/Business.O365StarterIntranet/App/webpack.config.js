@@ -27,6 +27,7 @@ module.exports = validate({
                 "office-ui-fabric/dist/css/fabric.components.css",
                 "bootstrap/dist/js/bootstrap.js",
                 "es6-promise",
+                "moment",
                 "whatwg-fetch"]
     },
     
