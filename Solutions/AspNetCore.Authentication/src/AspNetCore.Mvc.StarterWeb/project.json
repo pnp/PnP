@@ -19,7 +19,7 @@
     "Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.0.0",
 
     "Microsoft.AspNetCore.Server.Kestrel.Https": "1.0.0",
-    "OfficeDevPnP.Core.Framework.Authentication": "1.0.0-*"
+    "OfficeDevPnP.Core.Framework.Authentication": "1.1.0-*"
   },
 
   "tools": {
