@@ -13,7 +13,7 @@ Param(
 	[switch]$Prod=$false,
 	
 	[Parameter(Mandatory=$False)]
-	[switch]$Force
+	[switch]$IncludeData=$false
 )
 
 # -----------------
@@ -168,6 +168,17 @@ Get-SPOListItem -List Pages | ForEach-Object {
 
 Execute-SPOQuery
 
+# Reset the theme
+Set-SPOTheme
+
+# Set the theme
+$Web = Get-SPOWeb
+$bgImageUrl = Out-Null
+$fontScheme = Out-Null
+$Web.ApplyTheme("$SiteServerRelativeUrl/_catalogs/theme/15/intranet.spcolor", $fontScheme, $bgImageUrl, $true)
+
+Execute-SPOQuery
+
 # -------------------------------------------------------------------------------------
 # 3) Taxonomy setup
 # -------------------------------------------------------------------------------------
@@ -255,6 +266,61 @@ Write-Host "7# Configure image renditions..." -ForegroundColor Magenta
 
 # Thanks to http://www.eliostruyf.com/provision-image-renditions-to-your-sharepoint-2013-site/
 Add-SPOFile -Path $ImageRenditionsConfigurationFilePath -Folder "_catalogs\masterpage\" -Checkout
+
+# -------------------------------------------------------------------------------------
+# Add sample data
+# -------------------------------------------------------------------------------------
+if ($IncludeData.IsPresent) {
+
+    $CarouselItemsList = Get-SPOList -Identity "Carousel Items"
+
+    $ConfigurationItemsEN = @(
+
+	    @{ "Title"="Part 1: Functional overview (How to use the solution?)";"CarouselItemURL"="http://thecollaborationcorner.com/2016/08/22/part-1-functional-overview-how-to-use-the-solution";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/08/part1.png";"IntranetContentLanguage"="EN" },
+	    @{ "Title"="Part 2: Frameworks and libraries used (How it is implemented?)";"CarouselItemURL"="http://thecollaborationcorner.com/2016/08/25/part-2-frameworks-and-libraries-used-how-it-is-implemented";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/08/part2.png";"IntranetContentLanguage"="EN" },
+        @{ "Title"="Part 3: Design and mobile implementation";"CarouselItemURL"="http://thecollaborationcorner.com/2016/08/29/part-3-design-and-mobile-implementation";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/08/part3.png";"IntranetContentLanguage"="EN" },
+        @{ "Title"="Part 4: The navigation implementation";"CarouselItemURL"="http://thecollaborationcorner.com/2016/08/31/part-4-the-navigation-implementation";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/08/part4.png";"IntranetContentLanguage"="EN" },    
+        @{ "Title"="Part 5: Localization";"CarouselItemURL"="http://thecollaborationcorner.com/2016/09/02/part-5-localization";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/09/part5.png";"IntranetContentLanguage"="EN" },  
+        @{ "Title"="Part 6: The search implementation";"CarouselItemURL"="http://thecollaborationcorner.com/2016/09/08/part-6-the-search-implementation";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/09/part6.png";"IntranetContentLanguage"="EN" }  
+    )
+
+    $ConfigurationItemsFR = @(
+
+	    @{ "Title"="Partie 1: Aperçu fonctionel (Comment utiliser cette solution?)";"CarouselItemURL"="http://thecollaborationcorner.com/2016/08/22/part-1-functional-overview-how-to-use-the-solution";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/08/part1.png";"IntranetContentLanguage"="FR" },
+	    @{ "Title"="Partie 2: Frameworks et librairies utilisées";"CarouselItemURL"="http://thecollaborationcorner.com/2016/08/25/part-2-frameworks-and-libraries-used-how-it-is-implemented";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/08/part2.png";"IntranetContentLanguage"="FR" },
+        @{ "Title"="Partie 3: Identité visuelle et implémentation mobile";"CarouselItemURL"="http://thecollaborationcorner.com/2016/08/29/part-3-design-and-mobile-implementation";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/08/part3.png";"IntranetContentLanguage"="FR" },
+        @{ "Title"="Partie 4: Implémentation de la navigation";"CarouselItemURL"="http://thecollaborationcorner.com/2016/08/31/part-4-the-navigation-implementation";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/08/part4.png";"IntranetContentLanguage"="FR" },    
+        @{ "Title"="Partie 5: Multilinguisme";"CarouselItemURL"="http://thecollaborationcorner.com/2016/09/02/part-5-localization";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/09/part5.png";"IntranetContentLanguage"="FR" },  
+        @{ "Title"="Partie 6: Implémentation de la recherche";"CarouselItemURL"="http://thecollaborationcorner.com/2016/09/08/part-6-the-search-implementation";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/09/part6.png";"IntranetContentLanguage"="FR" }  
+    )
+
+    Write-Host "8# Add carousel data..." -ForegroundColor Magenta
+
+    # Create the configuration item for each language
+    $ConfigurationItemsEN | ForEach-Object {
+
+        $Item = Add-SPOListItem -List $CarouselItemsList -ContentType "Carousel Item" -Values $_
+    }
+
+    $ConfigurationItemsFR | ForEach-Object {
+
+        $Item = Add-SPOListItem -List $CarouselItemsList -ContentType "Carousel Item"  -Values $_
+    }
+
+    # Add promoted links
+    $PromotedLinksList = Get-SPOList -Identity "Links"
+    $PromotedLinks = @(
+
+	    @{ "Title"="Link 1";"LinkLocation"="http://dev.office.com/patterns-and-practices"},
+	    @{ "Title"="Link 2";"LinkLocation"="http://dev.office.com/patterns-and-practices"},
+	    @{ "Title"="Link 3";"LinkLocation"="http://dev.office.com/patterns-and-practices"}
+    )
+
+    $PromotedLinks | ForEach-Object {
+
+        $Item = Add-SPOListItem -List $PromotedLinksList -Values $_
+    }
+}
 
 Write-Host "Done!" -ForegroundColor Green
 

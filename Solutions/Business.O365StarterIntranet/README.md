@@ -15,7 +15,7 @@ Here is what you get with this sample:
 <p align="center">Home Page</p>
 <p align="center">
   <img width="600" 
-  src="http://thecollaborationcorner.com/wp-content/uploads/2016/08/o365_starterintranet_hp.png"/>
+  src="http://thecollaborationcorner.com/wp-content/uploads/2016/09/homepage.png"/>
   
 </p>
 
@@ -62,8 +62,7 @@ A blog series will come soon to explain how we did this solution in details. Her
 
 Before starting, you'll need to install some prerequisites:
 
-- Install the last release of [PnP PowerShell cmdlets SharePointPnPPowerShellOnline](https://github.com/OfficeDev/PnP-PowerShell/releases).
- (We recommend to use the June 2016 Intermediate 3 version, there are some issues with the August 2016 version)
+- Install the latest release of [PnP PowerShell cmdlets SharePointPnPPowerShellOnline](https://github.com/OfficeDev/PnP-PowerShell/releases) or a version compatible with the 201605 PnP schema version (the solution uses the september 2016 release).
 - Install Node.js on your machine https://nodejs.org/en/
 - Install the 'typings' Node JS client (`npm install typings --global`)
 - Install the 'webpack' Node JS client (`npm install webpack --global`)
@@ -76,6 +75,12 @@ Before starting, you'll need to install some prerequisites:
   <img width="600" src="http://thecollaborationcorner.com/wp-content/uploads/2016/08/create-new-site-collection.png">
 </p>
 
+- Ensure your taxonomy term store has both "French" and "English" working languages selected (you need to be a term store administrator to do this).
+
+<p align="center">
+  <img width="600" src="http://thecollaborationcorner.com/wp-content/uploads/2016/09/workinglanguages.png">
+</p>
+
 ### Solution ###
 Solution                | Author(s)
 ------------------------|----------
@@ -85,6 +90,7 @@ Business.O365StarterIntranet | Franck Cornu
 Version  | Date | Comments
 ---------| -----| --------
 1.0 | August 19th 2016 | Initial release
+1.1 | Sept 21st 2016 | Added carousel component + small fixes
 
 ### Disclaimer ###
 
@@ -106,10 +112,15 @@ $SiteUrl = "https://<your_tenant>.sharepoint.com/sites/<your_site_collection>"
 Set-Location "<your_pnp_installation_folder>\Solutions\Business.O365StarterIntranet"
 
 $Script = ".\Deploy-Solution.ps1" 
-& $Script -SiteUrl $SiteUrl -UserName $UserName -Password $Password
+& $Script -SiteUrl $SiteUrl -UserName $UserName -Password $Password -IncludeData
 
 ```
-- Use the "`-Prod`" switch for the `Deploy-Solution.ps1` script to use a production bundled version of the code.
+- Use the "`-Prod`" switch parameter for the `Deploy-Solution.ps1` script to use a production bundled version of the code.
+- Use the "`-IncludeData`" switch parameter to provision sample data.
+
+# Troubleshooting #
+
+- __Issue with the extensibility provider__: If you encounter some troubles with the provider assembly during the deployment (or the default column values are not applied in the "Pages" library), just rebuild the Visual Studio solution (in release mode) by opening the **Intranet.Providers.sln** file. Also, make sure the PnP PowerShell cmdlets use the same version of the PnP Core assembly as the extensibility provider (check the nuget package reference).
 
 ----------
 <img  src="https://telemetry.sharepointpnp.com/pnp/solutions/Business.O365StarterIntranet" />
