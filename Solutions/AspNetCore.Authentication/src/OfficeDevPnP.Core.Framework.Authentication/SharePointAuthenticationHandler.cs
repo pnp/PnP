@@ -24,11 +24,6 @@
 
         protected HttpClient Backchannel { get; private set; }
 
-        /// <summary>
-        /// RedirectionStatus would decide if we contunue to the next middleware in the pipe.
-        /// </summary>
-        private RedirectionStatus _redirectionStatus;
-
         protected override async Task<AuthenticateResult> HandleRemoteAuthenticateAsync()
         {
             Uri redirectUrl;
@@ -52,8 +47,6 @@
             switch (SharePointContextProvider.CheckRedirectionStatus(Context, out redirectUrl))
             {
                 case RedirectionStatus.Ok:
-                    _redirectionStatus = RedirectionStatus.Ok;
-
                     // Gets the current SharePoint context
                     var spContext = SharePointContextProvider.Current.GetSharePointContext(Context);
 
@@ -114,8 +107,6 @@
 
                     break;
                 case RedirectionStatus.ShouldRedirect:
-                    _redirectionStatus = RedirectionStatus.ShouldRedirect;
-
                     Response.StatusCode = 301;
                     result = AuthenticateResult.Fail("ShouldRedirect");
 
@@ -126,8 +117,6 @@
                     Context.Response.Redirect(redirectUrl.AbsoluteUri);
                     break;
                 case RedirectionStatus.CanNotRedirect:
-                    _redirectionStatus = RedirectionStatus.CanNotRedirect;
-
                     result = AuthenticateResult.Fail("No SPHostUrl to build a SharePoint Context, but Authenticate was called on the SharePoint middleware.");
 
                     //Log that we cannot redirect

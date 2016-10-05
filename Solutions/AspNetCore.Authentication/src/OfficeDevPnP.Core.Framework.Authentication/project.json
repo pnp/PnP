@@ -1,10 +1,9 @@
 {
-  "version": "1.0.0-*",
+  "version": "1.1.0-*",
   "authors": [ "Radi Atanassov" ],
   "title": "OfficeDevPnP.Core.Framwork.Authentication",
 
   "dependencies": {
-    "NETStandard.Library": "1.6.0",
     "Microsoft.AspNetCore.Authentication": "1.0.0",
     "Microsoft.AspNetCore.Authentication.Cookies": "1.0.0",
     "Microsoft.AspNetCore.WebUtilities": "1.0.0",
@@ -17,7 +16,6 @@
 
   "frameworks": {
     "net451": {
-      "imports": "dnxcore50",
       "frameworkAssemblies": {
         "System.IdentityModel": "4.0.0.0",
         "System.IdentityModel.Selectors": "4.0.0.0",
