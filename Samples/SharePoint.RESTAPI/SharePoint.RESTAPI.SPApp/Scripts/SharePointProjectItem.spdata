@@ -7,5 +7,16 @@
     <ProjectItemFile Source="jquery-1.7.1.js" Target="Scripts\" Type="ElementFile" />
     <ProjectItemFile Source="jquery-1.7.1.intellisense.js" Target="Scripts\" Type="ElementFile" />
     <ProjectItemFile Source="REST-APIs-Examples.js" Target="Scripts\" Type="ElementFile" />
+    <ProjectItemFile Source="accordion\data\main.js" Target="Scripts\accordion\data\" Type="ElementFile" />
+    <ProjectItemFile Source="accordion\datamodels\slideModel.js" Target="Scripts\accordion\datamodels\" Type="ElementFile" />
+    <ProjectItemFile Source="accordion\helpers\browserRequirements.js" Target="Scripts\accordion\helpers\" Type="ElementFile" />
+    <ProjectItemFile Source="accordion\helpers\Cache.js" Target="Scripts\accordion\helpers\" Type="ElementFile" />
+    <ProjectItemFile Source="accordion\helpers\namespace.js" Target="Scripts\accordion\helpers\" Type="ElementFile" />
+    <ProjectItemFile Source="accordion\libraries\jquery-2.2.3.min.js" Target="Scripts\accordion\libraries\" Type="ElementFile" />
+    <ProjectItemFile Source="accordion\libraries\jquery-2.2.3.min.map" Target="Scripts\accordion\libraries\" Type="ElementFile" />
+    <ProjectItemFile Source="accordion\libraries\jquery-ui.js" Target="Scripts\accordion\libraries\" Type="ElementFile" />
+    <ProjectItemFile Source="accordion\libraries\jquery-ui.min.js" Target="Scripts\accordion\libraries\" Type="ElementFile" />
+    <ProjectItemFile Source="accordion\libraries\knockout-3.1.0.js" Target="Scripts\accordion\libraries\" Type="ElementFile" />
+    <ProjectItemFile Source="accordion\libraries\modernizr.2.8.2.custom.js" Target="Scripts\accordion\libraries\" Type="ElementFile" />
   </Files>
 </ProjectItem>

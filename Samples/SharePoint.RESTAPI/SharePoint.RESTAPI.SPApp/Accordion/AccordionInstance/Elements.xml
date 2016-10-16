@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <ListInstance Title="Accordion" OnQuickLaunch="TRUE" TemplateType="100" Url="Lists/Accordion" Description="Accordion Example List">
+    <Data>
+      <Rows>
+        <Row>
+          <Field Name="Title">Accordion Item</Field>
+          <Field Name="SlideTitle">Gears of War 4</Field>
+          <Field Name="SlideWho">MATURE - Titles rated M (Mature) have content that may be suitable for persons ages 17 and older.</Field>
+          <Field Name="SlideDescription">A new saga begins for one of the most acclaimed video game franchises in history. After narrowly escaping an attack on their village, JD Fenix and his friends, Kait and Del, must rescue the ones they love and discover the source of a monstrous new enemy.</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">Accordion Item</Field>
+          <Field Name="SlideTitle">Battlefield 1</Field>
+          <Field Name="SlideWho">RATING PENDING - Titles listed as RP (Rating Pending) have been submitted to the ESRB and are awaiting final rating.</Field>
+          <Field Name="SlideDescription">Fight your way through epic battles going from tight urban combat in a besieged French city to big open spaces in the Italian Alps or frantic combats in the deserts of Arabia...</Field>
+        </Row>
+        <Row>
+          <Field Name="Title">Accordion Item</Field>
+          <Field Name="SlideTitle">Forza Horizon 3</Field>
+          <Field Name="SlideWho">EVERYONE - Titles rated E (Everyone) have content that may be suitable for persons ages 6 and older. Titles in this category may contain minimal cartoon, fantasy or mild violence and/or infrequent use of mild language.</Field>
+          <Field Name="SlideDescription">You’re in charge of the Horizon Festival. Customize everything, hire and fire your friends, and explore Australia in over 350 of the world’s greatest cars.</Field>
+        </Row>
+      </Rows>
+    </Data>
+  </ListInstance>
+</Elements>
