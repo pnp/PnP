@@ -3,16 +3,16 @@
 
 ## Summary
 
-[x] Localizes a field title
-[ ] Next things to be implemented on fields goes here...
-[ ] Next things to be implemented on fields goes here...
-[ ] Next things to be implemented on fields goes here...
+- [x] Localizes a field title
+- [ ] Next things to be implemented on fields goes here...
+- [ ] Next things to be implemented on fields goes here...
+- [ ] Next things to be implemented on fields goes here...
 
 
 ## Applies to
 
-[x] SharePoint 2013 on-premise
-[x] Office 365
+- [x] SharePoint 2013 on-premise
+- [x] Office 365
 
 
 ## Prerequisites
