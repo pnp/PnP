@@ -8,9 +8,11 @@ namespace PNP.Deployer.Common
     {
         #region Attributes
 
+        [Required]
         [XmlAttribute("LCID")]
         public int LCID { get; set; }
 
+        [Required]
         [XmlAttribute("Value")]
         public string Value { get; set; }
 

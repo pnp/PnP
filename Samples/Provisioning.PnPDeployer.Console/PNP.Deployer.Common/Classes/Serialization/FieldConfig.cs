@@ -12,6 +12,7 @@ namespace PNP.Deployer.Common
     {
         #region Attributes
 
+        [Required]
         [XmlAttribute("Name")]
         public string Name { get; set; }
 
