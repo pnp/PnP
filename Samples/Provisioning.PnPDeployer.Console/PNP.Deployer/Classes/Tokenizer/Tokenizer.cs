@@ -18,12 +18,13 @@ namespace PNP.Deployer
     {
         #region Constants
 
-        private const string ERROR_FOLDER_NOT_FOUND     = "Unable to tokenize the specified folder '{0}' : Folder not found.";
-        private const string ERROR_FILE_NOT_FOUND       = "Unable to tokenize the specified file '{0}' : File not found.";
-        private const string ERROR_TOKENS_NOT_FOUND     = "Unable to  tokenize the specified folder with the tokens file '{0}' : File not found.";
-        private const string TOKENS_SCHEMA_FILE_NAME    = "TokensConfiguration.xsd";
-        private const string TOKENIZED_FOLDER_EXTENSION = "_Tokenized";
-        private const string DEFAULT_TOKENS_PREFIX      = "token-";
+        private const string ERROR_FOLDER_NOT_FOUND         = "Unable to tokenize the specified folder '{0}' : Folder not found.";
+        private const string ERROR_FILE_NOT_FOUND           = "Unable to tokenize the specified file '{0}' : File not found.";
+        private const string ERROR_TOKENS_NOT_FOUND         = "Unable to  tokenize the specified folder with the tokens file '{0}' : File not found.";
+        private const string TOKENS_SCHEMA_FILE_NAME        = "Classes/XSD/TokensConfiguration.xsd";
+        private const string TOKENIZED_FOLDER_EXTENSION     = "_Tokenized";
+        private const string DEFAULT_TOKENS_PREFIX          = "token-";
+        private const string APP_SETTING_IGNORED_FOLDERS    = "clientIgnoredFolders";
 
         #endregion
 
@@ -31,6 +32,7 @@ namespace PNP.Deployer
         #region Private Members
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
+        private List<string> ignoredFolders = new List<string>();
 
         #endregion
 
@@ -80,7 +82,7 @@ namespace PNP.Deployer
             {
                 foreach (string key in ConfigurationManager.AppSettings.AllKeys.Where(x => x.StartsWith(DEFAULT_TOKENS_PREFIX)))
                 {
-                    tokens.Add(new Token() { Key = key, Value = ConfigurationManager.AppSettings[key] });
+                    tokens.Add(new Token() { Key = key.Substring(DEFAULT_TOKENS_PREFIX.Length), Value = ConfigurationManager.AppSettings[key] });
                 }
             }
 
@@ -193,10 +195,15 @@ namespace PNP.Deployer
                     throw new DirectoryNotFoundException(string.Format(ERROR_FOLDER_NOT_FOUND, folderPath));
 
                 // --------------------------------------------------
+                // Loads the ignored folders
+                // --------------------------------------------------
+                ignoredFolders = ConfigurationManager.AppSettings[APP_SETTING_IGNORED_FOLDERS].Split('|').Where(x => !string.IsNullOrEmpty(x)).Select(x => Path.Combine(folderPath.ToLower(), x.ToLower())).ToList<string>();
+
+                // --------------------------------------------------
                 // Copies the source folder to it's tokenized destination
                 // --------------------------------------------------
                 tokenizedFolderPath = folderPath + TOKENIZED_FOLDER_EXTENSION;
-                FilesUtility.CopyDirectory(folderPath, tokenizedFolderPath);
+                FilesUtility.CopyDirectory(folderPath, tokenizedFolderPath, ignoredFolders);
 
                 // --------------------------------------------------
                 // Tokenizes the destination folder recursively

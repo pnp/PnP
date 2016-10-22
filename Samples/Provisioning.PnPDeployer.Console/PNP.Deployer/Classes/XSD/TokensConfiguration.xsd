@@ -6,7 +6,7 @@
         <xs:element name="tokens">
           <xs:complexType>
             <xs:sequence>
-              <xs:element maxOccurs="unbounded" name="add">
+              <xs:element maxOccurs="unbounded" name="token">
                 <xs:complexType>
                   <xs:attribute name="key" type="xs:string" use="required" />
                   <xs:attribute name="value" type="xs:string" use="required" />
