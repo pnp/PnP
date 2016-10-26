@@ -1,4 +1,4 @@
-Thank you for reporting an issue or suggesting an enhancement. We appreciate your feedback - to help the team to understand your needs, please complete the below template to ensure we have the necessary details to assist you. If you have a actual question, we would ask you to use PnP Yammer group at http://aka.ms/OfficeDevPnPYammer. Thanks!
+Thank you for reporting an issue or suggesting an enhancement. We appreciate your feedback - to help the team to understand your needs, please complete the below template to ensure we have the necessary details to assist you. If you have a actual question, we would ask you to use [SharePoint Developer Group](http://aka.ms/sppnp-community) at Microsoft Tech Community. Thanks!
 
 #### Which PnP repository to report the issue?
 - PnP Samples - https://github.com/OfficeDev/PnP
@@ -35,7 +35,7 @@ _Delete this section after reading_
 - If you are reporting any issues around PnP Core Component, please reproduce the issue with latest release.
 - If you are reporting issue around PnP Provisioning Engine, please share the xml template, if possible.
 - If you are reporting an issue around any of the samples, please ensure that you have clear reference on the sample and possibly code file, which should be fixed.
-- If you have a general question, please use the [PnP Yammer Group](http://aka.ms/OfficeDevPnPYammer).
+- If you have a general question, please use the [SharePoint Developer Group](http://aka.ms/sppnp-community) at Microsoft Tech Community.
 - Remember to include sufficient details and context.
 - If you have multiple suggestions or bugs please submit them in seperate bugs so we can track resolution.
 
