@@ -25,7 +25,6 @@ namespace PNP.Deployer
         private const string TOKENIZED_FOLDER_EXTENSION     = "_Tokenized";
         private const string DEFAULT_TOKENS_PREFIX          = "token-";
         private const string APP_SETTING_IGNORED_FOLDERS    = "clientIgnoredFolders";
-        private const string APP_SETTING_IGNORED_EXTENSIONS = "ignoredFileExtensions";
 
         #endregion
 
@@ -34,7 +33,6 @@ namespace PNP.Deployer
 
         private static Logger logger = LogManager.GetCurrentClassLogger();
         private List<string> ignoredFolders = new List<string>();
-        private List<string> ignoredExtensions = new List<string>();
 
         #endregion
 
@@ -63,11 +61,6 @@ namespace PNP.Deployer
             List<Token> fileTokens = LoadTokensFromFile(tokensFilePath);
             this.Tokens.AddRange(fileTokens);
             logger.Info("Loaded '{0}' tokens from file '{1}'", fileTokens.Count, tokensFilePath);
-
-            // --------------------------------------------------
-            // Loads the ignored extensions
-            // --------------------------------------------------
-            this.ignoredExtensions = ConfigurationManager.AppSettings[APP_SETTING_IGNORED_EXTENSIONS].Split('|').Select(x => x.ToLower().Trim()).ToList<string>();
         }
 
         #endregion
@@ -238,24 +231,24 @@ namespace PNP.Deployer
             if (!File.Exists(filePath))
                 throw new FileNotFoundException(string.Format(ERROR_FILE_NOT_FOUND, filePath));
             
-            // --------------------------------------------------
-            // Validates the file extension
-            // --------------------------------------------------
-            string fileExtension = Path.GetExtension(filePath).Replace(".", "");
-
-            if (!ignoredExtensions.Contains(fileExtension))
-            {
+            if (!filePath.ToLower().Trim().EndsWith(".pnp"))
+			{
                 // --------------------------------------------------
                 // Replaces the tokens by their value
                 // --------------------------------------------------
                 string fileContent = File.ReadAllText(filePath);
+                bool needSave = false;
 
                 foreach (Token token in this.Tokens)
                 {
-                    fileContent = fileContent.Replace("{{" + token.Key + "}}", token.Value);
+                    if (fileContent.Contains("{{" + token.Key + "}}"))
+					{
+                        fileContent = fileContent.Replace("{{" + token.Key + "}}", token.Value);
+                        needSave = true;
+                    }
                 }
-
-                File.WriteAllText(filePath, fileContent);
+                if(needSave)
+                    File.WriteAllText(filePath, fileContent);
             }
         }
 
