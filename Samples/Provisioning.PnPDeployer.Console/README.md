@@ -127,15 +127,13 @@ While supporting regular `.xml` templates, the deployer also supports the new `.
 # Getting Started #
 
 ### 1 - Configuring the deployer ###
-The configuration of the deployer is stored within the `PNP.Deployer.exe.config` file located in the `bin\release` folder. The \<appSettings\> section of the configuration file stores 5 kinds of information :
+The configuration of the deployer is stored within the `PNP.Deployer.exe.config` file located in the `bin\release` folder. The \<appSettings\> section of the configuration file stores 4 kinds of information :
 * `clientSequencesFile` : 
     - The name of the sequences file that the deployer needs to look for (relative to the `WorkingDirectory` specified by the caller)
 * `clientTokensFile`
     - The name of the tokens file that the deployer needs to look for (relative to the `WorkingDirectory` specified by the caller)
 * `clientIgnoredFolders`
     - The path of the folders that can be ignored by the deployer in order to speed up the tokenizing process. The different paths must be delimited by a pipe ("|") and must be relative to the `WorkingDirectory` specified by the caller. This feature can be usefull for instance when deploying a package with large non-production-sub-folders on a development environment, for example a NPM package with a large `node_modules` sub folder
-* `ignoredFileExtensions`
-     - The file extensions that must be ignored by the tokenizer. This avoids to end up with corrupted files caused by the tokenizer trying to open a binary file, execute its string replacement process, and save it back into a corrupted format. Files such as images, videos, pnp packages or any other non-text-files should have their extension added to current parameter in order to be able to deploy them without issues.
 * `token-*`
     - The default tokens will be available for any package deployed by the deployer, and can be added to the \<appSettings\> section by adding entries with keys that are prefixed with `token-` followed by the name of the token that will become available within the client packages
 
@@ -155,11 +153,6 @@ The configuration of the deployer is stored within the `PNP.Deployer.exe.config`
   <!-- Folders ignored by the deployer, relative to the client's working directory (x|y|z) -->
   <!-- =================================================================================== -->
   <add key="clientIgnoredFolders" value="node_modules" />
-
-  <!-- =================================================================================== -->
-  <!-- File extensions that should be ignored by the tokenizer (x|y|z)                     -->
-  <!-- =================================================================================== -->
-  <add key="ignoredFileExtensions" value="pnp|jpg|jpeg|png|gif|tif|wmv|mpeg|mpg|mp4|mp3" />
     
   <!-- =================================================================================== -->
   <!-- Default tokens used by the tokenizer (Must be prefixed by 'token-')                 -->
