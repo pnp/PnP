@@ -18,7 +18,7 @@ namespace PNP.Deployer
         #region Constants
 
         private const string APP_SETTING_SEQUENCES_FILE = "clientSequencesFile";
-        private const string SEQUENCES_SCHEMA_FILE_NAME = "Sequences.xsd";
+        private const string SEQUENCES_SCHEMA_FILE_NAME = "Classes/XSD/Sequences.xsd";
         private const string ERROR_FOLDER_INVALID       = "The specified working directory '{0}' does not exist";
         private const string ERROR_SEQUENCES_NOT_FOUND  = "Sequences configuration file was not found at path '{0}'";
         private const string ERROR_SEQUENCES_INVALID    = "The {0} file is invalid : {1}";

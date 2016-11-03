@@ -17,7 +17,7 @@ namespace PNP.Deployer
         #region Public Members
 
         [XmlArray("tokens")]
-        [XmlArrayItem("add", typeof(Token))]
+        [XmlArrayItem("token", typeof(Token))]
         public List<Token> Tokens { get; set; }
 
         #endregion

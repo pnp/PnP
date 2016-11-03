@@ -39,6 +39,10 @@
         <div class="Command"><input type="button" value="Check-in a file" onclick="checkInFile()" /></div>
         <div class="Command"><input type="button" value="Delete a file" onclick="deleteFile()" /></div>
         <div class="Command"><input type="button" value="Query for documents in a library" onclick="queryDocuments()" /></div>
+        <br /><hr /><br />
+        <h3>Accordion, REST, and Knockout example</h3>
+        <div class="Command"><input type="button" value="View Accordion" onclick="location.href = 'Sample_REST_KO_Accordion.aspx'" /></div>
+        <div class="Command"><input type="button" value="View Accordion List" onclick="location.href = '../Lists/Accordion'" /></div>
     </div>
 
 </asp:Content>

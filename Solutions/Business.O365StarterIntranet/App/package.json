@@ -51,7 +51,7 @@
     "node-fetch": "^1.5.3",
     "office-ui-fabric": "^2.6.1",
     "pubsub-js": "^1.5.3",
-    "sp-pnp-js": "^1.0.4",
+    "sp-pnp-js": "1.0.4",
     "sprintf-js": "^1.0.3",
     "trunk8": "0.0.1",
     "whatwg-fetch": "^1.0.0"

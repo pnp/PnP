@@ -155,9 +155,11 @@
     </Content>
     <None Include="Classes\XSD\Sequences.xsd">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Classes\XSD\TokensConfiguration.xsd">
       <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
@@ -193,8 +195,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy $(ProjectDir)Classes\XSD\Sequences.xsd $(ProjectDir)$(OutDir)
-copy $(ProjectDir)Classes\XSD\TokensConfiguration.xsd $(ProjectDir)$(OutDir)</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
