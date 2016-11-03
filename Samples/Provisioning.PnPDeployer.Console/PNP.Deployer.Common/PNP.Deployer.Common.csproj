@@ -40,7 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Classes\Attributes\RequiredAttribute.cs" />
+    <Compile Include="Classes\Helpers\DeployerUtility.cs" />
     <Compile Include="Classes\Helpers\XmlUtility.cs" />
+    <Compile Include="Classes\Serialization\FieldConfig.cs" />
+    <Compile Include="Classes\Serialization\FieldsConfig.cs" />
+    <Compile Include="Classes\Serialization\ResourceConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
