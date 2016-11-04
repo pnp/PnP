@@ -12,7 +12,7 @@
 The projects within the Visual Studio solution have a dependency on the `PnP Core library`. By default, they are all configured for using the [SharePoint PnP Core library for SharePoint 2013](#sequences-for-a-configurable-deployment) nugget package, but feel free to change the nugget package for the one that suits your needs :
 * [SharePoint PnP Core library for SharePoint 2013 (SharePointPnPCore2013)](https://www.nuget.org/packages/SharePointPnPCore2013)
 * [SharePoint PnP Core library for SharePoint 2016 (SharePointPnPCore2016)](https://www.nuget.org/packages/SharePointPnPCore2016)
-* [SharePoint PnP Core library for SharePoint 2013 (SharePointPnPCoreOnline)](https://www.nuget.org/packages/SharePointPnPCoreOnline)
+* [SharePoint PnP Core library for SharePoint Online (SharePointPnPCoreOnline)](https://www.nuget.org/packages/SharePointPnPCoreOnline)
 
 ### Solution ###
 Solution | Author(s)
@@ -60,8 +60,8 @@ The [PnP Provisioning Engine](https://github.com/OfficeDev/PnP-Guidance/blob/551
 ```xml
 <tokensConfiguration>
   <tokens>
-    <add key="PortalUrl" value="http://company.sharepoint.com" />
-    <add key="HubUrl" value="http://company.sharepoint.com/Hub" />
+    <token key="PortalUrl" value="http://company.sharepoint.com" />
+    <token key="HubUrl" value="http://company.sharepoint.com/Hub" />
   </tokens>
 </tokensConfiguration>
 ```
@@ -127,11 +127,13 @@ While supporting regular `.xml` templates, the deployer also supports the new `.
 # Getting Started #
 
 ### 1 - Configuring the deployer ###
-The configuration of the deployer is stored within the `PNP.Deployer.exe.config` file located in the `bin\release` folder. The \<appSettings\> section of the configuration file stores 3 kinds of information :
+The configuration of the deployer is stored within the `PNP.Deployer.exe.config` file located in the `bin\release` folder. The \<appSettings\> section of the configuration file stores 4 kinds of information :
 * `clientSequencesFile` : 
     - The name of the sequences file that the deployer needs to look for (relative to the `WorkingDirectory` specified by the caller)
 * `clientTokensFile`
     - The name of the tokens file that the deployer needs to look for (relative to the `WorkingDirectory` specified by the caller)
+* `clientIgnoredFolders`
+    - The path of the folders that can be ignored by the deployer in order to speed up the tokenizing process. The different paths must be delimited by a pipe ("|") and must be relative to the `WorkingDirectory` specified by the caller. This feature can be usefull for instance when deploying a package with large non-production-sub-folders on a development environment, for example a NPM package with a large `node_modules` sub folder
 * `token-*`
     - The default tokens will be available for any package deployed by the deployer, and can be added to the \<appSettings\> section by adding entries with keys that are prefixed with `token-` followed by the name of the token that will become available within the client packages
 
@@ -147,6 +149,11 @@ The configuration of the deployer is stored within the `PNP.Deployer.exe.config`
   <!-- =================================================================================== -->
   <add key="clientTokensFile" value="Tokens.xml" />
 
+  <!-- =================================================================================== -->
+  <!-- Folders ignored by the deployer, relative to the client's working directory (x|y|z) -->
+  <!-- =================================================================================== -->
+  <add key="clientIgnoredFolders" value="node_modules" />
+    
   <!-- =================================================================================== -->
   <!-- Default tokens used by the tokenizer (Must be prefixed by 'token-')                 -->
   <!-- =================================================================================== -->
@@ -192,9 +199,9 @@ While being optional, in order for the `tokens` file to be recognised, it also n
 ```xml
 <tokensConfiguration>
   <tokens>
-    <add key="MyToken1" value="Value1" />
-    <add key="MyToken2" value="Value2" />
-    <add key="MyToken3" value="Value3" />
+    <token key="MyToken1" value="Value1" />
+    <token key="MyToken2" value="Value2" />
+    <token key="MyToken3" value="Value3" />
   </tokens>
 </tokensConfiguration>
 ```

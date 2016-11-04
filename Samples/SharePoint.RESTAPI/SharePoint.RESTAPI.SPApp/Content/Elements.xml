@@ -2,5 +2,13 @@
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/">
   <Module Name="Content">
     <File Path="Content\App.css" Url="Content/App.css" />
+    <File Path="Content\accordion\jquery-ui.min.css" Url="Content/accordion/jquery-ui.min.css" ReplaceContent="TRUE" />
+    <File Path="Content\accordion\progressbar.css" Url="Content/accordion/progressbar.css" ReplaceContent="TRUE" />
+    <File Path="Content\accordion\images\ui-icons_444444_256x240.png" Url="Content/accordion/images/ui-icons_444444_256x240.png" ReplaceContent="TRUE" />
+    <File Path="Content\accordion\images\ui-icons_555555_256x240.png" Url="Content/accordion/images/ui-icons_555555_256x240.png" ReplaceContent="TRUE" />
+    <File Path="Content\accordion\images\ui-icons_777620_256x240.png" Url="Content/accordion/images/ui-icons_777620_256x240.png" ReplaceContent="TRUE" />
+    <File Path="Content\accordion\images\ui-icons_777777_256x240.png" Url="Content/accordion/images/ui-icons_777777_256x240.png" ReplaceContent="TRUE" />
+    <File Path="Content\accordion\images\ui-icons_cc0000_256x240.png" Url="Content/accordion/images/ui-icons_cc0000_256x240.png" ReplaceContent="TRUE" />
+    <File Path="Content\accordion\images\ui-icons_ffffff_256x240.png" Url="Content/accordion/images/ui-icons_ffffff_256x240.png" ReplaceContent="TRUE" />
   </Module>
 </Elements>

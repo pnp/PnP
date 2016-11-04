@@ -1,11 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package dslVersion="1.0.0.0" 
-        Id="78371f1b-1af8-47fc-b459-86a57ff69cdb" 
-        solutionId="78371f1b-1af8-47fc-b459-86a57ff69cdb" 
-        xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel" 
-        name="DevLeap.SP2013.RESTAPI.SPApp"
-        sharePointProductVersion="15.0">
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="78371f1b-1af8-47fc-b459-86a57ff69cdb" solutionId="78371f1b-1af8-47fc-b459-86a57ff69cdb" resetWebServer="false" sharePointProductVersion="15.0" name="DevLeap.SP2013.RESTAPI.SPApp" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
   <features>
-        <featureReference itemId="bddebd54-a3da-48ca-b830-d53a7b18c778" />
+    <featureReference itemId="bddebd54-a3da-48ca-b830-d53a7b18c778" />
+    <featureReference itemId="60b4aef8-1adc-412f-9c00-31de2387749a" />
   </features>
 </package>

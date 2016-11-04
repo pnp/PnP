@@ -6,9 +6,9 @@ This is the main repository for the community driven [Office 365 Developer Patte
 PnP initiative has numerous GitHub repositories, so that you can more easily find what's relevant for you depending on your interest. Easiest way to follow up on latest changes is our landing page at http://aka.ms/OfficeDevPnP. We also recommend you to use the [PnP sample and solution search tool](http://dev.office.com/patterns-and-practices-resources) at dev.office.com for finding relevant content for you.
 
 - [PnP at dev.office.com](http://aka.ms/OfficeDevPnP) - Welcome page with sample and guidance search
-- [PnP Yammer Group](http://aka.ms/OfficeDevPnPYammer) - Questions and feedback
+- [SharePoint Dev Group](http://aka.ms/sppnp-community) - Questions and feedback
 - [PnP at MSDN](http://aka.ms/OfficeDevPnPMSDN) 
-- [PnP videos](http://aka.ms/OfficeDevPnPVideos) at Channel 9
+- [PnP videos](http://aka.ms/OfficeDevPnPVideos) at YouTube
 - [PnP at Docs.com](https://docs.com/OfficeDevPnP) - Docs.com
 - [PnP Sites Core Component](http://aka.ms/officedevpnpsitescore) - GitHub repository 
 - [PnP Core Component (JavaScript)](https://github.com/OfficeDev/PnP-JS-Core) - GitHub repository
