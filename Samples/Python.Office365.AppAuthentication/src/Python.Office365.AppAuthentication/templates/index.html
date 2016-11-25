@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h1>Office365 Flask Application</h1>
+    {% if user %}
+        <h2>Welcome {{user.title}}</h2>
+        <div>Access token: {{user.access_token}}</div>
+    {% else %}
+        <a href="{{url}}">Office365 Sign in</a>
+    {% endif %}
+
+{% endblock %}

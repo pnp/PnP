@@ -16,6 +16,7 @@ using System.Xml.Serialization;
 using System.Reflection;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
+using System.Configuration;
 
 namespace Contoso.Core.ProfilePictureUploader
 {
@@ -115,8 +116,8 @@ namespace Contoso.Core.ProfilePictureUploader
             }
 
 
-            LogMessage("Processing finished for " + count + " user profiles", LogLevel.Information);
-         }
+            LogMessage("Processing finished for " + count + " user profiles (or so)", LogLevel.Information);
+        }
 
 
         /// <summary>
@@ -201,7 +202,7 @@ namespace Contoso.Core.ProfilePictureUploader
                 }
 
                 //remove onmicrosoft.com from tenant name, all we need is friendly name, which will be used in SPO site collection URLs
-                int pos = _appConfig.TenantName.IndexOf(".onmicrosoft.com",StringComparison.CurrentCultureIgnoreCase);
+                int pos = _appConfig.TenantName.IndexOf(".onmicrosoft.com", StringComparison.CurrentCultureIgnoreCase);
                 if (pos > 0)
                     _appConfig.TenantName = _appConfig.TenantName.Remove(pos, 16);
 
@@ -311,8 +312,7 @@ namespace Contoso.Core.ProfilePictureUploader
         {
             try
             {
-
-                string spPhotoPathTempate = "/User Photos/Profile Pictures/{0}_{1}Thumb.jpg"; //path template to photo lib in My Site Host
+                string spPhotoPathTempate = string.Concat(_appConfig.TargetLibraryPath.TrimEnd('/'), "/{0}_{1}Thumb.jpg"); //path template to photo lib in My Site Host
                 string spImageUrl = string.Empty;
 
                 //create SPO Client context to My Site Host
@@ -320,7 +320,7 @@ namespace Contoso.Core.ProfilePictureUploader
                 SecureString securePassword = GetSecurePassword(_sPoAuthPasword);
                 //provide auth crendentials using O365 auth
                 mySiteclientContext.Credentials = new SharePointOnlineCredentials(_sPoAuthUserName, securePassword);
-                                
+
                 if (!_appConfig.Thumbs.Upload3Thumbs) //just take single input image and upload to photo lib, no resizeing of image
                 {
                     spImageUrl = string.Format(spPhotoPathTempate, PictureName, "M");
@@ -341,13 +341,13 @@ namespace Contoso.Core.ProfilePictureUploader
                     spImageUrl = string.Format(spPhotoPathTempate, PictureName, "L");
                     LogMessage("Uploading large image to " + spImageUrl, LogLevel.Information);
                     Microsoft.SharePoint.Client.File.SaveBinaryDirect(mySiteclientContext, spImageUrl, ProfilePicture, true);
-                    
+
                     ProfilePicture.Seek(0, SeekOrigin.Begin);
                     spImageUrl = string.Format(spPhotoPathTempate, PictureName, "S");
                     LogMessage("Uploading small image to " + spImageUrl, LogLevel.Information);
                     Microsoft.SharePoint.Client.File.SaveBinaryDirect(mySiteclientContext, spImageUrl, ProfilePicture, true);
 
-                    
+
                 }
                 else if (_appConfig.Thumbs.Upload3Thumbs && _appConfig.Thumbs.CreateSMLThumbs) //generate 3 different size thumbs
                 {
@@ -360,7 +360,7 @@ namespace Contoso.Core.ProfilePictureUploader
                         {
                             spImageUrl = string.Format(spPhotoPathTempate, PictureName, "S");
                             LogMessage("Uploading small image to " + spImageUrl, LogLevel.Information);
-                            Microsoft.SharePoint.Client.File.SaveBinaryDirect(mySiteclientContext, spImageUrl, smallThumb, true);                            
+                            Microsoft.SharePoint.Client.File.SaveBinaryDirect(mySiteclientContext, spImageUrl, smallThumb, true);
                         }
                     }
 
@@ -372,7 +372,7 @@ namespace Contoso.Core.ProfilePictureUploader
                             spImageUrl = string.Format(spPhotoPathTempate, PictureName, "M");
                             LogMessage("Uploading medium image to " + spImageUrl, LogLevel.Information);
                             Microsoft.SharePoint.Client.File.SaveBinaryDirect(mySiteclientContext, spImageUrl, mediumThumb, true);
-                           
+
                         }
                     }
 
@@ -385,15 +385,15 @@ namespace Contoso.Core.ProfilePictureUploader
                             spImageUrl = string.Format(spPhotoPathTempate, PictureName, "L");
                             LogMessage("Uploading large image to " + spImageUrl, LogLevel.Information);
                             Microsoft.SharePoint.Client.File.SaveBinaryDirect(mySiteclientContext, spImageUrl, largeThumb, true);
-                            
+
                         }
                     }
-                  
-                   
+
+
                 }
                 //return medium sized URL, as this is the one that should be set in the user profile
-                return _mySiteUrl + string.Format(spPhotoPathTempate, PictureName, "M");                
-                
+                return _mySiteUrl + string.Format(spPhotoPathTempate, PictureName, "M");
+
             }
             catch (Exception ex)
             {
@@ -436,11 +436,11 @@ namespace Contoso.Core.ProfilePictureUploader
                     return memStream;
                 }
 
-                              
+
             }
             catch (Exception ex)
             {
-                LogMessage("User Error: cannot create resized image to new width of " + NewWidth.ToString() + ex.Message,LogLevel.Error);
+                LogMessage("User Error: cannot create resized image to new width of " + NewWidth.ToString() + ex.Message, LogLevel.Error);
                 return null;
             }
         }
@@ -474,7 +474,7 @@ namespace Contoso.Core.ProfilePictureUploader
             originalImage.Dispose();
             memStream.Seek(0, SeekOrigin.Begin);
             return memStream;
-            
+
 
         }
 
@@ -507,7 +507,7 @@ namespace Contoso.Core.ProfilePictureUploader
                     }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Error writing to log file. " + ex.Message);
@@ -682,7 +682,7 @@ namespace Contoso.Core.ProfilePictureUploader
                 LogMessage("Exception trying to get profile properties for user " + UserName + "\n" + ex.Message, LogLevel.Error);
                 return null;
             }
-            
+
         }
 
 
@@ -692,7 +692,7 @@ namespace Contoso.Core.ProfilePictureUploader
         /// <returns></returns>
         static bool InitializeClientService()
         {
-            
+
             try
             {
 
@@ -755,7 +755,7 @@ namespace Contoso.Core.ProfilePictureUploader
 
                 // Assign previously created auth container to admin profile web service 
                 _userProfileService.CookieContainer = authContainer;
-               // LogMessage("Finished creating service object for SPO Web Service " + adminWebServiceUrl, LogLevel.Information);
+                // LogMessage("Finished creating service object for SPO Web Service " + adminWebServiceUrl, LogLevel.Information);
                 return true;
             }
             catch (Exception ex)
@@ -765,7 +765,7 @@ namespace Contoso.Core.ProfilePictureUploader
 
             }
 
-            
+
         }
 
 
@@ -782,7 +782,7 @@ namespace Contoso.Core.ProfilePictureUploader
             return sPassword;
         }
 
-      
+
 
     }
 }

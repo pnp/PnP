@@ -1,0 +1,83 @@
+﻿{
+  "SITE_PROVISIONING": "Webbplatsskaparen",
+  "WELCOME_TEXT": "Välkommen till webbplatsskaparen.",
+  "REQUEST_A_SITE": "Begär en ny webbplats",
+  "MY_COMPLETED_REQUESTS": "Mina genomförda förfrågningar",
+  "MY_NEW_REQUESTS": "Mina nya förfrågningar",
+  "MY_APPROVED_REQUESTS": "Mina godkända förfrågningar",
+  "MY_FAILED_REQUESTS": "Mina misslyckade förfrågningar",
+
+  "ERR_CANNOT_BE_BLANK": "Detta fält kan inte vara tomt",
+  "ERR_TO_SHORT": "Värdet för detta fält är för kort",
+  "ERR_TO_LONG": "Värdet för detta fält är för långt",
+  "ERR_NOT_CORRECT_FORMAT": "Värdet du skrev in har fel format",
+
+  "WELCOME": "Välkommen",
+  "RESPONSIBILITIES": "Ansvar",
+  "INTENDED_USE": "Användningsområde",
+  "TEMPLATE_SELECTION": "Mallval",
+  "THE_DETAILS": "Detaljer",
+  "SELECT_OWNERS": "Ägare",
+  "PRIVACY": "Integritet",
+  "CONFIRMATION": "Bekräftelse",
+
+  "WIZARD_INTRO": "<p>Åtkomst, användande och lagring av innehåll i SharePoint Online kan vara övervakat och granskat av företaget för att hantera prestanda, säkerhet och efterlevnad av regler.</p><p>I allmänhet, kom ihpåg dessa användningsregler när du användare SharePoint Online.: <p><b>Hjälp till </b> att hålla kostnader nere genom att: Hålla anpassningarna till ett minimum genom att använda inbyggda funktioner.</p><p><b>Tänk på att</b>  tjänsten omfattas av företagets säkerhetspolicy.</p><p>Är du redo? Om du är det, klicka på Nästa pilen nedanför.</p>",
+
+  "BUSINESS_PURPOSE": "Vad är det affärsmässiga syftet med webbplatsen?",
+  "BUSINESS_PURPOSE_ERR": "Affärsmässigt syfte har inte angetts",
+
+  "OWNERS_AND_PERMISSIONS": "Ägare och behörigheter",
+  "ADDITIONAL_OWNERS": "Ytterligare ägare av webbplatsen (alla kan behöva en backup)",
+  "NAME_OR_EMAIL": "[namn eller e-post adress]",
+
+  "TEMPLATE_WHICH_TEMPLATE": "Vilken typ av webbplats vill du skapa?",
+  "TEMPLATE_ICON": "Mallikon",
+
+  "DETAILS": "Webbplatsdetaljer",
+  "DETAILS_TITLE": "Ge din webbplats ett namn",
+  "DETAILS_TITLE_ERR": "Du gav inte webbplatsen ett namn",
+  "DETAILS_TITLE_URL": "Ge din webbplats en URL",
+  "DETAILS_TITLE_URL_ERR": "Du gav inte webbplatsen en URL",
+  "DETAILS_CHECKING": "Kontrollerar tillgänglighet...",
+  "DETAILS_URL_TAKEN": "Tyvärr så är webbplats URL:en upptagen",
+  "DETAILS_DESCRIPTION": "Ge din webbplats en beskrivning",
+  "DETAILS_DESCRIPTION_ERR": "Du angav ingen beskrivning",
+  "DETAILS_REGION": "Region",
+  "DETAILS_REGION_ERR": "Region är inte valt",
+  "DETAILS_FUNCTION": "Funktion",
+  "DETAILS_FUNCTION_ERR": "Funktion är inte valt",
+  "DETAILS_DIVISION": "Avdelning",
+  "DETAILS_DIVISION_ERR": "Avdelning är inte valt",
+  "DETAILS_LANGUAGE": "Språk",
+  "DETAILS_LANGUAGE_ERR": "Språk är inte valt",
+  "DETAILS_TIMEZONE": "Tidszon",
+  "DETAILS_TIMEZONE_ERR": "Tidszon är inte valt",
+  "DETAILS_ENABLE_EXTERNAL_SHARING": "Tillåt Extern delning",
+
+  "SITE_OWNER_RESPONSIBILITIES": "Webbplatsägaransvar",
+  "SITE_OWNER_RESPONSIBILITIES_TEXT": "Det är ägaren av webbplatsens ansvar att se till att hantera behörigheter för webbplatsen så att information och data som skapas är skyddat på ett korrekt sätt förenligt med företagets policies. Ytterligare måste all personlig information, inkluderat all information som kan härledas att en individ kan bli identifierad eller kontaktad (till exemple namn, adress, telefonnummer, finansiell information eller kontonummer eller personnummer), endast användas för företagets syften. Allt användande, kopierande eller lagring av personlig information måste uppfylla företagets policies.",
+  "ACCEPT": "Jag har läst och godkänt...",
+
+  "DATA_PRIVACY": "Date integritet och säkerhet",
+  "DATA_PRIVACY_TEXT": "<p>Hur känslig är informationen?</p><p>All information måste klassificeras baserat på hur mycket informationen kan påverka företaget eller de partner företaget samarbetar med..</p><p>För mer information om integritet och säkerhet kontakta säkerhetsavdelningen.</p>",
+  "SITE_CLASSIFICATION": "Webbplatsklassificering",
+  "SITE_CLASSIFICATION_ERR": "Webbplatsklassificering har inte blivit valt",
+
+  "CONFIRMATION_TEXT": "<p>Var vänlig och verifiera din begäran så att den är korrekt.</p><p>Klicka på tillbaka-pilarna för att ändra. För att slutfara, klicka på bock-symbolen.</p>",
+  "SITE_URL": "Webbplats URL",
+  "SITE_URL_ERR": "URL har inte angetts",
+  "PRIMARY_OWNER": "Huvudägare",
+  "PRIMARY_OWNER_ERR": "Huvudägare har inte angetts",
+  "SECONDARY_OWNER": "Andra ägare",
+  "SITE_TEMPLATE": "Webbplatsmall",
+  "SITE_TEMPLATE_ERR": "Webbplatsmall har inte angetts",
+  "EXTERNAL_SHARING": "Extern delning",
+  "RESPONSIBILITIES_ACCEPTED": "Ansvar accepterats",
+  "RESPONSIBILITIES_ACCEPTED_ERR": "Du har inte accepterat Webbplatsägaransvaret",
+
+  "WHAT_HAPPENS_NEXT": "Vad händer sen?",
+  "WHAT_HAPPENS_NEXT_1":  "Du kommer få en e-post notifiering när din webbplats är skapad.",
+
+  "SOLUTION_LOADED":  "Webbplatsskaparen har laddats"
+
+}

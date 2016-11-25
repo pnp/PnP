@@ -1,7 +1,0 @@
-Term Set Name,Term Set Description,LCID,Available for Tagging,Term Description,Level 1 Term,Level 2 Term,Level 3 Term,Level 4 Term,Level 5 Term,Level 6 Term,Level 7 Term
-Test Changes,Updated term set description,,TRUE,"Test of deletes, adds and update",Retain1,,,,,,
-,,,FALSE,Changed description,Retain1,Update2,,,,,
-,,,TRUE,Test retaining same term,Retain1,Update2,Retain3,,,,
-,,,TRUE,Test adding new  term,Retain1,New2,,,,,
-,,,TRUE,Test adding new child term,Retain1,New2,New3,,,,
-,,,TRUE,Test adding another new term,New1,,,,

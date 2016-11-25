@@ -6,6 +6,8 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SC = System.Configuration;
+
 
 namespace Provisioning.Common.Data.Templates
 {
@@ -60,7 +62,14 @@ namespace Provisioning.Common.Data.Templates
                 var typeName = type[0];
                 var assemblyName = type[1];
                 var instance = (AbstractModule)Activator.CreateInstance(assemblyName, typeName).Unwrap();
-                instance.ConnectionString = _module.ConnectionString;
+                if (String.IsNullOrEmpty(_module.ConnectionString))
+                {
+                    instance.ConnectionString = SC.ConfigurationManager.AppSettings.Get(ModuleKeys.MASTERTEMPLATEPROVIDER_KEY + "_connectionString");
+                }
+                else
+                {
+                    instance.ConnectionString = _module.ConnectionString;
+                }
                 instance.Container = _module.Container;
                Log.Info("Provisioning.Common.Data.Templates", PCResources.SiteTemplate_Factory_Created_Instance, _managerTypeString);
                 return (ISiteTemplateManager)instance;

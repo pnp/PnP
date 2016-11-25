@@ -7,6 +7,7 @@ using Provisioning.Common.Configuration;
 using Provisioning.Common.Data;
 using Provisioning.Common.Data.SiteRequests;
 using Provisioning.Common.Data.Templates;
+using Provisioning.Common.Utilities;
 using Provisioning.UX.AppWeb.Models;
 using System;
 using System.Collections.Generic;
@@ -80,7 +81,7 @@ namespace Provisioning.UX.AppWeb.Controllers
             catch(Exception _ex)
             {
                _request.ErrorMessage = _ex.Message;
-               Log.Error("ProvisioningController.IsExternalSharingEnabled", 
+                OfficeDevPnP.Core.Diagnostics.Log.Error("ProvisioningController.IsExternalSharingEnabled", 
                    "There was an error processing the request. Exception: {0}", 
                    _ex);
                return _request;
@@ -88,6 +89,30 @@ namespace Provisioning.UX.AppWeb.Controllers
     
         }
 
-    
+        [Route("api/provisioning/isSiteUrlProviderUsed")]
+        [WebAPIContextFilter]
+        [HttpPost]
+        public SiteUrlCheckRequest IsSiteUrlProviderUsed([FromBody]string value)
+        {
+            var _request = JsonConvert.DeserializeObject<SiteUrlCheckRequest>(value);
+
+            ReflectionManager rm = new ReflectionManager();
+
+            var siteUrlProvider = rm.GetSiteUrlProvider("SiteUrlProvider");
+            if (siteUrlProvider != null)
+            {
+                _request.UsesCustomProvider = false;
+            }
+            else
+            {
+                _request.UsesCustomProvider = true;
+            }
+
+            return _request;
+        }
+
+
+
+
     }
 }

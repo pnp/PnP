@@ -1,0 +1,43 @@
+﻿<div class="ms-NavBar">
+    <div class="ms-NavBar-openMenu js-openMenu">
+        <i class="ms-Icon ms-Icon--menu"></i>
+    </div>
+    <div class="ms-Overlay"></div>
+    <ul class="ms-NavBar-items">
+
+        <!-- Search Text Box and Icon -->
+        <li class="ms-NavBar-item ms-NavBar-item--search ms-u-hiddenSm">
+            <div class="ms-TextField">
+                <input class="ms-TextField-field">
+            </div>
+        </li>
+
+        <!-- Home menu item -->
+        <li class="ms-NavBar-item @(ViewBag.Current == "Index" ? "is-selected" : "")"><i class="ms-Icon ms-Icon--home" aria-hidden="true"></i> @Html.ActionLink("Home", "Index", "Home", null, new { @class = "ms-NavBar-link" })</li>
+
+        <!-- Rendering Mode dropdown menu item -->
+        <li class="ms-NavBar-item ms-NavBar-item--hasMenu">
+            <a class="ms-NavBar-link">Rendering Mode</a> <i class="ms-NavBar-chevronDown ms-Icon ms-Icon--chevronDown" aria-hidden="true"></i>
+            <ul class="ms-ContextualMenu">
+                <li class="ms-ContextualMenu-item"><a class="ms-ContextualMenu-link">Simple</a></li>
+                <li class="ms-ContextualMenu-item"><a class="ms-ContextualMenu-link">Normal</a></li>
+                <li class="ms-ContextualMenu-item"><a class="ms-ContextualMenu-link">Full</a></li>
+            </ul>
+        </li>
+
+        <!-- Start New Process menu item -->
+        <li class="ms-NavBar-item @(ViewBag.Current == "StartNewProject" ? "is-selected" : "")"><i class="ms-Icon ms-Icon--documentAdd" aria-hidden="true"></i> @Html.ActionLink("Start New Project", "StartNewProject", "Project", null, new { @class = "ms-NavBar-link" })</li>
+
+        <!-- List My Processes menu item -->
+        <li class="ms-NavBar-item @(ViewBag.Current == "MyProjects" ? "is-selected" : "")"><i class="ms-Icon ms-Icon--listCheckbox" aria-hidden="true"></i> @Html.ActionLink("List My Projects", "MyProjects", "Project", null, new { @class = "ms-NavBar-link" })</li>
+
+        <!-- Go back to default Site Collection -->
+        <li class="ms-NavBar-item"><i class="ms-Icon ms-Icon--globe" aria-hidden="true"></i> <a class="ms-NavBar-link" href="@BusinessApps.O365ProjectsApp.Infrastructure.O365ProjectsAppContext.CurrentSiteUrl">Back to Target Site</a></li>
+
+        <!-- Settings menu item -->
+        @if (BusinessApps.O365ProjectsApp.Infrastructure.O365ProjectsAppContext.CurrentUserIsAdmin)
+        {
+            <li class="ms-NavBar-item ms-NavBar-item--right"><i class="ms-Icon ms-Icon--gear" aria-hidden="true"></i> @Html.ActionLink("Settings", "Settings", "Home", null, new { @class = "ms-NavBar-link" })</li>
+        }
+    </ul>
+</div>

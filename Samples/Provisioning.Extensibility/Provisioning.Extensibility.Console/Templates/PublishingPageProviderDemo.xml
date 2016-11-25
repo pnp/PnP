@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2015/08/ProvisioningSchema">
+	<pnp:Preferences></pnp:Preferences>
+	<pnp:Templates>
+		<pnp:ProvisioningTemplate ID="PublishingPageProviderDemo">
+
+			<pnp:Lists>
+				<pnp:ListInstance
+						Title="Useful Links"
+						OnQuickLaunch="false"
+						TemplateType="103"
+						Url="Lists/UsefulLinks"
+						Description="Some useful links for us">
+				</pnp:ListInstance>
+			</pnp:Lists>
+			
+			<pnp:Files>
+				
+				<pnp:File Src=".\Assets\CustomJsLink.js" Folder="Style Library" Overwrite="true" />
+				
+				<pnp:File Src=".\Assets\BlankWebPartPageCopy.aspx" Folder="{masterpagecatalog}/" Overwrite="true">
+					<pnp:Properties>
+						<pnp:Property Key="Title" Value="My Custom Page Layout" />
+						<pnp:Property Key="MasterPageDescription" Value="Just a custom page layout. Copied from Default Blank Webpart page layout" />
+						<pnp:Property Key="ContentTypeId" Value="0x01010007FF3E057FA8AB4AA42FCB67B453FFC100E214EEE741181F4E9F7ACC43278EE811" />
+						<pnp:Property Key="PublishingAssociatedContentType" Value=";#Welcome Page;#0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF390064DEA0F50FC8C147B0B6EA0636C4A7D4;#"/>
+						<pnp:Property Key="UIVersion" Value="15" />
+					</pnp:Properties>
+				</pnp:File>
+			</pnp:Files>
+			
+			<pnp:Providers>
+				<pnp:Provider Enabled="true" 
+							  HandlerType="Provisioning.Extensibility.Providers.PublishingPageProvisioningExtensibilityHandler, Provisioning.Extensibility.Providers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+					<pnp:Configuration>
+						<PublishingPageProvider id="PublishingPageProviderConfig" xmlns="http://schemas.somecompany.com/PublishingPageProvisioningExtensibilityHandlerConfiguration">
+							<Page Overwrite="true"
+								  FileName="default"
+								  Publish="true"
+								  Title="PnP Extesions Test"
+								  Layout="BlankWebPartPageCopy"
+								  WelcomePage="true" >
+								
+								<Properties>
+									<Property Name="PublishingPageContent" 
+											  Value="&lt;b&gt;Welcome to PnP&lt;/b&gt;. This is an Extensions sample." />
+								</Properties>
+								
+								<WebParts>
+									
+									<WebPart Zone="CenterColumn" Order="0" Title="LinksList Custom JSLink" DefaultViewDisplayName="All Links">
+										<Contents>
+											<![CDATA[
+												<webParts>
+														<webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+																<metaData>
+																		<type name="Microsoft.SharePoint.WebPartPages.XsltListViewWebPart,Microsoft.SharePoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+																		<importErrorMessage>Cannot import this Web Part.</importErrorMessage>
+																</metaData>
+																<data>
+																	<properties>
+																		<property name="Title" type="string">List of Links with Custom JSLink</property>
+																		<property name="ListUrl" type="string">{listurl:Useful Links}</property>
+																		<property name="JSLink" type="string">&#126;sitecollection/Style Library/CustomJsLink.js</property>
+																		<property name="ChromeType" type="chrometype">None</property>
+																	</properties>
+																</data>
+														</webPart>
+												</webParts>
+											]]>
+										</Contents>
+									</WebPart>
+
+									<WebPart Zone="CenterColumn" Order="1" Title="Script editor" DefaultViewDisplayName="">
+										<Contents>
+											<![CDATA[
+												<webParts>
+													<webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
+														<metaData>
+															<type name="Microsoft.SharePoint.WebPartPages.ScriptEditorWebPart, Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+															<importErrorMessage>Cannot import this Web Part.</importErrorMessage>
+														</metaData>
+														<data>
+															<properties>
+																<property name="ExportMode" type="exportmode">All</property>
+																<property name="HelpUrl" type="string" />
+																<property name="Hidden" type="bool">False</property>
+																<property name="Description" type="string">Allows authors to insert HTML snippets or scripts.</property>
+																<property name="Content" type="string">																
+																	&lt;input type="button" value="Script Editor WP demo" onclick="javascript: alert('Welcome to PnP');" /&gt;
+																</property>
+																<property name="CatalogIconImageUrl" type="string" />
+																<property name="Title" type="string">Script Editor</property>
+																<property name="AllowHide" type="bool">True</property>
+																<property name="AllowMinimize" type="bool">True</property>
+																<property name="AllowZoneChange" type="bool">True</property>
+																<property name="TitleUrl" type="string" />
+																<property name="ChromeType" type="chrometype">None</property>
+																<property name="AllowConnect" type="bool">True</property>
+																<property name="Width" type="unit" />
+																<property name="Height" type="unit" />
+																<property name="HelpMode" type="helpmode">Navigate</property>
+																<property name="AllowEdit" type="bool">True</property>
+																<property name="TitleIconImageUrl" type="string" />
+																<property name="Direction" type="direction">NotSet</property>
+																<property name="AllowClose" type="bool">True</property>
+																<property name="ChromeState" type="chromestate">Normal</property>
+															</properties>
+														</data>
+													</webPart>
+												</webParts> 
+											]]>
+										</Contents>
+									</WebPart>
+								</WebParts>
+							</Page>
+						</PublishingPageProvider>
+					</pnp:Configuration>
+				</pnp:Provider>
+			</pnp:Providers>
+
+		</pnp:ProvisioningTemplate>
+	</pnp:Templates>
+</pnp:Provisioning>

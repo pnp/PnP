@@ -1,0 +1,41 @@
+﻿<span id="page-script">
+    <script type="text/javascript" src="../scripts/pnp.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            sample.init(function (hostWebUrl, appWebUrl) {
+
+                // make a request that will be cached
+                $pnp.storage.session.getOrPut("myUserProfileKey", function () { return $pnp.sp.profiles.userProfile; }).then(function (d) {
+
+                    // here we would use the result
+                    sample.show(d);
+                });
+
+                // set this late enough the first request should be done
+                setTimeout(function () {
+                    $pnp.storage.session.getOrPut("myUserProfileKey", function () { return $pnp.sp.profiles.userProfile; }).then(function (d) {
+                        sample.append(d);
+                    });
+                }, 7000);
+            });
+        });
+
+    </script>
+</span>
+
+<div class="page-header">
+    <h1>Caching Basics</h1>
+</div>
+
+<p>
+    This sample shows retrieving the users's profile - a common operation for data that is unlikely to change frequently, a prime case for caching. We
+    use the session storage to provide some security between sessions and to avoid bugs where a user "inherits" another's profile. The getOrPut method
+    is a shortcut to the logic of "check the cache and make the request if it is not there". Because these requests are likely async it returns a promise and takes in a
+    function that returns a promise, in this case "$pnp.sp.profiles.userProfile" is a property that returns a promise.
+</p>
+
+<p>
+    If you check the network trace (using the browser dev tools or fiddler) you will see a single request is sent for the profile, and no request is executed the second
+    time as the data is retrieved from the cache.
+</p>

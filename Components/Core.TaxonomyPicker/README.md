@@ -9,7 +9,8 @@ This sample shows an implementation of a SharePoint Taxonomy Picker control that
 -  SharePoint 2013 on-premises
 
 ### Prerequisites ###
-It's important that the provider hosted add-in that's running the taxonomy picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
+- It's important that the provider hosted add-in that's running the taxonomy picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
+- You have to set the Options 'This service application is the default storage location for Keywords.' and 'This service application is the default storage location for column specific term sets.' on one of the Managed Metadata Service Application(s) Proxy Properties. If you get "Loading TermSet failed. Please refresh your browser and try again." errors then please check this.
 
 ### Solution ###
 Solution | Author(s)
@@ -130,12 +131,14 @@ The first parameter of the Taxonomy Picker sets the options for the control. The
 | isMulti | Boolean indicating if taxonomy picker support multiple value |
 | isReadOnly | Boolean indicating if the taxonomy picker is rendered in read only mode |
 | allowFillIn | Boolean indicating if the control allows fill=ins (Open TermSets only) |
+| enterFillIn | Boolean indicating if the control allows fill=ins using enter or tab instead the button (Open TermSets only) |
 | termSetId | the GUID of the TermSet to bind against (available from Term Mgmt) |
 | useHashtags | Boolean indicating if the default hashtags TermSet should be used |
 | useKeyword | Boolean indicating if the default keywords TermSet should be used |
 | maxSuggestions | integer for the max number of suggestions to list (defaults is 10) |
 | lcid | the locale ID for creating terms (default is 1033) |
 | language | the language code for the control (defaults to en=us) context. |
+| useContainsSuggestions | optional boolean indicating if the suggestions should search with "contains" matching (default pattern is "starts with") |
 
  The second parameter is an initialized SP.ClientContext object 
 

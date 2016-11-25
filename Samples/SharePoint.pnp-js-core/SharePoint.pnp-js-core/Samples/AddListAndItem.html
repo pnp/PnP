@@ -1,0 +1,31 @@
+﻿<span id="page-script">
+    <script type="text/javascript" src="../scripts/pnp.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            sample.init(function (hostWebUrl, appWebUrl) {
+
+                // we first create a new list, providing the title and accepting the other defaults
+                $pnp.sp.crossDomainWeb(appWebUrl, hostWebUrl).lists.ensure("New List").then(function (result) {
+
+                    sample.append(result);
+
+                    // once we create the list we get back a result, which has the new list instance
+                    result.list.items.add({
+                        Title: "My First Item"
+                    }).then(sample.append);
+                });
+
+            });//end sample.init
+        });
+    </script>
+</span>
+
+<div class="page-header">
+    <h1>Add a List and Item</h1>
+</div>
+
+<p>
+    This sample shows how to add a list and an item to the newly created list using Promise chaining. Note the use of the "ensure" method on lists to
+    only create the list if it doesn't exist.
+</p>
+

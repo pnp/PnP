@@ -1,0 +1,25 @@
+﻿<div>
+
+    <link rel="Stylesheet" type="text/css" href="../SiteAssets/SurveyApp/Survey.css" />
+
+    <table>
+        <tr>
+            <td class="webPart">
+                <div style="width: 400px; height: 250px;" ng-controller="main as vm" ng-include="'../SiteAssets/SurveyApp/main.html'"></div>
+            </td>
+        </tr>
+    </table>
+
+    <script type="text/javascript" src="../SiteAssets/SurveyApp/pnp-ww.js"
+            ww-appname="microSurvey"
+            ww-apptype="Angular"
+            ww-appscripts='[{"src": "../SiteAssets/SurveyApp/angular.1.3.14.min.js", "priority":0, "test": "false"},
+                                        {"src": "../SiteAssets/SurveyApp/mainController.js", "priority":1, "test": "false"},
+                                        {"src": "../SiteAssets/SurveyApp/settingsController.js", "priority":2, "test": "false"},
+                                        {"src": "../SiteAssets/SurveyApp/listFormController.js", "priority":3, "test": "false"},
+                                        {"src": "../SiteAssets/SurveyApp/surveyService.js", "priority":4, "test": "false"},
+                                        {"src": "../SiteAssets/SurveyApp/spDataService.js", "priority":5, "test": "false"}
+                    ]'>
+    </script>
+
+</div>

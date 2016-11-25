@@ -1,0 +1,18 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-ms-adal": {
+            "PACKAGE_NAME": "{ec467040-eaa9-11e5-b655-5f6b26ee3d3e}"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "{ec467040-eaa9-11e5-b655-5f6b26ee3d3e}"
+        }
+    },
+    "dependent_plugins": {}
+}

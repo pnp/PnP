@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProjectItem Type="Microsoft.VisualStudio.SharePoint.GenericElement" DefaultFile="Elements.xml" SupportedTrustLevels="All" SupportedDeploymentScopes="Web, Site, WebApplication, Farm, Package" xmlns="http://schemas.microsoft.com/VisualStudio/2010/SharePointTools/SharePointProjectItemModel">
+  <Files>
+    <ProjectItemFile Source="Elements.xml" Target="Samples\" Type="ElementManifest" />
+    <ProjectItemFile Source="HelloWorld.html" Target="Samples\" Type="ElementFile" />
+    <ProjectItemFile Source="RequireBasic.html" Target="Samples\" Type="ElementFile" />
+    <ProjectItemFile Source="CachingBasic.html" Target="Samples\" Type="ElementFile" />
+    <ProjectItemFile Source="Logging.html" Target="Samples\" Type="ElementFile" />
+    <ProjectItemFile Source="LoggingAdvanced.html" Target="Samples\" Type="ElementFile" />
+    <ProjectItemFile Source="Search.html" Target="Samples\" Type="ElementFile" />
+    <ProjectItemFile Source="AddListAndItem.html" Target="Samples\" Type="ElementFile" />
+    <ProjectItemFile Source="Configuration.html" Target="Samples\" Type="ElementFile" />
+    <ProjectItemFile Source="ReadListItems.html" Target="Samples\" Type="ElementFile" />
+    <ProjectItemFile Source="ReadListItemsPaged.html" Target="Samples\" Type="ElementFile" />
+    <ProjectItemFile Source="RequestCaching.html" Target="Samples\" Type="ElementFile" />
+    <ProjectItemFile Source="RequestBatching.html" Target="Samples\" Type="ElementFile" />
+    <ProjectItemFile Source="RequestBatchingAndCaching.html" Target="Samples\" Type="ElementFile" />
+  </Files>
+</ProjectItem>

@@ -1,0 +1,28 @@
+﻿@model BusinessApps.HelpDesk.Models.SupportTicket.SupportTicketViewModel
+
+<div>
+    <div class="dl-horizontal">
+        @Html.LabelFor(model => model.SupportTicket.Title):
+        @Model.SupportTicket.Title
+    </div>
+    <div class="dl-horizontal">
+        @Html.LabelFor(model => model.SupportTicket.AssignedTo):
+        <span id="support-ticket-assignedto">@Model.SupportTicket.AssignedTo</span>
+    </div>
+    <div class="dl-horizontal">
+        @Html.LabelFor(model => model.SupportTicket.Status):
+        <span id="support-ticket-status">@Model.SupportTicket.Status</span>
+    </div>
+    <div class="dl-horizontal">
+        @Html.LabelFor(model => model.SupportTicket.Description):
+        <div class="support-ticket-content">
+            <span id="support-ticket-description">@Html.Raw(Model.SupportTicket.Description)</span>
+        </div>
+    </div>
+    <div class="dl-horizontal">
+        <button class="float-right" onclick="CloseTicket('@Model.SupportTicket.ID')">Close Ticket</button>
+    </div>
+</div>
+
+
+

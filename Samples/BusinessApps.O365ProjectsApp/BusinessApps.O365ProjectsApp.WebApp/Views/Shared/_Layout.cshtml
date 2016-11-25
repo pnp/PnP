@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+
+    <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/4.0/1/MicrosoftAjax.js"></script>
+    @Scripts.Render("~/bundles/jquery")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+
+    @Html.Partial("~/Views/Shared/_Office365SuiteBar.cshtml")
+    @Html.Partial("~/Views/Shared/_Office365NavBar.cshtml")
+
+    <div class="scrollableContent">
+        <div id="mainContent">
+
+            <div class="ms-Grid">
+                <div class="ms-Grid-row">
+                    <div class="ms-Grid-col ms-u-sm1 ms-u-md1 ms-u-lg2">
+                        <img src="/AppIcon.png" class="siteIcon" />
+                    </div>
+                    <div class="ms-Grid-col ms-u-sm11 ms-u-md11 ms-u-lg10">
+                        <h1>@ViewBag.Title</h1>
+                    </div>
+                </div>
+                <div class="ms-Grid-row">
+                    <div class="ms-Grid-col ms-u-sm1 ms-u-md1 ms-u-lg2">
+
+                    </div>
+                    <div class="ms-Grid-col ms-u-sm11 ms-u-md11 ms-u-lg10">
+                        @RenderBody()
+                    </div>
+                </div>
+                <div class="ms-Grid-row">
+                    <div class="ms-Grid-col ms-u-sm12 ms-u-md12 ms-u-lg12">
+                        <hr />
+                        <footer>
+                            (C) Office 365 Developers Patterns &amp; Practices, 2016
+                        </footer>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/fabric")
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+
+        // Initialize the NavBar object
+        if ($.fn.NavBar) {
+            $(".ms-NavBar").NavBar();
+        }
+
+    </script>
+
+</body>
+</html>

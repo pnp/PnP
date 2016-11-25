@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="Samples">
+    <File Path="Samples\HelloWorld.html" Url="Samples/HelloWorld.html" ReplaceContent="TRUE" />
+    <File Path="Samples\RequireBasic.html" Url="Samples/RequireBasic.html" ReplaceContent="TRUE" />
+    <File Path="Samples\CachingBasic.html" Url="Samples/CachingBasic.html" ReplaceContent="TRUE" />
+    <File Path="Samples\Logging.html" Url="Samples/Logging.html" ReplaceContent="TRUE" />
+    <File Path="Samples\LoggingAdvanced.html" Url="Samples/LoggingAdvanced.html" ReplaceContent="TRUE" />
+    <File Path="Samples\Search.html" Url="Samples/Search.html" ReplaceContent="TRUE" />
+    <File Path="Samples\AddListAndItem.html" Url="Samples/AddListAndItem.html" ReplaceContent="TRUE" />
+    <File Path="Samples\Configuration.html" Url="Samples/Configuration.html" ReplaceContent="TRUE" />
+    <File Path="Samples\ReadListItems.html" Url="Samples/ReadListItems.html" ReplaceContent="TRUE" />
+    <File Path="Samples\ReadListItemsPaged.html" Url="Samples/ReadListItemsPaged.html" ReplaceContent="TRUE" />
+    <File Path="Samples\RequestCaching.html" Url="Samples/RequestCaching.html" ReplaceContent="TRUE" />
+    <File Path="Samples\RequestBatching.html" Url="Samples/RequestBatching.html" ReplaceContent="TRUE" />
+    <File Path="Samples\RequestBatchingAndCaching.html" Url="Samples/RequestBatchingAndCaching.html" ReplaceContent="TRUE" />    
+  </Module>
+</Elements>

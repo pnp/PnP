@@ -62,13 +62,13 @@ $(document).ready(function () {
 
 
                         //Make a Csom people picker control
-                        //1. data url on the server (webmethod in webforms, controller action in MVC)
-                        //2. SpHostUrl
-                        //3. $('#spanCsomAdministrators') = SPAN that will 'host' the people picker control
-                        //4. $('#inputCsomAdministrators') = INPUT that will be used to capture user input
-                        //5. $('#divCsomAdministratorsSearch') = DIV that will show the 'dropdown' of the people picker
-                        //6. $('#hdnCsomAdministrators') = INPUT hidden control that will host a JSON string of the resolved users
-                        csomPeoplePicker = new CAMControl.CsomPeoplePicker('Default.aspx/GetPeoplePickerData', spHostUrl, $('#spanCsomAdministrators'), $('#inputCsomAdministrators'), $('#divCsomAdministratorsSearch'), $('#hdnCsomAdministrators'));
+                        //1. context = SharePoint Client Context object
+                        //2. $('#spanCsomAdministrators') = SPAN that will 'host' the people picker control
+                        //3. $('#inputCsomAdministrators') = INPUT that will be used to capture user input
+                        //4. $('#divCsomAdministratorsSearch') = DIV that will show the 'dropdown' of the people picker
+                        //5. $('#hdnCsomAdministrators') = INPUT hidden control that will host a JSON string of the resolved users
+                        //6. data url on the server (webmethod in webforms, controller action in MVC)
+                        csomPeoplePicker = new CAMControl.PeoplePicker(context, $('#spanCsomAdministrators'), $('#inputCsomAdministrators'), $('#divCsomAdministratorsSearch'), $('#hdnCsomAdministrators'), 'Default.aspx/GetPeoplePickerData');
                         // required to pass the variable name here!
                         csomPeoplePicker.InstanceName = "csomPeoplePicker";
                         // Pass current language, if not set defaults to en-US. Use the SPLanguage query string param or provide a string like "nl-BE"
@@ -118,7 +118,7 @@ function getQueryStringParameter(urlParameterKey) {
     var strParams = '';
     for (var i = 0; i < params.length; i = i + 1) {
         var singleParam = params[i].split('=');
-        if (singleParam[0] == urlParameterKey)
+        if (singleParam[0] === urlParameterKey)
             return singleParam[1];
     }
 }

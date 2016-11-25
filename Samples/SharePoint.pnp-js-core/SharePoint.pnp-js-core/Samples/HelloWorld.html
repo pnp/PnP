@@ -1,0 +1,19 @@
+﻿<span id="page-script">
+    <script type="text/javascript" src="../scripts/pnp.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            sample.init(function (hostWebUrl, appWebUrl) {
+
+                $pnp.sp.crossDomainWeb(appWebUrl, hostWebUrl).select("Title").get().then(sample.show);
+
+            });//end sample.init
+        });
+    </script>
+</span>
+
+<div class="page-header">
+    <h1>Hello World</h1>
+</div>
+
+<p>This sample demonstrates basic functionality of the library. Incuding the code with a script tag and using the global $pnp variable. This approach can be used in script editor web parts as well as SharePoint hosted applications.</p>
+

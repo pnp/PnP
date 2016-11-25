@@ -1,0 +1,39 @@
+﻿<span id="page-script">
+    <script type="text/javascript" src="../scripts/pnp.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            sample.init(function (hostWebUrl, appWebUrl) {
+
+                // we first need to create a logger instance, this can be done using any of the built in loggers:
+                // here we create a function listener, that just passes each message do your function.
+                var logger1 = new $pnp.log.FunctionListener(function (m) {
+                    sample.show(JSON.stringify(m));
+                });
+
+                // let's also create a console listener
+                var logger2 = new $pnp.log.ConsoleListener();
+
+                // the next step is to subscribe our listeners to the log, which we can do by passing them to subscribe.
+                $pnp.log.subscribe(logger1, logger2);
+
+                // by default our messages won't be logged unless they are of a sufficient level, so let's reduce the default level of our logger
+                $pnp.log.activeLogLevel = $pnp.log.LogLevel.Verbose; // verbose
+
+                // now we log something - you'll have to check the console to see the value there.
+                $pnp.log.write("My first log message!");
+
+            });//end sample.init
+        });
+    </script>
+</span>
+
+<div class="page-header">
+    <h1>Logging</h1>
+</div>
+
+<p>
+    This sample show the basics of logging using the PnP framework. You can use the subscription model to log to one or more logs, as well as set the log level. You will find several log listeners already
+    built in, these are: ConsoleListener, FunctionListener, and AzureInsightsListener. The ConsoleListener will log to the browser console. FunctionListener will pass any messages to your custom logic wrapped in 
+    the function supplied in the constructor. Finally, AzureInsightsListener allows you to log information to your Azure Insights account - you must pass in your instrumentation key in the constructor.
+</p>
+

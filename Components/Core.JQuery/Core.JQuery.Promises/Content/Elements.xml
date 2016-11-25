@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+  <Module Name="Content">
+    <File Path="Content\AddIn.css" Url="Content/AddIn.css" ReplaceContent="TRUE" />
+  </Module>
+</Elements>

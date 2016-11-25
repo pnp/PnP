@@ -1,0 +1,62 @@
+﻿<span id="page-script">
+    <script type="text/javascript" src="../scripts/pnp.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            sample.init(function (hostWebUrl, appWebUrl) {
+
+                // this helper function will ensure we have a list with data
+                function ensureSampleData() {
+                    return new Promise(function (resolve, reject) {
+
+                        $pnp.sp.crossDomainWeb(appWebUrl, hostWebUrl).lists.ensure("Read List Sample").then(function (result) {
+                            if (result.created) {
+                                // only create the items if we created the list on this execution
+                                Promise.all([
+                                    result.list.items.add({ Title: "Item 1" }),
+                                    result.list.items.add({ Title: "Item 2" }),
+                                    result.list.items.add({ Title: "Item 3" }),
+                                    result.list.items.add({ Title: "Item 4" }),
+                                    result.list.items.add({ Title: "Item 5" }),
+                                    result.list.items.add({ Title: "Item 6" }),
+                                ]).then(function () { resolve(result.list); });
+                            } else {
+                                resolve(result.list);
+                            }
+                        });
+                    });
+                }
+
+                // ensure our list and data, then retrieve it:
+                ensureSampleData().then(function (list) {
+
+                    // get the first page of items
+                    list.items.top(2).orderBy("Title").getPaged().then(function (result) {
+
+                        // show the first page of results
+                        sample.append(result.results);
+
+                        // always see if there are more results before requesting them
+                        if (result.hasNext) {
+
+                            result.getNext().then(function (result2) {
+
+                                // show the second page of results
+                                sample.append(result2.results);
+                            });
+                        }
+                    });
+                });
+
+            });//end sample.init
+        });
+    </script>
+</span>
+
+<div class="page-header">
+    <h1>Read List Items</h1>
+</div>
+
+<p>
+    This sample shows how to read items from a list in several ways.
+</p>
+

@@ -1,0 +1,86 @@
+<div class="persona-search-outer">
+    <div class="persona-search">
+        <input class="persona-search-box" type="text" placeholder="Search contact" ng-model="vm.searchQuery" ng-disabled="vm.searching" focus-on="searchFinished" ng-keyup="$event.keyCode === 13 && vm.search()">
+        <button class="persona-search-commit" ng-click="vm.search()" ng-disabled="vm.searching || vm.canSearch() === false">
+            <svg class="icon icon-24">
+                <use xlink:href="./images/icons.svg#icon-search" x="0" y="0" class="icon-style"></use>
+            </svg>
+        </button>
+    </div>
+</div>
+<div ng-show="vm.searching" class="spinner">
+    <img src="images/ajax-loader.gif">
+</div>
+<div ng-show="vm.searching === false">
+    <div ng-show="vm.error !== null">
+        The following error has occured while searching for contacts: {{::vm.error}}.
+    </div>
+    <div ng-show="vm.contacts.length === 0 && vm.hasSearched">
+        No contacts found
+    </div>
+    <div ng-show="vm.contacts.length > 0" class="persona-result">
+        <div class="persona-item" ng-repeat="contact in vm.contacts" ng-swipe-left="vm.showContactActions($event)">
+            <div class="persona-image">
+                <img src="/images/default-person.gif" ng-src="{{::contact.photoUrl}}">
+            </div>
+            <div class="persona-item-baseinfo">
+                <div class="persona-label">
+                    {{::contact.name}}
+                </div>
+                <div class="persona-function">
+                    {{::contact.title}}
+                </div>
+            </div>
+            <div class="persona-item-detailinfo">
+                <div class="persona-detail">
+                    <label class="persona-detail-label">E-Mail</label><a href="mailto:{{::contact.emailAddresses[0].address}}">{{::contact.emailAddresses[0].address}}</a>
+                </div>
+                <div class="persona-detail">
+                    <label class="persona-detail-label">Phone</label><a href="tel://{{::contact.businessPhones[0]}}">{{::contact.businessPhones[0]}}</a>
+                </div>
+                <div class="persona-detail" ng-show="contact.profileUrl">
+                    <label class="persona-detail-label">Profile</label><a ng-href="{{::contact.profileUrl}}" target="_blank">{{::contact.profileUrl}}</a>
+                </div>
+            </div>
+            <div class="persona-item-tasks">
+                <div class="btn-group">
+                    <span class="icon-button-32 icon-close">
+                        <button class="icon-close">
+                            <svg class="icon icon-32 moveRight">
+                                <use xlink:href="./images/icons.svg#icon-chevronsRight" x="0" y="0" class="icon-style"></use>
+                            </svg>
+                        </button>
+                    </span>
+                    <span class="icon-button-32">
+                        <a href="tel://{{::contact.businessPhones[0]}}">
+                            <svg class="icon icon-32">
+                                <use xlink:href="./images/icons.svg#icon-phone" x="0" y="0" class="icon-style"></use>
+                            </svg>
+                        </a>
+                    </span>
+                    <span class="icon-button-32">
+                        <a href="sip:{{::contact.emailAddresses[0].address}}">
+                            <svg class="icon icon-32 icon-skype">
+                                <use xlink:href="./images/icons.svg#icon-skype" x="0" y="0" class="icon-style"></use>
+                            </svg>
+                        </a>
+                    </span>
+                    <span class="icon-button-32">
+                        <a href="mailto:{{::contact.emailAddresses[0].address}}" class="icon-mail">
+                            <svg class="icon icon-32">
+                                <use xlink:href="./images/icons.svg#icon-mail" x="0" y="0" class="icon-style"></use>
+                            </svg>
+                        </a>
+                    </span>
+                    <span class="icon-button-32" ng-show="contact.profileUrl">
+                        <a ng-href="{{::contact.profileUrl}}" target="_blank">
+                        <svg class="icon icon-32 icon-info">
+                            <use xlink:href="./images/icons.svg#icon-onlineJoin" x="0" y="0" class="icon-style"></use>
+                        </svg>
+                        </a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

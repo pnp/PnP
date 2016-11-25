@@ -11,6 +11,8 @@ namespace Contoso.Core.PeoplePickerWeb
 {
     public class PeoplePickerHelper
     {
+        private static int GroupID = -1;
+
         public static string GetPeoplePickerSearchData()
         {
              var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext.Current);
@@ -25,6 +27,7 @@ namespace Contoso.Core.PeoplePickerWeb
             //get searchstring and other variables
             var searchString = (string)HttpContext.Current.Request["SearchString"];
             int principalType = Convert.ToInt32(HttpContext.Current.Request["PrincipalType"]);
+            string spGroupName = (string)HttpContext.Current.Request["SPGroupName"];
 
             ClientPeoplePickerQueryParameters querryParams = new ClientPeoplePickerQueryParameters();
             querryParams.AllowMultipleEntities = false;
@@ -32,6 +35,27 @@ namespace Contoso.Core.PeoplePickerWeb
             querryParams.PrincipalSource = PrincipalSource.All;
             querryParams.PrincipalType = (PrincipalType) principalType;
             querryParams.QueryString = searchString;
+
+            if (!string.IsNullOrEmpty(spGroupName))
+            {
+                if (PeoplePickerHelper.GroupID == -1)
+                {
+                    var group = context.Web.SiteGroups.GetByName(spGroupName);
+                    if (group != null)
+                    {
+                        context.Load(group, p => p.Id);
+                        context.ExecuteQuery();
+
+                        PeoplePickerHelper.GroupID = group.Id;
+
+                        querryParams.SharePointGroupID = group.Id;
+                    }
+                }
+                else
+                {
+                    querryParams.SharePointGroupID = PeoplePickerHelper.GroupID;
+                }
+            }
 
             //execute query to Sharepoint
             ClientResult<string> clientResult = Microsoft.SharePoint.ApplicationPages.ClientPickerQuery.ClientPeoplePickerWebServiceInterface.ClientPeoplePickerSearchUser(context, querryParams);

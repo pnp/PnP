@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Graph Connect App</title>
+    @Scripts.Render("~/bundles/jquery")
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/1.0/fabric.min.css" />
+    <link rel="stylesheet" href="https://appsforoffice.microsoft.com/fabric/1.0/fabric.components.min.css" />
+</head>
+<body>
+    @Html.Partial("~/Views/Shared/_Office365SuiteBar.cshtml")
+    @Html.Partial("~/Views/Shared/_Office365NavBar.cshtml")
+    <div class="scrollableContent">
+        @*<img src="~/Images/PnP-O365-App-Icon.png" class="siteIcon" />
+            <h1>@ViewBag.Title</h1>*@
+        <div id="mainContent">
+            <div class="container body-content">
+                @RenderBody()
+                <hr />
+                <footer>
+                    <p>&copy; @DateTime.Now.Year - <a href="https://aka.ms/OfficeDevPnP" title="Office 365 Development Patterns and Practices">Office 365 Development Patterns and Practices</a></p>
+                </footer>
+            </div>
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jquery")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

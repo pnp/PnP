@@ -1,0 +1,77 @@
+﻿@model IEnumerable<OfficeDevPnP.MSGraphAPIGroups.Models.Post>
+
+<div class="ms-Grid-row ms-bgColor-themeDark ">
+
+	<div class="ms-Grid-col ms-u-sm12">
+		<h2 class="ms-font-xxl ms-fontColor-white">
+			@ViewBag.Title
+		</h2>
+	</div>
+</div>
+
+<div class="ms-Grid-row">
+	<div class="ms-Grid-col ms-u-sm12">
+		@if (!String.IsNullOrEmpty(ViewBag.Message))
+		{
+			<h4 class="ms-font-xl">@ViewBag.Message</h4>
+		}
+	</div>
+</div>
+
+<div class="ms-Grid-row">
+	<div class="ms-Grid-col ms-u-sm12">
+		<div class="ms-CommandBar">
+			<div class="ms-CommandBar-sideCommands">
+				<div class="ms-CommandBarItem">
+					<div class="ms-CommandBarItem-linkWrapper">
+						<a class="ms-CommandBarItem-link" tabindex="1" href="@Url.Action("Details", new { id = ViewBag.GroupId })">
+							<span class="ms-CommandBarItem-icon ms-Icon ms-Icon--reactivate"></span>
+							<span class="ms-CommandBarItem-commandText ms-font-m ms-font-weight-regular">Back to Group Details</span>
+						</a>
+					</div>
+				</div>
+			</div>
+			<div class="ms-CommandBar-mainArea">
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="ms-Grid-row">
+	<div class="ms-Grid-col ms-u-sm12">
+
+		<div class="ms-Table">
+			<div class="ms-Table-row">
+				<span class="ms-Table-cell">@Html.DisplayNameFor(model => model.sender)</span>
+				<span class="ms-Table-cell">@Html.DisplayNameFor(model => model.newParticipants)</span>
+				<span class="ms-Table-cell">@Html.DisplayNameFor(model => model.receivedDateTime)</span>
+				<span class="ms-Table-cell">@Html.DisplayNameFor(model => model.categories)</span>
+				<span class="ms-Table-cell">@Html.DisplayNameFor(model => model.hasAttachments)</span>
+			</div>
+
+			@foreach (var item in Model)
+			{
+				string newParticipants = (item.newParticipants == null) ? "" : String.Join<OfficeDevPnP.MSGraphAPIGroups.Models.Recipient>("<br/>", item.newParticipants);
+				string categories = String.Join("<br/>", item.categories);
+				<div class="ms-Table-row">
+					<span class="ms-Table-cell">
+						@Html.DisplayFor(modelItem => item.sender.emailAddress.name)
+					</span>
+					<span class="ms-Table-cell">
+						@Html.Raw(newParticipants)
+					</span>
+					<span class="ms-Table-cell">
+						@Html.DisplayFor(modelItem => item.receivedDateTime)
+					</span>
+					<span class="ms-Table-cell">
+						@Html.Raw(categories)
+					</span>
+					<span class="ms-Table-cell">
+						@Html.DisplayFor(modelItem => item.hasAttachments)
+					</span>
+				</div>
+			}
+		</div>
+
+	</div>
+</div>

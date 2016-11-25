@@ -1,0 +1,17 @@
+﻿<div>
+
+    <link rel="Stylesheet" type="text/css" href="%AppPath%/Survey.css" />
+
+    <table>
+        <tr>
+            <td class="webPart">
+                <div style="width: 400px; height: 250px;"
+                     ng-controller="main as vm"
+                     ng-include="'%AppPath%/main.html'"></div>
+            </td>
+        </tr>
+    </table>
+
+    <script src="%AppPath%/initUI.js"></script>
+
+</div>

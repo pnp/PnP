@@ -1,0 +1,399 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		11C1E34A165F1728AD02010B /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C83EEF2DE59EA3ECC4C97903 /* libPods.a */; };
+		F03486CC1C8F22E9001C0E88 /* MailClient.m in Sources */ = {isa = PBXBuildFile; fileRef = F03486CB1C8F22E9001C0E88 /* MailClient.m */; };
+		F03486CE1C8F2F87001C0E88 /* adal_settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = F03486CD1C8F2F87001C0E88 /* adal_settings.plist */; };
+		F0C983571C8F1E3F00ACDD72 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C983561C8F1E3F00ACDD72 /* main.m */; };
+		F0C9835A1C8F1E3F00ACDD72 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C983591C8F1E3F00ACDD72 /* AppDelegate.m */; };
+		F0C9835D1C8F1E3F00ACDD72 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F0C9835C1C8F1E3F00ACDD72 /* ViewController.m */; };
+		F0C983601C8F1E3F00ACDD72 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F0C9835E1C8F1E3F00ACDD72 /* Main.storyboard */; };
+		F0C983621C8F1E3F00ACDD72 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F0C983611C8F1E3F00ACDD72 /* Assets.xcassets */; };
+		F0C983651C8F1E3F00ACDD72 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F0C983631C8F1E3F00ACDD72 /* LaunchScreen.storyboard */; };
+		F0C9836D1C8F1E5000ACDD72 /* Podfile in Resources */ = {isa = PBXBuildFile; fileRef = F0C9836C1C8F1E5000ACDD72 /* Podfile */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		5CBE25B9F0AA59961EA90684 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		A8C2655BC8DF1E92A15E7A4E /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		C83EEF2DE59EA3ECC4C97903 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F03486CA1C8F22E9001C0E88 /* MailClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MailClient.h; sourceTree = "<group>"; };
+		F03486CB1C8F22E9001C0E88 /* MailClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MailClient.m; sourceTree = "<group>"; };
+		F03486CD1C8F2F87001C0E88 /* adal_settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = adal_settings.plist; sourceTree = "<group>"; };
+		F0C983521C8F1E3F00ACDD72 /* MSGraph.MailClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MSGraph.MailClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		F0C983561C8F1E3F00ACDD72 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		F0C983581C8F1E3F00ACDD72 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		F0C983591C8F1E3F00ACDD72 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		F0C9835B1C8F1E3F00ACDD72 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		F0C9835C1C8F1E3F00ACDD72 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		F0C9835F1C8F1E3F00ACDD72 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		F0C983611C8F1E3F00ACDD72 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		F0C983641C8F1E3F00ACDD72 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		F0C983661C8F1E3F00ACDD72 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F0C9836C1C8F1E5000ACDD72 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F0C9834F1C8F1E3F00ACDD72 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				11C1E34A165F1728AD02010B /* libPods.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3D00EBD53B724023797968B7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				5CBE25B9F0AA59961EA90684 /* Pods.debug.xcconfig */,
+				A8C2655BC8DF1E92A15E7A4E /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		EC5F28C1CF8C69367763BFB2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C83EEF2DE59EA3ECC4C97903 /* libPods.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		F0C983491C8F1E3E00ACDD72 = {
+			isa = PBXGroup;
+			children = (
+				F0C9836C1C8F1E5000ACDD72 /* Podfile */,
+				F0C983541C8F1E3F00ACDD72 /* MSGraph.MailClient */,
+				F0C983531C8F1E3F00ACDD72 /* Products */,
+				3D00EBD53B724023797968B7 /* Pods */,
+				EC5F28C1CF8C69367763BFB2 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		F0C983531C8F1E3F00ACDD72 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F0C983521C8F1E3F00ACDD72 /* MSGraph.MailClient.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		F0C983541C8F1E3F00ACDD72 /* MSGraph.MailClient */ = {
+			isa = PBXGroup;
+			children = (
+				F0C983581C8F1E3F00ACDD72 /* AppDelegate.h */,
+				F0C983591C8F1E3F00ACDD72 /* AppDelegate.m */,
+				F0C9835B1C8F1E3F00ACDD72 /* ViewController.h */,
+				F0C9835C1C8F1E3F00ACDD72 /* ViewController.m */,
+				F0C9835E1C8F1E3F00ACDD72 /* Main.storyboard */,
+				F0C983611C8F1E3F00ACDD72 /* Assets.xcassets */,
+				F0C983631C8F1E3F00ACDD72 /* LaunchScreen.storyboard */,
+				F0C983661C8F1E3F00ACDD72 /* Info.plist */,
+				F0C983551C8F1E3F00ACDD72 /* Supporting Files */,
+				F03486CA1C8F22E9001C0E88 /* MailClient.h */,
+				F03486CB1C8F22E9001C0E88 /* MailClient.m */,
+				F03486CD1C8F2F87001C0E88 /* adal_settings.plist */,
+			);
+			path = MSGraph.MailClient;
+			sourceTree = "<group>";
+		};
+		F0C983551C8F1E3F00ACDD72 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				F0C983561C8F1E3F00ACDD72 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		F0C983511C8F1E3F00ACDD72 /* MSGraph.MailClient */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F0C983691C8F1E3F00ACDD72 /* Build configuration list for PBXNativeTarget "MSGraph.MailClient" */;
+			buildPhases = (
+				71B24B1FC5439894F02FF81E /* Check Pods Manifest.lock */,
+				F0C9834E1C8F1E3F00ACDD72 /* Sources */,
+				F0C9834F1C8F1E3F00ACDD72 /* Frameworks */,
+				F0C983501C8F1E3F00ACDD72 /* Resources */,
+				676C0424572E0EABBE54AD96 /* Embed Pods Frameworks */,
+				B774E35FDCF4F602E86DE993 /* Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MSGraph.MailClient;
+			productName = MSGraph.MailClient;
+			productReference = F0C983521C8F1E3F00ACDD72 /* MSGraph.MailClient.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F0C9834A1C8F1E3E00ACDD72 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "Office 365 Development Patterns and Practises";
+				TargetAttributes = {
+					F0C983511C8F1E3F00ACDD72 = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
+				};
+			};
+			buildConfigurationList = F0C9834D1C8F1E3F00ACDD72 /* Build configuration list for PBXProject "MSGraph.MailClient" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = F0C983491C8F1E3E00ACDD72;
+			productRefGroup = F0C983531C8F1E3F00ACDD72 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F0C983511C8F1E3F00ACDD72 /* MSGraph.MailClient */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F0C983501C8F1E3F00ACDD72 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F0C983651C8F1E3F00ACDD72 /* LaunchScreen.storyboard in Resources */,
+				F0C983621C8F1E3F00ACDD72 /* Assets.xcassets in Resources */,
+				F0C9836D1C8F1E5000ACDD72 /* Podfile in Resources */,
+				F0C983601C8F1E3F00ACDD72 /* Main.storyboard in Resources */,
+				F03486CE1C8F2F87001C0E88 /* adal_settings.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		676C0424572E0EABBE54AD96 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		71B24B1FC5439894F02FF81E /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B774E35FDCF4F602E86DE993 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		F0C9834E1C8F1E3F00ACDD72 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F0C9835D1C8F1E3F00ACDD72 /* ViewController.m in Sources */,
+				F03486CC1C8F22E9001C0E88 /* MailClient.m in Sources */,
+				F0C9835A1C8F1E3F00ACDD72 /* AppDelegate.m in Sources */,
+				F0C983571C8F1E3F00ACDD72 /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		F0C9835E1C8F1E3F00ACDD72 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F0C9835F1C8F1E3F00ACDD72 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		F0C983631C8F1E3F00ACDD72 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				F0C983641C8F1E3F00ACDD72 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		F0C983671C8F1E3F00ACDD72 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F0C983681C8F1E3F00ACDD72 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F0C9836A1C8F1E3F00ACDD72 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5CBE25B9F0AA59961EA90684 /* Pods.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = MSGraph.MailClient/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.officedev.pnp.MSGraph-MailClient";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		F0C9836B1C8F1E3F00ACDD72 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A8C2655BC8DF1E92A15E7A4E /* Pods.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = MSGraph.MailClient/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.officedev.pnp.MSGraph-MailClient";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F0C9834D1C8F1E3F00ACDD72 /* Build configuration list for PBXProject "MSGraph.MailClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F0C983671C8F1E3F00ACDD72 /* Debug */,
+				F0C983681C8F1E3F00ACDD72 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		F0C983691C8F1E3F00ACDD72 /* Build configuration list for PBXNativeTarget "MSGraph.MailClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F0C9836A1C8F1E3F00ACDD72 /* Debug */,
+				F0C9836B1C8F1E3F00ACDD72 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = F0C9834A1C8F1E3E00ACDD72 /* Project object */;
+}

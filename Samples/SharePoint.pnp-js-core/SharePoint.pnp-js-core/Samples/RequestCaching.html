@@ -1,0 +1,77 @@
+﻿<span id="page-script">
+    <script type="text/javascript" src="../scripts/pnp.js"></script>
+    <script type="text/javascript">
+
+        // this function only exists to reset the defaults in case you refresh the page multiple times
+        // and ensure consistent behavior. It is not required if you are not updating the defaults
+        function resetDefaults() {
+            // setup the global cache defaults
+            $pnp.setup({
+                defaultCachingStore: "session",
+                defaultCachingTimeoutSeconds: 30,
+                globalCacheDisable: false
+            });
+        }
+
+        $(function () {
+            sample.init(function (hostWebUrl, appWebUrl) {
+
+                sample.show("");
+
+                resetDefaults();
+
+                // the simplest example adds caching to the method chain
+                $pnp.sp.web.usingCaching().get().then(function (d) {
+                    // here we would use the result
+                    sample.append(d);
+                });
+
+                // you can also set the parameters on a per call basis
+                // each of these values is optional
+                $pnp.sp.web.usingCaching({
+                    key: "my-web-storage-key",
+                    expiration: new Date(2016, 6, 29),
+                    storeName: "local"
+                }).get().then(function (d) {
+                    // here we would use the result
+                    sample.append(d);
+                });
+
+                // setup the global cache defaults
+                $pnp.setup({
+                    defaultCachingStore: "session", // or local
+                    defaultCachingTimeoutSeconds: 10
+                });
+
+                // this call will use the default values set in the call to setup above
+                $pnp.sp.web.usingCaching().get().then(function (d) {
+                    // here we would use the result
+                    sample.append(d);
+                });
+
+                // and finally you can disable caching global for dev/test scenarios without updating your calls
+                // setup the global cache defaults
+                $pnp.setup({
+                    globalCacheDisable: true
+                });
+
+                // this call will not be cached
+                $pnp.sp.web.usingCaching().get().then(function (d) {
+                    // here we would use the result
+                    sample.append(d);
+                });
+            });
+        });
+
+    </script>
+</span>
+
+<div class="page-header">
+    <h1>Request Caching</h1>
+</div>
+
+<p>
+    This sample demonstrates how to use the "usingCaching" chainable method to store the results of your query in either local or session storage in the user's browser. You should chain the method
+    immediately before the get() call. Using caching is as simple as chaining the method into our existing queries, but you can also configure the caching if needed. By default data is stored in the
+    session cache for 30 seconds. You can also configure the default values using the pnp.setup method if desired and they will be applied to all caching calls.
+</p>

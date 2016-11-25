@@ -1,0 +1,142 @@
+﻿body {
+    /*padding-top: 50px;*/
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.container {
+    margin-left: 145px;
+}
+
+h1 {
+    display: inline;
+    vertical-align: middle;
+}
+
+img.siteIcon {
+    display: inline;
+    margin-left: 40px;
+    margin-right: 20px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+a:hover {
+    color: #333 !important;
+}
+
+.scrollableContent {
+    overflow: auto;
+}
+
+.waitWorking {
+    width: 350px; 
+    margin-top: 50px; 
+    margin-left:150px; 
+    margin-bottom: 50px;
+    vertical-align: middle;
+}
+
+.settingsValue {
+    margin-top: 6px;
+}
+
+.informationText {
+    margin-bottom: 50px;
+}
+
+.noOverflow {
+    overflow: hidden;
+}
+
+.gridHeader {
+    font-weight: bold;
+}
+
+.highlight:hover  
+{ 
+    background:#e6f2fb;
+}
+
+/* Added from BusinessApps.HelpDesk */
+
+.dashboard-tile {
+    width: 49%;
+    min-height: 400px;
+    margin-top: 2%;
+    padding-left: 1%;
+    padding-right: 1%;
+    background-color: white;
+}
+
+.dashboard-tile-content {
+    border: 1px solid grey;
+    width: 100%;
+    min-height: 330px;
+    padding: 1%;
+}
+
+#embedded-feed {
+    width: 100%;
+    height: 320px;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.email-message {
+    width: 100%;
+    cursor: pointer;
+}
+
+    .email-message:hover {
+        background-color: lightsteelblue;
+    }
+
+.email-text {
+    font-weight: bold;
+    
+}
+
+.email-timestamp {
+    float: right;
+    padding-left: 1%;
+    min-width: 4%
+}
+
+.email-content {
+    overflow: scroll;
+    height: 250px;
+    width: 675px;
+}
+
+/* custom */
+footer {
+    display: inline-block;
+}

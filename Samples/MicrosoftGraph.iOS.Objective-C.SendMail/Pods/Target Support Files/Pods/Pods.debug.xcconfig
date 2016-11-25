@@ -1,0 +1,6 @@
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/ADALiOS" "${PODS_ROOT}/Headers/Public/LiveSDK" "${PODS_ROOT}/Headers/Public/MSGraph-SDK-iOS" "${PODS_ROOT}/Headers/Public/orc"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/ADALiOS" -isystem "${PODS_ROOT}/Headers/Public/LiveSDK" -isystem "${PODS_ROOT}/Headers/Public/MSGraph-SDK-iOS" -isystem "${PODS_ROOT}/Headers/Public/orc"
+OTHER_LDFLAGS = $(inherited) -ObjC -l"ADALiOS" -l"LiveSDK" -l"MSGraph-SDK-iOS" -l"orc"
+PODS_ROOT = ${SRCROOT}/Pods
+USER_HEADER_SEARCH_PATHS = "${PODS_ROOT}/orc"

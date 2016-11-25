@@ -128,7 +128,7 @@ public void Save(Web web) {
 ```
 
 # WEB INTERFACE #
-The user experience for the Corporate Events add-in uses both SharePoint to be the primary driving interface as well as the provider-hosted web interface. The web interface is MVC controlled using the OOB ASP.NET MVC interface with Bootstrap and jquery.
+The user experience for the Corporate Events add-in uses both SharePoint to be the primary driving interface as well as the provider-hosted web interface. The web interface is MVC controlled using the OOB ASP.NET MVC interface with Bootstrap and jquery. 
 
 ## EVENTS HOME ##
 ![SharePoint - Events home](http://i.imgur.com/nwHBVn7.png)

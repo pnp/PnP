@@ -9,11 +9,16 @@
 
         // Vendor Modules
         'ui.bootstrap',
+        'angularSpinners',
+        
+        // Angular translate
+        'pascalprecht.translate',
 
         // Custom Modules
         'app.data',
         'app.wizard',
         'common'
+
 
     ]);
 
