@@ -1,0 +1,11 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Card Sent!</h2>
+        <p>Your card has been sent to the target Office 365 Group. You can now send another card.</p>
+        <p>@Html.ActionLink("Send another Card", "SendCard", "Home", new { @class = "btn btn-default" })</p>
+    </div>
+</div>

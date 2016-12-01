@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>Office 365 Connectors</h1>
+    <p class="lead">This is a sample application to show the power of Office 365 Connectors.</p>
+    <p><a href="https://dev.outlook.com/Connectors" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Register Connector</h2>
+        <p>First of all you need to register your connector in Office 365, and eventually in the Office Store.</p>
+        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkID=780623">Register</a></p>
+    </div>
+    <div class="col-md-4">
+        <h2>Connect your connector</h2>
+        <p>You can now connect the Connector with a target Office 365 Group.</p>
+        <p>@Html.ActionLink("Connect", "NewConnection", "Home", new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="col-md-4">
+        <h2>Send a card</h2>
+        <p>And now you can send cards to a target Office 365 Group.</p>
+        <p>@Html.ActionLink("Send a Card", "SendCard", "Home", new { @class = "btn btn-default" })</p>
+    </div>
+</div>
