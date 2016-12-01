@@ -7,8 +7,6 @@ namespace Office365.Connectors.Models
 {
     public class ConnectionError
     {
-        public String GroupName { get; set; }
-
         public String State { get; set; }
 
         public String Error { get; set; }

@@ -232,6 +232,7 @@
     <Content Include="Views\Home\Connect.cshtml" />
     <Content Include="Views\Home\SendCard.cshtml" />
     <Content Include="Views\Home\CardSent.cshtml" />
+    <Content Include="Views\Home\ConnectionError.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

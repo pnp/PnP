@@ -39,7 +39,6 @@ namespace Office365.Connectors.Controllers
                 return View("ConnectionError",
                     new ConnectionError
                     {
-                        GroupName = group_name,
                         State = state,
                         Error = error,
                     });
@@ -88,6 +87,11 @@ namespace Office365.Connectors.Controllers
         }
 
         public ActionResult CardSent()
+        {
+            return View();
+        }
+
+        public ActionResult ConnectionError(ConnectionError model)
         {
             return View();
         }
