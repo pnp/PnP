@@ -4,7 +4,7 @@
 This is generic sample of a custom Office 365 Connector built using Microsoft .NET.
 
 See following PnP Web Cast for additional details and live demo around this sample
-- [PnP Web Cast - PnP Web Cast - Introducing Office 365 Connectors](#)
+- [PnP Web Cast - PnP Web Cast - Introducing Office 365 Connectors](https://dev.office.com/blogs/introducing-office-365-connectors)
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
