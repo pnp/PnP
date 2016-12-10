@@ -1,0 +1,22 @@
+﻿{
+  "version": "1.2.0-*",
+  "authors": [ "Radi Atanassov" ],
+  "title": "SharePointPnP.IdentityModel",
+
+  "dependencies": {
+    "Microsoft.Extensions.WebEncoders": "1.0.0",
+    "Microsoft.IdentityModel": "6.1.7600.16394"
+  },
+
+  "frameworks": {
+    "net451": {
+      "frameworkAssemblies": {
+        "System.Web": "4.0.0.0",
+        "System.Web.Extensions": "4.0.0.0",
+        "System.IdentityModel": "4.0.0.0",
+        "System.Xml": "4.0.0.0",
+        "System.Runtime.Serialization": "4.0.0.0"
+      }
+    }
+  }
+}
