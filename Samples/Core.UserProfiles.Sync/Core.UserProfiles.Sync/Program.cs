@@ -84,7 +84,7 @@ namespace Core.UserProfiles.Sync
                     pagedCollection = await pagedCollection.GetNextPageAsync();
                     //Below condition checks for the last batch of users and adds it to the list. 
                     //Otherwise, the pagedCollection.MorePagesAvailable fails in the while condition and the loop misses the last batch of users.
-                    if (!pagedCollection.MorePagesAvailable)
+                    if (pagedCollection!= null && !pagedCollection.MorePagesAvailable)
                     {
                         usersList.AddRange(pagedCollection.CurrentPage.ToList());
                     }

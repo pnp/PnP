@@ -1,0 +1,13 @@
+﻿@model Office365.Connectors.Models.ConnectionError
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <h2>Connection Error!</h2>
+        <p>The connection with the Office 365 Group failed!</p>
+        <p>Error: @(Model?.Error)</p>
+        <p>@Html.ActionLink("Back to Home", "Index", "Home", new { @class = "btn btn-default" })</p>
+    </div>
+</div>

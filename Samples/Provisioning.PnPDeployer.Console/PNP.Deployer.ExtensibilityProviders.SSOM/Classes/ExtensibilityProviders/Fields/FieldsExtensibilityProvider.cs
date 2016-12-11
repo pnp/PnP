@@ -20,7 +20,7 @@ using PNP.Deployer.Common;
 // =======================================================
 namespace PNP.Deployer.ExtensibilityProviders.SSOM
 {
-    public class SiteFieldsProvider : IProvisioningExtensibilityHandler
+    public class FieldsExtensibilityProvider : IProvisioningExtensibilityHandler
     {
         #region Constants
 
@@ -47,7 +47,7 @@ namespace PNP.Deployer.ExtensibilityProviders.SSOM
                 // ----------------------------------------------
                 // Deserializes the configuration data
                 // ----------------------------------------------
-                SiteFieldsConfigurationData configData = XmlUtility.DeserializeXml<SiteFieldsConfigurationData>(configurationData);
+                FieldsConfig configData = DeployerUtility.DeserializeProviderConfig<FieldsConfig>(configurationData);
 
                 // ----------------------------------------------
                 // Loads the site collection and root web
@@ -59,14 +59,14 @@ namespace PNP.Deployer.ExtensibilityProviders.SSOM
                         // ----------------------------------------------
                         // Loops through the <Fields> nodes
                         // ----------------------------------------------
-                        foreach (Field configField in configData.Fields)
+                        foreach (FieldConfig fieldConfig in configData.Fields)
                         {
-                            SPField field = web.Fields.GetFieldByInternalName(configField.Name);
+                            SPField field = web.Fields.GetFieldByInternalName(fieldConfig.Name);
 
                             // ----------------------------------------------
                             // Configures the field's title resource
                             // ----------------------------------------------
-                            ConfigureFieldTitleResource(field, configField);
+                            field.ConfigureFieldTitleResource(fieldConfig.TitleResources);
                         }
                     }
                 }
@@ -87,29 +87,6 @@ namespace PNP.Deployer.ExtensibilityProviders.SSOM
         public IEnumerable<TokenDefinition> GetTokens(ClientContext ctx, ProvisioningTemplate template, string configurationData)
         {
             return new List<TokenDefinition>();
-        }
-
-        #endregion
-
-
-        #region Private Methods
-
-        // ===========================================================================================================
-        /// <summary>
-        /// Configures the TitleResource of the given <b>SPField</b> based on the specified <b>Field</b> config
-        /// </summary>
-        /// <param name="field">The <b>SPField</b> that needs to be configured</param>
-        /// <param name="configField">The <b>Field</b> config</param>
-        // ===========================================================================================================
-        private void ConfigureFieldTitleResource(SPField field, Field configField)
-        {
-            logger.Info("Configuring title resources for field '{0}'", field.InternalName);
-
-            foreach(TitleResource titleResource in configField.TitleResources)
-            {
-                field.TitleResource.SetValueForUICulture(new CultureInfo(titleResource.LCID), titleResource.Value);
-            }
-            field.Update();
         }
 
         #endregion

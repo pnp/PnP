@@ -19,10 +19,9 @@ namespace Provisioning.Extensibility.Console
             string siteCollectionUrl = "https://your_tenant.sharepoint.com/sites/entwikipnp";
 
             XMLTemplateProvider provider =
-                        new XMLFileSystemTemplateProvider(@"D:\Github\PnP\Samples\Provisioning.Extensibility\Provisioning.Extensibility.Console\Templates\", "");
+                        new XMLFileSystemTemplateProvider(Environment.CurrentDirectory, "");
 
-            var template = provider.GetTemplate("PublishingPageProviderDemo.xml");
-            template.Connector = new FileSystemConnector(@"D:\Github\PnP\Samples\Provisioning.Extensibility\Provisioning.Extensibility.Console\", "");
+            var template = provider.GetTemplate("Templates\\PublishingPageProviderDemo.xml");
 
             using (ClientContext context = new ClientContext(siteCollectionUrl))
             {

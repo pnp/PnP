@@ -86,11 +86,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\ExtensibilityProviders\SiteFieldsProvider.cs" />
-    <Compile Include="Classes\Serialization\SiteFieldsConfigurationData.cs" />
+    <Compile Include="Classes\ExtensibilityProviders\Fields\FieldsExtensibilityProvider.cs" />
+    <Compile Include="Classes\Extensions\SPFieldExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Classes\ExtensibilityProviders\Fields\FieldsExtensibilityProvider.md" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

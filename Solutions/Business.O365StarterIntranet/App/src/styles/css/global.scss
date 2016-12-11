@@ -73,4 +73,16 @@
     margin: 0 auto -30px;
     overflow: visible !important;
   }
+
+    /* Promoted links tiles style */
+  .ms-promlink-header {display:none;}
+
+  .ms-promlink-root {
+      width: 100%;
+      overflow: visible;
+  }
+
+  .ms-promlink-body {
+      width:100%;
+  }
 }
