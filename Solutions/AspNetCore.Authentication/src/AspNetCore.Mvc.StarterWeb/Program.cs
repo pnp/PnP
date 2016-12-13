@@ -22,8 +22,7 @@ namespace AspNetCore.Mvc.StarterWeb
                             options.NoDelay = true;
 
                             //I use this to get rid of SSL errors, feel free to remove it.
-                            IConnectionFilter prevFilter = options.ConnectionFilter ?? new NoOpConnectionFilter();
-                            options.ConnectionFilter = new IgnoreSslErrorsConnectionFilter(prevFilter);
+                            options.ConnectionFilter = new IgnoreSslErrorsConnectionFilter(options.ConnectionFilter ?? new NoOpConnectionFilter());
                         }
                     )
                     .UseUrls("https://localhost:5000")
