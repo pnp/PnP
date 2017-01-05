@@ -43,7 +43,7 @@ $AppFolderName = "PnP"
 # Connect to the site
 $PasswordAsSecure = ConvertTo-SecureString $Password -AsPlainText -Force
 $Credentials = New-Object System.Management.Automation.PSCredential ($UserName , $PasswordAsSecure)
-Connect-PnPnline -Url $SiteUrl -Credentials $Credentials
+Connect-PnPOnline -Url $SiteUrl -Credentials $Credentials
 
 # -------------------------------------------------------------------------------------
 # Upload files in the style library (folders are created automatically by the PnP cmdlet)
@@ -325,6 +325,6 @@ if ($IncludeData.IsPresent) {
 Write-Host "Done!" -ForegroundColor Green
 
 # Close the connection to the server
-Disconnect-PnPnline
+Disconnect-PnPOnline
 
 
