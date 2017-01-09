@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.S2S.Protocols.OAuth2;
+using SharePointPnP.IdentityModel.Extensions.S2S.Protocols.OAuth2;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.SharePoint.Client;
 using Newtonsoft.Json;
