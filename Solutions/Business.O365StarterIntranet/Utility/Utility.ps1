@@ -12,7 +12,7 @@ function Enable-CustomItemScheduling {
     # Get function from: https://gist.github.com/aflyen/4a098b69b9faa43fd1a3
     $ListParameter = Get-CustomLoadParameter -Object $List -PropertyName "EventReceivers"
     $Web.Context.Load($List, $ListParameter)
-    Execute-SPOQuery
+    Execute-PnPQuery
 
     # Prerequisites for using scheduling
     $List.EnableModeration = $true
@@ -87,7 +87,7 @@ function Enable-CustomItemScheduling {
         $List.Update()
     }
 
-    Execute-SPOQuery
+    Execute-PnPQuery
 }
 
 function Get-CustomLoadParameter {
@@ -132,7 +132,7 @@ function Set-FolderContentTypesOrder() {
 
 	)
 
-	$Folder = Ensure-SPOFolder -SiteRelativePath $FolderRelativePath
+	$Folder = Ensure-PnPFolder -SiteRelativePath $FolderRelativePath
 	$ContentTypeOrder = New-Object System.Collections.Generic.List[Microsoft.SharePoint.Client.ContentTypeId]
 
 	if ($ContentTypes.Count -gt 0) {
@@ -140,7 +140,7 @@ function Set-FolderContentTypesOrder() {
 		$ContentTypes | Foreach-Object {
 
 			$ContentTypeName = $_
-			$Ct = Get-SPOContentType  -List Pages | Where-Object { $_.Name -eq $ContentTypeName }
+			$Ct = Get-PnPContentType  -List Pages | Where-Object { $_.Name -eq $ContentTypeName }
 
 			if ($Ct) {
 
@@ -148,11 +148,11 @@ function Set-FolderContentTypesOrder() {
 			}
 		}
 
-		$Property = Get-SPOProperty -ClientObject $Folder -Property UniqueContentTypeOrder
+		$Property = Get-PnPProperty -ClientObject $Folder -Property UniqueContentTypeOrder
 
 		$Folder.UniqueContentTypeOrder = $ContentTypeOrder
 		$Folder.Update()
 
-		Execute-SPOQuery	
+		Execute-PnPQuery	
 	}
 }

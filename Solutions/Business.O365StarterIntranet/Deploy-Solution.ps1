@@ -43,7 +43,7 @@ $AppFolderName = "PnP"
 # Connect to the site
 $PasswordAsSecure = ConvertTo-SecureString $Password -AsPlainText -Force
 $Credentials = New-Object System.Management.Automation.PSCredential ($UserName , $PasswordAsSecure)
-Connect-SPOnline -Url $SiteUrl -Credentials $Credentials
+Connect-PnPnline -Url $SiteUrl -Credentials $Credentials
 
 # -------------------------------------------------------------------------------------
 # Upload files in the style library (folders are created automatically by the PnP cmdlet)
@@ -78,7 +78,7 @@ Get-ChildItem -Recurse $DistFolder -File | ForEach-Object {
 
     $TargetFolder = "Style Library\$AppFolderName\" + (Resolve-Path -relative $_.FullName) | Split-Path -Parent
 
-	Add-SPOFile -Path $_.FullName -Folder ($TargetFolder.Replace("\","/")).Replace("./","").Replace(".","") -Checkout
+	Add-PnPFile -Path $_.FullName -Folder ($TargetFolder.Replace("\","/")).Replace("./","").Replace(".","") -Checkout
 }
 
 Pop-Location
@@ -89,19 +89,19 @@ Pop-Location
 Write-Host "3# Apply the provisioning template to the root site..." -ForegroundColor Magenta
 
 # Create news folder in the "Pages" library
-Ensure-SPOFolder -SiteRelativePath "Pages/News" | Out-Null
+Ensure-PnPFolder -SiteRelativePath "Pages/News" | Out-Null
 
 # Load the custom extensibility provider type in the current PS session
 Add-Type -Path $CustomProviderDllPath 
 
 # Apply the root site provisioning template and set column default values (without files)
-Apply-SPOProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -ExcludeHandlers Files,WebSettings -Parameters @{ "CompanyName" = $AppFolderName }
+Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -ExcludeHandlers Files,WebSettings -Parameters @{ "CompanyName" = $AppFolderName }
 
 # Enable Item Scheduling feature on the "Pages" library
-Enable-CustomItemScheduling -Web (Get-SPOWeb) -PagesLibraryName "Pages"
+Enable-CustomItemScheduling -Web (Get-PnPWeb) -PagesLibraryName "Pages"
 
 # Apply the global template for the root site (to get the right pages auto tagging)
-Apply-SPOProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -Handlers Files,WebSettings -Parameters @{ "CompanyName" = $AppFolderName }
+Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -Handlers Files,WebSettings -Parameters @{ "CompanyName" = $AppFolderName }
  
 # Content Types order
 $ContentTypesOrderRoot = @(
@@ -115,13 +115,13 @@ $ContentTypesOrderRoot | Foreach-Object { Set-FolderContentTypesOrder -FolderRel
 # Set up the search configuration
 # Be careful, in SharePoint Online, we can't update an automatically created managed property to be sortable. We have to use Refinable<Type>XX predefined property.
 # For example, for the news list on the front page, we use the RefinableDate00 property for the publishing date. Use an alias instead of using the default name.
-Set-SPOSearchConfiguration -Path $SearchConfigurationFilePath -Scope Site
+Set-PnPSearchConfiguration -Path $SearchConfigurationFilePath -Scope Site
 
 Write-Host "4# Publishing artefacts..." -ForegroundColor Magenta
 
 # Publishing artefacts
-$Site = Get-SPOSite
-$SiteServerRelativeUrl = Get-SPOProperty -ClientObject $Site -Property ServerRelativeUrl
+$Site = Get-PnPSite
+$SiteServerRelativeUrl = Get-PnPProperty -ClientObject $Site -Property ServerRelativeUrl
 
 $FilesToPublish = @(
 
@@ -156,28 +156,28 @@ $FilesToPublish = @(
 
 $FilesToPublish | ForEach-Object {
 
-    Set-SPOFileCheckedOut -Url $_.Url
-    Set-SPOFileCheckedIn -Url $_.Url -CheckinType MajorCheckIn
+    Set-PnPFileCheckedOut -Url $_.Url
+    Set-PnPFileCheckedIn -Url $_.Url -CheckinType MajorCheckIn
 }
 
 # Approve all items 
-Get-SPOListItem -List Pages | ForEach-Object { 
+Get-PnPListItem -List Pages | ForEach-Object { 
     $_["_ModerationStatus"] = 0
     $_.Update()
 }
 
-Execute-SPOQuery
+Execute-PnPQuery
 
 # Reset the theme
-Set-SPOTheme
+Set-PnPTheme
 
 # Set the theme
-$Web = Get-SPOWeb
+$Web = Get-PnPWeb
 $bgImageUrl = Out-Null
 $fontScheme = Out-Null
 $Web.ApplyTheme("$SiteServerRelativeUrl/_catalogs/theme/15/intranet.spcolor", $fontScheme, $bgImageUrl, $true)
 
-Execute-SPOQuery
+Execute-PnPQuery
 
 # -------------------------------------------------------------------------------------
 # 3) Taxonomy setup
@@ -185,11 +185,11 @@ Execute-SPOQuery
 Write-Host "5# Set up taxonomy..." -ForegroundColor Magenta
 
 # Get the site collection term group name
-$CurrentSite = Get-SPOSite
-$Session = Get-SPOTaxonomySession
+$CurrentSite = Get-PnPSite
+$Session = Get-PnPTaxonomySession
 $TermStore = $Session.GetDefaultSiteCollectionTermStore();
 $SiteCollectionTermGroup = $TermStore.GetSiteCollectionGroup($CurrentSite, $false)
-$IntranetTermGroupName = Get-SPOProperty -ClientObject $SiteCollectionTermGroup -Property Name 
+$IntranetTermGroupName = Get-PnPProperty -ClientObject $SiteCollectionTermGroup -Property Name 
 
 $SiteMapTermSetName_EN = "Site Map EN"
 $SiteMapTermSetName_FR = "Site Map FR"
@@ -198,45 +198,45 @@ $HeaderLinksTermSetName_EN = "Header Links EN"
 $HeaderLinksTermSetName_FR = "Header Links FR"
 
 # Get navigation term sets for each language (FR & EN)
-$SiteMapTermSet_EN = Get-SPOTaxonomyItem -Term "$IntranetTermGroupName|$SiteMapTermSetName_EN"
+$SiteMapTermSet_EN = Get-PnPTaxonomyItem -Term "$IntranetTermGroupName|$SiteMapTermSetName_EN"
 $SiteMapTermSetId_EN = $SiteMapTermSet_EN.Id
 
-$SiteMapTermSet_FR = Get-SPOTaxonomyItem -Term "$IntranetTermGroupName|$SiteMapTermSetName_FR"
+$SiteMapTermSet_FR = Get-PnPTaxonomyItem -Term "$IntranetTermGroupName|$SiteMapTermSetName_FR"
 $SiteMapTermSetId_FR = $SiteMapTermSet_FR.Id
 
 # Duplicate the Site Map EN into Site Map FR to have a mirror structure (i.e pin terms with children)
-$SiteMapTermSetTerms_EN = Get-SPOProperty -ClientObject $SiteMapTermSet_EN -Property Terms
+$SiteMapTermSetTerms_EN = Get-PnPProperty -ClientObject $SiteMapTermSet_EN -Property Terms
 
 $SiteMapTermSetTerms_EN | ForEach-Object {
 
-	$NavTerm = Get-SPOTaxonomyItem -Term ("$IntranetTermGroupName|$SiteMapTermSetName_FR|" + $_.Name)
+	$NavTerm = Get-PnPTaxonomyItem -Term ("$IntranetTermGroupName|$SiteMapTermSetName_FR|" + $_.Name)
 
     if ($NavTerm -eq $null) {
 
 		$Reuse = $SiteMapTermSet_FR.ReuseTermWithPinning($_)
 
-		Execute-SPOQuery
+		Execute-PnPQuery
 	}
 }
 
 # Do the same thing for header links term set
-$HeaderLinksTermSet_EN = Get-SPOTaxonomyItem -Term "$IntranetTermGroupName|$HeaderLinksTermSetName_EN"
+$HeaderLinksTermSet_EN = Get-PnPTaxonomyItem -Term "$IntranetTermGroupName|$HeaderLinksTermSetName_EN"
 $HeaderLinksTermSetId_EN = $HeaderLinksTermSet_EN.Id
 
-$HeaderLinksTermSet_FR = Get-SPOTaxonomyItem -Term "$IntranetTermGroupName|$HeaderLinksTermSetName_FR"
+$HeaderLinksTermSet_FR = Get-PnPTaxonomyItem -Term "$IntranetTermGroupName|$HeaderLinksTermSetName_FR"
 $HeaderLinksTermSetId_FR = $HeaderLinksTermSet_FR.Id
 
-$HeaderLinksTermSetTerms_EN = Get-SPOProperty -ClientObject $HeaderLinksTermSet_EN -Property Terms
+$HeaderLinksTermSetTerms_EN = Get-PnPProperty -ClientObject $HeaderLinksTermSet_EN -Property Terms
 
 $HeaderLinksTermSetTerms_EN | ForEach-Object {
 
-	$NavTerm = Get-SPOTaxonomyItem -Term ("$IntranetTermGroupName|$HeaderLinksTermSetName_FR|" + $_.Name)
+	$NavTerm = Get-PnPTaxonomyItem -Term ("$IntranetTermGroupName|$HeaderLinksTermSetName_FR|" + $_.Name)
 
     if ($NavTerm -eq $null) {
 
 		$Reuse = $HeaderLinksTermSet_FR.ReuseTermWithPinning($_)
 
-		Execute-SPOQuery
+		Execute-PnPQuery
 	}
 }
 
@@ -245,7 +245,7 @@ $HeaderLinksTermSetTerms_EN | ForEach-Object {
 # -------------------------------------------------------------------------------------
 Write-Host "6# Setup the configuration list..." -ForegroundColor Magenta
 
-$ConfigurationList = Get-SPOList -Identity "Configuration"
+$ConfigurationList = Get-PnPList -Identity "Configuration"
 
 $ConfigurationItems = @(
 
@@ -256,7 +256,7 @@ $ConfigurationItems = @(
 # Create the configuration item for each language
 $ConfigurationItems | ForEach-Object {
 
-    $Item = Add-SPOListItem -List $ConfigurationList -ContentType Item  -Values $_
+    $Item = Add-PnPListItem -List $ConfigurationList -ContentType Item  -Values $_
 }
 
 # -------------------------------------------------------------------------------------
@@ -265,14 +265,14 @@ $ConfigurationItems | ForEach-Object {
 Write-Host "7# Configure image renditions..." -ForegroundColor Magenta
 
 # Thanks to http://www.eliostruyf.com/provision-image-renditions-to-your-sharepoint-2013-site/
-Add-SPOFile -Path $ImageRenditionsConfigurationFilePath -Folder "_catalogs\masterpage\" -Checkout
+Add-PnPFile -Path $ImageRenditionsConfigurationFilePath -Folder "_catalogs\masterpage\" -Checkout
 
 # -------------------------------------------------------------------------------------
 # Add sample data
 # -------------------------------------------------------------------------------------
 if ($IncludeData.IsPresent) {
 
-    $CarouselItemsList = Get-SPOList -Identity "Carousel Items"
+    $CarouselItemsList = Get-PnPList -Identity "Carousel Items"
 
     $ConfigurationItemsEN = @(
 
@@ -299,16 +299,16 @@ if ($IncludeData.IsPresent) {
     # Create the configuration item for each language
     $ConfigurationItemsEN | ForEach-Object {
 
-        $Item = Add-SPOListItem -List $CarouselItemsList -ContentType "Carousel Item" -Values $_
+        $Item = Add-PnPListItem -List $CarouselItemsList -ContentType "Carousel Item" -Values $_
     }
 
     $ConfigurationItemsFR | ForEach-Object {
 
-        $Item = Add-SPOListItem -List $CarouselItemsList -ContentType "Carousel Item"  -Values $_
+        $Item = Add-PnPListItem -List $CarouselItemsList -ContentType "Carousel Item"  -Values $_
     }
 
     # Add promoted links
-    $PromotedLinksList = Get-SPOList -Identity "Links"
+    $PromotedLinksList = Get-PnPList -Identity "Links"
     $PromotedLinks = @(
 
 	    @{ "Title"="Link 1";"LinkLocation"="http://dev.office.com/patterns-and-practices"},
@@ -318,13 +318,13 @@ if ($IncludeData.IsPresent) {
 
     $PromotedLinks | ForEach-Object {
 
-        $Item = Add-SPOListItem -List $PromotedLinksList -Values $_
+        $Item = Add-PnPListItem -List $PromotedLinksList -Values $_
     }
 }
 
 Write-Host "Done!" -ForegroundColor Green
 
 # Close the connection to the server
-Disconnect-SPOnline
+Disconnect-PnPnline
 
 
