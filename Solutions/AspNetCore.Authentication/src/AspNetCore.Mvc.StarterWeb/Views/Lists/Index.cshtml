@@ -1,0 +1,11 @@
+﻿@model IEnumerable<AspNetCore.Mvc.StarterWeb.Models.SharePointListViewModel>
+@{
+    ViewBag.Title = "Get SharePoint Lists";
+}
+<h2>SharePoint Lists</h2>
+<ul>
+    @foreach (var list in Model)
+    {
+        <li>@list.ListTitle</li>
+    }
+</ul>

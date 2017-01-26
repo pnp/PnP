@@ -1,0 +1,25 @@
+<!-- Page Info component -->
+<div id="page-info" class="ms-font-l">
+    
+     <!-- ko with: pageItem -->
+
+        <div id="category" data-bind="visible: IntranetContentCategory">
+            <i class="ms-Icon ms-Icon--tag" aria-hidden="true"></i>
+            <span data-bind="text: IntranetContentCategory"></span>
+        </div>
+
+         <div id="date" data-bind="visible: IntranetContentPublishingDate">
+            <i class="ms-Icon ms-Icon--event" aria-hidden="true"></i>
+            <span data-bind="formatDateField: IntranetContentPublishingDate"></span>
+        </div>       
+
+        <!-- ko if: $data.hasOwnProperty('IntranetContentAuthor') -->
+            <div id="author">
+                <i class="ms-Icon ms-Icon--person" aria-hidden="true"></i>
+                <span data-bind="text: IntranetContentAuthor.Title"></span>
+            </div>
+         <!-- /ko -->
+
+     <!-- /ko -->
+    
+</div>

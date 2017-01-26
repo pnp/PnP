@@ -480,3 +480,5 @@ EXAMPLE:
 ```JavaScript
 overrider.finished();
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.AppPartPropertyUIOverride" />

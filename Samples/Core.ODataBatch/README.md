@@ -54,6 +54,4 @@ We'd love to get your feedback on this Android starter kit. You can send your qu
 
 Copyright (c) Microsoft. All rights reserved.
 
-
-
-
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.ODataBatch" />

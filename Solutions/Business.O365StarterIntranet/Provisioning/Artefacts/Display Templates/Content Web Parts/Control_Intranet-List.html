@@ -1,0 +1,125 @@
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"> 
+<head>
+<title>Intranet List with Paging</title>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:TemplateHidden msdt:dt="string">0</mso:TemplateHidden>
+<mso:MasterPageDescription msdt:dt="string">This is a Control Display Template with Paging. It is used by default in Rollup Pages. It allows the user to page through items using the arrows that appear when there are more items to show.</mso:MasterPageDescription>
+<mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106601</mso:ContentTypeId>
+<mso:TargetControlType msdt:dt="string">;#Content Web Parts;#</mso:TargetControlType>
+<mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>
+
+<body>
+
+    <div id="Control_ListWithPaging">
+
+<!--#_ 
+if (!$isNull(ctx.ClientControl) &&
+    !$isNull(ctx.ClientControl.shouldRenderControl) &&
+    !ctx.ClientControl.shouldRenderControl())
+{
+    return "";
+}
+ctx.ListDataJSONGroupsKey = "ResultTables";
+var $noResults = Srch.ContentBySearch.getControlTemplateEncodedNoResultsMessage(ctx.ClientControl);
+
+var isRollupPageInDisplayMode = Srch.ContentBySearch.isRollupPage(ctx.ClientControl) && !Srch.U.isPageInEditMode();
+var noResultsClassName = isRollupPageInDisplayMode ? "ms-attractMode ms-uppercase ms-alignCenter" : "ms-srch-result-noResults";
+
+var ListRenderRenderWrapper = function(itemRenderResult, inCtx, tpl)
+{
+    var iStr = [];
+    iStr.push('<li>');
+    iStr.push(itemRenderResult);
+    iStr.push('</li>');
+    return iStr.join('');
+}
+ctx['ItemRenderWrapper'] = ListRenderRenderWrapper;
+_#-->
+    <div class="display-template">
+        <ul class="cbs-List">
+                _#= ctx.RenderGroups(ctx) =#_
+
+<!--#_
+var showPaging = ctx.ClientControl.get_showPaging();
+if(showPaging)
+{
+    var pagingInfo = ctx.ClientControl.get_pagingInfo();
+    showPaging = !$isEmptyArray(pagingInfo);
+    if(showPaging)
+    {
+        var currentPage = null;
+        var firstPage = pagingInfo[0];
+        var lastPage = pagingInfo[pagingInfo.length - 1];
+
+        for (var i = 0; i< pagingInfo.length; i++)
+        {
+            var pl = pagingInfo[i];
+            if (!$isNull(pl))
+            {
+                if (pl.startItem == -1)
+                {
+                    currentPage = pl;
+                }
+            }
+        }
+
+        var getPagingImageClassName = function(buttonClassNamePrefix, isNext, isEnabled)
+        {
+            var className = buttonClassNamePrefix;
+            className += (isNext && !Srch.U.isRTL()) || (!isNext && Srch.U.isRTL()) ? "right" : "left";
+            if(!$isNull(isEnabled) && isEnabled == false)
+            {
+                className += "-disabled";
+            }
+            return className;
+        }
+
+        var getPagingContainerClassName = function(buttonClassNamePrefix, isEnabled)
+        {
+            var className = buttonClassNamePrefix;
+            className += isEnabled ? "enabled" : "disabled";
+            return className;
+        }
+
+        var hasNextPage = lastPage.pageNumber == -2;
+        var hasPreviousPage = firstPage.pageNumber == -1;
+        var buttonClassNamePrefix = "ms-promlink-button-";
+        var nextPageContainerClassName = getPagingContainerClassName(buttonClassNamePrefix, hasNextPage);
+        var previousPageContainerClassName = getPagingContainerClassName(buttonClassNamePrefix, hasPreviousPage);
+        var nextPageImageClassName = getPagingImageClassName(buttonClassNamePrefix, true, hasNextPage);
+        var previousPageImageClassName = getPagingImageClassName(buttonClassNamePrefix, false, hasPreviousPage);
+_#-->
+                <li class="ms-promlink-header">
+                    <span class="ms-promlink-headerNav">
+                        <a href="#" onclick='$getClientControl(this).page(_#= $htmlEncode(firstPage.startItem) =#_);return Srch.U.cancelEvent(event);'>
+                        	<i class="ms-Icon ms-Icon--arrowLeft _#= $htmlEncode(previousPageContainerClassName) =#_"></i>
+                        </a>
+                        <span class="ms-promlink-button-inner"></span>
+                        <a href="#" onclick='$getClientControl(this).page(_#= $htmlEncode(lastPage.startItem) =#_);return Srch.U.cancelEvent(event);'>
+                            <i class="ms-Icon ms-Icon--arrowRight _#= $htmlEncode(nextPageContainerClassName) =#_"></i>
+                        </a>
+                    </span>
+                </li>
+<!--#_
+    }
+}
+_#-->
+            </ul>
+        </div>
+<!--#_
+if (ctx.ClientControl.get_shouldShowNoResultMessage())
+{
+_#-->
+        <div class="_#= noResultsClassName =#_">_#= $noResults =#_</div>
+<!--#_
+}
+_#-->
+
+    </div>
+</body>
+</html>

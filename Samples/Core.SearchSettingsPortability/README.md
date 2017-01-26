@@ -56,3 +56,4 @@ Example of the Import method
 The end result from an export is a search settings .xml file that can be use elsewhere by performing the import shown above.
 
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.SearchSettingsPortability" />

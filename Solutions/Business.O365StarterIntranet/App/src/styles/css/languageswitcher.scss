@@ -1,0 +1,70 @@
+@import 'variables';
+
+#language-switcher {
+
+    line-height: 35px; // Align middle
+    max-height: 40px; // Fix for Firefox
+
+    ul {
+
+        padding: 0;
+        margin: 0;
+
+        li~li { 
+
+            border-left: 1px solid #000000; // Put a '|' between language label
+        }
+
+        li {
+            display: inline;
+            list-style: none;
+            padding-left: 5px;
+            padding-right: 5px;
+            
+            .is-selected {
+                font-weight: bold;
+            }
+
+            a {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+/* Mobile version of the language switcher */
+#languageswitcher-mobile {
+
+    #language-switcher {
+
+        padding: 1px; // Align with burger button borders
+        float: right;
+        height: 40px;
+        background-color: transparent;
+        background-image: none;
+        border-color: transparent;
+        min-width: 2em;
+        margin-left: 5px;
+        line-height: inherit;
+
+        li {
+            color: $navbar-l1-link-color;
+            display: block;
+            padding: 0;
+            text-align: left;
+
+            .is-selected {
+                color: $navbar-hover-color;
+            }      
+
+            a {
+                text-decoration: underline;
+                color: $navbar-l1-link-color;
+            }  
+        }
+
+        li~li { 
+            border: none;
+        }
+    }
+}

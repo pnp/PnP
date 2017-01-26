@@ -224,3 +224,5 @@ If you play around with this sample you’ll have created a collection of pages 
 
 ![Cleanup created pages button](http://i.imgur.com/TihwUb0.png)
 
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.Pages" />

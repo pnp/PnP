@@ -103,3 +103,5 @@ using (var ctx = TokenHelper.GetClientContextWithAccessToken(tenantAdminUri.ToSt
     }
 }
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.CreateSite" />

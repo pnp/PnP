@@ -1,0 +1,62 @@
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"> 
+<head>
+<title>Intranet - MUI Refinement Control</title>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:CompatibleManagedProperties msdt:dt="string"></mso:CompatibleManagedProperties>
+<mso:TemplateHidden msdt:dt="string">0</mso:TemplateHidden>
+<mso:MasterPageDescription msdt:dt="string"></mso:MasterPageDescription>
+<mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106601</mso:ContentTypeId>
+<mso:TargetControlType msdt:dt="string">;#Refinement;#</mso:TargetControlType>
+<mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>
+<body> 
+    <div id="Control_Refinement">
+<!--#_ 
+
+        ctx.ClientControl.alternateRenderer = function(container, cntxt) {};
+_#-->
+        <div class="ms-ref-ctrl" id="Refinement" name="Control">
+<!--#_ 
+            if(!$isNull(ctx.ClientControl)){
+                var rcs = ctx.ClientControl.get_selectedRefinementControls();
+                if(!$isEmptyArray(rcs)){
+                    for(var i = 0; i < rcs.length; i++){
+                        var rc = rcs[i];
+                        if(!$isNull(rc)){
+                            rc.containerId = ctx.ClientControl.get_nextUniqueId(); 
+_#-->
+                            <div class="ms-ref-refiner" id="_#= $htmlEncode(rc.containerId) =#_" name="Group" refinerName="_#= $htmlEncode(rc.propertyName) =#_"></div>
+<!--#_ 
+                        }
+                    }
+                }
+_#-->
+                <div id="_#= ctx.ClientControl.get_emptyRefinementMessageId() =#_" class="ms-disabled ms-alignCenter ms-hide">
+<!--#_
+                    var emptyMessage = Intranet.Main.getResource("rf_EmptyRefinement");
+
+                    if ($isEmptyString(emptyMessage))
+                    {
+_#-->
+                        _#= $htmlEncode(Srch.U.loadResource("rf_EmptyRefinement")) =#_
+<!--#_
+                    }
+                    else
+                    {
+_#-->
+                        _#= $htmlEncode(emptyMessage) =#_
+<!--#_
+                    }
+_#-->
+                </div>
+<!--#_
+            }
+_#-->
+        </div>
+    </div>
+</body>
+</html>

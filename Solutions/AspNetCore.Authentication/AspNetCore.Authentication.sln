@@ -1,18 +1,22 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "OfficeDevPnP.Core.Framework.Authentication", "OfficeDevPnP.Core.Framework.Authentication\OfficeDevPnP.Core.Framework.Authentication.xproj", "{008E649E-BBDC-4EE0-AD57-CA6415A9DE8B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A58128DC-FDCB-49E1-BF44-1D4AAEB147C2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.Mvc.SharePointApp", "AspNetCore.Mvc.SharePointApp\AspNetCore.Mvc.SharePointApp.csproj", "{F11896BE-0645-4680-B726-F70423935A37}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNetCore.Mvc.StarterWeb", "AspNetCore.Mvc.StarterWeb\AspNetCore.Mvc.StarterWeb.xproj", "{97F83AE2-9FC7-49BD-B95D-FBBE7993C033}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8625A035-3800-470A-9EEC-A23750CB05AB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ECAF03F4-9B36-49F8-99FD-77137987B919}"
 	ProjectSection(SolutionItems) = preProject
-		README.md = README.md
+		global.json = global.json
 	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "OfficeDevPnP.Core.Framework.Authentication", "src\OfficeDevPnP.Core.Framework.Authentication\OfficeDevPnP.Core.Framework.Authentication.xproj", "{57A3EE4D-ED11-42A4-808F-DD30C097146A}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "AspNetCore.Mvc.StarterWeb", "src\AspNetCore.Mvc.StarterWeb\AspNetCore.Mvc.StarterWeb.xproj", "{81D023B2-DCD8-4887-9D48-FD47A87E00E4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetCore.Mvc.SharePointApp", "src\AspNetCore.Mvc.SharePointApp\AspNetCore.Mvc.SharePointApp.csproj", "{ADD1CD0C-2E98-4BFD-B695-C60029FA3E18}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "SharePointPnP.IdentityModel", "src\SharePointPnP.IdentityModel\SharePointPnP.IdentityModel.xproj", "{EB239573-1869-4DF4-8973-E01B7796DA02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,22 +24,32 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{008E649E-BBDC-4EE0-AD57-CA6415A9DE8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{008E649E-BBDC-4EE0-AD57-CA6415A9DE8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{008E649E-BBDC-4EE0-AD57-CA6415A9DE8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{008E649E-BBDC-4EE0-AD57-CA6415A9DE8B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F11896BE-0645-4680-B726-F70423935A37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F11896BE-0645-4680-B726-F70423935A37}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F11896BE-0645-4680-B726-F70423935A37}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{F11896BE-0645-4680-B726-F70423935A37}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F11896BE-0645-4680-B726-F70423935A37}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F11896BE-0645-4680-B726-F70423935A37}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{97F83AE2-9FC7-49BD-B95D-FBBE7993C033}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{97F83AE2-9FC7-49BD-B95D-FBBE7993C033}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{97F83AE2-9FC7-49BD-B95D-FBBE7993C033}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{97F83AE2-9FC7-49BD-B95D-FBBE7993C033}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57A3EE4D-ED11-42A4-808F-DD30C097146A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57A3EE4D-ED11-42A4-808F-DD30C097146A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57A3EE4D-ED11-42A4-808F-DD30C097146A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57A3EE4D-ED11-42A4-808F-DD30C097146A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81D023B2-DCD8-4887-9D48-FD47A87E00E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81D023B2-DCD8-4887-9D48-FD47A87E00E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81D023B2-DCD8-4887-9D48-FD47A87E00E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81D023B2-DCD8-4887-9D48-FD47A87E00E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADD1CD0C-2E98-4BFD-B695-C60029FA3E18}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADD1CD0C-2E98-4BFD-B695-C60029FA3E18}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADD1CD0C-2E98-4BFD-B695-C60029FA3E18}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{ADD1CD0C-2E98-4BFD-B695-C60029FA3E18}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADD1CD0C-2E98-4BFD-B695-C60029FA3E18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADD1CD0C-2E98-4BFD-B695-C60029FA3E18}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{EB239573-1869-4DF4-8973-E01B7796DA02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB239573-1869-4DF4-8973-E01B7796DA02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB239573-1869-4DF4-8973-E01B7796DA02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB239573-1869-4DF4-8973-E01B7796DA02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{57A3EE4D-ED11-42A4-808F-DD30C097146A} = {A58128DC-FDCB-49E1-BF44-1D4AAEB147C2}
+		{81D023B2-DCD8-4887-9D48-FD47A87E00E4} = {A58128DC-FDCB-49E1-BF44-1D4AAEB147C2}
+		{ADD1CD0C-2E98-4BFD-B695-C60029FA3E18} = {A58128DC-FDCB-49E1-BF44-1D4AAEB147C2}
+		{EB239573-1869-4DF4-8973-E01B7796DA02} = {A58128DC-FDCB-49E1-BF44-1D4AAEB147C2}
 	EndGlobalSection
 EndGlobal

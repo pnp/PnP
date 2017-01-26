@@ -1,0 +1,12 @@
+﻿@model Office365.Connectors.Models.Connection
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>Connection Established!</h2>
+        <p>You can now play with your brand new connector against Office 365 Group: @Model.GroupName</p>
+        <p>@Html.ActionLink("Send a Card", "SendCard", "Home", new { @class = "btn btn-default" })</p>
+    </div>
+</div>

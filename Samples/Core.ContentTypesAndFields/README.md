@@ -157,3 +157,5 @@ And setting the list name can be done via the **SetLocalizationLabelsForList** m
 ```C#
 ctx.Web.SetLocalizationLabelsForList(txtListName.Text, "es-es", "List name (es)", "List description (es)");
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.ContentTypesAndFields" />

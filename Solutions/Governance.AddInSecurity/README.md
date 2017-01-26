@@ -54,3 +54,5 @@ To validate the encrypted text, without altering any values, click the Decrypt b
 If the value is tampered or if you try to use the encrypted text value in a different machine, the decryption will fail. 
 
 ![Show the decrypted value](http://i.imgur.com/HHWKQ5d.png)
+
+<img src="https://telemetry.sharepointpnp.com/pnp/solutions/Governance.AddInSecurity" />

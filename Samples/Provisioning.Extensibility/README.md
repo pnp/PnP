@@ -20,7 +20,7 @@ N/A
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Provisioning.Extensibility | Luis Mañez
+Provisioning.Extensibility | Luis Maï¿½ez
 
 ### Configuration ###
 The provider is configured using the Providers Node in the XML template:
@@ -94,3 +94,5 @@ Version  | Date | Comments
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
 
 ----------
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.Extensibility" />

@@ -36,3 +36,4 @@ You can also check following video at PnP Channel 9 section for demo
 - [Self service site collection provisioning to Office 365 with Azure WebJob](http://channel9.msdn.com/blogs/OfficeDevPnP/Self-service-site-collection-provisioning-to-Office-365-with-Azure-WebJob)
 
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.Cloud.Async.WebJob" />

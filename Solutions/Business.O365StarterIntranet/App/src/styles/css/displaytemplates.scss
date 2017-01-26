@@ -1,0 +1,197 @@
+@import 'variables';
+
+.display-template {
+
+    /* Start Common styles (both CSWP & Search Results) */
+    .item-title {
+        font-weight: bold;
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .item-image, .item-icon {
+        float:left;
+        margin-right: 10px;        
+    }
+
+    .item-image {
+        width: 100px;
+    }
+
+    .all-items-link {
+        text-align: center;
+        padding: 15px;
+        text-decoration: underline;
+    }
+
+    .document-item, .news-item, .page-item, .contact-item  {
+        padding: 10px;
+        clear: both;
+    }
+
+    .alt {
+        border-bottom: 1px solid $text-color;
+    }   
+    /* End Common styles (both CSWP & Search Results) */
+    
+    /* Start Content Search Web Part Styles */
+    ul.cbs-List {
+        
+        width: 100%;
+        margin: 0px;
+
+        // Paging control
+        .ms-promlink-headerNav {
+
+            padding-right: 15px;
+            margin: 0px;
+
+            a {
+                text-decoration: none;
+
+                .ms-promlink-button-disabled {
+                    color: #e1e1e1;
+                }
+
+                .ms-promlink-button-enabled {
+                    color: inherit;
+                }
+
+                .ms-promlink-button-enabled:hover, .ms-promlink-button-enabled.ms-promlink-button-disabled:hover {
+                    background-color: transparent;
+                    border-color: transparent;
+                }
+            }
+        }
+    }
+    /* End Content Search Web Part Styles */
+
+    /* Start Search Results Styles */ 
+    #Result {
+
+        margin-top: 0px;
+
+        #ResultCount {
+            padding: 10px;
+            padding-top: 0px;
+        }
+
+        #Groups {
+            min-height: 700px;
+        }
+
+        .search-item {
+            max-width: 500px; 
+            width: 100%; // For mobile view
+
+            strong.ms-srch-item-highlightedText {
+                color: $navbar-l2-link-color-hover;
+            }
+        }
+
+        .search-item:hover {
+            background-color: rgba( 205,230,247,0.5 );
+        }
+    }
+
+    #NoResult {
+        text-align: center;
+    }
+    /* End Search Results Styles */ 
+
+    /* Start Refinement Filter Styles */
+    #RefinementName { // Used to display the spinner
+        min-width: 30px;
+        min-height: 20px;
+        display: inline-block;
+    }
+
+    .ms-ref-refinername, .ms-ref-refinername:hover, .ms-ref-refinername:link {
+        font-size: 14px;
+    }
+
+    /* Slide bar graph refinement colors */
+    .ajax__multi_slider_default .inner_rail_horizontal {
+        background-color:$primary-color;
+        border-top: 1px solid $primary-color;
+        border-bottom: 1px solid $primary-color;
+    }
+
+    .slider_tick_active {
+        background-color: $primary-color;
+        border: 1px solid $primary-color;
+    }
+
+    .histogram_bar_active {
+        border-top: 2px solid $primary-color;
+    }
+
+    .ms-ref-ctrl .ms-ref-selSec .ms-ref-filterSel, .ms-ref-ctrl .ms-ref-allSec .ms-ref-filterSel {
+        color: $primary-color;
+    }
+
+    #FilterLink.ms-ref-filterSel .ms-ref-name {
+        color: $navbar-l2-link-color-hover;
+    }       
+    /* End Refinement Filter Styles */
+
+    /* News Item Styles (CSWP & Search Results) */
+    .news-item {
+
+        min-height: 130px;
+
+        img.no-image {
+            background-image: url(./images/default_image.png);
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 100%;
+            height: 100px;
+        }
+    }
+
+    /* Document Item Styles */
+    .document-item {
+        
+        .item-download {
+            float: left;
+            margin-left: 10px;
+        }
+
+        .item-title {
+            float: left;
+        }
+
+        .item-excerpt {
+            clear: both;
+        }
+    }
+
+    .contact-item {
+        #contact-fullname {
+            float: left;
+        }
+
+        #contact-jobtitle {
+            font-style: italic;
+        }
+
+        #contact-workemail {
+            margin-bottom: 5px;
+        }
+
+        #contact-workphone {
+            float:left;
+            margin-right: 15px;
+        }
+
+        #contact-mobilephone {
+            float:left;
+            margin-right: 15px;
+        }
+
+        #row-2 {
+            clear: both;
+            overflow: hidden;
+        }
+    }
+}

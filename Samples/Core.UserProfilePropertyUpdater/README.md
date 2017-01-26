@@ -100,3 +100,5 @@ pMui[0].Values[0].Value = "nl-BE,en-US";
 pMui[0].IsValueChanged = true;
 upm.SetPropertyForUser("SPS-MUILanguages", pMui, userLoginName);
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.UserProfilePropertyUpdater" />

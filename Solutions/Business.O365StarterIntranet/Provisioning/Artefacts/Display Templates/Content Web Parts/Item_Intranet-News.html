@@ -1,0 +1,106 @@
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"> 
+<head>
+<title>Intranet News Item</title>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:TemplateHidden msdt:dt="string">0</mso:TemplateHidden>
+<mso:ManagedPropertyMapping msdt:dt="string">'Picture URL'{Picture URL}:'PublishingImage','Link URL'{Link URL}:'Path','Title'{Title}:'Title','News Summary'{News Summary}:'PublishingPageContentOWSHTML','News Publishing Date'{News Publishing Date}:'IntranetContentPublishingDateOWSDATE','SecondaryFileExtension','IntranetIsNewsOnTop','ContentTypeId'</mso:ManagedPropertyMapping>
+<mso:MasterPageDescription msdt:dt="string">Displays the news item in a list format.</mso:MasterPageDescription>
+<mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106603</mso:ContentTypeId>
+<mso:TargetControlType msdt:dt="string">;#Content Web Parts;#</mso:TargetControlType>
+<mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+<mso:HtmlDesignConversionSucceeded msdt:dt="string">True</mso:HtmlDesignConversionSucceeded>
+<mso:CrawlerXSLFile msdt:dt="string"></mso:CrawlerXSLFile>
+<mso:HtmlDesignPreviewUrl msdt:dt="string"></mso:HtmlDesignPreviewUrl>
+<mso:DisplayTemplateLevel msdt:dt="string">Item</mso:DisplayTemplateLevel>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+
+</head>
+
+<body>
+
+    <div id="Item_WebPage">
+
+    <!--#_
+        // Thanks to this post http://sharepointificate.blogspot.ca/2016/06/search-display-templates-made-easy-w.html
+
+        var encodedId = $htmlEncode(ctx.ClientControl.get_nextUniqueId());
+        var containerId = "NewsItem_" + encodedId;
+        var currentItem = ctx.CurrentItem;
+        var currentItemId = ctx.CurrentItemIdx + 1;
+        var groupRowCount = ctx.CurrentGroup.RowCount;
+        
+        // Get the URL of the news image with the correct rendition
+        var image = $getItemValue(ctx, "Picture URL");
+        var imageUrlWithRendition = Srch.U.getImageSourceWithRendition(image, 100, 100);
+        
+        // Remove existing rendition parameter is there is one
+        imageUrlWithRendition  = imageUrlWithRendition.replace(/\?RENDITIONID=.&/gi, "?");
+
+        AddPostRenderCallback(ctx, function() {
+
+            Intranet.Main.initNewsDisplayTemplateItemViewModel(currentItem, document.getElementById(containerId));
+        });
+        
+    _#-->
+
+    <div data-bind="stopBinding: true">
+        <div class="display-template">
+            <div id="_#=containerId=#_" class="news-item">
+                        
+                <!-- ko with: item -->
+                        
+                    <div class="item-image hidden-sm hidden-xs">
+                        <a data-bind="attr: { href: Path }">                            
+                            <img src="_#= imageUrlWithRendition =#_" data-bind="css: {'no-image': !$data.PublishingImage }"/>
+                        </a>
+                    </div>
+                  
+                    <div class="item-title">
+                        <!-- ko if: $data.IntranetIsNewsOnTop == 1 -->
+	                    	<i class="ms-Icon ms-Icon--alert ms-fontColor-redDark ms-font-xl" aria-hidden="true"></i>
+						<!-- /ko -->
+
+                        <!-- ko if: $data.Title -->
+                        <a data-bind="attr: { href: Path }, text: Title"> </a>
+                        <!-- /ko -->
+                    </div>
+                    
+                    <div class="item-date">
+                        <!-- ko if: $data.IntranetContentPublishingDateOWSDATE -->
+                        <span data-bind="formatDateField: IntranetContentPublishingDateOWSDATE"></span>
+                        <!-- /ko -->
+                    </div>     
+
+                    <div class="item-excerpt">
+                        <!-- ko if: $data.PublishingPageContentOWSHTML -->
+                        <div data-bind="summarize: { text: PublishingPageContentOWSHTML }"></div>
+                        <!-- /ko -->
+                    </div>            
+
+                <!-- /ko -->
+        
+                <!--#_
+                
+                // Check if it is the last item to process
+                var currentItemIdx = ctx.CurrentItemIdx + 1;
+                
+                if(currentItemIdx === ctx.CurrentGroup.RowCount) {
+                _#-->
+                    <div class="all-items-link">
+                        <a data-bind="text: allNewsLabel, attr: { href: searchPageUrl }, visible: searchPageUrl, getNewsSearchUrl: true"></a>
+                    </div>
+                <!--#_
+                }
+                _#-->
+            
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+<div id="navbar" data-bind="css: {'spinner': wait }">
+  <div class="navbar yamm clear">
+    <div class="container">
+      <div class="navbar-header">
+          <button type="button" data-toggle="collapse" data-target="#navbar-collapse-1" class="navbar-toggle">
+              <i class="ms-Icon ms-Icon--menu ms-font-xl" aria-hidden="true"></i>
+          </button>
+
+          <div id="call-to-action" class="hidden-md hidden-lg hidden-sm">
+
+            <div id="languageswitcher-mobile">
+              <component-languageswitcher params='availableLanguages: ["EN","FR"], languageFieldName:"IntranetContentLanguage", associationKeyFieldName:"IntranetContentAssociationKey"'></component-languageswitcher>
+            </div>
+              
+            <component-searchboxmobile></component-searchboxmobile>
+
+          </div>
+
+      </div>
+      <div id="navbar-collapse-1" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+            <!-- ko if: errorMessage  -->   
+              <li >
+                <a>
+                  <i class="ms-Icon ms-Icon--xCircle"></i>
+                  <span data-bind="text: errorMessage"></span>
+                </a>
+              </li>
+            <!-- /ko -->
+            <!-- ko foreach: nodes -->
+            <!-- ko ifnot: excludeFromGlobalNavigation() -->
+            <li data-bind="css: { dropdown: hasChildren(), right: $data.properties()['align'] === 'right' }">
+              <a aria-expanded="true" data-bind="attr: { href: url, 'data-toggle': dataToggle }, css: { 'dropdown-toggle': hasChildren }">                          
+                    <span data-bind="text: title"></span>
+                    <i class="ms-Icon ms-Icon--chevronDown" data-bind="visible: hasChildren"></i>
+              </a>
+              <!-- ko if: hasChildren -->
+              <ul class="dropdown-menu">
+                <li>
+                  <!-- Content container to add padding -->
+                  <div class="yamm-content">
+                    <div class="row">
+                      <!-- ko foreach: children -->
+                        <!-- ko ifnot: excludeFromGlobalNavigation() -->
+                        <ul class="col-sm-3 list-unstyled">
+                          <li class="level2">
+                            <a data-bind="text: title, attr: { href: url }"></a>
+                          </li>
+                          <!-- ko if: hasChildren -->
+                            <!-- ko foreach: children -->
+                              <!-- ko ifnot: excludeFromGlobalNavigation() -->
+                                  <li>
+                                    <a data-bind="text: title, attr: { href: url }"></a>
+                                  </li>
+                              <!-- /ko -->
+                            <!-- /ko -->
+                          <!-- /ko -->
+                        </ul>
+                        <!-- /ko -->
+                      <!-- /ko -->
+                    </div>
+                  </div>
+                </li>
+              </ul>
+              <!-- /ko -->
+            </li>
+            <!-- /ko -->
+          <!-- /ko -->
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

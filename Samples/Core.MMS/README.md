@@ -117,3 +117,5 @@ if (taxonomySession != null)
 -  Microsoft.SharePoint.Client.dll
 -  Microsoft.SharePoint.Client.Runtime.dll
 -  Microsoft.SharePoint.Client.Taxonomy.dll
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.MMS" />

@@ -75,4 +75,4 @@ This will apply the template to the site provided via the clientcontext object. 
 > The current implementation (v1) is not doing a detailed delta apply, meaning if for example the description of the field has changed this will not be applied. 
 
 
-
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.Framework.Console" />

@@ -58,7 +58,4 @@ As of the initial release of this sample, the Office Developer Tools for Visual 
 You can now run the sample with F5. The first time you do, you are prompted to trust the add-in. The default page of the web application then opens and displays the name of the SharePoint website (your SharePoint developer site).
 
  
-
-
-
-
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.OnPrem.S2S.WindowsCertStore" />

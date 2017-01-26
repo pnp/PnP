@@ -715,3 +715,5 @@ namespace Contoso.Core.EventReceiversWeb.Cache
     }
 }
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.EventReceivers" />

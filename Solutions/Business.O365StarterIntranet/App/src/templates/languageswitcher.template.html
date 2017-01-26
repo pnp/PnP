@@ -1,0 +1,24 @@
+<div id="language-switcher">
+
+    <!-- ko if: availableLanguages().length > 0 -->
+        <ul>
+        <!-- ko foreach: availableLanguages -->
+            <li>
+                <!-- ko if: isCurrentLanguage -->
+                    <span data-bind="text: label" class="is-selected"></span>
+                 <!-- /ko -->
+                 <!-- ko ifnot: isCurrentLanguage -->
+                    <!-- ko if: isValidTranslation -->
+                        <a data-bind="attr: { href:url }, text: label"></a>
+                    <!-- /ko -->
+                    <!-- ko ifnot: isValidTranslation -->
+                        <span data-bind="text: label, attr: { title: $parent.noTranslationMessage }"></span>    
+                        <i class="ms-Icon ms-Icon--alert2 ms-font-sPlus ms-fontColor-orangeLighter" aria-hidden="true" data-bind=", attr: { title: $parent.noTranslationMessage }"></i>   
+                    <!-- /ko -->
+                 <!-- /ko -->                 
+            </li>
+        <!-- /ko -->
+        </ul>
+    <!-- /ko -->
+
+</div>

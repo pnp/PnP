@@ -202,3 +202,5 @@ After deployment you should find that the following sample lists have been creat
 
 At the moment th Announcments View and Taxonomy samples need to be manually created after deployment (more details on that can be found in the [Samples](#jslink-samples) section above.
 
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Branding.JSLink" />

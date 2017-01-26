@@ -1,0 +1,59 @@
+{
+  "name": "pnp-o365-intranet",
+  "version": "1.0.0",
+  "description": "PnP Starter Intranet for Office 365/SharePoint Online",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "build:prod": "webpack -p"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "Office365",
+    "SPOnline",
+    "Intranet",
+    "Free ;)"
+  ],
+  "author": "Franck Cornu",
+  "license": "MIT",
+  "devDependencies": {
+    "css-loader": "^0.23.1",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "file-loader": "^0.9.0",
+    "json-loader": "^0.5.4",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
+    "node-sass": "^3.8.0",
+    "resolve-url-loader": "^1.4.3",
+    "sass-loader": "^3.2.1",
+    "source-map-loader": "^0.1.5",
+    "string-replace-loader": "^1.0.2",
+    "style-loader": "^0.13.1",
+    "text-loader": "0.0.1",
+    "ts-loader": "^0.8.2",
+    "typescript": "^1.8.10",
+    "webpack": "^1.13.1",
+    "webpack-validator": "^2.2.0"
+  },
+  "dependencies": {
+    "bootstrap": "^3.3.6",
+    "es6-promise": "^3.2.1",
+    "flickity": "^2.0.3",
+    "i18next": "^3.3.1",
+    "jquery": "^2.2.4",
+    "knockout": "^3.4.0",
+    "knockout-mapping": "^2.6.0",
+    "moment": "^2.14.1",
+    "node-fetch": "^1.5.3",
+    "office-ui-fabric": "^2.6.1",
+    "pubsub-js": "^1.5.3",
+    "sp-pnp-js": "1.0.4",
+    "sprintf-js": "^1.0.3",
+    "trunk8": "0.0.1",
+    "whatwg-fetch": "^1.0.0"
+  }
+}

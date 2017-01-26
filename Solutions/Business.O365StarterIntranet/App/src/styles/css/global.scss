@@ -1,0 +1,88 @@
+@import 'variables';
+
+.bootstrap-iso {
+
+  #s4-bodyContainer {
+
+    font-family: $font-primary;
+
+    .clear {
+      clear: both;
+    }
+
+    a, p {
+      color: $text-color;
+    }
+
+    .warning-msg { // Same styles as default SharePoint warning message
+      background-color: #fff19d;
+      border-color: #d7d889;
+      border-width: 1px;
+      border-style: solid;
+    }
+
+    /* Start intranet logo styles */
+    #intranet-logo {
+    
+      img {
+          width: 160px;
+          float: left;
+      }
+    }
+
+    /* Small devices (Tablets) */
+    /* iPad resolution is 768px width so we have to set a lower value to display the image with a desktop view */
+    @media (max-width: 767px) { 
+
+      #intranet-logo img {
+        display: block;
+        margin: auto;
+        float: none;
+      }
+    }
+    /* End intranet logo styles */
+
+    .header {
+      height:80px;
+      margin-top:20px;
+      margin-bottom:20px
+    }
+
+    .spinner {
+      background-image: url(./images/spinner.gif);
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    /* SharePoint styles */
+    .ms-webpart-zone {
+        display: inherit;
+    }
+  }
+
+  body #s4-workspace {
+    margin-bottom: -30px;
+  }
+
+  /* See http://www.eliostruyf.com/sticky-footer-solution-for-sharepoint-2013/ for sticky footer with SharePoint */
+  .wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    /* The bottom margin is the negative value of the footer's height */
+    margin: 0 auto -30px;
+    overflow: visible !important;
+  }
+
+    /* Promoted links tiles style */
+  .ms-promlink-header {display:none;}
+
+  .ms-promlink-root {
+      width: 100%;
+      overflow: visible;
+  }
+
+  .ms-promlink-body {
+      width:100%;
+  }
+}

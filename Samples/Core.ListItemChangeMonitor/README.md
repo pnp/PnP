@@ -107,5 +107,4 @@ foreach (ChangeItem itm in coll)
 5. While the monitor is running you may also press the "r" key to override the timer and force a check.
 
 
-
-
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.ListItemChangeMonitor" />

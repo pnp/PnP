@@ -40,18 +40,57 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="Accordion\AccordionInstance\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{0bb8cd43-14ea-48f2-a472-7087e069ef50}</SharePointProjectItemId>
+    </None>
+    <None Include="Accordion\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{9d89afd2-6418-4f0a-b8bf-49b3b7b415e1}</SharePointProjectItemId>
+    </None>
+    <None Include="Features\Feature2\Feature2.feature">
+      <FeatureId>{60b4aef8-1adc-412f-9c00-31de2387749a}</FeatureId>
+    </None>
     <None Include="packages.config" />
     <None Include="Pages\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{3e91353f-8da4-47b6-a525-00b1c0af3560}</SharePointProjectItemId>
     </None>
+    <Content Include="Accordion\AccordionInstance\Elements.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Accordion\Elements.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Accordion\Schema.xml" />
+    <Content Include="Content\accordion\images\ui-icons_444444_256x240.png" />
+    <Content Include="Content\accordion\images\ui-icons_555555_256x240.png" />
+    <Content Include="Content\accordion\images\ui-icons_777620_256x240.png" />
+    <Content Include="Content\accordion\images\ui-icons_777777_256x240.png" />
+    <Content Include="Content\accordion\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\accordion\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\accordion\jquery-ui.min.css" />
+    <Content Include="Content\accordion\progressbar.css" />
+    <Content Include="Features\Feature2\Feature2.Template.xml">
+      <DependentUpon>Feature2.feature</DependentUpon>
+    </Content>
     <Content Include="Pages\Elements.xml" />
     <Content Include="Pages\Default.aspx" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Scripts\accordion\libraries\jquery-2.2.3.min.map" />
     <None Include="Scripts\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{9a574d9c-7eb7-43a4-af97-7f14a21385e5}</SharePointProjectItemId>
     </None>
     <Content Include="Pages\REST-APIs-Examples.aspx" />
+    <Content Include="Pages\Sample_REST_KO_Accordion.aspx" />
+    <Content Include="Scripts\accordion\datamodels\slideModel.js" />
+    <Content Include="Scripts\accordion\data\main.js" />
+    <Content Include="Scripts\accordion\helpers\browserRequirements.js" />
+    <Content Include="Scripts\accordion\helpers\Cache.js" />
+    <Content Include="Scripts\accordion\helpers\namespace.js" />
+    <Content Include="Scripts\accordion\libraries\jquery-2.2.3.min.js" />
+    <Content Include="Scripts\accordion\libraries\jquery-ui.js" />
+    <Content Include="Scripts\accordion\libraries\jquery-ui.min.js" />
+    <Content Include="Scripts\accordion\libraries\knockout-3.1.0.js" />
+    <Content Include="Scripts\accordion\libraries\modernizr.2.8.2.custom.js" />
     <Content Include="Scripts\Elements.xml" />
     <Content Include="Scripts\App.js" />
     <Content Include="Scripts\jquery-1.7.1.intellisense.js" />

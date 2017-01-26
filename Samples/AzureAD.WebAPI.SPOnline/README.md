@@ -297,3 +297,6 @@ In the **WebApi** Project, update the **Web.Config** file.
     <add key="SharePointURL" value="https://[yourtenant].SharePoint.com" />
   </appSettings> 
 ```
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/AzureAD.WebAPI.SPOnline" />

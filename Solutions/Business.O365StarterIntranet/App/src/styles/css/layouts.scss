@@ -1,0 +1,59 @@
+@import 'variables';
+
+/* Important: these styles are only applied in display mode ! */
+.page-layout {
+
+    div.content {
+        margin-top: 10px;
+
+        #title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        #page-content {
+            clear: both;
+
+            .ms-formfieldvaluecontainer{
+
+                border: 1px solid #ababab;
+            }
+        }      
+    }
+
+    #DeltaSiteLogo {
+        text-align: center;
+    }
+
+    /* Start Home Page Layout styles */
+    #homepage-layout {
+        display: block;
+    }      
+    /* End Home Page Layout styles */
+
+    /* Start News Page Layout styles */
+    #news-layout {
+                
+        #page-image {
+            clear: both;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }     
+    }
+    /* End News Page Layout styles */
+
+    /* Start Search Page Layout styles */
+    #search-layout {
+
+        #Refinement {
+            padding-left: 15px;
+        }
+
+        #Result {
+            min-height: 700px;
+        }    
+    }
+    /* End Search Page Layout styles */
+}     
+         

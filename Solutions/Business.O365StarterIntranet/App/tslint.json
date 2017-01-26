@@ -1,0 +1,11 @@
+{
+  "extends": "tslint:latest",
+  "rules": {
+      "max-line-length": [
+          500
+      ],
+    "no-constructor-vars": true
+  },
+  "rulesDirectory": [
+  ]
+}

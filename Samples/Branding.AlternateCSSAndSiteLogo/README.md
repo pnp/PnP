@@ -103,3 +103,5 @@ web.SiteLogoUrl = "";
 web.Update();
 web.Context.ExecuteQuery();
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Branding.AlternateCSSAndSiteLogo" />

@@ -1,0 +1,131 @@
+@import 'variables';
+
+#navbar {
+
+  clear: both;
+  background-color: $primary-color;
+  font-size: $navbar-font-size;
+  min-height: 50px; // To display the spinner
+
+  .navbar-header {
+
+      button.navbar-toggle {
+        margin-left: 5px;
+        min-width: 4em;
+      }
+
+      /* SearchBox + Language Switcher group */
+      #call-to-action {
+        border-width: 0.8px;
+        border: solid transparent;
+        overflow: auto;
+        margin-left: 15px;
+        margin-right: 15px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+      }
+  }
+
+  .yamm-content {
+    font-size: $navbar-font-size;
+  }
+
+  /* Small devices */
+  @media (max-width: 768px) { 
+
+    .yamm-content {
+
+      a {
+          color: $navbar-l1-link-color;
+      }
+    }
+  }
+
+  /* Medium and large devices (Desktop) */
+  @media (min-width: 768px) {
+
+    .navbar-collapse {
+      padding: 0;
+    }
+
+    .nav {
+
+      a {
+          color: $navbar-l1-link-color;
+      }
+
+      a:hover {
+          color: $navbar-l1-link-color-hover;
+      }
+      
+      ul.dropdown-menu {
+          left: 0px;
+          width: 100%;
+      }
+
+      .yamm-content {
+
+          a {
+              color: $navbar-l2-link-color;
+          }
+
+          a:hover {
+              color: $navbar-l2-link-color-hover;
+              text-decoration: none;
+          }
+      }
+
+      li.right {
+        float:right;
+      }
+    }
+  }
+
+  .nav {
+
+    width: 100%;
+
+    .yamm-content {
+      padding: 15px;
+
+      .level2 {
+        font-weight: bold;
+        margin-bottom: 10px;
+        margin-top: 10px;
+      }
+    }
+
+    li > {
+
+      a {
+        color: $navbar-l1-link-color;
+      }
+      
+      a:hover {
+        color: $navbar-hover-color;
+        background-color: inherit;
+        background-color: transparent;
+      }
+
+      a:focus {
+        background-color: transparent;
+      }
+    }
+  }
+  
+  .nav .open > {
+
+    a, a:hover,a:focus {
+      background-color: inherit;
+    }
+
+  }
+
+  .navbar-toggle {
+    border-color: #ffffff;
+
+    i {
+      color: #ffffff;
+    }
+  }
+}

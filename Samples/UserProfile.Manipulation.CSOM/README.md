@@ -119,3 +119,5 @@ using (var clientContext = spContext.CreateUserClientContextForSPHost())
     RefreshUIValues();
 }
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/UserProfile.Manipulation.CSOM" />

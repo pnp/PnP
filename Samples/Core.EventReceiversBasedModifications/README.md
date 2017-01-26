@@ -109,3 +109,4 @@ When a user uninstalls a deployed add-in this moves the add-in to the site's rec
 ### Note: ###
 If you’ve been experimenting a lot it often helps to test this sample in a clean developer site.
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.EventReceiverBasedModifications" />

@@ -46,3 +46,5 @@ Detailed documentation in progress.
 
 # Controlling available site templates and page layouts for publishing webs using CSOM #
 Detailed documentation in progress.
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.PublishingFeatures" />

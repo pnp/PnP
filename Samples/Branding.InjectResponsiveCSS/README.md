@@ -12,19 +12,12 @@ To make sure the css is rendered correctly on hardware devices a viewport html m
 *Notice* - There's more fine tuned and polished responsive UI CSS included in the PnP Partner Pack, which can be accessed from http://aka.ms/OfficeDevPnPPartnerPack. 
 
 ### Applies to ###
--  Office 365 Multi Tenant (MT)
+-  Office 365 Multi Tenant (MT) - Classic sites
 -  Office 365 Dedicated (D)*
 -  SharePoint 2013 on-premises*
+-  SharePoint 2016 on-premises*
 
 Experience might be slightly different, but the same thinking and process applies to on-premises as well.
-
-### Prerequisites ###
-To add valid viewport settings to the master page the site collection feature "SharePoint Server Publishing Infrastructure" needs to be activated. No other publishing related feature needs to be activated.
-Alternatively the viewport meta tag can be added through a custom action[https://github.com/OfficeDev/PnP/tree/master/Samples/Core.EmbedJavaScript](https://github.com/OfficeDev/PnP/tree/master/Samples/Core.EmbedJavaScript). This is currently not covered in this solution. The HTML element that needs to be added is:
-
-```HTML
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-```
 
 ### Solution ###
 Solution | Author(s)
@@ -37,6 +30,7 @@ Provisioning of viewport meta tag settings done by Stefan Bauer, n8d
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
+1.3  | November 30th 2016 | Updated to use PnP CSOM Core to be consistent with other responsive samples from PnP
 1.2  | November 19th 2015 | Small polishing on the code and adjustments in the documentation
 1.1  | May 2nd 2015 | Viewport meta tag added
 1.0  | April 26th 2015 | Initial release
@@ -46,6 +40,24 @@ Version  | Date | Comments
 
 
 ----------
+
+# November 2016 Update details #
+Below screenshots and the process applies on classic approach. If you use the PnP CSOM Core component available as NuGet package for SharePoint Online, SharePoint 2016 and SharePoint 2013, you can simply run following command in the code. This will apply needed CSS and JS on the site.
+
+```C#
+// Get access to source site
+using (var ctx = new ClientContext(siteUrl))
+{
+    ctx.AuthenticationMode = ClientAuthenticationMode.Default;
+    ctx.Credentials = new SharePointOnlineCredentials(userName, pwd);
+
+    // Enable Responsive UI in the site - Will apply needed CSS and JS to site
+    ctx.Web.EnableResponsiveUI();
+
+    // Disable Responsive UI in the site - Will remove CSS and JS from site. 
+    // ctx.Web.DisableReponsiveUI();
+}
+```
 
 # Responsive Experience #
 Please check Heather's blog post for detailed information on the CSS design at [http://blog.sharepointexperience.com/2015/03/making-seattle-master-responsive](http://blog.sharepointexperience.com/2015/03/making-seattle-master-responsive/)
@@ -65,7 +77,6 @@ Notice how the top navigation is rendered completely differently
 If navigation control is clicked, user is presented the same list of navigation options
 
 ![Menu shown after click](http://i.imgur.com/BRtYm79.png)
-
 
 # Attaching custom css to site #
 Attaching the css to the site is two step process. We upload the CSS to some location where it can be used from and then we update the AlternateCssUrl property of the web to the right URL. 
@@ -123,3 +134,6 @@ After setting the CSS Url, the viewport meta tag will be added to the "Search En
         allProperties["seocustommetatagpropertyname"] = "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1\" />";
     }
 ```
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Branding.InjectResponsiveCSS" />

@@ -115,3 +115,5 @@ The solution is hard-coded to look through a specific array of site collections.
 Debug the console application project first (Governance.ExternalSharingTimer) to populate the application database with external sharing details. If necessary, tweak the WarningDuration and CutoffDuration configuration settings to trigger the desired outcome(s) for testing.
 
 Once a warning has been reached, the solution will send a warning email through SharePoint using CSOM. This email will contain links to view warning details or extend/revoke the share. To view these, start debugging of the MVC web application (Governance.ExternalSharingTimer.Web)
+
+<img src="https://telemetry.sharepointpnp.com/pnp/solutions/Governance.ExternalSharingTimer" />

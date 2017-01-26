@@ -48,3 +48,6 @@ Now you should be able to run the console application with the result below. Whe
 After the application is completed navigate to /sites/pub1 or /sites/pub2 and verify that the branding has been applied. You should also have two new page layouts available.
 
 ![Screen shot of the branded UI](http://i.imgur.com/ErHzlot.png)
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Branding.ApplyBranding" />

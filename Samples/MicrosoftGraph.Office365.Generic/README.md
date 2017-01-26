@@ -41,3 +41,5 @@ High level configuration details as follows:
 - Configure web.config file accordingly with registered app information 
 
 ![Setup details in web.config](http://i.imgur.com/POSJqD7.png)
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/MicrosoftGraph.Office365.Generic" />

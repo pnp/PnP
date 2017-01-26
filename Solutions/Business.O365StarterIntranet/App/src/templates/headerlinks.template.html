@@ -1,0 +1,11 @@
+<div id="header-links" data-bind="css: {'spinner': wait }">
+    <ul>
+        <!-- ko foreach: nodes -->
+        <li>
+            <i class="ms-Icon" aria-hidden="true" data-bind="visible: $data.properties()['iconClass'], css: $data.properties()['iconClass']"></i>
+            <a data-bind="attr: { href: url }, text: title">
+            </a>
+        </li>
+        <!-- /ko -->  
+    </ul>
+</div>

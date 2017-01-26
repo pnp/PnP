@@ -216,3 +216,6 @@ Using the iCalendar application, that same calendar loaded into OWA looks like t
 If the user syncs their Office 365 e-mail to their mobile devices, their OWA calendar can be automatically
 synced as well.  This means that they can easily add any SharePoint calendar to their mobile device with very
 little effort.
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/BusinessApps.remoteCalendarAccess" />
