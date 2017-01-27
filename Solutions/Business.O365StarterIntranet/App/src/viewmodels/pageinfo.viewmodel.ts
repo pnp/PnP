@@ -1,11 +1,6 @@
 // ====================
 // Page Info Menu Component
 // ====================
-
-/// <reference path="../../typings/globals/knockout/index.d.ts" />
-/// <reference path="../../typings/globals/knockout.mapping/index.d.ts" />
-/// <reference path="../../typings/globals/sharepoint/index.d.ts" />
-
 import { TaxonomyModule } from "../core/taxonomy";
 import "../shared/bindinghandlers";
 import * as moment from "moment";
@@ -133,7 +128,7 @@ export class PageInfoViewModel {
 
         }).catch((errorMesssage) => {
 
-            pnp.log.write(errorMesssage, pnp.log.LogLevel.Error);
+            pnp.log.write(errorMesssage, pnp.LogLevel.Error);
         });
     }
 }

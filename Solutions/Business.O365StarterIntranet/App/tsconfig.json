@@ -2,9 +2,13 @@
   "compilerOptions": {
     "target": "es5", // Output type for compiled js files by the TypeScript compiler. Need to target ES5 to work with Webpack (Webpack does not support es6 yet). With es5, we need to install typings for es6-promise. More info here: http://www.jbrantly.com/es6-modules-with-typescript-and-webpack/
     "sourceMap": true,
-    "module": "commonjs"
-  },
-  "files": [
-    "./typings/index.d.ts"
-  ]
+    "module": "commonjs",
+    "types": [
+      "sharepoint",
+      "whatwg-fetch",
+      "knockout",
+      "knockout.mapping"
+    ],
+    "lib": ["dom", "es2015.promise", "es5","es2015.iterable"] //Include some usefull librairies https://www.typescriptlang.org/docs/handbook/compiler-options.html
+  }
 }

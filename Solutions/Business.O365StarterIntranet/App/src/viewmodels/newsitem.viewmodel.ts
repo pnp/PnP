@@ -1,13 +1,8 @@
 // ====================
 // News Item View Model (Display Template)
 // ====================
-
-/// <reference path="../../typings/globals/knockout/index.d.ts" />
-/// <reference path="../../typings/globals/trunk8/index.d.ts" />
-/// <reference path="../../typings/globals/sharepoint/index.d.ts" />
-
 import "../shared/bindinghandlers";
-import { DefaultDisplayTemplateItemViewModel } from "./defaultdisplaytemplateitem.viewmodel.ts";
+import { DefaultDisplayTemplateItemViewModel } from "./defaultdisplaytemplateitem.viewmodel";
 import i18n = require("i18next");
 import sprintf = require("sprintf-js");
 

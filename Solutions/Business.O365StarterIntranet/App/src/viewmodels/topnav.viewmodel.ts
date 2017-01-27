@@ -1,12 +1,9 @@
 // ========================================
 // Main Menu Component View Model
 // ========================================
-
-/// <reference path="../../typings/globals/knockout/index.d.ts" />
-
+import * as i18n from "i18next";
 import "pubsub-js";
 import * as pnp from "sp-pnp-js";
-import i18n = require("i18next");
 
 import { TaxonomyModule } from "../core/taxonomy";
 import { UtilityModule } from "../core/utility";
@@ -83,14 +80,14 @@ export class TopNavViewModel extends NavigationViewModel {
 
             } else {
 
-                pnp.log.write("There is no configuration item for the site map for the language '" + currentLanguage + "'", pnp.log.LogLevel.Error);
+                pnp.log.write("There is no configuration item for the site map for the language '" + currentLanguage + "'", pnp.LogLevel.Error);
             }
 
         }).catch(errorMesssage => {
 
             this.errorMessage(errorMesssage);
 
-            pnp.log.write(errorMesssage, pnp.log.LogLevel.Error);
+            pnp.log.write(errorMesssage, pnp.LogLevel.Error);
         });
     }
 
@@ -99,7 +96,7 @@ export class TopNavViewModel extends NavigationViewModel {
         if (!termSetId) {
 
             let errorMesssage = "The term set id for the site map is null. Please specify a valid term set id in the configuration list";
-            pnp.log.write(errorMesssage, pnp.log.LogLevel.Error);
+            pnp.log.write(errorMesssage, pnp.LogLevel.Error);
 
             this.errorMessage(errorMesssage);
 
@@ -126,13 +123,13 @@ export class TopNavViewModel extends NavigationViewModel {
                 }).catch(errorMesssage => {
 
                     this.errorMessage(errorMesssage);
-                    pnp.log.write(errorMesssage, pnp.log.LogLevel.Error);
+                    pnp.log.write(errorMesssage, pnp.LogLevel.Error);
                 });
 
             }).catch(errorMesssage => {
 
                 this.errorMessage(errorMesssage);
-                pnp.log.write(errorMesssage, pnp.log.LogLevel.Error);
+                pnp.log.write(errorMesssage, pnp.LogLevel.Error);
             });
         }
     }

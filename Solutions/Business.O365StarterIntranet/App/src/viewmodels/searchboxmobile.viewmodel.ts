@@ -1,9 +1,6 @@
 // ========================================
 // Search box View Model (Mobile)
 // ========================================
-
-/// <reference path="../../typings/globals/knockout/index.d.ts" />
-
 import "../shared/bindinghandlers";
 import { SearchBoxViewModel } from "./searchbox.viewmodel";
 

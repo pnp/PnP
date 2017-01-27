@@ -1,12 +1,8 @@
 // ====================
 // Search box View Model (Desktop)
 // ====================
-
-/// <reference path="../../typings/globals/knockout/index.d.ts" />
-/// <reference path="../../typings/globals/sharepoint/index.d.ts" />
-
 import { UtilityModule } from "../core/utility";
-import i18n = require("i18next");
+import * as i18n from "i18next";
 
 export class SearchBoxViewModel {
 

@@ -1,10 +1,6 @@
 // ===============================
 // Application main entry point
 // ===============================
-
-/// <reference path="../typings/globals/knockout/index.d.ts" />
-/// <reference path="../typings/globals/jquery/index.d.ts" />
-
 // We must declare this function to get static files like html or CSS via the ts-loader
 // More info here https://github.com/TypeStrong/ts-loader
 declare var require: {
@@ -15,8 +11,8 @@ declare var require: {
 
 // View models for components
 import { BreadcrumbViewModel } from "./viewmodels/breadcrumb.viewmodel";
-import { ContextualMenuViewModel } from "./viewmodels/contextualmenu.viewmodel";
 import { CarouselViewModel } from "./viewmodels/carousel.viewmodel";
+import { ContextualMenuViewModel } from "./viewmodels/contextualmenu.viewmodel";
 import { DefaultDisplayTemplateItemViewModel } from "./viewmodels/defaultdisplaytemplateitem.viewmodel";
 import { DefaultFilterViewModel } from "./viewmodels/defaultfilter-mui.viewmodel";
 import { DocumentDisplayTemplateItemViewModel } from "./viewmodels/documentitem.viewmodel";
@@ -167,10 +163,10 @@ export class Main {
 
         this.registerComponents();
 
-        // Init the pnp logger
-        let consoleLogger = new pnp.log.ConsoleListener();
+        // Init the loggger
+        let consoleLogger = new pnp.ConsoleListener();
         pnp.log.subscribe(consoleLogger);
-        pnp.log.activeLogLevel = pnp.log.LogLevel.Verbose;
+        pnp.log.activeLogLevel = pnp.LogLevel.Verbose;
 
         // Be careful, we need to apply bindings after the document is ready
         $(document).ready(() => {

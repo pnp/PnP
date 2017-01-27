@@ -1,11 +1,6 @@
 // ========================================
 // Base Display Template Item View Model
 // ========================================
-
-/// <reference path="../../typings/globals/knockout/index.d.ts" />
-/// <reference path="../../typings/globals/trunk8/index.d.ts" />
-/// <reference path="../../typings/globals/sharepoint/index.d.ts" />
-
 import "../shared/bindinghandlers";
 import * as moment from "moment";
 import "trunk8"; // Trunk8 typings are exposed through an interface, so we have just to import it globally
@@ -70,7 +65,7 @@ export class DefaultDisplayTemplateItemViewModel {
             init: (element, valueAccessor) => {
 
                 // Get the current value of the current property we're bound to
-                let value = ko.unwrap(valueAccessor()); 
+                let value = ko.unwrap(valueAccessor());
 
                 let date = moment(value).format(this.dateFormat);
 

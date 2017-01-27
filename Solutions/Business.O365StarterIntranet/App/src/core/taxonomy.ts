@@ -1,10 +1,6 @@
 // ====================
 // Taxonomy module
 // ====================
-
-/// <reference path="../../typings/globals/sharepoint/index.d.ts" />
-/// <reference path="../../typings/globals/es6-promise/index.d.ts" />
-
 import { NavigationNode } from "../shared/navigationnode";
 import i18n = require("i18next");
 import * as pnp from "sp-pnp-js";
@@ -179,7 +175,7 @@ export class TaxonomyModule {
             return p;
 
         } else {
-            pnp.log.write("TaxonomyModule.getTermById: the provided term id is null!", pnp.log.LogLevel.Error);
+            pnp.log.write("TaxonomyModule.getTermById: the provided term id is null!", pnp.LogLevel.Error);
         }
     }
 

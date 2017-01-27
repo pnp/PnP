@@ -1,9 +1,6 @@
 // ====================
 // Utility module
 // ====================
-
-/// <reference path="../../typings/globals/sharepoint/index.d.ts" />
-
 import { NavigationNode } from "../shared/navigationnode.ts";
 
 export class UtilityModule {

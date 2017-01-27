@@ -39,16 +39,10 @@
  *       - The association key is kept. The new created translation used the same association key as the orignal page  
  * 
  * **********************************************/
-
-/// <reference path="../../typings/globals/knockout/index.d.ts" />
-/// <reference path="../../typings/globals/sprintf-js/index.d.ts" />
-/// <reference path="../../typings/globals/sharepoint/index.d.ts" />
-/// <reference path="../../typings/globals/es6-promise/index.d.ts" />
-
 import { UtilityModule } from "../core/utility";
+import * as i18n from "i18next";
 import * as pnp from "sp-pnp-js";
-import i18n = require("i18next");
-import sprintf = require("sprintf-js");
+import * as sprintf from "sprintf-js";
 
 export class TranslationControlViewModel {
 
@@ -254,31 +248,31 @@ export class TranslationControlViewModel {
                         }).catch((errorMesssage) => {
 
                             this.showErrorMessage(errorMesssage);
-                            pnp.log.write(errorMesssage, pnp.log.LogLevel.Error);
+                            pnp.log.write(errorMesssage, pnp.LogLevel.Error);
                         });
 
                     }).catch((errorMesssage) => {
 
                         this.showErrorMessage(errorMesssage);
-                        pnp.log.write(errorMesssage, pnp.log.LogLevel.Error);
+                        pnp.log.write(errorMesssage, pnp.LogLevel.Error);
                     });
 
                 }).catch((errorMesssage) => {
 
                     this.showErrorMessage(errorMesssage);
-                    pnp.log.write(errorMesssage, pnp.log.LogLevel.Error);
+                    pnp.log.write(errorMesssage, pnp.LogLevel.Error);
                 });
 
             }).catch((errorMesssage) => {
 
                 this.showErrorMessage(errorMesssage);
-                pnp.log.write(errorMesssage, pnp.log.LogLevel.Error);
+                pnp.log.write(errorMesssage, pnp.LogLevel.Error);
             });
 
         }).catch((errorMesssage) => {
 
             this.showErrorMessage(errorMesssage);
-            pnp.log.write(errorMesssage, pnp.log.LogLevel.Error);
+            pnp.log.write(errorMesssage, pnp.LogLevel.Error);
         });
     }
 
@@ -342,13 +336,13 @@ export class TranslationControlViewModel {
             }).catch((errorMesssage) => {
 
                 this.showErrorMessage(errorMesssage);
-                pnp.log.write(errorMesssage, pnp.log.LogLevel.Error);
+                pnp.log.write(errorMesssage, pnp.LogLevel.Error);
             });
 
         }).catch((errorMesssage) => {
 
             this.showErrorMessage(errorMesssage);
-            pnp.log.write(errorMesssage, pnp.log.LogLevel.Error);
+            pnp.log.write(errorMesssage, pnp.LogLevel.Error);
         });
 
         return p;

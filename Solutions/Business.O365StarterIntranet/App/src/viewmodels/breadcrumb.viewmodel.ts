@@ -1,16 +1,12 @@
 // ========================================
 // Breadcrumb Component View Model
 // ========================================
-
-/// <reference path="../../typings/globals/sharepoint/index.d.ts" />
-/// <reference path="../../typings/globals/knockout/index.d.ts" />
-
+import { UtilityModule } from "../core/utility";
+import { NavigationViewModel } from "../shared/navigation.viewmodel";
+import { NavigationNode } from "../shared/navigationnode";
+import * as i18n from "i18next";
 import "pubsub-js";
 import * as pnp from "sp-pnp-js";
-import i18n = require("i18next");
-import { NavigationNode } from "../shared/navigationnode";
-import { NavigationViewModel } from "../shared/navigation.viewmodel";
-import { UtilityModule } from "../core/utility";
 
 export class BreadcrumbViewModel extends NavigationViewModel {
 
@@ -84,7 +80,7 @@ export class BreadcrumbViewModel extends NavigationViewModel {
 
             }).catch((errorMesssage) => {
 
-                pnp.log.write(errorMesssage, pnp.log.LogLevel.Error);
+                pnp.log.write(errorMesssage, pnp.LogLevel.Error);
             });
         });
     }

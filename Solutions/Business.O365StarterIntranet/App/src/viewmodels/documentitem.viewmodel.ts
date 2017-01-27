@@ -1,15 +1,10 @@
 // ========================================
 // Document Item View Model (Display Template)
 // ========================================
-
-/// <reference path="../../typings/globals/knockout/index.d.ts" />
-/// <reference path="../../typings/globals/trunk8/index.d.ts" />
-/// <reference path="../../typings/globals/sharepoint/index.d.ts" />
-
 import "../shared/bindinghandlers";
-import { DefaultDisplayTemplateItemViewModel } from "./defaultdisplaytemplateitem.viewmodel.ts";
-import i18n = require("i18next");
-import sprintf = require("sprintf-js");
+import { DefaultDisplayTemplateItemViewModel } from "./defaultdisplaytemplateitem.viewmodel";
+import * as i18n from "i18next";
+import * as sprintf from "sprintf-js";
 
 export class DocumentDisplayTemplateItemViewModel extends DefaultDisplayTemplateItemViewModel {
 

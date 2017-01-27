@@ -1,7 +1,6 @@
 // ========================================
 // Carousel Component View Model
 // ========================================
-
 import * as pnp from "sp-pnp-js";
 import "trunk8";
 
@@ -55,7 +54,7 @@ export class CarouselViewModel {
 
                     // Adjust automatically slide label on resize
                     $(window).resize((event) => {
-                        $(".carousel-label").trunk8(trunk8Options);                        
+                        $(".carousel-label").trunk8(trunk8Options);
                     });
                 });
             }

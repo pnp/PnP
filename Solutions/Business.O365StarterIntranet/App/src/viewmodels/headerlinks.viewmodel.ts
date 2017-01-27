@@ -1,14 +1,11 @@
 // ========================================
 // Main Menu Component View Model
 // ========================================
-
-/// <reference path="../../typings/globals/knockout/index.d.ts" />
-
 import { TaxonomyModule } from "../core/taxonomy";
 import { UtilityModule } from "../core/utility";
 import { NavigationViewModel } from "../shared/navigation.viewmodel";
+import * as i18n from "i18next";
 import * as pnp from "sp-pnp-js";
-import i18n = require("i18next");
 
 export class HeaderLinksViewModel extends NavigationViewModel {
 
@@ -71,12 +68,12 @@ export class HeaderLinksViewModel extends NavigationViewModel {
 
             } else {
 
-                pnp.log.write("There is no configuration item for this site", pnp.log.LogLevel.Warning);
+                pnp.log.write("There is no configuration item for this site", pnp.LogLevel.Warning);
             }
 
         }).catch(errorMesssage => {
 
-            pnp.log.write(errorMesssage, pnp.log.LogLevel.Error);
+            pnp.log.write(errorMesssage, pnp.LogLevel.Error);
         });
     }
 
@@ -84,7 +81,7 @@ export class HeaderLinksViewModel extends NavigationViewModel {
 
         if (!termSetId) {
 
-            pnp.log.write("The term set id for the header links is null. Please specify a valid term set id in the configuration list", pnp.log.LogLevel.Error);
+            pnp.log.write("The term set id for the header links is null. Please specify a valid term set id in the configuration list", pnp.LogLevel.Error);
 
         } else {
 
@@ -105,12 +102,12 @@ export class HeaderLinksViewModel extends NavigationViewModel {
 
                 }).catch(errorMesssage => {
 
-                    pnp.log.write(errorMesssage, pnp.log.LogLevel.Error);
+                    pnp.log.write(errorMesssage, pnp.LogLevel.Error);
                 });
 
             }).catch(errorMesssage => {
 
-                pnp.log.write(errorMesssage, pnp.log.LogLevel.Error);
+                pnp.log.write(errorMesssage, pnp.LogLevel.Error);
             });
         }
     }

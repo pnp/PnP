@@ -5,9 +5,6 @@
 // Note: to get this display template work, you have to use a managed property mapped to a taxonomy crawl property like ows_taxid_xxx (not the ows_xxx in string format)
 // By this way, we are able to get the term id and retrieve the correct label according to the language
 
-/// <reference path="../../typings/globals/knockout/index.d.ts" />
-/// <reference path="../../typings/globals/trunk8/index.d.ts" />
-
 import { TaxonomyModule } from "../core/taxonomy";
 import "../shared/bindinghandlers";
 import * as pnp from "sp-pnp-js";
@@ -49,7 +46,7 @@ export class DefaultFilterViewModel {
                             });
 
                         }).catch((errorMesssage) => {
-                            pnp.log.write(errorMesssage, pnp.log.LogLevel.Error);
+                            pnp.log.write(errorMesssage, pnp.LogLevel.Error);
                         });
                     }
 

@@ -25,14 +25,8 @@
  *          - Only the most recent translation is shown for the "EN" label, in the component.
  *
  * **********************************************/
-
-/// <reference path="../../typings/globals/knockout/index.d.ts" />
-/// <reference path="../../typings/globals/sprintf-js/index.d.ts" />
-/// <reference path="../../typings/globals/sharepoint/index.d.ts" />
-/// <reference path="../../typings/globals/es6-promise/index.d.ts" />
-
+import * as i18n from "i18next";
 import * as pnp from "sp-pnp-js";
-import i18n = require("i18next");
 
 export class LanguageSwitcherViewModel {
 
@@ -129,12 +123,12 @@ export class LanguageSwitcherViewModel {
 
             }).catch((errorMesssage) => {
 
-                pnp.log.write(errorMesssage, pnp.log.LogLevel.Error);
+                pnp.log.write(errorMesssage, pnp.LogLevel.Error);
             });
 
         }).catch((errorMesssage) => {
 
-            pnp.log.write(errorMesssage, pnp.log.LogLevel.Error);
+            pnp.log.write(errorMesssage, pnp.LogLevel.Error);
         });
     }
 }

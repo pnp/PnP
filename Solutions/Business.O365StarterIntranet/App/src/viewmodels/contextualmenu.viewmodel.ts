@@ -1,10 +1,9 @@
 // ========================================
 // Contextual Menu Component View Model
 // ========================================
-
+import { UtilityModule } from "../core/utility";
 import { NavigationViewModel } from "../shared/navigation.viewmodel";
 import { NavigationNode } from "../shared/navigationnode";
-import { UtilityModule } from "../core/utility";
 import "pubsub-js";
 import * as pnp from "sp-pnp-js";
 
@@ -95,7 +94,7 @@ export class ContextualMenuViewModel extends NavigationViewModel {
 
                     } else {
 
-                        pnp.log.write("[Contextual Menu] Unable to determine the current position in the site map", pnp.log.LogLevel.Warning);
+                        pnp.log.write("[Contextual Menu] Unable to determine the current position in the site map", pnp.LogLevel.Warning);
                     }
 
                     this.initialize(navigationTree);
@@ -108,7 +107,7 @@ export class ContextualMenuViewModel extends NavigationViewModel {
 
             }).catch((errorMesssage) => {
 
-                pnp.log.write(errorMesssage, pnp.log.LogLevel.Error);
+                pnp.log.write(errorMesssage, pnp.LogLevel.Error);
             });
         });
     }

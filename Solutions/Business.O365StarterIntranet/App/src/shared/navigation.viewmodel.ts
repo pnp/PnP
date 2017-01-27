@@ -1,6 +1,3 @@
-/// <reference path="../../typings/globals/knockout/index.d.ts" />
-/// <reference path="../../typings/globals/sharepoint/index.d.ts" />
-
 import { NavigationNode } from "./navigationnode";
 
 export class NavigationViewModel {
