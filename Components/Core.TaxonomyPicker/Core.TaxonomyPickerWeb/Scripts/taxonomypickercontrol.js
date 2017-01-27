@@ -727,6 +727,7 @@
             //reset this._selectedTerms
             this._selectedTerms = newTerms;
             this._hiddenValidated.val(JSON.stringify(this._selectedTerms));
+            this._hiddenValidated.trigger('change');
 
             return textValidation;
         },
@@ -754,6 +755,7 @@
                        		
                        		this._selectedTerms.push(termNew);
                 			this._hiddenValidated.val(JSON.stringify(this._selectedTerms));
+                			this._hiddenValidated.trigger('change');
                 			
                 			this.pushSelectedTerm(termNew);
 
