@@ -48,17 +48,19 @@ export class PageInfoViewModel {
 
                 if (item.hasOwnProperty(key)) {
 
-                    let value = item[key];
+                    let itemValue = item[key];
 
                     let p = new Promise<any>((resolve) => {
 
-                        if (value) {
+                        if (itemValue) {
 
                             // Mutiple values taxonomy (returned as an array of objects)
-                            if (Array.isArray(value)) {
+                            // Be careful, with SharePoint 2013, the response is not the same as SharePoint Online
+                            // With SharePoint 2013, values must be retrieved via the "results" property of itemValue
+                            if (Array.isArray(itemValue.results)) {
 
                                 let arrayValues: Array<Promise<string>> = [];
-                                value.forEach(element => {
+                                itemValue.results.forEach(element => {
 
                                     if (element.hasOwnProperty("TermGuid")) {
 
@@ -84,9 +86,9 @@ export class PageInfoViewModel {
                             } else {
 
                                 // Single value taxonomy (returned as a single object)
-                                if (value.hasOwnProperty("TermGuid")) {
+                                if (itemValue.hasOwnProperty("TermGuid")) {
 
-                                    let termId = value.TermGuid;
+                                    let termId = itemValue.TermGuid;
 
                                     this.taxonomyModule.init().then(() => {
 
@@ -98,7 +100,7 @@ export class PageInfoViewModel {
 
                                 } else {
 
-                                    resolve({key: key, value: value});
+                                    resolve({key: key, value: itemValue});
                                 }
                             }
 
