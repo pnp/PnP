@@ -5,10 +5,10 @@ The following refactoring steps have been followed to adapt the original the PnP
 ### Environement setup ###
 The following environment has been used to refactor the solution:
 
-Version  | Version | Date
+Version  | Version(s) | Date
 ---------| -----| --------
 PnP PowerShell cmdlets | 2.11.1701.1 | January 2017
-SharePoint 2013 | 15.0.4893.1000 | January 2017 CU
+SharePoint 2013 | 15.0.4893.1000, 15.0.4867.1000 | January 2017 CU, October 2016 CU
 PnP Core NuGet package for the extensibility provider | 2.11.1701.1 | January 2017
 
 ### Refactoring tasks ###
