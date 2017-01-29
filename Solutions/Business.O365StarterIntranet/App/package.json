@@ -60,9 +60,9 @@
     "node-fetch": "^1.5.3",
     "office-ui-fabric": "^2.6.1",
     "pubsub-js": "^1.5.4",
-    "sp-pnp-js": "^2.0.0",
     "sprintf-js": "^1.0.3",
     "trunk8": "0.0.1",
+    "sp-pnp-js": "1.0.6",
     "whatwg-fetch": "^1.0.0"
   }
 }

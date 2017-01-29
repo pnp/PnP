@@ -1,7 +1,6 @@
 ﻿using OfficeDevPnP.Core.Framework.Provisioning.Extensibility;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Diagnostics;
 using OfficeDevPnP.Core.Framework.Provisioning.Model;
@@ -9,6 +8,7 @@ using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers;
 using OfficeDevPnP.Core.Framework.Provisioning.ObjectHandlers.TokenDefinitions;
 using System.Xml.Linq;
 using OfficeDevPnP.Core.Entities;
+using System.Linq;
 
 namespace Intranet.Providers
 {

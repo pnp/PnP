@@ -31,7 +31,7 @@ $ProvisioningRootSiteTemplateFile = ($CommandDirectory  + ".\Provisioning\RootSi
 $SearchConfigurationFilePath = ($CommandDirectory  + ".\Provisioning\SearchConfiguration.xml")
 $ImageRenditionsConfigurationFilePath = ($CommandDirectory + ".\Provisioning\PublishingImageRenditions.xml")
 
-$CustomProviderDllPath = ($CommandDirectory + ".\Provisioning\Intranet.Providers\Intranet.Providers\bin\Release\Intranet.Providers.dll")
+$CustomProviderDllPath = ($CommandDirectory + ".\Provisioning\Intranet.Providers\Intranet.Providers\bin\Debug\Intranet.Providers.dll")
 
 # This name will be used to create a separated folder in the style library and the master page catalog.
 # If you change this name, don't forget to update :
@@ -55,14 +55,14 @@ if ($Prod.IsPresent) {
 	Write-Host "1# Bundling the application (production mode)..." -ForegroundColor Magenta
 	
 	# Bundle the project in production mode (the '2>$null' is to avoid PowerShell ISE errors)
-	webpack -p 2>$null
+	#webpack -p 2>$null
 		
 } else {
 
 	Write-Host "1# Bundling the application (development mode)..." -ForegroundColor Magenta
 	
 	# Bundle the project in dev mode
-	webpack 2>$null
+	#webpack 2>$null
 }
 
 Pop-Location
@@ -78,7 +78,7 @@ Get-ChildItem -Recurse $DistFolder -File | ForEach-Object {
 
     $TargetFolder = "Style Library\$AppFolderName\" + (Resolve-Path -relative $_.FullName) | Split-Path -Parent
 
-	Add-PnPFile -Path $_.FullName -Folder ($TargetFolder.Replace("\","/")).Replace("./","").Replace(".","") -Checkout
+	#Add-PnPFile -Path $_.FullName -Folder ($TargetFolder.Replace("\","/")).Replace("./","").Replace(".","") -Checkout
 }
 
 Pop-Location
@@ -93,6 +93,9 @@ Ensure-PnPFolder -SiteRelativePath "Pages/News" | Out-Null
 
 # Load the custom extensibility provider type in the current PS session
 Add-Type -Path $CustomProviderDllPath 
+Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -Handlers ExtensibilityProviders -Parameters @{ "CompanyName" = $AppFolderName }
+
+Read-Host
 
 # Apply the root site provisioning template and set column default values (without files)
 Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -ExcludeHandlers Files,WebSettings -Parameters @{ "CompanyName" = $AppFolderName }

@@ -9,6 +9,6 @@
       "knockout",
       "knockout.mapping"
     ],
-    "lib": ["dom", "es2015.promise", "es5","es2015.iterable"] //Include some usefull librairies https://www.typescriptlang.org/docs/handbook/compiler-options.html
+    "lib": ["dom", "es5"] //Include some usefull librairies https://www.typescriptlang.org/docs/handbook/compiler-options.html
   }
 }

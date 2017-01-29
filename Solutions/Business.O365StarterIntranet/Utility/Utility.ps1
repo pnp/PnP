@@ -19,7 +19,8 @@ function Enable-CustomItemScheduling {
     $List.EnableMinorVersions = $true
     $List.Update()
 
-    $Assembly = "Microsoft.SharePoint.Publishing, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c"
+    # Target assemblies according to the target environnement (Online or SP2013)
+    $Assembly = "Microsoft.SharePoint.Publishing, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c"
     $FullName = "Microsoft.SharePoint.Publishing.Internal.ScheduledItemEventReceiver"
     $EventReceiverItemAddedExists = $false
     $EventReceiverItemAddedType = [Microsoft.SharePoint.Client.EventReceiverType]::ItemAdded

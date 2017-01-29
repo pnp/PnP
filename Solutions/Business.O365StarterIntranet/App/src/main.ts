@@ -168,6 +168,13 @@ export class Main {
         pnp.log.subscribe(consoleLogger);
         pnp.log.activeLogLevel = pnp.LogLevel.Verbose;
 
+        // Needed for SharePoint 2013 On-Premise othjerwise it will use Atom XML
+        pnp.setup({
+            headers: {
+                Accept: "application/json; odata=verbose",
+            },
+        });
+
         // Be careful, we need to apply bindings after the document is ready
         $(document).ready(() => {
 
