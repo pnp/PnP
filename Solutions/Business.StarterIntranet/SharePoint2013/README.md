@@ -54,7 +54,7 @@ A blog series will come soon to explain how we did this solution in details. Her
 
 ### Set up your environment ###
 
-Before starting, you'll need to install some prerequisites (see the refactoring notes to see the environment used):
+Before starting, you'll need to install some prerequisites (*see the [refactoring notes](./REFACTORING-NOTES.md) to see the environment used):
 
 - Install the latest release of [PnP PowerShell cmdlets SharePointPnPPowerShell2013](https://github.com/OfficeDev/PnP-PowerShell/releases) or a version compatible with the 201605 PnP schema version (the solution uses the september 2016 release).
 - Install Node.js on your machine https://nodejs.org/en/
