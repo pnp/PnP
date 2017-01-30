@@ -1,0 +1,34 @@
+<div id="contextualmenu" data-bind="css: {'spinner': wait }">
+    <ul class="nav nav-pills nav-stacked">
+
+        <!-- ko with: parentSection -->
+        <li class="parent-section">    
+            <i class="ms-Icon ms-Icon--sections" aria-hidden="true"></i>          
+            <a aria-expanded="true" data-bind="attr: { href: Url ? Url : '#' }, text: Title">           
+            </a>          
+        </li>
+        <!-- /ko -->
+
+        <!-- ko foreach: nodes -->
+            <!-- ko ifnot: excludeFromCurrentNavigation() -->
+                <li data-toggle="collapse" data-bind="attr: {'data-target': '#collapse' + $index() }, css: { 'is-selected': isCurrentNode }">
+                    <a aria-expanded="true" data-bind="attr: { href: url }, text: title">                  
+                    </a>
+                    <i class="ms-Icon ms-Icon--chevronDown" aria-hidden="true" data-bind="visible: hasChildren"></i>
+                </li>
+                <!-- ko if: hasChildren -->
+                    <div class="nav collapse" data-bind="attr: { id: 'collapse' + $index() }">
+                    <!-- ko foreach: children -->
+                        <!-- ko ifnot: excludeFromCurrentNavigation() -->
+                            <li class="is-child" data-bind="css: { 'is-selected': isCurrentNode }">
+                                <a data-bind="attr: { href: url }, text: title">
+                                </a>
+                            </li>
+                        <!-- /ko -->
+                    <!-- /ko -->
+                    </div>
+                <!-- /ko -->
+            <!-- /ko -->
+        <!-- /ko -->
+    </ul>
+</div>

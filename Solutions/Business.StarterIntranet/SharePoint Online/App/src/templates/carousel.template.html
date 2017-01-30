@@ -1,0 +1,20 @@
+<div id="carousel">
+    
+    <!-- Flickity HTML init -->
+    <div class="carousel">
+        <!-- ko foreach: items -->
+        
+        <div class="carousel-cell">
+        
+            <img data-bind="attr : {'data-flickity-lazyload': CarouselItemImage ? (CarouselItemImage.Url + '?width=850') : $component.siteLogoUrl }, css : {'no-image' : !CarouselItemImage }" />
+        
+            <span class="carousel-label">
+                <a data-bind="text: Title, attr: {href: CarouselItemURL ? CarouselItemURL.Url : '#' }">
+                </a>
+            </span>
+            
+        </div>
+        <!-- /ko -->
+    </div>
+
+</div>
