@@ -6,6 +6,7 @@ using Microsoft.SharePoint.Client;
 using Microsoft.SharePoint.Client.EventReceivers;
 using System.Diagnostics;
 using OfficeDevPnP.Core.Entities;
+using OfficeDevPnP.Core.Utilities;
 
 namespace CorporateEvents.SharePointWeb.Models {
     class DataInitializer {
