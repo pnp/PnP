@@ -71,7 +71,7 @@ Before starting, you'll need to install some prerequisites (*see the [refactorin
 ### Solution ###
 Solution                | Author(s)
 ------------------------|----------
-Business.O365StarterIntranet | Franck Cornu
+Business.StarterIntranet.SharePoint2013 | Franck Cornu
 
 ### Version history ###
 Version  | Date | Comments
@@ -97,7 +97,7 @@ $UserName = "<your_username>"
 $Password = "<your_password>"
 $SiteUrl = "https://<your_site_collection>"
 
-Set-Location "<your_pnp_installation_folder>\Solutions\Business.O365StarterIntranet"
+Set-Location "<your_pnp_installation_folder>\Solutions\Business.StarterIntranet.SharePoint2013"
 
 $Script = ".\Deploy-Solution.ps1" 
 & $Script -SiteUrl $SiteUrl -UserName $UserName -Password $Password -IncludeData
