@@ -359,16 +359,13 @@
             });
 
             //load translation files
-            if (typeof CAMControl.resourceLoaded == 'undefined') {
-                CAMControl.resourceLoaded = false;
+            if (!window.TaxonomyPickerConsts) {
                 var resourceFileName = scriptUrl + '_resources.' + this.Language.substring(0, 2).toLowerCase() + '.js';
 
                 jQuery.ajax({
                     dataType: "script",
                     cache: true,
                     url: resourceFileName
-                }).done(function () {
-                    CAMControl.resourceLoaded = true;
                 }).fail(function () {
                     alert('Could not load the resource file ' + resourceFileName);
                 });
