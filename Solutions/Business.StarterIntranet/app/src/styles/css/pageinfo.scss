@@ -1,0 +1,16 @@
+@import 'variables';
+
+#page-info {
+
+    height: 100%;
+
+    #category, #date {
+        float: left;
+        padding-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    i {
+        color: $page-icon-color;
+    }
+}

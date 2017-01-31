@@ -1,0 +1,42 @@
+@import 'variables';
+
+#suggestions-box {
+
+    #title {
+        margin-bottom: 5px;
+        padding: 10px;
+    }
+
+    #line1 {
+        margin-bottom: 20px;
+
+        #image {
+            float: left;
+        }
+
+        #image, #description {
+            padding: 10px;
+        }
+    }
+
+    #line2 {
+
+        #action {
+            padding: 10px;
+            float: right;
+            margin-bottom: 10px;
+
+            a {
+                span {
+                    padding: 7px;
+                    color: $navbar-l1-link-color;
+                    background-color: $primary-color;
+                }
+            }
+
+            a:hover {
+                text-decoration: none;
+            }
+        }   
+    }
+}
