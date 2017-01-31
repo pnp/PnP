@@ -21,17 +21,17 @@ Param(
 # -----------------
 
 # Include utility functions
- . "./Utility/Utility.ps1"
+ . "./utility/Utility.ps1"
 
 $0 = $myInvocation.MyCommand.Definition
 $CommandDirectory = [System.IO.Path]::GetDirectoryName($0)
 
 # Configuration file paths
-$ProvisioningRootSiteTemplateFile = ($CommandDirectory  + ".\Provisioning\RootSiteTemplate.xml")
-$SearchConfigurationFilePath = ($CommandDirectory  + ".\Provisioning\SearchConfiguration.xml")
-$ImageRenditionsConfigurationFilePath = ($CommandDirectory + ".\Provisioning\PublishingImageRenditions.xml")
+$ProvisioningRootSiteTemplateFile = ($CommandDirectory  + ".\provisioning\RootSiteTemplate.xml")
+$SearchConfigurationFilePath = ($CommandDirectory  + ".\provisioning\SearchConfiguration.xml")
+$ImageRenditionsConfigurationFilePath = ($CommandDirectory + ".\provisioning\PublishingImageRenditions.xml")
 
-$CustomProviderDllPath = ($CommandDirectory + ".\Provisioning\Intranet.Providers\Intranet.Providers\bin\Debug\Intranet.Providers.dll")
+$CustomProviderDllPath = ($CommandDirectory + ".\provisioning\Intranet.Providers\Intranet.Providers\bin\Debug\Intranet.Providers.dll")
 
 # This name will be used to create a separated folder in the style library and the master page catalog.
 # If you change this name, don't forget to update :
@@ -57,7 +57,7 @@ switch ($ServerVersion)
 # -------------------------------------------------------------------------------------
 # Upload files in the style library (folders are created automatically by the PnP cmdlet)
 # -------------------------------------------------------------------------------------
-Push-Location ".\App"
+Push-Location ".\app"
 
 if ($Prod.IsPresent) {
 		
@@ -77,7 +77,7 @@ if ($Prod.IsPresent) {
 Pop-Location
 
 # Get Webpack output folder and upload all files in the style library (eventually will be replaced by CDN in the future)
-$DistFolder = $CommandDirectory + "\App\dist"
+$DistFolder = $CommandDirectory + "\app\dist"
 
 Write-Host "2# Uploading all files (non optimized)..." -ForegroundColor Magenta
 

@@ -1,0 +1,108 @@
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"> 
+<head>
+<title>Common Hover Panel Header</title>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:TemplateHidden msdt:dt="string">0</mso:TemplateHidden>
+<mso:MasterPageDescription msdt:dt="string">Displays the hover panel header elements that are common to all results.</mso:MasterPageDescription>
+<mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106603</mso:ContentTypeId>
+<mso:TargetControlType msdt:dt="string">;#SearchHoverPanel;#</mso:TargetControlType>
+<mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+<mso:HtmlDesignConversionSucceeded msdt:dt="string">True</mso:HtmlDesignConversionSucceeded>
+<mso:CrawlerXSLFile msdt:dt="string"></mso:CrawlerXSLFile>
+<mso:HtmlDesignPreviewUrl msdt:dt="string"></mso:HtmlDesignPreviewUrl>
+<mso:ManagedPropertyMapping msdt:dt="string"></mso:ManagedPropertyMapping>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>
+<body>
+    <div id="Item_CommonHoverPanel_Header">
+<!--#_
+        var id = ctx.CurrentItem.csr_id;
+        var fileType = ctx.CurrentItem.csr_FileType;
+        if($isEmptyString(fileType)){
+            //fileType = HP.GetFriendlyNameForFileType(ctx.CurrentItem);
+
+            // Updated the method to get the right resource 
+            // Resource values are available in the Srch.Res object (prefixed by 'file_')
+            var resKey = Srch.U.getFriendlyNameForFileExtension(ctx.CurrentItem.FileType)
+            fileType = Intranet.Main.getResource(resKey);
+        }
+        var showFileIcon = Boolean(ctx.CurrentItem.csr_ShowFileIcon);
+		var titleCSSClass = "ms-srch-hover-title ms-dlg-heading ms-srch-ellipsis";
+		var maxViews = 10000;
+_#-->
+        <div>
+            <div class="ms-srch-hover-close">
+                <a href="javascript:HP.Close()" id="_#= $htmlEncode(id + HP.ids.close) =#_" title="_#= $htmlEncode(Intranet.Main.getResource('hp_Tooltip_Close')) =#_">
+                    <img class="js-callout-closeButtonImage" src="_#= $urlHtmlEncodeString(GetThemedImageUrl('spcommon.png')) =#_" alt="_#= $htmlEncode(Intranet.Main.getResource('hp_Tooltip_Close')) =#_" />
+                </a>
+            </div>
+<!--#_
+            if (showFileIcon) {
+_#-->
+                <img class="ms-srch-item-icon ms-positionRelative" id="_#= $htmlEncode(id + Srch.U.Ids.icon) =#_" onload="this.style.display='inline';this.style.bottom='-5px'" src="_#= $urlHtmlEncodeString(Srch.U.getIconUrlByFileExtension(ctx.CurrentItem)) =#_" />
+<!--#_
+            }	
+			if(!$isNull(ctx.CurrentItem.ViewsLifeTime)) {
+				var formattedViewsLifeTime;
+
+				if (ctx.CurrentItem.ViewsLifeTime > maxViews)	{
+					formattedViewsLifeTime = maxViews.localeFormat("N0") + "+";  
+				} 
+				else {
+					formattedViewsLifeTime = ctx.CurrentItem.ViewsLifeTime.localeFormat("N0"); 
+				}
+				var views = "";
+				titleCSSClass = titleCSSClass + " ms-srch-hover-title-extraMarginForViews";
+				if (ctx.CurrentItem.ViewsLifeTime === 1) {
+					views = Intranet.Main.getResource('hp_Views_Singular');
+				} 
+				else {
+					views = Intranet.Main.getResource('hp_Views_Plural');
+				}				   
+                var tooltipViewsEncoded = $htmlEncode(String.format(Intranet.Main.getResource('hp_Tooltip_Views'), formattedViewsLifeTime));
+_#-->			
+				<div class="ms-srch-hover-popularity ms-metadata" title="_#= tooltipViewsEncoded =#_ ">		
+					<div id="_#= $htmlEncode(id + HP.ids.viewsLifeTime) =#_"> _#= $htmlEncode(formattedViewsLifeTime) =#_ </div>
+					<div> _#= $htmlEncode(views) =#_ </div>
+				</div>
+<!--#_
+			}
+            if (!Srch.U.e(ctx.CurrentItem.Title)) {
+_#-->		
+                <div class="_#= titleCSSClass =#_" id="_#= $htmlEncode(id + HP.ids.title) =#_"  title="_#= $htmlEncode(ctx.CurrentItem.Title) =#_">
+                    _#= $htmlEncode(ctx.CurrentItem.Title) =#_
+                </div>
+<!--#_						
+            }
+_#-->	
+        </div>
+        <div class="ms-metadata">
+            <div class="ms-srch-hover-filetype">
+<!--#_
+                if (!Srch.U.e(fileType)) {
+_#-->
+                    <span id="_#= $htmlEncode(id + HP.ids.fileType) =#_">
+                        _#= $htmlEncode(fileType) + " " =#_
+                    </span>
+<!--#_
+                }                
+_#-->
+            </div>
+        </div>
+<!--#_
+
+    AddPostRenderCallback(ctx, function(){
+        if (Srch.U.e(ctx.CurrentItem.ServerRedirectedEmbedURL)){
+            Srch.U.logClick($get(id), "Hover");
+        } else {
+            Srch.U.logClick($get(id), "HoverWithWAC");
+        }
+    });
+
+_#-->
+    </div>
+</body>
+</html>

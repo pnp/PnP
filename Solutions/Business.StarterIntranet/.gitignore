@@ -1,6 +1,6 @@
 dist/
 node_modules/
-App/typings/
+app/typings/
 packages/
 ![Rr]elease/Intranet.Providers.dll
 ![Rr]elease/OfficeDevPnP.Core.dll

@@ -1,0 +1,154 @@
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"> 
+<head>
+<title>Common Hover Panel Actions</title>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:TemplateHidden msdt:dt="string">0</mso:TemplateHidden>
+<mso:MasterPageDescription msdt:dt="string">Displays the hover panel actions that are common to all results.</mso:MasterPageDescription>
+<mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106603</mso:ContentTypeId>
+<mso:TargetControlType msdt:dt="string">;#SearchHoverPanel;#</mso:TargetControlType>
+<mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>
+<body>
+    <script>
+    if(Flighting.VariantConfiguration.IsExpFeatureClientEnabled(4))
+    {
+
+        SP.SOD.executeFunc(
+            'followingcommon.js',
+            'PrepareYammerEnvironment',
+            function() {
+                PrepareYammerEnvironment(null);
+            });
+
+        window.SearchHovercardPostToYammer = function(messageOrUrlToPost)
+        {
+            var postToYammerFunc = function() { PostToYammer(messageOrUrlToPost, HP.postActionEventName); };
+            if(Srch.U.n(PostToYammer))
+            {
+
+                SP.SOD.executeFunc('followingcommon.js', 'PostToYammer', postToYammerFunc);
+            }
+            else
+            {
+
+                postToYammerFunc();
+            }
+        };
+    }
+    </script>
+    <div id="Item_CommonHoverPanel_Actions">
+<!--#_	
+        var id = ctx.CurrentItem.id;   
+        var appAttribs = "";
+        if (!$isEmptyString(ctx.CurrentItem.csr_OpenApp)) { appAttribs += "openApp=\"" + $htmlEncode(ctx.CurrentItem.csr_OpenApp) + "\"" }; 
+        if (!$isEmptyString(ctx.CurrentItem.csr_OpenControl)) { appAttribs += " openControl=\"" + $htmlEncode(ctx.CurrentItem.csr_OpenControl) + "\"" };
+
+        if (!Srch.U.e(ctx.CurrentItem.Path))
+        {
+            var editId = id + HP.ids.open;
+            var editTitle = Intranet.Main.getResource('hp_Tooltip_Open');
+            var editText = Intranet.Main.getResource('hp_Open');
+
+            if (ctx.currentItem_IsOfficeDocument)
+            {
+                editId = id + HP.ids.open;
+                editTitle = Intranet.Main.getResource('hp_Edit');
+                editText = Intranet.Main.getResource('hp_Edit');
+            }
+            else if (!Srch.U.e(ctx.CurrentItem.ServerRedirectedURL) && !ctx.CurrentItem.IsContainer && 
+                     !ctx.CurrentItem.csr_ForceOpenLink)
+            {
+                editId = id + HP.ids.openClient;
+                editTitle = Intranet.Main.getResource('hp_Tooltip_OpenInClient');
+                editText = Intranet.Main.getResource('hp_Edit');
+            }
+
+            var editHmtl = String.format('<a clicktype="ActionEdit" id="{0}" class="ms-calloutLink ms-uppercase" href="{1}" title="{2}" {3}>{4}</a>', 
+                                            $htmlEncode(editId), $urlHtmlEncodeString(ctx.CurrentItem.Path), $htmlEncode(editTitle), appAttribs, $htmlEncode(editText));
+_#-->				
+            <div class="ms-srch-hover-action">        
+                _#= editHmtl =#_                   
+            </div>
+<!--#_
+        }
+
+        var hasYammerPostCapability = (Flighting.VariantConfiguration.IsExpFeatureClientEnabled(4) &&
+            !Srch.U.n(SP) &&
+            !Srch.U.n(SP.YammerSwitch) &&
+            SP.YammerSwitch.IsEnabled);
+
+        var isOfficeDoc = (!Srch.U.n(ctx.currentItem_IsOfficeDocument) &&
+            ctx.currentItem_IsOfficeDocument);
+
+        var isPostableDoc = isOfficeDoc || (!Srch.U.n(ctx.currentItem_ShowPostToYammer) &&
+            ctx.currentItem_ShowPostToYammer);
+
+        if (hasYammerPostCapability &&
+            isPostableDoc)
+        {
+            var forceGotoWACUrl = isOfficeDoc;
+            if(ctx.ScriptApplicationManager && ctx.ScriptApplicationManager.states){
+
+                forceGotoWACUrl = (forceGotoWACUrl && !ctx.ScriptApplicationManager.states.openDocumentsInClient);
+            }
+
+            var bestUrl = SP.Utilities.HttpUtility.urlPathEncode(ctx.CurrentItem.Path) + (forceGotoWACUrl ? "?Web=1" : "");;
+
+            var urlForHrefClickAttrib = $htmlEncode(encodeURIComponent(bestUrl));
+_#-->
+            <div class="ms-srch-hover-action">
+                <a id="_#= $htmlEncode(id + HP.ids.post) =#_" class="ms-calloutLink ms-uppercase" href="javascript:SearchHovercardPostToYammer('_#= urlForHrefClickAttrib =#_');" title="_#= $htmlEncode(Intranet.Main.getResource('hp_Tooltip_Post')) =#_">
+                    _#= $htmlEncode(Intranet.Main.getResource('hp_Post')) =#_
+                </a>
+            </div>
+<!--#_
+        }
+        else if (!Srch.U.isSPFSKU() && ctx.CurrentItem.csr_ShowFollowLink && !$isEmptyString(ctx.CurrentItem.Path) && window.IsSPSocialSwitchEnabled && IsSPSocialSwitchEnabled()){
+            var isDoc = true;
+            if(!$isNull(ctx.CurrentItem.csr_IsSite) && ctx.CurrentItem.csr_IsSite == true) {
+                isDoc = false;
+            }
+_#-->
+            <div class="ms-srch-hover-action">
+                <a id="_#= $htmlEncode(id + HP.ids.follow) =#_" class="ms-calloutLink ms-uppercase" href="javascript:HP.Follow('_#= $scriptEncode(ctx.CurrentItem.Path) =#_', true, _#= isDoc =#_)" title="_#= $htmlEncode(Intranet.Main.getResource('hp_Tooltip_Follow')) =#_">
+                    _#= $htmlEncode(Intranet.Main.getResource('hp_Follow')) =#_
+                </a>
+            </div>
+<!--#_
+        }
+_#-->
+        <div class="ms-srch-hover-action">
+<!--#_
+            var emailLink = HP.GetEmailLink(ctx.CurrentItem.Title, ctx.CurrentItem.Path, ctx.CurrentItem.csr_ClientType, ctx.CurrentItem.ServerRedirectedURL);
+_#-->
+            <a clicktype="ActionSend" id="_#= $htmlEncode(id + HP.ids.send) =#_" class="ms-calloutLink ms-uppercase" title="_#= $htmlEncode(Intranet.Main.getResource('hp_Tooltip_Send')) =#_" href="_#= $htmlEncode(emailLink) =#_">
+                _#= $htmlEncode(Intranet.Main.getResource('hp_Send')) =#_
+            </a>
+        </div>
+<!--#_
+        if(!Srch.U.e(ctx.CurrentItem.ParentLink) && ctx.CurrentItem.csr_ShowViewLibrary) {
+_#-->
+            <div class="ms-srch-hover-action">
+                <a clicktype="ActionViewLibrary" id="_#= $htmlEncode(id + HP.ids.parentLink) =#_" class="ms-calloutLink ms-uppercase" title="_#= $htmlEncode(Intranet.Main.getResource('hp_Tooltip_ViewLibrary')) =#_" href="_#= $urlHtmlEncodeString(ctx.CurrentItem.ParentLink) =#_">_#= $htmlEncode(Intranet.Main.getResource('hp_ViewLibrary')) =#_</a>
+            </div>
+<!--#_
+        }
+        if(ctx.ClientControl.get_showViewDuplicates() && !Srch.U.n(ctx.CurrentItem.CollapsingStatus) && !Srch.U.n(ctx.CurrentItem.DocId)) {
+            if(ctx.CurrentItem.CollapsingStatus === 1){
+_#-->
+                <div class="ms-srch-hover-action">
+                    <a clicktype="ActionViewDupes" id="_#= $htmlEncode(id + HP.ids.viewDuplicates) =#_" class="ms-calloutLink ms-uppercase" title="_#= $htmlEncode(Intranet.Main.getResource('hp_Tooltip_ViewDuplicates')) =#_" href="javascript:HP.ViewDuplicates('_#= $scriptEncode(ctx.CurrentItem.id) =#_',_#= ctx.CurrentItem.DocId =#_)">
+                        _#= $htmlEncode(Intranet.Main.getResource('hp_ViewDuplicates')) =#_
+                    </a>
+                </div>
+<!--#_
+            }
+        }
+_#-->
+    </div>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"> 
+<head>
+<title>Intranet Contact Item</title>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:TemplateHidden msdt:dt="string">0</mso:TemplateHidden>
+<mso:ManagedPropertyMapping msdt:dt="string">'Link URL'{Link URL}:'Path','Title'{Title}:'Title','FirstNameOWSTEXT','WorkEmail','JobTitle','WorkPhone','MobilePhone','IntranetAreasOfResponsibilityOWSMTXT'</mso:ManagedPropertyMapping>
+<mso:MasterPageDescription msdt:dt="string">Displays the contact item in a list format.</mso:MasterPageDescription>
+<mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106603</mso:ContentTypeId>
+<mso:TargetControlType msdt:dt="string">;#Content Web Parts;#</mso:TargetControlType>
+<mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+<mso:HtmlDesignConversionSucceeded msdt:dt="string">True</mso:HtmlDesignConversionSucceeded>
+<mso:CrawlerXSLFile msdt:dt="string"></mso:CrawlerXSLFile>
+<mso:HtmlDesignPreviewUrl msdt:dt="string"></mso:HtmlDesignPreviewUrl>
+<mso:DisplayTemplateLevel msdt:dt="string">Item</mso:DisplayTemplateLevel>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+
+</head>
+
+<body>
+
+    <div id="Item_Contact">
+
+    <!--#_
+        var encodedId = $htmlEncode(ctx.ClientControl.get_nextUniqueId());
+        var containerId = "NewsItem_" + encodedId;
+        var currentItem = ctx.CurrentItem;
+        ctx.CurrentItem.csr_Icon = Srch.U.getIconUrlByFileExtension(ctx.CurrentItem);
+        var currentItemId = ctx.CurrentItemIdx + 1;
+        var groupRowCount = ctx.CurrentGroup.RowCount;
+
+        var altClass = "alt";
+        if (currentItemId === groupRowCount) {
+            altClass = "";
+        }
+        
+        AddPostRenderCallback(ctx, function() {
+
+            Intranet.Main.initDefaultDisplayTemplateItemViewModel(currentItem, document.getElementById(containerId));
+        });
+        
+    _#-->
+
+    <div data-bind="stopBinding: true">
+        <div class="display-template">
+            <div id="_#=containerId=#_" class="contact-item _#= altClass =#_">
+
+                <!-- ko with: item -->
+
+                    <div id="row-1">
+
+                        <div class="item-icon">
+                            <i class="ms-Icon ms-Icon--person" aria-hidden="true"></i>
+                        </div>
+
+                        <div id="contact-fullname" class="item-title">
+                            <a data-bind="attr: { href: Path }">          
+                                <span id="contact-firstname" data-bind="text: Title">  
+
+                                </span>
+                                <!-- ko if: $data.FirstNameOWSTEXT -->
+                                <span id="contact-lastname" data-bind="text: FirstNameOWSTEXT">  
+                                </span>                        
+                                <!-- /ko -->
+                            </a>  
+                        </div>
+
+                        <!-- ko if: $data.JobTitle -->
+                        <div id="contact-jobtitle">  
+                            ,
+                            <span data-bind="text: JobTitle"></span>
+                        </div>                        
+                        <!-- /ko -->
+
+                    </div>
+
+                    <div id="row-2">
+
+                        <div id="contact-infozone1">
+                            <!-- ko if: $data.WorkEmail -->
+                            <div id="contact-workemail"> 
+                                <i class="ms-Icon ms-Icon--mail" aria-hidden="true"></i>
+                                <a data-bind="attr: { href: 'mailto:' + WorkEmail }, text: WorkEmail"></a>
+                            </div>                        
+                            <!-- /ko -->
+
+                            <!-- ko if: $data.WorkPhone -->
+                            <div id="contact-workphone" >  
+                                <i class="ms-Icon ms-Icon--phone" aria-hidden="true"></i>
+                                <span data-bind="text: WorkPhone"></span>
+                                <span data-bind="text: '(' + Intranet.Main.getResource('workphone') + ')'"></span>
+                            </div>                        
+                            <!-- /ko -->
+
+                            <!-- ko if: $data.MobilePhone -->
+                            <div id="contact-mobilephone" >  
+                                <i class="ms-Icon ms-Icon--phone" aria-hidden="true"></i>
+                                <span data-bind="text: MobilePhone"></span>
+                                <span data-bind="text: '(' + Intranet.Main.getResource('mobilephone') + ')'"></span>
+                            </div>                        
+                            <!-- /ko -->
+                        </div>
+
+                    </div>
+                    
+                <!-- /ko -->
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+</body>
+</html>

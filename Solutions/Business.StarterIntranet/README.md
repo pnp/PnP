@@ -76,8 +76,8 @@ A complete documentaion is available explaining how we did this solution in deta
 
 Here are the following versions of PnP and SharePoint used for this sample:
 
-<ul style="list-style: none"><li>PnP PowerShell cmdlets version <br> (All SharePoint versions)</li></ul> | <ul style="list-style: none"><li>PnP NuGet package version <br> (All SharePoint versions)</li></ul> |<ul style="list-style: none"><li> SharePoint 2013 tested version(s)</li></ul> | <ul style="list-style: none"><li>SharePoint 2016 tested version(s)</li></ul> 
----------| -----| -------- | ---------| -----| --------
+PnP PowerShell cmdlets version (All SharePoint versions)| PnP NuGet package version (All SharePoint versions) |SharePoint 2013 tested version(s) | SharePoint 2016 tested version(s)
+---------|---------|---------| ---------
 <ul style="list-style: none"><li>2.11.1701.1 (January 2017)</li></ul> | <ul style="list-style: none"><li>2.11.1701.1 (January 2017)</li></ul> | <ul style="list-style: none"><li>15.0.4893.1000 (January 2017 CU)</li><li>15.0.4867.1000 (October 2016 CU)</li></ul> | <ul style="list-style: none"><li>16.0.4483.1000 (January 2017 CU)</li></ul>
 
 ### Set up your environment ###
@@ -88,8 +88,8 @@ Before starting, you'll need to setup tour environment:
 - For SharePoint 2016, install the [SharePoint Server 2016 Client Components SDK](https://www.microsoft.com/en-us/download/details.aspx?id=51679)
 - Install Node.js on your machine https://nodejs.org/en/
 - Install the 'webpack' Node JS client (`npm install webpack --global`)
-- Go to the ".\App" folder and install all dependencies listed in the package.json file by running the `npm install` cmd 
-- Check if everything is OK by running the "`webpack`" cmd from the ".\App" folder. We shouldn't any errors here (just warnings)
+- Go to the ".\app" folder and install all dependencies listed in the package.json file by running the `npm install` cmd 
+- Check if everything is OK by running the "`webpack`" cmd from the ".\app" folder. We shouldn't any errors here (just warnings)
 - According to the targeted SharePoint version, compile the extensibility provider Visual Studio solution with the corresponding PnP NuGet package (the deployment script uses the *Debug* bin folder by default). Be careful, the PnP NuGet package version **must be the same** as the PnP PowerShell one. Before adding a new NuGet package, make sure your removed all older references (remove the old *Debug* folder as well).
 
 <table style="margin: 0px auto;">
@@ -110,13 +110,13 @@ Before starting, you'll need to setup tour environment:
 - Create a site collection with the **publishing template**.
 
 <p align="center">
-  <img width="400" src="./Images/new-sitecollection.png">
+  <img width="400" src="./images/new-sitecollection.png">
 </p>
 
 - Ensure your taxonomy term store has both "French" and "English" working languages selected (you need to be a term store administrator to do this).
 
 <p align="center">
-  <img width="600" src="./Images/taxonomy-languages.png">
+  <img width="600" src="./images/taxonomy-languages.png">
 </p>
 
 ### Solution ###
