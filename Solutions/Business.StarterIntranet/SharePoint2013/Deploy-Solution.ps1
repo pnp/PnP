@@ -45,6 +45,15 @@ $PasswordAsSecure = ConvertTo-SecureString $Password -AsPlainText -Force
 $Credentials = New-Object System.Management.Automation.PSCredential ($UserName , $PasswordAsSecure)
 Connect-PnPOnline -Url $SiteUrl -Credentials $Credentials
 
+# Determine the SharePoint version
+$ServerVersion = (Get-PnPContext).ServerLibraryVersion.Major
+
+switch ($ServerVersion) 
+{ 
+	15 {$AssemblyVersion = "15.0.0.0"} 
+	16 {$AssemblyVersion = "16.0.0.0"} 
+}
+
 # -------------------------------------------------------------------------------------
 # Upload files in the style library (folders are created automatically by the PnP cmdlet)
 # -------------------------------------------------------------------------------------
@@ -95,13 +104,13 @@ Ensure-PnPFolder -SiteRelativePath "Pages/News" | Out-Null
 Add-Type -Path $CustomProviderDllPath 
 
 # Apply the root site provisioning template and set column default values (without files)
-Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -ExcludeHandlers Files,WebSettings -Parameters @{ "CompanyName" = $AppFolderName }
+Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -ExcludeHandlers Files,WebSettings -Parameters @{ "CompanyName" = $AppFolderName; "AssemblyVersion" = $AssemblyVersion }
 
 # Enable Item Scheduling feature on the "Pages" library
 Enable-CustomItemScheduling -Web (Get-PnPWeb) -PagesLibraryName "Pages"
 
 # Apply the global template for the root site (to get the right pages auto tagging)
-Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -Handlers Files,WebSettings -Parameters @{ "CompanyName" = $AppFolderName }
+Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -Handlers Files,WebSettings -Parameters @{ "CompanyName" = $AppFolderName; "AssemblyVersion" = $AssemblyVersion }
  
 # Content Types order
 $ContentTypesOrderRoot = @(
