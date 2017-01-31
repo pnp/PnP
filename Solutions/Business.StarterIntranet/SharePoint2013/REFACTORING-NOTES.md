@@ -5,7 +5,7 @@ The following refactoring steps have been followed to adapt the original the PnP
 
 ### Refactoring tasks ###
 
-- Downgrade all "16.0.0.0" (SharePoint Online) references to "15.0.0.0" (SharePoint 2013) in the whole project. These references are mainly used in the page layouts and also the master page.
+- Downgraded all "16.0.0.0" (SharePoint Online) references to "15.0.0.0" (SharePoint 2013) in the whole project. These references are mainly used in the page layouts and also the master page.
 - In the *RootSiteTemplate.xml* file, removed all references to the *BSN* property. This property is specific to SharePoint Online.
 - In the *RootSiteTemplate.xml* file, removed all WebParts provisioning code from *aspx* files. When used with SharePoint 2013, the following issue appears [https://github.com/SharePoint/PnP-Sites-Core/issues/866](https://github.com/SharePoint/PnP-Sites-Core/issues/866).
 - In page layouts and master page, replaced the Tagprefix "SharePointWebControls" to "SharePoint". Updated also all references accordingly in these files. The correct tag can be retrieved in the native *seattle.master*:
