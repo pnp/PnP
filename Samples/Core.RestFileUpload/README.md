@@ -24,7 +24,7 @@ Version  | Date | Comments
 
 ----------
 # Introduction #
-Several upload methods are described in [Large Files Upload](https://github.com/OfficeDev/PnP/tree/dev/Samples/Core.LargeFileUpload) link, but this sample shows how to use the SharePoint REST APIs to upload files smaller than 250mb. SharePoint Online has a file limit of 250mb for file getting upload in single call. If you are trying to upload larger files, you will have to use the chunked file approach for this operation. For on-premises or for files that can be uploaded within the security timeout window the REST approach is good one.
+Several upload methods are described in [Large Files Upload](https://github.com/OfficeDev/PnP/tree/dev/Samples/Core.LargeFileUpload) link, but this sample shows how to use the SharePoint REST APIs to upload files smaller than 250mb. SharePoint Online has a file limit of 250mb for file getting upload in single call. If you want to upload file over 250 MB and you’re on SharePoint Online, you MUST use the sliced upload approach.  The issue here is not the security timeout, but rather a hard file size upload limit set in the Web Application properties to which the tenant has no access.  This setting is immutable, so you will not be able to upload file larger than 250 MB unless you use the chunked file approach.
 
 ## Console Application
 
