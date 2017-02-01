@@ -89,8 +89,8 @@ Before starting, you'll need to setup tour environment:
 - Install Node.js on your machine https://nodejs.org/en/
 - Install the 'webpack' Node JS client (`npm install webpack --global`)
 - Go to the ".\app" folder and install all dependencies listed in the package.json file by running the `npm install` cmd 
-- Check if everything is OK by running the "`webpack`" cmd from the ".\app" folder. We shouldn't any errors here (just warnings)
-- According to the targeted SharePoint version, compile the extensibility provider Visual Studio solution with the corresponding PnP NuGet package (the deployment script uses the *Debug* bin folder by default). Be careful, the PnP NuGet package version **must be the same** as the PnP PowerShell one. Before adding a new NuGet package, make sure your removed all older references (remove the old *Debug* folder as well).
+- Check if everything is OK by running the "`webpack`" cmd from the ".\app" folder. You shouldn't see any errors here.
+- According to the targeted SharePoint version, build the extensibility provider Visual Studio solution with the corresponding PnP NuGet package (the deployment script uses the *Debug* bin folder by default). Be careful, the PnP NuGet package version **must be the same** as the PnP PowerShell one. Before adding a new NuGet package, make sure your removed all older references (remove the old *Debug* folder as well).
 
 <table style="margin: 0px auto;">
   <tr>
