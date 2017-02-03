@@ -119,6 +119,12 @@ Before starting, you'll need to setup tour environment:
   <img width="600" src="./images/taxonomy-languages.png">
 </p>
 
+- For on-premises deployments, make sure the managed metadata service application is the default storage location for column specific term sets.
+
+<p align="center">
+  <img width="600" src="./images/mms-proxy-setting.png">
+</p>
+
 ### Solution ###
 Solution                | Author(s)
 ------------------------|----------
