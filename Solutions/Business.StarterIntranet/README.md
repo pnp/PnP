@@ -46,14 +46,14 @@ This solution is implemented using:
 
 - TypeScript (for the code structure and definitions)
 - Webpack (for application bundling and packaging)
-- PnP JS Core library (for REST communications with SharePoint 2013)
+- PnP JS Core library (for REST communications with SharePoint)
 - PnP Remote Provisioning engine and PnP PowerShell cmdlets (for SharePoint site configuration and artefacts provisioning)
 - Knockout JS (for application behavior and UI components)
 - Bootstrap (for mobile support)
 - Office UI Fabric (for icons, fonts and styles)
 - Node JS (for dependencies management with npm)
 
-The entire solution is "site collection self-contained" to not interfer with the global tenant/farm configuration (especially taxonomy and search configuration). It allows you to deploy this solution safely in your tenant/farm.
+The entire solution is "site collection self-contained" to not conflict with the global tenant/farm configuration (especially taxonomy and search configuration). It allows you to deploy this solution safely in your tenant/farm.
 
 ### Documentation #
 
