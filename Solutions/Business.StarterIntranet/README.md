@@ -87,10 +87,10 @@ Before starting, you'll need to setup tour environment:
 - Install the latest release of [PnP PowerShell cmdlets SharePointPnPPowerShellXXX](https://github.com/OfficeDev/PnP-PowerShell/releases) according to your SharePoint version. The version must be compatible with the 201605 PnP schema version.
 - For SharePoint 2016, install the [SharePoint Server 2016 Client Components SDK](https://www.microsoft.com/en-us/download/details.aspx?id=51679)
 - Install Node.js on your machine https://nodejs.org/en/
-- Install the 'webpack' Node JS client (`npm install webpack --global`)
-- Go to the ".\app" folder and install all dependencies listed in the package.json file by running the `npm install` cmd 
+- Install the 'webpack' Node JS client (`npm i webpack -g`)
+- Go to the ".\app" folder and install all dependencies listed in the package.json file by running the `npm i` cmd 
 - Check if everything is OK by running the "`webpack`" cmd from the ".\app" folder. You shouldn't see any errors here.
-- According to the targeted SharePoint version, build the extensibility provider Visual Studio solution with the corresponding PnP NuGet package (the deployment script uses the *Debug* bin folder by default). Be careful, the PnP NuGet package version **must be the same** as the PnP PowerShell one. Before adding a new NuGet package, make sure your removed all older references (remove the old *Debug* folder as well).
+- According to the targeted SharePoint version, build the extensibility provider Visual Studio solution with the corresponding PnP NuGet package (the deployment script uses the *Debug* bin folder by default). Be careful, the PnP NuGet package version **must be the same** as the PnP PowerShell one. Before adding a new NuGet package, make sure your removed older references (remove the old *Debug* folder as well).
 
 <table style="margin: 0px auto;">
   <tr>
