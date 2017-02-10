@@ -7,7 +7,7 @@ using System.Security.Principal;
 using System.Web;
 using System.Web.Configuration;
 
-namespace CorporateEvents.SharePointWeb
+namespace Contoso.Core.SitePermissions
 {
     /// <summary>
     /// Encapsulates all the information from SharePoint.
