@@ -2,6 +2,7 @@
   <pnp:Preferences Generator="Custom" >
     <pnp:Parameters>
       <pnp:Parameter Key="CompanyName" Required="true"></pnp:Parameter>
+      <pnp:Parameter Key="AssemblyVersion" Required="true"></pnp:Parameter>     
     </pnp:Parameters>
   </pnp:Preferences>
   <pnp:Templates ID="CONTAINER-TEMPLATE-PNP-O365-STARTER-INTRANET">
@@ -66,7 +67,7 @@
               </Property>
               <Property>
                 <Name>FilterAssemblyStrongName</Name>
-                <Value xmlns:q10="http://www.w3.org/2001/XMLSchema" p4:type="q10:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">Microsoft.SharePoint.Taxonomy, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Value>
+                <Value xmlns:q10="http://www.w3.org/2001/XMLSchema" p4:type="q10:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">Microsoft.SharePoint.Taxonomy, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Value>
               </Property>
               <Property>
                 <Name>FilterClassName</Name>
@@ -166,7 +167,7 @@
               </Property>
               <Property>
                 <Name>FilterAssemblyStrongName</Name>
-                <Value xmlns:q10="http://www.w3.org/2001/XMLSchema" p4:type="q10:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">Microsoft.SharePoint.Taxonomy, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Value>
+                <Value xmlns:q10="http://www.w3.org/2001/XMLSchema" p4:type="q10:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">Microsoft.SharePoint.Taxonomy, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Value>
               </Property>
               <Property>
                 <Name>FilterClassName</Name>
@@ -238,7 +239,7 @@
               </Property>
               <Property>
                 <Name>FilterAssemblyStrongName</Name>
-                <Value xmlns:q10="http://www.w3.org/2001/XMLSchema" p4:type="q10:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">Microsoft.SharePoint.Taxonomy, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Value>
+                <Value xmlns:q10="http://www.w3.org/2001/XMLSchema" p4:type="q10:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">Microsoft.SharePoint.Taxonomy, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Value>
               </Property>
               <Property>
                 <Name>FilterClassName</Name>
@@ -313,7 +314,7 @@
               </Property>
               <Property>
                 <Name>FilterAssemblyStrongName</Name>
-                <Value xmlns:q10="http://www.w3.org/2001/XMLSchema" p4:type="q10:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">Microsoft.SharePoint.Taxonomy, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Value>
+                <Value xmlns:q10="http://www.w3.org/2001/XMLSchema" p4:type="q10:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">Microsoft.SharePoint.Taxonomy, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Value>
               </Property>
               <Property>
                 <Name>FilterClassName</Name>
@@ -948,7 +949,7 @@
       <pnp:Files>
 
         <!-- Start: ASPX Pages -->
-        <pnp:File Src=".\Artefacts\Pages\Home.aspx" Folder="{site}/Pages" Overwrite="true">
+        <pnp:File Src=".\artefacts\pages\Home.aspx" Folder="{site}/Pages" Overwrite="true">
           <pnp:Properties>
             <pnp:Property Key="ContentTypeId" Value="{contenttypeid:Home Page}" />
             <pnp:Property Key="Title" Value="Intranet - Home" />
@@ -958,7 +959,6 @@
             <pnp:Property Key="RobotsNoIndex" Value="False" />
             <pnp:Property Key="IntranetContentLanguage" Value="EN" />
             <pnp:Property Key="IntranetContentAssociationKey" Value="1b1c9ffe-a909-45a2-a433-652a5daa9b7e" />
-            <pnp:Property Key="BSN" Value="Microsoft.SharePoint.Client.FieldLookupValue" />
           </pnp:Properties>
           <pnp:WebParts>
             <pnp:WebPart Title="Content Search" Zone="LeftColum" Order="0">
@@ -966,7 +966,7 @@
                 <webParts>
                   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
                     <metaData>
-                      <type name="Microsoft.Office.Server.Search.WebControls.ContentBySearchWebPart, Microsoft.Office.Server.Search, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+                      <type name="Microsoft.Office.Server.Search.WebControls.ContentBySearchWebPart, Microsoft.Office.Server.Search, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
                       <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
                     </metaData>
                     <data>
@@ -1053,7 +1053,7 @@
                 <webParts>
                   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
                     <metaData>
-                      <type name="Microsoft.SharePoint.WebPartPages.ScriptEditorWebPart, Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+                      <type name="Microsoft.SharePoint.WebPartPages.ScriptEditorWebPart, Microsoft.SharePoint, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
                       <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
                     </metaData>
                     <data>
@@ -1090,7 +1090,7 @@
                 <webParts>
                   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
                     <metaData>
-                      <type name="Microsoft.SharePoint.WebPartPages.XsltListViewWebPart, Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+                      <type name="Microsoft.SharePoint.WebPartPages.XsltListViewWebPart, Microsoft.SharePoint, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
                       <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
                     </metaData>
                     <data>
@@ -1108,7 +1108,7 @@
                         <property name="EnableOriginalValue" type="bool">False</property>
                         <property name="Direction" type="direction">NotSet</property>
                         <property name="ServerRender" type="bool">False</property>
-                        <property name="ViewFlags" type="Microsoft.SharePoint.SPViewFlags, Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">Html, TabularView, Hidden, ReadOnly, Ordered</property>
+                        <property name="ViewFlags" type="Microsoft.SharePoint.SPViewFlags, Microsoft.SharePoint, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c">Html, TabularView, Hidden, ReadOnly, Ordered</property>
                         <property name="AllowConnect" type="bool">True</property>
                         <property name="ListName" type="string">{{listid:Links}}</property>
                         <property name="ListDisplayName" type="string" null="true" />
@@ -1138,7 +1138,7 @@
                         <property name="DataFields" type="string" />
                         <property name="Hidden" type="bool">False</property>
                         <property name="Title" type="string" />
-                        <property name="PageType" type="Microsoft.SharePoint.PAGETYPE, Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">PAGE_NORMALVIEW</property>
+                        <property name="PageType" type="Microsoft.SharePoint.PAGETYPE, Microsoft.SharePoint, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c">PAGE_NORMALVIEW</property>
                         <property name="DataSourcesString" type="string" />
                         <property name="AllowClose" type="bool">True</property>
                         <property name="InplaceSearchEnabled" type="bool">True</property>
@@ -1153,7 +1153,7 @@
                         <property name="NoDefaultStyle" type="string" null="true" />
                         <property name="AllowHide" type="bool">True</property>
                         <property name="ParameterBindings" type="string">&lt;ParameterBinding Name="dvt_sortdir" Location="Postback;Connection" /&gt;&lt;ParameterBinding Name="dvt_sortfield" Location="Postback;Connection" /&gt;&lt;ParameterBinding Name="dvt_startposition" Location="Postback" DefaultValue="" /&gt;&lt;ParameterBinding Name="dvt_firstrow" Location="Postback;Connection" /&gt;&lt;ParameterBinding Name="OpenMenuKeyAccessible" Location="Resource(wss,OpenMenuKeyAccessible)" /&gt;&lt;ParameterBinding Name="open_menu" Location="Resource(wss,open_menu)" /&gt;&lt;ParameterBinding Name="select_deselect_all" Location="Resource(wss,select_deselect_all)" /&gt;&lt;ParameterBinding Name="idPresEnabled" Location="Resource(wss,idPresEnabled)" /&gt;&lt;ParameterBinding Name="NoAnnouncements" Location="Resource(wss,noXinviewofY_LIST)" /&gt;&lt;ParameterBinding Name="NoAnnouncementsHowTo" Location="Resource(wss,noXinviewofY_DEFAULT)" /&gt;</property>
-                        <property name="DataSourceMode" type="Microsoft.SharePoint.WebControls.SPDataSourceMode, Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">List</property>
+                        <property name="DataSourceMode" type="Microsoft.SharePoint.WebControls.SPDataSourceMode, Microsoft.SharePoint, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c">List</property>
                         <property name="AutoRefreshInterval" type="int">60</property>
                         <property name="AsyncRefresh" type="bool">False</property>
                         <property name="HelpUrl" type="string" />
@@ -1172,7 +1172,7 @@
                 <webParts>
                   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
                     <metaData>
-                      <type name="Microsoft.SharePoint.WebPartPages.ScriptEditorWebPart, Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+                      <type name="Microsoft.SharePoint.WebPartPages.ScriptEditorWebPart, Microsoft.SharePoint, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
                       <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
                     </metaData>
                     <data>
@@ -1231,7 +1231,7 @@
                   <MissingAssembly>Cannot import this Web Part.</MissingAssembly>
                   <PartImageLarge>/_layouts/15/images/mscontl.gif</PartImageLarge>
                   <IsIncludedFilter />
-                  <Assembly>Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Assembly>
+                  <Assembly>Microsoft.SharePoint, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Assembly>
                   <TypeName>Microsoft.SharePoint.WebPartPages.ContentEditorWebPart</TypeName>
                   <ContentLink xmlns="http://schemas.microsoft.com/WebPart/v2/ContentEditor" />
                   <Content xmlns="http://schemas.microsoft.com/WebPart/v2/ContentEditor"><![CDATA[<div id="suggestions-box"> 
@@ -1272,7 +1272,7 @@
             </pnp:WebPart>
           </pnp:WebParts>
         </pnp:File>
-        <pnp:File Src=".\Artefacts\Pages\Accueil.aspx" Folder="{site}/Pages" Overwrite="true">
+        <pnp:File Src=".\artefacts\pages\Accueil.aspx" Folder="{site}/Pages" Overwrite="true">
           <pnp:Properties>
             <pnp:Property Key="ContentTypeId" Value="{contenttypeid:Home Page}" />
             <pnp:Property Key="Title" Value="Intranet - Accueil" />
@@ -1282,7 +1282,6 @@
             <pnp:Property Key="RobotsNoIndex" Value="False" />
             <pnp:Property Key="IntranetContentLanguage" Value="FR" />
             <pnp:Property Key="IntranetContentAssociationKey" Value="1b1c9ffe-a909-45a2-a433-652a5daa9b7e" />
-            <pnp:Property Key="BSN" Value="Microsoft.SharePoint.Client.FieldLookupValue" />
           </pnp:Properties>
           <pnp:WebParts>
             <pnp:WebPart Title="Content Search" Zone="LeftColum" Order="0">
@@ -1290,7 +1289,7 @@
                 <webParts>
                   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
                     <metaData>
-                      <type name="Microsoft.Office.Server.Search.WebControls.ContentBySearchWebPart, Microsoft.Office.Server.Search, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+                      <type name="Microsoft.Office.Server.Search.WebControls.ContentBySearchWebPart, Microsoft.Office.Server.Search, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
                       <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
                     </metaData>
                     <data>
@@ -1377,7 +1376,7 @@
                 <webParts>
                   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
                     <metaData>
-                      <type name="Microsoft.SharePoint.WebPartPages.ScriptEditorWebPart, Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+                      <type name="Microsoft.SharePoint.WebPartPages.ScriptEditorWebPart, Microsoft.SharePoint, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
                       <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
                     </metaData>
                     <data>
@@ -1414,7 +1413,7 @@
                 <webParts>
                   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
                     <metaData>
-                      <type name="Microsoft.SharePoint.WebPartPages.XsltListViewWebPart, Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+                      <type name="Microsoft.SharePoint.WebPartPages.XsltListViewWebPart, Microsoft.SharePoint, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
                       <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
                     </metaData>
                     <data>
@@ -1432,7 +1431,7 @@
                         <property name="EnableOriginalValue" type="bool">False</property>
                         <property name="Direction" type="direction">NotSet</property>
                         <property name="ServerRender" type="bool">False</property>
-                        <property name="ViewFlags" type="Microsoft.SharePoint.SPViewFlags, Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">Html, TabularView, Hidden, ReadOnly, Ordered</property>
+                        <property name="ViewFlags" type="Microsoft.SharePoint.SPViewFlags, Microsoft.SharePoint, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c">Html, TabularView, Hidden, ReadOnly, Ordered</property>
                         <property name="AllowConnect" type="bool">True</property>
                         <property name="ListName" type="string">{{listid:Links}}</property>
                         <property name="ListDisplayName" type="string" null="true" />
@@ -1462,7 +1461,7 @@
                         <property name="DataFields" type="string" />
                         <property name="Hidden" type="bool">False</property>
                         <property name="Title" type="string" />
-                        <property name="PageType" type="Microsoft.SharePoint.PAGETYPE, Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">PAGE_NORMALVIEW</property>
+                        <property name="PageType" type="Microsoft.SharePoint.PAGETYPE, Microsoft.SharePoint, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c">PAGE_NORMALVIEW</property>
                         <property name="DataSourcesString" type="string" />
                         <property name="AllowClose" type="bool">True</property>
                         <property name="InplaceSearchEnabled" type="bool">True</property>
@@ -1477,7 +1476,7 @@
                         <property name="NoDefaultStyle" type="string" null="true" />
                         <property name="AllowHide" type="bool">True</property>
                         <property name="ParameterBindings" type="string">&lt;ParameterBinding Name="dvt_sortdir" Location="Postback;Connection" /&gt;&lt;ParameterBinding Name="dvt_sortfield" Location="Postback;Connection" /&gt;&lt;ParameterBinding Name="dvt_startposition" Location="Postback" DefaultValue="" /&gt;&lt;ParameterBinding Name="dvt_firstrow" Location="Postback;Connection" /&gt;&lt;ParameterBinding Name="OpenMenuKeyAccessible" Location="Resource(wss,OpenMenuKeyAccessible)" /&gt;&lt;ParameterBinding Name="open_menu" Location="Resource(wss,open_menu)" /&gt;&lt;ParameterBinding Name="select_deselect_all" Location="Resource(wss,select_deselect_all)" /&gt;&lt;ParameterBinding Name="idPresEnabled" Location="Resource(wss,idPresEnabled)" /&gt;&lt;ParameterBinding Name="NoAnnouncements" Location="Resource(wss,noXinviewofY_LIST)" /&gt;&lt;ParameterBinding Name="NoAnnouncementsHowTo" Location="Resource(wss,noXinviewofY_DEFAULT)" /&gt;</property>
-                        <property name="DataSourceMode" type="Microsoft.SharePoint.WebControls.SPDataSourceMode, Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">List</property>
+                        <property name="DataSourceMode" type="Microsoft.SharePoint.WebControls.SPDataSourceMode, Microsoft.SharePoint, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c">List</property>
                         <property name="AutoRefreshInterval" type="int">60</property>
                         <property name="AsyncRefresh" type="bool">False</property>
                         <property name="HelpUrl" type="string" />
@@ -1496,7 +1495,7 @@
                 <webParts>
                   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
                     <metaData>
-                      <type name="Microsoft.SharePoint.WebPartPages.ScriptEditorWebPart, Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+                      <type name="Microsoft.SharePoint.WebPartPages.ScriptEditorWebPart, Microsoft.SharePoint, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
                       <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
                     </metaData>
                     <data>
@@ -1555,7 +1554,7 @@
                   <MissingAssembly>Cannot import this Web Part.</MissingAssembly>
                   <PartImageLarge>/_layouts/15/images/mscontl.gif</PartImageLarge>
                   <IsIncludedFilter />
-                  <Assembly>Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Assembly>
+                  <Assembly>Microsoft.SharePoint, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Assembly>
                   <TypeName>Microsoft.SharePoint.WebPartPages.ContentEditorWebPart</TypeName>
                   <ContentLink xmlns="http://schemas.microsoft.com/WebPart/v2/ContentEditor" />
                   <Content xmlns="http://schemas.microsoft.com/WebPart/v2/ContentEditor"><![CDATA[<div id="suggestions-box"> 
@@ -1592,7 +1591,7 @@
             </pnp:WebPart>
           </pnp:WebParts>
         </pnp:File>
-        <pnp:File Src=".\Artefacts\Pages\Search.aspx" Folder="{site}/Pages" Overwrite="true">
+        <pnp:File Src=".\artefacts\pages\Search.aspx" Folder="{site}/Pages" Overwrite="true">
           <pnp:Properties>
             <pnp:Property Key="ContentTypeId" Value="{contenttypeid:Search Page}" />
             <pnp:Property Key="Title" Value="Search - Intranet" />
@@ -1602,7 +1601,6 @@
             <pnp:Property Key="RobotsNoIndex" Value="False" />
             <pnp:Property Key="IntranetContentLanguage" Value="EN" />
             <pnp:Property Key="IntranetContentAssociationKey" Value="536cd959-6b02-4c86-b16f-c0d70d6c3039" />
-            <pnp:Property Key="BSN" Value="Microsoft.SharePoint.Client.FieldLookupValue" />
           </pnp:Properties>
           <pnp:WebParts>
             <pnp:WebPart Title="Refinement Panel" Zone="LeftColum" Order="0">
@@ -1610,7 +1608,7 @@
                 <webParts>
                   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
                     <metaData>
-                      <type name="Microsoft.Office.Server.Search.WebControls.RefinementScriptWebPart, Microsoft.Office.Server.Search, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+                      <type name="Microsoft.Office.Server.Search.WebControls.RefinementScriptWebPart, Microsoft.Office.Server.Search, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
                       <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
                     </metaData>
                     <data>
@@ -1656,7 +1654,7 @@
                 <webParts>
                   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
                     <metaData>
-                      <type name="Microsoft.Office.Server.Search.WebControls.ResultScriptWebPart, Microsoft.Office.Server.Search, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+                      <type name="Microsoft.Office.Server.Search.WebControls.ResultScriptWebPart, Microsoft.Office.Server.Search, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
                       <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
                     </metaData>
                     <data>
@@ -1729,7 +1727,7 @@
             </pnp:WebPart>
           </pnp:WebParts>
         </pnp:File>
-        <pnp:File Src=".\Artefacts\Pages\Recherche.aspx" Folder="{site}/Pages" Overwrite="true">
+        <pnp:File Src=".\artefacts\pages\Recherche.aspx" Folder="{site}/Pages" Overwrite="true">
           <pnp:Properties>
             <pnp:Property Key="ContentTypeId" Value="{contenttypeid:Search Page}" />
             <pnp:Property Key="Title" Value="Recherche - Intranet" />
@@ -1739,7 +1737,6 @@
             <pnp:Property Key="RobotsNoIndex" Value="False" />
             <pnp:Property Key="IntranetContentLanguage" Value="FR" />
             <pnp:Property Key="IntranetContentAssociationKey" Value="536cd959-6b02-4c86-b16f-c0d70d6c3039" />
-            <pnp:Property Key="BSN" Value="Microsoft.SharePoint.Client.FieldLookupValue" />
           </pnp:Properties>
           <pnp:WebParts>
             <pnp:WebPart Title="Refinement Panel" Zone="LeftColum" Order="0">
@@ -1747,7 +1744,7 @@
                 <webParts>
                   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
                     <metaData>
-                      <type name="Microsoft.Office.Server.Search.WebControls.RefinementScriptWebPart, Microsoft.Office.Server.Search, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+                      <type name="Microsoft.Office.Server.Search.WebControls.RefinementScriptWebPart, Microsoft.Office.Server.Search, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
                       <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
                     </metaData>
                     <data>
@@ -1793,7 +1790,7 @@
                 <webParts>
                   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
                     <metaData>
-                      <type name="Microsoft.Office.Server.Search.WebControls.ResultScriptWebPart, Microsoft.Office.Server.Search, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+                      <type name="Microsoft.Office.Server.Search.WebControls.ResultScriptWebPart, Microsoft.Office.Server.Search, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
                       <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
                     </metaData>
                     <data>
@@ -1866,7 +1863,7 @@
             </pnp:WebPart>
           </pnp:WebParts>
         </pnp:File>                
-        <pnp:File Src=".\Artefacts\Pages\SearchDocuments.aspx" Folder="{site}/Pages" Overwrite="true">
+        <pnp:File Src=".\artefacts\pages\SearchDocuments.aspx" Folder="{site}/Pages" Overwrite="true">
           <pnp:Properties>
             <pnp:Property Key="ContentTypeId" Value="{contenttypeid:Search Page}" />
             <pnp:Property Key="Title" Value="Search - Documents" />
@@ -1876,7 +1873,6 @@
             <pnp:Property Key="RobotsNoIndex" Value="False" />
             <pnp:Property Key="IntranetContentLanguage" Value="EN" />
             <pnp:Property Key="IntranetContentAssociationKey" Value="b078853e-22af-411c-aa00-a56b2d5dec75" />
-            <pnp:Property Key="BSN" Value="Microsoft.SharePoint.Client.FieldLookupValue" />
           </pnp:Properties>
           <pnp:WebParts>
             <pnp:WebPart Title="Refinement Panel" Zone="LeftColum" Order="0">
@@ -1884,7 +1880,7 @@
                 <webParts>
                   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
                     <metaData>
-                      <type name="Microsoft.Office.Server.Search.WebControls.RefinementScriptWebPart, Microsoft.Office.Server.Search, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+                      <type name="Microsoft.Office.Server.Search.WebControls.RefinementScriptWebPart, Microsoft.Office.Server.Search, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
                       <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
                     </metaData>
                     <data>
@@ -1930,7 +1926,7 @@
                 <webParts>
                   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
                     <metaData>
-                      <type name="Microsoft.Office.Server.Search.WebControls.ResultScriptWebPart, Microsoft.Office.Server.Search, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+                      <type name="Microsoft.Office.Server.Search.WebControls.ResultScriptWebPart, Microsoft.Office.Server.Search, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
                       <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
                     </metaData>
                     <data>
@@ -2003,7 +1999,7 @@
             </pnp:WebPart>
           </pnp:WebParts>
         </pnp:File>    
-        <pnp:File Src=".\Artefacts\Pages\RechercheDocuments.aspx" Folder="{site}/Pages" Overwrite="true">
+        <pnp:File Src=".\artefacts\pages\RechercheDocuments.aspx" Folder="{site}/Pages" Overwrite="true">
           <pnp:Properties>
             <pnp:Property Key="ContentTypeId" Value="{contenttypeid:Search Page}" />
             <pnp:Property Key="Title" Value="Recherche - Documents" />
@@ -2013,7 +2009,6 @@
             <pnp:Property Key="RobotsNoIndex" Value="False" />
             <pnp:Property Key="IntranetContentLanguage" Value="FR" />
             <pnp:Property Key="IntranetContentAssociationKey" Value="b078853e-22af-411c-aa00-a56b2d5dec75" />
-            <pnp:Property Key="BSN" Value="Microsoft.SharePoint.Client.FieldLookupValue" />
           </pnp:Properties>
           <pnp:WebParts>
             <pnp:WebPart Title="Refinement Panel" Zone="LeftColum" Order="0">
@@ -2021,7 +2016,7 @@
                 <webParts>
                   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
                     <metaData>
-                      <type name="Microsoft.Office.Server.Search.WebControls.RefinementScriptWebPart, Microsoft.Office.Server.Search, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+                      <type name="Microsoft.Office.Server.Search.WebControls.RefinementScriptWebPart, Microsoft.Office.Server.Search, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
                       <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
                     </metaData>
                     <data>
@@ -2067,7 +2062,7 @@
                 <webParts>
                   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
                     <metaData>
-                      <type name="Microsoft.Office.Server.Search.WebControls.ResultScriptWebPart, Microsoft.Office.Server.Search, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
+                      <type name="Microsoft.Office.Server.Search.WebControls.ResultScriptWebPart, Microsoft.Office.Server.Search, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c" />
                       <importErrorMessage>Cannot import this Web Part.</importErrorMessage>
                     </metaData>
                     <data>
@@ -2143,57 +2138,52 @@
         <!-- End: ASPX Pages -->
 
         <!-- Start: Master Pages -->
-        <pnp:File Src=".\Artefacts\Master Pages\portal.master" Folder="{masterpagecatalog}/{parameter:CompanyName}" Overwrite="true">
+        <pnp:File Src=".\artefacts\master pages\portal.master" Folder="{masterpagecatalog}/{parameter:CompanyName}" Overwrite="true">
           <pnp:Properties>
-            <pnp:Property Key="ContentTypeId" Value="{contenttypeid:Master Page}" />
+            <pnp:Property Key="ContentTypeId" Value="0x0101000F1C8B9E0EB4BE489F09807B2C53288F0054AD6EF48B9F7B45A142F8173F171BD1" />
             <pnp:Property Key="MasterPageDescription" Value="Master Page for the starter PnP Intranet" />
             <pnp:Property Key="Title" Value="PnP Portal Master Page" />
-            <pnp:Property Key="BSN" Value="Microsoft.SharePoint.Client.FieldLookupValue" />
           </pnp:Properties>
         </pnp:File>
         <!-- End: Master Pages -->
 
         <!-- Start: Page Layouts -->
-        <pnp:File Src=".\Artefacts\Page Layouts\HomePageLayout.aspx" Folder="{masterpagecatalog}/{parameter:CompanyName}" Overwrite="true">
+        <pnp:File Src=".\artefacts\page layouts\HomePageLayout.aspx" Folder="{masterpagecatalog}/{parameter:CompanyName}" Overwrite="true">
           <pnp:Properties>
-            <pnp:Property Key="ContentTypeId" Value="{contenttypeid:Page Layout}" />
+            <pnp:Property Key="ContentTypeId" Value="0x01010007FF3E057FA8AB4AA42FCB67B453FFC100E214EEE741181F4E9F7ACC43278EE811" />
             <pnp:Property Key="MasterPageDescription" Value="Home Page" />
             <pnp:Property Key="Title" Value="Intranet Home Page (2 columns)" />
             <pnp:Property Key="PublishingAssociatedContentType" Value=";#Home Page;#0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C03;#" />
-            <pnp:Property Key="BSN" Value="Microsoft.SharePoint.Client.FieldLookupValue" />
           </pnp:Properties>
         </pnp:File>
-        <pnp:File Src=".\Artefacts\Page Layouts\NewsPageLayout.aspx" Folder="{masterpagecatalog}/{parameter:CompanyName}" Overwrite="true">
+        <pnp:File Src=".\artefacts\page layouts\NewsPageLayout.aspx" Folder="{masterpagecatalog}/{parameter:CompanyName}" Overwrite="true">
           <pnp:Properties>
-            <pnp:Property Key="ContentTypeId" Value="{contenttypeid:Page Layout}" />
+            <pnp:Property Key="ContentTypeId" Value="0x01010007FF3E057FA8AB4AA42FCB67B453FFC100E214EEE741181F4E9F7ACC43278EE811" />
             <pnp:Property Key="MasterPageDescription" Value="Page layout for a news" />
             <pnp:Property Key="Title" Value="Intranet News Page" />
             <pnp:Property Key="PublishingAssociatedContentType" Value=";#News Page;#0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C02;#" />
-            <pnp:Property Key="BSN" Value="Microsoft.SharePoint.Client.FieldLookupValue" />
           </pnp:Properties>
         </pnp:File>
-        <pnp:File Src=".\Artefacts\Page Layouts\StaticPageLayout.aspx" Folder="{masterpagecatalog}/{parameter:CompanyName}" Overwrite="true">
+        <pnp:File Src=".\artefacts\page layouts\StaticPageLayout.aspx" Folder="{masterpagecatalog}/{parameter:CompanyName}" Overwrite="true">
           <pnp:Properties>
-            <pnp:Property Key="ContentTypeId" Value="{contenttypeid:Page Layout}" />
+            <pnp:Property Key="ContentTypeId" Value="0x01010007FF3E057FA8AB4AA42FCB67B453FFC100E214EEE741181F4E9F7ACC43278EE811" />
             <pnp:Property Key="MasterPageDescription" Value="Page layout for a static page" />
             <pnp:Property Key="Title" Value="Intranet Static Page " />
             <pnp:Property Key="PublishingAssociatedContentType" Value=";#Static Page;#0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C01;#" />
-            <pnp:Property Key="BSN" Value="Microsoft.SharePoint.Client.FieldLookupValue" />
           </pnp:Properties>
         </pnp:File>
-        <pnp:File Src=".\Artefacts\Page Layouts\SearchPageLayout.aspx" Folder="{masterpagecatalog}/{parameter:CompanyName}" Overwrite="true">
+        <pnp:File Src=".\artefacts\page layouts\SearchPageLayout.aspx" Folder="{masterpagecatalog}/{parameter:CompanyName}" Overwrite="true">
           <pnp:Properties>
-            <pnp:Property Key="ContentTypeId" Value="{contenttypeid:Page Layout}" />
+            <pnp:Property Key="ContentTypeId" Value="0x01010007FF3E057FA8AB4AA42FCB67B453FFC100E214EEE741181F4E9F7ACC43278EE811" />
             <pnp:Property Key="MasterPageDescription" Value="Search Page" />
             <pnp:Property Key="Title" Value="Intranet Search Page" />
             <pnp:Property Key="PublishingAssociatedContentType" Value=";#Search Page;#0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C04;#" />
-            <pnp:Property Key="BSN" Value="Microsoft.SharePoint.Client.FieldLookupValue" />
           </pnp:Properties>
         </pnp:File>
         <!-- End: Page Layouts -->
         
-        <!-- Start: Display Templates -->
-        <pnp:File Src=".\Artefacts\Display Templates\Content Web Parts\Item_Intranet-News.html" Folder="{masterpagecatalog}/Display Templates/Content Web Parts/{parameter:CompanyName}" Overwrite="true">	
+        <!-- Start: display templates -->
+        <pnp:File Src=".\artefacts\display templates\content web parts\Item_Intranet-News.html" Folder="{masterpagecatalog}/display templates/Content Web Parts/{parameter:CompanyName}" Overwrite="true">	
             <pnp:Properties>
               <pnp:Property Key="Title" Value="Intranet News Item" />
               <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
@@ -2202,7 +2192,7 @@
               <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
             </pnp:Properties>	
         </pnp:File>
-        <pnp:File Src=".\Artefacts\Display Templates\Content Web Parts\Item_Intranet-Document.html" Folder="{masterpagecatalog}/Display Templates/Content Web Parts/{parameter:CompanyName}" Overwrite="true">	
+        <pnp:File Src=".\artefacts\display templates\content web parts\Item_Intranet-Document.html" Folder="{masterpagecatalog}/display templates/Content Web Parts/{parameter:CompanyName}" Overwrite="true">	
             <pnp:Properties>
               <pnp:Property Key="Title" Value="Intranet Document Item" />
               <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
@@ -2211,7 +2201,7 @@
               <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
             </pnp:Properties>	
         </pnp:File>
-        <pnp:File Src=".\Artefacts\Display Templates\Content Web Parts\Item_Intranet-Contact.html" Folder="{masterpagecatalog}/Display Templates/Content Web Parts/{parameter:CompanyName}" Overwrite="true">	
+        <pnp:File Src=".\artefacts\display templates\content web parts\Item_Intranet-Contact.html" Folder="{masterpagecatalog}/display templates/Content Web Parts/{parameter:CompanyName}" Overwrite="true">	
             <pnp:Properties>
               <pnp:Property Key="Title" Value="Intranet Contact Item" />
               <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
@@ -2220,7 +2210,7 @@
               <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
             </pnp:Properties>	
         </pnp:File>
-        <pnp:File Src=".\Artefacts\Display Templates\Content Web Parts\Control_Intranet-List.html" Folder="{masterpagecatalog}/Display Templates/Content Web Parts/{parameter:CompanyName}" Overwrite="true">	
+        <pnp:File Src=".\artefacts\display templates\content web parts\Control_Intranet-List.html" Folder="{masterpagecatalog}/display templates/Content Web Parts/{parameter:CompanyName}" Overwrite="true">	
             <pnp:Properties>
               <pnp:Property Key="Title" Value="Intranet List with Paging" />
               <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106601" />
@@ -2229,7 +2219,7 @@
               <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
             </pnp:Properties>	
         </pnp:File>    
-        <pnp:File Src=".\Artefacts\Display Templates\Filters\Filter_Intranet-Item.html" Folder="{masterpagecatalog}/Display Templates/Filters/{parameter:CompanyName}" Overwrite="true">	
+        <pnp:File Src=".\artefacts\display templates\filters\Filter_Intranet-Item.html" Folder="{masterpagecatalog}/display templates/Filters/{parameter:CompanyName}" Overwrite="true">	
             <pnp:Properties>
               <pnp:Property Key="Title" Value="Intranet Search Taxonomy Filter" />
               <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106604" />
@@ -2237,7 +2227,7 @@
               <pnp:Property Key="TemplateHidden" Value="0" />
             </pnp:Properties>	
         </pnp:File>
-        <pnp:File Src=".\Artefacts\Display Templates\Filters\Filter_Intranet-SliderBarGraph.html" Folder="{masterpagecatalog}/Display Templates/Filters/{parameter:CompanyName}" Overwrite="true">	
+        <pnp:File Src=".\artefacts\display templates\filters\Filter_Intranet-SliderBarGraph.html" Folder="{masterpagecatalog}/display templates/Filters/{parameter:CompanyName}" Overwrite="true">	
             <pnp:Properties>
               <pnp:Property Key="Title" Value="Intranet Search Date Histogram" />
               <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106604" />
@@ -2245,7 +2235,7 @@
               <pnp:Property Key="TemplateHidden" Value="0" />
             </pnp:Properties>	
         </pnp:File>
-        <pnp:File Src=".\Artefacts\Display Templates\Filters\Control_Intranet-Refinement.html" Folder="{masterpagecatalog}/Display Templates/Filters/{parameter:CompanyName}" Overwrite="true">	
+        <pnp:File Src=".\artefacts\display templates\filters\Control_Intranet-Refinement.html" Folder="{masterpagecatalog}/display templates/Filters/{parameter:CompanyName}" Overwrite="true">	
             <pnp:Properties>
               <pnp:Property Key="Title" Value="Intranet MUI Refinement Control" />
               <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106601" />
@@ -2253,7 +2243,7 @@
               <pnp:Property Key="TemplateHidden" Value="0" />
             </pnp:Properties>	
         </pnp:File>
-        <pnp:File Src=".\Artefacts\Display Templates\Search\Control_Intranet-SearchResults.html" Folder="{masterpagecatalog}/Display Templates/Search/{parameter:CompanyName}" Overwrite="true">	
+        <pnp:File Src=".\artefacts\display templates\search\Control_Intranet-SearchResults.html" Folder="{masterpagecatalog}/display templates/Search/{parameter:CompanyName}" Overwrite="true">	
             <pnp:Properties>
               <pnp:Property Key="Title" Value="Intranet MUI Search Results Control" />
               <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106601" />
@@ -2261,7 +2251,7 @@
               <pnp:Property Key="TemplateHidden" Value="0" />
             </pnp:Properties>	
         </pnp:File>
-        <pnp:File Src=".\Artefacts\Display Templates\Search\Item_Intranet-News_Search.html" Folder="{masterpagecatalog}/Display Templates/Search/{parameter:CompanyName}" Overwrite="true">	
+        <pnp:File Src=".\artefacts\display templates\search\Item_Intranet-News_Search.html" Folder="{masterpagecatalog}/display templates/Search/{parameter:CompanyName}" Overwrite="true">	
             <pnp:Properties>
               <pnp:Property Key="Title" Value="Intranet Search News Item" />
               <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
@@ -2270,7 +2260,7 @@
               <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
             </pnp:Properties>	
         </pnp:File>
-        <pnp:File Src=".\Artefacts\Display Templates\Search\Item_Intranet-Page_Search.html" Folder="{masterpagecatalog}/Display Templates/Search/{parameter:CompanyName}" Overwrite="true">	
+        <pnp:File Src=".\artefacts\display templates\search\Item_Intranet-Page_Search.html" Folder="{masterpagecatalog}/display templates/Search/{parameter:CompanyName}" Overwrite="true">	
             <pnp:Properties>
               <pnp:Property Key="Title" Value="Intranet Search Page Item" />
               <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
@@ -2279,7 +2269,7 @@
               <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
             </pnp:Properties>	
         </pnp:File>    
-        <pnp:File Src=".\Artefacts\Display Templates\Search\Item_Intranet-WebPage_HoverPanel.html" Folder="{masterpagecatalog}/Display Templates/Search/{parameter:CompanyName}" Overwrite="true">	
+        <pnp:File Src=".\artefacts\display templates\search\Item_Intranet-WebPage_HoverPanel.html" Folder="{masterpagecatalog}/display templates/Search/{parameter:CompanyName}" Overwrite="true">	
             <pnp:Properties>
               <pnp:Property Key="Title" Value="Intranet MUI Web Page Hover Panel" />
               <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
@@ -2287,7 +2277,7 @@
               <pnp:Property Key="TemplateHidden" Value="0" />
             </pnp:Properties>	
         </pnp:File>
-        <pnp:File Src=".\Artefacts\Display Templates\Search\Item_Intranet-CommonHoverPanel_Header.html" Folder="{masterpagecatalog}/Display Templates/Search/{parameter:CompanyName}" Overwrite="true">	
+        <pnp:File Src=".\artefacts\display templates\search\Item_Intranet-CommonHoverPanel_Header.html" Folder="{masterpagecatalog}/display templates/Search/{parameter:CompanyName}" Overwrite="true">	
             <pnp:Properties>
               <pnp:Property Key="Title" Value="Intranet Common Header Hover Panel" />
               <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
@@ -2295,7 +2285,7 @@
               <pnp:Property Key="TemplateHidden" Value="0" />
             </pnp:Properties>	
         </pnp:File>
-        <pnp:File Src=".\Artefacts\Display Templates\Search\Item_Intranet-CommonHoverPanel_Body.html" Folder="{masterpagecatalog}/Display Templates/Search/{parameter:CompanyName}" Overwrite="true">	
+        <pnp:File Src=".\artefacts\display templates\search\Item_Intranet-CommonHoverPanel_Body.html" Folder="{masterpagecatalog}/display templates/Search/{parameter:CompanyName}" Overwrite="true">	
             <pnp:Properties>
               <pnp:Property Key="Title" Value="Intranet Common Body Hover Panel" />
               <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
@@ -2303,7 +2293,7 @@
               <pnp:Property Key="TemplateHidden" Value="0" />
             </pnp:Properties>	
         </pnp:File>
-        <pnp:File Src=".\Artefacts\Display Templates\Search\Item_Intranet-CommonHoverPanel_Actions.html" Folder="{masterpagecatalog}/Display Templates/Search/{parameter:CompanyName}" Overwrite="true">	
+        <pnp:File Src=".\artefacts\display templates\search\Item_Intranet-CommonHoverPanel_Actions.html" Folder="{masterpagecatalog}/display templates/Search/{parameter:CompanyName}" Overwrite="true">	
             <pnp:Properties>
               <pnp:Property Key="Title" Value="Intranet Common Footer Hover Panel" />
               <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
@@ -2311,7 +2301,7 @@
               <pnp:Property Key="TemplateHidden" Value="0" />
             </pnp:Properties>	
         </pnp:File>
-        <pnp:File Src=".\Artefacts\Display Templates\Search\Item_Intranet-Document_Search.html" Folder="{masterpagecatalog}/Display Templates/Search/{parameter:CompanyName}" Overwrite="true">	
+        <pnp:File Src=".\artefacts\display templates\search\Item_Intranet-Document_Search.html" Folder="{masterpagecatalog}/display templates/Search/{parameter:CompanyName}" Overwrite="true">	
             <pnp:Properties>
               <pnp:Property Key="Title" Value="Intranet Search Document Item" />
               <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
@@ -2319,7 +2309,7 @@
               <pnp:Property Key="TemplateHidden" Value="0" />
             </pnp:Properties>	
         </pnp:File>
-        <pnp:File Src=".\Artefacts\Display Templates\Search\Item_Intranet-Document_HoverPanel.html" Folder="{masterpagecatalog}/Display Templates/Search/{parameter:CompanyName}" Overwrite="true">	
+        <pnp:File Src=".\artefacts\display templates\search\Item_Intranet-Document_HoverPanel.html" Folder="{masterpagecatalog}/display templates/Search/{parameter:CompanyName}" Overwrite="true">	
             <pnp:Properties>
               <pnp:Property Key="Title" Value="Intranet Document Search Hover Panel" />
               <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
@@ -2327,10 +2317,10 @@
               <pnp:Property Key="TemplateHidden" Value="0" />
             </pnp:Properties>	
         </pnp:File>
-        <!-- End: Display Templates -->
+        <!-- End: display templates -->
 
         <!-- Start: Theme -->
-        <pnp:File Src=".\Artefacts\Themes\intranet.spcolor" Folder="{themecatalog}/15" Overwrite="true">	
+        <pnp:File Src=".\artefacts\themes\intranet.spcolor" Folder="{themecatalog}/15" Overwrite="true">	
         </pnp:File>
         <!-- End: Theme -->
 
