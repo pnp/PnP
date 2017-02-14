@@ -1,5 +1,5 @@
 # Patterns and Practices #
-This is the main repository for the community driven [SharePoint / Office Dev Patterns and Practices](http://aka.ms/OfficeDevPnP) (PnP) initiative. If you are looking for latest news around PnP or related topics, please have a look on our one pager at [http://aka.ms/sppnp](http://aka.ms/sppnp). 
+This is the main repository for the community driven [SharePoint / Office Dev Patterns and Practices](http://aka.ms/OfficeDevPnP) (PnP) initiative. If you are looking for latest news around PnP or related topics, please have a look on our one pager at [http://aka.ms/sppnp](http://aka.ms/sppnp).
 
 ![SharePoint Patterns and Practices logo](https://dev.office.com/Media/Default/PnP/sppnp.png)
 
@@ -28,4 +28,4 @@ You could be also interested on seeing all PnP resources in [one PowerPoint slid
 
 ## "Sharing is caring" 
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/). For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments. 
