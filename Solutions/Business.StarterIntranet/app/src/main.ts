@@ -168,7 +168,7 @@ export class Main {
         pnp.log.subscribe(consoleLogger);
         pnp.log.activeLogLevel = pnp.LogLevel.Verbose;
 
-        // Needed for SharePoint 2013 On-Premise othjerwise it will use Atom XML
+        // Needed for SharePoint 2013 On-Premise otherwise it will use Atom XML
         pnp.setup({
             headers: {
                 Accept: "application/json; odata=verbose",
