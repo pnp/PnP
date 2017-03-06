@@ -10,11 +10,11 @@
     <RootNamespace>Branding.ClientSideRendering</RootNamespace>
     <AssemblyName>Branding.ClientSideRendering</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <TargetOfficeVersion>16.0</TargetOfficeVersion>
+    <TargetOfficeVersion>16.1</TargetOfficeVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
-    <MinimumOfficeToolsVersion>12.1</MinimumOfficeToolsVersion>
+    <MinimumOfficeToolsVersion>12.2</MinimumOfficeToolsVersion>
     <IncludeAssemblyInPackage>False</IncludeAssemblyInPackage>
     <ProjectMode>SharePointApp</ProjectMode>
     <AppFeaturePartId>{899e3efe-7c8c-4fdb-82cd-fb36bf6e9205}</AppFeaturePartId>
@@ -22,6 +22,11 @@
     <WorkflowPartId>{c9e7f7d8-6f4c-44a5-b95c-5c5933815046}</WorkflowPartId>
     <CspkgPartId>{78a165c9-74c3-4823-b6b6-3901e6671e2b}</CspkgPartId>
     <SqlPackagePartId>{f1bf78ee-4a12-466b-977a-ecce63e20ece}</SqlPackagePartId>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>12.0</OldToolsVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
