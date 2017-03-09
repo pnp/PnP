@@ -14,7 +14,9 @@
   },
   "keywords": [
     "Office365",
-    "SPOnline",
+    "SharePoint Online",
+    "SharePoint 2013",
+    "SharePoint 2016",
     "Intranet",
     "Free ;)"
   ],
@@ -35,7 +37,7 @@
     "style-loader": "^0.13.1",
     "text-loader": "0.0.1",
     "ts-loader": "^0.8.2",
-    "typescript": "^2.1.5",
+    "typescript": "2.2.0",
     "webpack": "^1.14.0",
     "webpack-validator": "^2.2.0"
   },
