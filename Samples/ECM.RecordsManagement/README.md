@@ -201,4 +201,4 @@ public static void SetListAutoRecordDeclaration(this List list, bool autoDeclare
 ```
 
 
-
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/ECM.RecordsManagement" />

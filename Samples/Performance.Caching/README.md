@@ -99,3 +99,5 @@ As mentioned above, the sample just reads your ‘About Me’ data from your use
 
 This sample will first check to see if cookies are enabled, then it will check to see if the cookie exists. If it does, it will retrieve the value from it and render in the text area. If not, it will pull from the profile, populate the cookie, set expiration and then render in UI.
 
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Performance.Caching" />

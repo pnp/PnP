@@ -42,3 +42,4 @@ Documentation about this sample can be found [here]( http://www.luisevalencia.co
 - Make the Events list name customizable via add-in Part Properties.
 - Make the colors rendered by CSS customizable via add-in Part Properties.
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.JSOM.MiniCalendar" />

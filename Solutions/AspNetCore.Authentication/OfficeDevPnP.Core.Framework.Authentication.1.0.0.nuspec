@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>OfficeDevPnP.Core.Framework.Authentication</id>
+        <version>1.0.0</version>
+        <title>OfficeDevPnP.Core.Framework.Authentication</title>
+        <authors>Radi Atanassov</authors>
+        <owners>Radi Atanassov</owners>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>A NuGet package wrapping OfficeDevPnP.Core.Framework.Authentication.dll</description>
+        <summary>A NuGet package wrapping OfficeDevPnP.Core.Framework.Authentication.dll</summary>
+        <releaseNotes>Temporarily used to add the DLL to .NET Core projects.</releaseNotes>
+    </metadata>
+    <files>
+        <file src="src\OfficeDevPnP.Core.Framework.Authentication\bin\Debug\net451\OfficeDevPnP.Core.Framework.Authentication.dll" target="lib\net451\OfficeDevPnP.Core.Framework.Authentication.dll" />
+    </files>
+</package>

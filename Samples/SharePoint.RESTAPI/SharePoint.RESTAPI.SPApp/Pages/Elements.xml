@@ -3,5 +3,6 @@
   <Module Name="Pages">
     <File Path="Pages\Default.aspx" Url="Pages/Default.aspx" />
     <File Path="Pages\REST-APIs-Examples.aspx" Url="Pages/REST-APIs-Examples.aspx" />
+    <File Path="Pages\Sample_REST_KO_Accordion.aspx" Url="Pages/Sample_REST_KO_Accordion.aspx" ReplaceContent="TRUE" />
   </Module>
 </Elements>

@@ -3,7 +3,7 @@
 <App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest"
      Name="SubSiteCreationApp"
      ProductID="{ac4c3a81-5f63-462a-8f3b-6a0e6ee112ec}"
-     Version="1.0.0.0"
+     Version="1.0.1.0"
      SharePointMinVersion="15.0.0.0"
 >
   <Properties>

@@ -358,3 +358,4 @@ Once the add-in is installed, click the add-in to load it and follow the instruc
 ![Add-in UI](http://i.imgur.com/lGr6Ts8.png)
 
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Workflow.CallCustomService" />

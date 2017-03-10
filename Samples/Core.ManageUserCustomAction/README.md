@@ -73,5 +73,4 @@ This sample explains how is possible to create a split between Power Users and D
 - Creation of Recycle List to store deleted SharePoint Object "UserCustomActions" base in JSON, by default this SharePoint Objects are not stored in the Out of the Box recycled bin.
 - Creation of Resource files or [Language].js files to support a multilanguage app.
 
-
-
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.ManageUserCustomAction" />

@@ -146,3 +146,5 @@ public static void ExecuteQueryWithIncrementalRetry(this ClientContext context, 
     throw new MaximumRetryAttemptedException(string.Format("Maximum retry attempts {0}, has be attempted.", retryCount));
 }
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.Throttling" />

@@ -54,3 +54,6 @@ web.DeployThemeToWeb("SPC",
 ```
 
 This method also supports a custom font file and master page linked to the theme, but in the above sample these are set.
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Branding.Themes" />

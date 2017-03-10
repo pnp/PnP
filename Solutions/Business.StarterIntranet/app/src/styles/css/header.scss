@@ -1,0 +1,48 @@
+@import 'variables';
+
+#header  {
+
+    float: right;
+
+    /* Start: Global header styles */  
+    #logoZone {
+        float: left;
+    }
+    
+    #utilsZone {
+        float: left;
+        margin-right: 10px;
+        max-height: 40px;
+    }
+
+    #language-switcher, #searchbox, #header-links   {
+        float: left;
+    }
+    /* End: Global header styles */
+    
+    /* Header links */
+    #header-links {
+        
+        float: right;
+        min-height: 20px;
+        min-width: 150px;
+        padding-left: 20px;
+        margin-top: 10px;
+        
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+        
+        ul li {
+            display: inline;
+            padding-left: 3px;
+            padding-right: 3px;
+
+            i {
+                color: $primary-color;       
+            }
+        }
+    
+    }   
+}

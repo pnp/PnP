@@ -100,3 +100,5 @@ foreach (var existingAction in existingActions)
 clientContext.ExecuteQuery();
 
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Branding.CustomCSS" />

@@ -104,3 +104,5 @@ using (var ctx = CreateAppOnlyClientContextForUrl(spContext, url))
 }
 
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.Services.SiteManager" />

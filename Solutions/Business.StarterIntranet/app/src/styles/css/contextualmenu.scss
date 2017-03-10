@@ -1,0 +1,66 @@
+@import 'variables';
+
+#contextualmenu {
+
+    min-height: 200px; // We set a min height to display the spinner
+    padding-left: 15px;
+
+    ul.nav {
+        margin-top: 0px;
+    }
+
+    .nav > li {
+
+        padding: 10px 15px;
+
+        a {
+            display: inline;
+            padding: 0px;
+        }
+
+        a:hover {
+            background-color: transparent;
+        }
+
+        a:focus{
+            background-color: transparent;
+        }
+        
+        i {
+            float:right;
+        }
+    }
+
+    .nav > li.parent-section {
+
+        font-weight: bold;
+        color: $primary-color;
+
+        i {
+            float: none;
+        }
+
+        a {
+            color: $primary-color;
+        }
+    }
+    
+    .nav > li.is-child {
+        padding-left:30px;
+    }
+
+    .is-selected {
+
+        background-color: $contextual-selected-color;
+        border-radius: 5px;
+        color: #ffffff;
+
+        a {
+            color: #ffffff;
+        }
+
+        :hover {
+            background-color: $contextual-selected-color;
+        }
+    }
+}

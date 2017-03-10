@@ -120,3 +120,5 @@ Note: I didn't manage to get this working with an Add-in Only Policy context... 
     <!--<add key="TenantId" value="GUID HERE" /> left for academic reasons-->
   </appSettings>
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.UserProfile.Sync" />

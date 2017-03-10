@@ -77,3 +77,5 @@ clientContext.Web.RemoveSupportedUILanguage(1035);
 clientContext.Web.Update();
 clientContext.ExecuteQuery();
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.Settings.LocaleAndLanguage" />

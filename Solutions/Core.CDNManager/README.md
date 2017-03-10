@@ -116,3 +116,5 @@ The CDN Manager can also be used to load references in JSLink files. If you acti
 ## Known issues
 1. Scripting must be enabled in the tenancy to use the CDN Manager.
 2. Script Editor web parts will break the Minimal Download Service.
+
+<img  src="https://telemetry.sharepointpnp.com/pnp/solutions/Core.CDNManager" />

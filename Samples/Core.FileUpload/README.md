@@ -92,3 +92,5 @@ destinationFolder.UploadFile("SP2013_LargeFile.pptx", HostingEnvironment.MapPath
 ```
 
 This is using the same `UploadFile` method as in the previous scenario.
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.FileUpload" />

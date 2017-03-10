@@ -142,5 +142,6 @@ $.ajax({
         logMessage("File upload failed "+args.get_message(), state.ERROR);
 
     });
-´´´
 
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.JSOM.BinaryUpload" />

@@ -149,5 +149,4 @@ using (WorkflowTemplateDeployer workflowDeployer = new WorkflowTemplateDeployer(
 ```
 
 
-
-
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.WorkflowTemplate" />

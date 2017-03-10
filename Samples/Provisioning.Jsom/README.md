@@ -124,3 +124,5 @@ return dfd.promise();
 
 **Provisioning.Jsom.App** – This can be built to a .App file and deployed like any other SharePoint hosted add-in.
 
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.Jsom" />

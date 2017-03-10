@@ -40,3 +40,6 @@ Read entire documentation here:
 
 
 [Video](https://youtu.be/5O7uGB1KCRA)
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/AzureAD.RedisCacheUserProfile" />

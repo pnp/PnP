@@ -185,3 +185,5 @@ Now that we have uploaded our theme and create the composite look, we are now ab
 	// Execute the needed code
 	web.Context.ExecuteQuery();
 
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Branding.DeployCustomThemeWeb" />

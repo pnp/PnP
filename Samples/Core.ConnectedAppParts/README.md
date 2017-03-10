@@ -37,3 +37,5 @@ We have basically two different options for the connectivity with the add-in par
 This sample leverages a server-side approach using ASP.NET SignalR. SignalR allows add-in parts to communicate to each through active socket connections with the server. Ultimately the web server serves the purpose of a communication "proxy" between add-in parts as depicted in the diagram below
 
 ![Connected Add-In Parts with SignalR](http://i.imgur.com/ueQjqPS.png) 
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.ConnectedAppParts" />

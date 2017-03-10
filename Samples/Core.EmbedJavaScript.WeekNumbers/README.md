@@ -69,3 +69,5 @@ Result should look something like the image below.
 
 #NOTE#
 A function that returns the week numbers according to the Gregorian calendar is used but that could be replaced by any other calculation. Also this example takes some dependencies on both how the HTML in a SharePoint calendar is structured and also on the calendar scripts. So updates to how SharePoint renders a calendar can affect this sample.
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.EmbedJavaScript.WeekNumbers" />

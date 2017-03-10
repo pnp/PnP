@@ -213,3 +213,4 @@ To decrypt the data the process doing the decryption needs to have access to the
 
 Encryption/decryption is handled via the EncryptionUtiltity class in the from the OfficeDevPnP Core project.
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.CloudServices" />

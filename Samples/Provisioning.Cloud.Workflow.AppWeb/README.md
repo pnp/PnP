@@ -39,3 +39,5 @@ See more recommendations from the PnP MSDN library under the title "[Branding an
 ## Configure the sample ##
 Check the **Handle Add-In Installed** property in the project property of the add-in for SharePoint project.
 
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.Cloud.Workflow.AppWeb" />

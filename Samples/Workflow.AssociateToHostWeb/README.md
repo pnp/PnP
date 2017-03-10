@@ -68,3 +68,5 @@ Once the .app file has been modified to include the WorkflowManifest.xml change:
 ## DEPENDENCIES ##
 - Microsoft.SharePoint.Client.dll
 - Microsoft.SharePoint.Client.Runtime.dll
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Workflow.AssociateToHostWeb" />

@@ -63,4 +63,4 @@ An exception in the **AppInstalled** handler should leave neither the **Core.App
 * [Handling events in apps for SharePoint](https://msdn.microsoft.com/en-us/library/office/jj220048.aspx) and it's child articles.
 
 
-
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.AppEvents" />

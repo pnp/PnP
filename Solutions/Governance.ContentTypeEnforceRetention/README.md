@@ -108,3 +108,5 @@ The follow code sample outlines the appSettings that need to be configured with 
     <add key="0x0101" value="365" /> <!--Document-->
   </ContentTypeRetentionPolicyPeriod>
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/solutions/Governance.ContentTypeEnforceRetention" />

@@ -65,3 +65,5 @@ Run the application and click the "Inject Secondary Navigation" button. This wil
 # DEPENDENCIES 
 
 None
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/OD4B.NavLinksInjection" />

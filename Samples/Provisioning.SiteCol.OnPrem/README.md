@@ -43,3 +43,5 @@ Check detailed documentation from [http://blogs.msdn.com/b/vesku/archive/2014/06
 
 You should also have a look on how you can perform similar capability using asynchronous pattern, which is much more end user friendlier way to provide this functionality. Details on this pattern are available from following blog post: [http://blogs.msdn.com/b/vesku/archive/2014/08/29/async-site-collection-provisioning-with-app-model-for-on-prem-and-office-365-dedicated.aspx](http://blogs.msdn.com/b/vesku/archive/2014/08/29/async-site-collection-provisioning-with-app-model-for-on-prem-and-office-365-dedicated.aspx)
 
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.SiteCol.OnPrem" />

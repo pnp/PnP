@@ -1,0 +1,32 @@
+﻿@model Office365.Connectors.Models.SendCard
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@using (Html.BeginForm("SendCard", "Home", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col-md-12">
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Send a Card!</h2>
+            <p>Select a target Office 365 Group connection and provide the JSON for the card that you want to send to the target group.</p>
+            <p>
+                Target Office 365 Group:<br />
+                @Html.DropDownListFor(m => m.WebHookUrl, (from c in Model.Connections select new SelectListItem { Value = c.WebHookUrl, Text = c.GroupName }), "-- Select --")
+                @Html.ValidationMessageFor(m => m.WebHookUrl, null, new { @class = "error" })
+            </p>
+            <p>
+                JSON for Card:<br />
+                @Html.TextAreaFor(m => m.CardJson, 5, 100, null)
+                @Html.ValidationMessageFor(m => m.CardJson, null, new { @class = "error" })
+            </p>
+            <p><input type="submit" value="Send Card" class="btn btn-default" /></p>
+        </div>
+    </div>
+}

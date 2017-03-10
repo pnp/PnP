@@ -128,3 +128,5 @@ using (var clientContext = spContext.CreateUserClientContextForSPHost())
 
 ##  ACCESSING USER PROFILE FROM THE JAVASCRIPT ##
 Actual accessing and rendering of the information is happening using JavaScript. We are using user profile CSOM to access current user’s user profile for getting the needed information from specific user profile properties. Sample implementation does not have any caching, but in production usage we would recommend to use either HTML local store or cookie based caching for avoiding to JavaScript accessing the user profile on each request. This would also result much faster rendering times for the browser. Typically we could for example cache the information for one hour and refresh after that.
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.AppScriptPart" />

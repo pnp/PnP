@@ -241,3 +241,5 @@ Governance Solution should provide a page for administrators to restore a locked
 The unlock page url should be assigned to the property [Tenant.NoAccessRedirectUrl](https://msdn.microsoft.com/en-us/library/office/microsoft.online.sharepoint.tenantadministration.tenant.noaccessredirecturl(v=office.15).aspx) with related tenant CSOM API.
 
 ![UI when site is locked](https://raw.githubusercontent.com/LiyeXu/PnP-Governance-Assets/master/UnlockSite.png)
+
+<img src="https://telemetry.sharepointpnp.com/pnp/solutions/Governance.TimerJobs" />

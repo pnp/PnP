@@ -90,4 +90,4 @@ Solution activation is done using the DesignPackage objects to determine the wsp
 -   [Setting up provider hosted add-in to Windows Azure for Office365 tenant](http://blogs.msdn.com/b/vesku/archive/2013/11/25/setting-up-provider-hosted-app-to-windows-azure-for-office365-tenant.aspx)
 
 
-
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.PreventDeleteSites" />

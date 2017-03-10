@@ -46,3 +46,5 @@ var queryUrl = _spPageContextInfo.webAbsoluteUrl + "/_api/search/query?Querytext
                     "&SelectProperties='Title,UserName,Path'" +
                     "&RowLimit=10";
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/OfficeGraph.Demo.App" />

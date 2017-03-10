@@ -113,4 +113,4 @@ Answer: Not without adjusting the source code
 
 You would need to comment out the code which fetches images from source location and uploads to SPO. The code already exists to read the “additionalProfileProperties” section in the configuration file and set the values in SPO user profiles, so this would be used to perform your mass update requirement.
 
-
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.ProfilePictureUploader" />

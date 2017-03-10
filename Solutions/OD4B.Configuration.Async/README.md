@@ -169,3 +169,4 @@ This is the actual provider hosted add-in which is hosted in Microsoft Azure. It
 Notice. If you will face permission denied issues with the WebJob or add-in only access in general, make sure that you have updated add-in client id and secret in the app.config to match the values in the web.config from this project. Visual Studio can change these values in certain scenarios. 
 
  
+<img src="https://telemetry.sharepointpnp.com/pnp/solutions/OD4B.Configuration.Async" />

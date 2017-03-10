@@ -6,5 +6,16 @@
     <File Path="Scripts\jquery-1.7.1.js" Url="Scripts/jquery-1.7.1.js" />
     <File Path="Scripts\jquery-1.7.1.intellisense.js" Url="Scripts/jquery-1.7.1.intellisense.js" />
     <File Path="Scripts\REST-APIs-Examples.js" Url="Scripts/REST-APIs-Examples.js" />
+    <File Path="Scripts\accordion\data\main.js" Url="Scripts/accordion/data/main.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\accordion\datamodels\slideModel.js" Url="Scripts/accordion/datamodels/slideModel.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\accordion\helpers\browserRequirements.js" Url="Scripts/accordion/helpers/browserRequirements.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\accordion\helpers\Cache.js" Url="Scripts/accordion/helpers/Cache.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\accordion\helpers\namespace.js" Url="Scripts/accordion/helpers/namespace.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\accordion\libraries\jquery-2.2.3.min.js" Url="Scripts/accordion/libraries/jquery-2.2.3.min.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\accordion\libraries\jquery-2.2.3.min.map" Url="Scripts/accordion/libraries/jquery-2.2.3.min.map" ReplaceContent="TRUE" />
+    <File Path="Scripts\accordion\libraries\jquery-ui.js" Url="Scripts/accordion/libraries/jquery-ui.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\accordion\libraries\jquery-ui.min.js" Url="Scripts/accordion/libraries/jquery-ui.min.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\accordion\libraries\knockout-3.1.0.js" Url="Scripts/accordion/libraries/knockout-3.1.0.js" ReplaceContent="TRUE" />
+    <File Path="Scripts\accordion\libraries\modernizr.2.8.2.custom.js" Url="Scripts/accordion/libraries/modernizr.2.8.2.custom.js" ReplaceContent="TRUE" />
   </Module>
 </Elements>

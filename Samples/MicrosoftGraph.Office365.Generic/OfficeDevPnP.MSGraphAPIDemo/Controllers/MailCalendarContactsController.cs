@@ -68,7 +68,7 @@ namespace OfficeDevPnP.MSGraphAPIDemo.Controllers
             var folders = MailHelper.ListFolders();
 
             // Here you can use whatever mailbox name that you like, instead of Inbox
-            var messages = MailHelper.ListMessages(folders.FirstOrDefault(f => f.Name == "Posta in arrivo" || f.Name == "Inobx").Id);
+            var messages = MailHelper.ListMessages(folders.FirstOrDefault(f => f.Name == "Posta in arrivo" || f.Name == "Inbox").Id);
             if (messages != null && messages.Count > 0)
             {
                 var message = MailHelper.GetMessage(messages[0].Id, true);

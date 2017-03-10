@@ -112,3 +112,5 @@ Once a page has been created the button Remove web part from the last page creat
     
     this.hplPage2.NavigateUrl = string.Format("{0}/{1}", Request.QueryString["SPHostUrl"], scenario2PageUrl);
     }
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.ModifyPages" />

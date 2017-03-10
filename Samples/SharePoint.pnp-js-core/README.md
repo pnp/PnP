@@ -18,8 +18,8 @@ This sample is a set of interactive demos for using the [Patterns and Practices 
 
 We always welcome new samples! If you have an idea for a good scenario please create it and submit a pull request. You can use the existing samples as a template for adding your own.
 
-### Yammer Group ###
-We have an active [Yammer Group](http://aka.ms/OfficeDevPnPSIGJavaScriptYammer) dedicated to the library upon which these samples are built, please join the conversation.
+### Community Discussion Group ###
+We have an active [Gitter Room](https://gitter.im/OfficeDev/PnP-JS-Core) dedicated to the library upon which these samples are built, please join the conversation.
 
 
 #### Disclaimer ####
@@ -27,3 +27,6 @@ We have an active [Yammer Group](http://aka.ms/OfficeDevPnPSIGJavaScriptYammer) 
 
 
 ###"Sharing is Caring"###
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/SharePoint.pnp-js-core" />

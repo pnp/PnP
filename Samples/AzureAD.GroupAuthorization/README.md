@@ -39,3 +39,5 @@ Read entire documentation here:
 
 
 [Video](https://youtu.be/sUC4kJ73Pns)
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/AzureAD.GroupAuthorization" />

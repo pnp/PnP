@@ -32,3 +32,4 @@ This sample shows how one can use JavaScript to perform basic updates to a Share
 
 ![Picture showing additional message in header of the page](http://i.imgur.com/xpL9UGb.png)
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.EmbedJavaScriptJSOM" />

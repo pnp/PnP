@@ -72,3 +72,5 @@ Credits to https://github.com/dstrockis and https://github.com/vibronet.
 The Office Fabric UI styling was aided by a blog post here: http://chakkaradeep.com/index.php/using-office-ui-fabric-in-sharepoint-add-ins/
 
 Credit to https://github.com/chakkaradeep
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/MicrosoftGraph.Office365.GroupsExplorer" />

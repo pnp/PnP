@@ -105,3 +105,6 @@ The code shows several useful patterns including:
 
 ______________________
 Clever URL Parsing is brought to you by: https://saikiran78.wordpress.com/2014/01/17/getting-list-data-in-sharepoint-2013-using-rest-api-and-angular-js/
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.MicroSurvey" />

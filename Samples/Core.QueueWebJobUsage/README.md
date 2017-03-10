@@ -205,3 +205,5 @@ namespace Core.QueueWebJobUsage.Job
             SiteModifyRequest modifyRequest, TextWriter log)
         {
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.QueueWebJobUsage" />

@@ -57,3 +57,4 @@ The following code shows associating a document template with a document content
                 Console.WriteLine("Content type updates");
             }
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.CreateDocumentContentType" />

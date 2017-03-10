@@ -29,3 +29,4 @@ In order to play with this sample, you need to:
 -  Press F5 and play with the sample add-in
 
  
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/SharePoint.RESTAPI" />

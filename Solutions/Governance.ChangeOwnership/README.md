@@ -134,3 +134,5 @@ To protect the Add-in principles, most importantly the Client ID and Client Secr
 ![Windows form application for encrypting add-in principals](http://i.imgur.com/oBMuD3X.png)
 
 **Please look at Governance.AddInSecurity application in PNP Github for the source code.**
+
+<img src="https://telemetry.sharepointpnp.com/pnp/solutions/Governance.ChangeOwnership" />

@@ -165,3 +165,5 @@ Update the app.config file with the client ID and secret you've obtained in the 
     <add key="ClientSecret" value="<client secret>"/>
   </appSettings>
 ```
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/AzureAD.GroupMembership" />

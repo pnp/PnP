@@ -113,3 +113,4 @@ For content types you have the option to localize the name and description while
     fld.TitleResource.SetValueForUICulture("fi-FI", "Contoso Teksti");
     fld.DescriptionResource.SetValueForUICulture("fi-FI", "Tää on niiku Contoso metadatalle.");
  
+ <img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.CreateContentTypes" />

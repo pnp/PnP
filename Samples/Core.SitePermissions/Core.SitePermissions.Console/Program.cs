@@ -11,6 +11,7 @@ namespace Contoso.Core.SitePermissions
 {
     class Program
     {
+        // Updated this based on your tenant
         const string SAMPLE_USER_ACCOUNTNAME = "i:0#.f|membership|user@domain";
 
         static void Main(string[] args)
@@ -29,9 +30,7 @@ namespace Contoso.Core.SitePermissions
             Console.WriteLine(") :");
             string siteName = Console.ReadLine();
             
-            Console.Write("Tenant admin name (");
-            ConsoleWriteColor("<tenantAdminName>", ConsoleColor.Green);
-            Console.WriteLine("@" + tenantName + ".onmicrosoft.com) :");
+            Console.Write("Tenant admin account: ");
             string tenantAdminUserName = Console.ReadLine();
 
             Console.WriteLine("Create SharePoint ClientContext object for the web");
@@ -39,8 +38,7 @@ namespace Contoso.Core.SitePermissions
             AuthenticationManager authManager = new AuthenticationManager();
 
             string targetSiteUrl = String.Format("https://{0}.sharepoint.com/sites/{1}", tenantName, siteName);
-            string tenantAdmin = String.Format("{0}@{1}.onmicrosoft.com", tenantAdminUserName, tenantName);
-            ClientContext cc = authManager.GetSharePointOnlineAuthenticatedContextTenant(targetSiteUrl, tenantAdmin, tenantAdminPassword);
+            ClientContext cc = authManager.GetSharePointOnlineAuthenticatedContextTenant(targetSiteUrl, tenantAdminUserName, tenantAdminPassword);
             
             // Alternative approach is via an AppOnly app that has been registered via AppRegNew/AppInv. Good thing with this approach is
             // that you registered app can have tenant level permissions which makes that you can use below code to for example set the 
@@ -51,7 +49,7 @@ namespace Contoso.Core.SitePermissions
             // Tenant admin site context
             Console.WriteLine("Create SharePoint ClientContext object for the tenant administration web");
             string tenantAdminUrl = String.Format("https://{0}-admin.sharepoint.com/", tenantName);
-            ClientContext ccTenant = authManager.GetSharePointOnlineAuthenticatedContextTenant(tenantAdminUrl, tenantAdmin, tenantAdminPassword);
+            ClientContext ccTenant = authManager.GetSharePointOnlineAuthenticatedContextTenant(tenantAdminUrl, tenantAdminUserName, tenantAdminPassword);
 
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("----------------------------------------------------------------------");

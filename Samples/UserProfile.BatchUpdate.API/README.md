@@ -50,3 +50,5 @@ Since many enterprises have however business requirements to replicate custom at
 
 See additional references what mentioned in the start of the document for API reference.
 
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/UserProfile.BatchUpdate.API" />

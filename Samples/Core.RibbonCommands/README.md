@@ -66,3 +66,5 @@ clientContext.ExecuteQuery();
 # DEPENDENCIES #
 -  Microsoft.SharePoint.Client.dll
 -  Microsoft.SharePoint.Client.Runtime.dll
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.RibbonCommands" />

@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Provisioning.Modern.Console.RESTAPI", "Provisioning.Modern.Console.RESTAPI.csproj", "{19A8C855-BA02-4BAE-A6A3-F90E2CAF0CD2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{4ADD19B5-FA67-4D91-8488-04B6275FD1A2}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{19A8C855-BA02-4BAE-A6A3-F90E2CAF0CD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19A8C855-BA02-4BAE-A6A3-F90E2CAF0CD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19A8C855-BA02-4BAE-A6A3-F90E2CAF0CD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19A8C855-BA02-4BAE-A6A3-F90E2CAF0CD2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

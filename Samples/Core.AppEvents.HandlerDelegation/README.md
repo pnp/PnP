@@ -64,5 +64,4 @@ An exception in the **TryCreateList()** method should leave neither the **Core.A
 
 * [Handling events in apps for SharePoint](https://msdn.microsoft.com/en-us/library/office/jj220048.aspx) and it's child articles.
 
-
-
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.AppEvents.HandlerDelegation" />

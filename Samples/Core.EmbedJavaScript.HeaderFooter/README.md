@@ -77,3 +77,5 @@ The Page has 1 JSON Editor and 2 buttons for provision of Features associated to
 
 **Provision Files AppWeb to HostWeb**
 [http://www.sharepointnutsandbolts.com/2013/05/sp2013-host-web-apps-provisioning-files.html](http://www.sharepointnutsandbolts.com/2013/05/sp2013-host-web-apps-provisioning-files.html)
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.EmbedJavaScript.HeaderFooter" />

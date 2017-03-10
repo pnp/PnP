@@ -143,3 +143,5 @@ The multi-tenancy with ASP.NET MVC and OpenID Connect is provided thanks to the 
 https://github.com/AzureADSamples/WebApp-WebAPI-MultiTenant-OpenIdConnect-DotNet
 
 Credits to https://github.com/dstrockis and https://github.com/vibronet.
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Office365Api.Overview" />

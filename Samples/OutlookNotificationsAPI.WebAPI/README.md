@@ -241,3 +241,5 @@ The key source code files in this project are the following:
 - Learn about webhooks at: <http://culttt.com/2014/01/22/webhooks/>
 - Explore the Outook Notifications REST API and its operations at: <https://msdn.microsoft.com/en-us/office/office365/api/notify-rest-operations> 
 - Read more about this sample at: <http://simonjaeger.com/call-me-back-outlook-notifications-rest-api/>
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/OutlookNotificationsAPI.WebAPI" />

@@ -1,5 +1,7 @@
 # Branding OneDrive for Business with an add-in for SharePoint #
 
+> Note. This only works with Classic mode used in OneDrive for Business sites. 
+
 ### Summary ###
 This scenario shows the pattern on how to access end user’s own OneDrive for Business and to apply custom branding to it automatically. Getting access to the personal my site will happen using Social CSOM which provides read access to user profile properties and also access to the Site object of the personal OneDrive for Business.
 Actual branding is applied by uploading custom theme to the Site by using file upload mechanisms in the client side OM and then applying theme to the site. Notice that themes are not visible in the UI of the personal OneDrive for Business sites, but you can still use them.
@@ -313,3 +315,4 @@ The code for SetComposedLookByUrl is the following:
  }
 
 ```
+<img src="https://telemetry.sharepointpnp.com/pnp/solutions/Provisioning.OneDrive" />

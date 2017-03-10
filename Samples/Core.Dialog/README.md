@@ -146,3 +146,5 @@ this.web = appContextSite.get_web();
 ```
 
 See [here](http://msdn.microsoft.com/en-us/library/office/fp179927(v=office.15).aspx) for more information on cross domain calls.
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.Dialog" />

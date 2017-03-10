@@ -102,3 +102,5 @@ public void CreateSubSite(Web hostWeb, string url, string template,
 }
 ```
 
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.Yammer" />

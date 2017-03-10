@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="sequencesConfiguration">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="sequences">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="sequence">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="templates">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element maxOccurs="unbounded" name="template">
+                            <xs:complexType>
+                              <xs:attribute name="path" type="xs:string" use="required" />
+                              <xs:attribute name="name" type="xs:string" use="required" />
+                              <xs:attribute name="ignore" type="xs:boolean" use="optional" default="false" />
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="name" type="xs:string" use="required" />
+                  <xs:attribute name="description" type="xs:string" use="required" />
+                  <xs:attribute name="webUrl" type="xs:string" use="required" />
+                  <xs:attribute name="ignore" type="xs:boolean" use="optional" default="false" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

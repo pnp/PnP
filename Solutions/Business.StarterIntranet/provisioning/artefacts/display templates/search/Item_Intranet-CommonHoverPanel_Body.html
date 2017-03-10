@@ -1,0 +1,155 @@
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"> 
+<head>
+<title>Common Hover Panel Body</title>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:TemplateHidden msdt:dt="string">0</mso:TemplateHidden>
+<mso:MasterPageDescription msdt:dt="string">Displays the hover panel footer elements that are common to all results.</mso:MasterPageDescription>
+<mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106603</mso:ContentTypeId>
+<mso:TargetControlType msdt:dt="string">;#SearchHoverPanel;#</mso:TargetControlType>
+<mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>
+<body>
+    <div id="Item_CommonHoverPanel_Body">
+<!--#_
+        var id = ctx.CurrentItem.csr_id;
+        var dataShown = false;
+        var changedBySnippetShown = false;
+
+        if (ctx.currentItem_ShowChangedBySnippet &&
+            !Srch.U.n(ctx.CurrentItem.LastModifiedTime) &&
+            !$isEmptyString(ctx.CurrentItem.EditorOWSUSER))
+        {
+            var changedById = id + "_ChangedBy";
+            var editorIdentifiers = ctx.CurrentItem.EditorOWSUSER.split(" | ");
+            var editorEmail = "";
+            if(!$isNull(editorIdentifiers[0]))
+            {
+                editorEmail = editorIdentifiers[0];
+            }
+
+            var editorDisplayName = "";
+            if(!$isNull(editorIdentifiers[1]))
+            {
+                editorDisplayName = editorIdentifiers[1];
+            }
+
+            AddPostRenderCallback(ctx, function()
+            {
+                EnsureScriptFunc("clienttemplates.js", "RenderUserFieldWorker", function()
+                {
+                    EnsureScriptFunc("sp.datetimeutil.js", "SP.DateTimeUtil.SPRelativeDateTime", function()
+                    {
+                        var renderCtx = new ContextInfo();
+                        renderCtx.Templates = {};
+                        renderCtx.Templates["Fields"] = {};
+
+                        var field =
+                        {
+                            "FieldType" : "User",
+                            "DefaultRender" : "1",
+                            "HasUserLink" : "1",
+                            "Type" : "User"
+                        };
+
+                        var listItem =
+                        {
+                            "id" : "",
+                            "title" : editorDisplayName,
+                            "email" : editorEmail
+                        };
+
+                        var listSchema =
+                        {
+                            "EffectivePresenceEnabled" : "1",
+                            "PresenceAlt" : "No presence information",
+                            "UserDispUrl" : "/_layouts/15/userdisp.aspx"
+                        };
+
+                        var htmlUserPresence = RenderUserFieldWorker(renderCtx, field, listItem, listSchema);
+                        var timeZoneOffset = Srch.ScriptApplicationManager.get_current().states["timeZoneOffsetInHours"];
+                        var lastModifiedDate = ctx.CurrentItem.LastModifiedTime;
+                        var now_utc = new Date(lastModifiedDate.getUTCFullYear(), lastModifiedDate.getUTCMonth(), lastModifiedDate.getUTCDate(), lastModifiedDate.getUTCHours(), lastModifiedDate.getUTCMinutes(), lastModifiedDate.getUTCSeconds());
+                        now_utc.setTime(now_utc.getTime() + Math.floor(timeZoneOffset*60*60*1000));
+                        var convertedDate = SP.DateTimeUtil.IntlDate.createFromJsLocalDate(now_utc, Srch.U.getCalendarType());
+                        var changedDate = convertedDate.format("d", Sys.CultureInfo.CurrentCulture.name);
+                        var changedTime = convertedDate.format("t", Sys.CultureInfo.CurrentCulture.name);
+                        var encodedChangedBySnippet = String.format(
+                            $htmlEncode(Intranet.Main.getResource('hp_ChangedByAuthorDate')),
+                            htmlUserPresence,
+                            $htmlEncode(changedDate),
+                            $htmlEncode(changedTime));
+
+                        var targetElement = document.getElementById(changedById);
+                        if(targetElement)
+                        {
+                            targetElement.innerHTML = encodedChangedBySnippet;
+                        }
+
+                        ProcessImn();
+                    });
+                });
+            });
+_#-->
+            <div class="ms-srch-hover-subTitle ms-srch-hover-text ms-srch-ellipsis" id="_#= $htmlEncode(changedById) =#_"></div>
+<!--#_
+            dataShown = true;
+            changedBySnippetShown = true;
+        }
+
+        if(ctx.currentItem_ShowChangedBySnippet &&
+           !changedBySnippetShown &&
+           !ctx.currentItem_NeverFallbackToAuthor)
+        {
+            ctx.CurrentItem.csr_ShowLastModifiedTime = true;
+            ctx.CurrentItem.csr_ShowAuthors = true;
+        }
+
+        if (!Srch.U.n(ctx.CurrentItem.LastModifiedTime) &&
+            ctx.CurrentItem.csr_ShowLastModifiedTime)
+        {
+            var lastModifiedTimeId = id + HP.ids.modifiedDate;
+            AddPostRenderCallback(ctx, function()
+            {
+                Srch.U.renderFriendlyTimeIntervalString(ctx.CurrentItem.LastModifiedTime, lastModifiedTimeId);
+            });
+
+_#-->
+            <div class="ms-srch-hover-subTitle"><h3 class="ms-soften">_#= $htmlEncode(Intranet.Main.getResource('hp_LastModified')) =#_</h3></div>
+            <div class="ms-srch-hover-text ms-srch-ellipsis" id="_#= $htmlEncode(lastModifiedTimeId) =#_"></div>
+<!--#_
+            dataShown = true;
+        }
+
+        if (!$isEmptyString(ctx.CurrentItem.DisplayAuthor) &&
+            ctx.CurrentItem.csr_ShowAuthors)
+        {
+            var authorsLabel = $resource("hp_RecentlyEdited");
+            if(!$isEmptyString(ctx.CurrentItem.csr_AuthorsLabel))
+            {
+                authorsLabel = ctx.CurrentItem.csr_AuthorsLabel;
+            }
+
+            var authors = Srch.U.getArray(ctx.CurrentItem.DisplayAuthor);
+_#-->
+            <div class="ms-srch-hover-subTitle"><h3 class="ms-soften">_#= $htmlEncode(authorsLabel) =#_</h3></div>
+				<div class="ms-srch-hover-text">
+					_#= HP.GetAuthorsHtml(id, authors) =#_
+				</div>
+<!--#_
+            dataShown = true;
+        }
+
+        if(!ctx.CurrentItem.csr_DataShown && !dataShown)
+        {
+_#-->
+            <div class="ms-srch-hover-noContent" id="_#= $htmlEncode(id + HP.ids.noData) =#_">_#= $htmlEncode(Srch.Res.hp_NoData) =#_</div>
+<!--#_
+        }
+_#-->
+    </div>
+</body>
+</html>

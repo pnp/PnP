@@ -1,0 +1,26 @@
+{
+  "version": "1.2.0-*",
+  "authors": [ "Radi Atanassov" ],
+  "title": "OfficeDevPnP.Core.Framwork.Authentication",
+
+  "dependencies": {
+    "Microsoft.AspNetCore.Authentication": "1.0.0",
+    "Microsoft.AspNetCore.Authentication.Cookies": "1.0.0",
+    "Microsoft.AspNetCore.WebUtilities": "1.0.0",
+    "Microsoft.SharePointOnline.CSOM": "16.1.5326.1200",
+    "Microsoft.IdentityModel": "6.1.7600.16394",
+    "Microsoft.AspNetCore.Server.Kestrel": "1.0.0",
+    "Newtonsoft.Json": "9.0.1",
+    "SharePointPnP.IdentityModel": "1.2.0-*"
+  },
+
+  "frameworks": {
+    "net451": {
+      "frameworkAssemblies": {
+        "System.IdentityModel": "4.0.0.0",
+        "System.IdentityModel.Selectors": "4.0.0.0",
+        "System.ServiceModel": "4.0.0.0"
+      }
+    }
+  }
+}

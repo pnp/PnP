@@ -69,3 +69,6 @@ private string ResolveAdditionalFilter(string aboutMeValue)
 - Microsoft.SharePoint.Client.Runtime.dll
 - Microsoft.SharePoint.Client.Search.dll
 - Microsoft.SharePoint.Client.UserProfiles.dll
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Search.PersonalizedResults" />

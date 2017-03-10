@@ -80,3 +80,5 @@ We will assume a real world scenario of a basic add-in which displays data from 
 - **Title**: Internal Title. This would be to allow styling other than what chrome control provides. (Basic Property Objective)
 - **RowLimit**: Maximum number of items to request from the host web list. (Basic Property Objective)
 - **List GUID**: The guid for the host web list so we can request data. (Advanced Objective)
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.EmbeddedEditing" />

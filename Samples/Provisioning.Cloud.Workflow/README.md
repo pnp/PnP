@@ -39,3 +39,5 @@ For a more detailed description of this sample, see Module 5 of the [SharePoint 
 ## Configure the sample ##
 Check the **Handle Add-in Installed** property in the project property of the add-in for SharePoint project.
 
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.Cloud.Workflow" />

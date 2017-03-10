@@ -98,4 +98,4 @@ Wait for the add-in to install.
 3. Right-click the Batch Provisioning Console project in Solution Explorer. Select Start new instance from the Debug menu. While the console app is running, go to your Office 365 site, click on the Admin menu, and select SharePoint. The Site Collections list will display your new site or sites and note that they are being provisioned.
 
 
-
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.Batch" />

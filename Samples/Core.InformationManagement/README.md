@@ -90,3 +90,4 @@ cc.Web.ApplySitePolicy("policy name");
 -  http://blogs.technet.com/b/speschka/archive/2009/10/30/publish-and-subscribe-to-content-types-in-sharepoint-2010.aspx
 
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.InformationManagment" />

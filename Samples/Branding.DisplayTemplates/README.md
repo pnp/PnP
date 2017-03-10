@@ -242,3 +242,6 @@ When the page is loaded in the iPad Device Channel, the iPad.master Master Page 
 When the page is loaded in the iPhone Device Channel, the iPhone.master Master Page is used. This master page loads the hero_iphone.css CSS file.  This CSS file contains styles specific to the iPhone version of the Home Hero slider.
 
 The HomePageHeroItemTemplate_channel.js Item Display Template is used for all three Device Channels, it uses the CSS styles it inherits from the CSS file the Master Page includes. 
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Branding.DisplayTemplates" />

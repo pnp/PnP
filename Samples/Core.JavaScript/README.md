@@ -38,3 +38,5 @@ Included in this package is a JavaScript design template demonstrating how to up
 ## Embedder Console Application ##
 
 To ease testing it can be helpful to use a console application to embed the UserCustomAction in the target site. Included is such an application, you can [read the details here](embedder.md).
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.JavaScript" />

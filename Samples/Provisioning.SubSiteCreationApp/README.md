@@ -32,6 +32,7 @@ Provisioning.SubSiteCreationApp | Vesa Juvonen ,Bert Jansen & Frank Marasco (**M
 Version  | Date | Comments
 ---------| -----| --------
 1.0  | May 5th 2014 | Initial release
+1.1  | September 7th 2016 | Updated to work with modern experiences as well by adding redirect to oob sub site creation page.
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
@@ -217,3 +218,6 @@ function SubSiteOverride_OverrideLinkToAppUrl() {
 ```
 
 Notice that since this link update is based on JavaScript execution on client side, you might encounter challenges if the client browser has delays or slowness on the script execution. You can mitigate this by using having for example CSS in the site, which has this link hidden by default, but then it’s shown only after the JavaScript function has been executed.
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.SubSiteCreationApp" />

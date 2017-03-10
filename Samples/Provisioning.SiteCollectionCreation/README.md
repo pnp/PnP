@@ -106,3 +106,4 @@ Now we need to grant permissions to the add-in principal.  You will have to navi
 - [Setting up provider hosted add-in to Windows Azure for Office365 tenant](http://blogs.msdn.com/b/vesku/archive/2013/11/25/setting-up-provider-hosted-app-to-windows-azure-for-office365-tenant.aspx)
 
 
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.SiteColectionCreation" />

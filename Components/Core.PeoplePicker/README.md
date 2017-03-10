@@ -517,3 +517,5 @@ PeoplePicker.prototype.DeleteProcessedUser = function (lookupValue) {
     this.PeoplePickerData.change();
 }
 ```
+
+<img  src="https://telemetry.sharepointpnp.com/pnp/components/Core.PeoplePicker" />

@@ -1,0 +1,39 @@
+@import 'variables';
+
+#footer, .push {
+    /* .push must be the same height as .footer */
+    height: 30px;
+    /* Multicolumn Layout With Sticky Footer */
+    clear: both;
+}
+
+#footer {
+
+    ul {
+
+        list-style: none;
+        text-align: center;
+        padding-left: 0;
+
+        li {
+            
+            display: inline-block;
+            color: $primary-color;
+            padding-right: 15px;
+            padding-left: 15px;
+            margin-bottom: 5px;
+
+            a, a:hover {
+                color: $primary-color;
+            }
+        }
+
+        /* Medium and large devices (Desktop) */
+        @media (min-width: 768px) {
+            
+            li~li { 
+                border-left: 1px solid #000000; // Put a '|' between links
+            }
+        }
+    }
+}

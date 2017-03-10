@@ -160,3 +160,4 @@ coreNavigation.updateNavigationInheritance(true)
             $("#statusMessage").html('Failed to set navigation inheritance to true: ' + message);
         });
 ```
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Core.Jsom.Navigation" />

@@ -830,3 +830,6 @@ function RegisterDependentFieldsContext() {
     });
 }
 ```
+
+
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/Branding.ClientSideRendering" />
