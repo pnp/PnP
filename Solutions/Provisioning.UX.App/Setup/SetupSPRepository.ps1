@@ -23,7 +23,7 @@ $provisioningTemplate = "PnPSiteProvisioning.xml"
 
 
 #########MAIN##########################################
-Connect-PnPOnline -Url $siteUrl –Credentials (Get-Credential)
+Connect-PnPOnline -Url $siteUrl –UseWebLogin
 Write-Host "Connected to Site " $siteUrl
 
 Apply-PnPProvisioningTemplate -Path $provisioningTemplate
