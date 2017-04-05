@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCTaxonomyPicker", "MVCTax
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCTaxonomyPickerWeb", "MVCTaxonomyPickerWeb\MVCTaxonomyPickerWeb.csproj", "{14F0B43C-6DC0-48E6-A92D-99270C4F3FB2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{1156AD54-54E2-435B-84B0-ABE0EB61DA15}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\Users\spinstall\Documents\README.md = ..\..\..\..\Users\spinstall\Documents\README.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
