@@ -231,6 +231,7 @@ var spHostUrl = decodeURIComponent(getQueryStringParameter('SPHostUrl'));
         }
     });
 });
+```
 	
 ![Screenshot of ActionResults model](http://i.imgur.com/eEocfbV.png "Screenshot of ActionResults model")
 
@@ -245,6 +246,7 @@ Please ensure that you are already having a Term Set containing terms for at lea
 
 Find out the GUID of the Term Set to bind (using Site Settings --> Term Store Management) & update below line with actual Term Set GUID.
 
+```javascript#
 $('#Demo1Control').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: 'f9a12d1b-7c94-467e-8687-70794a83211f', levelToShowTerms: 1, termSetImageUrl: '/Content/Images' }, function () {
     $('#Demo2Control').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: 'f9a12d1b-7c94-467e-8687-70794a83211f', filterTermId: this._selectedTerms[0].Id, levelToShowTerms: 2, useTermSetasRootNode: false, termSetImageUrl: '/Content/Images' }, function () {
         $('#Demo3Control').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: 'f9a12d1b-7c94-467e-8687-70794a83211f', filterTermId: this._selectedTerms[0].Id, levelToShowTerms: 3, useTermSetasRootNode: false, termSetImageUrl: '/Content/Images' });
