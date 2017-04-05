@@ -207,7 +207,7 @@ public class TermQueryModel
 ```
 
 ## Reading values ##
-The Taxonomy Picker will store the selected terms in the hidden field using JSON string format. Access this data just use jQuery to geth the value and create a new object representing your ViewModel and convert the value from the hidden field into JSON and it will be translated into a List<PickerTermModel>() in your Controller:
+The Taxonomy Picker will store the selected terms in the hidden field using JSON string format. Access this data just use jQuery to geth the value and create a new object representing your ViewModel and convert the value from the hidden field into JSON and it will be translated into a List``<PickerTermModel>``() in your Controller:
 
 ```javascript#
 //The following code shows how to call the GetTaxonomyPickerData method from inside taxonomypickercontrol.js
