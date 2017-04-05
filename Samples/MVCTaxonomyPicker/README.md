@@ -34,14 +34,14 @@ Version  | Date | Comments
 
 Using the Taxonomy Picker in your MVC provider hosted add-in does not require many steps?
 
-## Ensure you trigger the creation of an add-in web ##
+## No need to ensure you trigger the creation of an add-in web ##
 When you build a provider hosted add-in it does not necessarily have an add-in web associated with it whereas a SharePoint hosted add-in always has an add-in web. 
 
 This TaxonomyPicker control uses CSOM object model from C# thus it does not require no add-in web.
-Since the Taxonomy Picker control uses the CSOM object model from JavaScript it�s required to have an add-in web. 
+Since the Taxonomy Picker control uses the CSOM object model from JavaScript it's required to have an add-in web. 
 
 ## Add-In permissions ##
-The Taxonomy Picker communicates with SharePoint�s Managed Metadata Service, which requires special permissions in the add-in model.  Working with Closed TermSets will require Read permission on the Taxonomy permission scope.  To enable the creation of new terms in Open TermSets, the add-in will require Write permission on the Taxonomy permission scope.  These permissions can be set in the AppManifest.xml as seen below:
+The Taxonomy Picker communicates with SharePoint's Managed Metadata Service, which requires special permissions in the add-in model.  Working with Closed TermSets will require Read permission on the Taxonomy permission scope.  To enable the creation of new terms in Open TermSets, the add-in will require Write permission on the Taxonomy permission scope.  These permissions can be set in the AppManifest.xml as seen below:
 
 ![Screenshot of add-in permissions](http://i.imgur.com/ULMbalg.png "Screenshot of add-in permissions")
  
