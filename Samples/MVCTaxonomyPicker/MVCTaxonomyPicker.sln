@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCTaxonomyPickerWeb", "MVC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{1156AD54-54E2-435B-84B0-ABE0EB61DA15}"
 	ProjectSection(SolutionItems) = preProject
-		..\..\..\..\Users\spinstall\Documents\README.md = ..\..\..\..\Users\spinstall\Documents\README.md
+		README.md = README.md
 	EndProjectSection
 EndProject
 Global
