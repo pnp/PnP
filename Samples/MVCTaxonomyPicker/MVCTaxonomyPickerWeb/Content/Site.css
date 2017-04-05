@@ -1,0 +1,50 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+}
+
+.intro {
+    padding-bottom:30px;
+}
+
+.spacer {
+    padding:10px;
+}
+
+/* Office UI Fabric Overrides*/
+.ms-bgColor-themeDarker,
+.ms-bgColor-themeDarker--hover:hover {
+  background-color: #004578 !important;
+}
+
+.ms-fontColor-white,
+.ms-fontColor-white--hover:hover {
+  color: #ffffff !important;
+}
+
+.ms-borderColor-white,
+.ms-borderColor-white--hover:hover {
+  border-color: #ffffff !important;
+}
+
+.is-selected{
+    border-bottom: 2px solid white !important;
+}
+
+.ms-NavBar-chevronDown {
+    color: white !important;
+}
+
+.ms-Icon--menu {
+    color: white;
+}
+
+@media (max-width: 479px) {
+    .ms-NavBar.is-open .ms-NavBar-items {
+        background-color: #004578 !important;
+    }
+
+    .ms-NavBar-item:hover {
+        background-color: #106ebe !important;
+    }
+}
