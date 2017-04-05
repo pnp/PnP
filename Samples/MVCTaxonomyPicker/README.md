@@ -47,7 +47,7 @@ The Taxonomy Picker communicates with SharePoint's Managed Metadata Service, whi
 ## Required files ##
 The Taxonomy Picker is implemented as a jQuery extension, which means it requires a reference to jQuery on and pages it will be used. In addition to jQuery, the Taxonomy Picker control requires the reference of a taxonomypicker.js and taxonomypicker.css files included in the sample solution.
 
-![Screenshot of script tag](http://i.imgur.com/ULMbalg.png "Screenshot of BundleConfig tags")
+![Screenshot of script tag](http://i.imgur.com/McOXD0Y.png "Screenshot of BundleConfig tags")
  
 ## Loading required scripts ##
 The JavaScript below shows how to initialize the TaxonomyPicker, note that there is no JSOM required, this is taken from the App.js file in the scripts folder:  
