@@ -1,12 +1,13 @@
 ﻿# MVC Taxonomy picker for sharepoint add-in #
 
 ### Summary ###
-This sample shows an implementation of a SharePoint Taxonomy Picker control that can be used on MVC provider hosted SharePoint apps.
+This sample shows an implementation of a SharePoint Taxonomy Picker control that can be used on MVC provider hosted SharePoint apps. It is based on the Core.TaxonomyPicker from  SharePoint/Office Dev Patterns and Practices.
+This Sample basically let's CSOM do the heavy lifting throught ajax calls to the Controller. 
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
 -  Office 365 Dedicated (D)
--  SharePoint 2013 on-premises
+-  (Not yet tested ) SharePoint 2013 on-premises
 
 ### Prerequisites ###
 - It's important that the provider hosted add-in that's running the taxonomy picker is using the same IE security zone as the SharePoint site it's installed on. If you get "Sorry we had trouble accessing your site" errors then please check this.
@@ -50,11 +51,10 @@ The Taxonomy Picker is implemented as a jQuery extension, which means it require
 ![Screenshot of script tag](http://i.imgur.com/McOXD0Y.png "Screenshot of BundleConfig tags")
  
 ## Loading required scripts ##
-The JavaScript below shows how to initialize the TaxonomyPicker, note that there is no JSOM required, this is taken from the App.js file in the scripts folder:  
+The html is taken from the TaxonomyPickerDemo.cshtml file:  
 
 ```cshtml
-
-
+@Scripts.Render("~/bundles/taxpicker")
 ```
 
 ## Using the TaxonomyPicker in your ViewModel ##
@@ -63,8 +63,8 @@ Included in this sample there is a custom EditorTemplate for the Taxonomypicker,
 ### C# Example ###
 
 ```c#	
-	[UIHint("TaxonomyPicker")]
-	public List<PickerTermModel> Demo { get; set; }
+[UIHint("TaxonomyPicker")]
+public List<PickerTermModel> Demo { get; set; }
 ```
 
 ## Adding the taxonomy picker to html ##
@@ -78,10 +78,10 @@ Now you can simply render it in your .cshtml with an EditorFor
 ### Wire up the TaxonomyPicker control ###
 The Taxonomy Picker is implemented as a jQuery extension, which makes it extremely easy to wire-up on the control (by default the EditorTemplate builds around the PropertyName and the adds the other components with id's based on that name).
 So if the property is named Demo the hidden input will have the id Demo and the control will have the id DemoControl,
-Oposite to the Core.TaxonomyPicker we will initialize the surronding countrol inst of the hidden input, thus:
+Oposite to the Core.TaxonomyPicker we will initialize the surronding countrol instead of the hidden input:
 
 ```javascript
-  $('#DemoControl').taxpicker({ isMulti: false, allowFillIn: true, termSetId: 'f9a12d1b-7c94-467e-8687-70794a83211f', termSetImageUrl: '/Content/Images'});
+ $('#DemoControl').taxpicker({ isMulti: false, allowFillIn: true, termSetId: 'f9a12d1b-7c94-467e-8687-70794a83211f', termSetImageUrl: '/Content/Images'});
 ```
 
 ### Parameters ###
