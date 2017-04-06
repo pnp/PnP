@@ -52,37 +52,9 @@ The Taxonomy Picker is implemented as a jQuery extension, which means it require
 ## Loading required scripts ##
 The JavaScript below shows how to initialize the TaxonomyPicker, note that there is no JSOM required, this is taken from the App.js file in the scripts folder:  
 
-```javascript
-//Wait for the page to load
-var taxPickerIndex = {};
-(function ($) {
-    $(document).ready(function () {
-        //Initiate taxpicker 
-        $('#DemoControl').taxpicker({ isMulti: false, allowFillIn: true, termSetId: 'f9a12d1b-7c94-467e-8687-70794a83211f', termSetImageUrl: '/Content/Images'});
-
-        $('#Demo1Control').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: 'f9a12d1b-7c94-467e-8687-70794a83211f', levelToShowTerms: 1, termSetImageUrl: '/Content/Images' }, function () {
-            $('#Demo2Control').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: 'f9a12d1b-7c94-467e-8687-70794a83211f', filterTermId: this._selectedTerms[0].Id, levelToShowTerms: 2, useTermSetasRootNode: false, termSetImageUrl: '/Content/Images' }, function () {
-                $('#Demo3Control').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: 'f9a12d1b-7c94-467e-8687-70794a83211f', filterTermId: this._selectedTerms[0].Id, levelToShowTerms: 3, useTermSetasRootNode: false, termSetImageUrl: '/Content/Images' });
-            });
-        });
-        taxPickerIndex["#Demo1Control"] = 0;
-        taxPickerIndex["#Demo2Control"] = 4;
-        taxPickerIndex["#Demo3Control"] = 5;
-    });
-
-}(jQuery));
+```cshtml
 
 
-//function to get a parameter value by a specific key, used by taxonomypickercontrol.js
-function getQueryStringParameter(urlParameterKey) {
-    var params = document.URL.split('?')[1].split('&');
-    var strParams = '';
-    for (var i = 0; i < params.length; i = i + 1) {
-        var singleParam = params[i].split('=');
-        if (singleParam[0] == urlParameterKey)
-            return singleParam[1];
-    }
-}
 ```
 
 ## Using the TaxonomyPicker in your ViewModel ##
@@ -113,65 +85,23 @@ Oposite to the Core.TaxonomyPicker we will initialize the surronding countrol in
 ```
 
 ### Parameters ###
-The first parameter of the Taxonomy Picker sets the options for the control. The properties that can be set include (not changed from the original):
-
-| Parameter | Description |
-| ----------|-------------|
-| isMulti | Boolean indicating if taxonomy picker support multiple value |
-| isReadOnly | Boolean indicating if the taxonomy picker is rendered in read only mode |
-| allowFillIn | Boolean indicating if the control allows fill=ins (Open TermSets only) |
-| enterFillIn | Boolean indicating if the control allows fill=ins using enter or tab instead the button (Open TermSets only) |
-| termSetId | the GUID of the TermSet to bind against (available from Term Mgmt) |
-| useHashtags | Boolean indicating if the default hashtags TermSet should be used |
-| useKeyword | Boolean indicating if the default keywords TermSet should be used |
-| maxSuggestions | integer for the max number of suggestions to list (defaults is 10) |
-| lcid | the locale ID for creating terms (default is 1033) |
-| language | the language code for the control (defaults to en=us) context. |
-| useContainsSuggestions | optional boolean indicating if the suggestions should search with "contains" matching (default pattern is "starts with") |
-
-
-## Sample implementations ##
-
-```javascript
-//Single-select open termset field
-$('#taxPickerOpenSingle').taxpicker({ 
- isMulti: false,
- allowFillIn: true,
- termSetId: 'ac8b3d2f-37e9-4f75-8f67-6fb8f8bfb39b' });
-```
-
-```javascript
-//Multi-select closed termset field
-$('#taxPickerClosedMulti').taxpicker({ 
- isMulti: true,
- allowFillIn: false,
- termSetId: '1c4da890-60c8-4b91-ad3a-cf79ebe1281a' });
-```
-
-```javascript
-//Use default Hashtags termset and limit the suggestions to 5
-$('#taxPickerHashtags').taxpicker({ 
- isMulti: true,
- allowFillIn: true,
- useHashtags: true,
- maxSuggestions: 5 });
-```
-
-```javascript
-//Use default keywords termset with a locale id of 1031 and German
-$('#taxPickerKeywords').taxpicker({ 
- isMulti: true,
- allowFillIn: true,
- useKeywords: true,
- lcid: 1031,
- language: 'de-de' });
-```
+Same as Core.TaxonomyPicker
 
 ## Working with the Controller ##
 The sample project includes a TaxonomyPickerService.cs file, containing methods to help retriving TermSet and Terms, adding and deleting terms(deleting is not actually implemented yet in the taxonomypickercontrol.js). 
 In the HomeController you can see these methods implemented, for the TaxonomyPicker to work these ActionResults method names must correspond with the methods being called via jQuery.ajax in the taxonomypickercontrol.js (i.e copy paste ftw):
 
-```javascript#
+```c#
+//POST method for retriving termset and all it´s terms as a TermSetQueryModel
+[HttpPost]
+[SharePointContextFilter]
+public ActionResult GetTaxonomyPickerData(TermSetQueryModel model)
+{
+    return Json(TaxonomyPickerService.GetTaxonomyPickerData(model), JsonRequestBehavior.AllowGet);
+}
+````
+
+```javascript
 //The following code shows how to call the GetTaxonomyPickerData method from inside taxonomypickercontrol.js
 var parent = this;
 $.ajax({
@@ -193,15 +123,15 @@ $.ajax({
     }
 });
 ```
-As you may notice you are creating a data object that represents the TermQueryModel wich the method GetTaxonomyPickerData takes in as a parameter (Razor will hook that up for you transforming you object into your model):
+As you may notice you are creating a data object that represents the TermSetQueryModel wich the method GetTaxonomyPickerData takes in as a parameter (Razor will hook that up for you transforming you object into your model):
 
 ```c#
-public class TermQueryModel
-{
-    public string Name { get; set; }
-    public string Id { get; set; }
-    public string TermSetId { get; set; }     
-    public string ParentTermId { get; set; }
+public class TermSetQueryModel
+{       
+    public string Id { get; set; }  
+    public string Name { get; set; }     
+    public bool UseKeywords { get; set; }
+    public bool UseHashtags { get; set; }
     public int LCID { get; set; }
 }
 ```

@@ -75,11 +75,7 @@ namespace MVCTaxonomyPickerWeb.Controllers
         [SharePointContextFilter]
         public ActionResult TaxonomyPickerDemo()
         {
-            var model = new DemoViewModel()
-            {
-                Demo = new List<PickerTermModel>()
-            };
-
+            var model = new DemoViewModel();            
             return View(model);
         }
 
