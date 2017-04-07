@@ -249,3 +249,4 @@ And properly define them in the aspx page:
 </div>
 @Scripts.Render("~/bundles/taxpicker")
 ```
+<img src="https://telemetry.sharepointpnp.com/pnp/samples/ECM.MVCTaxonomyPicker" />
