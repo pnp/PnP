@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCTaxonomyPicker", "MVCTaxonomyPicker\MVCTaxonomyPicker.csproj", "{9A8CFB98-0286-4268-A874-15AB4623A001}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVCTaxonomyPickerWeb", "MVCTaxonomyPickerWeb\MVCTaxonomyPickerWeb.csproj", "{14F0B43C-6DC0-48E6-A92D-99270C4F3FB2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{1156AD54-54E2-435B-84B0-ABE0EB61DA15}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9A8CFB98-0286-4268-A874-15AB4623A001}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A8CFB98-0286-4268-A874-15AB4623A001}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A8CFB98-0286-4268-A874-15AB4623A001}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{9A8CFB98-0286-4268-A874-15AB4623A001}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A8CFB98-0286-4268-A874-15AB4623A001}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A8CFB98-0286-4268-A874-15AB4623A001}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{14F0B43C-6DC0-48E6-A92D-99270C4F3FB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14F0B43C-6DC0-48E6-A92D-99270C4F3FB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14F0B43C-6DC0-48E6-A92D-99270C4F3FB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14F0B43C-6DC0-48E6-A92D-99270C4F3FB2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
