@@ -12,7 +12,7 @@
             required = "true";
         }
     }
-    var inputValue = JsonHelper.Serialize<List<PickerTermModel>>(Model);
+    var inputValue = Model != null ? JsonHelper.Serialize<List<PickerTermModel>>(Model) : string.Empty;
 }
 
 <div id="@string.Format("{0}{1}", ViewData.ModelMetadata.PropertyName, "Control")" class="cam-taxpicker">
