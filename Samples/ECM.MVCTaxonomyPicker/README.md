@@ -81,7 +81,26 @@ So if the property is named Demo the hidden input will have the id Demo and the 
 Oposite to the Core.TaxonomyPicker we will initialize the surronding countrol instead of the hidden input:
 
 ```cshtml
+@{
+    var requiredMsg = "";
+    var required = "false";
+    IEnumerable<ModelClientValidationRule> clientRules = ModelValidatorProviders.Providers.GetValidators(ViewData.ModelMetadata, ViewContext).SelectMany(v => v.GetClientValidationRules());
+    foreach (ModelClientValidationRule rule in clientRules)
+    {
+        if (rule.ValidationType == "required")
+        {
+            requiredMsg = rule.ErrorMessage;
+            required = "true";
+        }
+    }
+}
 
+<div id="@string.Format("{0}{1}", ViewData.ModelMetadata.PropertyName, "Control")" class="cam-taxpicker">
+    <div id="@string.Format("{0}{1}", ViewData.ModelMetadata.PropertyName, "Editor")" class="cam-taxpicker-editor" contenteditable="true"></div>
+    <div id="@string.Format("{0}{1}", ViewData.ModelMetadata.PropertyName, "Button")" class="cam-taxpicker-button"></div>   
+    <input data-val="@required" data-val-required="@requiredMsg" id="@ViewData.ModelMetadata.PropertyName" name="@ViewData.ModelMetadata.PropertyName" type="hidden" value="">   
+</div>
+<div id="@string.Format("{0}{1}", ViewData.ModelMetadata.PropertyName, "Suggestions")" class="cam-taxpicker-suggestion-container"></div>
 ```
 
 ```javascript
