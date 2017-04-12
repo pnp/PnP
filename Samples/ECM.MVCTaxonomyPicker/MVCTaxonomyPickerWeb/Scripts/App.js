@@ -12,6 +12,7 @@
         });
         taxPickerIndex["Demo2Control"] = 2;
         taxPickerIndex["Demo3Control"] = 3;
+
         $.validator.setDefaults({ ignore: null });
 
         $('#btnSubmit').on('click', function (evt) {
