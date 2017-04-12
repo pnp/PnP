@@ -203,7 +203,7 @@
     <Compile Include="Services\TaxonomyPickerService.cs" />
     <Compile Include="SharePointContext.cs" />
     <Compile Include="TokenHelper.cs" />
-    <Compile Include="ViewModels\DemoViewModel.cs" />
+    <Compile Include="Models\DemoModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
