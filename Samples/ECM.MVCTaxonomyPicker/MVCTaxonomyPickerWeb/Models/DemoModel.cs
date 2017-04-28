@@ -6,10 +6,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace MVCTaxonomyPickerWeb.ViewModels
+namespace MVCTaxonomyPickerWeb.Models
 {
-    public class DemoViewModel
-    {
+    public class DemoModel
+    { 
         [DisplayName("Demo"),
          Required(ErrorMessage = "Demo3 is required")]
         [UIHint("TaxonomyPicker")]

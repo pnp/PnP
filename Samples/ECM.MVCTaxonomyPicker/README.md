@@ -80,6 +80,29 @@ The Taxonomy Picker is implemented as a jQuery extension, which makes it extreme
 So if the property is named Demo the hidden input will have the id Demo and the control will have the id DemoControl,
 Oposite to the Core.TaxonomyPicker we will initialize the surronding countrol instead of the hidden input:
 
+```cshtml
+@{
+    var requiredMsg = "";
+    var required = "false";
+    IEnumerable<ModelClientValidationRule> clientRules = ModelValidatorProviders.Providers.GetValidators(ViewData.ModelMetadata, ViewContext).SelectMany(v => v.GetClientValidationRules());
+    foreach (ModelClientValidationRule rule in clientRules)
+    {
+        if (rule.ValidationType == "required")
+        {
+            requiredMsg = rule.ErrorMessage;
+            required = "true";
+        }
+    }
+}
+
+<div id="@string.Format("{0}{1}", ViewData.ModelMetadata.PropertyName, "Control")" class="cam-taxpicker">
+    <div id="@string.Format("{0}{1}", ViewData.ModelMetadata.PropertyName, "Editor")" class="cam-taxpicker-editor" contenteditable="true"></div>
+    <div id="@string.Format("{0}{1}", ViewData.ModelMetadata.PropertyName, "Button")" class="cam-taxpicker-button"></div>   
+    <input data-val="@required" data-val-required="@requiredMsg" id="@ViewData.ModelMetadata.PropertyName" name="@ViewData.ModelMetadata.PropertyName" type="hidden" value="">   
+</div>
+<div id="@string.Format("{0}{1}", ViewData.ModelMetadata.PropertyName, "Suggestions")" class="cam-taxpicker-suggestion-container"></div>
+```
+
 ```javascript
  $('#DemoControl').taxpicker({ isMulti: false, allowFillIn: true, termSetId: 'f9a12d1b-7c94-467e-8687-70794a83211f', termSetImageUrl: '/Content/Images'});
 ```
@@ -102,7 +125,7 @@ public ActionResult GetTaxonomyPickerData(TermSetQueryModel model)
 ````
 
 ```javascript
-//The following code shows how to call the GetTaxonomyPickerData method from inside taxonomypickercontrol.js
+//The following code shows how to call the GetTaxonomyPickerData method from taxonomypickercontrol.js
 var parent = this;
 $.ajax({
     url: '/Home/GetTaxonomyPickerData?SPHostUrl=' + decodeURIComponent(getQueryStringParameter('SPHostUrl')),
@@ -140,7 +163,7 @@ public class TermSetQueryModel
 The Taxonomy Picker will store the selected terms in the hidden field using JSON string format. Access this data just use jQuery to geth the value and create a new object representing your ViewModel and convert the value from the hidden field into JSON and it will be translated into a List``<PickerTermModel>``() in your Controller:
 
 ```javascript#
-//The following code shows how to call the GetTaxonomyPickerData method from inside taxonomypickercontrol.js
+//The following code shows how to call the GetTaxonomyPickerHiddenValue method from App.js
 var spHostUrl = decodeURIComponent(getQueryStringParameter('SPHostUrl'));
 
  $('#btnSubmit').on('click', function () {            
@@ -178,18 +201,17 @@ Find out the GUID of the Term Set to bind (using Site Settings --> Term Store Ma
 
 ```javascript#
 $('#Demo1Control').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: 'f9a12d1b-7c94-467e-8687-70794a83211f', levelToShowTerms: 1, termSetImageUrl: '/Content/Images' }, function () {
-    $('#Demo2Control').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: 'f9a12d1b-7c94-467e-8687-70794a83211f', filterTermId: this._selectedTerms[0].Id, levelToShowTerms: 2, useTermSetasRootNode: false, termSetImageUrl: '/Content/Images' }, function () {
-        $('#Demo3Control').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: 'f9a12d1b-7c94-467e-8687-70794a83211f', filterTermId: this._selectedTerms[0].Id, levelToShowTerms: 3, useTermSetasRootNode: false, termSetImageUrl: '/Content/Images' });
+    $('#Demo2Control').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: 'f9a12d1b-7c94-467e-8687-70794a83211f', filterTermId: this._selectedTerms[0].Id, levelToShowTerms: 2, useTermSetasRootNode: false, termSetImageUrl: '/Content/Images', taxPickerIndex: 2 }, function () {
+        $('#Demo3Control').taxpicker({ isMulti: false, allowFillIn: false, useKeywords: false, termSetId: 'f9a12d1b-7c94-467e-8687-70794a83211f', filterTermId: this._selectedTerms[0].Id, levelToShowTerms: 3, useTermSetasRootNode: false, termSetImageUrl: '/Content/Images', taxPickerIndex: 3 });
     });
 });
-taxPickerIndex["#Demo1Control"] = 0;
-taxPickerIndex["#Demo2Control"] = 4;
-taxPickerIndex["#Demo3Control"] = 5;
+taxPickerIndex["Demo2Control"] = 2;
+taxPickerIndex["Demo3Control"] = 3;
 ```
 
 And properly define them in the aspx page:
 ```cshtml
-@model Core.ProviderHostedTaxonomyPickerWeb.ViewModels.DemoViewModel
+@model MVCTaxonomyPickerWeb.Models.DemoModel
 
 @{
     ViewBag.Title = "TaxonomyPickerDemo";

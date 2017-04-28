@@ -12,10 +12,11 @@
   </Properties>
 
   <AppPrincipal>
-    <RemoteWebApplication ClientId="*" />
+    <RemoteWebApplication ClientId="b2e74c86-cc66-497c-a0ce-514c47aad09b" />
   </AppPrincipal>
   <AppPermissionRequests AllowAppOnlyPolicy="true">    
     <AppPermissionRequest Scope="http://sharepoint/social/tenant" Right="Read" />
     <AppPermissionRequest Scope="http://sharepoint/taxonomy" Right="Write" />
+    <AppPermissionRequest Scope="http://sharepoint/content/tenant" Right="FullControl" />
   </AppPermissionRequests>
 </App>
