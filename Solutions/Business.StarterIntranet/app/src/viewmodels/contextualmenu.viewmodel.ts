@@ -31,8 +31,8 @@ export class ContextualMenuViewModel extends NavigationViewModel {
 
             let iconElt = $("[data-target='#" + event.target.id + "']").find("i");
             if (iconElt) {
-                iconElt.removeClass("ms-Icon--chevronUp");
-                iconElt.addClass("ms-Icon--chevronDown");
+                iconElt.removeClass("fa-angle-up");
+                iconElt.addClass("fa-angle-down");
             }
         });
 
@@ -43,8 +43,8 @@ export class ContextualMenuViewModel extends NavigationViewModel {
             // Get the parent with the data-target attribute equals to my id.
             let iconElt = $("[data-target='#" + event.target.id + "']").find("i");
             if (iconElt) {
-                iconElt.removeClass("ms-Icon--chevronDown");
-                iconElt.addClass("ms-Icon--chevronUp");
+                iconElt.removeClass("fa-angle-down");
+                iconElt.addClass("fa-angle-up");
             }
         });
 
@@ -76,7 +76,7 @@ export class ContextualMenuViewModel extends NavigationViewModel {
                         if (currentNode.ParentId !== null) {
 
 
-                            let parentNode = this.utilityModule.getNodeByTermId(navigationTree, new SP.Guid(currentNode.ParentId));
+                            let parentNode = this.utilityModule.getNodeByTermId(navigationTree, currentNode.ParentId);
 
                             // Set the parent section
                             this.parentSection(parentNode);
@@ -102,7 +102,7 @@ export class ContextualMenuViewModel extends NavigationViewModel {
 
                     if (currentNode !== undefined) {
 
-                        this.setCurrentNode(new SP.Guid(currentNode.Id));
+                        this.setCurrentNode(currentNode.Id);
                     }
 
             }).catch((errorMesssage) => {

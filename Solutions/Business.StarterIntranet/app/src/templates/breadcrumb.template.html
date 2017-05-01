@@ -1,11 +1,8 @@
-<div id="breadcrumb">
+<div id="breadcrumb-nav">
     <!-- ko if: isEmptyNodes -->
-        <div class="ms-MessageBar warning-msg">
-            <div class="ms-MessageBar-content">
-                <div class="ms-MessageBar-icon"><i class="ms-Icon ms-Icon--infoCircle"></i></div>
-                <div class="ms-MessageBar-text" data-bind="text: errorMessage">              
-                </div>
-            </div>
+        <div id="message" class="bg-warning">
+            <i class="fa fa-info-circle text-warning" aria-hidden="true"></i>
+            <div data-bind="text: errorMessage"></div>              
         </div>
     <!-- /ko -->
     <!-- ko if: nodes().length > 0 -->
@@ -14,19 +11,19 @@
                 <!-- ko if: hasParent -->
                 <li>
                     <a href="#" class="chevron">
-                        <i class="ms-Icon ms-Icon--chevronRight"></i>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
                 </li>
                 <!-- /ko -->  
                 <!-- ko ifnot: hasParent -->       
                 <li data-bind="css : { 'is-selected' : isCurrentNode }">
                     <a style="text-decoration: none;padding-left: 0px" data-bind="attr: {href: $parent.siteServerRelativeUrl }">
-                        <i class="ms-Icon ms-Icon--home"></i>
+                        <i class="fa fa-home" aria-hidden="true"></i>
                     </a>  
                 </li> 
                 <li>
                     <a href="#" class="chevron">
-                        <i class="ms-Icon ms-Icon--chevronRight"></i>
+                        <i class="fa fa-angle-right" aria-hidden="true"></i>
                     </a>
                 </li>
                 <!-- /ko -->

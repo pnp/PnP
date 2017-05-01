@@ -13,33 +13,6 @@
 </xml><![endif]-->
 </head>
 <body>
-    <script>
-    if(Flighting.VariantConfiguration.IsExpFeatureClientEnabled(4))
-    {
-
-        SP.SOD.executeFunc(
-            'followingcommon.js',
-            'PrepareYammerEnvironment',
-            function() {
-                PrepareYammerEnvironment(null);
-            });
-
-        window.SearchHovercardPostToYammer = function(messageOrUrlToPost)
-        {
-            var postToYammerFunc = function() { PostToYammer(messageOrUrlToPost, HP.postActionEventName); };
-            if(Srch.U.n(PostToYammer))
-            {
-
-                SP.SOD.executeFunc('followingcommon.js', 'PostToYammer', postToYammerFunc);
-            }
-            else
-            {
-
-                postToYammerFunc();
-            }
-        };
-    }
-    </script>
     <div id="Item_CommonHoverPanel_Actions">
 <!--#_	
         var id = ctx.CurrentItem.id;   
@@ -59,8 +32,7 @@
                 editTitle = Intranet.Main.getResource('hp_Edit');
                 editText = Intranet.Main.getResource('hp_Edit');
             }
-            else if (!Srch.U.e(ctx.CurrentItem.ServerRedirectedURL) && !ctx.CurrentItem.IsContainer && 
-                     !ctx.CurrentItem.csr_ForceOpenLink)
+            else if (!Srch.U.e(ctx.CurrentItem.ServerRedirectedURL) && !ctx.CurrentItem.IsContainer)
             {
                 editId = id + HP.ids.openClient;
                 editTitle = Intranet.Main.getResource('hp_Tooltip_OpenInClient');
@@ -68,48 +40,16 @@
             }
 
             var editHmtl = String.format('<a clicktype="ActionEdit" id="{0}" class="ms-calloutLink ms-uppercase" href="{1}" title="{2}" {3}>{4}</a>', 
-                                            $htmlEncode(editId), $urlHtmlEncodeString(ctx.CurrentItem.Path), $htmlEncode(editTitle), appAttribs, $htmlEncode(editText));
+                                            $htmlEncode(editId), $urlHtmlEncode(ctx.CurrentItem.Path), $htmlEncode(editTitle), appAttribs, $htmlEncode(editText));
 _#-->				
             <div class="ms-srch-hover-action">        
                 _#= editHmtl =#_                   
             </div>
 <!--#_
         }
-
-        var hasYammerPostCapability = (Flighting.VariantConfiguration.IsExpFeatureClientEnabled(4) &&
-            !Srch.U.n(SP) &&
-            !Srch.U.n(SP.YammerSwitch) &&
-            SP.YammerSwitch.IsEnabled);
-
-        var isOfficeDoc = (!Srch.U.n(ctx.currentItem_IsOfficeDocument) &&
-            ctx.currentItem_IsOfficeDocument);
-
-        var isPostableDoc = isOfficeDoc || (!Srch.U.n(ctx.currentItem_ShowPostToYammer) &&
-            ctx.currentItem_ShowPostToYammer);
-
-        if (hasYammerPostCapability &&
-            isPostableDoc)
-        {
-            var forceGotoWACUrl = isOfficeDoc;
-            if(ctx.ScriptApplicationManager && ctx.ScriptApplicationManager.states){
-
-                forceGotoWACUrl = (forceGotoWACUrl && !ctx.ScriptApplicationManager.states.openDocumentsInClient);
-            }
-
-            var bestUrl = SP.Utilities.HttpUtility.urlPathEncode(ctx.CurrentItem.Path) + (forceGotoWACUrl ? "?Web=1" : "");;
-
-            var urlForHrefClickAttrib = $htmlEncode(encodeURIComponent(bestUrl));
-_#-->
-            <div class="ms-srch-hover-action">
-                <a id="_#= $htmlEncode(id + HP.ids.post) =#_" class="ms-calloutLink ms-uppercase" href="javascript:SearchHovercardPostToYammer('_#= urlForHrefClickAttrib =#_');" title="_#= $htmlEncode(Intranet.Main.getResource('hp_Tooltip_Post')) =#_">
-                    _#= $htmlEncode(Intranet.Main.getResource('hp_Post')) =#_
-                </a>
-            </div>
-<!--#_
-        }
-        else if (!Srch.U.isSPFSKU() && ctx.CurrentItem.csr_ShowFollowLink && !$isEmptyString(ctx.CurrentItem.Path) && window.IsSPSocialSwitchEnabled && IsSPSocialSwitchEnabled()){
+        if (!Srch.U.isSPFSKU() && ctx.CurrentItem.csr_ShowFollowLink && !$isEmptyString(ctx.CurrentItem.Path)){
             var isDoc = true;
-            if(!$isNull(ctx.CurrentItem.csr_IsSite) && ctx.CurrentItem.csr_IsSite == true) {
+            if(!$isNull(ctx.CurrentItem.csr_IsSite) && ctx.CurrentItem.csr_IsSite == true){
                 isDoc = false;
             }
 _#-->
@@ -133,7 +73,7 @@ _#-->
         if(!Srch.U.e(ctx.CurrentItem.ParentLink) && ctx.CurrentItem.csr_ShowViewLibrary) {
 _#-->
             <div class="ms-srch-hover-action">
-                <a clicktype="ActionViewLibrary" id="_#= $htmlEncode(id + HP.ids.parentLink) =#_" class="ms-calloutLink ms-uppercase" title="_#= $htmlEncode(Intranet.Main.getResource('hp_Tooltip_ViewLibrary')) =#_" href="_#= $urlHtmlEncodeString(ctx.CurrentItem.ParentLink) =#_">_#= $htmlEncode(Intranet.Main.getResource('hp_ViewLibrary')) =#_</a>
+                <a clicktype="ActionViewLibrary" id="_#= $htmlEncode(id + HP.ids.parentLink) =#_" class="ms-calloutLink ms-uppercase" title="_#= $htmlEncode(Intranet.Main.getResource('hp_Tooltip_ViewLibrary')) =#_" href="_#= $urlHtmlEncode(ctx.CurrentItem.ParentLink) =#_">_#= $htmlEncode(Intranet.Main.getResource('hp_ViewLibrary')) =#_</a>
             </div>
 <!--#_
         }

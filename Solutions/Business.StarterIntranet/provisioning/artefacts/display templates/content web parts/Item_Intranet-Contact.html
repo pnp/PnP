@@ -44,7 +44,7 @@
     _#-->
 
     <div data-bind="stopBinding: true">
-        <div class="display-template">
+        <div class="item-display-template">
             <div id="_#=containerId=#_" class="contact-item _#= altClass =#_">
 
                 <!-- ko with: item -->
@@ -52,7 +52,7 @@
                     <div id="row-1">
 
                         <div class="item-icon">
-                            <i class="ms-Icon ms-Icon--person" aria-hidden="true"></i>
+                            <i class="fa fa-user" aria-hidden="true"></i>
                         </div>
 
                         <div id="contact-fullname" class="item-title">
@@ -81,14 +81,14 @@
                         <div id="contact-infozone1">
                             <!-- ko if: $data.WorkEmail -->
                             <div id="contact-workemail"> 
-                                <i class="ms-Icon ms-Icon--mail" aria-hidden="true"></i>
+                                <i class="fa fa-envelope-o" aria-hidden="true"></i>
                                 <a data-bind="attr: { href: 'mailto:' + WorkEmail }, text: WorkEmail"></a>
                             </div>                        
                             <!-- /ko -->
 
                             <!-- ko if: $data.WorkPhone -->
                             <div id="contact-workphone" >  
-                                <i class="ms-Icon ms-Icon--phone" aria-hidden="true"></i>
+                                <i class="fa fa-phone" aria-hidden="true"></i>
                                 <span data-bind="text: WorkPhone"></span>
                                 <span data-bind="text: '(' + Intranet.Main.getResource('workphone') + ')'"></span>
                             </div>                        
@@ -96,7 +96,7 @@
 
                             <!-- ko if: $data.MobilePhone -->
                             <div id="contact-mobilephone" >  
-                                <i class="ms-Icon ms-Icon--phone" aria-hidden="true"></i>
+                                <i class="fa fa-mobile" aria-hidden="true"></i>
                                 <span data-bind="text: MobilePhone"></span>
                                 <span data-bind="text: '(' + Intranet.Main.getResource('mobilephone') + ')'"></span>
                             </div>                        

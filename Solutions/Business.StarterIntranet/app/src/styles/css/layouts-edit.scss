@@ -1,15 +1,7 @@
 @import 'variables';
 
 /* Important: these styles are only applied in edit mode ! */
-
-#DeltaPlaceHolderMain div[class^="col-"] { // Stack all WebPart zones to avoid headaches with Bootstrap layout in edit mode 
-    float: none;
-    width: 100%;
-}
-
 .page-layout {
-
-    margin-right: 20px; // Give some space to the WebPart editor panel
 
     #contextualmenu, #breadcrumb, #DeltaSiteLogo {
         display: none;
@@ -26,15 +18,32 @@
         padding: 10px;
     }
 
-    #news-layout, #static-page-layout {
-
-        #publishing-start-date {
-            float: left;
-            margin-right: 20px;
-        }
-
-        #publishing-expiration-date {
-            display: inline-block;
-        }
+    #publishing-start-date {
+        float: left;
+        margin-right: 20px;
     }
+
+    #publishing-expiration-date {
+        display: inline-block;
+    }
+
+    /* Fix a bug with the tag icon */
+    .ms-taxonomy .ms-taxonomy-fieldeditor {
+        width: auto!important;
+        
+    }
+
+    .ms-taxonomy-browser-button {
+        padding-top: 5px;
+        padding-left: 5px;
+    }
+}
+
+
+/* Background image on the home page */
+#HomeSlider-wrapper {
+    position: relative;
+    height: auto;
+    width: 100%;
+    top: 0;
 }

@@ -11,8 +11,6 @@ declare var HP;
 export class DefaultDisplayTemplateItemViewModel {
 
     public item: KnockoutObservable<any>;
-    protected summaryLinesCount: number = 3;
-    protected dateFormat: string = "LL";
 
     constructor(currentItem?: any) {
 
@@ -20,14 +18,16 @@ export class DefaultDisplayTemplateItemViewModel {
 
         ko.bindingHandlers.summarize = {
 
-            init: (element, valueAccessor) => {
+            init: (element, valueAccessor, allBindings) => {
 
                 // Get the current value of the current property we're bound to
                 let value = ko.unwrap(valueAccessor());
+                var linesCount = allBindings.get('linesCount') || 1;
+                var tooltip = allBindings.get('tooltip') || false;
 
                 let trunk8Options: Trunk8Options = {
-                    lines: this.summaryLinesCount,
-                    tooltip: false,
+                    lines: linesCount,
+                    tooltip: tooltip,
                 };
 
                 // 1) Output the HTML string without modifications
@@ -62,15 +62,15 @@ export class DefaultDisplayTemplateItemViewModel {
 
         ko.bindingHandlers.formatDateField = {
 
-            init: (element, valueAccessor) => {
+            init: (element, valueAccessor, allBindings) => {
+    
+                var value = ko.unwrap(valueAccessor());
+                var dateFormat = allBindings.get('dateFormat') || 'LL';
 
-                // Get the current value of the current property we're bound to
-                let value = ko.unwrap(valueAccessor());
-
-                let date = moment(value).format(this.dateFormat);
+                let date = moment(value).format(dateFormat);
 
                 $(element).text(date);
-            },
+            }
         };
 
         // This binding handlers is used to avoid applying bindings twice (from the main script for components)

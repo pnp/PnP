@@ -2,15 +2,20 @@
 
 #page-info {
 
+    font-family: $font-primary;
     height: 100%;
 
-    #category, #date {
+    i {
+        color: $page-icon-color;
+    }
+
+    .tag {
         float: left;
         padding-right: 10px;
         margin-bottom: 10px;
     }
 
-    i {
-        color: $page-icon-color;
+    .tag:last-child {
+        clear: right;
     }
 }

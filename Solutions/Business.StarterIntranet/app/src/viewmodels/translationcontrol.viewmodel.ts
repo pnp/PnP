@@ -187,14 +187,14 @@ export class TranslationControlViewModel {
                     if (this.isNewCreation()) {
 
                         msg = sprintf.sprintf(i18n.t("successTranslationCreation"), this.selectedLanguage());
-                        this.messageStatusClass("ms-MessageBar--success");
-                        this.messageStatusIcon("ms-Icon--checkboxCheck");
+                        this.messageStatusClass("bg-success");
+                        this.messageStatusIcon("fa-check text-success");
 
                     } else {
 
                         msg = sprintf.sprintf(i18n.t("existingTranslations"), this.selectedLanguage());
-                        this.messageStatusClass("warning-msg");
-                        this.messageStatusIcon("ms-Icon--infoCircle");
+                        this.messageStatusClass("bg-info");
+                        this.messageStatusIcon("fa-info-circle text-info");
                     }
 
                     this.infoMessage(msg);
@@ -352,8 +352,8 @@ export class TranslationControlViewModel {
 
         this.isError(true);
         this.wait(false);
-        this.messageStatusClass("ms-MessageBar--error");
-        this.messageStatusIcon("ms-Icon ms-Icon--xCircle");
+        this.messageStatusClass("bg-danger");
+        this.messageStatusIcon("fa fa-exclamation text-danger");
         this.infoMessage(error);
     }
 }

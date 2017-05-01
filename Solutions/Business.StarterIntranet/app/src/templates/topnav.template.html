@@ -1,9 +1,8 @@
 <div id="navbar" data-bind="css: {'spinner': wait }">
   <div class="navbar yamm clear">
-    <div class="container">
       <div class="navbar-header">
           <button type="button" data-toggle="collapse" data-target="#navbar-collapse-1" class="navbar-toggle">
-              <i class="ms-Icon ms-Icon--menu ms-font-xl" aria-hidden="true"></i>
+              <i class="fa fa-bars" aria-hidden="true"></i>
           </button>
 
           <div id="call-to-action" class="hidden-md hidden-lg hidden-sm">
@@ -20,9 +19,9 @@
       <div id="navbar-collapse-1" class="navbar-collapse collapse">
         <ul class="nav navbar-nav">
             <!-- ko if: errorMessage  -->   
-              <li >
+              <li>
                 <a>
-                  <i class="ms-Icon ms-Icon--xCircle"></i>
+                  <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
                   <span data-bind="text: errorMessage"></span>
                 </a>
               </li>
@@ -32,14 +31,14 @@
             <li data-bind="css: { dropdown: hasChildren(), right: $data.properties()['align'] === 'right' }">
               <a aria-expanded="true" data-bind="attr: { href: url, 'data-toggle': dataToggle }, css: { 'dropdown-toggle': hasChildren }">                          
                     <span data-bind="text: title"></span>
-                    <i class="ms-Icon ms-Icon--chevronDown" data-bind="visible: hasChildren"></i>
+                    <i class="fa fa-angle-down" data-bind="visible: hasChildren"></i>
               </a>
               <!-- ko if: hasChildren -->
               <ul class="dropdown-menu">
                 <li>
                   <!-- Content container to add padding -->
                   <div class="yamm-content">
-                    <div class="row">
+                    <div class="row-fluid">
                       <!-- ko foreach: children -->
                         <!-- ko ifnot: excludeFromGlobalNavigation() -->
                         <ul class="col-sm-3 list-unstyled">
@@ -68,6 +67,5 @@
           <!-- /ko -->
         </ul>
       </div>
-    </div>
   </div>
 </div>

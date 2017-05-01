@@ -61,7 +61,7 @@ export class BreadcrumbViewModel extends NavigationViewModel {
                         // If there is no 'ParentId', this is a root term
                         while (currentNode.ParentId !== null) {
 
-                            let parentNode = this.utilityModule.getNodeByTermId(data.nodes, new SP.Guid(currentNode.ParentId));
+                            let parentNode = this.utilityModule.getNodeByTermId(data.nodes, currentNode.ParentId);
 
                             breadcrumbNodes.push(parentNode);
                             currentNode = parentNode;
@@ -71,7 +71,7 @@ export class BreadcrumbViewModel extends NavigationViewModel {
 
                         this.initialize(breadcrumbNodes);
 
-                        this.setCurrentNode(new SP.Guid(currentNode.Id));
+                        this.setCurrentNode(currentNode.Id);
 
                     } else {
 

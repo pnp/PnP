@@ -1,5 +1,5 @@
 // ========================================
-// Main Menu Component View Model
+// Header Links Component View Model
 // ========================================
 import { TaxonomyModule } from "../core/taxonomy";
 import { UtilityModule } from "../core/utility";

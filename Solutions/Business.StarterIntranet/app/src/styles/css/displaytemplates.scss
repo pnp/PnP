@@ -1,39 +1,23 @@
 @import 'variables';
 
-.display-template {
-
-    /* Start Common styles (both CSWP & Search Results) */
-    .item-title {
-        font-weight: bold;
-        font-size: 13px;
-        margin-bottom: 5px;
-    }
-
-    .item-image, .item-icon {
-        float:left;
-        margin-right: 10px;        
-    }
-
-    .item-image {
-        width: 100px;
-    }
+.control-display-template {
 
     .all-items-link {
-        text-align: center;
-        padding: 15px;
-        text-decoration: underline;
-    }
-
-    .document-item, .news-item, .page-item, .contact-item  {
-        padding: 10px;
         clear: both;
+        text-align: left;
+        padding: 15px;
+
+        a {
+            text-decoration: underline;
+        }
     }
 
-    .alt {
-        border-bottom: 1px solid $text-color;
-    }   
-    /* End Common styles (both CSWP & Search Results) */
-    
+    .all-items-link.tile {
+        padding-left: 35px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+    }
+
     /* Start Content Search Web Part Styles */
     ul.cbs-List {
         
@@ -99,15 +83,63 @@
     }
     /* End Search Results Styles */ 
 
-    /* Start Refinement Filter Styles */
+    #Refinement {
+        font-family: $font-primary;
+    }
+}
+
+.item-display-template {
+
+    font-family: $font-primary;
+
+    /* Start Common styles (both CSWP & Search Results) */
+    .item-title {
+        font-weight: bold;
+        font-size: 13px;
+        margin-bottom: 5px;
+    }
+
+    .item-image, .item-icon {
+        float:left;
+        margin-right: 10px;        
+    }
+
+    .item-image {
+        width: 100px;
+    }
+
+    .item-excerpt {
+        text-transform: initial;
+        min-height: 50px;
+    }
+
+    .document-item, .news-item, .page-item, .contact-item  {
+        padding: 10px;
+        clear: both;
+    }
+
+    .alt {
+        border-bottom: 1px solid $text-color;
+    }   
+    /* End Common styles (both CSWP & Search Results) */
+
+    /* Start Refinement Item Filter Styles */
     #RefinementName { // Used to display the spinner
         min-width: 30px;
         min-height: 20px;
         display: inline-block;
     }
 
+    #RefinementCount {
+        color: $primary-color;
+    }
+
     .ms-ref-refinername, .ms-ref-refinername:hover, .ms-ref-refinername:link {
-        font-size: 14px;
+        font-size: inherit
+    }
+
+    .ms-ref-uparrow, .ms-ref-downarrow {
+        margin-top: auto;
     }
 
     /* Slide bar graph refinement colors */
@@ -134,11 +166,15 @@
         color: $navbar-l2-link-color-hover;
     }       
     /* End Refinement Filter Styles */
-
+    
     /* News Item Styles (CSWP & Search Results) */
     .news-item {
 
         min-height: 130px;
+
+        img {
+            border-radius: 5px;
+        }
 
         img.no-image {
             background-image: url(./images/default_image.png);
@@ -147,12 +183,17 @@
             width: 100%;
             height: 100px;
         }
+
+        .tile {
+            height: 130px;
+            padding: 10px;
+        }
     }
 
     /* Document Item Styles */
     .document-item {
         
-        .item-download {
+        .item-download, .item-library {
             float: left;
             margin-left: 10px;
         }
@@ -167,6 +208,7 @@
     }
 
     .contact-item {
+
         #contact-fullname {
             float: left;
         }
@@ -192,6 +234,82 @@
         #row-2 {
             clear: both;
             overflow: hidden;
+        }
+    }
+
+    .event-item {
+
+        clear: both;
+        width: 100%;
+        display: inline-block;
+        padding: 15px;
+        border-bottom: 1px solid #e0e0e0;
+
+        p {
+            margin: 0;
+        }
+
+        .event-dates {
+
+            float: left;
+            display: block;
+            margin-right: 15px;
+            min-height: 50px;
+          
+            i.arrow {
+                float: left;
+                margin-top: 23px;
+                margin-left: 2px;
+                margin-right: 2px;
+            }
+        }
+
+        .event-date {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .event-infos {
+            display: block;
+            min-width: 160px;
+            margin-left: 100px;
+
+            i {
+                float: left;
+                margin-right: 5px;
+            }
+
+            .event-summary {
+                padding: 3px 0 0;
+            }
+        }
+
+        .date-box {
+            width: 36px;
+            float: left;
+            
+            .month {
+                color: #FFF;
+                box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+                display: block;
+                font-style: normal;
+                font-weight: normal;
+                text-align: center;
+                text-transform: uppercase;
+                height: 23px;
+                line-height: 23px;
+                background-color: #a82d28;
+            }
+
+            .day {
+                display: block;
+                font-style: normal;
+                font-weight: normal;
+                text-align: center;
+                text-transform: uppercase;
+                height: 23px;
+                line-height: 23px;
+                background: #f9f9f9;
+            }
         }
     }
 }

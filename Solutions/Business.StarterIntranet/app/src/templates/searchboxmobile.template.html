@@ -1,20 +1,20 @@
 <div id="searchbox-mobile">
 
     <button type="button" data-bind="click: toggleSearchBox, style: { float: displaySearchBox() ? 'right' : 'inherit' }">
-        <i class="ms-Icon ms-font-xl" aria-hidden="true" data-bind="css: { 'ms-Icon--x': displaySearchBox,'ms-Icon--search': !displaySearchBox() }"></i>
+        <i class="fa fa-lg" aria-hidden="true" data-bind="css: { 'fa-times': displaySearchBox,'fa-search': !displaySearchBox() }"></i>
     </button>
-
     <!-- ko if: displaySearchBox -->
 
         <!-- ko if: isError -->
             <button type="button" class="error" aria-haspopup="true" aria-expanded="false">
-                <i class="ms-Icon ms-font-l ms-Icon--exclamation" aria-hidden="true"></i>
+                <i class="fa fa-exclamation fa-lg" aria-hidden="true"></i>
             </button>
         <!-- /ko -->
 
+
         <!-- ko ifnot: isError -->
             <button type="button" data-bind="click: toggleCategory">
-                <i class="ms-Icon ms-font-l" aria-hidden="true" data-bind="css: selectedCategory().iconClass"></i>
+                <i class="fa fa-lg" aria-hidden="true" data-bind="css: selectedCategory().iconClass"></i>
             </button>
         <!-- /ko -->
 

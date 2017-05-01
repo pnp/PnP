@@ -25,15 +25,15 @@ export class PageInfoViewModel {
 
         ko.bindingHandlers.formatDateField = {
 
-            init: (element, valueAccessor) => {
+            init: (element, valueAccessor, allBindings) => {
+    
+                var value = ko.unwrap(valueAccessor());
+                var dateFormat = allBindings.get('dateFormat') || 'LL';
 
-                // Get the current value of the current property we"re bound to
-                let value = ko.unwrap(valueAccessor());
-
-                let date = moment(value).format("LL");
+                let date = moment(value).format(dateFormat);
 
                 $(element).text(date);
-            },
+            }
         };
 
         // Note 1: Be careful, there is a bug with GET REST API for taxonomy fields when they have only a single value (i.e the Label property is not correct)

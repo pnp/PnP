@@ -36,13 +36,13 @@ _#-->
         <div>
             <div class="ms-srch-hover-close">
                 <a href="javascript:HP.Close()" id="_#= $htmlEncode(id + HP.ids.close) =#_" title="_#= $htmlEncode(Intranet.Main.getResource('hp_Tooltip_Close')) =#_">
-                    <img class="js-callout-closeButtonImage" src="_#= $urlHtmlEncodeString(GetThemedImageUrl('spcommon.png')) =#_" alt="_#= $htmlEncode(Intranet.Main.getResource('hp_Tooltip_Close')) =#_" />
+                    <img class="js-callout-closeButtonImage" src="_#= $urlHtmlEncode(GetThemedImageUrl('spcommon.png')) =#_" alt="_#= $htmlEncode(Intranet.Main.getResource('hp_Tooltip_Close')) =#_" />
                 </a>
             </div>
 <!--#_
             if (showFileIcon) {
 _#-->
-                <img class="ms-srch-item-icon ms-positionRelative" id="_#= $htmlEncode(id + Srch.U.Ids.icon) =#_" onload="this.style.display='inline';this.style.bottom='-5px'" src="_#= $urlHtmlEncodeString(Srch.U.getIconUrlByFileExtension(ctx.CurrentItem)) =#_" />
+                <img class="ms-srch-item-icon ms-positionRelative" id="_#= $htmlEncode(id + Srch.U.Ids.icon) =#_" onload="this.style.display='inline';this.style.bottom='-5px'" src="_#= $urlHtmlEncode(Srch.U.getIconUrlByFileExtension(ctx.CurrentItem)) =#_" />
 <!--#_
             }	
 			if(!$isNull(ctx.CurrentItem.ViewsLifeTime)) {
