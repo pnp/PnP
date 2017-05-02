@@ -60,8 +60,6 @@
     "knockout": "3.4.2",
     "knockout-mapping": "2.6.0",
     "moment": "2.18.1",
-    "node-fetch": "1.6.3",
-    "office-ui-fabric": "2.6.3",
     "pubsub-js": "1.5.6",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",

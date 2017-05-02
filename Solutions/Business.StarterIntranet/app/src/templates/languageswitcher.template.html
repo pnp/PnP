@@ -5,9 +5,11 @@
         <!-- ko foreach: availableLanguages -->
             <li>
                 <!-- ko if: isCurrentLanguage -->
+                    <i class="flag" data-bind="css: flagCssClass"></i>
                     <span data-bind="text: label" class="is-selected"></span>
                  <!-- /ko -->
                  <!-- ko ifnot: isCurrentLanguage -->
+                    <i class="flag" data-bind="css: flagCssClass"></i>            
                     <!-- ko if: isValidTranslation -->
                         <a data-bind="attr: { href:url }, text: label"></a>
                     <!-- /ko -->

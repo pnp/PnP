@@ -25,8 +25,11 @@
  *          - Only the most recent translation is shown for the "EN" label, in the component.
  *
  * **********************************************/
+declare function require(name: string);
 import * as i18n from "i18next";
 import * as pnp from "sp-pnp-js";
+
+
 
 export class LanguageSwitcherViewModel {
 
@@ -81,6 +84,21 @@ export class LanguageSwitcherViewModel {
 
                     // The label is given by the component parameters
                     languageLink.label(element);
+
+                    // Set the corresponding flag icon CSS class
+                    switch (element) {
+                        case "EN":
+                            languageLink.flagCssClass("gb");
+                            break;
+
+                        case "FR":
+                            languageLink.flagCssClass("fr");
+                            break;
+
+                        default:
+                            languageLink.flagCssClass("");
+                            break;
+                    }
 
                     // This is the current language
                     if (element.localeCompare(currentPageLanguage) === 0) {
@@ -139,6 +157,7 @@ class LanguageLinkViewModel {
     public url: KnockoutObservable<string>;
     public isCurrentLanguage: KnockoutObservable<boolean>;
     public isValidTranslation: KnockoutObservable<boolean>;
+    public flagCssClass: KnockoutObservable<string>;
 
     constructor() {
 
@@ -146,5 +165,6 @@ class LanguageLinkViewModel {
         this.url = ko.observable("");
         this.isCurrentLanguage = ko.observable(false);
         this.isValidTranslation = ko.observable(false);
+        this.flagCssClass = ko.observable("");
     }
 }

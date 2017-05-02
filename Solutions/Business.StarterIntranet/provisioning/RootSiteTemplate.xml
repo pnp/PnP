@@ -8,7 +8,7 @@
   </pnp:Preferences>
   <pnp:Templates ID="CONTAINER-TEMPLATE-PNP-O365-STARTER-INTRANET">
     <pnp:ProvisioningTemplate ID="TEMPLATE-PNP-O365-STARTER-INTRANET" Version="1">
-      <pnp:WebSettings RequestAccessEmail="someone@example.com" Title="IDRC Intranet" NoCrawl="false" WelcomePage="Pages/Home.aspx" SiteLogo="{site}/Style Library/{parameter:CompanyName}/img/logo_intranet.png" AlternateCSS="" MasterPageUrl="{masterpagecatalog}/seattle.master" CustomMasterPageUrl="{masterpagecatalog}/{parameter:CompanyName}/portal.master" />
+      <pnp:WebSettings RequestAccessEmail="someone@example.com" Title="PnP Starter Intranet v1.3" NoCrawl="false" WelcomePage="Pages/Home.aspx" SiteLogo="" AlternateCSS="" MasterPageUrl="{masterpagecatalog}/seattle.master" CustomMasterPageUrl="{masterpagecatalog}/{parameter:CompanyName}/portal.master" />
       <pnp:RegionalSettings AdjustHijriDays="0" AlternateCalendarType="None" CalendarType="Gregorian" Collation="25" FirstDayOfWeek="Sunday" FirstWeekOfYear="0" LocaleId="1033" ShowWeeks="false" Time24="false" TimeZone="10" WorkDayEndHour="5:00PM" WorkDays="62" WorkDayStartHour="8:00AM" />
       <pnp:SupportedUILanguages>
         <pnp:SupportedUILanguage LCID="1033" />    

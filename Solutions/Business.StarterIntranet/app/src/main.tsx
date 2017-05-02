@@ -49,6 +49,7 @@ require("./styles/css/images/logo_intranet.png");
 require("./styles/css/images/spinner.gif");
 require("./styles/css/images/default_image.png");
 require("./styles/css/images/favicon_intranet.ico");
+require("./styles/css/images/flags.png");
 
 // Bootstrap CSS isolation
 require("./styles/css/bootstrap/bootstrap-prefix.less");
@@ -133,6 +134,7 @@ export class Main {
         // Component: "Language Switcher"
         let languageSwitcherTemplate = require("./templates/languageswitcher.template.html");
         require("./styles/css/languageswitcher.scss");
+        require("./styles/css/flags.scss");
         let languageSwitcherComponent = new KnockoutComponent("component-languageswitcher", LanguageSwitcherViewModel, languageSwitcherTemplate);
 
         // Component: "Searchbox"
