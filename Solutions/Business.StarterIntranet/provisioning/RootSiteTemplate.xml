@@ -2077,7 +2077,7 @@
             <pnp:Property Key="ContentTypeId" Value="0x01010007FF3E057FA8AB4AA42FCB67B453FFC100E214EEE741181F4E9F7ACC43278EE811" />
             <pnp:Property Key="MasterPageDescription" Value="Home Page" />
             <pnp:Property Key="Title" Value="Intranet Home Page (2 columns)" />
-            <pnp:Property Key="PublishingAssociatedContentType" Value=";#Static Page;#0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C01;#" />
+            <pnp:Property Key="PublishingAssociatedContentType" Value=";#Welcome Page;#0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF390064DEA0F50FC8C147B0B6EA0636C4A7D4;#" />
           </pnp:Properties>
         </pnp:File>
                                                                
@@ -2264,11 +2264,6 @@
             </pnp:Properties>	
         </pnp:File>
         <!-- End: display templates -->
-
-        <!-- Start: Theme -->
-        <pnp:File Src=".\artefacts\themes\intranet.spcolor" Folder="{themecatalog}/15" Overwrite="true">	
-        </pnp:File>
-        <!-- End: Theme -->
 
       </pnp:Files>
       <pnp:TermGroups>

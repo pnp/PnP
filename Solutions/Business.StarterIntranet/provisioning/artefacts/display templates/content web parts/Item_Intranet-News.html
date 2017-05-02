@@ -58,6 +58,7 @@
 			// Then we move this element at the end of the tile control. Don't forget to add the 'stopBinding: true' binding to avoid multiple Knockout bindings on the same element.   		   
             if(isLastItem) {
             
+                var $ = Intranet.Main.jQuery();
             	var parent = $("#" + containerId).closest("ul");
             	var allItemsLink = $("#" + containerId).children(".all-items-link");
             	allItemsLink.attr('data-bind', 'stopBinding: true');

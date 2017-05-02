@@ -115,6 +115,9 @@ $BindTuningCssFiles | ForEach-Object {
 	Add-PnPFile -Path ($CommandDirectory + "\provisioning\artefacts\css\BindTuning\" + $_) -Folder $TargetFolder -Checkout
 }
 
+# Override Plumsail Localization.js file in the Style Library
+$TargetFolder = "Style Library\$PlumsailFolder\OrgChart"
+Add-PnPFile -Path ($CommandDirectory + "\provisioning\artefacts\js\Plumsail\Localization.js" ) -Folder $TargetFolder -Checkout
 
 # -------------------------------------------------------------------------------------
 # Apply root site template
@@ -155,8 +158,41 @@ $SiteServerRelativeUrl = Get-PnPProperty -ClientObject $Site -Property ServerRel
 $FilesToPublish = @(
 
 	# BindTuning master pages
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$BindTuningFolder/Home_Boxed.master"},
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$BindTuningFolder/Home_Boxed_SideBar.master"},
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$BindTuningFolder/Home_SideBar.master"},
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$BindTuningFolder/Home.master"},
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$BindTuningFolder/FullWidth.master"},
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$BindTuningFolder/FullWidth_SideBar.master"},
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$BindTuningFolder/Boxed.master"},
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$BindTuningFolder/Boxed_SideBar.master"},
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/portal.master"},
-
+	# BindTuning page layouts
+	# Be careful, BT layouts are deployed in the _catalogs/masterpage root folder...
+    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/BodyOnly.BT.aspx"},
+    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPC1Col.aspx"},
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPC2Cols.aspx"},
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPC3Cols.aspx"},
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCHeader.aspx"},
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCHeaderleft-split.aspx"},
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCHeaderright-split.aspx"},
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCHeadersplit.aspx"},	
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCHeaderwithleftsidebar.aspx"},	
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCHeaderwithrightsidebar.aspx"},	
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCLanding2cols.aspx"},
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCLanding3cols.aspx"},	
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCLandingInverted.aspx"},			
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCLandingwithleftsidebar.aspx"},		
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCLandingwithrightsidebar.aspx"},	
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCSidebarleft.aspx"},		
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCSidebarleftwithfeatured.aspx"},	
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCSidebarright.aspx"},	
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCSidebarrightwithfeatured.aspx"},	
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SummaryLinks.BT.aspx"},	
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/WelcomeLinks.BT.aspx"},		
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/WelcomeSplash.BT.aspx"},	
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/BlankWebpartPage.BT.aspx"},			
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCIDRC-home-page.aspx"},			
 	# PnP Starter Solution Files
     [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/EventPageLayout.aspx"},
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/NewsPageLayout.aspx"},
@@ -201,17 +237,6 @@ Get-PnPListItem -List Pages | ForEach-Object {
     $_["_ModerationStatus"] = 0
     $_.Update()
 }
-
-Execute-PnPQuery
-
-# Reset the theme
-Set-PnPTheme
-
-# Set the theme
-$Web = Get-PnPWeb
-$bgImageUrl = Out-Null
-$fontScheme = Out-Null
-$Web.ApplyTheme("$SiteServerRelativeUrl/_catalogs/theme/15/intranet.spcolor", $fontScheme, $bgImageUrl, $true)
 
 Execute-PnPQuery
 

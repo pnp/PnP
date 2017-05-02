@@ -6,7 +6,7 @@ declare function require(name: string);
 import * as pnp from "sp-pnp-js";
 import "trunk8";
 import * as i18n from "i18next";
-let Flickity = require("flickity");
+let Flickity = require('flickity');
 require('flickity-imagesloaded');
 
 export class CarouselViewModel {

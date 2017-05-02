@@ -46,6 +46,23 @@ body #s4-workspace {
   overflow: visible !important;
 }
 
+#bg-layer{
+    height: 100%;
+    left: 0;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: -999;
+}
+
+header {
+  margin-bottom: 30px;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 1px 20px rgba(0, 0, 0, 0.3);
+  background-color: #fff;
+}
+
 #breadcrumb {
   color: $footerlinks-color;
   min-height: 40px;
