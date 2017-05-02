@@ -31,16 +31,12 @@ $ProvisioningRootSiteTemplateFile = ($CommandDirectory  + ".\provisioning\RootSi
 $SearchConfigurationFilePath = ($CommandDirectory  + ".\provisioning\SearchConfiguration.xml")
 $ImageRenditionsConfigurationFilePath = ($CommandDirectory + ".\provisioning\PublishingImageRenditions.xml")
 
-$CustomProviderDllPath = ($CommandDirectory + ".\provisioning\Intranet.Providers\Intranet.Providers\bin\Debug\Intranet.Providers.dll")
-
 # This name will be used to create a separated folder in the style library and the master page catalog.
 # If you change this name, don't forget to update :
 # - Links in the master page (CSS and JS files)
 # - Web Parts XML contents on the provisioning template (display templates paths)
 # - Display templates files (relative paths to hover panel display template)
 $AppFolderName = "PnP"
-$BindTuningFolder = "idrcintranet"
-$PlumsailFolder = "Plumsail"
 
 # Connect to the site
 $PasswordAsSecure = ConvertTo-SecureString $Password -AsPlainText -Force
@@ -102,23 +98,6 @@ Get-ChildItem -Recurse $DistFolder -File | ForEach-Object {
 
 Pop-Location
 
-# Override BindTuning CSS files in the Style Library
-$TargetFolder = "Style Library\$BindTuningFolder\"
-$BindTuningCssFiles = @(
-
-	"COREV15.css",
-	"idrcintranet.css"
-)
-
-$BindTuningCssFiles | ForEach-Object {
-
-	Add-PnPFile -Path ($CommandDirectory + "\provisioning\artefacts\css\BindTuning\" + $_) -Folder $TargetFolder -Checkout
-}
-
-# Override Plumsail Localization.js file in the Style Library
-$TargetFolder = "Style Library\$PlumsailFolder\OrgChart"
-Add-PnPFile -Path ($CommandDirectory + "\provisioning\artefacts\js\Plumsail\Localization.js" ) -Folder $TargetFolder -Checkout
-
 # -------------------------------------------------------------------------------------
 # Apply root site template
 # -------------------------------------------------------------------------------------
@@ -156,47 +135,17 @@ $Site = Get-PnPSite
 $SiteServerRelativeUrl = Get-PnPProperty -ClientObject $Site -Property ServerRelativeUrl
 
 $FilesToPublish = @(
-
-	# BindTuning master pages
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$BindTuningFolder/Home_Boxed.master"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$BindTuningFolder/Home_Boxed_SideBar.master"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$BindTuningFolder/Home_SideBar.master"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$BindTuningFolder/Home.master"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$BindTuningFolder/FullWidth.master"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$BindTuningFolder/FullWidth_SideBar.master"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$BindTuningFolder/Boxed.master"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$BindTuningFolder/Boxed_SideBar.master"},
+	# Master pages
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/portal.master"},
-	# BindTuning page layouts
-	# Be careful, BT layouts are deployed in the _catalogs/masterpage root folder...
-    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/BodyOnly.BT.aspx"},
-    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPC1Col.aspx"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPC2Cols.aspx"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPC3Cols.aspx"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCHeader.aspx"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCHeaderleft-split.aspx"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCHeaderright-split.aspx"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCHeadersplit.aspx"},	
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCHeaderwithleftsidebar.aspx"},	
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCHeaderwithrightsidebar.aspx"},	
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCLanding2cols.aspx"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCLanding3cols.aspx"},	
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCLandingInverted.aspx"},			
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCLandingwithleftsidebar.aspx"},		
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCLandingwithrightsidebar.aspx"},	
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCSidebarleft.aspx"},		
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCSidebarleftwithfeatured.aspx"},	
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCSidebarright.aspx"},	
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCSidebarrightwithfeatured.aspx"},	
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SummaryLinks.BT.aspx"},	
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/WelcomeLinks.BT.aspx"},		
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/WelcomeSplash.BT.aspx"},	
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/BlankWebpartPage.BT.aspx"},			
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/SPCIDRC-home-page.aspx"},			
-	# PnP Starter Solution Files
+			
+	# Page Layouts
     [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/EventPageLayout.aspx"},
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/NewsPageLayout.aspx"},
     [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/StaticPageLayout.aspx"},
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/HomePageLayout.aspx"},
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/SearchPageLayout.aspx"},
+
+	# Display Templates
     [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Content Web Parts/$AppFolderName/Item_Intranet-News.html"},
     [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Content Web Parts/$AppFolderName/Item_Intranet-News-Tile.html"},		
     [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Content Web Parts/$AppFolderName/Item_Intranet-Event.html"},	
@@ -217,13 +166,17 @@ $FilesToPublish = @(
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet_CommonHoverPanel_Actions.html"},  
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet_CommonHoverPanel_Body.html"},  
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet_CommonHoverPanel_Header.html"},  		
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet_WebPage_HoverPanel.html"},  	
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet_WebPage_HoverPanel.html"},
+
+	# Pages  	
     [PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/Home.aspx"},  
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/Search.aspx"},  
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/SearchDocuments.aspx"},
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/Accueil.aspx"},  
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/Recherche.aspx"},  
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/RechercheDocuments.aspx"}    	
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/RecherchePersonnes.aspx"},  
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/SearchPeople.aspx"}   
 )
 
 $FilesToPublish | ForEach-Object {

@@ -9,6 +9,8 @@ declare var require: {
     ensure: (paths: string[], callback: (require: <T>(path: string) => T) => void) => void;
 };
 
+require('es6-promise/auto'); // Fix for IE11 (inject the polyfill in the global context)
+
 // View models for components
 import { Localization } from "./core/localization";
 import { BreadcrumbViewModel } from "./viewmodels/breadcrumb.viewmodel";

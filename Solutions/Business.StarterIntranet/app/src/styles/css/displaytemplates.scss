@@ -186,7 +186,6 @@
 
         .tile {
             height: 130px;
-            padding: 10px;
         }
     }
 
@@ -204,36 +203,6 @@
 
         .item-excerpt {
             clear: both;
-        }
-    }
-
-    .contact-item {
-
-        #contact-fullname {
-            float: left;
-        }
-
-        #contact-jobtitle {
-            font-style: italic;
-        }
-
-        #contact-workemail {
-            margin-bottom: 5px;
-        }
-
-        #contact-workphone {
-            float:left;
-            margin-right: 15px;
-        }
-
-        #contact-mobilephone {
-            float:left;
-            margin-right: 15px;
-        }
-
-        #row-2 {
-            clear: both;
-            overflow: hidden;
         }
     }
 

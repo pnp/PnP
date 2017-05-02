@@ -22,10 +22,10 @@ module.exports = {
             "jquery",
             "knockout",
             "knockout-mapping",
-            "bootstrap/dist/js/bootstrap.js",
+            "bootstrap/dist/js/bootstrap.min.js",
+            "whatwg-fetch",
             "es6-promise",
-            "flickity/dist/flickity.css",
-            "whatwg-fetch"
+            "flickity/dist/flickity.min.css",
         ]
     },
     
