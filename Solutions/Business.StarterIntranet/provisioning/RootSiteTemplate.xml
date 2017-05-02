@@ -3,7 +3,6 @@
     <pnp:Parameters>
       <pnp:Parameter Key="CompanyName" Required="true"></pnp:Parameter>
       <pnp:Parameter Key="AssemblyVersion" Required="true"></pnp:Parameter>    
-      <pnp:Parameter Key="BindTuningFolder" Required="true"></pnp:Parameter>     
     </pnp:Parameters>
   </pnp:Preferences>
   <pnp:Templates ID="CONTAINER-TEMPLATE-PNP-O365-STARTER-INTRANET">
@@ -2116,15 +2115,6 @@
               <pnp:Property Key="Title" Value="Intranet Document Item" />
               <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
               <pnp:Property Key="MasterPageDescription" Value="Displays document items in a list format." />
-              <pnp:Property Key="TemplateHidden" Value="0" />
-              <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
-            </pnp:Properties>	
-        </pnp:File>
-        <pnp:File Src=".\artefacts\display templates\content web parts\Item_Intranet-Contact.html" Folder="{masterpagecatalog}/display templates/Content Web Parts/{parameter:CompanyName}" Overwrite="true">	
-            <pnp:Properties>
-              <pnp:Property Key="Title" Value="Intranet Contact Item" />
-              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
-              <pnp:Property Key="MasterPageDescription" Value="Displays contact items in a list format." />
               <pnp:Property Key="TemplateHidden" Value="0" />
               <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
             </pnp:Properties>	

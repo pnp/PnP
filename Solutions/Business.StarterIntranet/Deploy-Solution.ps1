@@ -108,7 +108,7 @@ Ensure-PnPFolder -SiteRelativePath "Pages/News" | Out-Null
 Ensure-PnPFolder -SiteRelativePath "Pages/Events" | Out-Null
 
 # Apply the root site provisioning template
-Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -Parameters @{ "CompanyName" = $AppFolderName; "AssemblyVersion" = $AssemblyVersion; "BindTuningFolder" = $BindTuningFolder }
+Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -Parameters @{ "CompanyName" = $AppFolderName; "AssemblyVersion" = $AssemblyVersion; }
 
 # Enable Item Scheduling feature on the "Pages" library
 Enable-CustomItemScheduling -Web (Get-PnPWeb) -PagesLibraryName "Pages"
