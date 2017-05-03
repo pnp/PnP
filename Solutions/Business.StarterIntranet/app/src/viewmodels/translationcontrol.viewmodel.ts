@@ -41,7 +41,7 @@
  * **********************************************/
 import { UtilityModule } from "../core/utility";
 import * as i18n from "i18next";
-import * as pnp from "sp-pnp-js";
+import { Web, Logger, LogLevel } from "sp-pnp-js";
 import * as sprintf from "sprintf-js";
 
 export class TranslationControlViewModel {
@@ -170,15 +170,17 @@ export class TranslationControlViewModel {
         this.wait(true);
         this.isError(false);
 
+        let web = new Web(_spPageContextInfo.webAbsoluteUrl);
+
         // Get the info for the current page
-        pnp.sp.web.lists.getByTitle("Pages").items.getById(this.currentPageId).select(this.associationKeyFieldName, "ID", this.languageFieldName).get().then((item) => {
+        web.lists.getByTitle("Pages").items.getById(this.currentPageId).select(this.associationKeyFieldName, "ID", this.languageFieldName).get().then((item) => {
 
             let targetLanguage: string = this.selectedLanguage();
 
             // Does a page in the 'Pages' library exist with the same GUID as me for the selected target language ?
             let filterQuery: string = this.associationKeyFieldName + " eq '" + item[this.associationKeyFieldName] + "' and ID ne '" + item.ID + "' and " + this.languageFieldName + " eq '" + targetLanguage  + "'";
 
-            pnp.sp.web.lists.getByTitle("Pages").items.filter(filterQuery).select("FileRef, FileLeafRef").get().then((item) => {
+            web.lists.getByTitle("Pages").items.filter(filterQuery).select("FileRef, FileLeafRef").get().then((item) => {
 
                 let msg: string;
 
@@ -227,20 +229,22 @@ export class TranslationControlViewModel {
         // Build the destination file URL
         let destinationFile = this.currentPageUrl.replace(/(.*)\/.*(\.aspx$)/i, "$1/" + this.inputDestinationFileName() + "$2");
 
+        let web = new Web(_spPageContextInfo.webAbsoluteUrl);
+
         this.ensurePageGuid().then(() => {
 
             // Copy the page in the Pages library with the new language
             // Note: during the copy operation, all original metadata are retained by default 
-            pnp.sp.web.getFileByServerRelativeUrl(this.currentPageUrl).copyTo(destinationFile, true).then(() => {
+            web.getFileByServerRelativeUrl(this.currentPageUrl).copyTo(destinationFile, true).then(() => {
 
                 // Checkout the file before making any changes
-                pnp.sp.web.getFileByServerRelativeUrl(destinationFile).checkout().then(() => {
+                web.getFileByServerRelativeUrl(destinationFile).checkout().then(() => {
 
                     // Get the ID the copied file and update the language (update does not work with a single operation)
-                    pnp.sp.web.getFileByServerRelativeUrl(destinationFile).listItemAllFields.select("ID").get().then((item) => {
+                    web.getFileByServerRelativeUrl(destinationFile).listItemAllFields.select("ID").get().then((item) => {
 
                         // Set the peer language on the destination file
-                        pnp.sp.web.lists.getByTitle("Pages").items.getById(item.ID).update({[this.languageFieldName]: this.selectedLanguage()}).then((item) => {
+                        web.lists.getByTitle("Pages").items.getById(item.ID).update({[this.languageFieldName]: this.selectedLanguage()}).then((item) => {
 
                             this.isNewCreation(true);
                             this.checkForExistingTranslations();
@@ -248,31 +252,31 @@ export class TranslationControlViewModel {
                         }).catch((errorMesssage) => {
 
                             this.showErrorMessage(errorMesssage);
-                            pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+                            Logger.write(errorMesssage, LogLevel.Error);
                         });
 
                     }).catch((errorMesssage) => {
 
                         this.showErrorMessage(errorMesssage);
-                        pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+                        Logger.write(errorMesssage, LogLevel.Error);
                     });
 
                 }).catch((errorMesssage) => {
 
                     this.showErrorMessage(errorMesssage);
-                    pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+                    Logger.write(errorMesssage, LogLevel.Error);
                 });
 
             }).catch((errorMesssage) => {
 
                 this.showErrorMessage(errorMesssage);
-                pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+                Logger.write(errorMesssage, LogLevel.Error);
             });
 
         }).catch((errorMesssage) => {
 
             this.showErrorMessage(errorMesssage);
-            pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+            Logger.write(errorMesssage, LogLevel.Error);
         });
     }
 
@@ -283,8 +287,10 @@ export class TranslationControlViewModel {
      */
     private initAvailableLanguages(languages: Array<string>): void {
 
+        let web = new Web(_spPageContextInfo.webAbsoluteUrl);
+
         // Get the current page language
-        pnp.sp.web.lists.getByTitle("Pages").items.getById(this.currentPageId).select(this.languageFieldName, this.associationKeyFieldName).get().then((item) => {
+        web.lists.getByTitle("Pages").items.getById(this.currentPageId).select(this.languageFieldName, this.associationKeyFieldName).get().then((item) => {
 
             // Remove the current page language from the available languages
             let index = languages.indexOf(item[this.languageFieldName]);
@@ -312,8 +318,10 @@ export class TranslationControlViewModel {
 
         let p = new Promise<void>((resolve) => {
 
+            let web = new Web(_spPageContextInfo.webAbsoluteUrl);
+
             // Get the association key for the current item
-            pnp.sp.web.lists.getByTitle("Pages").items.getById(this.currentPageId).select(this.associationKeyFieldName).get().then((item) => {
+            web.lists.getByTitle("Pages").items.getById(this.currentPageId).select(this.associationKeyFieldName).get().then((item) => {
 
                 let currentContentAssociationKey = item[this.associationKeyFieldName];
 
@@ -327,7 +335,7 @@ export class TranslationControlViewModel {
                     let guid = this.utilityModule.getNewGuid();
 
                     // Set a new unique identifier for this page
-                    pnp.sp.web.lists.getByTitle("Pages").items.getById(this.currentPageId).update({[this.associationKeyFieldName] : guid}).then((item) => {
+                    web.lists.getByTitle("Pages").items.getById(this.currentPageId).update({[this.associationKeyFieldName] : guid}).then((item) => {
 
                         resolve();
                     });
@@ -336,13 +344,13 @@ export class TranslationControlViewModel {
             }).catch((errorMesssage) => {
 
                 this.showErrorMessage(errorMesssage);
-                pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+                Logger.write(errorMesssage, LogLevel.Error);
             });
 
         }).catch((errorMesssage) => {
 
             this.showErrorMessage(errorMesssage);
-            pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+            Logger.write(errorMesssage, LogLevel.Error);
         });
 
         return p;

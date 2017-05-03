@@ -38,7 +38,7 @@ import * as ReactDOM from "react-dom";
 
 // Third party libraries
 import i18n = require("i18next");
-import * as pnp from "sp-pnp-js";
+import { Web, ConsoleListener, Logger, LogLevel, setup } from "sp-pnp-js";
 
 // Main style sheet for the application
 require("./styles/css/global.scss");
@@ -175,12 +175,12 @@ export class Main {
         this.registerComponents();
 
         // Init the loggger
-        let consoleLogger = new pnp.ConsoleListener();
-        pnp.log.subscribe(consoleLogger);
-        pnp.log.activeLogLevel = pnp.LogLevel.Error;
+        let consoleListener = new ConsoleListener();
+        Logger.subscribe(consoleListener);
+        Logger.activeLogLevel = LogLevel.Error;
 
         // Needed for SharePoint 2013 On-Premise othjerwise it will use Atom XML
-        pnp.setup({
+        setup({
             headers: {
                 Accept: "application/json; odata=verbose",
             },
@@ -191,7 +191,9 @@ export class Main {
 
             let localization = new Localization();
                 
-            localization.initLanguageEnv().then(() => {       
+            localization.initLanguageEnv().then(() => {  
+
+                let web = new Web(_spPageContextInfo.webAbsoluteUrl);     
 
                 ReactDOM.render(<BotChatControl />, document.getElementById('bot-webchat'));      
 
@@ -202,7 +204,7 @@ export class Main {
                 $("#page-image img").addClass("img-responsive");
 
                 // This code is specific to BT master pages and is used to hide elements only on the welcome page 
-                pnp.sp.web.lists.getByTitle("Pages").items.getById(_spPageContextInfo.pageItemId).select("HideSideBar").get().then(item => {
+                web.lists.getByTitle("Pages").items.getById(_spPageContextInfo.pageItemId).select("HideSideBar").get().then(item => {
                     
                     if (item.HideSideBar) {
 
@@ -216,7 +218,6 @@ export class Main {
                         $(".page-layout #title").hide();
                     }
                 });
-
             });            
         });
     }

@@ -5,7 +5,7 @@ import { TaxonomyModule } from "../core/taxonomy";
 import { UtilityModule } from "../core/utility";
 import { NavigationViewModel } from "../shared/navigation.viewmodel";
 import * as i18n from "i18next";
-import * as pnp from "sp-pnp-js";
+import { Site, storage, Logger, LogLevel } from "sp-pnp-js";
 
 export class FooterLinksViewModel extends NavigationViewModel {
 
@@ -29,10 +29,12 @@ export class FooterLinksViewModel extends NavigationViewModel {
         this.localStorageKey = i18n.t("footerLinksLocalStorageKey");
 
         let filterQuery: string = "IntranetContentLanguage eq '" + currentLanguage + "'";
+        
+        let site = new Site(_spPageContextInfo.siteAbsoluteUrl);
 
         // Read the configuration value from a configuration list instead from a term set property to improve performances
         // Get only the first item
-        pnp.sp.site.rootWeb.lists.getByTitle(configListName).items.filter(filterQuery).top(1).get().then((item) => {
+        site.rootWeb.lists.getByTitle(configListName).items.filter(filterQuery).top(1).get().then((item) => {
 
             if (item.length > 0) {
 
@@ -45,7 +47,7 @@ export class FooterLinksViewModel extends NavigationViewModel {
                 if (noCache) {
 
                         // Clear the local storage value
-                        pnp.storage.local.delete(this.localStorageKey);
+                        storage.local.delete(this.localStorageKey);
 
                         // Get navigation nodes
                         this.getNavigationNodes(termSetId);
@@ -68,12 +70,12 @@ export class FooterLinksViewModel extends NavigationViewModel {
 
             } else {
 
-                pnp.log.write("There is no configuration item for this site", pnp.LogLevel.Warning);
+                Logger.write("There is no configuration item for this site", LogLevel.Warning);
             }
 
         }).catch(errorMesssage => {
 
-            pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+            Logger.write(errorMesssage, LogLevel.Error);
         });
     }
 
@@ -81,7 +83,7 @@ export class FooterLinksViewModel extends NavigationViewModel {
 
         if (!termSetId) {
 
-            pnp.log.write("The term set id for the footer links is null. Please specify a valid term set id in the configuration list", pnp.LogLevel.Error);
+            Logger.write("The term set id for the footer links is null. Please specify a valid term set id in the configuration list", LogLevel.Error);
 
         } else {
 
@@ -98,16 +100,16 @@ export class FooterLinksViewModel extends NavigationViewModel {
                         let now: Date = new Date();
 
                         // Set the navigation tree in the local storage of the browser
-                        pnp.storage.local.put(this.localStorageKey, this.utilityModule.stringifyTreeObject(navigationTree), new Date(now.setDate(now.getDate() + 7)));
+                        storage.local.put(this.localStorageKey, this.utilityModule.stringifyTreeObject(navigationTree), new Date(now.setDate(now.getDate() + 7)));
 
                 }).catch(errorMesssage => {
 
-                    pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+                    Logger.write(errorMesssage, LogLevel.Error);
                 });
 
             }).catch(errorMesssage => {
 
-                pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+                Logger.write(errorMesssage, LogLevel.Error);
             });
         }
     }

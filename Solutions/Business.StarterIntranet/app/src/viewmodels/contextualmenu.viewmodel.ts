@@ -5,7 +5,7 @@ import { UtilityModule } from "../core/utility";
 import { NavigationViewModel } from "../shared/navigation.viewmodel";
 import { NavigationNode } from "../shared/navigationnode";
 import "pubsub-js";
-import * as pnp from "sp-pnp-js";
+import { Web, Logger, LogLevel } from "sp-pnp-js";
 
 export class ContextualMenuViewModel extends NavigationViewModel {
 
@@ -52,8 +52,9 @@ export class ContextualMenuViewModel extends NavigationViewModel {
         PubSub.subscribe("navigationNodes", (msg, data) => {
 
             let navigationTree: Array<NavigationNode> = data.nodes;
+            let web = new Web(_spPageContextInfo.webAbsoluteUrl);  
 
-            pnp.sp.web.lists.getByTitle("Pages").items.getById(_spPageContextInfo.pageItemId).select(this.siteMapFieldName).get().then((item) => {
+            web.lists.getByTitle("Pages").items.getById(_spPageContextInfo.pageItemId).select(this.siteMapFieldName).get().then((item) => {
 
                     let siteMapTermGuid = item[this.siteMapFieldName];
                     let currentNode: NavigationNode = undefined;
@@ -94,7 +95,7 @@ export class ContextualMenuViewModel extends NavigationViewModel {
 
                     } else {
 
-                        pnp.log.write("[Contextual Menu] Unable to determine the current position in the site map", pnp.LogLevel.Warning);
+                        Logger.write("[Contextual Menu] Unable to determine the current position in the site map", LogLevel.Warning);
                     }
 
                     this.initialize(navigationTree);
@@ -107,7 +108,7 @@ export class ContextualMenuViewModel extends NavigationViewModel {
 
             }).catch((errorMesssage) => {
 
-                pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+                Logger.write(errorMesssage, LogLevel.Error);
             });
         });
     }

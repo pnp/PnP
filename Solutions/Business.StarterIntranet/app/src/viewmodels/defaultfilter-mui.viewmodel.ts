@@ -7,7 +7,7 @@
 
 import { TaxonomyModule } from "../core/taxonomy";
 import "../shared/bindinghandlers";
-import * as pnp from "sp-pnp-js";
+import { Logger, LogLevel } from "sp-pnp-js";
 import "trunk8"; // Trunk8 typings are exposed through an interface, so we have just to import it globally
 
 export class DefaultFilterViewModel {
@@ -46,7 +46,7 @@ export class DefaultFilterViewModel {
                             });
 
                         }).catch((errorMesssage) => {
-                            pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+                            Logger.write(errorMesssage, LogLevel.Error);
                         });
                     }
 

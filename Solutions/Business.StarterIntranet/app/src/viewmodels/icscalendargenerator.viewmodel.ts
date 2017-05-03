@@ -7,7 +7,7 @@ let fileSaver = require('file-saver');
 let sanitize = require("sanitize-filename");
 
 import { Localization } from "../core/localization";
-import * as pnp from "sp-pnp-js";
+import { Web, Logger, LogLevel } from "sp-pnp-js";
 import i18n = require("i18next");
 
 export class ICSCalendarGeneratorViewModel {
@@ -35,8 +35,10 @@ export class ICSCalendarGeneratorViewModel {
 
         this.wait(true);
 
+        let web = new Web(_spPageContextInfo.webAbsoluteUrl);
+
         // Get the event details directly from the Pages library
-        pnp.sp.web.lists.getByTitle("Pages").items.getById(this.eventItemId).get().then(item => {
+        web.lists.getByTitle("Pages").items.getById(this.eventItemId).get().then(item => {
             
             // Create a builder
             var builder = icalToolkit.createIcsFileBuilder();
@@ -89,7 +91,7 @@ export class ICSCalendarGeneratorViewModel {
 
             //Check if there was an error (Only required if yu configured to return error, else error will be thrown.)
             if (icsFileContent instanceof Error) {
-                pnp.log.write("[iCalendar Generator] Error during the iCal generation", pnp.LogLevel.Error);
+                Logger.write("[iCalendar Generator] Error during the iCal generation", LogLevel.Error);
             }
 
             // Prompt for download (text file)

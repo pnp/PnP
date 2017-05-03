@@ -51,6 +51,7 @@
     "@types/trunk8": "0.0.27",
     "@types/whatwg-fetch": "0.0.33",
     "bootstrap": "3.3.7",
+    "botframework-webchat": "^0.10.6",
     "es6-promise": "4.1.0",
     "file-saver": "1.3.3",
     "flickity": "2.0.5",

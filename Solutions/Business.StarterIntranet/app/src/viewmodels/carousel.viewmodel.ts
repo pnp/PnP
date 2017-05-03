@@ -3,7 +3,7 @@
 // ========================================
 declare function require(name: string);
 
-import * as pnp from "sp-pnp-js";
+import { Web } from "sp-pnp-js";
 import "trunk8";
 import * as i18n from "i18next";
 let Flickity = require('flickity');
@@ -35,8 +35,10 @@ export class CarouselViewModel {
             tooltip: false,
         };
 
+        let web = new Web(_spPageContextInfo.webAbsoluteUrl);   
+
         // Get the current page language
-        pnp.sp.web.lists.getByTitle("Pages").items.getById(_spPageContextInfo.pageItemId).select("ID", languageFieldName).get().then((item) => {
+        web.lists.getByTitle("Pages").items.getById(_spPageContextInfo.pageItemId).select("ID", languageFieldName).get().then((item) => {
 
             let currentPageLanguage = item[languageFieldName];
 
@@ -45,7 +47,7 @@ export class CarouselViewModel {
                 let now = new Date();
                 let filterQuery = "CarouselItemEndDate ge datetime'" + now.toISOString() + "' and CarouselItemStartDate le datetime'" + now.toISOString() + "' and IntranetContentLanguage eq '" + currentPageLanguage + "'";
 
-                pnp.sp.web.lists.getByTitle(listTitle).items.orderBy("CarouselItemOrder", true).filter(filterQuery).get().then((elements) => {
+                web.lists.getByTitle(listTitle).items.orderBy("CarouselItemOrder", true).filter(filterQuery).get().then((elements) => {
 
                     // Fill the observable array
                     this.items(elements);

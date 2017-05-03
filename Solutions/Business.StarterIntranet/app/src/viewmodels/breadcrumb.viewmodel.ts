@@ -6,7 +6,7 @@ import { NavigationViewModel } from "../shared/navigation.viewmodel";
 import { NavigationNode } from "../shared/navigationnode";
 import * as i18n from "i18next";
 import "pubsub-js";
-import * as pnp from "sp-pnp-js";
+import { Web, Logger, LogLevel } from "sp-pnp-js";
 
 export class BreadcrumbViewModel extends NavigationViewModel {
 
@@ -35,10 +35,12 @@ export class BreadcrumbViewModel extends NavigationViewModel {
 
             let breadcrumbNodes = [];
 
+            let web = new Web(_spPageContextInfo.webAbsoluteUrl);   
+
             // There are two ways to determine the position of the current page in the navigation site map
             // 1) By checking the explicit value of the property used for content classification (and mapped to the site map term set).
             // 2) By checking the current url and try to find it in the navigation nodes data to get the corresponding term.
-            pnp.sp.web.lists.getByTitle("Pages").items.getById(_spPageContextInfo.pageItemId).select(this.siteMapFieldName).get().then((item) => {
+            web.lists.getByTitle("Pages").items.getById(_spPageContextInfo.pageItemId).select(this.siteMapFieldName).get().then((item) => {
 
                     let siteMapTermGuid = item[this.siteMapFieldName];
                     let currentNode: NavigationNode = undefined;
@@ -80,7 +82,7 @@ export class BreadcrumbViewModel extends NavigationViewModel {
 
             }).catch((errorMesssage) => {
 
-                pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+                Logger.write(errorMesssage, LogLevel.Error);
             });
         });
     }
