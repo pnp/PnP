@@ -203,13 +203,10 @@ export class Main {
                 // Add Bootstrap responsive behavior for news images
                 $("#page-image img").addClass("img-responsive");
 
-                // This code is specific to BT master pages and is used to hide elements only on the welcome page 
                 web.lists.getByTitle("Pages").items.getById(_spPageContextInfo.pageItemId).select("HideSideBar").get().then(item => {
                     
                     if (item.HideSideBar) {
 
-                        // The current page is the welcome page
-                        // Hide the sidebar and breadcrumb
                         $("#sidebar").hide();
                         $("#content").removeClass("col-md-push-3 col-md-9");
                         $("#content").addClass("col-md-12");
@@ -217,7 +214,7 @@ export class Main {
                         $("#breadcrumb-nav").hide();
                         $(".page-layout #title").hide();
                     }
-                });
+                });            
             });            
         });
     }

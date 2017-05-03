@@ -27,6 +27,7 @@ module.exports = {
             "es6-promise",
             "react",
             "react-dom",
+            "office-ui-fabric-react",
             "office-ui-fabric-react/dist/css/fabric.min.css",
             "flickity/dist/flickity.min.css",
             "botframework-webchat/botchat.css"
