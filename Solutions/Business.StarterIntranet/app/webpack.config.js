@@ -25,10 +25,14 @@ module.exports = {
             "bootstrap/dist/js/bootstrap.min.js",
             "whatwg-fetch",
             "es6-promise",
+            "react",
+            "react-dom",
+            "office-ui-fabric-react/dist/css/fabric.min.css",
             "flickity/dist/flickity.min.css",
+            "botframework-webchat/botchat.css"
         ]
     },
-    
+
     output: {
         filename: "js/app.js",
         path: path.join(__dirname, "dist"),

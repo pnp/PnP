@@ -31,10 +31,10 @@ import { TopNavViewModel } from "./viewmodels/topnav.viewmodel";
 import { TranslationControlViewModel } from "./viewmodels/translationcontrol.viewmodel";
 import { ICSCalendarGeneratorViewModel } from "./viewmodels/icscalendargenerator.viewmodel";
 
+import { BotChatControl } from "./components/BotChatPanel"; 
+
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-
-//import { Chat } from 'botframework-webchat';
 
 // Third party libraries
 import i18n = require("i18next");
@@ -190,17 +190,10 @@ export class Main {
         $(document).ready(() => {
 
             let localization = new Localization();
-            localization.initLanguageEnv().then(() => {
+                
+            localization.initLanguageEnv().then(() => {       
 
-               /* const App = () => {
-                return (
-                    <div>
-                        <Chat bot={{id: 'a0095b82-a596-450f-957a-a62b858b75cf', name: 'SharePointBot'}} directLine={{ secret: "0ZVQsoBm6F0.cwA.YdE.HF64soQxOy2ls_t2wKXiL4BKV0HTf1zjiIzUMG-rbzY" }} user={{ id: 'user_id', name: 'user_name' }}/>
-                    </div>
-                )
-                }
-
-                ReactDOM.render(<App />, document.getElementById('#bot-webchat'))*/
+                ReactDOM.render(<BotChatControl />, document.getElementById('bot-webchat'));      
 
                 // Apply the Knockout JS magic!
                 ko.applyBindings();
