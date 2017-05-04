@@ -24,6 +24,7 @@ export class BotChatControl extends React.Component<any, any> {
 
     // This binding is necessary to make `this` work in the callback
     this.handleClick = this.handleClick.bind(this);
+    
   }
 
   public handleClick(e) {
@@ -75,7 +76,8 @@ export class BotChatControl extends React.Component<any, any> {
           <Chat 
             bot={{id: this.botId , name: this.botHandle }}
             directLine={{ secret: this.botDirectLineSecretKey }}
-            user={{ id: 'user_id', name: 'Guest' }}/>
+            user={{ id: 'user_id', name: 'Guest' }}
+            locale={ this.currentLanguage.toLowerCase() }/>
         </Panel>
       </div>
     );

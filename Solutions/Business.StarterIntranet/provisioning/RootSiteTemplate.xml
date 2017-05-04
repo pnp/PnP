@@ -110,7 +110,7 @@
         </Field>
         <Field Type="Text" DisplayName="Footer Links Term Set Id" Description="The term set id for the footer links" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" MaxLength="255" Group="Intranet" ID="{0e20cab4-8fda-42fb-82f9-f5e9eb562fb4}" SourceID="{cafbb6db-85b8-4fc8-81f9-8fb8f259aa5e}" StaticName="FooterLinksTermSetId" Name="FooterLinksTermSetId">
         </Field>
-        <Field Type="Boolean" DisplayName="Hide Side Bar" EnforceUniqueValues="FALSE" Indexed="FALSE" Group="Intranet" ID="{09b42c74-7fe7-4579-b391-ed88eecc549d}" SourceID="{dcb8f1ea-b933-4920-a2a8-84cf361f6821}" StaticName="HideSideBar" Name="HideSideBar" Required="FALSE">
+        <Field Type="Boolean" DisplayName="Hide Side Bar" EnforceUniqueValues="FALSE" Indexed="FALSE" Group="Intranet" ID="{09b42c74-7fe7-4579-b391-ed88eecc549d}" SourceID="{dcb8f1ea-b933-4920-a2a8-84cf361f6821}" StaticName="HideSideBar" Name="HideSideBar" Required="FALSE" Description="If checked, hide the side bar and the breadcrumb for this specific page">
           <Default>0</Default>
         </Field>
         <Field Type="Choice" DisplayName="Content Language" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" Format="RadioButtons" FillInChoice="FALSE" Group="Intranet" ID="{dc289a60-042d-4e47-b33e-c3d3712f0cbe}" SourceID="{4b10a27b-a6c3-423d-ab76-d388d2dcefad}" StaticName="IntranetContentLanguage" Name="IntranetContentLanguage" AllowDeletion="TRUE">
