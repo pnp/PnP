@@ -62,7 +62,7 @@
     "knockout": "3.4.2",
     "knockout-mapping": "2.6.0",
     "moment": "2.18.1",
-    "office-ui-fabric-react": "^2.24.2",
+    "office-ui-fabric-react": "2.24.2",
     "pubsub-js": "1.5.6",
     "react": "15.5.4",
     "react-dom": "15.5.4",

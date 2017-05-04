@@ -63,10 +63,14 @@ export class BotChatControl extends React.Component<any, any> {
     return (
 
       <div> 
-        <Link
-          disabled = { this.state.isBotDisabled }
-          onClick= { this.handleClick }
-          href="#">{ this.botLinkLabel }</Link>      
+        <div className={ this.state.isBotDisabled ? "is-botdisabled": ""}>
+          <i className="fa fa-comments" aria-hidden="true"></i>
+          <Link
+            disabled = { this.state.isBotDisabled }
+            onClick= { this.handleClick }
+            href="#">{ this.botLinkLabel }</Link>   
+
+        </div>   
         <Panel
           isOpen={ this.state.showPanel }
           isLightDismiss={ true }

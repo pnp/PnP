@@ -1,12 +1,17 @@
-<p align="center">
-  <img width="400" src="./images/logo_intranet.png">
-</p>
-
-# International Development Research Centre (IDRC) - Intranet solution for SharePoint 2013 #
+# PnP Starter Intranet for SharePoint 2013/2016 and SharePoint Online  #
 
 ### Summary ###
 
-The solution implements the publishing intranet for IDRC based on the [PnP starter intranet](https://github.com/SharePoint/PnP/tree/master/Solutions/Business.StarterIntranet) for SharePoint 2013 and the [SPC BindTuning theme](http://bindtuning.com/cms/sharepoint/sharepoint-2013/theme/SPC/page/Home/customize).
+Intranet projects shouldn’t have to reinvent the wheel every time for basic features (like navigation or multilingualism).
+This solution aims to provide the fundamental building blocks of a common intranet solution with SharePoint 2013/2016 on-premises and SharePoint Online through a lightweight client side solution using the latest web stack development tools and frameworks.
+This solution leverages the SharePoint classic publishing infrastructure feature.
+
+Here is what you get with this sample:
+- A basic page creation experience with common layouts for static page, home page and news.
+- Common intranet navigation menus like main menu, header links, footer, contextual menu and breadcrumb based on taxonomy.
+- A basic translation system for multilingual sites (pages and UI).
+- A search experience including results with preview.
+- A mobile intranet using SharePoint 2013/2016 on-premises or SharePoint Online.
 
 This solution is implemented using:
 
@@ -17,31 +22,23 @@ This solution is implemented using:
 - Knockout JS (for application behavior and UI components)
 - Bootstrap (for mobile support)
 - Node JS (for dependencies management with npm)
-- Bind Tuning SPC theme for SharePoint 2013 (for overall branding)
+- Bootstrap & Font Awesome(for overall branding)
 
 The entire solution is "site collection self-contained" to not conflict with the global tenant/farm configuration (especially taxonomy and search configuration). It allows you to deploy this solution safely in your farm.
 
 ### Applies to ###
-- SharePoint 2013 on-premises
-
-### Tested versions ###
-
-Here are the following versions of PnP and SharePoint used for this solution:
-
-PnP PowerShell cmdlets version (All SharePoint versions)| PnP NuGet package version (All SharePoint versions) |SharePoint 2013 tested version(s) 
----------|---------|---------
-<ul style="list-style: none"><li>2.12.1702.0 (February 2017)</li></ul> | <ul style="list-style: none"><li>2.12.1702.0 (February 2017)</li></ul> | <ul style="list-style: none"><li>15.0.4893.1000 (January 2017 CU)</li><li>15.0.4867.1000 (October 2016 CU)</li></ul>
+- SharePoint 2013/2016 on-premises
+- SharePoint Online (Office 365)
 
 ### Set up your environment ###
 
 Before starting, you'll need to setup tour environment:
 
-- Install at least the February 2017 release of [PnP PowerShell cmdlets SharePointPnPPowerShellXXX](https://github.com/OfficeDev/PnP-PowerShell/releases) for SharePoint 2013
+- Install at latest release of [PnP PowerShell cmdlets SharePointPnPPowerShellXXX](https://github.com/OfficeDev/PnP-PowerShell/releases) according to your SharePoint version.
 - Install Node.js on your machine https://nodejs.org/en/ (v6.10.1)
-- Install the 'webpack' Node JS client version 1.14.0 (`npm i webpack@1.14.0 -g`)
+- Install the 'webpack' Node JS client (`npm i webpack -g`). This sample uses webpack v2.
 - Go to the ".\app" folder and install all dependencies listed in the package.json file by running the `npm i` cmd 
 - Check if everything is OK by running the "`webpack`" cmd from the ".\app" folder. You shouldn't see any errors here.
-- According to the targeted SharePoint version, build the extensibility provider Visual Studio solution with the corresponding PnP NuGet package (the deployment script uses the *Debug* bin folder by default). Be careful, the PnP NuGet package version **must be the same** as the PnP PowerShell one. Before adding a new NuGet package, make sure your removed older references (remove the old *Debug* folder as well).
 
 <table style="margin: 0px auto;">
   <tr>
@@ -79,12 +76,15 @@ Before starting, you'll need to setup tour environment:
 ### Solution ###
 Solution                | Author(s)
 ------------------------|----------
-IDRC.Intranet | Franck Cornu (Aequos)
+Business.StarterIntranet | Franck Cornu (MVP Office Development at aequos) - Twitter @FranckCornu 
 
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
-0.1 | 4th March 2017 | <ul style="list-style: none"><li>Initial release with adapated BindTuning theme</li></ul>
+1.0 | August 19th 2016 | <ul style="list-style: none"><li>Initial release</li></ul>
+1.1 | September 21st 2016 | <ul style="list-style: none"><li>Added carousel component + miscellaneous fixes</li></ul>
+1.2 | January 31st 2016 |  <ul style="list-style: none"><li>Added the support of SharePoint 2013 and 2016 on-premises</li><li>Updated to TypeScript 2.1.5 and PnP Js Core 1.0.6</li></ul>
+1.3 | April 9th 2017 | <ul style="list-style: none"><li>Added the support of event pages</li><li>News display templates for news</li><li>Added the support for a bot web chat connected to the Bot Framework</li><li>Bug fixes + migration to webpack 2.0 and sp-pnp-js 2.0</li></ul>
 
 # Installation #
 
@@ -109,7 +109,8 @@ $Script = ".\Deploy-Solution.ps1"
 
 # Post-installation steps #
 
-Right after the deployment, you have to complete some manual steps to set up default column value settings as follow. These information are used for the news and event webparts on the home page to filter archive page (the "See all news/events" links).
+## Configure column default values in the Pages library ##
+Right after the deployment, you have to complete some manual steps to set up default column value settings as follow (the extensibilty provider has been removed). These information are used for the news and event webparts on the home page to filter archive page (the "See all news/events" links).
 
 Library/Folder | Column | Value
 ---------| -----| --------
@@ -120,3 +121,12 @@ Pages/Events | Content Type | Event
 Pages/Events | Site Map Position | Events 
 Documents/ | Content Type | Document 
 
+## Configre the QnA bot ##
+
+
+
+### Disclaimer ###
+
+THIS CODE IS PROVIDED AS IS WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
+
+----------

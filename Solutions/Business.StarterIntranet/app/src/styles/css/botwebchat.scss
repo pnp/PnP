@@ -1,5 +1,20 @@
 @import 'variables';
 
+.ms-Panel-commands button {
+  min-width: inherit;
+}
+
+#bot-webchat {
+  
+  i {
+    margin-right: 4px;
+  }
+
+  .is-botdisabled {
+    display: none;
+  }
+}
+
 /* reset */
 
 body .wc-app {
@@ -13,7 +28,7 @@ body .wc-app {
     font-size: 15px;
   }
   button {
-    background-color: #0063b1;
+    background-color: $primary-color;
     border: 1px solid #ccc;
     border-radius: 1px;
     color: #fff;
