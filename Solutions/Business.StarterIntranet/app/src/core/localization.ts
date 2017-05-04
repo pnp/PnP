@@ -5,7 +5,7 @@ declare var require: {
 };
 
 import i18n = require("i18next");
-import * as pnp from "sp-pnp-js";
+import { Web } from "sp-pnp-js";
 
 // Be careful, if you do a manual import, you can't add this module to the vendor chunk of webpack (an error will occur during execution otherwise)
 import * as moment from "moment";
@@ -25,11 +25,13 @@ export class Localization {
 
         let p = new Promise<void>((resolve) => {
 
+            let web = new Web(_spPageContextInfo.webAbsoluteUrl);
+
             // Get the current page language. In this solution, the language context is given by the page itself instead of the web.
             // By this way, we don't have to create a synchronized symetric web structure (like SharePoint variations do). We keep a flat structure with only one site.
             // For a contributor, it is by far easier to use than variations.
             // The "IntranetContentLanguage" is a choice field so we don't need taxonomy field here. Values of this choice field have to be 'en' or 'fr' to fit with the format below.
-            pnp.sp.web.lists.getByTitle("Pages").items.getById(_spPageContextInfo.pageItemId).select("IntranetContentLanguage").get().then((item) => {
+            web.lists.getByTitle("Pages").items.getById(_spPageContextInfo.pageItemId).select("IntranetContentLanguage").get().then((item) => {
 
                 let itemLanguage: string = item.IntranetContentLanguage;
 

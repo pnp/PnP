@@ -10,8 +10,7 @@ var layoutsCssEditExtractTextPlugin = new ExtractTextPlugin("layouts-edit.css");
 var portalCssExtractTextPlugin = new ExtractTextPlugin("portal.css");
 var bootstrapCssExtractTextPlugin = new ExtractTextPlugin("bootstrap-iso.css");
 
-// Wrap the whole Webpack config with a validator to avoid typos mistakes
-module.exports = {
+const config = {
 
     entry: {
         app: "./main.ts", // The main entry point for the application.
@@ -27,8 +26,9 @@ module.exports = {
             "es6-promise",
             "react",
             "react-dom",
-            "office-ui-fabric-react/lib/Link",
+            "sp-pnp-js",
             "office-ui-fabric-react/lib/Panel",
+            "office-ui-fabric-react/lib/Link",
             "office-ui-fabric-react/dist/css/fabric.min.css",
             "flickity/dist/flickity.min.css"
         ]
@@ -87,7 +87,16 @@ module.exports = {
             {
                 // Loader for TypeScript files (.ts)
                 test: /\.tsx?$/,
-                use: 'ts-loader'
+                use: [
+                    {
+                        loader: 'ts-loader',
+                        query : {
+                            silent: true // To be able to run the webpack-bundle-size-analyzer without errors
+                        }
+                    }
+                ],
+
+                
             },
             {
                 // CSS loader for the Office UI fabric styles
@@ -219,6 +228,11 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor',
             filename: 'js/vendor.js',
-        })
+        }),
+
+        // Load only the needed locales to reduce the size of the bundle
+        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|fr/)
     ]
 };
+
+module.exports = config;
