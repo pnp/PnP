@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { IconButton, IButtonProps } from 'office-ui-fabric-react/lib/Button';
+import { Link } from 'office-ui-fabric-react/lib/Link';
 import { Panel } from 'office-ui-fabric-react/lib/Panel';
 import { Chat } from 'botframework-webchat';
 import { Site } from 'sp-pnp-js';
@@ -9,13 +9,18 @@ export class BotChatControl extends React.Component<any, any> {
 
   private configListName: string; 
   private currentLanguage: string;
+  private botId: string;
+  private botHandle: string;
+  private botDirectLineSecretKey: string;
+  private botLinkLabel: string;
 
   constructor() {
     super();
 
     this.configListName = "Configuration";
-    this.state = { showPanel: false, isBotEnabled: false };
+    this.state = { showPanel: false, isBotDisabled: true };
     this.currentLanguage = i18n.t("LanguageLabel");
+    this.botLinkLabel = i18n.t("chatWithBot");
 
     // This binding is necessary to make `this` work in the callback
     this.handleClick = this.handleClick.bind(this);
@@ -30,14 +35,25 @@ export class BotChatControl extends React.Component<any, any> {
     }));
   }
 
-  public componentWillMount() {
+  public componentDidMount() {
 
       let site = new Site(_spPageContextInfo.siteAbsoluteUrl);
       let filterQuery: string = "IntranetContentLanguage eq '" + this.currentLanguage + "'";
 
       site.rootWeb.lists.getByTitle(this.configListName).items.filter(filterQuery).top(1).get().then((item) => {
-        let toto = item;
-        this.setState({isBotEnabled : false});
+
+        let botId = item[0].BotId;
+        let botHandle = item[0].BotHandle;
+        let botDirectLineSecretKey = item[0].BotDirectLineSecretKey;
+
+        if (botId && botHandle && botDirectLineSecretKey) {
+
+          this.botId = botId;
+          this.botHandle = botHandle;
+          this.botDirectLineSecretKey = botDirectLineSecretKey;
+
+          this.setState({ isBotDisabled : false });
+        }
       });
   }
 
@@ -46,12 +62,10 @@ export class BotChatControl extends React.Component<any, any> {
     return (
 
       <div> 
-        <IconButton
-          disabled = { this.state.isBotEnabled }
-          iconProps={ { iconName: 'Emoji2' } }
-          title='Emoji'
-          ariaLabel='Emoji' 
-          onClick= { this.handleClick } />        
+        <Link
+          disabled = { this.state.isBotDisabled }
+          onClick= { this.handleClick }
+          href="#">{ this.botLinkLabel }</Link>      
         <Panel
           isOpen={ this.state.showPanel }
           isLightDismiss={ true }
@@ -59,8 +73,8 @@ export class BotChatControl extends React.Component<any, any> {
           onDismiss={ () => this.setState({ showPanel: false }) }
         >
           <Chat 
-            bot={{id: 'a0095b82-a596-450f-957a-a62b858b75cf', name: 'SharePointBot'}}
-            directLine={{ secret: "0ZVQsoBm6F0.cwA.YdE.HF64soQxOy2ls_t2wKXiL4BKV0HTf1zjiIzUMG-rbzY" }}
+            bot={{id: this.botId , name: this.botHandle }}
+            directLine={{ secret: this.botDirectLineSecretKey }}
             user={{ id: 'user_id', name: 'Guest' }}/>
         </Panel>
       </div>

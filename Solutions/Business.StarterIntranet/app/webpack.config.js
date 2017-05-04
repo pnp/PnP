@@ -14,7 +14,7 @@ var bootstrapCssExtractTextPlugin = new ExtractTextPlugin("bootstrap-iso.css");
 module.exports = {
 
     entry: {
-        app: "./main.tsx", // The main entry point for the application.
+        app: "./main.ts", // The main entry point for the application.
 
         // Note that 'es6-promise' and 'whatwg-fetch' are necessary to get pnp work in IE
         // More info here https://github.com/OfficeDev/PnP-JS-Core/wiki/Install-and-Use
@@ -219,6 +219,6 @@ module.exports = {
         new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor',
             filename: 'js/vendor.js',
-        }),
+        })
     ]
 };

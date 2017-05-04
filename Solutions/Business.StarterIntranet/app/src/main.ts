@@ -30,11 +30,7 @@ import { SearchBoxMobileViewModel } from "./viewmodels/searchboxmobile.viewmodel
 import { TopNavViewModel } from "./viewmodels/topnav.viewmodel";
 import { TranslationControlViewModel } from "./viewmodels/translationcontrol.viewmodel";
 import { ICSCalendarGeneratorViewModel } from "./viewmodels/icscalendargenerator.viewmodel";
-
-import { BotChatControl } from "./components/BotChatPanel"; 
-
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { BotWebChatViewModel } from "./viewmodels/botwebchat.viewmodel";
 
 // Third party libraries
 import i18n = require("i18next");
@@ -165,9 +161,14 @@ export class Main {
         let carouselComponent = new KnockoutComponent("component-carousel", CarouselViewModel, carouselTemplate);
 
         // Component: "ICS Generator"
-        let calendarGeneratorTemplate = require("./templates/icscalendargenerator.viewmodel.html");
+        let calendarGeneratorTemplate = require("./templates/icscalendargenerator.html");
         require("./styles/css/icscalendargenerator.scss");
         let calendarGeneratorComponent = new KnockoutComponent("component-icsgenerator", ICSCalendarGeneratorViewModel, calendarGeneratorTemplate);
+
+        // Component: "Bot Web chat"
+        let botWebChatTemplate = require("./templates/botwebchat.html");
+        require("./styles/css/botwebchat.scss");
+        let botWebChatComponent = new KnockoutComponent("component-botwebchat", BotWebChatViewModel, botWebChatTemplate);        
     }
 
     public init() {
@@ -193,9 +194,7 @@ export class Main {
                 
             localization.initLanguageEnv().then(() => {  
 
-                let web = new Web(_spPageContextInfo.webAbsoluteUrl);     
-
-                ReactDOM.render(<BotChatControl />, document.getElementById('bot-webchat'));      
+                let web = new Web(_spPageContextInfo.webAbsoluteUrl);         
 
                 // Apply the Knockout JS magic!
                 ko.applyBindings();

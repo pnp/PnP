@@ -1,5 +1,9 @@
 <div id="header-links" data-bind="css: {'spinner': wait }">
     <ul>
+
+        <li>
+            <component-botwebchat></component-botwebchat>
+        </li>
         <!-- ko foreach: nodes -->
         <li>
             <i class="fa" aria-hidden="true" data-bind="visible: $data.properties()['iconClass'], css: $data.properties()['iconClass']"></i>

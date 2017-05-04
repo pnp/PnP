@@ -2,24 +2,20 @@
 
 #header  {
 
-    clear: both;
-    float: right;
     font-family: $font-primary;
     text-decoration: none;
     text-transform: uppercase;
+    display: inline-block;
+    vertical-align: top;
 
     /* Start: Global header styles */  
-    #logoZone {
-        float: left;
-    }
-    
     #utilsZone {
-        float: left;
         max-height: 40px;
     }
 
     #language-switcher, #searchbox, #header-links   {
-        float: left;
+        display: inline-block;
+        vertical-align: top;
     }
     /* End: Global header styles */
 }
