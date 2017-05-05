@@ -43,7 +43,6 @@ require("./styles/css/layouts-edit.scss");
 require("./styles/css/displaytemplates.scss");
 
 // Images
-require("./styles/css/images/logo_intranet.png");
 require("./styles/css/images/spinner.gif");
 require("./styles/css/images/default_image.png");
 require("./styles/css/images/favicon_intranet.ico");

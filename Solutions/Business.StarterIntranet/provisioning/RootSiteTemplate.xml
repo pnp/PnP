@@ -941,7 +941,6 @@
           <pnp:Properties>
             <pnp:Property Key="ContentTypeId" Value="{contenttypeid:Welcome Page}" />
             <pnp:Property Key="Title" Value="Intranet - Home" />
-            <pnp:Property Key="IntranetContact" Value="{currentuserloginname}" />
             <pnp:Property Key="PublishingPageLayout" Value="{masterpagecatalog}/{parameter:CompanyName}/HomePageLayout.aspx, Home Page" />
             <pnp:Property Key="PublishingIsFurlPage" Value="False" />
             <pnp:Property Key="RobotsNoIndex" Value="False" />
@@ -1266,7 +1265,6 @@
           <pnp:Properties>
             <pnp:Property Key="ContentTypeId" Value="{contenttypeid:Welcome Page}" />
             <pnp:Property Key="Title" Value="Intranet - Accueil" />
-            <pnp:Property Key="IntranetContact" Value="{currentuserloginname}" />
             <pnp:Property Key="PublishingPageLayout" Value="{masterpagecatalog}/{parameter:CompanyName}/HomePageLayout.aspx, Home Page" />
             <pnp:Property Key="PublishingIsFurlPage" Value="False" />
             <pnp:Property Key="RobotsNoIndex" Value="False" />
@@ -1591,7 +1589,6 @@
           <pnp:Properties>
             <pnp:Property Key="ContentTypeId" Value="{contenttypeid:Welcome Page}" />
             <pnp:Property Key="Title" Value="Search - Intranet" />
-            <pnp:Property Key="IntranetContact" Value="{currentuserloginname}" />
             <pnp:Property Key="PublishingPageLayout" Value="{masterpagecatalog}/{parameter:CompanyName}/SearchPageLayout.aspx,  Search Page" />
             <pnp:Property Key="PublishingIsFurlPage" Value="False" />
             <pnp:Property Key="RobotsNoIndex" Value="False" />
@@ -1728,7 +1725,6 @@
           <pnp:Properties>
             <pnp:Property Key="ContentTypeId" Value="{contenttypeid:Welcome Page}" />
             <pnp:Property Key="Title" Value="Recherche - Intranet" />
-            <pnp:Property Key="IntranetContact" Value="{currentuserloginname}" />
             <pnp:Property Key="PublishingPageLayout" Value="{masterpagecatalog}/{parameter:CompanyName}/SearchPageLayout.aspx,  Search Page" />
             <pnp:Property Key="PublishingIsFurlPage" Value="False" />
             <pnp:Property Key="RobotsNoIndex" Value="False" />
@@ -1865,7 +1861,6 @@
           <pnp:Properties>
             <pnp:Property Key="ContentTypeId" Value="{contenttypeid:Welcome Page}" />
             <pnp:Property Key="Title" Value="Search - Documents" />
-            <pnp:Property Key="IntranetContact" Value="{currentuserloginname}" />
             <pnp:Property Key="PublishingPageLayout" Value="{masterpagecatalog}/{parameter:CompanyName}/SearchPageLayout.aspx,  Search Page" />
             <pnp:Property Key="PublishingIsFurlPage" Value="False" />
             <pnp:Property Key="RobotsNoIndex" Value="False" />
@@ -2002,7 +1997,6 @@
           <pnp:Properties>
             <pnp:Property Key="ContentTypeId" Value="{contenttypeid:Welcome Page}" />
             <pnp:Property Key="Title" Value="Recherche - Documents" />
-            <pnp:Property Key="IntranetContact" Value="{currentuserloginname}" />
             <pnp:Property Key="PublishingPageLayout" Value="{masterpagecatalog}/{parameter:CompanyName}/SearchPageLayout.aspx,  Search Page" />
             <pnp:Property Key="PublishingIsFurlPage" Value="False" />
             <pnp:Property Key="RobotsNoIndex" Value="False" />
@@ -2139,7 +2133,6 @@
           <pnp:Properties>
             <pnp:Property Key="ContentTypeId" Value="{contenttypeid:Welcome Page}" />
             <pnp:Property Key="Title" Value="Search - People" />
-            <pnp:Property Key="IntranetContact" Value="{currentuserloginname}" />
             <pnp:Property Key="PublishingPageLayout" Value="{masterpagecatalog}/{parameter:CompanyName}/SearchPageLayout.aspx,  Search Page" />
             <pnp:Property Key="PublishingIsFurlPage" Value="False" />
             <pnp:Property Key="RobotsNoIndex" Value="False" />
@@ -2276,7 +2269,6 @@
           <pnp:Properties>
             <pnp:Property Key="ContentTypeId" Value="{contenttypeid:Welcome Page}" />
             <pnp:Property Key="Title" Value="Recherche - Personnes" />
-            <pnp:Property Key="IntranetContact" Value="{currentuserloginname}" />
             <pnp:Property Key="PublishingPageLayout" Value="{masterpagecatalog}/{parameter:CompanyName}/SearchPageLayout.aspx,  Search Page" />
             <pnp:Property Key="PublishingIsFurlPage" Value="False" />
             <pnp:Property Key="RobotsNoIndex" Value="False" />
