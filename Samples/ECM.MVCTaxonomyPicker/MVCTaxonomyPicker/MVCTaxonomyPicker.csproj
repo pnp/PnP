@@ -22,6 +22,7 @@
     <WorkflowPartId>{ba330b13-ede4-496c-a5f9-79ce068d0981}</WorkflowPartId>
     <CspkgPartId>{cb2d7929-77f7-4266-aaf2-ac2fb03888e7}</CspkgPartId>
     <SqlPackagePartId>{d566f244-02ae-417e-983f-56b53f324ff5}</SqlPackagePartId>
+    <ActivePublishProfile>ECM-MVCTaxonomyPickerDemo - Web Deploy</ActivePublishProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
