@@ -393,11 +393,19 @@
                 this._control.empty().append(this._editor).append(this._hiddenValidated);
             }
 
-
-
-
             //initialize value if it exists
-            if (this._initialValue != undefined && this._initialValue.length > 0) {
+            if (this._initialLabels) {
+                //When the termset is loaded, terms with the supplied labels are initially selected
+                this.TermSet.OnTermsLoaded = Function.createDelegate(this, function () {
+                    for (var j = 0; j < this._initialLabels.length; j++) {
+                        var terms = this.TermSet.getTermsByLabel(this._initialLabels[j]);
+                        for (var i = 0; i < terms.length; i++) {
+                            this.pushSelectedTerm(terms[i]);
+                        }
+                    }
+                    this._editor.html(this.selectedTermsToHtml());
+                });
+            } else if (this._initialValue != undefined && this._initialValue.length > 0) {
                 var terms = JSON.parse(this._initialValue);
                 for (var i = 0; i < terms.length; i++) {
                     //add the term to selected terms array
