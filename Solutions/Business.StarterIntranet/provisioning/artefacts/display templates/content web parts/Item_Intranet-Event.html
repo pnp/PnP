@@ -5,7 +5,7 @@
 <!--[if gte mso 9]><xml>
 <mso:CustomDocumentProperties>
 <mso:TemplateHidden msdt:dt="string">0</mso:TemplateHidden>
-<mso:ManagedPropertyMapping msdt:dt="string">'Picture URL'{Picture URL}:'PublishingImage','Link URL'{Link URL}:'Path','Title'{Title}:'Title','News Summary'{News Summary}:'PublishingPageContentOWSHTML','News Publishing Date'{News Publishing Date}:'IntranetContentPublishingDateOWSDATE','Refiner'{Refiner}:'RefinableString02','SecondaryFileExtension','ContentTypeId','StartDateOWSDATE','EndDateOWSDATE','LocationOWSTEXT','ListItemID'</mso:ManagedPropertyMapping>
+<mso:ManagedPropertyMapping msdt:dt="string">'Picture URL'{Picture URL}:'PublishingImage','Link URL'{Link URL}:'Path','Title'{Title}:'Title','News Summary'{News Summary}:'PublishingPageContentOWSHTML','News Publishing Date'{News Publishing Date}:'IntranetContentPublishingDateOWSDATE','Refiner'{Refiner}:'RefinableString02','SecondaryFileExtension','ContentTypeId','StartDateOWSDATE','RefinableString05','LocationOWSTEXT','ListItemID'</mso:ManagedPropertyMapping>
 <mso:MasterPageDescription msdt:dt="string">Displays event item in a list format.</mso:MasterPageDescription>
 <mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106603</mso:ContentTypeId>
 <mso:TargetControlType msdt:dt="string">;#Content Web Parts;#</mso:TargetControlType>
@@ -92,14 +92,14 @@
 								<!-- /ko -->
 							</p>
 							
-							<!-- ko if: $data.EndDateOWSDATE -->
+							<!-- ko if: $data.RefinableString05 -->
 							
-								<!-- ko if: EndDateOWSDATE != StartDateOWSDATE -->
+								<!-- ko if: RefinableString05 != StartDateOWSDATE -->
 								
 								<i class="fa fa-arrow-right arrow" aria-hidden="true"></i>
 								<p class="event-date date-box">
-									<i class="month" data-bind="formatDateField: EndDateOWSDATE, dateFormat : 'MMM'"></i> 
-									<i class="day" data-bind="formatDateField: EndDateOWSDATE, dateFormat : 'DD'"></i>
+									<i class="month" data-bind="formatDateField: RefinableString05, dateFormat : 'MMM'"></i> 
+									<i class="day" data-bind="formatDateField: RefinableString05, dateFormat : 'DD'"></i>
 								</p>
 								<!-- /ko -->
 							<!-- /ko -->
@@ -112,9 +112,10 @@
 							<!-- ko if: $data.StartDateOWSDATE-->
 	                        <span data-bind="formatDateField: StartDateOWSDATE, dateFormat : 'HH:mm A'"></span >
 	                        <!-- /ko -->
-	                        <!-- ko if: $data.EndDateOWSDATE -->
+                            <!-- RefinableString05 = EndDateOWSDATE (we can't use managed property aliases in display templates) -->
+	                        <!-- ko if: $data.RefinableString05 -->
 	                        -
-	                        <span data-bind="formatDateField: EndDateOWSDATE, dateFormat : 'HH:mm A'"></span >
+	                        <span data-bind="formatDateField: RefinableString05, dateFormat : 'HH:mm A'"></span >
 	                        <!-- /ko -->
 						</div>
 											

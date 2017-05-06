@@ -36,3 +36,11 @@
         }
     }
 }
+
+/* Small devices */
+@media (max-width: 768px) { 
+
+    #header-links {
+        text-align: center;
+    }
+}

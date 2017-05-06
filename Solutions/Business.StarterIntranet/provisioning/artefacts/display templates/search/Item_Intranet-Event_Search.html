@@ -9,7 +9,7 @@
 <mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106603</mso:ContentTypeId>
 <mso:TargetControlType msdt:dt="string">;#SearchResults;#</mso:TargetControlType>
 <mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
-<mso:ManagedPropertyMapping msdt:dt="string">'Title':'Title','Path':'Path','HitHighlightedSummary','HitHighlightedProperties','PublishingImage','IntranetContentPublishingDateOWSDATE','ContentTypeId','StartDateOWSDATE','EndDateOWSDATE','LocationOWSTEXT' </mso:ManagedPropertyMapping><mso:HtmlDesignConversionSucceeded msdt:dt="string">True</mso:HtmlDesignConversionSucceeded>
+<mso:ManagedPropertyMapping msdt:dt="string">'Title':'Title','Path':'Path','HitHighlightedSummary','HitHighlightedProperties','PublishingImage','IntranetContentPublishingDateOWSDATE','ContentTypeId','StartDateOWSDATE','RefinableString05','LocationOWSTEXT' </mso:ManagedPropertyMapping><mso:HtmlDesignConversionSucceeded msdt:dt="string">True</mso:HtmlDesignConversionSucceeded>
 <mso:DisplayTemplateLevel msdt:dt="string">Item</mso:DisplayTemplateLevel></mso:CustomDocumentProperties></xml><![endif]-->
 </head>
 <body>
@@ -78,9 +78,10 @@
 									<span data-bind="formatDateField: StartDateOWSDATE, dateFormat : 'LLL'"></span>
 									<!-- /ko -->
 									
-									<!-- ko if: $data.EndDateOWSDATE-->
+									<!-- RefinableString05 = EndDateOWSDATE (we can't use managed property aliases in display templates) -->
+									<!-- ko if: $data.RefinableString05-->
 									-
-									<span data-bind="formatDateField: EndDateOWSDATE, dateFormat : 'LLL'"></span>
+									<span data-bind="formatDateField: RefinableString05, dateFormat : 'LLL'"></span>
 									<!-- /ko -->
 								</div>
 								

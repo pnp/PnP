@@ -28,7 +28,11 @@
         .ms-promlink-headerNav {
 
             padding-right: 15px;
-            margin: 0px;
+            margin-top: 15px;
+            float: none;
+            display: block;
+            text-align: center;
+
 
             a {
                 text-decoration: none;
@@ -47,7 +51,14 @@
                 }
             }
         }
+        
+        li~li {
+            .event-item, .news-item {
+                border-top: 1px solid #F2EFEF;
+            }
+        }
     }
+
     /* End Content Search Web Part Styles */
 
     /* Start Search Results Styles */ 
@@ -212,7 +223,6 @@
         width: 100%;
         display: inline-block;
         padding: 15px;
-        border-bottom: 1px solid #e0e0e0;
 
         p {
             margin: 0;
@@ -280,5 +290,5 @@
                 background: #f9f9f9;
             }
         }
-    }
+    }   
 }

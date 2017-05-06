@@ -81,7 +81,8 @@ export class BotChatControl extends React.Component<any, any> {
             bot={{id: this.botId , name: this.botHandle }}
             directLine={{ secret: this.botDirectLineSecretKey }}
             user={{ id: 'user_id', name: 'Guest' }}
-            locale={ this.currentLanguage.toLowerCase() }/>
+            locale={ this.currentLanguage.toLowerCase() }
+            sendTyping= { true }/>
         </Panel>
       </div>
     );

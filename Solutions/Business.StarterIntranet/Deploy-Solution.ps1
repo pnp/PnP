@@ -50,6 +50,7 @@ switch ($ServerVersion)
 { 
 	15 {$AssemblyVersion = "15.0.0.0"} 
 	16 {$AssemblyVersion = "16.0.0.0"} 
+    default {$AssemblyVersion = "16.0.0.0"}
 }
 
 # -------------------------------------------------------------------------------------
@@ -57,7 +58,7 @@ switch ($ServerVersion)
 # -------------------------------------------------------------------------------------
 Get-ChildItem -Path ".\provisioning\artefacts" -Include "*.aspx","*.master" -Recurse | ForEach-Object {
 
-    (Get-Content -Path $_.FullName) -replace "1[5|6].0.0.0",$AssemblyVersion | Out-File -FilePath $_.FullName
+    (Get-Content -Path $_.FullName) -replace "1[5|6]\.0\.0\.0",$AssemblyVersion | Out-File -FilePath $_.FullName
 }
 
 # -------------------------------------------------------------------------------------

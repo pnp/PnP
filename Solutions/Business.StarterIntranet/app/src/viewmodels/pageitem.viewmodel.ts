@@ -8,6 +8,8 @@ import sprintf = require("sprintf-js");
 import { Localization } from "../core/localization";
 import { UtilityModule } from "../core/utility";
 
+declare function unescape(s:string): string;
+
 export class PageDisplayTemplateItemViewModel extends DefaultDisplayTemplateItemViewModel {
 
     public allLabel: KnockoutObservable<string>;
@@ -38,8 +40,11 @@ export class PageDisplayTemplateItemViewModel extends DefaultDisplayTemplateItem
                         // Get only the L0 refiner value from the taxonomy field
                         let itemContentType = filterValue.match(/L0\|#0[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}\|.*?;/);
 
+                        // Encode diacritics
+                        let ctValue = unescape(encodeURIComponent(itemContentType[0]));
+
                         if (itemContentType) {
-                            let refinerValue = "\\\"ǂǂ" + utilityModule.stringToHex(itemContentType[0].slice(0, -1)) + "\\\""; 
+                            let refinerValue = "\\\"ǂǂ" + utilityModule.stringToHex(ctValue.slice(0, -1)) + "\\\""; 
 
                             // We can't filter by ContentTypeId because the refinement does an "equal"" instead of a "contain" (so 0x0..* does not work). We use the taxonomy field ContentType instead (RefinableString02)
                             let refinementString = '{"k":"*","r":[{"n":"'+ filterProperty +'","t":["' + refinerValue + '"],"o":"and","k":true,"m":null}]}';
