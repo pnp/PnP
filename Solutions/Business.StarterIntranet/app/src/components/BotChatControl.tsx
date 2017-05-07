@@ -80,7 +80,7 @@ export class BotChatControl extends React.Component<any, any> {
           <Chat 
             bot={{id: this.botId , name: this.botHandle }}
             directLine={{ secret: this.botDirectLineSecretKey }}
-            user={{ id: 'user_id', name: 'Guest' }}
+            user={{ id: '', name: _spPageContextInfo["userDisplayName"] }}
             locale={ this.currentLanguage.toLowerCase() }
             sendTyping= { true }/>
         </Panel>

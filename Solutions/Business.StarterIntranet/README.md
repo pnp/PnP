@@ -14,27 +14,27 @@ Here is what you get with this sample:
 - A mobile intranet using SharePoint 2013/2016 on-premises or SharePoint Online.
 - A concrete example of a bot integration within an intranet solution (see below)
 
-<table style="margin: 0px auto;">
-  <tr>
-    <th>
+<table style="margin: 0px auto">
+  <tr style="border: none">
+    <th style="border: none">
         <p align="center">Home Page - (SharePoint Online)</p>
         <p align="center">
-            <img width="600" src="./images/homepage.png"/>
+            <img src="./images/homepage.png"/>
         </p>
     </th>
   </tr>
 </table>
 
-<table style="margin: 0px auto;">
-  <tr>
-    <th>
+<table style="margin: 0px auto">
+  <tr style="border: none">
+    <th style="border: none">
       <p align="center">News page (Desktop)</p>
       <p align="center">
         <img width="600" 
         src="./images/news.png"/>
       </p>
     </th>
-    <th>
+    <th style="border: none">
       <p align="center">News page (Mobile)</p>
       <p align="center">
         <img width="300" src="./images/news-mobile.png">
@@ -43,9 +43,9 @@ Here is what you get with this sample:
   </tr> 
 </table>
 
-<table style="margin: 0px auto;">
-  <tr>
-    <th>
+<table style="margin: 0px auto;border: 0px">
+  <tr style="border: none">
+    <th style="border: none">
       <p align="center">Bot framework integration</p>
       <p align="center">
         <img src="./images/bot-demo.gif">
