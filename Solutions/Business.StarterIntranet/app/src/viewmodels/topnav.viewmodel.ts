@@ -3,7 +3,7 @@
 // ========================================
 import * as i18n from "i18next";
 import "pubsub-js";
-import * as pnp from "sp-pnp-js";
+import { Site, Logger, LogLevel, storage } from "sp-pnp-js";
 
 import { TaxonomyModule } from "../core/taxonomy";
 import { UtilityModule } from "../core/utility";
@@ -39,9 +39,10 @@ export class TopNavViewModel extends NavigationViewModel {
         });
 
         let filterQuery: string = "IntranetContentLanguage eq '" + currentLanguage + "'";
+        let site = new Site(_spPageContextInfo.siteAbsoluteUrl);
 
         // Read the configuration value from the configuration list and for the current langauge. We use a list item instead of a term set property to improve performances (SOD loading is slow compared to a simple REST call).
-        pnp.sp.site.rootWeb.lists.getByTitle(configListName).items.filter(filterQuery).top(1).get().then((item) => {
+        site.rootWeb.lists.getByTitle(configListName).items.filter(filterQuery).top(1).get().then((item) => {
 
             if (item.length > 0) {
 
@@ -54,7 +55,7 @@ export class TopNavViewModel extends NavigationViewModel {
                 if (noCache) {
 
                         // Clear the local storage value
-                        pnp.storage.local.delete(this.localStorageKey);
+                        storage.local.delete(this.localStorageKey);
 
                         // Get navigation nodes
                         this.getNavigationNodes(termSetId);
@@ -80,14 +81,14 @@ export class TopNavViewModel extends NavigationViewModel {
 
             } else {
 
-                pnp.log.write("There is no configuration item for the site map for the language '" + currentLanguage + "'", pnp.LogLevel.Error);
+                Logger.write("There is no configuration item for the site map for the language '" + currentLanguage + "'", LogLevel.Error);
             }
 
         }).catch(errorMesssage => {
 
             this.errorMessage(errorMesssage);
 
-            pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+            Logger.write(errorMesssage, LogLevel.Error);
         });
     }
 
@@ -96,7 +97,7 @@ export class TopNavViewModel extends NavigationViewModel {
         if (!termSetId) {
 
             let errorMesssage = "The term set id for the site map is null. Please specify a valid term set id in the configuration list";
-            pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+            Logger.write(errorMesssage, LogLevel.Error);
 
             this.errorMessage(errorMesssage);
 
@@ -118,18 +119,18 @@ export class TopNavViewModel extends NavigationViewModel {
                         let now: Date = new Date();
 
                         // Set the navigation tree in the local storage of the browser
-                        pnp.storage.local.put(this.localStorageKey, this.utilityModule.stringifyTreeObject(navigationTree), new Date(now.setDate(now.getDate() + 7)));
+                        storage.local.put(this.localStorageKey, this.utilityModule.stringifyTreeObject(navigationTree), new Date(now.setDate(now.getDate() + 7)));
 
                 }).catch(errorMesssage => {
 
                     this.errorMessage(errorMesssage);
-                    pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+                    Logger.write(errorMesssage, LogLevel.Error);
                 });
 
             }).catch(errorMesssage => {
 
                 this.errorMessage(errorMesssage);
-                pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+                Logger.write(errorMesssage, LogLevel.Error);
             });
         }
     }

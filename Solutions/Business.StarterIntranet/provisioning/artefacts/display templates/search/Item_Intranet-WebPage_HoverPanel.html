@@ -38,7 +38,7 @@ _#-->
                         loadSiteFrame = true;
                         var idViewerEncoded = $htmlEncode(id + HP.ids.viewer);
                         var idGlassViewerEncoded = "glass_" + idViewerEncoded;
-						var encodedSrcOfIframe = $urlHtmlEncodeString(ctx.CurrentItem.csr_Path);
+						var encodedSrcOfIframe = $urlHtmlEncode(ctx.CurrentItem.csr_Path);
 _#-->				    
                         <div class="ms-srch-hover-viewerContainer ms-srch-hover-siteViewerContainer">
                             <div id="_#= idGlassViewerEncoded =#_" class="ms-srch-hover-glass-siteViewer"></div>
