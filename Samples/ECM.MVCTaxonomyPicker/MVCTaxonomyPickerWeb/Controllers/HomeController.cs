@@ -1,7 +1,6 @@
 ﻿using MVCTaxonomyPickerWeb.Helpers;
 using MVCTaxonomyPickerWeb.Models;
 using MVCTaxonomyPickerWeb.Services;
-using MVCTaxonomyPickerWeb.ViewModels;
 using Microsoft.SharePoint.Client;
 using System;
 using System.Collections.Generic;
@@ -17,9 +16,9 @@ namespace MVCTaxonomyPickerWeb.Controllers
         public ActionResult Index()
         {
             User spUser = null;
-
+            ViewBag.Current = "Home";
             var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
-
+            ViewBag.SPHostUrl = spContext.SPHostUrl.AbsoluteUri.TrimEnd('/');
             using (var clientContext = spContext.CreateUserClientContextForSPHost())
             {
                 if (clientContext != null)
@@ -40,6 +39,9 @@ namespace MVCTaxonomyPickerWeb.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
+            ViewBag.Current = "About";
+            var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
+            ViewBag.SPHostUrl = spContext.SPHostUrl.AbsoluteUri.TrimEnd('/');
 
             return View();
         }
@@ -47,6 +49,9 @@ namespace MVCTaxonomyPickerWeb.Controllers
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
+            ViewBag.Current = "Contact";
+            var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
+            ViewBag.SPHostUrl = spContext.SPHostUrl.AbsoluteUri.TrimEnd('/');
 
             return View();
         }
@@ -75,19 +80,23 @@ namespace MVCTaxonomyPickerWeb.Controllers
         [SharePointContextFilter]
         public ActionResult TaxonomyPickerDemo()
         {
-            var model = new DemoViewModel();            
+            ViewBag.Current = "Demo";
+            var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
+            ViewBag.SPHostUrl = spContext.SPHostUrl.AbsoluteUri.TrimEnd('/');
+
+            var model = new DemoModel();            
             return View(model);
         }
 
         [HttpPost]        
         [SharePointContextFilter]
-        public ActionResult GetTaxonomyPickerHiddenValue(DemoViewModel model)
+        public ActionResult GetTaxonomyPickerHiddenValue(DemoModel model)
         {
             if (!ModelState.IsValid) //Check for validation errors
             {
                 RedirectToAction("Index", "Home");
             }
-            return Json(JsonHelper.Serialize<DemoViewModel>(model), JsonRequestBehavior.AllowGet);
+            return Json(JsonHelper.Serialize<DemoModel>(model), JsonRequestBehavior.AllowGet);
         }
     }
 }

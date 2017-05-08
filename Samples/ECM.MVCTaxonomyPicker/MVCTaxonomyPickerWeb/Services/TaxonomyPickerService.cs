@@ -45,7 +45,7 @@ namespace MVCTaxonomyPickerWeb.Services
             if (clientContext != null)
             {                
                 var taxonomySession = TaxonomySession.GetTaxonomySession(clientContext);
-                var termStore = taxonomySession.GetDefaultKeywordsTermStore();
+                var termStore = taxonomySession.GetDefaultSiteCollectionTermStore();
 
                 Term parentTerm = null;
                 TermSet termSet = GetParent(termStore, model, out parentTerm);
