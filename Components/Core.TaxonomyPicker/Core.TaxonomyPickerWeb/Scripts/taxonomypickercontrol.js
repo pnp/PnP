@@ -198,6 +198,7 @@
                     termPath = term.PathOfTerm.split(';')
                     if (termPath.length > 0 && parts[i] == termPath[termPath.length - 1]) {
                         termList = term.Children;
+
                         break;
                     }
                 }
