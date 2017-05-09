@@ -1,0 +1,43 @@
+All files in:
+%ProgramFiles%\SharePoint Client Components\16.0\Assemblies
+%ProgramFiles%\SharePoint Client Components\16.0\Scripts
+
+The following files in %ProgramFiles%\Common Files\Microsoft Shared\Web Server Extensions\16\ISAPI:
+Microsoft.Office.Client.Policy.dll
+Microsoft.Office.Client.Policy.Portable.dll
+Microsoft.Office.Client.TranslationServices.dll
+Microsoft.Office.Client.TranslationServices.Portable.dll
+Microsoft.SharePoint.Client.dll
+Microsoft.SharePoint.Client.Portable.dll
+Microsoft.SharePoint.Client.DocumentManagement.dll
+Microsoft.SharePoint.Client.DocumentManagement.Portable.dll
+Microsoft.Sharepoint.Client.Portable.dll
+Microsoft.SharePoint.Client.Publishing.dll
+Microsoft.SharePoint.Client.Publishing.Portable.dll
+Microsoft.SharePoint.Client.Runtime.dll
+Microsoft.SharePoint.Client.Runtime.Portable.dll
+Microsoft.Sharepoint.Client.Runtime.Windows.dll
+Microsoft.Sharepoint.Client.Runtime.WindowsPhone.dll
+Microsoft.Sharepoint.Client.Runtime.WindowsStore.dll
+Microsoft.SharePoint.Client.Search.Applications.dll
+Microsoft.SharePoint.Client.Search.Applications.Portable.dll
+Microsoft.SharePoint.Client.Search.dll
+Microsoft.SharePoint.Client.Search.Portable.dll
+Microsoft.SharePoint.Client.Taxonomy.dll
+Microsoft.SharePoint.Client.Taxonomy.Portable.dll
+Microsoft.SharePoint.Client.UserProfiles.dll
+Microsoft.SharePoint.Client.UserProfiles.Portable.dll
+Microsoft.SharePoint.Client.WorkflowServices.dll
+Microsoft.SharePoint.Client.WorkflowServices.Portable.dll
+
+The following files in %ProgramFiles%\Common Files\Microsoft Shared\Web Server Extensions\16\TEMPLATE\LAYOUTS\ClientBin:
+Microsoft.Office.Client.Policy.Silverlight.dll
+Microsoft.Office.Client.TranslationServices.Silverlight.dll
+Microsoft.SharePoint.Client.DocumentManagement.Silverlight.dll
+Microsoft.Sharepoint.Client.Publishing.Silverlight.dll
+Microsoft.SharePoint.Client.Search.Applications.Silverlight.dll
+Microsoft.SharePoint.Client.Search.Silverlight.dll
+Microsoft.SharePoint.Client.Silverlight.dll
+Microsoft.SharePoint.Client.Silverlight.Runtime.dll
+Microsoft.SharePoint.Client.Taxonomy.Silverlight.dll
+Microsoft.SharePoint.Client.WorkflowServices.Silverlight.dll

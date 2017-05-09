@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+    <metadata>
+        <id>OfficeDevPnP.Core</id>
+        <version>0.5.1113.0</version>
+        <title>OfficeDevPnP.Core (on-premises)</title>
+        <authors>Office 365 Developer Patterns &amp; Practices</authors>
+        <owners>Microsoft Office Developer Patterns &amp; Practices</owners>
+        <licenseUrl>https://github.com/OfficeDev/PnP/blob/master/LICENSE.md</licenseUrl>
+        <projectUrl>http://aka.ms/OfficeDevPnP</projectUrl>
+        <iconUrl>http://i.imgur.com/6MWZgWW.png</iconUrl>
+        <requireLicenseAcceptance>true</requireLicenseAcceptance>
+        <description>Office 365 Patterns &amp; Practices Core CSOM extension methods for SharePoint app model development in Office 365.</description>
+        <summary>Core CSOM extension methods for SharePoint app model development.</summary>
+        <releaseNotes />
+        <copyright>Copyright 2014</copyright>
+        <tags>SharePoint CSOM OfficeDev Office AppModel FTCtoCAM Office365</tags>
+        <dependencies>
+            <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.2" />
+            <dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.2" />
+            <dependency id="AppForSharePointWebToolkit" version="3.0.1" />
+            <dependency id="SharePoint.ClientComponents" version="[15.0.4641.1011,16)" />
+        </dependencies>
+        <frameworkAssemblies>
+            <frameworkAssembly assemblyName="System" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Configuration" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Core" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Data" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Data.DataSetExtensions" targetFramework="" />
+            <frameworkAssembly assemblyName="System.IdentityModel" targetFramework="" />
+            <frameworkAssembly assemblyName="System.IdentityModel.Selectors" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Net.Http" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Net.Http.Formatting" targetFramework="" />
+            <frameworkAssembly assemblyName="System.ServiceModel" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Web" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Web.Extensions" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Xml" targetFramework="" />
+            <frameworkAssembly assemblyName="System.Xml.Linq" targetFramework="" />
+            <frameworkAssembly assemblyName="Microsoft.IdentityModel" targetFramework="" />
+            <frameworkAssembly assemblyName="Microsoft.IdentityModel.Extensions" targetFramework="" />
+        </frameworkAssemblies>
+    </metadata>
+    <files>
+        <file src="OfficeDevPnP.Core\bin\Release15\OfficeDevPnP.Core.dll" target="lib\net45" />
+    </files>
+</package>
