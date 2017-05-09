@@ -1,0 +1,65 @@
+﻿@if (ViewBag.DidNotAddConnectedServices == true)
+{
+    <h1>Oops you've reached an error!</h1>
+    <br />
+    <br />
+    <h5>
+        Looks like you may not have added the connected service to your project. Follow the
+        instructions in the readme to register and configure the sample to consume Office 365 services. The
+        readme file is in the solution (README.MD).
+    </h5>
+    <br />
+    <br />
+}
+@if (ViewBag.TenantIDIsNull == true)
+{
+    <h1>Oops you've reached an error!</h1>
+    <br />
+    <br />
+    <h5>
+        Looks like you may not have entered the value of your tenant ID in the web.config file in your project. Follow the
+        instructions in the readme to get this value from the Azure portal and copy it into the web.config file. The
+        readme file is in the solution (README.MD).
+    </h5>
+    <br />
+    <br />
+}
+@if ((ViewBag.DidNotAddConnectedServices == false) && (ViewBag.TenantIDIsNull == false))
+{
+    <div class="main">
+        <br />
+        <p>
+            This sample uses the <strong><a href="http://msdn.microsoft.com/en-us/office/office365/howto/platform-development-overview">Office 365 API</a></strong> client libraries 
+            to illustrate using the Client Side Object Model (CSOM) to perform administrative tasks on your SharePoint Online. 
+        </p>
+        <br />
+        <p>To get started:</p>
+        <br />
+        <ol>
+            <li><p>Select Sign in from the upper right corner of this page to sign in to your Office 365 tenant.</p></li>
+            <li><p>Select the buttons below to see this app in action.</p></li>
+        </ol>
+
+        <br />
+        <br />
+
+        <div class="mainButtons">
+            <button id="siteButton" type="button" class="btn btn-lg btn-primary has-spinner" data-spinner="right" onclick="location.href='@Url.Action("Index", "Site")'">Sites</button>
+        </div>
+    </div>
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        var spinnerHTML = "<span class='spinner'><i class='fa fa-spinner fa-spin'></i></span>",
+            spinnerObjects = $(".has-spinner");
+
+
+        spinnerObjects.click(function () {
+            $(this).append("&nbsp;" + spinnerHTML)
+            $(this).toggleClass('active');
+        });
+    });
+
+</script>
+
+

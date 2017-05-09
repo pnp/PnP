@@ -1,0 +1,78 @@
+﻿@model Provisioning.Cloud.Management.Models.Site
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h1>Sites</h1>
+<h3>Create site</h3>
+
+<div>
+    @Html.ActionLink("Discard this and take me back to the list", "Index")
+</div>
+@using (Html.BeginForm())
+{
+
+    <hr />
+    <br />
+
+    @Html.ValidationSummary(true)
+
+    <div class="form">
+        <form class="form-horizontal">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Title, new { @class = "control-label col-xs-2" })
+                @Html.EditorFor(model => model.Title, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Title)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Uri, new { @class = "control-label col-xs-2" })
+                @Html.EditorFor(model => model.Uri, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Uri)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Language, new { @class = "control-label col-xs-2" })
+                <select name="Language" id="Language"></select>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Template, new { @class = "control-label col-xs-2" })
+                <select name="Template" id="Template"></select>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Owner, new { @class = "control-label col-xs-2" })
+                @Html.EditorFor(model => model.Owner, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Owner)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.StorageMaximumLevel, new { @class = "control-label col-xs-2" })
+                @Html.EditorFor(model => model.StorageMaximumLevel, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.StorageMaximumLevel)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.UserCodeMaximumLevel, new { @class = "control-label col-xs-2" })
+                @Html.EditorFor(model => model.UserCodeMaximumLevel, new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.UserCodeMaximumLevel)
+            </div>
+
+            <div class="form-group">
+                <div class="col-xs-offset-2 col-xs-10">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+    </div>
+}
+
+
+<script>
+    $(document).ready(
+        function () {
+            loadLanguages($('#Language'), $('#Template'));
+        });
+</script>

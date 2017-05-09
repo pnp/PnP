@@ -1,0 +1,65 @@
+﻿@model IEnumerable<Provisioning.Cloud.Management.Models.Site>
+@{
+    ViewBag.Title = "Index";
+}
+<h1>SharePoint Sites<span class="refreshlink"> &nbsp;@Html.ActionLink("Refresh", "Index")</span></h1>
+<br />
+<br />
+<p>
+    @Html.ActionLink("Create New Site Collection", "Create")
+</p>
+<br />
+<br />
+<table class="table table-striped">
+    <tr>
+        <th>
+            Uri
+        </th>
+        <th>
+            Title
+        </th>
+        <th>
+            Language
+        </th>
+        <th>
+            Owner
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Template
+        </th>
+        <th>
+            Action
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Uri)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Language)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Owner)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Template)
+            </td>
+            <td>
+                @Html.ActionLink("Delete", "Delete", new { uri = item.Uri })
+            </td>
+        </tr>
+    }
+</table>
+<br />
+<br />

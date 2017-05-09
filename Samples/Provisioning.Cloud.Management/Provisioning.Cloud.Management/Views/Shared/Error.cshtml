@@ -1,0 +1,76 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+}
+
+<h1>Oops you've reached an error!</h1>
+<h2>We weren't able to process the action you requested. This was caused by an exception in the below table: </h2>
+
+<body>
+
+    <p>&nbsp;</p>
+    <p>&nbsp;</p>
+    <table style="width: 100%">
+        <tr>
+            <td class="auto-style1" style="width: 180px">
+                <strong>
+                    Exception
+                </strong>
+            </td>
+            <td class="auto-style1" style="width: 325px"><strong>Cause</strong></td>
+            <td class="auto-style1"><strong>Action</strong></td>
+        </tr>
+        <tr>
+            <td style="width: 180px" valign="top">AdalException</td>
+            <td style="width: 325px" valign="top">
+                This exception is thrown when
+                either you have a stale O365 access token that can cause
+                authentication errors, or you attempted to access a resource
+                that you don&#39;t have permissions to access.
+            </td>
+            <td>
+                <p>
+                    You&#39;ll may need to refresh the access token. Try signing
+                    out and signing back in to the app again, or refreshing the
+                    session Click @Html.ActionLink("here", "RefreshSession", "Account").
+                </p>
+                <p>
+                    <br />
+                    Make sure the app is configured with the correct service permissions in
+                    the <strong>Services Manager</strong> menu. If any of these permissions are
+                    not configured, or configured incorrectly, some parts of the app may throw
+                    an error. For example&nbsp; Right click the project, select <strong>Connected Service...</strong>,
+                    and ensure the following permissions are set for this app:
+                </p>
+                <ul>
+                    <li>
+                        <strong>(Calendar)</strong> – Have full access to users’
+                        calendar and Read users&#39; calendar
+                    </li>
+                    <li>
+                        <strong>(Contacts)</strong> – Have full access to users’ contacts
+                        and Read users&#39; contacts
+                    </li>
+                    <li>
+                        <strong>(Mail)</strong> - Send mail as a user, Read and write access
+                        to users&#39; mail, and Read users&#39; mail
+                    </li>
+                    <li>
+                        <strong>(Users and Groups)</strong> – Enable sign-on and read users’
+                        profiles.
+                    </li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+    <br />
+
+
+
+</body>
+
+
+
+
+
