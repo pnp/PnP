@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sharepoint.Deployment", "Sharepoint.Deployment\Sharepoint.Deployment.csproj", "{0892228F-57E9-4AD2-B9E7-D311F7EE699C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sharepoint.Deployment.Console", "Sharepoint.Deployment.Console\Sharepoint.Deployment.Console.csproj", "{A5EFA4DD-E215-48B2-B14B-D9B3BEC3E66E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0892228F-57E9-4AD2-B9E7-D311F7EE699C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0892228F-57E9-4AD2-B9E7-D311F7EE699C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0892228F-57E9-4AD2-B9E7-D311F7EE699C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0892228F-57E9-4AD2-B9E7-D311F7EE699C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5EFA4DD-E215-48B2-B14B-D9B3BEC3E66E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5EFA4DD-E215-48B2-B14B-D9B3BEC3E66E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5EFA4DD-E215-48B2-B14B-D9B3BEC3E66E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5EFA4DD-E215-48B2-B14B-D9B3BEC3E66E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
