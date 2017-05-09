@@ -36,6 +36,7 @@ namespace Contoso.Core.PeoplePickerWeb
             querryParams.PrincipalType = (PrincipalType) principalType;
             querryParams.QueryString = searchString;
 
+            //RV This is my comment
             if (!string.IsNullOrEmpty(spGroupName))
             {
                 if (PeoplePickerHelper.GroupID == -1)
