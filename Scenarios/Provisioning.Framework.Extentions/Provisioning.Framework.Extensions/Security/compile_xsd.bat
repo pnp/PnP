@@ -1,0 +1,2 @@
+SET xsdlocation=C:\Program Files (x86)\Microsoft SDKs\Windows\v8.1A\Bin\NETFX 4.5.1 Tools
+"%xsdlocation%\xsd.exe" -c SecurityProvisionSchema.xsd /n:Provisioning.Framework.Extensions.SecurityProvisionSchema

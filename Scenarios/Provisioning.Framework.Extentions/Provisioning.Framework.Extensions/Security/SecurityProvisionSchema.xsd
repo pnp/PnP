@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="WebPartProvision"
+    targetNamespace="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema/Extentions/Security"
+    elementFormDefault="qualified"
+    xmlns="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema/Extentions/Security"
+    xmlns:mstns="http://schemas.dev.office.com/PnP/2015/05/ProvisioningSchema/Extentions/Security"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  
+  <xs:element name="Security" type="SecurityConfiguration">
+  </xs:element>
+
+  <xs:complexType name="SecurityConfiguration">
+    <xs:sequence>
+      <xs:element name="PermissionLevels" type="mstns:PermissionLevelList" minOccurs="0" maxOccurs="1" />
+      <xs:element name="Groups" type="mstns:GroupList" minOccurs="0" maxOccurs="1" />
+      <xs:element name="PermissionScopes" type="mstns:PermissionScopeList" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="PermissionLevelList">
+    <xs:sequence>
+      <xs:element name="PermissionLevel" type="mstns:PermissionLevel" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="PermissionLevel">
+    <xs:sequence>
+      <xs:element name="Permissions" type="mstns:BasePermissionList" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="Title"/>
+    <xs:attribute type="xs:string" name="Description"/>
+  </xs:complexType>
+
+  <xs:complexType name="BasePermissionList">
+    <xs:sequence>
+      <xs:element name="BasePermission" type="mstns:BasePermission" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="BasePermission">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ViewListItems"/>
+      <xs:enumeration value="AddListItems"/>
+      <xs:enumeration value="EditListItems"/>
+      <xs:enumeration value="DeleteListItems"/>
+      <xs:enumeration value="ApproveItems"/>
+      <xs:enumeration value="OpenItems"/>
+      <xs:enumeration value="ViewVersions"/>
+      <xs:enumeration value="DeleteVersions"/>
+      <xs:enumeration value="CancelCheckout"/>
+      <xs:enumeration value="ManagePersonalViews"/>
+      <xs:enumeration value="ManageLists"/>
+      <xs:enumeration value="ViewFormPages"/>
+      <xs:enumeration value="AnonymousSearchAccessList"/>
+      <xs:enumeration value="Open"/>
+      <xs:enumeration value="ViewPages"/>
+      <xs:enumeration value="AddAndCustomizePages"/>
+      <xs:enumeration value="ApplyThemeAndBorder"/>
+      <xs:enumeration value="ApplyStyleSheets"/>
+      <xs:enumeration value="ViewUsageData"/>
+      <xs:enumeration value="CreateSSCSite"/>
+      <xs:enumeration value="ManageSubwebs"/>
+      <xs:enumeration value="CreateGroups"/>
+      <xs:enumeration value="ManagePermissions"/>
+      <xs:enumeration value="BrowseDirectories"/>
+      <xs:enumeration value="BrowseUserInfo"/>
+      <xs:enumeration value="AddDelPrivateWebParts"/>
+      <xs:enumeration value="UpdatePersonalWebParts"/>
+      <xs:enumeration value="ManageWeb"/>
+      <xs:enumeration value="AnonymousSearchAccessWebLists"/>
+      <xs:enumeration value="UseClientIntegration"/>
+      <xs:enumeration value="UseRemoteAPIs"/>
+      <xs:enumeration value="ManageAlerts"/>
+      <xs:enumeration value="CreateAlerts"/>
+      <xs:enumeration value="EditMyUserInfo"/>
+      <xs:enumeration value="EnumeratePermissions"/>
+      <xs:enumeration value="FullMask"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="GroupList">
+    <xs:sequence>
+      <xs:element name="Group" type="mstns:Group" minOccurs="0" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Group">
+    <xs:sequence>
+      <xs:element name="Members" type="mstns:MemberList" minOccurs="0" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="Title"/>
+    <xs:attribute type="xs:string" name="Description"/>
+    <xs:attribute type="xs:string" name="PermissionLevel"/>
+  </xs:complexType>
+
+  <xs:complexType name="MemberList">
+    <xs:sequence>
+      <xs:element name="Member" type="xs:string" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+
+  <xs:complexType name="PermissionScopeList">
+    <xs:sequence>
+      <xs:element name="ListScope" type="mstns:ListPermissionScope" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="ListPermissionScope">
+    <xs:complexContent>
+      <xs:extension base="PermissionScope">
+        <xs:sequence>
+          <xs:element name="FolderScope" type="PermissionScope" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:complexType name="PermissionScope">
+    <xs:sequence>
+      <xs:element name="Permissions" type="mstns:PermissionList" minOccurs="1" maxOccurs="1" />
+    </xs:sequence>
+    <xs:attribute type="xs:string" name="Title"/>
+    <xs:attribute type="xs:string" name="RelativeUrl"/>
+    <xs:attribute type="xs:boolean" name="CopyRoleAssignments"/>
+    <xs:attribute type="xs:boolean" name="ClearSubscopes"/>
+  </xs:complexType>
+
+  <xs:complexType name="PermissionList">
+    <xs:sequence>
+      <xs:element name="Permission" type="mstns:Permission" minOccurs="1" maxOccurs="unbounded" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="Permission">
+    <xs:attribute type="xs:string" name="Principal"/>
+    <xs:attribute type="xs:string" name="PermissionLevel"/>
+  </xs:complexType>
+
+</xs:schema>
