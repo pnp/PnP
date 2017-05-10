@@ -1,9 +1,16 @@
 @import 'variables';
 
-#breadcrumb {
+#breadcrumb-nav {
+    
+    font-family: $font-primary;
 
-    .ms-MessageBar {
-        width: 100%;
+    #message {
+        padding: 10px;
+
+        i {
+            float: left;
+            margin-right: 5px;
+        }
     }
 
     .nav {
@@ -14,6 +21,8 @@
 
             a {
                 text-decoration: none;
+                padding-top: 0px;
+                padding-bottom: 0px;
             }
 
             a:hover {
@@ -24,12 +33,16 @@
             a:focus{
                 background-color: transparent;
             }
+
+            a, a:hover {
+                color: $footerlinks-color;
+            }
         }
     }
     
     ul {
 
-        height: 35px;
+        padding-left: 15px;
 
         li {
             float: left;

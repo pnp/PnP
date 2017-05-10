@@ -30,7 +30,7 @@ jslinkTemplates.Taxonomy = function() {
             var termStore = taxonomySession.get_termStores().getById(sspId);
             var termSet = termStore.getTermSet(termSetId);
 
-            if (currentValue.length > 0) {
+            if (currentValue && currentValue.length > 0) {
                 // pull the Id from the current value
                 var currentTermId = currentValue.split("|")[1];
                 var currentTerm = termSet.getTerm(currentTermId);

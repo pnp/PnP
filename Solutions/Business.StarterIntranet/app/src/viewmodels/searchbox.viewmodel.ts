@@ -45,9 +45,9 @@ export class SearchBoxViewModel {
         });
 
         this.searchCategories = ko.observableArray([
-            new SearchCategory(i18n.t("intranetSearchCategory"), "ms-Icon--globe", i18n.t("intranetSearchPageUrl")),
-            new SearchCategory(i18n.t("documentsSearchCategory"), "ms-Icon--documents", i18n.t("documentsSearchPageUrl")),
-            new SearchCategory(i18n.t("peopleSearchCategory"), "ms-Icon--people", null, true),
+            new SearchCategory(i18n.t("intranetSearchCategory"), "fa-globe", i18n.t("intranetSearchPageUrl")),
+            new SearchCategory(i18n.t("documentsSearchCategory"), "fa-book", i18n.t("documentsSearchPageUrl")),
+            new SearchCategory(i18n.t("peopleSearchCategory"), "fa-users", i18n.t("peopleSearchPageUrl")),
         ]);
 
         let currentPageName = window.location.pathname;

@@ -24,8 +24,10 @@
 			var hoverUrl = "~sitecollection/_catalogs/masterpage/display templates/Search/PnP/Item_Intranet-Document_HoverPanel.js";
             $setResultItem(itemId, ctx.CurrentItem);
             ctx.CurrentItem.csr_Icon = Srch.U.getIconUrlByFileExtension(ctx.CurrentItem);
-            ctx.currentItem_ShowHoverPanelCallback = Srch.U.getShowHoverPanelCallback(itemId, hoverId, hoverUrl);
-            ctx.currentItem_HideHoverPanelCallback = Srch.U.getHideHoverPanelCallback();
+
+            // Disable hover panel for documents in Sharepoint 2013 (not supported without Office Web App)
+            //ctx.currentItem_ShowHoverPanelCallback = Srch.U.getShowHoverPanelCallback(itemId, hoverId, hoverUrl);
+            //ctx.currentItem_HideHoverPanelCallback = Srch.U.getHideHoverPanelCallback();
 
             var encodedId = $htmlEncode(ctx.ClientControl.get_nextUniqueId());
             var containerId = "DocumentItem_" + encodedId;
@@ -43,7 +45,7 @@
 _#-->
             <div id="_#= $htmlEncode(itemId) =#_" name="Item" data-displaytemplate="DocumentItem" class="search-item" onmouseover="_#= ctx.currentItem_ShowHoverPanelCallback =#_" onmouseout="_#= ctx.currentItem_HideHoverPanelCallback =#_">
 				
-                <div class="display-template">			
+                <div class="item-display-template">			
 					<div data-bind="stopBinding: true">
 						<div id="_#=containerId=#_" class="document-item">
 											
@@ -60,8 +62,14 @@ _#-->
                                 </div>
                                 
                                 <div class="item-download">
-                                    <a data-bind="attr: { href: Path }" download="">
-                                    	<i class="ms-Icon ms-Icon--download ms-font-s" aria-hidden="true"></i>
+                                    <a data-bind="attr: { href: Path, title: Intranet.Main.getResource('hp_Tooltip_Download')}" data-toggle="tooltip" data-placement="top" download="">
+                                    	<i class="fa fa-download" aria-hidden="true"></i>
+                                    </a>                                  
+                                </div>
+
+                                <div class="item-library">
+                                    <a data-bind="attr: { href: ParentLink, title: Intranet.Main.getResource('hp_Tooltip_ViewLibrary') }" data-toggle="tooltip" data-placement="top">
+                                    	<i class="fa fa-folder-open-o" aria-hidden="true"></i>
                                     </a>                                  
                                 </div>
                                                        

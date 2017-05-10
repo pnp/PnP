@@ -9,7 +9,10 @@ declare var require: {
     ensure: (paths: string[], callback: (require: <T>(path: string) => T) => void) => void;
 };
 
+require('es6-promise/auto'); // Fix for IE11 (inject the polyfill in the global context)
+
 // View models for components
+import { Localization } from "./core/localization";
 import { BreadcrumbViewModel } from "./viewmodels/breadcrumb.viewmodel";
 import { CarouselViewModel } from "./viewmodels/carousel.viewmodel";
 import { ContextualMenuViewModel } from "./viewmodels/contextualmenu.viewmodel";
@@ -17,19 +20,21 @@ import { DefaultDisplayTemplateItemViewModel } from "./viewmodels/defaultdisplay
 import { DefaultFilterViewModel } from "./viewmodels/defaultfilter-mui.viewmodel";
 import { DocumentDisplayTemplateItemViewModel } from "./viewmodels/documentitem.viewmodel";
 import { HeaderLinksViewModel } from "./viewmodels/headerlinks.viewmodel";
+import { FooterLinksViewModel } from "./viewmodels/footerlinks.viewmodel";
 import { KnockoutComponent } from "./viewmodels/knockoutcomponent";
 import { LanguageSwitcherViewModel } from "./viewmodels/languageswitcher.viewmodel";
-import { NewsDisplayTemplateItemViewModel } from "./viewmodels/newsitem.viewmodel";
+import { PageDisplayTemplateItemViewModel } from "./viewmodels/pageitem.viewmodel";
 import { PageInfoViewModel } from "./viewmodels/pageinfo.viewmodel";
 import { SearchBoxViewModel } from "./viewmodels/searchbox.viewmodel";
 import { SearchBoxMobileViewModel } from "./viewmodels/searchboxmobile.viewmodel";
 import { TopNavViewModel } from "./viewmodels/topnav.viewmodel";
 import { TranslationControlViewModel } from "./viewmodels/translationcontrol.viewmodel";
+import { ICSCalendarGeneratorViewModel } from "./viewmodels/icscalendargenerator.viewmodel";
+import { BotWebChatViewModel } from "./viewmodels/botwebchat.viewmodel";
 
 // Third party libraries
 import i18n = require("i18next");
-import * as moment from "moment";
-import * as pnp from "sp-pnp-js";
+import { Web, ConsoleListener, Logger, LogLevel, setup } from "sp-pnp-js";
 
 // Main style sheet for the application
 require("./styles/css/global.scss");
@@ -37,31 +42,23 @@ require("./styles/css/layouts.scss");
 require("./styles/css/layouts-edit.scss");
 require("./styles/css/displaytemplates.scss");
 
-// Reusable contents CSS
-require("./styles/css/suggestionsbox.scss");
-
 // Images
-require("./styles/css/images/logo_intranet.png");
 require("./styles/css/images/spinner.gif");
 require("./styles/css/images/default_image.png");
 require("./styles/css/images/favicon_intranet.ico");
+require("./styles/css/images/flags.png");
 
 // Bootstrap CSS isolation
 require("./styles/css/bootstrap/bootstrap-prefix.less");
-
-// Resources
-require("moment/locale/fr");
-let enUSResources = require("./resources/en-US.json");
-let frFRResources = require("./resources/fr-FR.json");
 
 export class Main {
 
     // Static methods are mainly used for SharePoint display templates (it is just a public wrapper)
     // We can't use Knockout components here because bindings are not triggered when the display template logic adds the component programmatically
     // We have to apply bindings manually after rendering
-    public static initNewsDisplayTemplateItemViewModel = (currentItem: any, domElement: string) => {
+    public static initPageDisplayTemplateItemViewModel = (currentItem: any, domElement: string, filterProperty: string, filterValue: string, allLabel: string) => {
 
-        let viewModel = new NewsDisplayTemplateItemViewModel(currentItem);
+        let viewModel = new PageDisplayTemplateItemViewModel(currentItem, filterProperty, filterValue, allLabel);
         ko.applyBindings(viewModel, domElement);
     }
 
@@ -88,9 +85,12 @@ export class Main {
         return i18n.t(resourceKey);
     }
 
+    public static jQuery = () => {
+        return $;
+    }
+
     /**
      * Register all Knockout components for the entire application
-     * @return {String}       The stringified tree object
      */
     public registerComponents() {
 
@@ -131,6 +131,7 @@ export class Main {
         // Component: "Language Switcher"
         let languageSwitcherTemplate = require("./templates/languageswitcher.template.html");
         require("./styles/css/languageswitcher.scss");
+        require("./styles/css/flags.scss");
         let languageSwitcherComponent = new KnockoutComponent("component-languageswitcher", LanguageSwitcherViewModel, languageSwitcherTemplate);
 
         // Component: "Searchbox"
@@ -138,14 +139,15 @@ export class Main {
         require("./styles/css/searchbox.scss");
         let searchboxComponent = new KnockoutComponent("component-searchbox", SearchBoxViewModel, searchboxTemplate);
 
-        // Component: "Footer" (template only)
-        let footerTemplate = require("./templates/footer.template.html");
-        require("./styles/css/footer.scss");
-        let footerComponent = new KnockoutComponent("component-footer", null, footerTemplate);
-
         // Component: "Header Links"
         let headerLinksTemplate = require("./templates/headerlinks.template.html");
+        require("./styles/css/headerlinks.scss");
         let headerLinksComponent = new KnockoutComponent("component-headerlinks", HeaderLinksViewModel, headerLinksTemplate);
+
+        // Component: "Footer Links"
+        let footerLinksTemplate = require("./templates/footerlinks.template.html");
+        require("./styles/css/footerlinks.scss");
+        let footerLinksComponent = new KnockoutComponent("component-footerlinks", FooterLinksViewModel, footerLinksTemplate);
 
         // Component: "Search Box (mobile)"
         let searchboxMobileTemplate = require("./templates/searchboxmobile.template.html");
@@ -155,8 +157,17 @@ export class Main {
         // Component: "Carousel"
         let carouselTemplate = require("./templates/carousel.template.html");
         require("./styles/css/carousel.scss");
-        require("flickity/dist/flickity.css")
         let carouselComponent = new KnockoutComponent("component-carousel", CarouselViewModel, carouselTemplate);
+
+        // Component: "ICS Generator"
+        let calendarGeneratorTemplate = require("./templates/icscalendargenerator.html");
+        require("./styles/css/icscalendargenerator.scss");
+        let calendarGeneratorComponent = new KnockoutComponent("component-icsgenerator", ICSCalendarGeneratorViewModel, calendarGeneratorTemplate);
+
+        // Component: "Bot Web chat"
+        let botWebChatTemplate = require("./templates/botwebchat.html");
+        require("./styles/css/botwebchat.scss");
+        let botWebChatComponent = new KnockoutComponent("component-botwebchat", BotWebChatViewModel, botWebChatTemplate);        
     }
 
     public init() {
@@ -164,12 +175,12 @@ export class Main {
         this.registerComponents();
 
         // Init the loggger
-        let consoleLogger = new pnp.ConsoleListener();
-        pnp.log.subscribe(consoleLogger);
-        pnp.log.activeLogLevel = pnp.LogLevel.Verbose;
+        let consoleListener = new ConsoleListener();
+        Logger.subscribe(consoleListener);
+        Logger.activeLogLevel = LogLevel.Error;
 
-        // Needed for SharePoint 2013 On-Premise otherwise it will use Atom XML
-        pnp.setup({
+        // Needed for SharePoint 2013 On-Premise othjerwise it will use Atom XML
+        setup({
             headers: {
                 Accept: "application/json; odata=verbose",
             },
@@ -178,48 +189,31 @@ export class Main {
         // Be careful, we need to apply bindings after the document is ready
         $(document).ready(() => {
 
-            // Get the current page language. In this solution, the language context is given by the page itself instead of the web.
-            // By this way, we don't have to create a synchronized symetric web structure (like SharePoint variations do). We keep a flat structure with only one site.
-            // For a contributor, it is by far easier to use than variations.
-            // The "IntranetContentLanguage" is a choice field so we don't need taxonomy field here. Values of this choice field have to be 'en' or 'fr' to fit with the format below.
-            pnp.sp.web.lists.getByTitle("Pages").items.getById(_spPageContextInfo.pageItemId).select("IntranetContentLanguage").get().then((item) => {
+            let localization = new Localization();
+                
+            localization.initLanguageEnv().then(() => {  
 
-                let itemLanguage: string = item.IntranetContentLanguage;
+                let web = new Web(_spPageContextInfo.webAbsoluteUrl);         
 
-                // Default language for the intranet
-                let workingLanguage: string = "en";
+                // Apply the Knockout JS magic!
+                ko.applyBindings();
 
-                if (itemLanguage) {
-                    workingLanguage = itemLanguage.toLowerCase();
-                }
+                // Add Bootstrap responsive behavior for news images
+                $("#page-image img").addClass("img-responsive");
 
-                i18n.init({
+                web.lists.getByTitle("Pages").items.getById(_spPageContextInfo.pageItemId).select("HideSideBar").get().then(item => {
+                    
+                    if (item.HideSideBar) {
 
-                    // Init the working language and resource files for the entire application
-                    fallbackLng: "en",
-                    lng: workingLanguage,
-                    resources: {
+                        $("#sidebar").hide();
+                        $("#content").removeClass("col-md-push-3 col-md-9");
+                        $("#content").addClass("col-md-12");
 
-                        en: {
-                            translation: enUSResources,
-
-                        },
-                        fr: {
-                            translation: frFRResources,
-                        },
-                    },
-                    }, (err, t) => {
-
-                        // Init the locale for the moment object (for date manipulations)
-                        moment.locale(workingLanguage);
-
-                        // Apply the Knockout JS magic!
-                        ko.applyBindings();
-
-                        // Add Bootstrap responsive behavior for news images
-                        $("#page-image img").addClass("img-responsive");
-                });
-            });
+                        $("#breadcrumb-nav").hide();
+                        $(".page-layout #title").hide();
+                    }
+                });            
+            });            
         });
     }
 }

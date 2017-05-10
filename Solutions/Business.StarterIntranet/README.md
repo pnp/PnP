@@ -3,7 +3,7 @@
 ### Summary ###
 
 Intranet projects shouldn’t have to reinvent the wheel every time for basic features (like navigation or multilingualism).
-This solution aims to provide the fundamental building blocks of a common intranet solution with SharePoint 2013/2016 on-premises and SharePoint Online through a lightweight client side solution using the latest web stack development tools and frameworks.
+This solution provides the fundamental building blocks of a common publishing intranet solution with SharePoint 2013/2016 on-premises and SharePoint Online through a lightweight client side solution and using the latest web stack development tools and frameworks.
 This solution leverages the SharePoint classic publishing infrastructure feature.
 
 Here is what you get with this sample:
@@ -12,31 +12,43 @@ Here is what you get with this sample:
 - A basic translation system for multilingual sites (pages and UI).
 - A search experience including results with preview.
 - A mobile intranet using SharePoint 2013/2016 on-premises or SharePoint Online.
+- A concrete example of a bot integration within an intranet solution (see below)
 
-<table style="margin: 0px auto;">
-  <tr>
-    <th>
+<table style="margin: 0px auto">
+  <tr style="border: none">
+    <th style="border: none">
         <p align="center">Home Page - (SharePoint Online)</p>
         <p align="center">
-            <img width="600" src="./images/homepage.png"/>
+            <img src="./images/homepage.png"/>
         </p>
     </th>
   </tr>
 </table>
 
-<table style="margin: 0px auto;">
-  <tr>
-    <th>
+<table style="margin: 0px auto">
+  <tr style="border: none">
+    <th style="border: none">
       <p align="center">News page (Desktop)</p>
       <p align="center">
         <img width="600" 
         src="./images/news.png"/>
       </p>
     </th>
-    <th>
+    <th style="border: none">
       <p align="center">News page (Mobile)</p>
       <p align="center">
         <img width="300" src="./images/news-mobile.png">
+      </p>
+    </th>
+  </tr> 
+</table>
+
+<table style="margin: 0px auto;border: 0px">
+  <tr style="border: none">
+    <th style="border: none">
+      <p align="center">Bot framework integration</p>
+      <p align="center">
+        <img src="./images/bot-demo.gif">
       </p>
     </th>
   </tr>
@@ -50,63 +62,24 @@ This solution is implemented using:
 - PnP Remote Provisioning engine and PnP PowerShell cmdlets (for SharePoint site configuration and artefacts provisioning)
 - Knockout JS (for application behavior and UI components)
 - Bootstrap (for mobile support)
-- Office UI Fabric (for icons, fonts and styles)
 - Node JS (for dependencies management with npm)
+- Bootstrap & Font Awesome(for overall branding)
 
-The entire solution is "site collection self-contained" to not conflict with the global tenant/farm configuration (especially taxonomy and search configuration). It allows you to deploy this solution safely in your tenant/farm.
-
-### Documentation #
-
-A complete documentaion is available explaining how we did this solution in details:
-
-* [Part 1: Functional overview (How to use the solution?)](http://thecollaborationcorner.com/2016/08/22/part-1-functional-overview-how-to-use-the-solution/)
-* [Part 2: Frameworks and libraries used (How it is implemented?)](http://thecollaborationcorner.com/2016/08/25/part-2-frameworks-and-libraries-used-how-it-is-implemented)
-* [Part 3: Design and mobile implementation](http://thecollaborationcorner.com/2016/08/29/part-3-design-and-mobile-implementation)
-* [Part 4: The navigation implementation](http://thecollaborationcorner.com/2016/08/31/part-4-the-navigation-implementation)
-* [Part 5: Localization](http://thecollaborationcorner.com/2016/09/02/part-5-localization)
-* [Part 6: The search implementation](http://thecollaborationcorner.com/2016/09/08/part-6-the-search-implementation)
+The entire solution is "site collection self-contained" to not conflict with the global tenant/farm configuration (especially taxonomy and search configuration). It allows you to deploy this solution safely in your farm.
 
 ### Applies to ###
-- Office 365 Multi Tenant (MT)
-- Office 365 Dedicated (D)
-- SharePoint 2013 on-premises
-- SharePoint 2016 on-premises
-
-### Tested versions ###
-
-Here are the following versions of PnP and SharePoint used for this sample:
-
-PnP PowerShell cmdlets version (All SharePoint versions)| PnP NuGet package version (All SharePoint versions) |SharePoint 2013 tested version(s) | SharePoint 2016 tested version(s)
----------|---------|---------| ---------
-<ul style="list-style: none"><li>2.11.1701.1 (January 2017)</li></ul> | <ul style="list-style: none"><li>2.11.1701.1 (January 2017)</li></ul> | <ul style="list-style: none"><li>15.0.4893.1000 (January 2017 CU)</li><li>15.0.4867.1000 (October 2016 CU)</li></ul> | <ul style="list-style: none"><li>16.0.4483.1000 (January 2017 CU)</li></ul>
+- SharePoint 2013/2016 on-premises
+- SharePoint Online (Office 365 E3 Plan at least to get the CSWP)
 
 ### Set up your environment ###
 
 Before starting, you'll need to setup tour environment:
 
-- Install the latest release of [PnP PowerShell cmdlets SharePointPnPPowerShellXXX](https://github.com/OfficeDev/PnP-PowerShell/releases) according to your SharePoint version. The version must be compatible with the 201605 PnP schema version.
-- For SharePoint 2016, install the [SharePoint Server 2016 Client Components SDK](https://www.microsoft.com/en-us/download/details.aspx?id=51679)
-- Install Node.js on your machine https://nodejs.org/en/
-- Install the 'webpack' Node JS client (`npm i webpack -g`)
+- Install at latest release of [PnP PowerShell cmdlets SharePointPnPPowerShellXXX](https://github.com/OfficeDev/PnP-PowerShell/releases) according to your SharePoint version.
+- Install Node.js on your machine https://nodejs.org/en/ (v6.10.1)
+- Install the 'webpack' Node JS client (`npm i webpack -g`). This sample uses webpack v2.
 - Go to the ".\app" folder and install all dependencies listed in the package.json file by running the `npm i` cmd 
 - Check if everything is OK by running the "`webpack`" cmd from the ".\app" folder. You shouldn't see any errors here.
-- According to the targeted SharePoint version, build the extensibility provider Visual Studio solution with the corresponding PnP NuGet package (the deployment script uses the *Debug* bin folder by default). Be careful, the PnP NuGet package version **must be the same** as the PnP PowerShell one. Before adding a new NuGet package, make sure your removed older references (remove the old *Debug* folder as well).
-
-<table style="margin: 0px auto;">
-  <tr>
-    <th>
-        <p align="center">
-            <img src="./images/pnp-powershell-version.png"/>
-        </p>
-    </th>
-    <th>
-        <p align="center">
-            <img src="./images/pnp-nuget-version.png"/>
-        </p>
-    </th>
-  </tr>
-</table>
-
 - Create a site collection with the **publishing template**.
 
 <p align="center">
@@ -128,14 +101,15 @@ Before starting, you'll need to setup tour environment:
 ### Solution ###
 Solution                | Author(s)
 ------------------------|----------
-Business.StarterIntranet | Franck Cornu (MVP Office Development)
+Business.StarterIntranet | Franck Cornu (MVP Office Development at [aequos](https://www.aequos.ca)) - Twitter @FranckCornu 
 
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
 1.0 | August 19th 2016 | <ul style="list-style: none"><li>Initial release</li></ul>
 1.1 | September 21st 2016 | <ul style="list-style: none"><li>Added carousel component + miscellaneous fixes</li></ul>
-1.2 | January 31st 2017 |  <ul style="list-style: none"><li>Added the support of SharePoint 2013 and 2016 on-premises</li><li>Updated to TypeScript 2.1.5 and PnP Js Core 1.0.6</li></ul>
+1.2 | January 31st 2016 |  <ul style="list-style: none"><li>Added the support of SharePoint 2013 and 2016 on-premises</li><li>Updated to TypeScript 2.1.5 and PnP Js Core 1.0.6</li></ul>
+1.3 | May 4th 2017 | <ul style="list-style: none"><li>New design</li><li>Added the support of event pages</li><li>New display templates for news + new carousel design</li><li>Added a QnA bot integration with authentication</li><li>Bug fixes + migration to webpack 2.0 and sp-pnp-js 2.0</li></ul>
 
 # Installation #
 
@@ -148,7 +122,7 @@ $UserName = "<your_username>"
 $Password = "<your_password>"
 $SiteUrl = "https://<your_site_collection>"
 
-Set-Location "<your_pnp_installation_folder>\Solutions\Business.StarterIntranet"
+Set-Location "<your_installation_folder>"
 
 $Script = ".\Deploy-Solution.ps1" 
 & $Script -SiteUrl $SiteUrl -UserName $UserName -Password $Password -IncludeData
@@ -157,7 +131,40 @@ $Script = ".\Deploy-Solution.ps1"
 - Use the "`-Prod`" switch parameter for the `Deploy-Solution.ps1` script to use a production bundled version for the JavaScript code.
 - Use the "`-IncludeData`" switch parameter to provision sample data (carousel and links).
 
-----------
+# Post-installation steps #
+
+## Configure column default values in the Pages library ##
+
+After the deployment, you have to complete some manual steps in order to set up default column values for folders in the "Pages" library (the extensibilty provider has been removed). These information are used for the news and event webparts on the home page to filter archive page (the "See all" links).
+
+Library/Folder | Column | Value
+---------| -----| --------
+Pages/ | Content Type | Page 
+Pages/News | Content Type | News 
+Pages/News | Site Map Position | News 
+Pages/Events | Content Type | Event 
+Pages/Events | Site Map Position | Events 
+Documents/ | Content Type | Document 
+
+## Configure the QnA bot ##
+
+This solution demonstrates the integration with a QnA Bot to improve search capabilities for intranet users. A sample bot can be set up from this repository [https://github.com/FranckyC/SharePointBot](https://github.com/FranckyC/SharePointBot).
+
+To enable the bot integration in the intranet:
+
+- In the [Bot Framework portal](https://dev.botframework.com/), enable the direct line channel and generate new key:
+
+<p align="center">
+  <img width="400" src="./images/configure_bot_directline.png">
+</p>
+
+- In the configuration list, update the corresponding information 
+
+<p align="center">
+  <img width="400" src="./images/bot_configuration.png">
+</p>
+
+Because of the bot sample is implemented using OAuth2 specifications, it is designed to be used with SharePoint Online in prior (unless you have the correct OAuth2 configuration in your on-premise farm). 
 
 ### Disclaimer ###
 
