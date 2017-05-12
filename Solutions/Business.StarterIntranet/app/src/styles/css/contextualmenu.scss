@@ -1,0 +1,69 @@
+@import 'variables';
+
+#contextualmenu {
+
+    min-height: 200px; // We set a min height to display the spinner
+    font-family: $font-primary;
+    text-decoration: none;
+
+    ul.nav {
+        margin-top: 0px;
+    }
+
+    .nav > li {
+
+        padding: 10px 15px;
+        
+        a {
+            display: inline;
+            padding: 0px;
+            color: $text-color;
+        }
+
+        a:hover {
+            background-color: transparent;
+        }
+
+        a:focus{
+            background-color: transparent;
+        }
+        
+        i {
+            float:right;
+        }   
+    }
+
+    .nav > li.is-selected {
+
+        a {
+            color: $contextual-selected-color;
+        }
+    }
+
+    .nav > li.parent-section {
+
+        font-weight: bold;
+    
+        i {
+            float: none;
+        }
+
+        a {
+            color: $text-color;
+        }
+    }
+    
+    .nav > li.is-child {
+        padding-left:30px;
+        border-bottom: transparent;
+
+        a {
+            color: #999;
+        }
+    }
+
+    .nav-pills > li~li {
+         
+        border-top: 1px solid #F2EFEF;
+    }
+}

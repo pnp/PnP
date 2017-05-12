@@ -23,8 +23,8 @@ $provisioningTemplate = "PnPSiteProvisioning.xml"
 
 
 #########MAIN##########################################
-Connect-SPOnline -Url $siteUrl –Credentials (Get-Credential)
+Connect-PnPOnline -Url $siteUrl –UseWebLogin
 Write-Host "Connected to Site " $siteUrl
 
-Apply-SPOProvisioningTemplate -Path $provisioningTemplate
+Apply-PnPProvisioningTemplate -Path $provisioningTemplate
 Write-Host "Completed Provisioning Site Assets"

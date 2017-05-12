@@ -1,0 +1,65 @@
+﻿@model MVCTaxonomyPickerWeb.Models.DemoModel
+
+@{
+    ViewBag.Title = "TaxonomyPickerDemo";   
+}
+@using (Html.BeginForm())
+{
+    <div class="ms-Grid-row">
+        <div class="ms-Grid-col ms-u-sm12 ms-u-md6 ms-u-lg6 ms-u-xl4">
+            <div class="ms-Table">                
+                <div class="ms-Table-row">
+                    <span class="ms-Table-cell">
+                        <label class="ms-Label is-required">
+                            @Html.DisplayNameFor(model => model.Demo)
+                        </label>
+                        @Html.EditorFor(model => model.Demo)
+                        @Html.ValidationMessageFor(model => model.Demo)
+                    </span>
+                </div>
+                <div class="ms-Table-row">
+                    <span class="ms-Table-cell">
+                        <label class="ms-Label is-required">
+                            @Html.DisplayNameFor(model => model.Demo1)
+                        </label>
+                        @Html.EditorFor(model => model.Demo1)
+                        @Html.ValidationMessageFor(model => model.Demo1)
+                    </span>
+                </div>
+                <div class="ms-Table-row">
+                    <span class="ms-Table-cell">
+                        <label class="ms-Label">
+                            @Html.DisplayNameFor(model => model.Demo2)
+                        </label>
+                        @Html.EditorFor(model => model.Demo2)
+                    </span>
+                </div>
+                <div class="ms-Table-row">
+                    <span class="ms-Table-cell">
+                        <label class="ms-Label">
+                            @Html.DisplayNameFor(model => model.Demo3)
+                        </label>
+                        @Html.EditorFor(model => model.Demo3)
+                    </span>
+                </div>
+                <div class="ms-Table-row">
+                    <span class="ms-Table-cell">                        
+                        <button id="btnSubmit" class="ms-Button--primary ms-Button" tabindex="0">
+                                <span class="ms-Button-label">Submit</span>
+                            </button>
+                        <button id="btnCancel" class="ms-Button--default ms-Button" tabindex="0">
+                            <span class="ms-Button-label">Cancel</span>
+                        </button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@Scripts.Render("~/bundles/taxpicker")
+@Scripts.Render("~/bundles/jqueryval")
+
+
+
+

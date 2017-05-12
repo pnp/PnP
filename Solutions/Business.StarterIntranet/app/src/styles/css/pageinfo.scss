@@ -1,0 +1,21 @@
+@import 'variables';
+
+#page-info {
+
+    font-family: $font-primary;
+    height: 100%;
+
+    i {
+        color: $page-icon-color;
+    }
+
+    .tag {
+        float: left;
+        padding-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    .tag:last-child {
+        clear: right;
+    }
+}

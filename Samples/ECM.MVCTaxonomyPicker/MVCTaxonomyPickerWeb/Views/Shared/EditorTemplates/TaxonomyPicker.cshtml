@@ -1,0 +1,23 @@
+﻿@using MVCTaxonomyPickerWeb.Models
+@using MVCTaxonomyPickerWeb.Helpers
+@{
+    var requiredMsg = "";
+    var required = "false";
+    IEnumerable<ModelClientValidationRule> clientRules = ModelValidatorProviders.Providers.GetValidators(ViewData.ModelMetadata, ViewContext).SelectMany(v => v.GetClientValidationRules());
+    foreach (ModelClientValidationRule rule in clientRules)
+    {
+        if (rule.ValidationType == "required")
+        {
+            requiredMsg = rule.ErrorMessage;
+            required = "true";
+        }
+    }
+    var inputValue = Model != null ? JsonHelper.Serialize<List<PickerTermModel>>(Model) : string.Empty;
+}
+
+<div id="@string.Format("{0}{1}", ViewData.ModelMetadata.PropertyName, "Control")" class="cam-taxpicker">
+    <div id="@string.Format("{0}{1}", ViewData.ModelMetadata.PropertyName, "Editor")" class="cam-taxpicker-editor" contenteditable="true"></div>
+    <div id="@string.Format("{0}{1}", ViewData.ModelMetadata.PropertyName, "Button")" class="cam-taxpicker-button"></div>
+    <input data-val="@required" data-val-required="@requiredMsg" id="@ViewData.ModelMetadata.PropertyName" name="@ViewData.ModelMetadata.PropertyName" type="hidden" value="@inputValue">
+</div>
+<div id="@string.Format("{0}{1}", ViewData.ModelMetadata.PropertyName, "Suggestions")" class="cam-taxpicker-suggestion-container"></div>

@@ -1,0 +1,48 @@
+@import 'variables';
+
+/* Important: these styles are only applied in edit mode ! */
+.page-layout {
+
+    #contextualmenu, #breadcrumb, #DeltaSiteLogo {
+        display: none;
+    }
+
+    .field {
+        margin-bottom: 20px;
+        clear: both;
+    }
+
+    div.edit-panel {
+        
+        background-color: #f8f8f8;
+        padding: 10px;
+    }
+
+    #publishing-start-date {
+        float: left;
+        margin-right: 20px;
+    }
+
+    #publishing-expiration-date {
+        display: inline-block;
+    }
+
+    /* Fix a bug with the tag icon */
+    .ms-taxonomy .ms-taxonomy-fieldeditor {
+        width: auto!important;
+        
+    }
+
+    .ms-taxonomy-browser-button {
+        padding-top: 5px;
+        padding-left: 5px;
+    }
+}
+
+/* Background image on the home page */
+#HomeSlider-wrapper {
+    position: relative;
+    height: auto;
+    width: 100%;
+    top: 0;
+}

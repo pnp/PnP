@@ -1,0 +1,21 @@
+@import 'variables';
+
+#header  {
+
+    font-family: $font-primary;
+    text-decoration: none;
+    text-transform: uppercase;
+    display: inline-block;
+    vertical-align: top;
+
+    /* Start: Global header styles */  
+    #utilsZone {
+        max-height: 40px;
+    }
+
+    #language-switcher, #searchbox, #header-links   {
+        display: inline-block;
+        vertical-align: top;
+    }
+    /* End: Global header styles */
+}

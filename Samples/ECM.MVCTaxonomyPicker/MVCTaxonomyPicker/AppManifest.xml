@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!--Created:cb85b80c-f585-40ff-8bfc-12ff4d0e34a9-->
+<App xmlns="http://schemas.microsoft.com/sharepoint/2012/app/manifest"
+     Name="MVCTaxonomyPicker"
+     ProductID="{3aa1e1d2-ab5b-40c6-b1a2-949c2d2dc248}"
+     Version="1.0.0.0"
+     SharePointMinVersion="16.0.0.0"
+>
+  <Properties>
+    <Title>MVCTaxonomyPicker</Title>
+    <StartPage>~remoteAppUrl/?{StandardTokens}</StartPage>
+  </Properties>
+
+  <AppPrincipal>
+    <RemoteWebApplication ClientId="b2e74c86-cc66-497c-a0ce-514c47aad09b" />
+  </AppPrincipal>
+  <AppPermissionRequests AllowAppOnlyPolicy="true">    
+    <AppPermissionRequest Scope="http://sharepoint/social/tenant" Right="Read" />
+    <AppPermissionRequest Scope="http://sharepoint/taxonomy" Right="Write" />
+    <AppPermissionRequest Scope="http://sharepoint/content/tenant" Right="FullControl" />
+  </AppPermissionRequests>
+</App>

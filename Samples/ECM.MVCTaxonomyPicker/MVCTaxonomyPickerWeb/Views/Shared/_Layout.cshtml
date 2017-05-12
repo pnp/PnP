@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html dir="ltr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/4.0/1/MicrosoftAjax.js"></script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")   
+    @Scripts.Render("~/bundles/fabric")
+    @RenderSection("scripts", required: false)
+</head>
+<body>
+    <div class="ms-NavBar ms-bgColor-themeDarker">
+        <div class="ms-NavBar-openMenu js-openMenu ms-bgColor-themeDarker">
+            <i class="ms-Icon ms-Icon--menu ms-bgColor-themePrimary ms-borderColor-white"></i>
+        </div>
+        <ul class="ms-NavBar-items ms-fontColor-white">
+            <li class="ms-NavBar-item ms-borderColor-white--hover @( ViewBag.Current=="Home"? "is-selected" : "")">@Html.ActionLink("Home", "Index", "Home", new { @SPHostUrl = ViewBag.SPHostUrl }, new { @class = "ms-NavBar-link ms-font-l ms-fontColor-white"})</li>
+            <li class="ms-NavBar-item ms-borderColor-white--hover @( ViewBag.Current=="Demo"? "is-selected" : "")">@Html.ActionLink("Demo", "TaxonomyPickerDemo", "Home", new { @SPHostUrl = ViewBag.SPHostUrl }, new { @class = "ms-NavBar-link ms-font-l ms-fontColor-white" })</li>
+            <li class="ms-NavBar-item ms-borderColor-white--hover @( ViewBag.Current=="About"? "is-selected" : "")">@Html.ActionLink("About", "About", "Home", new { @SPHostUrl = ViewBag.SPHostUrl }, new { @class = "ms-NavBar-link ms-font-l ms-fontColor-white" })</li>
+            <li class="ms-NavBar-item ms-borderColor-white--hover @( ViewBag.Current=="Contact"? "is-selected" : "")">@Html.ActionLink("Contact", "Contact", "Home", new { @SPHostUrl = ViewBag.SPHostUrl }, new { @class = "ms-NavBar-link ms-font-l ms-fontColor-white" })</li>             
+        </ul>
+    </div>
+    <div class="ms-Grid">
+        @RenderBody()
+        <div class="ms-Grid-row spacer">
+            <hr />
+            <div class="ms-Grid-col ms-u-lg10">
+                <footer class="ms-Grid-row ms-font-s">
+                    <div class="ms-Grid-col ms-u-lg10 ms-u-push1">
+                        <p>&copy; @DateTime.Now.Year - ASP.NET Application</p>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

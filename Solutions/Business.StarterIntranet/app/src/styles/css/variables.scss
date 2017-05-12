@@ -1,0 +1,20 @@
+$font-primary: "Segoe UI",Tahoma,Verdana,sans-serif;
+$primary-color: #0072c6; // Main color for the intranet
+$text-color: #6c6e70; // Used for links and text
+$error-color: #a80000;
+
+/* Nav bar colors */
+$navbar-l1-link-color: #6c6e70; // Navbar links - Level 1
+$navbar-l1-link-color-hover: #ffffff;
+$navbar-l2-link-color: $text-color; // / Navbar links - Level 2 (Only applied in desktop mode)
+$navbar-l2-link-color-hover: #0072c6;
+$navbar-font-size: 13px;
+$navbar-background-color: #ffffff;
+$navbar-hover-color: #0072c6;
+
+/*Header and footer links colors */
+$headerlinks-color: #ffffff;
+$footerlinks-color: #ddd;
+
+$page-icon-color: #0072c6; // Used in page info component for metadata displa
+$contextual-selected-color: #0072c6;
