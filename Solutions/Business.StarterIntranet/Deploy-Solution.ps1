@@ -94,7 +94,7 @@ Get-ChildItem -Recurse $DistFolder -File | ForEach-Object {
 
     $TargetFolder = "Style Library\$AppFolderName\" + (Resolve-Path -relative $_.FullName) | Split-Path -Parent
 
-	Add-PnPFile -Path $_.FullName -Folder ($TargetFolder.Replace("\","/")).Replace("./","").Replace(".","") -Checkout
+	$varFile = Add-PnPFile -Path $_.FullName -Folder ($TargetFolder.Replace("\","/")).Replace("./","").Replace(".","") -Checkout
 }
 
 Pop-Location
