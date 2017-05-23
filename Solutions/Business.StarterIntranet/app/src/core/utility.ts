@@ -1,7 +1,7 @@
 // ====================
 // Utility module
 // ====================
-import { NavigationNode } from "../shared/navigationnode.ts";
+import { NavigationNode } from "../shared/navigationnode";
 
 export class UtilityModule {
 
@@ -71,10 +71,10 @@ export class UtilityModule {
     /**
      * Get the navigation node in the specified array by its id
      * @param  {Array<NavigationNode>} nodes The navigation nodes array to search in
-     * @param  {SP.Guid} termId The navigation node id
+     * @param  {string} termId The navigation node id
      * @return {NavigationNode}       The corresponding node, null otherwise
      */
-    public getNodeByTermId (nodes: Array<NavigationNode>, termId: SP.Guid): NavigationNode {
+    public getNodeByTermId (nodes: Array<NavigationNode>, termId: string): NavigationNode {
 
         if (nodes) {
 
@@ -173,5 +173,26 @@ export class UtilityModule {
         array.splice(newIndex, 0, array.splice(oldIndex, 1)[0]);
 
         return array;
+    };
+
+    /**
+     * Convert a string to an hexadecimal value
+     * @param  {Array<NavigationNode>} nodes The navigation nodes array to search in
+     * @param  {SP.Guid} tmp The original string
+     * @return {string}       The converted string
+     */
+    public stringToHex (tmp: string): string {
+        var d2h = function (d) {
+            return d.toString(16);
+        };
+        var str = '',
+            i = 0,
+            tmp_len = tmp.length,
+            c;
+        for (; i < tmp_len; i += 1) {
+            c = tmp.charCodeAt(i);
+            str += d2h(c);
+        }
+        return str;
     };
 }

@@ -22,10 +22,10 @@ export class NavigationViewModel {
         NavigationViewModel.populateObservableNodeArray(navigationNodes, this.nodes);
     }
 
-    public setCurrentNode (nodeId: SP.Guid): void {
+    public setCurrentNode (nodeId: string): void {
 
         let match = ko.utils.arrayFirst(this.nodes(), (item) => {
-                return nodeId.toString() === item.id();
+                return nodeId === item.id();
         });
 
         if (match) {

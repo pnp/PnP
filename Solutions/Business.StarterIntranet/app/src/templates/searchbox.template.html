@@ -2,6 +2,7 @@
     <form data-bind="submit: doSearch">
 
             <div id="search-input">
+                <i class="fa fa-search" aria-hidden="true"></i>
                 <input  type="text" 
                         class="search" 
                         data-bind="textInput: inputQuery, 
@@ -13,13 +14,13 @@
 
                 <!-- ko if: isError -->
                     <button type="button" class="error" aria-haspopup="true" aria-expanded="false">
-                        <i class="ms-Icon ms-Icon--exclamation" aria-hidden="true"></i>
+                        <i class="fa fa-exclamation" aria-hidden="true"></i>
                     </button>
                 <!-- /ko -->
 
                 <!-- ko ifnot: isError -->
                     <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="category">
-                        <i class="ms-Icon" aria-hidden="true" data-bind="css: selectedCategory().iconClass"></i>
+                        <i class="fa" aria-hidden="true" data-bind="css: selectedCategory().iconClass"></i>
                     </button>
                     <ul class="dropdown-menu">
                     <!-- ko foreach: searchCategories -->

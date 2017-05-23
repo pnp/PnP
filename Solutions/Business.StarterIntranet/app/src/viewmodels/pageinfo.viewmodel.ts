@@ -4,7 +4,7 @@
 import { TaxonomyModule } from "../core/taxonomy";
 import "../shared/bindinghandlers";
 import * as moment from "moment";
-import * as pnp from "sp-pnp-js";
+import { Web, Logger, LogLevel } from "sp-pnp-js";
 
 export class PageInfoViewModel {
 
@@ -25,21 +25,23 @@ export class PageInfoViewModel {
 
         ko.bindingHandlers.formatDateField = {
 
-            init: (element, valueAccessor) => {
+            init: (element, valueAccessor, allBindings) => {
+    
+                var value = ko.unwrap(valueAccessor());
+                var dateFormat = allBindings.get('dateFormat') || 'LL';
 
-                // Get the current value of the current property we"re bound to
-                let value = ko.unwrap(valueAccessor());
-
-                let date = moment(value).format("LL");
+                let date = moment(value).format(dateFormat);
 
                 $(element).text(date);
-            },
+            }
         };
+
+        let web = new Web(_spPageContextInfo.webAbsoluteUrl);
 
         // Note 1: Be careful, there is a bug with GET REST API for taxonomy fields when they have only a single value (i.e the Label property is not correct)
         // In our case, we don"t use directly the label because we have to get it according the current language so it does not matter. Remember, by default, the returned label follows the current web language
         // Note 2: If no fields are specified, the pnp call return all fields from the item (without expand)
-        pnp.sp.web.lists.getByTitle("Pages").items.getById(_spPageContextInfo.pageItemId).select(this.selectedFields).expand(this.expandedFields).get().then((item) => {
+        web.lists.getByTitle("Pages").items.getById(_spPageContextInfo.pageItemId).select(this.selectedFields).expand(this.expandedFields).get().then((item) => {
 
             let allItemProperties: Array<Promise<any>> = [];
 
@@ -130,7 +132,7 @@ export class PageInfoViewModel {
 
         }).catch((errorMesssage) => {
 
-            pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+            Logger.write(errorMesssage, LogLevel.Error);
         });
     }
 }
