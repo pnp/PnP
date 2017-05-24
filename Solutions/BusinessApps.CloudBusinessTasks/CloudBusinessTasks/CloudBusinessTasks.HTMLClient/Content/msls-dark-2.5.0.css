@@ -1,0 +1,224 @@
+﻿/* App Customization CSS file - dark:
+   Contains styles that are meant to override the main theme file for dark themes (dark-theme-*.css).
+   **************************************************************************************************/
+
+/* App Loading sequence */
+
+#msls-id-app-loading .ui-icon-loading {
+    background-image: url(Images/msls-loader-dark.gif) !important;
+}
+
+#msls-id-progress-overlay .msls-progress {
+    background: url(Images/msls-loader-dark.gif) no-repeat bottom !important;
+}
+
+/* In dark theme, there is a 1px border on top of buttons. Remove it. */
+.ui-btn-inner {
+    border-top: none;
+}
+
+/* No bold fonts as per Modern Ux guidelines. Override globally. */
+.ui-btn {
+    font-weight: normal;
+}
+
+/* Header/Footer
+  *****************************************************************/
+.msls-header, 
+.msls-footer {
+    border-right: none;
+    border-bottom: none;
+    border-left: none;
+}
+
+    .msls-header .ui-shadow,
+    .msls-footer .ui-shadow {
+        -moz-box-shadow: 0px 0px 0 transparent;
+        -webkit-box-shadow: 0px 0px 0 transparent;
+        box-shadow: 0px 0px 0 transparent;
+    }
+
+.msls-header {
+    border-top: none;
+}
+
+/* Use the body color for the header instead of the header color defined in the theme. */
+.msls-header.ui-bar-a,
+.msls-header.ui-bar-b,
+.msls-header.ui-bar-c,
+.msls-header.ui-bar-d,
+.msls-header.ui-bar-e {
+    background: inherit;
+}
+
+/* Header/dialog/footer icons
+  *****************************************************************/
+.msls-large-icon .ui-icon,
+.msls-large-icon .ui-icon-searchfield:after {
+    background-image: url(images/msls-white-icons-36.png)!important;
+}
+
+.msls-large-icon.ui-btn-hover-a .ui-icon {
+    background-color: #3e81af !important;
+}
+
+.msls-footer .ui-btn .ui-btn-inner {
+    text-shadow: none;
+}
+
+/* Control visual states
+  *****************************************************************/
+
+/* ... disabled */
+
+.ui-body-a .ui-disabled .ui-link {
+    color: #d9d9d9 !important;
+}
+
+/* ... read only */
+
+input.msls-read-only, .msls-read-only.ui-select .ui-btn, textarea.msls-read-only {
+    background-color: transparent;
+    border-color: #595959;
+}
+
+/* ... loading */
+
+.msls-presenter.msls-loading > :not(.msls-presenter) > .msls-state-overlay,
+.msls-presenter.msls-loading > .msls-state-overlay {
+    background-image: url(Images/msls-loader-light.gif);
+}
+
+/* ... person viewer loading and links */
+
+.msls-sppsv-loading {
+    background-image: url(Images/msls-loader-light.gif);
+}
+
+.ui-body-a .ui-link.msls-sppsv-link,
+.ui-body-a .ui-link.msls-sppsv-link:visited {
+    color: inherit;
+}
+
+.ui-body-a .ui-link.msls-sppsv-link:hover,
+.ui-body-a .ui-link.msls-sppsv-link:active {
+    color: #2EB5EF;
+}
+
+/* ... person picker border color and background */
+
+.msls-ctl-person-picker-base .ui-listview {
+    border-color: #666666;
+    background: #555555;
+}
+
+/* ... details picker border color and background */
+
+.msls-ctl-details-modal-picker .id-auto-complete-dropdown .msls-ctl-list {
+    border-color: #666666;
+    background: #555555;
+}
+
+/* ... display error (errors loading control contents or rendering the control) */
+
+.msls-display-error-icon {
+    background-image: url(images/msls-white-icons-18.png);
+}
+
+/* ... list loading */
+
+.msls-list-loading {
+    background-image: url(Images/msls-loader-light.gif);
+}
+
+/* Focus state
+*****************************************************************/
+
+.ui-focus,
+.ui-btn:focus {
+    -moz-box-shadow: inset 0px 0px 1px #2EB5EF, 0px 0px 0px #2EB5EF;
+    -webkit-box-shadow: inset 0px 0px 1px #2EB5EF, 0px 0px 0px #2EB5EF;
+    box-shadow: inset 0px 0px 0px 1px #2EB5EF, 0px 0px 0px #2EB5EF;
+}
+
+tr.msls-table-row.ui-focus,
+tr.msls-table-row.ui-btn:focus {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+tr.msls-table-row.ui-btn-active {
+    border-width: 0px;
+}
+
+tr.msls-table-row:focus {
+    outline: 1px dotted white;
+}
+
+.ui-input-text.ui-focus,
+.ui-input-search.ui-focus {
+    -moz-box-shadow: inset 0px 0px 0px 1px #2EB5EF;
+    -webkit-box-shadow: inset 0px 0px 0px 1px #2EB5EF;
+    box-shadow: inset 0px 0px 0px 1px #2EB5EF;
+}
+
+.ui-bar-a .ui-shadow:focus,
+.ui-bar-b .ui-shadow:focus,
+.ui-bar-c .ui-shadow:focus,
+.ui-bar-d .ui-shadow:focus,
+.ui-bar-e .ui-shadow:focus {
+    -moz-box-shadow: inset 0px 0px 0px #2EB5EF, 0px 0px 0px 1px #2EB5EF;
+    -webkit-box-shadow: inset 0px 0px 0px #2EB5EF, 0px 0px 0px 1px #2EB5EF;
+    box-shadow: inset 0px 0px 0px #2EB5EF, 0px 0px 0px 1px #2EB5EF;
+}
+
+.msls-screen-tab .ui-btn:focus {
+    -moz-box-shadow: inset 0px 0px 0px #2EB5EF, 0px 0px 0px 1px #2EB5EF;
+    -webkit-box-shadow: inset 0px 0px 0px #2EB5EF, 0px 0px 0px 1px #2EB5EF;
+    box-shadow: inset 0px 0px 0px #2EB5EF, 0px 0px 0px 1px #2EB5EF;
+}
+
+/* Links
+***************************************************************/
+.ui-bar-a a.ui-link,
+.ui-bar-b a.ui-link,
+.ui-bar-c a.ui-link,
+.ui-bar-d a.ui-link,
+.ui-bar-e a.ui-link,
+.ui-body-a a.ui-link,
+.ui-body-b a.ui-link,
+.ui-body-c a.ui-link,
+.ui-body-d a.ui-link,
+.ui-body-e a.ui-link {
+    font-weight: normal;
+    text-decoration: none;
+}
+
+
+/* SharePoint Chrome
+***************************************************************/
+
+.msls-sharepoint-chrome {
+    background-color: rgb(0, 114, 198);
+}
+
+
+    .msls-sharepoint-chrome .msls-sharepoint-chrome-link:hover {
+        background-color: #a5acde;
+    }
+
+    .msls-sharepoint-chrome a.msls-sharepoint-chrome-link.msls-sharepoint-chrome-follow,
+    .msls-sharepoint-chrome a.msls-sharepoint-chrome-link.msls-sharepoint-chrome-follow:visited,
+    .msls-sharepoint-chrome a.msls-sharepoint-chrome-link.msls-sharepoint-chrome-follow:hover,
+    .msls-sharepoint-chrome a.msls-sharepoint-chrome-link.msls-sharepoint-chrome-follow:active {
+        background-color: #EEE;
+        color: #666;
+    }
+
+    .msls-sharepoint-chrome .msls-sharepoint-chrome-link.ui-link a,
+    .msls-sharepoint-chrome .msls-sharepoint-chrome-link.ui-link a:visited,
+    .msls-sharepoint-chrome .msls-sharepoint-chrome-link.ui-link a:hover,
+    .msls-sharepoint-chrome .msls-sharepoint-chrome-link.ui-link a:active {
+        color: #fff;
+    }
