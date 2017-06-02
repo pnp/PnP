@@ -1,0 +1,39 @@
+﻿<ui:DialogWindow x:Class="Perficient.Provisioning.VSTools.VSToolsConfigWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:ui="clr-namespace:Microsoft.VisualStudio.PlatformUI;assembly=Microsoft.VisualStudio.Shell.12.0"
+        Title="PnP VSTools - Connection Information" Height="300" Width="300">
+    <Grid>
+        <DockPanel VerticalAlignment="Stretch">
+            <GroupBox DockPanel.Dock="Left" HorizontalAlignment="Stretch">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" Grid.Row="0">Site url:</Label>
+                    <TextBox Grid.Column="1" Grid.Row="0" Name="txtSiteUrl" ToolTip="Note: this is read-only if it's set in the .config file."></TextBox>
+                    
+                    <Label Grid.Column="0" Grid.Row="1">Username:</Label>
+                    <TextBox  Grid.Column="1" Grid.Row="1" Name="txtUsername"></TextBox>
+                    
+                    <Label  Grid.Column="0" Grid.Row="2">Password:</Label>
+                    <PasswordBox Grid.Column="1" Grid.Row="2" Name="txtPassword"></PasswordBox>
+
+                    <StackPanel Grid.Row="4" Grid.ColumnSpan="2" DockPanel.Dock="Left" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+                        <Button Content="Cancel" Click="btnCancel_Click" Width="80" Height="30" Name="btnCancel" Margin="10,0"/>
+                        <Button Content="OK" Click="btnOK_Click" Width="80" Height="30" Name="btnOK" Margin="10,0"/>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
+        </DockPanel>
+    </Grid>
+</ui:DialogWindow>
