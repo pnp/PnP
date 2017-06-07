@@ -32,12 +32,12 @@ Version  | Date | Comments
 The Client-Side Data Access Layer (DAL) sample must be installed in your SharePoint Online tenancy.  The sample includes an easy-to-use Console application that automates nearly the entire installation process.  However, some manual steps are required.
 
 ### Overview ###
-The installation can be summarized as follows:
+The installation is summarized as follows:
 
-- Manually create two site collections (Admin and Demo)
-- Use the console application to create a folder hive in the Style Library of the root site collection and upload all necessary resource files
-- Use the console application to configure the two site collections for the demo 
-- Manually configure a Search Schema Managed Property
+- Manually create two site collections (Admin and Demo).
+- Use the console application to create a folder hive in the Style Library of the root site collection and upload all necessary resource files.
+- Use the console application to configure the two site collections for the demo.
+- Manually configure a Search Schema Managed Property.
 
 ### Pre-Requisites ###
 - SharePoint Online (MT) Tenancy
@@ -56,8 +56,7 @@ The installation can be summarized as follows:
 3. Visit the root site collection of the **Portal** web application (e.g., https://contoso.sharepoint.com/) and verify that it contains a document library named **Style Library**. This document library will serve as the **CDN** used to host the resource files for the DAL sample.
 
 ### Prepare the Sample ###
-
-1. Open the **Portal.DataAccessLayer** solution in Visual Studio
+1. Open the **Portal.DataAccessLayer** solution in Visual Studio.
 2. Edit the **configuration.js** file of the **JS** project folder and ensure that the following variables contain values appropriate to your environment:
 	- PortalWebAppAbsoluteUrl = 'https://**contoso**.sharepoint.com';
 	- PortalAdminSiteAbsoluteUrl = 'https://**contoso**.sharepoint.com/sites/**admin**';
@@ -67,16 +66,16 @@ The installation can be summarized as follows:
 	- `we use a custom master page only to simplify the demo; it is neither a technical requirement nor a recommended approach`
 
 ### Deploy the Sample ###
-1. Verify that SharePoint Online has completed provisioning of the **Admin** and **Demo** site collections
-2. Open the **Portal.DataAccessLayer** solution in Visual Studio
-3. Start the Console application
+1. Verify that SharePoint Online has completed provisioning of the **Admin** and **Demo** site collections.
+2. Open the **Portal.DataAccessLayer** solution in Visual Studio.
+3. Start the Console application.
 4. When prompted, specify the credentials of an O365 account that has the permissions listed in the **Pre-Requisites** section.
 5. Execute the following operations in the specified order:
 	1. Operation #1 - Configure CDN
 	2. Operation #2 - Configure Admin Site Collection
 	3. Operation #3 - Configure Demo Site Collection
 
-`Wait approximately 30 mins for the search crawler to index the new sites/lists`
+`Wait approximately 30 mins for the search crawler to index the new sites/lists.`
 
 ### Verify the Managed Properties ###
 Go to **SharePoint Admin Center** | **Search Administration** | **Manage Search Schema**.  Verify that the following **Managed Properties** exist:
@@ -99,41 +98,41 @@ Go to **SharePoint Admin Center** | **Search Administration** | **Manage Search 
 `You do not need to edit any of the auto-generated Managed Properties associated with this sample.`
 
 ### Re-Index the Lists ###
-At this point it is necessary to re-index the various configuration lists of the DAL sample in order to ensure that the configuration of the new **PnPPortalDisplayOrder** managed property takes effect.  The easiest way to do this is to re-execute Operations #2 and #3 of the Console application:
+At this point it is necessary to re-index the various configuration lists of the DAL sample in order to ensure that the configuration of the new **PnPPortalDisplayOrder** managed property takes effect. You must visit each list and manually trigger a re-indexing operation. Fortunately, an easier approach is to simply re-execute Operations #2 and #3 of the Console application:
 
-1. Open the **Portal.DataAccessLayer** solution in Visual Studio
-2. Start the Console application
+1. Open the **Portal.DataAccessLayer** solution in Visual Studio.
+2. Start the Console application.
 3. When prompted, specify the credentials of an O365 account that has **Site Collection Administrator** permissions on the **Admin** and **Demo** site collections.
 4. Execute the following operations in the specified order:
 	1. Operation #2 - Configure Admin Site Collection
 	2. Operation #3 - Configure Demo Site Collection
 
-`Wait approximately 30 mins for the search crawler to re-index the sites/lists`
+`Wait approximately 30 mins for the search crawler to re-index the sites/lists.`
 
 ### Visit the Demo Site Collection and Exercise the Demo ###
 1. Navigate to the DAL web of the Demo site collection to see the DAL in action.
 	- https://**DemoSiteUrl**/dal (e.g., https://contoso.sharepoint.com/sites/demo/dal)
-2. Note: You can also navigate to the root web of the Demo site collection
+2. Note: You can also navigate to the root web of the Demo site collection.
 	- https://**DemoSiteUrl**/ (e.g., https://contoso.sharepoint.com/sites/demo)
 3. The home page contains the following client-side JavaScript Controls:
-	1. **Global Nav**- managed via the **GlobalNavConfig** list of the Admin site
-	2. **Footer** - managed via the **PortalConfig** list of the Admin site
-	3. **Company Links** - managed via the **CompanyLinksConfig** list of the current **site collection**
-	4. **Local Nav** - managed via the **LocalNavConfig** list of the current **web** 
-	5. **Stock Ticker** - managed via the **StockTickerSymbol** variable in the **constants.js** file
-4. Press **F12** to launch the Internet Explorer Developer Tools
-5. Activate the **Console** window
-6. Reload the page and review the log messages sent to the **Console** window
-7. Note that the control data is being served from the client-side cache
-8. Note that the data for each control has a unique expiration timeout value and expiration policy
-9. Wait a few minutes for an expiration to occur
-10. Reload the page and review the log messages sent to the **Console** window
-11. Note that some control data has expired and that the back-end data source is called
-12. At any time, you can flush the DAL entries from the client-side cache by appending the following argument to the query string
+	- **Global Nav**- managed via the **GlobalNavConfig** list of the Admin site
+	- **Footer** - managed via the **PortalConfig** list of the Admin site
+	- **Company Links** - managed via the **CompanyLinksConfig** list of the current **site collection**
+	- **Local Nav** - managed via the **LocalNavConfig** list of the current **web** 
+	- **Stock Ticker** - managed via the **StockTickerSymbol** variable in the **constants.js** file
+4. Press **F12** to launch the Internet Explorer Developer Tools.
+5. Activate the **Console** window.
+6. Reload the page and review the log messages sent to the **Console** window.
+7. Note that the control data is being served from the client-side cache.
+8. Note that the data for each control has a unique expiration timeout value and expiration policy.
+9. Wait a few minutes for an expiration to occur.
+10. Reload the page and review the log messages sent to the **Console** window.
+11. Note that some control data has expired and that the back-end data source is called.
+12. At any time, flush the DAL entries from the client-side cache by appending the following argument to the query string:
 	- "**clearStorage=1**" 
-13. At any time, you can edit the various management lists to customize the data presented by these controls. 
+13. At any time, edit the various management lists to customize the data presented by these controls. 
 	- The controls will render the updated data in 15-20 mins, once the changes are crawled by SharePoint.
-14. At any time, you can edit the various implementation files to customize the configuration of these controls. 
-	- The controls will reflect the updated configuration as soon as the browser downloads the updated implementation file
+14. At any time, edit the various implementation files to customize the configuration of these controls. 
+	- The controls will reflect the updated configuration once the browser downloads the updated implementation file
 
 <img src="https://telemetry.sharepointpnp.com/pnp/samples/Portal.DataAccessLayer" />
