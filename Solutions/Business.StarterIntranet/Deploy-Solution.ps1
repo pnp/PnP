@@ -31,8 +31,6 @@ $ProvisioningRootSiteTemplateFile = ($CommandDirectory  + ".\provisioning\RootSi
 $SearchConfigurationFilePath = ($CommandDirectory  + ".\provisioning\SearchConfiguration.xml")
 $ImageRenditionsConfigurationFilePath = ($CommandDirectory + ".\provisioning\PublishingImageRenditions.xml")
 
-$CustomProviderDllPath = ($CommandDirectory + ".\provisioning\Intranet.Providers\Intranet.Providers\bin\Debug\Intranet.Providers.dll")
-
 # This name will be used to create a separated folder in the style library and the master page catalog.
 # If you change this name, don't forget to update :
 # - Links in the master page (CSS and JS files)
@@ -52,6 +50,15 @@ switch ($ServerVersion)
 { 
 	15 {$AssemblyVersion = "15.0.0.0"} 
 	16 {$AssemblyVersion = "16.0.0.0"} 
+    default {$AssemblyVersion = "16.0.0.0"}
+}
+
+# -------------------------------------------------------------------------------------
+# Set the correct SharePoint assembly version in .aspx and .master files regarding the server version
+# -------------------------------------------------------------------------------------
+Get-ChildItem -Path ".\provisioning\artefacts" -Include "*.aspx","*.master" -Recurse | ForEach-Object {
+
+    (Get-Content -Path $_.FullName) -replace "1[5|6]\.0\.0\.0",$AssemblyVersion | Out-File -FilePath $_.FullName
 }
 
 # -------------------------------------------------------------------------------------
@@ -87,7 +94,7 @@ Get-ChildItem -Recurse $DistFolder -File | ForEach-Object {
 
     $TargetFolder = "Style Library\$AppFolderName\" + (Resolve-Path -relative $_.FullName) | Split-Path -Parent
 
-	Add-PnPFile -Path $_.FullName -Folder ($TargetFolder.Replace("\","/")).Replace("./","").Replace(".","") -Checkout
+	$varFile = Add-PnPFile -Path $_.FullName -Folder ($TargetFolder.Replace("\","/")).Replace("./","").Replace(".","") -Checkout
 }
 
 Pop-Location
@@ -97,26 +104,22 @@ Pop-Location
 # -------------------------------------------------------------------------------------
 Write-Host "3# Apply the provisioning template to the root site..." -ForegroundColor Magenta
 
-# Create news folder in the "Pages" library
+# Create news and events folders in the "Pages" library
 Ensure-PnPFolder -SiteRelativePath "Pages/News" | Out-Null
+Ensure-PnPFolder -SiteRelativePath "Pages/Events" | Out-Null
 
-# Load the custom extensibility provider type in the current PS session
-Add-Type -Path $CustomProviderDllPath 
-
-# Apply the root site provisioning template and set column default values (without files)
-Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -ExcludeHandlers Files,WebSettings -Parameters @{ "CompanyName" = $AppFolderName; "AssemblyVersion" = $AssemblyVersion }
+# Apply the root site provisioning template
+Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -Parameters @{ "CompanyName" = $AppFolderName; "AssemblyVersion" = $AssemblyVersion; }
 
 # Enable Item Scheduling feature on the "Pages" library
 Enable-CustomItemScheduling -Web (Get-PnPWeb) -PagesLibraryName "Pages"
 
-# Apply the global template for the root site (to get the right pages auto tagging)
-Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -Handlers Files,WebSettings -Parameters @{ "CompanyName" = $AppFolderName; "AssemblyVersion" = $AssemblyVersion }
- 
 # Content Types order
 $ContentTypesOrderRoot = @(
 
 	[PSCustomObject]@{FolderName="Pages";ContentTypes=@("Home Page","Static Page","Search Page")},
 	[PSCustomObject]@{FolderName="Pages/News";ContentTypes=@("News Page")}
+	[PSCustomObject]@{FolderName="Pages/Events";ContentTypes=@("Event Page")}
 )
 
 $ContentTypesOrderRoot | Foreach-Object { Set-FolderContentTypesOrder -FolderRelativePath $_.FolderName -ContentTypes $_.ContentTypes }
@@ -133,17 +136,27 @@ $Site = Get-PnPSite
 $SiteServerRelativeUrl = Get-PnPProperty -ClientObject $Site -Property ServerRelativeUrl
 
 $FilesToPublish = @(
-
+	# Master pages
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/portal.master"},
+			
+	# Page Layouts
+    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/EventPageLayout.aspx"},
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/NewsPageLayout.aspx"},
+    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/StaticPageLayout.aspx"},
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/HomePageLayout.aspx"},
-    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/NewsPageLayout.aspx"},
-    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/SearchPageLayout.aspx"},
-    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/StaticPageLayout.aspx"}
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/SearchPageLayout.aspx"},
+
+	# Display Templates
     [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Content Web Parts/$AppFolderName/Item_Intranet-News.html"},
+    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Content Web Parts/$AppFolderName/Item_Intranet-News-Tile.html"},		
+    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Content Web Parts/$AppFolderName/Item_Intranet-Event.html"},	
     [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Content Web Parts/$AppFolderName/Item_Intranet-Document.html"},
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Content Web Parts/$AppFolderName/Item_Intranet-Contact.html"},
-    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Content Web Parts/$AppFolderName/Control_Intranet-List.html"},	
+    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Content Web Parts/$AppFolderName/Control_Intranet-List_Paging.html"},	
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Content Web Parts/$AppFolderName/Control_Intranet-List_NoPaging.html"},	
+    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Content Web Parts/$AppFolderName/Control_Intranet_Tiles_List.html"},			
     [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet-News_Search.html"},
+    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet-Event_Search.html"},	
     [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet-Page_Search.html"},
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Control_Intranet-SearchResults.html"},
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Filters/$AppFolderName/Filter_Intranet-Item.html"},
@@ -154,13 +167,17 @@ $FilesToPublish = @(
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet_CommonHoverPanel_Actions.html"},  
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet_CommonHoverPanel_Body.html"},  
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet_CommonHoverPanel_Header.html"},  		
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet_WebPage_HoverPanel.html"},  	
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet_WebPage_HoverPanel.html"},
+
+	# Pages  	
     [PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/Home.aspx"},  
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/Search.aspx"},  
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/SearchDocuments.aspx"},
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/Accueil.aspx"},  
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/Recherche.aspx"},  
 	[PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/RechercheDocuments.aspx"}    	
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/RecherchePersonnes.aspx"},  
+	[PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/SearchPeople.aspx"}   
 )
 
 $FilesToPublish | ForEach-Object {
@@ -174,17 +191,6 @@ Get-PnPListItem -List Pages | ForEach-Object {
     $_["_ModerationStatus"] = 0
     $_.Update()
 }
-
-Execute-PnPQuery
-
-# Reset the theme
-Set-PnPTheme
-
-# Set the theme
-$Web = Get-PnPWeb
-$bgImageUrl = Out-Null
-$fontScheme = Out-Null
-$Web.ApplyTheme("$SiteServerRelativeUrl/_catalogs/theme/15/intranet.spcolor", $fontScheme, $bgImageUrl, $true)
 
 Execute-PnPQuery
 
@@ -205,6 +211,9 @@ $SiteMapTermSetName_FR = "Site Map FR"
 
 $HeaderLinksTermSetName_EN = "Header Links EN"
 $HeaderLinksTermSetName_FR = "Header Links FR"
+
+$FooterLinksTermSetName_EN = "Footer Links EN"
+$FooterLinksTermSetName_FR = "Footer Links FR"
 
 # Get navigation term sets for each language (FR & EN)
 $SiteMapTermSet_EN = Get-PnPTaxonomyItem -Term "$IntranetTermGroupName|$SiteMapTermSetName_EN"
@@ -249,6 +258,27 @@ $HeaderLinksTermSetTerms_EN | ForEach-Object {
 	}
 }
 
+# ...and for the footer links term set also
+$FooterLinksTermSet_EN = Get-PnPTaxonomyItem -Term "$IntranetTermGroupName|$FooterLinksTermSetName_EN"
+$FooterLinksTermSetId_EN = $FooterLinksTermSet_EN.Id
+
+$FooterLinksTermSet_FR = Get-PnPTaxonomyItem -Term "$IntranetTermGroupName|$FooterLinksTermSetName_FR"
+$FooterLinksTermSetId_FR = $FooterLinksTermSet_FR.Id
+
+$FooterLinksTermSetTerms_EN = Get-PnPProperty -ClientObject $FooterLinksTermSet_EN -Property Terms
+
+$FooterLinksTermSetTerms_EN | ForEach-Object {
+
+	$NavTerm = Get-PnPTaxonomyItem -Term ("$IntranetTermGroupName|$FooterLinksTermSetName_FR|" + $_.Name)
+
+    if ($NavTerm -eq $null) {
+
+		$Reuse = $FooterLinksTermSet_FR.ReuseTermWithPinning($_)
+
+		Execute-PnPQuery
+	}
+}
+
 # -------------------------------------------------------------------------------------
 # Setup the configuration list
 # -------------------------------------------------------------------------------------
@@ -258,14 +288,16 @@ $ConfigurationList = Get-PnPList -Identity "Configuration"
 
 $ConfigurationItems = @(
 
-	@{ "Title"="Default EN";"ForceCacheRefresh"=1;"SiteMapTermSetId"=$SiteMapTermSetId_EN;"HeaderLinksTermSetId"=$HeaderLinksTermSetId_EN;"IntranetContentLanguage"="EN" },
-	@{ "Title"="Default FR";"ForceCacheRefresh"=1;"SiteMapTermSetId"=$SiteMapTermSetId_FR;"HeaderLinksTermSetId"=$HeaderLinksTermSetId_FR;"IntranetContentLanguage"="FR" }
+	@{ "Title"="Default EN";"ForceCacheRefresh"=1;"SiteMapTermSetId"=$SiteMapTermSetId_EN;"HeaderLinksTermSetId"=$HeaderLinksTermSetId_EN;"FooterLinksTermSetId"=$FooterLinksTermSetId_EN;"IntranetContentLanguage"="EN" },
+	@{ "Title"="Default FR";"ForceCacheRefresh"=1;"SiteMapTermSetId"=$SiteMapTermSetId_FR;"HeaderLinksTermSetId"=$HeaderLinksTermSetId_FR;"FooterLinksTermSetId"=$FooterLinksTermSetId_FR;"IntranetContentLanguage"="FR" }
 )
 
 # Create the configuration item for each language
 $ConfigurationItems | ForEach-Object {
 
-    $Item = Add-PnPListItem -List $ConfigurationList -ContentType Item  -Values $_
+    # We create items in two steps because of a bug with the Add-PnPListItem since the February release https://github.com/SharePoint/PnP-PowerShell/issues/778
+    $Item = Add-PnPListItem -List $ConfigurationList
+    $Item = Set-PnPListItem -Identity  $Item.Id -List $ConfigurationList -Values $_ -ContentType "Item"
 }
 
 # -------------------------------------------------------------------------------------
@@ -274,7 +306,7 @@ $ConfigurationItems | ForEach-Object {
 Write-Host "7# Configure image renditions..." -ForegroundColor Magenta
 
 # Thanks to http://www.eliostruyf.com/provision-image-renditions-to-your-sharepoint-2013-site/
-Add-PnPFile -Path $ImageRenditionsConfigurationFilePath -Folder "_catalogs\masterpage\" -Checkout
+$File = Add-PnPFile -Path $ImageRenditionsConfigurationFilePath -Folder "_catalogs\masterpage\" -Checkout
 
 # -------------------------------------------------------------------------------------
 # Add sample data
@@ -308,12 +340,14 @@ if ($IncludeData.IsPresent) {
     # Create the configuration item for each language
     $ConfigurationItemsEN | ForEach-Object {
 
-        $Item = Add-PnPListItem -List $CarouselItemsList -ContentType "Carousel Item" -Values $_
+		$Item = Add-PnPListItem -List $CarouselItemsList
+    	$Item = Set-PnPListItem -Identity  $Item.Id -List $CarouselItemsList -Values $_ -ContentType "Carousel Item"
     }
 
     $ConfigurationItemsFR | ForEach-Object {
 
-        $Item = Add-PnPListItem -List $CarouselItemsList -ContentType "Carousel Item"  -Values $_
+		$Item = Add-PnPListItem -List $CarouselItemsList
+    	$Item = Set-PnPListItem -Identity  $Item.Id -List $CarouselItemsList -Values $_ -ContentType "Carousel Item"
     }
 
     # Add promoted links
@@ -327,7 +361,8 @@ if ($IncludeData.IsPresent) {
 
     $PromotedLinks | ForEach-Object {
 
-        $Item = Add-PnPListItem -List $PromotedLinksList -Values $_
+		$Item = Add-PnPListItem -List $PromotedLinksList
+    	$Item = Set-PnPListItem -Identity  $Item.Id -List $PromotedLinksList -Values $_ -ContentType "Item"
     }
 }
 

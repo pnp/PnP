@@ -25,8 +25,9 @@
  *          - Only the most recent translation is shown for the "EN" label, in the component.
  *
  * **********************************************/
+declare function require(name: string);
 import * as i18n from "i18next";
-import * as pnp from "sp-pnp-js";
+import { Web, Logger, LogLevel } from "sp-pnp-js";
 
 export class LanguageSwitcherViewModel {
 
@@ -61,7 +62,8 @@ export class LanguageSwitcherViewModel {
     private getPeerUrls(languages: Array<string>) {
 
         // Get the info for the current page
-        pnp.sp.web.lists.getByTitle("Pages").items.getById(this.currentPageId).select(this.associationKeyFieldName, "ID", this.languageFieldName).get().then((item) => {
+        let web = new Web(_spPageContextInfo.webAbsoluteUrl);
+        web.lists.getByTitle("Pages").items.getById(this.currentPageId).select(this.associationKeyFieldName, "ID", this.languageFieldName).get().then((item) => {
 
             let allLanguages: Array<LanguageLinkViewModel> = [];
             let currentPageLanguage = item[this.languageFieldName];
@@ -71,7 +73,7 @@ export class LanguageSwitcherViewModel {
 
             // Return only one element ordered descending by the Modified date
             // It can't have more than one translation for the current page
-            pnp.sp.web.lists.getByTitle("Pages").items.filter(filterQuery).orderBy("Modified").top(1).select("FileRef, Title", this.languageFieldName).get().then((item: Array<any>) => {
+            web.lists.getByTitle("Pages").items.filter(filterQuery).orderBy("Modified").top(1).select("FileRef, Title", this.languageFieldName).get().then((item: Array<any>) => {
 
                 // Loop through each available languages and map the correct information according to the page context and its translations.
                 // We want to notifiy the users if there is not translation for a target language so that's why we map an arbitrary array of languages with the results
@@ -81,6 +83,21 @@ export class LanguageSwitcherViewModel {
 
                     // The label is given by the component parameters
                     languageLink.label(element);
+
+                    // Set the corresponding flag icon CSS class
+                    switch (element) {
+                        case "EN":
+                            languageLink.flagCssClass("gb");
+                            break;
+
+                        case "FR":
+                            languageLink.flagCssClass("fr");
+                            break;
+
+                        default:
+                            languageLink.flagCssClass("");
+                            break;
+                    }
 
                     // This is the current language
                     if (element.localeCompare(currentPageLanguage) === 0) {
@@ -123,12 +140,12 @@ export class LanguageSwitcherViewModel {
 
             }).catch((errorMesssage) => {
 
-                pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+                Logger.write(errorMesssage, LogLevel.Error);
             });
 
         }).catch((errorMesssage) => {
 
-            pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+            Logger.write(errorMesssage, LogLevel.Error);
         });
     }
 }
@@ -139,6 +156,7 @@ class LanguageLinkViewModel {
     public url: KnockoutObservable<string>;
     public isCurrentLanguage: KnockoutObservable<boolean>;
     public isValidTranslation: KnockoutObservable<boolean>;
+    public flagCssClass: KnockoutObservable<string>;
 
     constructor() {
 
@@ -146,5 +164,6 @@ class LanguageLinkViewModel {
         this.url = ko.observable("");
         this.isCurrentLanguage = ko.observable(false);
         this.isValidTranslation = ko.observable(false);
+        this.flagCssClass = ko.observable("");
     }
 }

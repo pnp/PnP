@@ -3,7 +3,7 @@ interface KnockoutBindingHandlers {
     stopBinding: KnockoutBindingHandler;
     summarize: KnockoutBindingHandler;
     localizedTermLabel: KnockoutBindingHandler;
-    getNewsSearchUrl: KnockoutBindingHandler;
+    getSearchUrl: KnockoutBindingHandler;
     getDocumentsSearchUrl: KnockoutBindingHandler;
     inputFocus: KnockoutBindingHandler;
 }

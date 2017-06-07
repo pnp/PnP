@@ -5,7 +5,7 @@ import { UtilityModule } from "../core/utility";
 import { NavigationViewModel } from "../shared/navigation.viewmodel";
 import { NavigationNode } from "../shared/navigationnode";
 import "pubsub-js";
-import * as pnp from "sp-pnp-js";
+import { Web, Logger, LogLevel } from "sp-pnp-js";
 
 export class ContextualMenuViewModel extends NavigationViewModel {
 
@@ -31,8 +31,8 @@ export class ContextualMenuViewModel extends NavigationViewModel {
 
             let iconElt = $("[data-target='#" + event.target.id + "']").find("i");
             if (iconElt) {
-                iconElt.removeClass("ms-Icon--chevronUp");
-                iconElt.addClass("ms-Icon--chevronDown");
+                iconElt.removeClass("fa-angle-up");
+                iconElt.addClass("fa-angle-down");
             }
         });
 
@@ -43,8 +43,8 @@ export class ContextualMenuViewModel extends NavigationViewModel {
             // Get the parent with the data-target attribute equals to my id.
             let iconElt = $("[data-target='#" + event.target.id + "']").find("i");
             if (iconElt) {
-                iconElt.removeClass("ms-Icon--chevronDown");
-                iconElt.addClass("ms-Icon--chevronUp");
+                iconElt.removeClass("fa-angle-down");
+                iconElt.addClass("fa-angle-up");
             }
         });
 
@@ -52,8 +52,9 @@ export class ContextualMenuViewModel extends NavigationViewModel {
         PubSub.subscribe("navigationNodes", (msg, data) => {
 
             let navigationTree: Array<NavigationNode> = data.nodes;
+            let web = new Web(_spPageContextInfo.webAbsoluteUrl);  
 
-            pnp.sp.web.lists.getByTitle("Pages").items.getById(_spPageContextInfo.pageItemId).select(this.siteMapFieldName).get().then((item) => {
+            web.lists.getByTitle("Pages").items.getById(_spPageContextInfo.pageItemId).select(this.siteMapFieldName).get().then((item) => {
 
                     let siteMapTermGuid = item[this.siteMapFieldName];
                     let currentNode: NavigationNode = undefined;
@@ -76,7 +77,7 @@ export class ContextualMenuViewModel extends NavigationViewModel {
                         if (currentNode.ParentId !== null) {
 
 
-                            let parentNode = this.utilityModule.getNodeByTermId(navigationTree, new SP.Guid(currentNode.ParentId));
+                            let parentNode = this.utilityModule.getNodeByTermId(navigationTree, currentNode.ParentId);
 
                             // Set the parent section
                             this.parentSection(parentNode);
@@ -94,7 +95,7 @@ export class ContextualMenuViewModel extends NavigationViewModel {
 
                     } else {
 
-                        pnp.log.write("[Contextual Menu] Unable to determine the current position in the site map", pnp.LogLevel.Warning);
+                        Logger.write("[Contextual Menu] Unable to determine the current position in the site map", LogLevel.Warning);
                     }
 
                     this.initialize(navigationTree);
@@ -102,12 +103,12 @@ export class ContextualMenuViewModel extends NavigationViewModel {
 
                     if (currentNode !== undefined) {
 
-                        this.setCurrentNode(new SP.Guid(currentNode.Id));
+                        this.setCurrentNode(currentNode.Id);
                     }
 
             }).catch((errorMesssage) => {
 
-                pnp.log.write(errorMesssage, pnp.LogLevel.Error);
+                Logger.write(errorMesssage, LogLevel.Error);
             });
         });
     }

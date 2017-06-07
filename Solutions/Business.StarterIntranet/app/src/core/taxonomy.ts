@@ -3,7 +3,7 @@
 // ====================
 import { NavigationNode } from "../shared/navigationnode";
 import i18n = require("i18next");
-import * as pnp from "sp-pnp-js";
+import { Logger, LogLevel } from "sp-pnp-js";
 
 export class TaxonomyModule {
 
@@ -175,7 +175,7 @@ export class TaxonomyModule {
             return p;
 
         } else {
-            pnp.log.write("TaxonomyModule.getTermById: the provided term id is null!", pnp.LogLevel.Error);
+            Logger.write("TaxonomyModule.getTermById: the provided term id is null!", LogLevel.Error);
         }
     }
 

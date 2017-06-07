@@ -3,7 +3,8 @@
 #contextualmenu {
 
     min-height: 200px; // We set a min height to display the spinner
-    padding-left: 15px;
+    font-family: $font-primary;
+    text-decoration: none;
 
     ul.nav {
         margin-top: 0px;
@@ -12,10 +13,11 @@
     .nav > li {
 
         padding: 10px 15px;
-
+        
         a {
             display: inline;
             padding: 0px;
+            color: $text-color;
         }
 
         a:hover {
@@ -28,39 +30,40 @@
         
         i {
             float:right;
+        }   
+    }
+
+    .nav > li.is-selected {
+
+        a {
+            color: $contextual-selected-color;
         }
     }
 
     .nav > li.parent-section {
 
         font-weight: bold;
-        color: $primary-color;
-
+    
         i {
             float: none;
         }
 
         a {
-            color: $primary-color;
+            color: $text-color;
         }
     }
     
     .nav > li.is-child {
         padding-left:30px;
-    }
-
-    .is-selected {
-
-        background-color: $contextual-selected-color;
-        border-radius: 5px;
-        color: #ffffff;
+        border-bottom: transparent;
 
         a {
-            color: #ffffff;
+            color: #999;
         }
+    }
 
-        :hover {
-            background-color: $contextual-selected-color;
-        }
+    .nav-pills > li~li {
+         
+        border-top: 1px solid #F2EFEF;
     }
 }
