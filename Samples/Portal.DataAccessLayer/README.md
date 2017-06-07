@@ -1,6 +1,6 @@
-#Client-Side Data Access Layer (DAL) Sample#
+# Client-Side Data Access Layer (DAL) Sample #
 
-##Summary##
+## Summary ##
 The Client-Side Data Access Layer (DAL) sample provides a reference implementation of the Client-Side Data Access Layer (DAL) Framework. The sample is intentionally verbose and rather straightforward in its implementation; the focus is on making the logic and operation easy to read and understand. 
 
 The Client-Side Data Access Layer (DAL) Framework is a custom client-side JavaScript framework that you can make available to all of your custom client-side display controls. It supports intelligent data loading patterns, abstracts the details of the client-to-server requests, provides data caching functionality (with expiration) to minimize client-to-server request traffic, and improves perceived page performance. 
@@ -14,20 +14,24 @@ You can learn more about the DAL by reading the following article:
 -  SharePoint Online (all SKUs)
 -  SharePoint 2013 On-Prem (Standard and Enterprise) [*not tested, but should work as expected*]
 
-### Solution Author(s) ###
-- Ron Tielke (**Microsoft**)
+### Solution ###
+Solution | Author(s)
+---------|----------
+Portal.DataAccessLayer | Ronald Tielke (Microsoft)
 
 ### Version history ###
-- v1.0: June 5th, 2017; Initial release
+Version  | Date | Comments
+---------| -----| --------
+1.0  | June 7th 2017 | Initial release
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
 
 ----------
-##Installation##
+## Installation ##
 The Client-Side Data Access Layer (DAL) sample must be installed in your SharePoint Online tenancy.  The sample includes an easy-to-use Console application that automates nearly the entire installation process.  However, some manual steps are required.
 
-###Overview###
+### Overview ###
 The installation can be summarized as follows:
 
 - Manually create two site collections (Admin and Demo)
@@ -35,12 +39,12 @@ The installation can be summarized as follows:
 - Use the console application to configure the two site collections for the demo 
 - Manually configure a Search Schema Managed Property
 
-###Pre-Requisites###
+### Pre-Requisites ###
 - SharePoint Online (MT) Tenancy
 - Account with permission to create site collections and manage Search schema via the SharePoint Admin Center (e.g., https://contoso-admin.sharepoint.com)
 - Account with permission to manage lists within the root site collection of the Portal web application (e.g., https://contoso.sharepoint.com/)
 
-###Prepare SharePoint Online###
+### Prepare SharePoint Online ###
 1. Go to **SharePoint Admin Center** | **Site Collections** and create an **Admin** site collection (e.g., /sites/admin).  This site will be used to host the various portal-level configuration lists for the DAL sample.
 	- Use the **Team Site** template
 	- Make note of the resulting Admin site url
@@ -49,7 +53,7 @@ The installation can be summarized as follows:
 	- Make note of the resulting Demo site url
 3. Visit the root site collection of the **Portal** web application (e.g., https://contoso.sharepoint.com/) and verify that it contains a document library named **Style Library**. This document library will serve as the **CDN** used to host the resource files for the DAL sample.
 
-###Prepare the Sample###
+### Prepare the Sample ###
 
 1. Open the **Portal.DataAccessLayer** solution in Visual Studio
 2. Edit the **configuration.js** file of the **JS** project folder and ensure that the following variables contain values appropriate to your environment:
@@ -59,7 +63,7 @@ The installation can be summarized as follows:
 	- StockTickerSymbol = "MSFT";
 3. Edit the **Portal.DataAccessLayer.master** file of the **Master Pages** project folder and ensure that the **src** attribute is correct for all CDN file **script** tags within the **PnP MODs** block (*starting at line 22*).
 
-###Deploy the Sample###
+### Deploy the Sample ###
 1. Verify that SharePoint Online has completed provisioning of the **Admin** and **Demo** site collections
 2. Open the **Portal.DataAccessLayer** solution in Visual Studio
 3. Start the Console application
@@ -70,7 +74,7 @@ The installation can be summarized as follows:
 	3. Operation #3 - Configure Demo Site Collection
 6. `Wait approximately 30 mins for the search crawler to index the new sites/lists`
 
-###Verify the Managed Properties###
+### Verify the Managed Properties ###
 Go to **SharePoint Admin Center** | **Search Administration** | **Manage Search Schema**.  Verify that the following **Managed Properties** exist:
 
 - PnPPortalConfigKeyOWSTXT
@@ -78,11 +82,9 @@ Go to **SharePoint Admin Center** | **Search Administration** | **Manage Search 
 - PnPPortalLinkTextOWSTXT
 - PnPPortalLinkUrlOWSTXT
 
-
-
 `Do not proceed until the Managed Properties appear in the Search Schema (this can take up to 30 mins).`
 
-###Configure the Sortable Managed Property###
+### Configure the Sortable Managed Property ###
 Go to **SharePoint Admin Center** | **Search Administration** | **Manage Search Schema**. Choose *one* of the **RefinableInt[00-99]** Managed Properties and configure as follows:
 
 - **Alias**: PnPPortalDisplayOrder
@@ -92,7 +94,7 @@ Go to **SharePoint Admin Center** | **Search Administration** | **Manage Search 
 
 `You do not need to edit any of the auto-generated Managed Properties associated with this sample.`
 
-###Re-Index the Lists###
+### Re-Index the Lists ###
 At this point it is necessary to re-index the various configuration lists of the DAL sample in order to ensure that the configuration of the new **PnPPortalDisplayOrder** managed property takes effect.  The easiest way to do this is to re-execute Operations #2 and #3 of the Console application:
 
 1. Open the **Portal.DataAccessLayer** solution in Visual Studio
@@ -103,7 +105,7 @@ At this point it is necessary to re-index the various configuration lists of the
 	2. Operation #3 - Configure Demo Site Collection
 5. `Wait approximately 30 mins for the search crawler to re-index the sites/lists`
 
-###Visit the Demo Site Collection and Exercise the Demo###
+### Visit the Demo Site Collection and Exercise the Demo ###
 1. Navigate to the DAL web of the Demo site collection to see the DAL in action.
 	- https://**DemoSiteUrl**/dal (e.g., https://contoso.sharepoint.com/sites/demo/dal)
 2. Note: You can also navigate to the root web of the Demo site collection
@@ -128,6 +130,5 @@ At this point it is necessary to re-index the various configuration lists of the
 	- The controls will render the updated data in 15-20 mins, once the changes are crawled by SharePoint.
 14. At any time, you can edit the various implementation files to customize the configuration of these controls. 
 	- The controls will reflect the updated configuration as soon as the browser downloads the updated implementation file
-
 
 <img src="https://telemetry.sharepointpnp.com/pnp/samples/Portal.DataAccessLayer" />
