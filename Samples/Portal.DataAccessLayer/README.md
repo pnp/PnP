@@ -41,8 +41,10 @@ The installation can be summarized as follows:
 
 ### Pre-Requisites ###
 - SharePoint Online (MT) Tenancy
-- Account with permission to create site collections and manage Search schema via the SharePoint Admin Center (e.g., https://contoso-admin.sharepoint.com)
-- Account with permission to manage lists within the root site collection of the Portal web application (e.g., https://contoso.sharepoint.com/)
+- Account with permission to create site collections and manage Search schema via the SharePoint Admin Center 
+	- (e.g., https://contoso-admin.sharepoint.com)
+- Account with permission to manage lists within the root site collection of the Portal web application 
+	- (e.g., https://contoso.sharepoint.com/)
 
 ### Prepare SharePoint Online ###
 1. Go to **SharePoint Admin Center** | **Site Collections** and create an **Admin** site collection (e.g., /sites/admin).  This site will be used to host the various portal-level configuration lists for the DAL sample.
@@ -62,6 +64,7 @@ The installation can be summarized as follows:
 	- PortalCdnUrl = "/style%20library/pnp";
 	- StockTickerSymbol = "MSFT";
 3. Edit the **Portal.DataAccessLayer.master** file of the **Master Pages** project folder and ensure that the **src** attribute is correct for all CDN file **script** tags within the **PnP MODs** block (*starting at line 22*).
+	- `we use a custom master page only to simplify the demo; it is neither a technical requirement nor a recommended approach`
 
 ### Deploy the Sample ###
 1. Verify that SharePoint Online has completed provisioning of the **Admin** and **Demo** site collections
@@ -72,7 +75,8 @@ The installation can be summarized as follows:
 	1. Operation #1 - Configure CDN
 	2. Operation #2 - Configure Admin Site Collection
 	3. Operation #3 - Configure Demo Site Collection
-6. `Wait approximately 30 mins for the search crawler to index the new sites/lists`
+
+`Wait approximately 30 mins for the search crawler to index the new sites/lists`
 
 ### Verify the Managed Properties ###
 Go to **SharePoint Admin Center** | **Search Administration** | **Manage Search Schema**.  Verify that the following **Managed Properties** exist:
@@ -103,7 +107,8 @@ At this point it is necessary to re-index the various configuration lists of the
 4. Execute the following operations in the specified order:
 	1. Operation #2 - Configure Admin Site Collection
 	2. Operation #3 - Configure Demo Site Collection
-5. `Wait approximately 30 mins for the search crawler to re-index the sites/lists`
+
+`Wait approximately 30 mins for the search crawler to re-index the sites/lists`
 
 ### Visit the Demo Site Collection and Exercise the Demo ###
 1. Navigate to the DAL web of the Demo site collection to see the DAL in action.
