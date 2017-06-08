@@ -37,14 +37,14 @@ ns.LocalNav.GetContents = function ()
         // Note: ENABLE this code block if you wish to present a progress indicator...
         //----------------------------------------------------------------------------
         //// insert a progress indicator while we request the BDO for the control. 
-        //$('#pnpStockTicker').empty();
-        //$('#pnpStockTicker').append("<h3>Local Navigation</h3>" + "<p><img src=\"" + ns.Configuration.PortalCdnUrl + "/images/loading.gif\" alt=\"loading...\"/>&nbsp;Working on it...</p>");
+        //$('#pnpLocalNav').empty();
+        //$('#pnpLocalNav').append("<h3>Local Navigation</h3>" + "<p><img src=\"" + ns.Configuration.PortalCdnUrl + "/images/loading.gif\" alt=\"loading...\"/>&nbsp;Working on it...</p>");
         //----------------------------------------------------------------------------
     }
 
     try
     {
-        // Request the BDO for the control; we use DurableStorage for Local Nav Links; it's content is not personalized/private
+        // Request the BDO for the control. We use DurableStorage for Local Nav Links -- its content is not personalized/private
         ns.BusinessDataManager.GetLocalNavData({ storageMode: ns.StorageManager.DurableStorageMode, useSlidingExpiration: false, timeout: ns.LocalNav.ExpirationTimeoutInMinutes }).then(
 
             function (localNavData)

@@ -23,6 +23,8 @@
         <!-- this is a demo; be sure to use the minimized versions of these files for PROD -->
         <script type="text/javascript" src="/style%20library/pnp/js/jquery.js"></script>
         <script type="text/javascript" src="/style%20library/pnp/js/jquery-ui.js"></script>
+        <!-- bootstrap is used only for the UserInfo dropdown -->
+        <script type="text/javascript" src="/style%20library/pnp/js/bootstrap.js"></script>
         <!-- utility.js must be our first custom JS file reference -->
         <script type="text/javascript" src="/style%20library/pnp/js/utility.js"></script>
         <script type="text/javascript" src="/style%20library/pnp/js/configuration.js"></script>
@@ -33,6 +35,7 @@
         <script type="text/javascript" src="/style%20library/pnp/js/companyLinks.js"></script>
         <script type="text/javascript" src="/style%20library/pnp/js/localNav.js"></script>
         <script type="text/javascript" src="/style%20library/pnp/js/stockTicker.js"></script>
+        <script type="text/javascript" src="/style%20library/pnp/js/userInfo.js"></script>
         <!-- PnP MODS -->
 
 	<SharePoint:SPShortcutIcon runat="server" IconUrl="/_layouts/15/images/favicon.ico?rev=44" />
@@ -51,6 +54,12 @@
 		<asp:ContentPlaceHolder id="PlaceHolderBodyAreaClass" Visible="true" runat="server" />
 	</SharePoint:AjaxDelta>
 	<SharePoint:CssRegistration Name="Themable/corev15.css" runat="server" />
+
+    <!-- PnP MODS -->
+    <!-- this is a demo; be sure to use the minimized versions of these files for PROD -->
+    <!-- bootstrap is used only for the UserInfo dropdown -->
+    <link rel="stylesheet" href="/style%20library/pnp/styles/bootstrap.css">
+    <!-- PnP MODS -->
 </head>
 <body>
   <SharePoint:ImageLink runat="server"/>
@@ -214,6 +223,17 @@
 					Location="TabRowRight"
 					ID="RibbonTabRowRight"
 					CssClass="s4-trc-container s4-notdlg ms-core-defaultFont">
+
+                    <!-- PnP MODS -->
+                    <span id="pnpUserInfo" class="dropdown ms-promotedActionButton" role="presentation">
+                        <a class="dropdown-toggle ms-promotedActionButton-text" id="pnpUserInfoDropdown" role="button" aria-expanded="false" aria-haspopup="true" href="#" data-toggle="dropdown" style="text-decoration:none;">
+                            <span class="ms-promotedActionButton-text">User Info</span>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" id="pnpUserInfoMenu" role="menu" aria-labelledby="pnpUserInfoDropdown" style="text-transform:none;"></ul>
+                    </span>
+                    <!-- PnP MODS -->
+
 					<SharePoint:SPSharePromotedActionButton runat="server"/>
 					<SharePoint:DelegateControl runat="server" ControlId="PromotedActions" AllowMultipleControls="true" />
 					<SharePoint:SPSyncPromotedActionButton runat="server"/>
@@ -645,6 +665,11 @@
                 $('#pnpLocalNav').LocalNav();
                 $('#pnpFooter').Footer();
                 $('#pnpStockTicker').StockTicker();
+                $('#pnpUserInfo').UserInfo();
+
+                $('#pnpUserInfo').on('show.bs.dropdown', function () {
+                    ns.UserInfo.GetContents();
+                });
             }
 
         </SharePoint:ScriptBlock>

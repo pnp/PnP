@@ -37,14 +37,14 @@ ns.CompanyLinks.GetContents = function ()
         // Note: ENABLE this code block if you wish to present a progress indicator...
         //----------------------------------------------------------------------------
         //// insert a progress indicator while we request the BDO for the control. 
-        //$('#pnpStockTicker').empty();
-        //$('#pnpStockTicker').append("<h3>Company Quick Links</h3>" + "<p><img src=\"" + ns.Configuration.PortalCdnUrl + "/images/loading.gif\" alt=\"loading...\"/>&nbsp;Working on it...</p>");
+        //$('#pnpCompanyLinks').empty();
+        //$('#pnpCompanyLinks').append("<h3>Company Quick Links</h3>" + "<p><img src=\"" + ns.Configuration.PortalCdnUrl + "/images/loading.gif\" alt=\"loading...\"/>&nbsp;Working on it...</p>");
         //----------------------------------------------------------------------------
     }
 
     try
     {
-        // Request the BDO for the control; we use DurableStorage for Company Links; it's content is not personalized/private
+        // Request the BDO for the control. We use DurableStorage for Company Links -- its content is not personalized/private
         ns.BusinessDataManager.GetCompanyLinksData({ storageMode: ns.StorageManager.DurableStorageMode, useSlidingExpiration: false, timeout: ns.CompanyLinks.ExpirationTimeoutInMinutes }).then(
 
             function (companyLinksData)

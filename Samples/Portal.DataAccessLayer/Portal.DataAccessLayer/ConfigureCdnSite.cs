@@ -80,9 +80,11 @@ namespace Portal.DataAccessLayer
                 Folder cdn = web.EnsureFolderPath(Constants.CdnWebRelativeUrl);
                 Folder images = cdn.EnsureFolder("images");
                 Folder js = cdn.EnsureFolder("js");
+                Folder styles = cdn.EnsureFolder("styles");
 
                 EnsureCdnFiles(web, images, "images");
                 EnsureCdnFiles(web, js, "js");
+                EnsureCdnFiles(web, styles, "styles");
 
                 Logger.LogSuccessMessage("Ensured CDN", false);
 

@@ -123,11 +123,11 @@ ns.StorageManager.ClearItems = function (storageMode, storageKeyWildcard)
 };
 
 // Commits the specified custom data element to storage using the specified storage options
-ns.StorageManager.Set = function (storageMode, storageKey, data, useSlidingExpiration, timeout)
+ns.StorageManager.Set = function (storageMode, storageKey, data, useSliding, timeout)
 {
     ns.StorageManager.SetStorageMode(storageMode);
     ns.LogMessage('ns.StorageManager.Set(): Storing item in ' + ns.StorageManager.StorageName + ' [key=' + storageKey + ']');
-    ns.StorageManager.SetPersistedData(ns.StorageManager.ConstructPersistedData(storageKey, data, useSlidingExpiration, timeout));
+    ns.StorageManager.SetPersistedData(storageKey, ns.StorageManager.ConstructPersistedData(storageKey, data, useSliding, timeout));
 };
 
 // Retrieves the specified custom data element from storage; 
@@ -152,15 +152,16 @@ ns.StorageManager.Get = function (storageMode, storageKey)
         if (persistedData.HasExpired())
         {
             ns.LogMessage('ns.StorageManager.Get(): Item has EXPIRED [key=' + storageKey + ']');
+            ns.StorageManager.Storage.removeItem(storageKey);
             return { hasExpired: true, data: persistedData.Data };
         }
 
         // If this item uses a sliding expiration policy, update its LastAccessOn property to reset the expiration timer
-        if (persistedData.UseSlidingExpiration)
+        if (persistedData.UseSliding)
         {
             ns.LogMessage('ns.StorageManager.Get(): Restarting sliding expiration timer for item [key=' + storageKey + ']');
-            persistedData.LastAccessedOn = new Date();
-            ns.StorageManager.SetPersistedData(persistedData);
+            persistedData.AccessedOn = new Date();
+            ns.StorageManager.SetPersistedData(storageKey, persistedData);
         }
 
         ns.LogMessage('ns.StorageManager.Get(): Returning item from ' + ns.StorageManager.StorageName + ' [key=' + storageKey + ']');
@@ -168,29 +169,43 @@ ns.StorageManager.Get = function (storageMode, storageKey)
     }
 };
 
-ns.StorageManager.SetPersistedData = function (persistedData)
+ns.StorageManager.SetPersistedData = function (storageKey, persistedData)
 {
-    //TODO: ensure ns.StorageManager.Storage.remainingSpace > length of key and length of stringified data
-    ns.StorageManager.Storage[persistedData.Key] = JSON.stringify(persistedData);
+    try
+    {
+        //TODO: ensure ns.StorageManager.Storage.remainingSpace > length of JSON.stringify(persistedData)
+        // Unfortunately, there does not appear to be a standard, cross-browser implementaton of the remainingSpace property
+        // Our only recourse is to catch the exception
+        ns.StorageManager.Storage[storageKey] = JSON.stringify(persistedData);
+    }
+    catch (ex)
+    {
+        if (ex.name == 'QuotaExceededError')
+        {
+            // We could not insert the item into the cache because the cache is full.
+            ns.LogMessage('ns.StorageManager.SetPersistedData(): Could not store the item [key=' + storageKey + ']; the ' + ns.StorageManager.StorageName + ' is FULL !!!');
+            return;
+        }
+        ns.LogError('ns.StorageManager.SetPersistedData(): unexpected exception occurred storing the item [key=' + storageKey + ']; error=' + ex.message);
+    }
 };
 
-ns.StorageManager.ConstructPersistedData = function (storageKey, data, useSlidingExpiration, timeout)
+ns.StorageManager.ConstructPersistedData = function (storageKey, data, useSliding, timeout)
 {
     var persistedData = new ns.PersistedData();
 
-    persistedData.Key = storageKey;
     persistedData.Data = data;
     persistedData.CreatedOn = (new Date());
-    persistedData.LastAccessedOn = (new Date());
+    persistedData.AccessedOn = (new Date());
 
-    if (useSlidingExpiration && timeout)
+    if (useSliding && timeout)
     {
-        persistedData.ExpirationTimeout = timeout;
-        persistedData.UseSlidingExpiration = useSlidingExpiration;
+        persistedData.Timeout = timeout;
+        persistedData.UseSliding = useSliding;
     }
     else
     {
-        persistedData.ExpirationTimeout = timeout;
+        persistedData.Timeout = timeout;
     }
 
     return persistedData;

@@ -67,24 +67,23 @@ ns.LogError = function (msg)
 /****define the Persisted Data class*********/
 ns.PersistedData = function ()
 {
-    this.Key = "";                      // key for the persisted data
-    this.Data = {};                     // represents the data to persist
-    this.CreatedOn = null;              // represents the time the data was persisted
-    this.LastAccessedOn = null;         // represents the time the data was last accessed
-    this.ExpirationTimeout = null;      // represents the timeout value (in minutes)
-    this.UseSlidingExpiration = false;  // if "true", use a sliding expiration policy; otherwise, use an absolute expiration policy
+    this.Data = {};             // represents the data to persist
+    this.CreatedOn = null;      // represents the time the data was persisted
+    this.AccessedOn = null;     // represents the time the data was last accessed
+    this.Timeout = null;        // represents the timeout value (in minutes)
+    this.UseSliding = false;    // if "true", use a sliding expiration policy; otherwise, use an absolute expiration policy
 
     ///Computes the Expiration Time of the data entry
     /// the expiration time is calculated as follows:
-    /// - if an absolute expiration policy is in play:  expiration time = CreatedOn + ExpirationTimeout 
-    /// - if a sliding expiration policy is in play:    expiration time = LastAccessedOn + ExpirationTimeout
+    /// - if an absolute expiration policy is in play:  expiration time = CreatedOn + Timeout 
+    /// - if a sliding expiration policy is in play:    expiration time = AccessedOn + Timeout
     this.ComputeExpiration = function ()
     {
-        if (this.UseSlidingExpiration && this.ExpirationTimeout)
+        if (this.UseSliding && this.Timeout)
         {
-            var newDt = new Date(this.LastAccessedOn);
-            ns.LogMessage('ns.PersistedData.ComputeExpiration(): Item LastAccessedOn = ' + newDt);
-            newDt = new Date(newDt.setMinutes(parseInt(newDt.getMinutes()) + parseInt(this.ExpirationTimeout)));
+            var newDt = new Date(this.AccessedOn);
+            ns.LogMessage('ns.PersistedData.ComputeExpiration(): Item AccessedOn = ' + newDt);
+            newDt = new Date(newDt.setMinutes(parseInt(newDt.getMinutes()) + parseInt(this.Timeout)));
             ns.LogMessage('ns.PersistedData.ComputeExpiration(): Item ExpiresOn = ' + newDt);
             return newDt;
         }
@@ -92,7 +91,7 @@ ns.PersistedData = function ()
         {
             var newDt = new Date(this.CreatedOn);
             ns.LogMessage('ns.PersistedData.ComputeExpiration(): Item CreatedOn = ' + newDt);
-            newDt = new Date(newDt.setMinutes(parseInt(newDt.getMinutes()) + parseInt(this.ExpirationTimeout)));
+            newDt = new Date(newDt.setMinutes(parseInt(newDt.getMinutes()) + parseInt(this.Timeout)));
             ns.LogMessage('ns.PersistedData.ComputeExpiration(): Item ExpiresOn = ' + newDt);
             return newDt;
         }
@@ -131,7 +130,7 @@ ns.UtilityManager.SupportsHtml5Storage = function ()
 };
 
 // function to get a parameter value by a specific key
-ns.UtilityManager.GetQueryStringParameter = function (urlParameterKey)
+ns.UtilityManager.GetQueryStringParameter = function (key)
 {
     var mainParams = document.URL.split('?');
 
@@ -145,7 +144,7 @@ ns.UtilityManager.GetQueryStringParameter = function (urlParameterKey)
     for (var i = 0; i < params.length; i = i + 1)
     {
         var singleParam = params[i].split('=');
-        if (singleParam[0] == urlParameterKey)
+        if (singleParam[0] == key)
         {
             return decodeURIComponent(singleParam[1]);
         }

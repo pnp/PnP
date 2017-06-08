@@ -160,6 +160,22 @@ ns.BusinessDataManager.StockTickerData = function ()
     this.Quotes = [];
 };
 
+// A UserInfoData BDO provides profile information of the current user for the UserInfo display control.
+ns.BusinessDataManager.UserInfoDataType = "UserInfoData";
+ns.BusinessDataManager.UserInfoData = function () {
+    this.Type = ns.BusinessDataManager.UserInfoDataType;
+    this.Account = "";
+    this.Dept = "";
+    this.Email = "";
+    this.First = "";
+    this.Last = "";
+    this.Name = "";
+    this.OneDriveUrl = "";
+    this.ProfileUrl = "";
+    this.Title = "";
+    this.Phone = "";
+};
+
 // An ErrorData BDO provides error details to the display control when a BDO operation fails.
 ns.BusinessDataManager.ErrorDataType = "ErrorData";
 ns.BusinessDataManager.ErrorData = function ()
@@ -184,6 +200,7 @@ ns.BusinessDataManager.StockTickerStorageKey = ns.BusinessDataManager.StorageKey
 // multiple context-specific instances; these keys serve as roots for the unique instance-specific keys we generate
 ns.BusinessDataManager.CompanyLinksStorageKeyRoot = ns.BusinessDataManager.StorageKeyRoot + "CompanyLinks";
 ns.BusinessDataManager.LocalNavigationStorageKeyRoot = ns.BusinessDataManager.StorageKeyRoot + "LocalNav";
+ns.BusinessDataManager.UserInfoStorageKeyRoot = ns.BusinessDataManager.StorageKeyRoot + "UserInfo";
 
 //----------------------------------------------------------------------------------------------------------
 // Utility methods
@@ -805,6 +822,120 @@ ns.BusinessDataManager.SetLocalNavData = function (storageOptions, localNav)
 {
     var jsonContract = JSON.stringify(localNav);
     console.log("ns.BusinessDataManager.SetLocalNavData()  JSON: " + jsonContract);
+
+    //TODO: implement the peristance model only if you leverage a custom admin UX that has a SAVE button; otherwise, ignore and use the OOB admin UX
+};
+
+/// Generates and returns the lightweight JSON Business Data Object for the User Info control
+ns.BusinessDataManager.GetUserInfoData = function (storageOptions)
+{
+    var deferred = $.Deferred();
+
+    // User Info data is obviously unique to this user; we must use a user-specific storage key.
+    var storageKey = ns.BusinessDataManager.UserInfoStorageKeyRoot + ':' + _spPageContextInfo.userLoginName;
+
+    // If null, the BDO is not in storage; otherwise, storageItem.data holds the BDO and storageItem.hasExpired indicates freshness 
+    // By design, we store/return a stale BDO if an exception occurs while building the fresh BDO; doing so allows the control to 
+    // continue showing reasonable content; it also prevents a cascade of data source call attempts/failures.
+    var storageItem = null;
+
+    try
+    {
+        // If storage is in play, request the BDO from storage
+        if (ns.BusinessDataManager.UseStorage(storageOptions))
+        {
+            // Return the BDO to the caller if it is still fresh; if the BDO is stale, keep it around in case we encounter an issue building a fresh BDO
+            storageItem = ns.StorageManager.Get(storageOptions.storageMode, storageKey);
+            if (storageItem && storageItem.hasExpired == false)
+            {
+                deferred.resolve(storageItem.data);
+                return deferred.promise();
+            }
+        }
+
+        ns.LogMessage('ns.BusinessDataManager.GetUserInfoData(): calling data source');
+
+        // Query the User Profile configuration list
+        var queryUrl = ns.Configuration.GetWebAppAbsoluteUrl() + "/_api/sp.userprofiles.peoplemanager/getmyproperties";
+
+        $.ajax({
+            url: queryUrl,
+            method: "GET",
+            headers: { "ACCEPT": "application/json;odata=verbose" },
+            cache: false
+        })
+        .done(function (data)
+        {
+            ns.LogMessage('ns.BusinessDataManager.GetUserInfoData(): processing data response');
+
+            //  construct the BDO for the control
+            var userInfo = new ns.BusinessDataManager.UserInfoData();
+
+            var profile = data.d;
+            if (profile)
+            {
+                var profileProps = profile.UserProfileProperties.results;
+                ns.LogMessage('ns.BusinessDataManager.GetUserInfoData(): 1 result returned for ' + _spPageContextInfo.userLoginName);
+
+                userInfo.Account = profile.AccountName;
+                userInfo.Dept = ns.BusinessDataManager.GetPropertyValueFromResult("Department", profileProps);
+                userInfo.Email = profile.Email;
+                userInfo.First = ns.BusinessDataManager.GetPropertyValueFromResult("FirstName", profileProps);
+                userInfo.Last = ns.BusinessDataManager.GetPropertyValueFromResult("LastName", profileProps);
+                userInfo.Name = profile.DisplayName;
+                userInfo.OneDriveUrl = profile.PersonalUrl;
+                userInfo.ProfileUrl = profile.UserUrl;
+                userInfo.Title = ns.BusinessDataManager.GetPropertyValueFromResult("Title", profileProps);
+                userInfo.Phone = ns.BusinessDataManager.GetPropertyValueFromResult("WorkPhone", profileProps);
+            }
+            else
+            {
+                ns.LogMessage('ns.BusinessDataManager.GetUserInfoData(): no results returned');
+                // No results is a valid result; cache a default/empty BDO
+                userInfo = new ns.BusinessDataManager.UserInfoData();
+            }
+
+            // If storage is in play, store the resulting BDO and return it to the caller
+            if (ns.BusinessDataManager.UseStorage(storageOptions))
+            {
+                ns.StorageManager.Set(storageOptions.storageMode, storageKey, userInfo, storageOptions.useSlidingExpiration, storageOptions.timeout);
+            }
+            deferred.resolve(userInfo);
+        })
+        .fail(function (xhr, status, error)
+        {
+            ns.LogError('ns.BusinessDataManager.GetUserInfoData(): failed to get data - Status=' + status + '; error=' + error);
+            if (storageItem)
+            {
+                // Store the stale BDO and return it to the caller; doing so provides reasonable display content and prevents a cascade of data source call attempts/failures.
+                ns.LogWarning('ns.BusinessDataManager.GetUserInfoData(): storing/returning stale data as a fallback');
+                ns.StorageManager.Set(storageOptions.storageMode, storageKey, storageItem.data, storageOptions.useSlidingExpiration, storageOptions.timeout);
+            }
+            // return the stale BDO if present; otherwise, return a null BDO and let the caller decide what to render
+            // TODO: instead of returning null, consider returning an ErrorData BDO if you wish to pass verbose error data to the caller.
+            deferred.resolve(storageItem ? storageItem.data : null);
+        });
+    }
+    catch (ex)
+    {
+        ns.LogError('ns.BusinessDataManager.GetUserInfoData(): unexpected exception occurred; error=' + ex.message);
+        if (storageItem)
+        {
+            // Store the stale BDO and return it to the caller; doing so provides reasonable display content and prevents a cascade of data source call attempts/failures.
+            ns.LogWarning('ns.BusinessDataManager.GetUserInfoData(): storing/returning stale data as a fallback');
+            ns.StorageManager.Set(storageOptions.storageMode, storageKey, storageItem.data, storageOptions.useSlidingExpiration, storageOptions.timeout);
+        }
+        // return the stale BDO if present; otherwise, return a null BDO and let the caller decide what to render
+        // TODO: instead of returning null, consider returning an ErrorData BDO if you wish to pass verbose error data to the caller.
+        deferred.resolve(storageItem ? storageItem.data : null);
+    }
+    return deferred.promise();
+};
+/// Consumes and persists an updated lightweight JSON Business Data Object for the User Info control
+//  - userInfo: an instance of the UserInfoData object, containing the updated data
+ns.BusinessDataManager.SetUserInfoData = function (storageOptions, userInfo) {
+    var jsonContract = JSON.stringify(userInfo);
+    console.log("ns.BusinessDataManager.SetUserInfoData()  JSON: " + jsonContract);
 
     //TODO: implement the peristance model only if you leverage a custom admin UX that has a SAVE button; otherwise, ignore and use the OOB admin UX
 };

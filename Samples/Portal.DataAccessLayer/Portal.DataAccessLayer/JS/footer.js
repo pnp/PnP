@@ -48,14 +48,14 @@ ns.Footer.GetContents = function ()
         // Note: ENABLE this code block if you wish to present a progress indicator...
         //----------------------------------------------------------------------------
         //// insert a progress indicator while we request the BDO for the control. 
-        //$('#pnpStockTicker').empty();
-        //$('#pnpStockTicker').append("<p><img src=\"" + ns.Configuration.PortalCdnUrl + "/images/loading.gif\" alt=\"loading...\"/>&nbsp;Working on it...</p>");
+        //$('#pnpFooter').empty();
+        //$('#pnpFooter').append("<p><img src=\"" + ns.Configuration.PortalCdnUrl + "/images/loading.gif\" alt=\"loading...\"/>&nbsp;Working on it...</p>");
         //----------------------------------------------------------------------------
     }
 
     try
     {
-        // Request the BDO for the control; we use DurableStorage for Footer Nav; it's content is not personalized/private
+        // Request the BDO for the control. We use DurableStorage for Footer Nav -- its content is not personalized/private
         ns.BusinessDataManager.GetFooterData({ storageMode: ns.StorageManager.DurableStorageMode, useSlidingExpiration: false, timeout: ns.Footer.ExpirationTimeoutInMinutes }).then(
 
             function (footerData)

@@ -8,7 +8,7 @@
 <p>
     The site collection contains a root web and a child web to allow for the unique configuration of local navigation. The pages of this site collection contain custom client-side JavaScript
     display controls.  These custom display controls are embedded on a custom Master Page that is used throughout the site collection
-    (<em>Note: we use a custom master page only to simplify the demo; it is not a technical requirement.</em>)
+    (<em>Note: we use a custom master page only to simplify the demo; it is neither a technical requirement nor a recommended practice.</em>)
     These custom display controls leverage the Client-Side Data Access Layer (DAL), which abstracts the back-end data sources and provides a client-side cache (with expiration).  <br>
 </p>
 
@@ -23,7 +23,7 @@
 
 <p>
     The DAL is available to all custom client-side ​JavaScript display controls used on the pages of the site collection. Each display control can be configured to use a specific
-    store (local or session), a unique expiration timeout, and a specific expiration policy (absolute or sliding). The following table shows the default configuration of the five custom
+    store (local or session), a unique expiration timeout, and a specific expiration policy (absolute or sliding). The following table shows the default configuration of the custom
     JavaScript display controls used for the demo.<br>
 </p>
 
@@ -66,10 +66,17 @@
         </tr>
         <tr class="ms-rteTableOddRow-5">
             <th class="ms-rteTableFirstCol-5" rowspan="1" colspan="1" style="width:6%;"><strong>Stock Ticker​</strong></th>
-            <td class="ms-rteTableOddCol-5"><strong>StockTickerSymbol</strong> variable in the <em> configuration.js</em> resource file of the <strong>CDN</strong> site collection​</td>
-            <td class="ms-rteTableEvenCol-5" style="width:6%;">Session Storage​</td>
-            <td class="ms-rteTableOddCol-5" style="width:5%;">3 mins​ (sliding)<br></td>
+            <td class="ms-rteTableOddCol-5"><strong>StockTickerSymbol</strong> variable in the <em>configuration.js</em> resource file of the <strong>CDN</strong> site collection​</td>
+            <td class="ms-rteTableEvenCol-5" style="width:6%;">Local Storage​</td>
+            <td class="ms-rteTableOddCol-5" style="width:5%;">3 mins​ (<strong>sliding</strong>)<br></td>
             <td class="ms-rteTableEvenCol-5" colspan="1" style="width:5%;">stockTicker.js​</td>
+        </tr>
+        <tr class="ms-rteTableEvenRow-5">
+            <th class="ms-rteTableFirstCol-5" rowspan="1" colspan="1" style="width:6%;"><strong>User Info ​</strong></th>
+            <td class="ms-rteTableOddCol-5"><strong>User Profile</strong> of the <strong>current</strong> user <em>(Note: control leverages a lazy load)</em></td>
+            <td class="ms-rteTableEvenCol-5" style="width:6%;">Session Storage​</td>
+            <td class="ms-rteTableOddCol-5" style="width:5%;">17 mins​ (absolute)<br></td>
+            <td class="ms-rteTableEvenCol-5" colspan="1" style="width:5%;">userInfo.js​</td>
         </tr>
     </tbody>
 </table>
@@ -89,6 +96,7 @@
 <ul>
     <li>To manage the content of a given display control, edit the appropriate configuration list​; the control will be updated once SharePoint crawls the list (approx 20 mins)</li>
     <li>To manage the content of the <strong>StockTicker</strong> control, edit the <em>configuration.js</em> resource file; the control will be updated once the modified resource file is downloaded</li>
+    <li>To manage the content of the <strong>UserInfo</strong> control, edit the <em>AAD record</em> and/or <em>user profile</em> of the current user; the control will be updated once the profile syncs</li>
     <li>To manage the <em><strong>Storage Mode</strong></em>, <em><strong>Expiration Timeout</strong></em>, or <em><strong>Expiration Policy</strong></em> of a given control, edit the appropriate implementation file; the control will be updated once the modified implementation file is downloaded</li>
     <li>To view the message log of the DAL, open the <strong>Developer Tools (F12)</strong> and activate the <strong>Console</strong> window</li>
     <ul>

@@ -22,7 +22,7 @@ Portal.DataAccessLayer | Ronald Tielke (Microsoft)
 ### Version history ###
 Version  | Date | Comments
 ---------| -----| --------
-1.0  | June 7th 2017 | Initial release
+1.0  | June 9th 2017 | Initial release
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
@@ -30,6 +30,8 @@ Version  | Date | Comments
 ----------
 ## Installation ##
 The Client-Side Data Access Layer (DAL) sample must be installed in your SharePoint Online tenancy.  The sample includes an easy-to-use Console application that automates nearly the entire installation process.  However, some manual steps are required.
+
+`Note: the Console application employs an "ensure" semantic; it will not overwrite existing DAL demo assets.`
 
 ### Overview ###
 The installation is summarized as follows:
@@ -120,6 +122,7 @@ At this point it is necessary to re-index the various configuration lists of the
 	- **Company Links** - managed via the **CompanyLinksConfig** list of the current **site collection**
 	- **Local Nav** - managed via the **LocalNavConfig** list of the current **web** 
 	- **Stock Ticker** - managed via the **StockTickerSymbol** variable in the **constants.js** file
+	- **User Info** - managed via the **AAD record** and **user profile** of the current user
 4. Press **F12** to launch the Internet Explorer Developer Tools.
 5. Activate the **Console** window.
 6. Reload the page and review the log messages sent to the **Console** window.
@@ -130,7 +133,7 @@ At this point it is necessary to re-index the various configuration lists of the
 11. Note that some control data has expired and that the back-end data source is called.
 12. At any time, flush the DAL entries from the client-side cache by appending the following argument to the query string:
 	- "**clearStorage=1**" 
-13. At any time, edit the various management lists to customize the data presented by these controls. 
+13. At any time, edit the various management lists or data sources to customize the data presented by these controls. 
 	- The controls will render the updated data in 15-20 mins, once the changes are crawled by SharePoint.
 14. At any time, edit the various implementation files to customize the configuration of these controls. 
 	- The controls will reflect the updated configuration once the browser downloads the updated implementation file

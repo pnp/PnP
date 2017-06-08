@@ -37,8 +37,8 @@ ns.GlobalNav.GetContents = function ()
         //// Note: ENABLE this code block if you wish to present a progress indicator...
         ////----------------------------------------------------------------------------
         //// insert a progress indicator while we request the BDO for the control. 
-        //$('#pnpStockTicker').empty();
-        //$('#pnpStockTicker').append(
+        //$('#pnpGlobalNav').empty();
+        //$('#pnpGlobalNav').append(
         //  "<ul class=\"ms-core-suiteLinkList\">" + 
         //    "<li class=\"ms-core-suiteLink\">" +
         //      "<a class=\"ms-core-suiteLink-a\" href=\"/\"><img src=\"" + ns.Configuration.PortalCdnUrl + "/images/loading.gif\" alt=\"loading...\"/>&nbsp;Working on it...</a>"); +
@@ -49,7 +49,7 @@ ns.GlobalNav.GetContents = function ()
 
     try
     {
-        // Request the BDO for the control; we use DurableStorage for Global Nav; it's content is not personalized/private
+        // Request the BDO for the control. We use DurableStorage for Global Nav -- its content is not personalized/private
         ns.BusinessDataManager.GetGlobalNavData({ storageMode: ns.StorageManager.DurableStorageMode, useSlidingExpiration: false, timeout: ns.GlobalNav.ExpirationTimeoutInMinutes }).then(
 
             function (globalNavData)
