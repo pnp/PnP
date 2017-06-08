@@ -150,10 +150,10 @@
                         if (term.Level == currentLevel) {
                             var path = term.PathOfTerm.split(';');
                             if (
+							    typeof (filterTerm) == 'undefined' ||
                                 ((path.length == this.LevelToShowTerms && this.FilterTermId != null && this.FilterTermId == term.Id) ||
-                                (this.FilterTermId != null && term.PathOfTerm.indexOf(filterTerm.Name) > -1 && this.LevelToShowTerms - 1 == term.Level)
-
-                                ) || typeof (filterTerm) == 'undefined') {
+                                (this.FilterTermId != null && term.PathOfTerm.indexOf(filterTerm.Name) > -1 && this.LevelToShowTerms - 1 == term.Level))
+								) {
 
                                 if (currentLevel == 0) {
                                     this.Terms.push(term.clone());
