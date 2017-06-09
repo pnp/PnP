@@ -17,7 +17,7 @@ You can learn more about the DAL by reading the following article:
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Portal.DataAccessLayer | Ronald Tielke (Microsoft)
+Portal.DataAccessLayer | Ronald Tielke (**Microsoft**)
 
 ### Version history ###
 Version  | Date | Comments
