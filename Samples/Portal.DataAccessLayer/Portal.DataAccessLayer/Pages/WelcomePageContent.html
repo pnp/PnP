@@ -1,0 +1,110 @@
+﻿<h2>​Welcome to the ​Office Dev PnP - Client-Side Data Access Layer (DAL) Framework Demonstration​<br></h2>
+
+<p>
+    This site collection demonstrates the operation of the <span class="ms-rteStyle-Accent1">Office Dev PnP - Client-Side Data Access Layer (DAL) Framework</span>.
+    For more information on the DAL, please refer to <a href="https://msdn.microsoft.com/en-us/pnp_articles/portal-performance#client-side-data-access-layer-dal-framework">this article​</a><br>
+</p>
+
+<p>
+    The site collection contains a root web and a child web to allow for the unique configuration of local navigation. The pages of this site collection contain custom client-side JavaScript
+    display controls.  These custom display controls are embedded on a custom Master Page that is used throughout the site collection
+    (<em>Note: we use a custom master page only to simplify the demo; it is neither a technical requirement nor a recommended practice.</em>)
+    These custom display controls leverage the Client-Side Data Access Layer (DAL), which abstracts the back-end data sources and provides a client-side cache (with expiration).  <br>
+</p>
+
+<p>
+    <span class="ms-rteStyle-Emphasis">
+        <strong>
+            Effective use of the DAL greatly reduces the number of client-to-server data source calls; this improves overall Portal performance in general
+            and individual page load performance in particular.
+        </strong>
+    </span><br>
+</p>
+
+<p>
+    The DAL is available to all custom client-side ​JavaScript display controls used on the pages of the site collection. Each display control can be configured to use a specific
+    store (local or session), a unique expiration timeout, and a specific expiration policy (absolute or sliding). The following table shows the default configuration of the custom
+    JavaScript display controls used for the demo.<br>
+</p>
+
+<table width="100%" class="ms-rteTable-5" cellspacing="0">
+    <tbody>
+        <tr class="ms-rteTableHeaderRow-5">
+            <th class="ms-rteTableHeaderFirstCol-5" rowspan="1" colspan="1" style="width:6%;">​​​Display Control<br></th>
+            <th class="ms-rteTableHeaderOddCol-5" rowspan="1" colspan="1" style="width:25%;">​Data Source<br></th>
+            <th class="ms-rteTableHeaderEvenCol-5" rowspan="1" colspan="1" style="width:6%;">​Storage Mode<br></th>
+            <th class="ms-rteTableHeaderOddCol-5" rowspan="1" colspan="1" style="width:5%;">​Expiration (policy)<br></th>
+            <th class="ms-rteTableHeaderEvenCol-5" rowspan="1" colspan="1" style="width:5%;">​Implementation<br></th>
+        </tr>
+        <tr class="ms-rteTableOddRow-5">
+            <th class="ms-rteTableFirstCol-5" rowspan="1" colspan="1" style="width:6%;"><strong>Global Navigation ​</strong></th>
+            <td class="ms-rteTableOddCol-5"><strong>GlobalNavConfig</strong> list at the <em>root</em> web of the <strong>Admin</strong> site collection​</td>
+            <td class="ms-rteTableEvenCol-5" style="width:6%;">Local Storage​</td>
+            <td class="ms-rteTableOddCol-5" style="width:5%;">13 mins​ (absolute)<br></td>
+            <td class="ms-rteTableEvenCol-5" colspan="1" style="width:5%;">globalNav.js​</td>
+        </tr>
+        <tr class="ms-rteTableEvenRow-5">
+            <th class="ms-rteTableFirstCol-5" rowspan="1" colspan="1" style="width:6%;"><strong>Footer ​</strong></th>
+            <td class="ms-rteTableOddCol-5"><strong>PortalConfig</strong> list at the <em>root</em> web of the <strong>Admin</strong> site collection​</td>
+            <td class="ms-rteTableEvenCol-5" style="width:6%;">Local Storage​</td>
+            <td class="ms-rteTableOddCol-5" style="width:5%;">11 mins​ (absolute)<br></td>
+            <td class="ms-rteTableEvenCol-5" colspan="1" style="width:5%;">footer.js​</td>
+        </tr>
+        <tr class="ms-rteTableOddRow-5">
+            <th class="ms-rteTableFirstCol-5" rowspan="1" colspan="1" style="width:6%;"><strong>Company Links ​</strong></th>
+            <td class="ms-rteTableOddCol-5"><strong>CompanyLinksConfig</strong> list at the <em>root</em> web of the <strong>current</strong> site collection​</td>
+            <td class="ms-rteTableEvenCol-5" style="width:6%;">Local Storage​</td>
+            <td class="ms-rteTableOddCol-5" style="width:5%;">7 mins​ (absolute)<br></td>
+            <td class="ms-rteTableEvenCol-5" colspan="1" style="width:5%;">companyLinks.js​</td>
+        </tr>
+        <tr class="ms-rteTableEvenRow-5">
+            <th class="ms-rteTableFirstCol-5" rowspan="1" colspan="1" style="width:6%;"><strong>Local Navigation ​</strong></th>
+            <td class="ms-rteTableOddCol-5"><strong>LocalNavConfig</strong> list at the <em>current</em> web of the <strong>current</strong> site collection​</td>
+            <td class="ms-rteTableEvenCol-5" style="width:6%;">Local Storage​</td>
+            <td class="ms-rteTableOddCol-5" style="width:5%;">5 mins​ (absolute)<br></td>
+            <td class="ms-rteTableEvenCol-5" colspan="1" style="width:5%;">localNav.js​</td>
+        </tr>
+        <tr class="ms-rteTableOddRow-5">
+            <th class="ms-rteTableFirstCol-5" rowspan="1" colspan="1" style="width:6%;"><strong>Stock Ticker​</strong></th>
+            <td class="ms-rteTableOddCol-5"><strong>StockTickerSymbol</strong> variable in the <em>configuration.js</em> resource file of the <strong>CDN</strong> site collection​</td>
+            <td class="ms-rteTableEvenCol-5" style="width:6%;">Local Storage​</td>
+            <td class="ms-rteTableOddCol-5" style="width:5%;">3 mins​ (<strong>sliding</strong>)<br></td>
+            <td class="ms-rteTableEvenCol-5" colspan="1" style="width:5%;">stockTicker.js​</td>
+        </tr>
+        <tr class="ms-rteTableEvenRow-5">
+            <th class="ms-rteTableFirstCol-5" rowspan="1" colspan="1" style="width:6%;"><strong>User Info ​</strong></th>
+            <td class="ms-rteTableOddCol-5"><strong>User Profile</strong> of the <strong>current</strong> user <em>(Note: control leverages a lazy load)</em></td>
+            <td class="ms-rteTableEvenCol-5" style="width:6%;">Session Storage​</td>
+            <td class="ms-rteTableOddCol-5" style="width:5%;">17 mins​ (absolute)<br></td>
+            <td class="ms-rteTableEvenCol-5" colspan="1" style="width:5%;">userInfo.js​</td>
+        </tr>
+    </tbody>
+</table>
+<div></div>
+<h2>​Op​e​​​ra​t​​​​​ion:<br></h2>
+<ul>
+    <li>When the page loads, each display control requests its data from the DAL<br></li>
+    <li>The DAL looks for the data in the appropriate client-side store<br></li>
+    <li>If the data is present and fresh, the DAL returns the data to the display control<br></li>
+    <li>If the data is stale or absent, the DAL calls the back-end data source to obtain fresh data<br></li>
+    <ul>
+        <li>If the data source call is a success, the DAL stores the fresh data and returns it to the display control<br></li>
+        <li>If the data source ​call is a failure, the DAL re-uses the stale data and returns it to the display control<br></li>
+    </ul>
+</ul>
+<h2>​​​​Notes:<br></h2>
+<ul>
+    <li>To manage the content of a given display control, edit the appropriate configuration list​; the control will be updated once SharePoint crawls the list (approx 20 mins)</li>
+    <li>To manage the content of the <strong>StockTicker</strong> control, edit the <em>configuration.js</em> resource file; the control will be updated once the modified resource file is downloaded</li>
+    <li>To manage the content of the <strong>UserInfo</strong> control, edit the <em>AAD record</em> and/or <em>user profile</em> of the current user; the control will be updated once the profile syncs</li>
+    <li>To manage the <em><strong>Storage Mode</strong></em>, <em><strong>Expiration Timeout</strong></em>, or <em><strong>Expiration Policy</strong></em> of a given control, edit the appropriate implementation file; the control will be updated once the modified implementation file is downloaded</li>
+    <li>To view the message log of the DAL, open the <strong>Developer Tools (F12)</strong> and activate the <strong>Console</strong> window</li>
+    <ul>
+        <li>the message log allows you to observe the operation of the various components of the DAL<br></li>
+    </ul>
+    <li>To view the DAL entries present in the client-side Web Stores, open the <strong>Developer Tools (F12)</strong> and activate the <strong>Debugger</strong> window<br></li>
+    <ul>
+        <li>expand the approriate <em><strong>origin domain</strong></em> beneath <strong>LocalStorage</strong></em> and <em><strong>SessionStorage</strong></em> and look for entries that are prefixed with <strong>pnp</strong><br></li>
+    </ul>
+    <li>To flush all DAL entries from the client-side Web Store, simply append the argument <strong>clearStorage=1</strong> to the query string and reload the page<br></li>
+</ul>
