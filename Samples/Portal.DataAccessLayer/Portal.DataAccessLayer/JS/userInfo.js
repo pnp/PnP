@@ -33,7 +33,7 @@ ns.UserInfo.GetContents = function ()
         $('#pnpUserInfoMenu').empty();
         $('#pnpUserInfoMenu').append(
             "<li class=\"ms-core-defaultFont\" role=\"presentation\">" +
-              "<a tabindex=\"-1\" role=\"menuitem\" href=\"#\"><img src=\"" + ns.Configuration.PortalCdnUrl + "/images/loading.gif\" alt=\"loading...\"/>Working on it...</a>" +
+              "<a tabindex=\"-1\" role=\"menuitem\" href=\"#\"><img src=\"" + ns.Configuration.PortalCdnUrl + "/images/loading.gif\" alt=\"loading...\"/>&nbsp;Working on it...</a>" +
             "</li>"
             );
         //----------------------------------------------------------------------------
