@@ -23,6 +23,7 @@ Version  | Date | Comments
 ---------| -----| --------
 1.0  | March 30th 2015 | Initial release
 1.1  | July 29th 2015 | Rewrite for better structure
+1.2  | July 11th 2017 | Updated NuGet and some polishing
 
 ### Disclaimer ###
 **THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.**
