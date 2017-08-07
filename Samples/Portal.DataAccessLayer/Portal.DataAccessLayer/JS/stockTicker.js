@@ -42,7 +42,7 @@ ns.StockTicker.GetContents = function ()
     {
         // Request the BDO for the control. We use DurableStorage for the Stock Ticker -- its content is not personalized/private
         // NOTE: for DEMO purposes, we want to show the use of a Sliding expiration policy
-        ns.BusinessDataManager.GetStockTickerData({ storageMode: ns.StorageManager.SessionStorageMode, useSlidingExpiration: true, timeout: ns.StockTicker.ExpirationTimeoutInMinutes }).then(
+        ns.BusinessDataManager.GetStockTickerData({ storageMode: ns.StorageManager.DurableStorageMode, useSlidingExpiration: true, timeout: ns.StockTicker.ExpirationTimeoutInMinutes }).then(
 
             function (stockTickerData)
             {

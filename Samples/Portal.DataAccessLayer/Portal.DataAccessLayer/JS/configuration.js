@@ -74,7 +74,8 @@ ns.Configuration.StockTickerSymbol = "MSFT";
 //   - Select: Include Content from all crawled properties
 //     - ADD: ows_PnPPortalDisplayOrder
 //     - ADD: ows_q_NMBR_PnPPortalDisplayOrder
-//  
+// - force a re-index on each list
+// - wait 30 mins for incremental crawl to execute
 //=========================================================================
 
 ns.Configuration.ManagedProp_PnPConfigKey = "PnPPortalConfigKeyOWSTEXT";        // auto-generated MP
@@ -86,8 +87,8 @@ ns.Configuration.ManagedProp_PnPDisplayOrder = "PnPPortalDisplayOrder";         
 //Portal Config List WEB-RELATIVE Url (do not include a leading OR trailing slash '/')
 // - list should reside at the root web of the Portal Admin Site Collection (SPSite) instance 
 // - list should contain the following Site Columns: 
-//   - PnPConfigKey
-//   - PnPConfigValue
+//   - PnPPortalConfigKey
+//   - PnPPortalConfigValue
 ns.Configuration.ConfigurationListWebRelativeUrl = "Lists/PortalConfig";
 // The list should contain an entry with the following PnPConfigKey
 ns.Configuration.ConfigurationListFooterKey = "FooterHtml";
@@ -95,23 +96,23 @@ ns.Configuration.ConfigurationListFooterKey = "FooterHtml";
 //Global Nav Config List WEB-RELATIVE Url (do not include a leading OR trailing slash '/')
 // - list should reside at the root web of the Portal Admin Site Collection (SPSite) instance 
 // - list should contain the following Site Columns: 
-//   - PnPLinkText
-//   - PnPLinkUrl
-//   - PnPDisplayOrder
+//   - PnPPortalLinkText
+//   - PnPPortalLinkUrl
+//   - PnPPortalDisplayOrder
 ns.Configuration.GlobalNavListWebRelativeUrl = "Lists/GlobalNavConfig";
 
 //Company Links Config List WEB-RELATIVE Url (do not include a leading OR trailing slash '/')
 // - list should reside at the root web of each Site Collection (SPSite) instance that leverages Company Links 
 // - list should contain the following Site Columns: 
-//   - PnPLinkText
-//   - PnPLinkUrl
-//   - PnPDisplayOrder
+//   - PnPPortalLinkText
+//   - PnPPortalLinkUrl
+//   - PnPPortalDisplayOrder
 ns.Configuration.CompanyLinksListWebRelativeUrl = "Lists/CompanyLinksConfig";
 
 //Local Nav Config List WEB-RELATIVE Url (do not include a leading OR trailing slash '/')
 // - list should reside at the root of each website (SPWeb) instance that leverages Local Nav 
 // - list should contain the following Site Columns: 
-//   - PnPLinkText
-//   - PnPLinkUrl
-//   - PnPDisplayOrder
+//   - PnPPortalLinkText
+//   - PnPPortalLinkUrl
+//   - PnPPortalDisplayOrder
 ns.Configuration.LocalNavListWebRelativeUrl = "Lists/LocalNavConfig";

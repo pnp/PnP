@@ -62,14 +62,14 @@ Sample app/add-in is using extension methods for simplifying the API calls from 
 **Q** - This app/add-in is requesting farm permissions, can't I make any of this work with smaller permissions?
 **A** - You can. Add-in is also accessing farm level settings for the tenant management, which is the reason for so high permissions. If you are only sharing sites or documents, you will need lower permissions depending on exact case. For site level sharing, you'll need to request Site Collection Owner permissions and for document sharing you'll need site manage permission. 
 
-**Q** - What if I try to share a site or document wiht insufficient permissions?
+**Q** - What if I try to share a site or document with insufficient permissions?
 **A** - You will get AccessRequestsQueued as the return value for the sharing request, which means that your request is queued for the site owner for verification. This is similar behaviour as with the UI based sharing using browser. See below picture for the the entry added in the queue for site owner processing.
 
 ![UI with pending request status](http://i.imgur.com/BQu8o48.png)
 
 
 # Controlling tenant and site collection setting with CSOM
-To be able to control tenant and site collections settings, you'll need to request Tenant Admin permissiosn for the add-in. After this you need to create context to your SharePoint administrations site with the url of "https://yourteannt-admin.sharepoin.com". This will give you needed permissions and acccess to Tenant level settings. 
+To be able to control tenant and site collections settings, you'll need to request Tenant Admin permissions for the add-in. After this you need to create context to your SharePoint administrations site with the url of "https://yourteannt-admin.sharepoin.com". This will give you needed permissions and acccess to Tenant level settings. 
 
 Following code snippet shows the model for accessing tenant level settings around external sharing.
 
