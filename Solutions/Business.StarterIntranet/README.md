@@ -56,33 +56,34 @@ The entire solution is "site collection self-contained" so it does not conflict 
 
 <table border="0">
   <tr>
-    <th colspan="2">
-      <div align="center">
+    <td colspan="2">
+      <p align="center">
         <img src="./images/starter.gif"/>
-      </div>
-    </th>
+        <p align="center">Demo<p>
+      </p>
+    </td>
   </tr>
   <tr>
     <td>
-      <div align="center">
+      <p align="center">
         <img width="400" src="./images/homepage.png"/>
-        <div>Home page</div>
+        <p align="center">Home page</p>
       </div>
     </td>
     <td>
-      <div align="center">
+      <p align="center">
         <img width="200" src="./images/mobile.png"/>
-        <div>Mobile menu</div>
-      </div>
+        <p align="center">Mobile menu<p>
+      </p>
     </td>
   </tr>
   <tr>
-    <th colspan="2">
-      <div align="center">
-        <img width="400" src="./images/bot_integration.png"/>
-        <div>Bot Framework integration</div>
-      </div>
-    </th>
+    <td colspan="2">
+      <p align="center">
+        <img width="600" src="./images/bot_integration.png"/>
+        <p align="center">Bot Framework integration</p>
+      </p>
+    </td>
   </tr>
 </table>
 
