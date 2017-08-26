@@ -93,16 +93,16 @@ A complete and optional documentation is available along this solution with an a
 - A complete development guide (about 100 pages) on how to maintain and customize this solution (add a new language, create a new component, etc.)
 - A complete user guide (about 40 pages) on how to use this solution from a contributor point of view (create content, manage navigation, etc.)
 
-<div style="text-align:center">
-  <div style="display:inline">
+<p align="center">
+  <span>
       <a href="https://transactions.sendowl.com/packages/48364/D024B326/view"><img src="https://static.wixstatic.com/media/9b7fa1_a0c40971a90c49349633971900079d59~mv2.png/v1/fit/w_375,h_375/9b7fa1_a0c40971a90c49349633971900079d59~mv2.png" /></a>
-  </div>
+  </span>
   &nbsp;&nbsp;
-  <div style="display:inline">
+  <span>
     <a href="https://transactions.sendowl.com/packages/48367/D92CFE56/view"><img src="https://static.wixstatic.com/media/9b7fa1_298a136859854926833330111db378b3~mv2.png/v1/fit/w_375,h_375/9b7fa1_298a136859854926833330111db378b3~mv2.png" /></a>
-    <p>By<p>
-  </div>
-</div>
+    <p align="center">By<p>
+  </span>
+</p>
 
 
 <p align="center">
