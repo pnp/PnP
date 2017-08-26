@@ -93,26 +93,24 @@ A complete and optional documentation is available along this solution with an a
 - A complete development guide (about 100 pages) on how to maintain and customize this solution (add a new language, create a new component, etc.)
 - A complete user guide (about 40 pages) on how to use this solution from a contributor point of view (create content, manage navigation, etc.)
 
-<div align="center">
+<div style="text-align:center">
+  <div style="display:inline">
+      <a href="https://transactions.sendowl.com/packages/48364/D024B326/view"><img src="https://static.wixstatic.com/media/9b7fa1_a0c40971a90c49349633971900079d59~mv2.png/v1/fit/w_375,h_375/9b7fa1_a0c40971a90c49349633971900079d59~mv2.png" /></a>
+  </div>
+  &nbsp;&nbsp;
+  <div style="display:inline">
+    <a href="https://transactions.sendowl.com/packages/48367/D92CFE56/view"><img src="https://static.wixstatic.com/media/9b7fa1_298a136859854926833330111db378b3~mv2.png/v1/fit/w_375,h_375/9b7fa1_298a136859854926833330111db378b3~mv2.png" /></a>
+    <p>By<p>
+  </div>
+</div>
 
-  <table>
-    <tr>
-      <th>
-        <a href="https://transactions.sendowl.com/packages/48364/D024B326/view"><img src="https://static.wixstatic.com/media/9b7fa1_a0c40971a90c49349633971900079d59~mv2.png/v1/fit/w_375,h_375/9b7fa1_a0c40971a90c49349633971900079d59~mv2.png" /></a>
-      </th>
-      <th>
-      <a href="https://transactions.sendowl.com/packages/48367/D92CFE56/view"><img src="https://static.wixstatic.com/media/9b7fa1_298a136859854926833330111db378b3~mv2.png/v1/fit/w_375,h_375/9b7fa1_298a136859854926833330111db378b3~mv2.png" /></a>
-      </th>
-    </tr>
-  </table>
 
-<p>By<p>
 <p align="center">
+
 <a href="https://www.aequos.ca/" target="_blank">
 	<img src="./images/aequos-logo.png" width="80px"/></a></p>
   
   <span>Thank you for supporting us!</span>
-</div>
 
 ## Applies to ##
 - SharePoint 2013/2016 on-premises
@@ -137,8 +135,8 @@ Version  | Date | Comments
 Before starting, you'll need to setup tour environment:
 
 - Install at latest release of [PnP PowerShell cmdlets SharePointPnPPowerShellXXX](https://github.com/OfficeDev/PnP-PowerShell/releases) according to your SharePoint version.
-- Install Node.js on your machine https://nodejs.org/en/ (v6.10.1)
-- Install the 'webpack' Node JS client (`npm i webpack -g`). This sample uses webpack v2.
+- Install Node.js on your machine https://nodejs.org/en/ *(v6.10.1)*
+- Install the 'webpack' Node JS client (`npm i webpack -g`). This solution uses webpack v2.
 - Go to the ".\app" folder and install all dependencies listed in the package.json file by running the `npm i` cmd 
 - Check if everything is OK by running the "`webpack`" cmd from the ".\app" folder. You shouldn't see any errors here.
 - Create a site collection with the **publishing template**.
@@ -191,7 +189,7 @@ By default, the solution comes with the support of two languages (French & Engli
 ```
 $Languages = @(
 
-	[PSCustomObject]@{
+[PSCustomObject]@{
       Title="English";
       Label="en";
       LCID=1033;
