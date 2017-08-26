@@ -1,0 +1,75 @@
+@import '../../styles/css/variables';
+
+#breadcrumb-nav {
+    
+    font-family: $font-primary;
+    width: 100%;
+    min-height: 50px; //to display the spinner
+    display: inline-block;
+    vertical-align: middle;
+
+    #message {
+        
+        display: inline-block;
+        vertical-align: middle;
+        color: $error-color;
+        line-height: initial;
+
+        i {
+            float: left;
+            color: $error-color;
+            margin-right: 5px;
+        }
+    }
+    
+    ul {
+
+        padding: 0;
+        margin: 0;
+
+        li {
+            display: inline;
+            list-style: none;
+            list-style-type: none;
+
+            a {
+                text-decoration: underline;
+                color: $primary-color;
+            }
+
+            a:visited {
+                color: $primary-color;
+            }
+        }
+
+        li.is-selected {
+            a {
+                color: $text-color;
+                text-decoration: none;
+            }
+        }
+
+        li:not(:first-child):before {
+            content: "|";
+            margin-left: 15px;
+            margin-right: 15px;
+        }
+
+        /* Small devices */
+        @media (max-width: 767px) { 
+
+            color: #000000;
+
+            li.is-selected, li{
+                a, i, a:visited {
+                    color: #000;
+                }
+            }
+
+            li:not(:first-child):before {
+                margin-left: 2px;
+                margin-right: 2px;
+            }
+        }
+    }
+}

@@ -1,0 +1,1113 @@
+<pnp:Provisioning xmlns:pnp="http://schemas.dev.office.com/PnP/2016/05/ProvisioningSchema">
+  <pnp:Preferences Generator="Custom" >
+    <pnp:Parameters>
+      <pnp:Parameter Key="CompanyName" Required="true"></pnp:Parameter>
+      <pnp:Parameter Key="AssemblyVersion" Required="true"></pnp:Parameter>
+      <pnp:Parameter Key="PagesLibraryName" Required="true"></pnp:Parameter>       
+    </pnp:Parameters>
+  </pnp:Preferences>
+  <pnp:Templates ID="CONTAINER-TEMPLATE-PNP-O365-STARTER-INTRANET">
+    <pnp:ProvisioningTemplate ID="TEMPLATE-PNP-O365-STARTER-INTRANET" Version="1">
+      <pnp:WebSettings RequestAccessEmail="someone@example.com" Title="PnP Starter Intranet v2.0" NoCrawl="false" WelcomePage="{parameter:PagesLibraryName}/RootRedirect.aspx" SiteLogo="" AlternateCSS="" MasterPageUrl="{masterpagecatalog}/seattle.master" CustomMasterPageUrl="{masterpagecatalog}/{parameter:CompanyName}/portal.master" />
+      <pnp:RegionalSettings AdjustHijriDays="0" AlternateCalendarType="None" CalendarType="Gregorian" Collation="25" FirstDayOfWeek="Sunday" FirstWeekOfYear="0" LocaleId="1033" ShowWeeks="false" Time24="false" TimeZone="10" WorkDayEndHour="5:00PM" WorkDays="62" WorkDayStartHour="8:00AM" />
+      <pnp:SupportedUILanguages>
+        <pnp:SupportedUILanguage LCID="1033" />    
+      </pnp:SupportedUILanguages>
+      <pnp:SiteFields>
+        <Field Type="Note" DisplayName="IntranetContentType_0" StaticName="b25b109d5d664dd2ac93123923dd5b99" Name="b25b109d5d664dd2ac93123923dd5b99" ID="{f416d825-267b-41bc-97a6-1a250671cf1f}" ShowInViewForms="FALSE" Required="FALSE" CanToggleHidden="TRUE" SourceID="{40fae8bb-6f63-4411-9fe9-ae062c186ddc}" AllowDeletion="TRUE" Hidden="TRUE" />
+        <Field Type="Note" DisplayName="IntranetKeywords_0" StaticName="e707b1682f3943fcbca6f1a399c93f57" Name="e707b1682f3943fcbca6f1a399c93f57" ID="{1963b18e-c186-40b9-967a-f4c0c6bc7c00}" ShowInViewForms="FALSE" Required="FALSE" CanToggleHidden="TRUE" SourceID="{ade31cf5-d1d8-4088-9ec9-b2a5f75f43e9}" AllowDeletion="TRUE" Hidden="TRUE" />
+        <Field Type="Note" DisplayName="IntranetContentCategory_0" StaticName="na09574064da42d7b192ecb9bcf33dd8" Name="na09574064da42d7b192ecb9bcf33dd8" ID="{28d950ef-75bf-480c-b71a-aa5fe27d3aaf}" ShowInViewForms="FALSE" Required="FALSE" CanToggleHidden="TRUE" SourceID="{ade31cf5-d1d8-4088-9ec9-b2a5f75f43e9}" AllowDeletion="TRUE" Hidden="TRUE" />
+        <Field ID="{d26b5f0c-27cf-46d0-984c-a0c2ea81cb10}" Name="Status" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="Status" Group="Search Config" Type="Text" Hidden="FALSE" DisplayName="Status" AllowDeletion="TRUE" />
+        <Field Type="TaxonomyFieldTypeMulti" DisplayName="Content Category" WebId="5532a031-f04b-4c73-9c1e-a55504b22e89" ShowField="Term1033" Required="FALSE" EnforceUniqueValues="FALSE" Group="Intranet" ID="{7a095740-64da-42d7-b192-ecb9bcf33dd8}" SourceID="{5532a031-f04b-4c73-9c1e-a55504b22e89}" StaticName="IntranetContentCategory" Name="IntranetContentCategory" AllowDeletion="TRUE" Mult="TRUE" Sortable="FALSE" List="{{listid:TaxonomyHiddenList}}">
+          <Default>
+          </Default>
+          <Customization>
+            <ArrayOfProperty>
+              <Property>
+                <Name>SspId</Name>
+                <Value xmlns:q1="http://www.w3.org/2001/XMLSchema" p4:type="q1:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">{sitecollectiontermstoreid}</Value>
+              </Property>
+              <Property>
+                <Name>GroupId</Name>
+              </Property>
+              <Property>
+                <Name>TermSetId</Name>
+                <Value xmlns:q2="http://www.w3.org/2001/XMLSchema" p4:type="q2:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">{termsetid:{sitecollectiontermgroupname}:Categories}</Value>
+              </Property>
+              <Property>
+                <Name>AnchorId</Name>
+                <Value xmlns:q3="http://www.w3.org/2001/XMLSchema" p4:type="q3:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">00000000-0000-0000-0000-000000000000</Value>
+              </Property>
+              <Property>
+                <Name>UserCreated</Name>
+                <Value xmlns:q4="http://www.w3.org/2001/XMLSchema" p4:type="q4:boolean" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">false</Value>
+              </Property>
+              <Property>
+                <Name>Open</Name>
+                <Value xmlns:q5="http://www.w3.org/2001/XMLSchema" p4:type="q5:boolean" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">false</Value>
+              </Property>
+              <Property>
+                <Name>TextField</Name>
+                <Value xmlns:q6="http://www.w3.org/2001/XMLSchema" p4:type="q6:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">{28d950ef-75bf-480c-b71a-aa5fe27d3aaf}</Value>
+              </Property>
+              <Property>
+                <Name>IsPathRendered</Name>
+                <Value xmlns:q7="http://www.w3.org/2001/XMLSchema" p4:type="q7:boolean" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">false</Value>
+              </Property>
+              <Property>
+                <Name>IsKeyword</Name>
+                <Value xmlns:q8="http://www.w3.org/2001/XMLSchema" p4:type="q8:boolean" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">false</Value>
+              </Property>
+              <Property>
+                <Name>TargetTemplate</Name>
+              </Property>
+              <Property>
+                <Name>CreateValuesInEditForm</Name>
+                <Value xmlns:q9="http://www.w3.org/2001/XMLSchema" p4:type="q9:boolean" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">false</Value>
+              </Property>
+              <Property>
+                <Name>FilterAssemblyStrongName</Name>
+                <Value xmlns:q10="http://www.w3.org/2001/XMLSchema" p4:type="q10:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">Microsoft.SharePoint.Taxonomy, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Value>
+              </Property>
+              <Property>
+                <Name>FilterClassName</Name>
+                <Value xmlns:q11="http://www.w3.org/2001/XMLSchema" p4:type="q11:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">Microsoft.SharePoint.Taxonomy.TaxonomyField</Value>
+              </Property>
+              <Property>
+                <Name>FilterMethodName</Name>
+                <Value xmlns:q12="http://www.w3.org/2001/XMLSchema" p4:type="q12:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">GetFilteringHtml</Value>
+              </Property>
+              <Property>
+                <Name>FilterJavascriptProperty</Name>
+                <Value xmlns:q13="http://www.w3.org/2001/XMLSchema" p4:type="q13:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">FilteringJavascript</Value>
+              </Property>
+            </ArrayOfProperty>
+          </Customization>
+        </Field>
+        <Field ID="{8382D247-72A9-44B1-9794-7B177EDC89F3}" Name="_IsRecord" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="_IsRecord" Type="Computed" ReadOnly="TRUE" Hidden="TRUE" DisplayName="Record">
+          <FieldRefs>
+            <FieldRef ID="{CCC1037F-F65E-434A-868E-8C98AF31FE29}" Name="_ComplianceFlags" />
+          </FieldRefs>
+          <DisplayPattern>
+            <Switch>
+              <Expr>
+                <LookupColumn Name="_ComplianceFlags" />
+              </Expr>
+              <Case Value="1">
+                <HTML>Yes</HTML>
+              </Case>
+              <Case Value="3">
+                <HTML>Yes</HTML>
+              </Case>
+              <Default>
+                <HTML>No</HTML>
+              </Default>
+            </Switch>
+          </DisplayPattern>
+        </Field>
+        <Field Type="User" DisplayName="Content Author" Required="FALSE" EnforceUniqueValues="FALSE" ShowField="ImnName" UserSelectionMode="PeopleOnly" UserSelectionScope="0" Group="Intranet" ID="{34203e4c-a673-40fa-9fde-502e433c66f8}" SourceID="{cfa52182-8c3f-46c2-8fc8-9d806f472331}" StaticName="IntranetContentAuthor" Name="IntranetContentAuthor" AllowDeletion="TRUE" />
+        <Field Type="Text" DisplayName="Header Links Term Set Id" Description="The term set id for the header links" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" MaxLength="255" Group="Intranet" ID="{9896f14e-389f-4829-9a7f-0bf16c5d710e}" SourceID="{654d2000-8636-4f08-8491-cc601884e314}" StaticName="HeaderLinksTermSetId" Name="HeaderLinksTermSetId" AllowDeletion="TRUE">
+        </Field>
+        <Field Type="Text" DisplayName="Footer Links Term Set Id" Description="The term set id for the footer links" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" MaxLength="255" Group="Intranet" ID="{0e20cab4-8fda-42fb-82f9-f5e9eb562fb4}" SourceID="{cafbb6db-85b8-4fc8-81f9-8fb8f259aa5e}" StaticName="FooterLinksTermSetId" Name="FooterLinksTermSetId">
+        </Field>
+        <Field Type="Boolean" DisplayName="Hide Side Bar" EnforceUniqueValues="FALSE" Indexed="FALSE" Group="Intranet" ID="{09b42c74-7fe7-4579-b391-ed88eecc549d}" SourceID="{dcb8f1ea-b933-4920-a2a8-84cf361f6821}" StaticName="HideSideBar" Name="HideSideBar" Required="FALSE" AllowDeletion="TRUE" Description="If checked, hide the left side bar for this page" CustomFormatter="">
+          <Default>0</Default>
+        </Field>
+        <Field Type="Choice" DisplayName="Content Language" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" Format="RadioButtons" FillInChoice="FALSE" Group="Intranet" ID="{dc289a60-042d-4e47-b33e-c3d3712f0cbe}" SourceID="{4b10a27b-a6c3-423d-ab76-d388d2dcefad}" StaticName="IntranetContentLanguage" Name="IntranetContentLanguage" AllowDeletion="TRUE">
+        </Field>
+        <Field Type="Boolean" DisplayName="Force Cache Refresh" EnforceUniqueValues="FALSE" Indexed="FALSE" Group="Intranet" ID="{3844b865-e196-4b87-b986-8aa5216da1ab}" SourceID="{40fae8bb-6f63-4411-9fe9-ae062c186ddc}" StaticName="ForceCacheRefresh" Name="ForceCacheRefresh" Description="If set to &quot;Yes&quot;, forces the refresh of users browser cache to get the last version of the navigation menus. If set to &quot;No&quot;, the navigation nodes will be cached in the browser, improving performances. Set &quot;Yes&quot; if you have made updates to the navigation structure." Required="FALSE" AllowDeletion="TRUE">
+          <Default>0</Default>
+        </Field>
+        <Field Type="TaxonomyFieldTypeMulti" DisplayName="Tags" WebId="5532a031-f04b-4c73-9c1e-a55504b22e89" ShowField="Term1033" Required="FALSE" EnforceUniqueValues="FALSE" Mult="TRUE" Sortable="FALSE" Group="Intranet" ID="{e707b168-2f39-43fc-bca6-f1a399c93f57}" SourceID="{5532a031-f04b-4c73-9c1e-a55504b22e89}" StaticName="IntranetKeywords" Name="IntranetKeywords" AllowDeletion="TRUE" List="{{listid:TaxonomyHiddenList}}">
+          <Default>
+          </Default>
+          <Customization>
+            <ArrayOfProperty>
+              <Property>
+                <Name>SspId</Name>
+                <Value xmlns:q1="http://www.w3.org/2001/XMLSchema" p4:type="q1:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">{sitecollectiontermstoreid}</Value>
+              </Property>
+              <Property>
+                <Name>GroupId</Name>
+              </Property>
+              <Property>
+                <Name>TermSetId</Name>
+                <Value xmlns:q2="http://www.w3.org/2001/XMLSchema" p4:type="q2:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">{termsetid:{sitecollectiontermgroupname}:Keywords}</Value>
+              </Property>
+              <Property>
+                <Name>AnchorId</Name>
+                <Value xmlns:q3="http://www.w3.org/2001/XMLSchema" p4:type="q3:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">00000000-0000-0000-0000-000000000000</Value>
+              </Property>
+              <Property>
+                <Name>UserCreated</Name>
+                <Value xmlns:q4="http://www.w3.org/2001/XMLSchema" p4:type="q4:boolean" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">false</Value>
+              </Property>
+              <Property>
+                <Name>Open</Name>
+                <Value xmlns:q5="http://www.w3.org/2001/XMLSchema" p4:type="q5:boolean" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">true</Value>
+              </Property>
+              <Property>
+                <Name>TextField</Name>
+                <Value xmlns:q6="http://www.w3.org/2001/XMLSchema" p4:type="q6:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">{1963b18e-c186-40b9-967a-f4c0c6bc7c00}</Value>
+              </Property>
+              <Property>
+                <Name>IsPathRendered</Name>
+                <Value xmlns:q7="http://www.w3.org/2001/XMLSchema" p4:type="q7:boolean" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">false</Value>
+              </Property>
+              <Property>
+                <Name>IsKeyword</Name>
+                <Value xmlns:q8="http://www.w3.org/2001/XMLSchema" p4:type="q8:boolean" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">false</Value>
+              </Property>
+              <Property>
+                <Name>TargetTemplate</Name>
+              </Property>
+              <Property>
+                <Name>CreateValuesInEditForm</Name>
+                <Value xmlns:q9="http://www.w3.org/2001/XMLSchema" p4:type="q9:boolean" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">false</Value>
+              </Property>
+              <Property>
+                <Name>FilterAssemblyStrongName</Name>
+                <Value xmlns:q10="http://www.w3.org/2001/XMLSchema" p4:type="q10:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">Microsoft.SharePoint.Taxonomy, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Value>
+              </Property>
+              <Property>
+                <Name>FilterClassName</Name>
+                <Value xmlns:q11="http://www.w3.org/2001/XMLSchema" p4:type="q11:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">Microsoft.SharePoint.Taxonomy.TaxonomyField</Value>
+              </Property>
+              <Property>
+                <Name>FilterMethodName</Name>
+                <Value xmlns:q12="http://www.w3.org/2001/XMLSchema" p4:type="q12:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">GetFilteringHtml</Value>
+              </Property>
+              <Property>
+                <Name>FilterJavascriptProperty</Name>
+                <Value xmlns:q13="http://www.w3.org/2001/XMLSchema" p4:type="q13:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">FilteringJavascript</Value>
+              </Property>
+            </ArrayOfProperty>
+          </Customization>
+        </Field>
+        <Field Type="Note" DisplayName="IntranetDepartment_0" StaticName="l666561c4a02446499cadf71622adfe1" Name="l666561c4a02446499cadf71622adfe1" ID="{37ebbd6a-e958-4492-b012-4ce6625a17f5}" ShowInViewForms="FALSE" Required="FALSE" CanToggleHidden="TRUE" SourceID="{e7826849-26d3-4967-878e-8e4c8c777906}" AllowDeletion="TRUE" Hidden="TRUE" />
+        <Field ID="{ef991a83-108d-4407-8ee5-ccc0c3d836b9}" Type="UserMulti" DisplayName="Shared With" Mult="TRUE" Name="SharedWithUsers" StaticName="SharedWithUsers" Group="_Hidden" AllowDeletion="FALSE" ShowInDisplayForm="FALSE" ShowInEditForm="FALSE" ShowInListSettings="FALSE" Viewable="FALSE" SourceID="{e7826849-26d3-4967-878e-8e4c8c777906}" Sealed="TRUE" ReadOnly="TRUE" />
+        <Field Type="Note" DisplayName="AssociatedCategory_0" StaticName="ce595422727c4d0b9e4cbe1451bc16bf" Name="ce595422727c4d0b9e4cbe1451bc16bf" ID="{f0abb186-525e-428e-87a4-19874c7a9cde}" ShowInViewForms="FALSE" Required="FALSE" CanToggleHidden="TRUE" SourceID="{ade31cf5-d1d8-4088-9ec9-b2a5f75f43e9}" Hidden="TRUE" />
+        <Field Type="Boolean" DisplayName="Is News On Top" EnforceUniqueValues="FALSE" Indexed="FALSE" Group="Intranet" ID="{c3909087-b857-4500-875e-32d79f47a41d}" SourceID="{e9a6f7aa-5e14-44ac-8845-86b0bf9f22a2}" StaticName="IntranetIsNewsOnTop" Name="IntranetIsNewsOnTop" Description="If set to 'Yes', the news will be displayed in the notifications component on the home page." Required="FALSE" AllowDeletion="TRUE">
+          <Default>0</Default>
+        </Field>
+        <Field Type="TaxonomyFieldType" DisplayName="Content Type" WebId="5532a031-f04b-4c73-9c1e-a55504b22e89" ShowField="Term1033" Required="FALSE" EnforceUniqueValues="FALSE" Group="Intranet" ID="{b25b109d-5d66-4dd2-ac93-123923dd5b99}" SourceID="{5532a031-f04b-4c73-9c1e-a55504b22e89}" StaticName="IntranetContentType" Name="IntranetContentType" AllowDeletion="TRUE" List="{{listid:TaxonomyHiddenList}}">
+          <Default>
+          </Default>
+          <Customization>
+            <ArrayOfProperty>
+              <Property>
+                <Name>SspId</Name>
+                <Value xmlns:q1="http://www.w3.org/2001/XMLSchema" p4:type="q1:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">{sitecollectiontermstoreid}</Value>
+              </Property>
+              <Property>
+                <Name>GroupId</Name>
+              </Property>
+              <Property>
+                <Name>TermSetId</Name>
+                <Value xmlns:q2="http://www.w3.org/2001/XMLSchema" p4:type="q2:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">{termsetid:{sitecollectiontermgroupname}:Content Types}</Value>
+              </Property>
+              <Property>
+                <Name>AnchorId</Name>
+                <Value xmlns:q3="http://www.w3.org/2001/XMLSchema" p4:type="q3:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">00000000-0000-0000-0000-000000000000</Value>
+              </Property>
+              <Property>
+                <Name>UserCreated</Name>
+                <Value xmlns:q4="http://www.w3.org/2001/XMLSchema" p4:type="q4:boolean" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">false</Value>
+              </Property>
+              <Property>
+                <Name>Open</Name>
+                <Value xmlns:q5="http://www.w3.org/2001/XMLSchema" p4:type="q5:boolean" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">false</Value>
+              </Property>
+              <Property>
+                <Name>TextField</Name>
+                <Value xmlns:q6="http://www.w3.org/2001/XMLSchema" p4:type="q6:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">{f416d825-267b-41bc-97a6-1a250671cf1f}</Value>
+              </Property>
+              <Property>
+                <Name>IsPathRendered</Name>
+                <Value xmlns:q7="http://www.w3.org/2001/XMLSchema" p4:type="q7:boolean" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">false</Value>
+              </Property>
+              <Property>
+                <Name>IsKeyword</Name>
+                <Value xmlns:q8="http://www.w3.org/2001/XMLSchema" p4:type="q8:boolean" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">false</Value>
+              </Property>
+              <Property>
+                <Name>TargetTemplate</Name>
+              </Property>
+              <Property>
+                <Name>CreateValuesInEditForm</Name>
+                <Value xmlns:q9="http://www.w3.org/2001/XMLSchema" p4:type="q9:boolean" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">false</Value>
+              </Property>
+              <Property>
+                <Name>FilterAssemblyStrongName</Name>
+                <Value xmlns:q10="http://www.w3.org/2001/XMLSchema" p4:type="q10:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">Microsoft.SharePoint.Taxonomy, Version={parameter:AssemblyVersion}, Culture=neutral, PublicKeyToken=71e9bce111e9429c</Value>
+              </Property>
+              <Property>
+                <Name>FilterClassName</Name>
+                <Value xmlns:q11="http://www.w3.org/2001/XMLSchema" p4:type="q11:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">Microsoft.SharePoint.Taxonomy.TaxonomyField</Value>
+              </Property>
+              <Property>
+                <Name>FilterMethodName</Name>
+                <Value xmlns:q12="http://www.w3.org/2001/XMLSchema" p4:type="q12:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">GetFilteringHtml</Value>
+              </Property>
+              <Property>
+                <Name>FilterJavascriptProperty</Name>
+                <Value xmlns:q13="http://www.w3.org/2001/XMLSchema" p4:type="q13:string" xmlns:p4="http://www.w3.org/2001/XMLSchema-instance">FilteringJavascript</Value>
+              </Property>
+            </ArrayOfProperty>
+          </Customization>
+        </Field>
+        <Field Type="Note" DisplayName="Document Description" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" NumLines="3" RichText="FALSE" Sortable="FALSE" Group="Intranet" ID="{1854bcb7-b187-4801-80a7-b576e26876a4}" SourceID="{f7bd406d-5a8b-4e13-bf96-3a65025f3568}" StaticName="IntranetDocumentDescription" Name="IntranetDocumentDescription" RestrictedMode="TRUE" RichTextMode="Compatible" IsolateStyles="FALSE" AppendOnly="FALSE" UnlimitedLengthInDocumentLibrary="FALSE" AllowDeletion="TRUE">
+        </Field>
+        <Field Type="DateTime" DisplayName="Publishing Date" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" Format="DateOnly" Group="Intranet" FriendlyDisplayFormat="Relative" ID="{662ed8d3-610f-4b8e-8565-0fc0cab99743}" SourceID="{cfa52182-8c3f-46c2-8fc8-9d806f472331}" StaticName="IntranetContentPublishingDate" Name="IntranetContentPublishingDate" CalType="0" AllowDeletion="TRUE">
+          <Default>[today]</Default>
+        </Field>
+        <Field Type="Text" DisplayName="Content Association Key" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" MaxLength="255" Group="Intranet" ID="{e51329dc-1174-4456-8bd0-3ffbd3c1264a}" SourceID="{e63bdf5d-0cf7-420e-b95b-e5d6e71e0694}" StaticName="IntranetContentAssociationKey" Name="IntranetContentAssociationKey" AllowDeletion="TRUE">
+        </Field>
+        <Field Type="Text" DisplayName="Site Map TermSet Id" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" MaxLength="255" Group="Intranet" ID="{ac1db0e5-42ad-431b-9999-02a25d669fe3}" SourceID="{d69ccd16-581b-425a-84ab-b7c85fa2dad8}" StaticName="SiteMapTermSetId" Name="SiteMapTermSetId" AllowDeletion="TRUE">
+        </Field>
+        <Field ID="{d3c9caf7-044c-4c71-ae64-092981e54b33}" Type="Note" DisplayName="Shared With Details" Name="SharedWithDetails" StaticName="SharedWithDetails" Group="_Hidden" AllowDeletion="FALSE" ShowInDisplayForm="FALSE" ShowInEditForm="FALSE" ShowInListSettings="FALSE" Viewable="FALSE" SourceID="{e7826849-26d3-4967-878e-8e4c8c777906}" Sealed="TRUE" ReadOnly="TRUE" />
+        <Field Type="DateTime" DisplayName="Item Display End Date" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" Format="DateTime" Group="Intranet" FriendlyDisplayFormat="Disabled" ID="{b81b582c-98cc-41dd-86e7-0dd5d5c52636}" SourceID="{9c7d8991-0d8f-4af6-84ec-cb9f0819a493}" StaticName="CarouselItemEndDate" Name="CarouselItemEndDate" CalType="0" AllowDeletion="TRUE">
+          <DefaultFormula>=Today+7</DefaultFormula>
+        </Field>
+        <Field Type="DateTime" DisplayName="Item Display Start Date" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" Format="DateTime" Group="Intranet" FriendlyDisplayFormat="Disabled" ID="{0095b93a-a128-46b5-8185-76a13fc4f36b}" SourceID="{9c7d8991-0d8f-4af6-84ec-cb9f0819a493}" StaticName="CarouselItemStartDate" Name="CarouselItemStartDate" CalType="0" AllowDeletion="TRUE">
+          <DefaultFormula>=Today</DefaultFormula>
+        </Field>
+        <Field Type="URL" DisplayName="Item Link" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" Format="Hyperlink" Group="Intranet" ID="{dcb5a901-905b-4b89-affe-096aa54e8ea6}" SourceID="{9c7d8991-0d8f-4af6-84ec-cb9f0819a493}" StaticName="CarouselItemURL" Name="CarouselItemURL" AllowDeletion="TRUE">
+        </Field>
+        <Field Type="URL" DisplayName="Item Image" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" Format="Image" Group="Intranet" ID="{dce60379-c4dd-4400-9b8d-487090fa9252}" SourceID="{9c7d8991-0d8f-4af6-84ec-cb9f0819a493}" StaticName="CarouselItemImage" Name="CarouselItemImage" AllowDeletion="TRUE">
+        </Field>
+        <Field Type="Number" DisplayName="Item Order" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" Decimals="0" Group="Intranet" ID="{a09bc1c5-561e-4388-84af-15b76a3fa5ef}" SourceID="{9c7d8991-0d8f-4af6-84ec-cb9f0819a493}" StaticName="CarouselItemOrder" Name="CarouselItemOrder" Percentage="FALSE" AllowDeletion="TRUE">
+        </Field>
+        <Field Type="DateTime" DisplayName="Start Date" ID="{64cd368d-2f95-4bfc-a1f9-8d4324ecb007}" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" Format="DateTime" Group="Base Columns" FriendlyDisplayFormat="Disabled"  StaticName="StartDate" Name="StartDate" CalType="0" AllowDeletion="TRUE">
+          <DefaultFormula>=Today</DefaultFormula>
+        </Field>
+        <Field Type="DateTime" DisplayName="End Date" ID="{8a121252-85a9-443d-8217-a1b57020fadf}" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" Format="DateTime" Group="Base Columns" FriendlyDisplayFormat="Disabled"  StaticName="_EndDate" Name="_EndDate" CalType="0" AllowDeletion="TRUE">
+        </Field>
+        <Field Type="UserMulti" DisplayName="Page Contact(s)" List="UserInfo" Required="FALSE" EnforceUniqueValues="FALSE" ShowField="ImnName" UserSelectionMode="PeopleOnly" UserSelectionScope="0" Mult="TRUE" Sortable="FALSE" Group="Intranet" ID="{feff03b1-9293-464c-bbbc-ff34ca32fd88}" SourceID="{d9c3cbd2-956f-4f0a-a9a5-1ea6baf033ca}" StaticName="IntranetContact" Name="IntranetContact" />
+        <Field Type="Text" DisplayName="BotDirectLineSecretKey" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" MaxLength="255" Group="Intranet" ID="{9c425907-121c-400b-b7fb-29a7519bbfb7}" SourceID="{accefce4-b37f-47ae-bcf2-61b3b86d2088}" StaticName="BotDirectLineSecretKey" Name="BotDirectLineSecretKey">
+        </Field>
+        <Field Type="Text" DisplayName="BotId" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" MaxLength="255" Group="Intranet" ID="{83fc5759-be54-4589-9e8f-d63b1fecdd12}" SourceID="{accefce4-b37f-47ae-bcf2-61b3b86d2088}" StaticName="BotId" Name="BotId">
+        </Field>
+        <Field Type="Text" DisplayName="BotHandle" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" MaxLength="255" Group="Intranet" ID="{e5165faf-c4f2-42a9-97ab-c4d188f4fd5d}" SourceID="{accefce4-b37f-47ae-bcf2-61b3b86d2088}" StaticName="BotHandle" Name="BotHandle">
+        </Field>
+        <Field Type="Text" DisplayName="AppInsightsInstrumentationKey" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" MaxLength="255" Group="Intranet" ID="{dac18d5e-e66d-4383-8b00-dc131abeda91}" SourceID="{1b46667a-37e4-4a5f-b142-6f470ac67f02}" StaticName="AppInsightsInstrumentationKey" Name="AppInsightsInstrumentationKey">
+        </Field>
+      </pnp:SiteFields>
+      <pnp:ContentTypes>
+        <pnp:ContentType ID="0x0100AD26B7A2A09CC8409C98FC7F7D6C7EF2" Name="Carousel Item" Description="" Group="Intranet" NewFormUrl="" EditFormUrl="" DisplayFormUrl="">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="c042a256-787d-4a6f-8a8a-cf6ab767f12d" Name="ContentType" />
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" Required="true" />
+            <pnp:FieldRef ID="dcb5a901-905b-4b89-affe-096aa54e8ea6" Name="CarouselItemURL" />
+            <pnp:FieldRef ID="dce60379-c4dd-4400-9b8d-487090fa9252" Name="CarouselItemImage" />
+            <pnp:FieldRef ID="0095b93a-a128-46b5-8185-76a13fc4f36b" Name="CarouselItemStartDate" />
+            <pnp:FieldRef ID="b81b582c-98cc-41dd-86e7-0dd5d5c52636" Name="CarouselItemEndDate" />
+            <pnp:FieldRef ID="a09bc1c5-561e-4388-84af-15b76a3fa5ef" Name="CarouselItemOrder" />
+            <pnp:FieldRef ID="dc289a60-042d-4e47-b33e-c3d3712f0cbe" Name="IntranetContentLanguage" />
+          </pnp:FieldRefs>
+        </pnp:ContentType>
+        <pnp:ContentType ID="0x01010092206821AFF2CF42B50BA968DA7AE9E9" Name="Intranet Document" Description="Create a new document." Group="Intranet" NewFormUrl="" EditFormUrl="" DisplayFormUrl="">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="c042a256-787d-4a6f-8a8a-cf6ab767f12d" Name="ContentType" />
+            <pnp:FieldRef ID="5f47e085-2150-41dc-b661-442f3027f552" Name="SelectFilename" />
+            <pnp:FieldRef ID="8553196d-ec8d-4564-9861-3dbe931050c8" Name="FileLeafRef" Required="true" />
+            <pnp:FieldRef ID="8c06beca-0777-48f7-91c7-6da68bc07b69" Name="Created" Hidden="true" />
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" />
+            <pnp:FieldRef ID="28cf69c5-fa48-462a-b5cd-27b6f9d2bd5f" Name="Modified" Hidden="true" />
+            <pnp:FieldRef ID="822c78e3-1ea9-4943-b449-57863ad33ca9" Name="Modified_x0020_By" />
+            <pnp:FieldRef ID="4dd7e525-8d6b-4cb4-9d3e-44ee25f973eb" Name="Created_x0020_By" />
+            <pnp:FieldRef ID="f416d825-267b-41bc-97a6-1a250671cf1f" Name="b25b109d5d664dd2ac93123923dd5b99" Hidden="true" />
+            <pnp:FieldRef ID="f3b0adf9-c1a2-4b02-920d-943fba4b3611" Name="TaxCatchAll" Hidden="true" />
+            <pnp:FieldRef ID="8f6b6dd8-9357-4019-8172-966fcd502ed2" Name="TaxCatchAllLabel" Hidden="true" />
+            <pnp:FieldRef ID="b25b109d-5d66-4dd2-ac93-123923dd5b99" Name="IntranetContentType" />
+            <pnp:FieldRef ID="1963b18e-c186-40b9-967a-f4c0c6bc7c00" Name="e707b1682f3943fcbca6f1a399c93f57" Hidden="true" />
+            <pnp:FieldRef ID="e707b168-2f39-43fc-bca6-f1a399c93f57" Name="IntranetKeywords" />
+            <pnp:FieldRef ID="1854bcb7-b187-4801-80a7-b576e26876a4" Name="IntranetDocumentDescription" />
+          </pnp:FieldRefs>
+        </pnp:ContentType>
+        <pnp:ContentType ID="0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C" Name="Default Page" Description="Page is a system content type template created by the Publishing Resources feature. The column templates from Page will be added to all Pages libraries created by the Publishing feature." Group="Intranet" NewFormUrl="" EditFormUrl="" DisplayFormUrl="">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" />
+            <pnp:FieldRef ID="8553196d-ec8d-4564-9861-3dbe931050c8" Name="FileLeafRef" Required="true" />
+            <pnp:FieldRef ID="f55c4d88-1f2e-4ad9-aaa8-819af4ee7ee8" Name="PublishingPageContent" />
+            <pnp:FieldRef ID="e707b168-2f39-43fc-bca6-f1a399c93f57" Name="IntranetKeywords" />
+            <pnp:FieldRef ID="50631c24-1371-4ecf-a5ae-ed41b03f4499" Name="PublishingIsFurlPage" />
+            <pnp:FieldRef ID="ff92f929-d18b-46d4-9879-521378c689ef" Name="SeoBrowserTitle" />
+            <pnp:FieldRef ID="325c00dd-fd91-468b-81cf-5bb9951abba1" Name="RobotsNoIndex" />
+            <pnp:FieldRef ID="34203e4c-a673-40fa-9fde-502e433c66f8" Name="IntranetContentAuthor" />
+            <pnp:FieldRef ID="662ed8d3-610f-4b8e-8565-0fc0cab99743" Name="IntranetContentPublishingDate" />
+            <pnp:FieldRef ID="28cf69c5-fa48-462a-b5cd-27b6f9d2bd5f" Name="Modified" Hidden="true" />
+            <pnp:FieldRef ID="7546ad0d-6c33-4501-b470-fb3003ca14ba" Name="PublishingContactName" Hidden="true" />
+            <pnp:FieldRef ID="dc47d55f-9bf9-494a-8d5b-e619214dd19a" Name="PublishingContactPicture" Hidden="true" />
+            <pnp:FieldRef ID="0f800910-b30d-4c8f-b011-8189b2297094" Name="PublishingPageLayout" />
+            <pnp:FieldRef ID="914fdb80-7d4f-4500-bf4c-ce46ad7484a4" Name="PublishingVariationGroupID" />
+            <pnp:FieldRef ID="766da693-38e5-4b1b-997f-e830b6dfcc7b" Name="PublishingVariationRelationshipLinkFieldID" />
+            <pnp:FieldRef ID="543bc2cf-1f30-488e-8f25-6fe3b689d9ac" Name="PublishingRollupImage" Hidden="true" />
+            <pnp:FieldRef ID="61cbb965-1e04-4273-b658-eedaa662f48d" Name="Audience" Hidden="true" />
+            <pnp:FieldRef ID="822c78e3-1ea9-4943-b449-57863ad33ca9" Name="Modified_x0020_By" />
+            <pnp:FieldRef ID="4dd7e525-8d6b-4cb4-9d3e-44ee25f973eb" Name="Created_x0020_By" />
+            <pnp:FieldRef ID="d83897e5-2430-4df7-8e5a-9bc06c664992" Name="SeoMetaDescription" Hidden="true" />
+            <pnp:FieldRef ID="45ae2169-585c-440b-aa4c-1d5e981fbbe5" Name="SeoKeywords" Hidden="true" />
+            <pnp:FieldRef ID="9da97a8a-1da5-4a77-98d3-4bc10456e700" Name="Comments" Hidden="true" />
+            <pnp:FieldRef ID="f3b0adf9-c1a2-4b02-920d-943fba4b3611" Name="TaxCatchAll" Hidden="true" />
+            <pnp:FieldRef ID="8f6b6dd8-9357-4019-8172-966fcd502ed2" Name="TaxCatchAllLabel" Hidden="true" />
+            <pnp:FieldRef ID="8c06beca-0777-48f7-91c7-6da68bc07b69" Name="Created" Hidden="true" />
+            <pnp:FieldRef ID="1963b18e-c186-40b9-967a-f4c0c6bc7c00" Name="e707b1682f3943fcbca6f1a399c93f57" Hidden="true" />
+            <pnp:FieldRef ID="c042a256-787d-4a6f-8a8a-cf6ab767f12d" Name="ContentType" />
+            <pnp:FieldRef ID="5f47e085-2150-41dc-b661-442f3027f552" Name="SelectFilename" />
+            <pnp:FieldRef ID="c79dba91-e60b-400e-973d-c6d06f192720" Name="PublishingContactEmail" Hidden="true" />
+            <pnp:FieldRef ID="a990e64f-faa3-49c1-aafa-885fda79de62" Name="PublishingExpirationDate" Hidden="true" />
+            <pnp:FieldRef ID="51d39414-03dc-4bd0-b777-d3e20cb350f7" Name="PublishingStartDate" Hidden="true" />
+            <pnp:FieldRef ID="dc289a60-042d-4e47-b33e-c3d3712f0cbe" Name="IntranetContentLanguage" />
+            <pnp:FieldRef ID="e51329dc-1174-4456-8bd0-3ffbd3c1264a" Name="IntranetContentAssociationKey" />
+            <pnp:FieldRef ID="f416d825-267b-41bc-97a6-1a250671cf1f" Name="b25b109d5d664dd2ac93123923dd5b99" Hidden="true" />
+            <pnp:FieldRef ID="b25b109d-5d66-4dd2-ac93-123923dd5b99" Name="IntranetContentType" />
+            <pnp:FieldRef ID="feff03b1-9293-464c-bbbc-ff34ca32fd88" Name="IntranetContact"/>
+          </pnp:FieldRefs>
+        </pnp:ContentType>
+        <pnp:ContentType ID="0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C01" Name="Static Page" Description="Page is a system content type template created by the Publishing Resources feature. The column templates from Page will be added to all Pages libraries created by the Publishing feature." Group="Intranet" NewFormUrl="" EditFormUrl="" DisplayFormUrl="">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" />
+            <pnp:FieldRef ID="8553196d-ec8d-4564-9861-3dbe931050c8" Name="FileLeafRef" Required="true" />
+            <pnp:FieldRef ID="f55c4d88-1f2e-4ad9-aaa8-819af4ee7ee8" Name="PublishingPageContent" />
+            <pnp:FieldRef ID="e707b168-2f39-43fc-bca6-f1a399c93f57" Name="IntranetKeywords" />
+            <pnp:FieldRef ID="50631c24-1371-4ecf-a5ae-ed41b03f4499" Name="PublishingIsFurlPage" />
+            <pnp:FieldRef ID="ff92f929-d18b-46d4-9879-521378c689ef" Name="SeoBrowserTitle" />
+            <pnp:FieldRef ID="325c00dd-fd91-468b-81cf-5bb9951abba1" Name="RobotsNoIndex" />
+            <pnp:FieldRef ID="34203e4c-a673-40fa-9fde-502e433c66f8" Name="IntranetContentAuthor" />
+            <pnp:FieldRef ID="662ed8d3-610f-4b8e-8565-0fc0cab99743" Name="IntranetContentPublishingDate" />
+            <pnp:FieldRef ID="28cf69c5-fa48-462a-b5cd-27b6f9d2bd5f" Name="Modified" Hidden="true" />
+            <pnp:FieldRef ID="7546ad0d-6c33-4501-b470-fb3003ca14ba" Name="PublishingContactName" Hidden="true" />
+            <pnp:FieldRef ID="dc47d55f-9bf9-494a-8d5b-e619214dd19a" Name="PublishingContactPicture" Hidden="true" />
+            <pnp:FieldRef ID="0f800910-b30d-4c8f-b011-8189b2297094" Name="PublishingPageLayout" />
+            <pnp:FieldRef ID="914fdb80-7d4f-4500-bf4c-ce46ad7484a4" Name="PublishingVariationGroupID" />
+            <pnp:FieldRef ID="766da693-38e5-4b1b-997f-e830b6dfcc7b" Name="PublishingVariationRelationshipLinkFieldID" />
+            <pnp:FieldRef ID="543bc2cf-1f30-488e-8f25-6fe3b689d9ac" Name="PublishingRollupImage" Hidden="true" />
+            <pnp:FieldRef ID="61cbb965-1e04-4273-b658-eedaa662f48d" Name="Audience" Hidden="true" />
+            <pnp:FieldRef ID="822c78e3-1ea9-4943-b449-57863ad33ca9" Name="Modified_x0020_By" />
+            <pnp:FieldRef ID="4dd7e525-8d6b-4cb4-9d3e-44ee25f973eb" Name="Created_x0020_By" />
+            <pnp:FieldRef ID="d83897e5-2430-4df7-8e5a-9bc06c664992" Name="SeoMetaDescription" Hidden="true" />
+            <pnp:FieldRef ID="45ae2169-585c-440b-aa4c-1d5e981fbbe5" Name="SeoKeywords" Hidden="true" />
+            <pnp:FieldRef ID="9da97a8a-1da5-4a77-98d3-4bc10456e700" Name="Comments" Hidden="true" />
+            <pnp:FieldRef ID="f3b0adf9-c1a2-4b02-920d-943fba4b3611" Name="TaxCatchAll" Hidden="true" />
+            <pnp:FieldRef ID="8f6b6dd8-9357-4019-8172-966fcd502ed2" Name="TaxCatchAllLabel" Hidden="true" />
+            <pnp:FieldRef ID="8c06beca-0777-48f7-91c7-6da68bc07b69" Name="Created" Hidden="true" />
+            <pnp:FieldRef ID="1963b18e-c186-40b9-967a-f4c0c6bc7c00" Name="e707b1682f3943fcbca6f1a399c93f57" Hidden="true" />
+            <pnp:FieldRef ID="c042a256-787d-4a6f-8a8a-cf6ab767f12d" Name="ContentType" />
+            <pnp:FieldRef ID="5f47e085-2150-41dc-b661-442f3027f552" Name="SelectFilename" />
+            <pnp:FieldRef ID="c79dba91-e60b-400e-973d-c6d06f192720" Name="PublishingContactEmail" Hidden="true" />
+            <pnp:FieldRef ID="a990e64f-faa3-49c1-aafa-885fda79de62" Name="PublishingExpirationDate" Hidden="true" />
+            <pnp:FieldRef ID="51d39414-03dc-4bd0-b777-d3e20cb350f7" Name="PublishingStartDate" Hidden="true" />
+            <pnp:FieldRef ID="dc289a60-042d-4e47-b33e-c3d3712f0cbe" Name="IntranetContentLanguage" />
+            <pnp:FieldRef ID="e51329dc-1174-4456-8bd0-3ffbd3c1264a" Name="IntranetContentAssociationKey" />
+            <pnp:FieldRef ID="f416d825-267b-41bc-97a6-1a250671cf1f" Name="b25b109d5d664dd2ac93123923dd5b99" Hidden="true" />
+            <pnp:FieldRef ID="b25b109d-5d66-4dd2-ac93-123923dd5b99" Name="IntranetContentType" />
+            <pnp:FieldRef ID="feff03b1-9293-464c-bbbc-ff34ca32fd88" Name="IntranetContact" />
+          </pnp:FieldRefs>
+        </pnp:ContentType>
+        <pnp:ContentType ID="0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C02" Name="News Page" Description="Page is a system content type template created by the Publishing Resources feature. The column templates from Page will be added to all Pages libraries created by the Publishing feature." Group="Intranet" NewFormUrl="" EditFormUrl="" DisplayFormUrl="">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" />
+            <pnp:FieldRef ID="8553196d-ec8d-4564-9861-3dbe931050c8" Name="FileLeafRef" Required="true" />
+            <pnp:FieldRef ID="f55c4d88-1f2e-4ad9-aaa8-819af4ee7ee8" Name="PublishingPageContent" />
+            <pnp:FieldRef ID="e707b168-2f39-43fc-bca6-f1a399c93f57" Name="IntranetKeywords" />
+            <pnp:FieldRef ID="50631c24-1371-4ecf-a5ae-ed41b03f4499" Name="PublishingIsFurlPage" />
+            <pnp:FieldRef ID="ff92f929-d18b-46d4-9879-521378c689ef" Name="SeoBrowserTitle" />
+            <pnp:FieldRef ID="325c00dd-fd91-468b-81cf-5bb9951abba1" Name="RobotsNoIndex" />
+            <pnp:FieldRef ID="34203e4c-a673-40fa-9fde-502e433c66f8" Name="IntranetContentAuthor" />
+            <pnp:FieldRef ID="662ed8d3-610f-4b8e-8565-0fc0cab99743" Name="IntranetContentPublishingDate" />
+            <pnp:FieldRef ID="a990e64f-faa3-49c1-aafa-885fda79de62" Name="PublishingExpirationDate" Hidden="true" />
+            <pnp:FieldRef ID="7546ad0d-6c33-4501-b470-fb3003ca14ba" Name="PublishingContactName" Hidden="true" />
+            <pnp:FieldRef ID="dc47d55f-9bf9-494a-8d5b-e619214dd19a" Name="PublishingContactPicture" Hidden="true" />
+            <pnp:FieldRef ID="0f800910-b30d-4c8f-b011-8189b2297094" Name="PublishingPageLayout" />
+            <pnp:FieldRef ID="914fdb80-7d4f-4500-bf4c-ce46ad7484a4" Name="PublishingVariationGroupID" />
+            <pnp:FieldRef ID="766da693-38e5-4b1b-997f-e830b6dfcc7b" Name="PublishingVariationRelationshipLinkFieldID" />
+            <pnp:FieldRef ID="543bc2cf-1f30-488e-8f25-6fe3b689d9ac" Name="PublishingRollupImage" Hidden="true" />
+            <pnp:FieldRef ID="61cbb965-1e04-4273-b658-eedaa662f48d" Name="Audience" Hidden="true" />
+            <pnp:FieldRef ID="822c78e3-1ea9-4943-b449-57863ad33ca9" Name="Modified_x0020_By" />
+            <pnp:FieldRef ID="4dd7e525-8d6b-4cb4-9d3e-44ee25f973eb" Name="Created_x0020_By" />
+            <pnp:FieldRef ID="d83897e5-2430-4df7-8e5a-9bc06c664992" Name="SeoMetaDescription" Hidden="true" />
+            <pnp:FieldRef ID="45ae2169-585c-440b-aa4c-1d5e981fbbe5" Name="SeoKeywords" Hidden="true" />
+            <pnp:FieldRef ID="9da97a8a-1da5-4a77-98d3-4bc10456e700" Name="Comments" Hidden="true" />
+            <pnp:FieldRef ID="f3b0adf9-c1a2-4b02-920d-943fba4b3611" Name="TaxCatchAll" Hidden="true" />
+            <pnp:FieldRef ID="8f6b6dd8-9357-4019-8172-966fcd502ed2" Name="TaxCatchAllLabel" Hidden="true" />
+            <pnp:FieldRef ID="8c06beca-0777-48f7-91c7-6da68bc07b69" Name="Created" Hidden="true" />
+            <pnp:FieldRef ID="1963b18e-c186-40b9-967a-f4c0c6bc7c00" Name="e707b1682f3943fcbca6f1a399c93f57" Hidden="true" />
+            <pnp:FieldRef ID="c042a256-787d-4a6f-8a8a-cf6ab767f12d" Name="ContentType" />
+            <pnp:FieldRef ID="5f47e085-2150-41dc-b661-442f3027f552" Name="SelectFilename" />
+            <pnp:FieldRef ID="c79dba91-e60b-400e-973d-c6d06f192720" Name="PublishingContactEmail" Hidden="true" />
+            <pnp:FieldRef ID="28d950ef-75bf-480c-b71a-aa5fe27d3aaf" Name="na09574064da42d7b192ecb9bcf33dd8" Hidden="true" />
+            <pnp:FieldRef ID="28cf69c5-fa48-462a-b5cd-27b6f9d2bd5f" Name="Modified" Hidden="true" />
+            <pnp:FieldRef ID="7a095740-64da-42d7-b192-ecb9bcf33dd8" Name="IntranetContentCategory" />
+            <pnp:FieldRef ID="51d39414-03dc-4bd0-b777-d3e20cb350f7" Name="PublishingStartDate" Hidden="true" />
+            <pnp:FieldRef ID="3de94b06-4120-41a5-b907-88773e493458" Name="PublishingPageImage" />
+            <pnp:FieldRef ID="dc289a60-042d-4e47-b33e-c3d3712f0cbe" Name="IntranetContentLanguage" />
+            <pnp:FieldRef ID="e51329dc-1174-4456-8bd0-3ffbd3c1264a" Name="IntranetContentAssociationKey" />
+            <pnp:FieldRef ID="f416d825-267b-41bc-97a6-1a250671cf1f" Name="b25b109d5d664dd2ac93123923dd5b99" Hidden="true" />
+            <pnp:FieldRef ID="b25b109d-5d66-4dd2-ac93-123923dd5b99" Name="IntranetContentType" />
+            <pnp:FieldRef ID="c3909087-b857-4500-875e-32d79f47a41d" Name="IntranetIsNewsOnTop" />
+            <pnp:FieldRef ID="feff03b1-9293-464c-bbbc-ff34ca32fd88" Name="IntranetContact"/>
+          </pnp:FieldRefs>
+        </pnp:ContentType>
+        <pnp:ContentType ID="0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C03" Name="Event Page" Description="" Group="Intranet" NewFormUrl="" EditFormUrl="" DisplayFormUrl="">
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="fa564e0f-0c70-4ab9-b863-0177e6ddd247" Name="Title" />
+            <pnp:FieldRef ID="8553196d-ec8d-4564-9861-3dbe931050c8" Name="FileLeafRef" Required="true" />
+            <pnp:FieldRef ID="f55c4d88-1f2e-4ad9-aaa8-819af4ee7ee8" Name="PublishingPageContent" />
+            <pnp:FieldRef ID="e707b168-2f39-43fc-bca6-f1a399c93f57" Name="IntranetKeywords" />
+            <pnp:FieldRef ID="50631c24-1371-4ecf-a5ae-ed41b03f4499" Name="PublishingIsFurlPage" />
+            <pnp:FieldRef ID="ff92f929-d18b-46d4-9879-521378c689ef" Name="SeoBrowserTitle" />
+            <pnp:FieldRef ID="325c00dd-fd91-468b-81cf-5bb9951abba1" Name="RobotsNoIndex" />
+            <pnp:FieldRef ID="34203e4c-a673-40fa-9fde-502e433c66f8" Name="IntranetContentAuthor" />
+            <pnp:FieldRef ID="662ed8d3-610f-4b8e-8565-0fc0cab99743" Name="IntranetContentPublishingDate" />
+            <pnp:FieldRef ID="28cf69c5-fa48-462a-b5cd-27b6f9d2bd5f" Name="Modified" Hidden="true" />
+            <pnp:FieldRef ID="7546ad0d-6c33-4501-b470-fb3003ca14ba" Name="PublishingContactName" Hidden="true" />
+            <pnp:FieldRef ID="dc47d55f-9bf9-494a-8d5b-e619214dd19a" Name="PublishingContactPicture" Hidden="true" />
+            <pnp:FieldRef ID="0f800910-b30d-4c8f-b011-8189b2297094" Name="PublishingPageLayout" />
+            <pnp:FieldRef ID="914fdb80-7d4f-4500-bf4c-ce46ad7484a4" Name="PublishingVariationGroupID" />
+            <pnp:FieldRef ID="766da693-38e5-4b1b-997f-e830b6dfcc7b" Name="PublishingVariationRelationshipLinkFieldID" />
+            <pnp:FieldRef ID="543bc2cf-1f30-488e-8f25-6fe3b689d9ac" Name="PublishingRollupImage" Hidden="true" />
+            <pnp:FieldRef ID="61cbb965-1e04-4273-b658-eedaa662f48d" Name="Audience" Hidden="true" />
+            <pnp:FieldRef ID="822c78e3-1ea9-4943-b449-57863ad33ca9" Name="Modified_x0020_By" />
+            <pnp:FieldRef ID="4dd7e525-8d6b-4cb4-9d3e-44ee25f973eb" Name="Created_x0020_By" />
+            <pnp:FieldRef ID="d83897e5-2430-4df7-8e5a-9bc06c664992" Name="SeoMetaDescription" Hidden="true" />
+            <pnp:FieldRef ID="45ae2169-585c-440b-aa4c-1d5e981fbbe5" Name="SeoKeywords" Hidden="true" />
+            <pnp:FieldRef ID="9da97a8a-1da5-4a77-98d3-4bc10456e700" Name="Comments" Hidden="true" />
+            <pnp:FieldRef ID="f3b0adf9-c1a2-4b02-920d-943fba4b3611" Name="TaxCatchAll" Hidden="true" />
+            <pnp:FieldRef ID="8f6b6dd8-9357-4019-8172-966fcd502ed2" Name="TaxCatchAllLabel" Hidden="true" />
+            <pnp:FieldRef ID="8c06beca-0777-48f7-91c7-6da68bc07b69" Name="Created" Hidden="true" />
+            <pnp:FieldRef ID="1963b18e-c186-40b9-967a-f4c0c6bc7c00" Name="e707b1682f3943fcbca6f1a399c93f57" Hidden="true" />
+            <pnp:FieldRef ID="c042a256-787d-4a6f-8a8a-cf6ab767f12d" Name="ContentType" />
+            <pnp:FieldRef ID="5f47e085-2150-41dc-b661-442f3027f552" Name="SelectFilename" />
+            <pnp:FieldRef ID="c79dba91-e60b-400e-973d-c6d06f192720" Name="PublishingContactEmail" Hidden="true" />
+            <pnp:FieldRef ID="a990e64f-faa3-49c1-aafa-885fda79de62" Name="PublishingExpirationDate" Hidden="true" />
+            <pnp:FieldRef ID="51d39414-03dc-4bd0-b777-d3e20cb350f7" Name="PublishingStartDate" Hidden="true" />
+            <pnp:FieldRef ID="dc289a60-042d-4e47-b33e-c3d3712f0cbe" Name="IntranetContentLanguage" />
+            <pnp:FieldRef ID="e51329dc-1174-4456-8bd0-3ffbd3c1264a" Name="IntranetContentAssociationKey" />
+            <pnp:FieldRef ID="f416d825-267b-41bc-97a6-1a250671cf1f" Name="b25b109d5d664dd2ac93123923dd5b99" Hidden="true" />
+            <pnp:FieldRef ID="b25b109d-5d66-4dd2-ac93-123923dd5b99" Name="IntranetContentType" />
+            <pnp:FieldRef ID="28d950ef-75bf-480c-b71a-aa5fe27d3aaf" Name="na09574064da42d7b192ecb9bcf33dd8" Hidden="true" />
+            <pnp:FieldRef ID="7a095740-64da-42d7-b192-ecb9bcf33dd8" Name="IntranetContentCategory" />
+            <pnp:FieldRef ID="64cd368d-2f95-4bfc-a1f9-8d4324ecb007" Name="StartDate" Required="true" />
+            <pnp:FieldRef ID="8a121252-85a9-443d-8217-a1b57020fadf" Name="_EndDate" />
+            <pnp:FieldRef ID="288f5f32-8462-4175-8f09-dd7ba29359a9" Name="Location" />
+            <pnp:FieldRef ID="feff03b1-9293-464c-bbbc-ff34ca32fd88" Name="IntranetContact" />
+          </pnp:FieldRefs>
+          <pnp:DocumentTemplate TargetName="/_layouts/15/CreatePage.aspx" />
+        </pnp:ContentType>
+      </pnp:ContentTypes>
+      <pnp:Lists>
+        <pnp:ListInstance Title="Carousel Items" Description="" EnableAttachments="false" DocumentTemplate="" TemplateType="100" Url="Lists/CarouselItems" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" TemplateFeatureID="00bfea71-de22-43b2-a848-c05709900100" ContentTypesEnabled="true" EnableFolderCreation="false">
+          <pnp:ContentTypeBindings>
+            <pnp:ContentTypeBinding ContentTypeID="0x0100AD26B7A2A09CC8409C98FC7F7D6C7EF2" Default="true" />
+            <pnp:ContentTypeBinding ContentTypeID="0x01" />
+            <pnp:ContentTypeBinding ContentTypeID="0x0120" />
+          </pnp:ContentTypeBindings>
+          <pnp:Views>
+            <View Name="{BFA7ECD9-98BB-47EE-AF50-A833C3AC56FD}" DefaultView="TRUE" Type="HTML" DisplayName="All Items" Url="{site}/Lists/CarouselItems/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=44">
+              <Query>
+                <OrderBy>
+                  <FieldRef Name="ID" />
+                </OrderBy>
+              </Query>
+              <ViewFields>
+                <FieldRef Name="LinkTitle" />
+                <FieldRef Name="CarouselItemURL" />
+                <FieldRef Name="CarouselItemImage" />
+                <FieldRef Name="CarouselItemOrder" />
+                <FieldRef Name="CarouselItemEndDate" />
+                <FieldRef Name="CarouselItemStartDate" />
+              </ViewFields>
+              <RowLimit Paged="TRUE">30</RowLimit>
+              <JSLink>clienttemplates.js</JSLink>
+            </View>
+          </pnp:Views>
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="dcb5a901-905b-4b89-affe-096aa54e8ea6" Name="CarouselItemURL" DisplayName="Item Link" />
+            <pnp:FieldRef ID="dce60379-c4dd-4400-9b8d-487090fa9252" Name="CarouselItemImage" DisplayName="Item Image" />
+            <pnp:FieldRef ID="0095b93a-a128-46b5-8185-76a13fc4f36b" Name="CarouselItemStartDate" DisplayName="Item Display Start Date" />
+            <pnp:FieldRef ID="b81b582c-98cc-41dd-86e7-0dd5d5c52636" Name="CarouselItemEndDate" DisplayName="Item Display End Date" />
+            <pnp:FieldRef ID="a09bc1c5-561e-4388-84af-15b76a3fa5ef" Name="CarouselItemOrder" DisplayName="Item Order" />
+          </pnp:FieldRefs>
+        </pnp:ListInstance>
+        <pnp:ListInstance Title="Links" Description="" DocumentTemplate="" TemplateType="170" Url="Lists/Links" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" TemplateFeatureID="192efa95-e50c-475e-87ab-361cede5dd7f" EnableAttachments="false" EnableFolderCreation="false">
+          <pnp:Views>
+            <View Name="{DBBB5222-126F-438A-B0DD-34298E7CAEE2}" DefaultView="TRUE" MobileDefaultView="TRUE" Type="HTML" ReadOnly="TRUE" OrderedView="TRUE" DisplayName="Tiles" Url="{site}/Lists/Links/Tiles.aspx" Level="1" BaseViewID="1" ContentTypeID="0x">
+              <Query>
+                <OrderBy>
+                  <FieldRef Name="TileOrder" Ascending="TRUE" />
+                  <FieldRef Name="Modified" Ascending="FALSE" />
+                </OrderBy>
+              </Query>
+              <ViewFields>
+                <FieldRef Name="Title" />
+                <FieldRef Name="BackgroundImageLocation" />
+                <FieldRef Name="Description" />
+                <FieldRef Name="LinkLocation" />
+                <FieldRef Name="LaunchBehavior" />
+                <FieldRef Name="BackgroundImageClusterX" />
+                <FieldRef Name="BackgroundImageClusterY" />
+                <FieldRef Name="IntranetContentLanguage" />
+              </ViewFields>
+              <RowLimit Paged="TRUE">30</RowLimit>
+              <JSLink>sp.ui.tileview.js</JSLink>
+            </View>
+            <View Name="{12551C7F-87A7-470B-A0DF-003674509D27}" Type="HTML" OrderedView="TRUE" DisplayName="All Promoted Links" Url="{site}/Lists/Links/AllItems.aspx" Level="1" BaseViewID="3" ContentTypeID="0x">
+              <Query>
+                <OrderBy>
+                  <FieldRef Name="TileOrder" Ascending="TRUE" />
+                  <FieldRef Name="Modified" Ascending="FALSE" />
+                </OrderBy>
+              </Query>
+              <ViewFields>
+                <FieldRef Name="Title" />
+                <FieldRef Name="BackgroundImageLocation" />
+                <FieldRef Name="Description" />
+                <FieldRef Name="LinkLocation" />
+                <FieldRef Name="LaunchBehavior" />
+                <FieldRef Name="TileOrder" />
+              </ViewFields>
+              <RowLimit Paged="TRUE">30</RowLimit>
+              <JSLink>clienttemplates.js</JSLink>
+            </View>
+            <View Name="{877F0078-08CE-4C2E-9737-5406EFD1105F}" MobileView="TRUE" Type="HTML" DisplayName="FR Links" Url="{site}/Lists/Links/FR Links.aspx" Level="1" BaseViewID="1" ContentTypeID="0x">
+              <Query>
+                <Where>
+                  <Eq>
+                    <FieldRef Name="IntranetContentLanguage" />
+                    <Value Type="Text">FR</Value>
+                  </Eq>
+                </Where>
+              </Query>
+              <ViewFields>
+                <FieldRef Name="Title" />
+                <FieldRef Name="BackgroundImageLocation" />
+                <FieldRef Name="Description" />
+                <FieldRef Name="LinkLocation" />
+                <FieldRef Name="LaunchBehavior" />
+                <FieldRef Name="BackgroundImageClusterX" />
+                <FieldRef Name="BackgroundImageClusterY" />
+              </ViewFields>
+              <RowLimit Paged="TRUE">30</RowLimit>
+              <Aggregations Value="Off" />
+              <JSLink>sp.ui.tileview.js</JSLink>
+            </View>
+            <View Name="{32A5DB80-B79E-44EC-82AF-90A185F8A1F6}" MobileView="TRUE" Type="HTML" DisplayName="EN Links" Url="{site}/Lists/Links/EN Links.aspx" Level="1" BaseViewID="1" ContentTypeID="0x">
+              <Query>
+                <Where>
+                  <Eq>
+                    <FieldRef Name="IntranetContentLanguage" />
+                    <Value Type="Text">EN</Value>
+                  </Eq>
+                </Where>
+              </Query>
+              <ViewFields>
+                <FieldRef Name="Title" />
+                <FieldRef Name="BackgroundImageLocation" />
+                <FieldRef Name="Description" />
+                <FieldRef Name="LinkLocation" />
+                <FieldRef Name="LaunchBehavior" />
+                <FieldRef Name="BackgroundImageClusterX" />
+                <FieldRef Name="BackgroundImageClusterY" />
+              </ViewFields>
+              <RowLimit Paged="TRUE">30</RowLimit>
+              <Aggregations Value="Off" />
+              <JSLink>sp.ui.tileview.js</JSLink>
+            </View>
+          </pnp:Views>
+          <pnp:Fields>
+            <Field ID="{a0fc423e-0808-490e-905e-260abd3d6511}" Type="URL" Name="BackgroundImageLocation" DisplayName="Background Image Location" Required="FALSE" SEALED="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="BackgroundImageLocation" ColName="nvarchar3" ColName2="nvarchar4" />
+            <Field ID="{bced0253-a215-49a2-bcd9-5025ad49560d}" Type="Note" Name="Description" DisplayName="Description" Required="FALSE" SEALED="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="Description" ColName="ntext2" />
+            <Field ID="{fda2f5e5-8253-4b10-8876-a42268d758e0}" Type="URL" Name="LinkLocation" DisplayName="Link Location" Required="TRUE" SEALED="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="LinkLocation" ColName="nvarchar5" ColName2="nvarchar6" />
+            <Field ID="{b2424958-fe1e-4227-af83-954985029aac}" Type="Choice" Name="LaunchBehavior" DisplayName="Launch Behavior" Required="TRUE" Format="Dropdown" SEALED="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="LaunchBehavior" ColName="nvarchar7">
+              <CHOICES>
+                <CHOICE>In page navigation</CHOICE>
+                <CHOICE>Dialog</CHOICE>
+                <CHOICE>New tab</CHOICE>
+              </CHOICES>
+              <Default>In page navigation</Default>
+            </Field>
+            <Field ID="{722b3e6d-ebb5-4b1c-8dde-8936e53a40c3}" Type="Number" Name="TileOrder" DisplayName="Order" Required="FALSE" SEALED="TRUE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="TileOrder" ColName="float1" />
+            <Field ID="{2a54fee9-ad68-454b-905b-f92ccee343d3}" Type="Number" Name="BackgroundImageClusterX" DisplayName="Background Image Cluster Horizontal Start" Required="FALSE" SEALED="TRUE" ShowInDisplayForm="FALSE" ShowInEditForm="FALSE" ShowInNewForm="FALSE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="BackgroundImageClusterX" ColName="float2" />
+            <Field ID="{2976fc30-0bbe-4671-bcf1-87679b512e9b}" Type="Number" Name="BackgroundImageClusterY" DisplayName="Background Image Cluster Vertical Start" Required="FALSE" SEALED="TRUE" ShowInDisplayForm="FALSE" ShowInEditForm="FALSE" ShowInNewForm="FALSE" SourceID="http://schemas.microsoft.com/sharepoint/v3" StaticName="BackgroundImageClusterY" ColName="float3" />
+          </pnp:Fields>
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="dc289a60-042d-4e47-b33e-c3d3712f0cbe" Name="IntranetContentLanguage" DisplayName="Page Language" />
+          </pnp:FieldRefs>
+        </pnp:ListInstance>
+        <pnp:ListInstance Title="Configuration" Description="" DocumentTemplate="" TemplateType="100" Url="Lists/Configuration" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" TemplateFeatureID="00bfea71-de22-43b2-a848-c05709900100" ContentTypesEnabled="true" EnableFolderCreation="false">
+          <pnp:ContentTypeBindings>
+            <pnp:ContentTypeBinding ContentTypeID="0x01" Default="true" />
+            <pnp:ContentTypeBinding ContentTypeID="0x0120" />
+          </pnp:ContentTypeBindings>
+          <pnp:Views>
+            <View Name="{3683954C-6DE3-4EF3-8A06-BB3DCFC3296A}" DefaultView="TRUE" Type="HTML" DisplayName="All Items" Url="{site}/Lists/Configuration/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/generic.png?rev=44">
+              <Query>
+                <OrderBy>
+                  <FieldRef Name="ID" />
+                </OrderBy>
+              </Query>
+              <ViewFields>
+                <FieldRef Name="LinkTitle" />
+                <FieldRef Name="IntranetContentLanguage" />
+                <FieldRef Name="ForceCacheRefresh" />
+                <FieldRef Name="SiteMapTermSetId" />
+                <FieldRef Name="HeaderLinksTermSetId" />
+                <FieldRef Name="FooterLinksTermSetId" />
+                <FieldRef Name="BotDirectLineSecretKey" />
+                <FieldRef Name="BotHandle" />
+                <FieldRef Name="BotId" />
+                <FieldRef Name="AppInsightsInstrumentationKey" />
+              </ViewFields>
+              <RowLimit Paged="TRUE">30</RowLimit>
+              <Aggregations Value="Off" />
+              <JSLink>clienttemplates.js</JSLink>
+            </View>
+          </pnp:Views>
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="3844b865-e196-4b87-b986-8aa5216da1ab" Name="ForceCacheRefresh" DisplayName="Force Cache Refresh" />
+            <pnp:FieldRef ID="ac1db0e5-42ad-431b-9999-02a25d669fe3" Name="SiteMapTermSetId" DisplayName="Site Map TermSet Id" />
+            <pnp:FieldRef ID="9896f14e-389f-4829-9a7f-0bf16c5d710e" Name="HeaderLinksTermSetId" DisplayName="Header Links Term Set Id" />
+            <pnp:FieldRef ID="0e20cab4-8fda-42fb-82f9-f5e9eb562fb4" Name="FooterLinksTermSetId" DisplayName="Footer Links Term Set Id" />
+            <pnp:FieldRef ID="dc289a60-042d-4e47-b33e-c3d3712f0cbe" Name="IntranetContentLanguage" DisplayName="Associated Language" />
+            <pnp:FieldRef ID="9c425907-121c-400b-b7fb-29a7519bbfb7" Name="BotDirectLineSecretKey" DisplayName="BotDirectLineSecretKey" />
+            <pnp:FieldRef ID="e5165faf-c4f2-42a9-97ab-c4d188f4fd5d" Name="BotHandle" DisplayName="BotHandle" />
+            <pnp:FieldRef ID="83fc5759-be54-4589-9e8f-d63b1fecdd12" Name="BotId" DisplayName="BotId" />
+            <pnp:FieldRef ID="dac18d5e-e66d-4383-8b00-dc131abeda91" Name="AppInsightsInstrumentationKey" DisplayName="AppInsightsInstrumentationKey" />
+          </pnp:FieldRefs>
+        </pnp:ListInstance>
+        <pnp:ListInstance Title="{parameter:PagesLibraryName}" Description="This system library was created by the Publishing feature to store pages that are created in this site." DocumentTemplate="" TemplateType="850" Url="Pages" EnableVersioning="true" EnableMinorVersions="true" EnableModeration="true" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" TemplateFeatureID="22a9ef51-737b-4ff2-9346-694633fe4416" ContentTypesEnabled="true" EnableAttachments="false" EnableFolderCreation="false">
+          <pnp:ContentTypeBindings>
+            <pnp:ContentTypeBinding ContentTypeID="0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C01" Default="true"/>
+            <pnp:ContentTypeBinding ContentTypeID="0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39" />
+            <pnp:ContentTypeBinding ContentTypeID="0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF3900242457EFB8B24247815D688C526CD44D" />
+            <pnp:ContentTypeBinding ContentTypeID="0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF390064DEA0F50FC8C147B0B6EA0636C4A7D4" />
+            <pnp:ContentTypeBinding ContentTypeID="0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF3900796F542FC5E446758C697981E370458C" />
+            <pnp:ContentTypeBinding ContentTypeID="0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C02" />
+            <pnp:ContentTypeBinding ContentTypeID="0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C03" />
+            <pnp:ContentTypeBinding ContentTypeID="0x0120" />
+          </pnp:ContentTypeBindings>
+          <pnp:Views>
+            <View Name="{FEBC0E02-FB2D-43FD-85F1-8D183731CEAB}" DefaultView="TRUE" Type="HTML" DisplayName="All Documents" Url="{site}/{parameter:PagesLibraryName}/Forms/AllItems.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=44">
+              <Query>
+                <OrderBy>
+                  <FieldRef Name="FileLeafRef" />
+                </OrderBy>
+              </Query>
+              <ViewFields>
+                <FieldRef Name="DocIcon" />
+                <FieldRef Name="LinkFilename" />
+                <FieldRef Name="Modified" />
+                <FieldRef Name="Editor" />
+                <FieldRef Name="CheckoutUser" />
+                <FieldRef Name="IntranetContact" />
+                <FieldRef Name="PublishingPageLayout" />
+                <FieldRef Name="_ModerationStatus" />
+              </ViewFields>
+              <RowLimit Paged="TRUE">30</RowLimit>
+              <JSLink>clienttemplates.js</JSLink>
+            </View>
+            <View Name="{6BEE3402-F86A-4488-BFF1-1A63C94E06E0}" Type="HTML" Scope="RecursiveAll" DisplayName="My submissions" Url="{site}/{parameter:PagesLibraryName}/Forms/mysub.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=44">
+              <Query>
+                <GroupBy>
+                  <FieldRef Name="_ModerationStatus" Ascending="FALSE" />
+                </GroupBy>
+              </Query>
+              <ViewFields>
+                <FieldRef Name="DocIcon" />
+                <FieldRef Name="LinkFilename" />
+                <FieldRef Name="Modified" />
+                <FieldRef Name="Editor" />
+                <FieldRef Name="_ModerationStatus" />
+                <FieldRef Name="_ModerationComments" />
+              </ViewFields>
+              <RowLimit Paged="TRUE">30</RowLimit>
+              <JSLink>clienttemplates.js</JSLink>
+            </View>
+            <View Name="{5BB142EE-4AB9-440B-8A18-0C6206379B38}" Type="HTML" Scope="RecursiveAll" DisplayName="Approve/reject Items" Url="{site}/{parameter:PagesLibraryName}/Forms/modview.aspx" Level="1" BaseViewID="1" ContentTypeID="0x" ImageUrl="/_layouts/15/images/dlicon.png?rev=44">
+              <Query>
+                <GroupBy>
+                  <FieldRef Name="_ModerationStatus" Ascending="FALSE" />
+                </GroupBy>
+              </Query>
+              <ViewFields>
+                <FieldRef Name="DocIcon" />
+                <FieldRef Name="LinkFilename" />
+                <FieldRef Name="Modified" />
+                <FieldRef Name="Author" />
+                <FieldRef Name="Editor" />
+                <FieldRef Name="_ModerationStatus" />
+                <FieldRef Name="_ModerationComments" />
+              </ViewFields>
+              <RowLimit Paged="TRUE">30</RowLimit>
+              <JSLink>clienttemplates.js</JSLink>
+            </View>
+          </pnp:Views>
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="28d950ef-75bf-480c-b71a-aa5fe27d3aaf" Name="na09574064da42d7b192ecb9bcf33dd8" Hidden="true" DisplayName="IntranetContentCategory_0" />
+            <pnp:FieldRef ID="f416d825-267b-41bc-97a6-1a250671cf1f" Name="b25b109d5d664dd2ac93123923dd5b99" Hidden="true" DisplayName="IntranetContentType_0" />
+            <pnp:FieldRef ID="1963b18e-c186-40b9-967a-f4c0c6bc7c00" Name="e707b1682f3943fcbca6f1a399c93f57" Hidden="true" DisplayName="IntranetKeywords_0" />
+            <pnp:FieldRef ID="9da97a8a-1da5-4a77-98d3-4bc10456e700" Name="Comments" DisplayName="Comments" />
+            <pnp:FieldRef ID="51d39414-03dc-4bd0-b777-d3e20cb350f7" Name="PublishingStartDate" DisplayName="Scheduling Start Date" />
+            <pnp:FieldRef ID="a990e64f-faa3-49c1-aafa-885fda79de62" Name="PublishingExpirationDate" DisplayName="Scheduling End Date" />
+            <pnp:FieldRef ID="c79dba91-e60b-400e-973d-c6d06f192720" Name="PublishingContactEmail" DisplayName="Contact E-Mail Address" />
+            <pnp:FieldRef ID="7546ad0d-6c33-4501-b470-fb3003ca14ba" Name="PublishingContactName" DisplayName="Contact Name" />
+            <pnp:FieldRef ID="dc47d55f-9bf9-494a-8d5b-e619214dd19a" Name="PublishingContactPicture" DisplayName="Contact Picture" />
+            <pnp:FieldRef ID="0f800910-b30d-4c8f-b011-8189b2297094" Name="PublishingPageLayout" DisplayName="Page Layout" />
+            <pnp:FieldRef ID="543bc2cf-1f30-488e-8f25-6fe3b689d9ac" Name="PublishingRollupImage" DisplayName="Rollup Image" />
+            <pnp:FieldRef ID="61cbb965-1e04-4273-b658-eedaa662f48d" Name="Audience" DisplayName="Target Audiences" />
+            <pnp:FieldRef ID="50631c24-1371-4ecf-a5ae-ed41b03f4499" Name="PublishingIsFurlPage" DisplayName="Hide physical URLs from search" />
+            <pnp:FieldRef ID="ff92f929-d18b-46d4-9879-521378c689ef" Name="SeoBrowserTitle" DisplayName="Browser Title" />
+            <pnp:FieldRef ID="d83897e5-2430-4df7-8e5a-9bc06c664992" Name="SeoMetaDescription" DisplayName="Meta Description" />
+            <pnp:FieldRef ID="45ae2169-585c-440b-aa4c-1d5e981fbbe5" Name="SeoKeywords" DisplayName="Meta Keywords" />
+            <pnp:FieldRef ID="325c00dd-fd91-468b-81cf-5bb9951abba1" Name="RobotsNoIndex" DisplayName="Hide from Internet Search Engines" />
+            <pnp:FieldRef ID="3de94b06-4120-41a5-b907-88773e493458" Name="PublishingPageImage" DisplayName="Page Image" />
+            <pnp:FieldRef ID="f55c4d88-1f2e-4ad9-aaa8-819af4ee7ee8" Name="PublishingPageContent" DisplayName="Page Content" />
+            <pnp:FieldRef ID="b3525efe-59b5-4f0f-b1e4-6e26cb6ef6aa" Name="SummaryLinks" DisplayName="Summary Links" />
+            <pnp:FieldRef ID="d3429cc9-adc4-439b-84a8-5679070f84cb" Name="ArticleByLine" DisplayName="Byline" />
+            <pnp:FieldRef ID="71316cea-40a0-49f3-8659-f0cefdbdbd4f" Name="ArticleStartDate" DisplayName="Article Date" />
+            <pnp:FieldRef ID="66f500e9-7955-49ab-abb1-663621727d10" Name="PublishingImageCaption" DisplayName="Image Caption" />
+            <pnp:FieldRef ID="27761311-936a-40ba-80cd-ca5e7a540a36" Name="SummaryLinks2" DisplayName="Summary Links 2" />
+            <pnp:FieldRef ID="e707b168-2f39-43fc-bca6-f1a399c93f57" Name="IntranetKeywords" DisplayName="Tags" />
+            <pnp:FieldRef ID="34203e4c-a673-40fa-9fde-502e433c66f8" Name="IntranetContentAuthor" DisplayName="Content Author" />
+            <pnp:FieldRef ID="662ed8d3-610f-4b8e-8565-0fc0cab99743" Name="IntranetContentPublishingDate" DisplayName="Publishing Date" />
+            <pnp:FieldRef ID="dc289a60-042d-4e47-b33e-c3d3712f0cbe" Name="IntranetContentLanguage" DisplayName="Content Language" />
+            <pnp:FieldRef ID="e51329dc-1174-4456-8bd0-3ffbd3c1264a" Name="IntranetContentAssociationKey" DisplayName="Content Association Key" />
+            <pnp:FieldRef ID="b25b109d-5d66-4dd2-ac93-123923dd5b99" Name="IntranetContentType" DisplayName="Content Type" />
+            <pnp:FieldRef ID="7a095740-64da-42d7-b192-ecb9bcf33dd8" Name="IntranetContentCategory" DisplayName="Content Category" />
+            <pnp:FieldRef ID="c3909087-b857-4500-875e-32d79f47a41d" Name="IntranetIsNewsOnTop" DisplayName="Is News On Top" />
+            <pnp:FieldRef ID="09b42c74-7fe7-4579-b391-ed88eecc549d" Name="HideSideBar" DisplayName="Hide Side Bar" />
+            <pnp:FieldRef ID="64cd368d-2f95-4bfc-a1f9-8d4324ecb007" Name="StartDate" DisplayName="Start Date" />
+            <pnp:FieldRef ID="8a121252-85a9-443d-8217-a1b57020fadf" Name="_EndDate" DisplayName="End Date" />
+            <pnp:FieldRef ID="288f5f32-8462-4175-8f09-dd7ba29359a9" Name="Location" DisplayName="Location" />
+            <pnp:FieldRef ID="feff03b1-9293-464c-bbbc-ff34ca32fd88" Name="IntranetContact" DisplayName="Page Contact(s)" />
+          </pnp:FieldRefs>
+        </pnp:ListInstance>
+      </pnp:Lists>
+      <pnp:Features>
+        <pnp:WebFeatures>
+          <pnp:Feature ID="00bfea71-4ea5-48d4-a4ad-7ea5c011abe5" />
+        </pnp:WebFeatures>
+      </pnp:Features>
+      <pnp:Files>
+
+        <!-- Start: Master Pages -->
+        <pnp:File Src=".\artefacts\master pages\portal.master" Folder="{masterpagecatalog}/{parameter:CompanyName}" Overwrite="true" Level="Published">
+          <pnp:Properties>
+            <pnp:Property Key="ContentTypeId" Value="0x0101000F1C8B9E0EB4BE489F09807B2C53288F0054AD6EF48B9F7B45A142F8173F171BD1" />
+            <pnp:Property Key="MasterPageDescription" Value="Master Page for the starter PnP Intranet" />
+            <pnp:Property Key="Title" Value="PnP Portal Master Page" />
+          </pnp:Properties>
+        </pnp:File>
+        <!-- End: Master Pages -->
+
+        <!-- Start: Page Layouts -->
+        <pnp:File Src=".\artefacts\page layouts\NewsPageLayout.aspx" Folder="{masterpagecatalog}/{parameter:CompanyName}" Overwrite="true" Level="Published">
+          <pnp:Properties>
+            <pnp:Property Key="ContentTypeId" Value="0x01010007FF3E057FA8AB4AA42FCB67B453FFC100E214EEE741181F4E9F7ACC43278EE811" />
+            <pnp:Property Key="MasterPageDescription" Value="Page layout for a news" />
+            <pnp:Property Key="Title" Value="Intranet News Page" />
+            <pnp:Property Key="PublishingAssociatedContentType" Value=";#News Page;#0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C02;#" />
+          </pnp:Properties>
+        </pnp:File>
+        <pnp:File Src=".\artefacts\page layouts\StaticPageLayout.aspx" Folder="{masterpagecatalog}/{parameter:CompanyName}" Overwrite="true" Level="Published">
+          <pnp:Properties>
+            <pnp:Property Key="ContentTypeId" Value="0x01010007FF3E057FA8AB4AA42FCB67B453FFC100E214EEE741181F4E9F7ACC43278EE811" />
+            <pnp:Property Key="MasterPageDescription" Value="Page layout for a static page" />
+            <pnp:Property Key="Title" Value="Intranet Static Page " />
+            <pnp:Property Key="PublishingAssociatedContentType" Value=";#Static Page;#0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C01;#" />
+          </pnp:Properties>
+        </pnp:File>
+        <pnp:File Src=".\artefacts\page layouts\EventPageLayout.aspx" Folder="{masterpagecatalog}/{parameter:CompanyName}" Overwrite="true" Level="Published">
+          <pnp:Properties>
+            <pnp:Property Key="ContentTypeId" Value="0x01010007FF3E057FA8AB4AA42FCB67B453FFC100E214EEE741181F4E9F7ACC43278EE811" />
+            <pnp:Property Key="MasterPageDescription" Value="Page layout for an event page" />
+            <pnp:Property Key="Title" Value="Intranet Event Page " />
+            <pnp:Property Key="PublishingAssociatedContentType" Value=";#Event Page;#0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C03;#" />
+          </pnp:Properties>
+        </pnp:File>        
+        <pnp:File Src=".\artefacts\page layouts\SearchPageLayout.aspx" Folder="{masterpagecatalog}/{parameter:CompanyName}" Overwrite="true" Level="Published">
+          <pnp:Properties>
+            <pnp:Property Key="ContentTypeId" Value="0x01010007FF3E057FA8AB4AA42FCB67B453FFC100E214EEE741181F4E9F7ACC43278EE811" />
+            <pnp:Property Key="MasterPageDescription" Value="Search Page" />
+            <pnp:Property Key="Title" Value="Intranet Search Page" />
+            <pnp:Property Key="PublishingAssociatedContentType" Value=";#Welcome Page;#0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF390064DEA0F50FC8C147B0B6EA0636C4A7D4;#" />
+          </pnp:Properties>
+        </pnp:File>
+        <pnp:File Src=".\artefacts\page layouts\HomePageLayout.aspx" Folder="{masterpagecatalog}/{parameter:CompanyName}" Overwrite="true" Level="Published">
+          <pnp:Properties>
+            <pnp:Property Key="ContentTypeId" Value="0x01010007FF3E057FA8AB4AA42FCB67B453FFC100E214EEE741181F4E9F7ACC43278EE811" />
+            <pnp:Property Key="MasterPageDescription" Value="Home Page" />
+            <pnp:Property Key="Title" Value="Intranet Home Page (2 columns)" />
+            <pnp:Property Key="PublishingAssociatedContentType" Value=";#Welcome Page;#0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF390064DEA0F50FC8C147B0B6EA0636C4A7D4;#" />
+          </pnp:Properties>
+        </pnp:File>
+        <pnp:File Src=".\artefacts\page layouts\RootRedirectionLayout.aspx" Folder="{masterpagecatalog}/{parameter:CompanyName}" Overwrite="true" Level="Published">
+          <pnp:Properties>
+            <pnp:Property Key="ContentTypeId" Value="0x01010007FF3E057FA8AB4AA42FCB67B453FFC100E214EEE741181F4E9F7ACC43278EE811" />
+            <pnp:Property Key="MasterPageDescription" Value="Redirection Page" />
+            <pnp:Property Key="Title" Value="Language Root Redirection" />
+            <pnp:Property Key="PublishingAssociatedContentType" Value=";#Welcome Page;#0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF390064DEA0F50FC8C147B0B6EA0636C4A7D4;#" />
+          </pnp:Properties>
+        </pnp:File>                                              
+        <!-- End: Page Layouts -->
+        
+        <!-- Start: Display templates -->
+        <pnp:File Src=".\artefacts\display templates\content web parts\Item_Intranet-News.html" Folder="{masterpagecatalog}/display templates/Content Web Parts/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet News Item (List Item)" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
+              <pnp:Property Key="MasterPageDescription" Value="Displays news items in a list format." />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
+            </pnp:Properties>	
+        </pnp:File>
+        <pnp:File Src=".\artefacts\display templates\content web parts\Item_Intranet-News-Tile.html" Folder="{masterpagecatalog}/display templates/Content Web Parts/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet News Item (Tile)" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
+              <pnp:Property Key="MasterPageDescription" Value="Displays news items in a tile format." />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
+            </pnp:Properties>	
+        </pnp:File>        
+        <pnp:File Src=".\artefacts\display templates\content web parts\Item_Intranet-Event.html" Folder="{masterpagecatalog}/display templates/Content Web Parts/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet Event Item" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
+              <pnp:Property Key="MasterPageDescription" Value="Displays event item in a list format." />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
+            </pnp:Properties>	
+        </pnp:File>
+        <pnp:File Src=".\artefacts\display templates\content web parts\Item_Intranet-Document.html" Folder="{masterpagecatalog}/display templates/Content Web Parts/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet Document Item" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
+              <pnp:Property Key="MasterPageDescription" Value="Displays document items in a list format." />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
+            </pnp:Properties>	
+        </pnp:File>
+        <pnp:File Src=".\artefacts\display templates\content web parts\Item_Intranet-Notification.html" Folder="{masterpagecatalog}/display templates/Content Web Parts/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet Notification (List Item)" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
+              <pnp:Property Key="MasterPageDescription" Value="Displays notification item in a list format." />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
+            </pnp:Properties>	
+        </pnp:File>
+        <pnp:File Src=".\artefacts\display templates\content web parts\Control_Intranet_Notifications.html" Folder="{masterpagecatalog}/display templates/Content Web Parts/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet Notifications List (No Paging)" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106601" />
+              <pnp:Property Key="MasterPageDescription" Value="Displays notification items in a list format." />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
+            </pnp:Properties>	
+        </pnp:File>
+        <pnp:File Src=".\artefacts\display templates\content web parts\Control_Intranet-List_Paging.html" Folder="{masterpagecatalog}/display templates/Content Web Parts/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet List (With Paging)" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106601" />
+              <pnp:Property Key="MasterPageDescription" Value="Displays document items in a list format." />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
+            </pnp:Properties>	
+        </pnp:File>   
+        <pnp:File Src=".\artefacts\display templates\content web parts\Control_Intranet-List_NoPaging.html" Folder="{masterpagecatalog}/display templates/Content Web Parts/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet List (No Paging)" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106601" />
+              <pnp:Property Key="MasterPageDescription" Value="Displays document items in a list format." />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
+            </pnp:Properties>	
+        </pnp:File>   
+        <pnp:File Src=".\artefacts\display templates\content web parts\Control_Intranet_Tiles_List_2Columns.html" Folder="{masterpagecatalog}/display templates/Content Web Parts/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet Tiles List (2 Columns)" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106601" />
+              <pnp:Property Key="MasterPageDescription" Value="Displays document items in a tiles list format (2 columns)." />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
+            </pnp:Properties>	
+        </pnp:File>     
+        <pnp:File Src=".\artefacts\display templates\content web parts\Control_Intranet_Tiles_List_3Columns.html" Folder="{masterpagecatalog}/display templates/Content Web Parts/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet Tiles List (3 Columns)" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106601" />
+              <pnp:Property Key="MasterPageDescription" Value="Displays document items in a tiles list format (3 columns)." />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
+            </pnp:Properties>	
+        </pnp:File>     
+        <pnp:File Src=".\artefacts\display templates\filters\Filter_Intranet-Item_Vertical.html" Folder="{masterpagecatalog}/display templates/Filters/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet Refinement Vertical Filter" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106604" />
+              <pnp:Property Key="MasterPageDescription" Value="Intranet Refinement Filter (Vertical)" />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
+            </pnp:Properties>	
+        </pnp:File>
+        <pnp:File Src=".\artefacts\display templates\filters\Filter_Intranet_Item_Horizontal.html" Folder="{masterpagecatalog}/display templates/Filters/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet Refinement Horizontal Filter" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106604" />
+              <pnp:Property Key="MasterPageDescription" Value="Intranet Refinement Filter (Horizontal)" />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
+            </pnp:Properties>	
+        </pnp:File>        
+        <pnp:File Src=".\artefacts\display templates\filters\Filter_Intranet_DatePicker.html" Folder="{masterpagecatalog}/display templates/Filters/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet Refinement Date Picker Filter" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106604" />
+              <pnp:Property Key="MasterPageDescription" Value="Intranet Date Picker Filter (Horizontal)" />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Control" />
+            </pnp:Properties>	
+        </pnp:File>
+        <pnp:File Src=".\artefacts\display templates\filters\Control_Intranet-Refinement.html" Folder="{masterpagecatalog}/display templates/Filters/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet Refinement Control" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106601" />
+              <pnp:Property Key="MasterPageDescription" Value="Intranet Refinement Control" />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Control" />
+            </pnp:Properties>	
+        </pnp:File>
+        <pnp:File Src=".\artefacts\display templates\search\Control_Intranet-SearchResults.html" Folder="{masterpagecatalog}/display templates/Search/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet Search Results Control" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106601" />
+              <pnp:Property Key="MasterPageDescription" Value="Intranet Search Results Control" />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Control" />
+            </pnp:Properties>	
+        </pnp:File>
+        <pnp:File Src=".\artefacts\display templates\search\Control_Intranet-SearchResults_GridLayout.html" Folder="{masterpagecatalog}/display templates/Search/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet Search Results Control (Grid Layout)" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106601" />
+              <pnp:Property Key="MasterPageDescription" Value="Intranet Search Results Control (Grid Layout)" />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Control" />
+            </pnp:Properties>	
+        </pnp:File>        
+        <pnp:File Src=".\artefacts\display templates\search\Item_Intranet-News_Search.html" Folder="{masterpagecatalog}/display templates/Search/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet Search News Item" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
+              <pnp:Property Key="MasterPageDescription" Value="Intranet Search News Item" />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
+            </pnp:Properties>	
+        </pnp:File>
+        <pnp:File Src=".\artefacts\display templates\search\Item_Intranet-Event_Search.html" Folder="{masterpagecatalog}/display templates/Search/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet Search Event Item" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
+              <pnp:Property Key="MasterPageDescription" Value="Intranet Search Event Item" />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
+            </pnp:Properties>	
+        </pnp:File>        
+        <pnp:File Src=".\artefacts\display templates\search\Item_Intranet-Page_Search.html" Folder="{masterpagecatalog}/display templates/Search/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet Search Page Item" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
+              <pnp:Property Key="MasterPageDescription" Value="Intranet Search Page Item" />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
+            </pnp:Properties>	
+        </pnp:File>
+        <pnp:File Src=".\artefacts\display templates\search\Item_Intranet-People_Search.html" Folder="{masterpagecatalog}/display templates/Search/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet Search People Item (3 Columns" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
+              <pnp:Property Key="MasterPageDescription" Value="Intranet Search People Item (3 Columns" />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
+            </pnp:Properties>	
+        </pnp:File>               
+        <pnp:File Src=".\artefacts\display templates\search\Item_Intranet-Document_Search.html" Folder="{masterpagecatalog}/display templates/Search/{parameter:CompanyName}" Overwrite="true" Level="Published">	
+            <pnp:Properties>
+              <pnp:Property Key="Title" Value="Intranet Search Document Item" />
+              <pnp:Property Key="ContentTypeId" Value="0x0101002039C03B61C64EC4A04F5361F385106603" />
+              <pnp:Property Key="MasterPageDescription" Value="Displays a result tailored for documents. (MUI version)." />
+              <pnp:Property Key="TemplateHidden" Value="0" />
+              <pnp:Property Key="DisplayTemplateLevel" Value="Item" />
+            </pnp:Properties>	
+        </pnp:File>
+        <!-- End: display templates -->
+
+        <!-- Start: ASPX Pages -->
+        <pnp:File Src=".\artefacts\pages\RootRedirect.aspx" Folder="{site}/{parameter:PagesLibraryName}" Overwrite="true" Level="Published">
+          <pnp:Properties>
+            <pnp:Property Key="ContentTypeId" Value="{contenttypeid:Welcome Page}" />
+            <pnp:Property Key="Title" Value="Root Redirection" />
+            <pnp:Property Key="PublishingPageLayout" Value="{masterpagecatalog}/{parameter:CompanyName}/RootRedirectionLayout.aspx, Redirection Page" />
+            <pnp:Property Key="PublishingIsFurlPage" Value="False" />
+            <pnp:Property Key="RobotsNoIndex" Value="False" />
+          </pnp:Properties>
+        </pnp:File>
+
+      </pnp:Files>
+      <pnp:TermGroups>
+        <pnp:TermGroup Name="{sitecollectiontermgroupname}" Description="" SiteCollectionTermGroup="true">
+          <pnp:TermSets>
+            <pnp:TermSet Name="Categories" Description="">
+              <pnp:Terms>
+                <pnp:Term Name="Announcements" SourceTermId="b0f83a25-f6ac-4a0e-aba0-abf4f024e06f">
+                  <pnp:Labels>
+                    <pnp:Label Language="1036" Value="Annonces" IsDefaultForLanguage="true" />
+                  </pnp:Labels>
+                </pnp:Term>
+                <pnp:Term Name="Human Resources" SourceTermId="a42fbcff-ee1a-4172-a9ab-23fd12d2bdf6">
+                  <pnp:Labels>
+                    <pnp:Label Language="1036" Value="Ressources humaines" IsDefaultForLanguage="true" />
+                  </pnp:Labels>
+                </pnp:Term>
+                <pnp:Term Name="Press Release" SourceTermId="de3e57d2-45e8-4059-9d85-50a522f60680" />
+              </pnp:Terms>
+            </pnp:TermSet>
+            <pnp:TermSet Name="Content Types" Description="">
+              <pnp:Terms>
+                <pnp:Term Name="News" SourceTermId="12f2929b-ba2b-46ee-9a8f-821e89af0a2c">
+                  <pnp:Labels>
+                    <pnp:Label Language="1036" Value="Nouvelle" IsDefaultForLanguage="true" />
+                  </pnp:Labels>
+                  <pnp:LocalCustomProperties>
+                    <pnp:Property Key="_Sys_Nav_SimpleLinkUrl" Value="" />
+                  </pnp:LocalCustomProperties>
+                </pnp:Term>
+                <pnp:Term Name="Page" SourceTermId="d8caa83d-b602-4350-b637-39e65965da4c">
+                  <pnp:Labels>
+                    <pnp:Label Language="1036" Value="Page" IsDefaultForLanguage="true" />
+                  </pnp:Labels>
+                </pnp:Term>
+                <pnp:Term Name="Document" SourceTermId="6ca79f8f-574b-4c62-8c44-aa7085f3c18e">
+                  <pnp:Labels>
+                    <pnp:Label Language="1036" Value="Document" IsDefaultForLanguage="true" />
+                  </pnp:Labels>
+                </pnp:Term>
+                <pnp:Term Name="Event" SourceTermId="d85056da-dced-4abe-8f7f-0a9c1b5b71d9">
+                  <pnp:Labels>
+                    <pnp:Label Language="1036" Value="Événement" IsDefaultForLanguage="true" />
+                  </pnp:Labels>
+                </pnp:Term>
+              </pnp:Terms>
+            </pnp:TermSet>
+            <pnp:TermSet Name="Keywords" Description="" IsOpenForTermCreation="true" />
+          </pnp:TermSets>
+          <pnp:Contributors />
+          <pnp:Managers />
+        </pnp:TermGroup>
+      </pnp:TermGroups>
+
+    </pnp:ProvisioningTemplate>
+  </pnp:Templates>
+</pnp:Provisioning>

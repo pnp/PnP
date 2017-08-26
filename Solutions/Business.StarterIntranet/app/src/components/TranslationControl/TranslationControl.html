@@ -1,0 +1,55 @@
+<!-- ko if: shouldRender -->
+<div id="translation-control">
+
+    <span class="ms-fontSize-m" data-bind="text: translationComponentTitle"></span>
+
+    <div id="selection-area">
+        <label class="ms-Label" data-bind="text: selectLanguageMessage"></label>
+        <!-- ko foreach: availableLanguages -->
+            <input type="radio" data-bind="attr: { value: $data }, checked: $parent.selectedLanguage"/> 
+            <label>
+                <span class="ms-Label" data-bind="text: $data"></span>
+            </label>    
+        <!-- /ko -->
+    </div>
+
+    <div id="action-area">
+
+        <!-- ko if: wait -->
+        <div class="spinner" style="width: 100%;height: 100px">
+
+        </div>
+        <!-- /ko -->
+
+        <!-- ko ifnot: wait -->
+            <!-- ko if: (isTranslationExist() || isError()) -->
+                <div id="content" data-bind="css: messageStatusClass">
+                    <i class="fa" data-bind="css: messageStatusIcon"></i>
+                    <span data-bind="text: infoMessage"></span>
+                    <ul id="translation-list">
+                    <!-- ko foreach: existingTranslations -->
+                        <li>
+                            <i class="fa fa-file" aria-hidden="true"></i>
+                            <a data-bind="attr: { href: $data.FileRef }, text: $data.FileLeafRef" target="_blank"></a>
+                        </li>
+                    <!-- /ko -->
+                    </ul>
+                </div>
+            <!-- /ko -->
+
+            <!-- ko ifnot: (isTranslationExist() || isError())  -->
+
+                <input id="pagename" type="text" data-bind="textInput: inputDestinationFileName, disable: isTranslationExist"/>
+                <span class="label-translate" data-bind="text: selectPageNameMessage + '.aspx'"></span>
+                <div class="label-translate" data-bind="visible: !isFileNameValid(), text: invalidFilenameMessage"></div>
+                <div>
+                    <button class="btn-translate" data-bind="click: createPageTranslation, disable: !isFileNameValid()"> 
+                        <span><i class="fa fa-plus"></i></span>
+                        <span data-bind="text: buttonLabel"></span> 
+                    </button>
+                </div>
+            <!-- /ko -->
+        <!-- /ko -->
+    </div>
+</div>
+<!-- /ko -->

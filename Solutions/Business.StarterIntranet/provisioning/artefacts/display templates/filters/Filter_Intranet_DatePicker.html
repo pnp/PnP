@@ -1,0 +1,157 @@
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+<head>
+    <title>Intranet Refinement Date Picker Filter</title>
+    <!--[if gte mso 9]>
+    <xml>
+        <mso:CustomDocumentProperties>
+            <mso:CompatibleManagedProperties msdt:dt="string"></mso:CompatibleManagedProperties>
+            <mso:TemplateHidden msdt:dt="string">0</mso:TemplateHidden>
+            <mso:CompatibleSearchDataTypes msdt:dt="string">;#DateTime;#</mso:CompatibleSearchDataTypes>
+            <mso:MasterPageDescription msdt:dt="string">Intranet Date Picker Filter (Horizontal)</mso:MasterPageDescription>
+            <mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106604</mso:ContentTypeId>
+            <mso:TargetControlType msdt:dt="string">;#Refinement;#</mso:TargetControlType>
+            <mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+            <mso:CrawlerXSLFile msdt:dt="string"></mso:CrawlerXSLFile>
+            <mso:HtmlDesignPreviewUrl msdt:dt="string"></mso:HtmlDesignPreviewUrl>
+    </xml>
+    <![endif]--><mso:HtmlDesignConversionSucceeded msdt:dt="string">True</mso:HtmlDesignConversionSucceeded>
+<mso:HtmlDesignStatusAndPreview msdt:dt="string">http://spfarm-devlab.eastus2.cloudapp.azure.com/sites/premium1/_catalogs/masterpage/Display Templates/Filters/PnP/Filter_Intranet_DatePicker.html, Conversion successful.</mso:HtmlDesignStatusAndPreview>
+
+</head>
+<body>
+
+    <div id="RangeFilter">
+<!--#_    
+      
+		var encodedId = $htmlEncode(ctx.ClientControl.get_nextUniqueId());
+		var containerId = "TaxonomyFilter_" + encodedId;
+
+        var listData = ctx.ListData;
+        var hasControl = true;
+        // Check if the current Refinement Control exists
+        if ($isNull(ctx.RefinementControl) || $isNull(ctx.ClientControl)) hasControl = false;
+        
+        if (hasControl) {
+            // Check if listdata contains data
+            if(!$isNull(listData) && !$isEmptyArray(listData)) {
+            
+                // Element IDs
+                var controlID = ctx.RefinementControl.containerId + "_" + ctx.RefinementControl.propertyName;
+                var fromInput = controlID + "_from";
+                var toInput = controlID + "_to";
+                var refineLink = controlID + "_refine";
+                var clearLink = controlID + "_clear";
+                
+                // Show the refinement title
+                var isExpanded = Srch.Refinement.getExpanded(ctx.RefinementControl.propertyName);
+                var iconClass = (isExpanded == "true"? "ms-ref-uparrow" : "ms-ref-downarrow");
+                
+                var refinerCatTitle = Srch.Refinement.getRefinementTitle(ctx.RefinementControl);
+                // Display style > needed to hide the refinement list when collapsed
+                var displayStyle = (isExpanded == "true"? "" : "none");
+                
+                // Set input form values
+                var from = "";
+                var to = "";
+                var currentRefinementCategory = ctx.ClientControl.getCurrentRefinementCategory(ctx.RefinementControl.propertyName);
+                
+        		var hasAnyFiltertokens = (!Srch.U.n(currentRefinementCategory) && currentRefinementCategory.get_tokenCount() > 0);
+               
+                // Check if the current control refinement is in use
+                if(hasAnyFiltertokens ) {
+                    // Parse the current filter token to find the current range condition
+                    var matchResults = Srch.U.parseTypedRangeToken(currentRefinementCategory.t[0], null);
+                    // check for a range token match with corresponding min and max
+                    if (matchResults != null && matchResults.length > 2) {
+                        var from = matchResults[1] === "min" ? "" : matchResults[1];
+                        var to = matchResults[2] === "max" ? "" : matchResults[2];
+                    }
+                }
+_#-->
+					<div data-bind="stopBinding: true">
+						<div id="_#= containerId =#_">
+							<div class="item-display-template">
+
+								<div class="filter-horizontal">
+			
+				                    <div class="filter-col">
+										<div class="refiner-category">
+							      			<span data-bind="getResource: 'filterBy'"></span>
+							      			<span data-bind="getResource: '_#= refinerCatTitle =#_'"></span>
+						      			</div>
+					      			</div>
+								
+									<div class="filter-col">
+					                    <div class='refiner-value' style='display:_#= $htmlEncode(displayStyle) =#_'>
+					                        <span for='_#= fromInput =#_' data-bind="getResource: 'from'"></span>
+					                        <input type='text' id='_#= fromInput =#_' name='from' value='_#= from =#_' readonly="readonly"/>
+					                        <span for='_#= toInput =#_' data-bind="getResource: 'to'"></span>
+					                        <input type='text' id='_#= toInput =#_' name='to' value='_#= to =#_' readonly="readonly"/>
+			                       
+					                         
+					                    </div>
+					                    
+					                    <div class='refiner-value'>
+					                    <span><a href='javascript:{}' id="_#= refineLink =#_" data-bind="getResource: 'applyFilter'"></a></span>	
+					                    <div class='refiner-value' data-bind="visible: _#= hasAnyFiltertokens =#_, css: {'refiner-remove': _#= hasAnyFiltertokens =#_}">
+										<span data-bind="getResource: 'removeAllFilters'"></span>
+					                    <a id="_#= clearLink =#_" href='javascript:{}'>
+						           			<i class="fa fa-times-circle" aria-hidden="true"></i>
+						           		</a>   
+										</div>
+					                    
+					                    </div>					       
+				                    </div>
+		                    	</div>
+		                    </div>
+	                    </div>
+                    </div>
+<!--#_
+                AddPostRenderCallback(ctx, function() {
+                
+                    // Retrieve the two hyperlinks 
+                    var refineLinkElm = document.getElementById(refineLink);
+                    var clearLinkElm = document.getElementById(clearLink);
+                    
+                    // Create an onclick event for the refinement link
+                    refineLinkElm.onclick = function () {
+                    
+                        // Retrieve the two input fields
+                        var fromInputElm = document.getElementById(fromInput);
+                        var toInputElm = document.getElementById(toInput);
+                        
+                        // Check if the two input fields contains a value, otherwise nothing needs to be done
+                        if (fromInputElm.value.trim() !== "" || toInputElm.value.trim() !== "") {
+                        
+                            // Retrieve the input values
+                            var fromValue = fromInputElm.value.trim() === "" ? "min" : fromInputElm.value.trim();
+                            var toValue = toInputElm.value.trim() === "" ? "max" : toInputElm.value.trim();
+                            
+                            // Refinement value
+                            if (ctx.ListData[0].filterTokenType === "decimal") {
+                                fromValue = fromValue === "min" ? fromValue : 'decimal(' + fromValue + ')';
+                                toValue = toValue === "max" ? toValue : 'decimal(' + toValue + ')';
+                            }
+                            
+                            // Create the refinement JSON value string
+                            var refinement = '{"'+ ctx.RefinementControl.propertyName +'":["range('+fromValue+','+toValue+')"]}';
+                            $getClientControl(this).updateRefinersJSON(refinement);
+                        }
+                    };
+                    
+                    // Create a onclick event to remove the refinement
+                    clearLinkElm.onclick = function () {
+                    
+                        // NULL Refinement value to remove the refinement
+                        var refinement = '{"'+ ctx.RefinementControl.propertyName +'":null}';
+                        $getClientControl(this).updateRefinersJSON(refinement);
+                    };
+                    Intranet.Main.initDisplayTemplateViewModel(document.getElementById(containerId));   
+                    Intranet.Main.initFilterDatePicker(controlID, fromInput, toInput);
+                });
+            }
+        }
+_#-->
+    </div>
+</body>
+</html>

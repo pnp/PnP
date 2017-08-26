@@ -1,0 +1,110 @@
+@import '../../styles/css/variables';
+
+#searchbox {
+    
+    font-family: $font-primary;
+
+    .search {
+        padding:8px 15px;
+    }
+
+    #search-input {
+        
+        i.fa-search {
+            padding-right: 15px;
+            padding-left: 15px;
+            color: $headerlinks-color;
+        }  
+    }
+
+    #search-input, #search-categories {
+        box-shadow: none;             
+        background-color: $searchbox-background-color;
+        font-size: 16px;
+
+        input {
+            border-radius: 0px;
+            background-color: $searchbox-background-color;
+            font-size: inherit;
+            font-family: $font-primary;
+            border: none;
+            overflow: auto;
+            outline: none;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
+        }
+
+        input, textarea {
+
+            color : $headerlinks-color; 
+
+        }
+
+        input.error {
+            border-color: $error-color;
+            outline-color: transparent;
+        }
+    }
+
+    #search-categories, #bot-wechat-btn {
+        float:right;
+        position: relative; 
+        line-height: initial;
+
+        button {
+
+            border-radius: 0;
+            padding: 8px 0px;
+            min-width: 4em;
+            background-color: $searchbox-categories-bgcolor;
+            font-size: $navbar-font-size;
+
+            i {
+                color: white;
+            }
+
+            i.fa-caret-down {
+                margin-left: 5px;
+            }
+        }
+
+        button.error {
+            border-color: $error-color;
+            background-color: $error-color;
+        }
+
+        ul.dropdown-menu {
+
+            left: -100px;
+            margin: 0;
+            border: 0;
+            border-radius: 0;
+            font-size: $navbar-font-size;
+            font-family: $font-primary;
+            cursor: pointer;
+            width: 164px;
+            text-align: right;
+            background-color: $nabar-l2-background-color;
+
+            a {
+                color: $navbar-l2-link-color;
+            }
+
+            a:hover {
+                color: $navbar-l2-link-color-hover;
+                text-decoration: none;
+            }
+        }
+    }
+
+    #search-input {
+        line-height: 64px;
+    }
+
+    input, button {
+        vertical-align: top; // Inline element
+        height: 64px; // Same height as topnav bar
+        border: 0;  
+    }
+}

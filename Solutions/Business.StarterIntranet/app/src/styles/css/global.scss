@@ -1,0 +1,341 @@
+@import 'variables';
+@import 'sp-editingstyles';
+
+//-----------------------------
+//  Fonts
+//-----------------------------
+@font-face {
+    font-family: 'myriad-pro';
+    src: url(./fonts/MyriadPro-Regular.eot);
+    src: url(./fonts/MyriadPro-Regular.woff) format('woff'), 
+         url(./fonts/MyriadPro-Regular.ttf) format('truetype'), 
+         url(./fonts/MyriadPro-Regular.svg) format('svg')
+}
+
+#s4-bodyContainer {
+
+  height: 100%;
+  padding-bottom: 0;
+
+  .clear {
+    clear: both;
+  }
+}
+
+//-----------------------------
+//  Master page components
+//-----------------------------
+
+/* Start: Header  */
+header {
+  
+  #intranet-header {
+    background-image: url(./images/intranet-background.jpg);
+    background-repeat: no-repeat;
+    height: 145px;
+    position: relative;
+
+    .intranet-logo {
+        width: 100%;
+    }
+
+    #welcomeMenuBox, #DeltaSiteLogo, #header {
+        line-height: 145px; // For the vertical align. Only works with one line
+    }
+
+    #header, #welcomeMenuBox {
+      float: right;
+    }
+
+    #header {
+      margin-right: 15px;
+    }
+
+    /* SharePoint Login control styles */
+    #welcomeMenuBox {
+
+        height: 100%;
+        margin-right: -15px;
+        font-family: $font-primary;
+        font-size:$headerlinks-font-size;
+        border: none;
+        position: static;
+
+        .ms-welcome-root {
+          padding-right: 25px;
+          padding-left: 25px;
+          padding-bottom: 10px;
+          padding-top: 10px;
+          background-color: #000;
+          min-width: 120px;
+          text-align: center;
+          border: 0;
+          z-index: 1;
+        }
+
+        .ms-welcome-root>a.ms-core-menu-root, .ms-signInLink, .ms-welcome-hover>a.ms-core-menu-root, .ms-signInLink:hover {
+          color: $headerlinks-color!important;
+        }
+
+        .ms-core-menu-box {
+          background-color: #000!important;
+          border: none!important;
+          left:0px!important;
+          width:100%!important;
+
+          .ms-core-menu-link {
+            font-family: $font-primary!important;
+            font-size:$headerlinks-font-size!important;
+            
+            .ms-core-menu-title {
+              color: $headerlinks-color!important;
+            }
+          } 
+
+          .ms-core-menu-link:hover {
+            .ms-core-menu-title {
+              color: $navbar-l1-background-color!important;
+            }
+          }
+        }
+    }
+  }
+}
+/* End: Header  */
+
+/* Start: Top nav + Search box  */
+#intranet-topnav {
+  line-height: 64px;
+  height: 64px;
+}
+
+#topnav-border {
+  height: 8px;
+  background-color: #000;
+}
+
+/* Medium and large devices (Desktop) */
+@media (min-width: 768px) {
+
+  #intranet-topnav {
+    background-color: $navbar-l1-background-color;
+
+    #navbar {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    
+    #searchbox {
+      margin-right: -15px;
+    }
+  }
+}
+
+/* Small devices */
+@media (max-width: 767px) { 
+
+  #intranet-topnav {
+      background-color: $nabar-l2-background-color;
+  }
+}
+/* End: Top nav + Search box  */
+
+/* Start: Main Content */
+#intranet-content-area {
+  padding: 15px;
+}
+/* End: Main Content */
+
+/* Start: Footer  */
+#intranet-footer {
+  background-color: $footer-bgcolor;
+  padding: 15px;
+
+  #intranet-footerbar {
+    line-height: 74px /*(104px - 30px) */;
+  }
+
+  #intranet-sociallinks {
+    float: right;
+  }
+}
+
+#intranet-footer, .push {
+
+  /* .push must be the same height as #intranet-footer */
+  height: 104px;
+  /* Multicolumn Layout With Sticky Footer */
+  clear: both;
+}
+/* End: Footer  */
+
+/* Start: Tabs */
+#intranet-tabs {
+
+  font-family: $font-primary;
+  font-size: 14px;
+  
+  ul.nav-tabs {
+    border: none;
+    width: 100%;
+    margin-bottom: 15px;
+    
+    li {
+
+      width: 50%;
+      background-color: #0271bb;
+      
+      a, a:hover {
+        background-color: inherit;
+        border-radius: 2px;
+        color: #fff;
+        text-align: center;
+        border: none;
+      }
+    }
+
+    li.active {
+      background-color: #024078;
+    }
+  }
+}
+/* End: Tabs */
+
+/* Start: Breadcrumb */
+#intranet-breadcrumb {
+  font-size: 14px;
+  font-family: $font-primary;
+  line-height: 64px;
+  display: inline-block;
+  width: 100%;
+}
+
+/* Medium and large devices (Desktop) */
+@media (min-width: 768px) {
+
+  #intranet-breadcrumb {
+      border-bottom: 1px solid #D8D8D8;
+      margin-bottom: 25px;
+  }
+}
+/* End: Breadcrumb */
+
+/* Start: SharePoint Share + Follow controls */
+.promoted-actions {
+    
+    .ms-promotedActionButton {
+        margin-right: 25px;
+
+            .ms-promotedActionButton-text {
+              font-size: 16px;
+              font-family: $font-primary;
+              text-transform: none;
+              color: $primary-color;
+        }
+
+        .ms-promotedActionButton-icon {
+            margin-bottom: 3px;
+        }
+    }
+}  
+
+/* Medium and large devices (Desktop) */
+@media (min-width: 768px) {
+
+  .promoted-actions {
+      text-align: right;
+  }  
+
+}
+
+/* Small devices */
+@media (max-width: 767px) { 
+
+    .promoted-actions {
+      padding-bottom: 10px;
+      padding-top: 10px;
+      margin-right: 0px;
+      margin-bottom: 15px;
+      text-align: right;
+      border-bottom: solid 1px #979797;
+          
+        .ms-promotedActionButton {
+          margin-right: 10px;
+          font-weight: 600;   
+        }
+    }
+}
+/* End: SharePoint Share + Follow controls */
+
+/* Start: Global SharePoint styles */
+
+body #s4-workspace {
+  margin-bottom: -30px;
+}
+
+/* Small devices */
+@media (max-width: 767px) { 
+  #DeltaSuiteLinks {
+    display: none; /* Hide the suite link (Newsfeed, OneDrive , etc.) */
+  }
+}
+/* End: Global SharePoint styles */
+
+/* See http://www.eliostruyf.com/sticky-footer-solution-for-sharepoint-2013/ for sticky footer with SharePoint */
+.wrapper {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* The bottom margin is the negative value of the footer's height */
+  margin: 0 auto -104px;
+  overflow: visible !important;
+  min-height: 1000px;
+}
+
+.spinner {
+  background-image: url(./images/spinner.gif);
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.bg-info {
+    background-color: #f4f4f4;
+}
+
+.bg-success {
+    background-color: #dff6dd;
+}
+
+.bg-danger {
+    background-color: #fed9cc;
+}
+
+//-----------------------------
+//  jQuery UI styles 
+//-----------------------------
+  
+/* Start: Date Picker widget */
+#ui-datepicker-div {
+    font-family: $font-primary;
+    color: $primary-color;
+    font-size: 14px;
+
+    td a {
+      text-align: center;
+    }
+
+    .ui-state-highlight {
+        border: 1px solid $navbar-l1-link-color-hover;
+        background: $navbar-l1-link-color-hover;
+        color: #fff;
+    }
+
+    .ui-datepicker-month, .ui-datepicker-year {
+      width: 50%;
+    }
+
+    .ui-widget-header .ui-icon {
+      background-image: url("./images/ui-icons_444444_256x240.png")!important;
+    }
+}
+/* End: Date Picker widget */
