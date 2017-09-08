@@ -1,0 +1,15 @@
+$font-primary: 'Open Sans', sans-serif;
+$primary-color: #EA4300; // Main color for the intranet
+$text-color: #333333; // Used for links and text
+$error-color: #a80000;
+
+/* Nav bar colors */
+$navbar-l1-link-color: #ffffff; // Navbar links - Level 1
+$navbar-l1-link-color-hover: #ffffff;
+$navbar-l2-link-color: $text-color; // / Navbar links - Level 2 (Only applied in desktop mode)
+$navbar-l2-link-color-hover: #EA4300;
+$navbar-font-size: 13px;
+$navbar-hover-color: #ffffff;
+
+$page-icon-color: #EA4300; // Used in page info component for metadata display
+$contextual-selected-color: $primary-color;

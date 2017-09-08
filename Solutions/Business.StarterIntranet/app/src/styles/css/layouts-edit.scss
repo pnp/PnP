@@ -1,0 +1,40 @@
+@import 'variables';
+
+/* Important: these styles are only applied in edit mode ! */
+
+#DeltaPlaceHolderMain div[class^="col-"] { // Stack all WebPart zones to avoid headaches with Bootstrap layout in edit mode 
+    float: none;
+    width: 100%;
+}
+
+.page-layout {
+
+    margin-right: 20px; // Give some space to the WebPart editor panel
+
+    #contextualmenu, #breadcrumb, #DeltaSiteLogo {
+        display: none;
+    }
+
+    .field {
+        margin-bottom: 20px;
+        clear: both;
+    }
+
+    div.edit-panel {
+        
+        background-color: #f8f8f8;
+        padding: 10px;
+    }
+
+    #news-layout, #static-page-layout {
+
+        #publishing-start-date {
+            float: left;
+            margin-right: 20px;
+        }
+
+        #publishing-expiration-date {
+            display: inline-block;
+        }
+    }
+}

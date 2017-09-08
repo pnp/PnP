@@ -1,0 +1,39 @@
+<div id="breadcrumb">
+    <!-- ko if: isEmptyNodes -->
+        <div class="ms-MessageBar warning-msg">
+            <div class="ms-MessageBar-content">
+                <div class="ms-MessageBar-icon"><i class="ms-Icon ms-Icon--infoCircle"></i></div>
+                <div class="ms-MessageBar-text" data-bind="text: errorMessage">              
+                </div>
+            </div>
+        </div>
+    <!-- /ko -->
+    <!-- ko if: nodes().length > 0 -->
+        <ul class="nav">
+            <!-- ko foreach: nodes -->
+                <!-- ko if: hasParent -->
+                <li>
+                    <a href="#" class="chevron">
+                        <i class="ms-Icon ms-Icon--chevronRight"></i>
+                    </a>
+                </li>
+                <!-- /ko -->  
+                <!-- ko ifnot: hasParent -->       
+                <li data-bind="css : { 'is-selected' : isCurrentNode }">
+                    <a style="text-decoration: none;padding-left: 0px" data-bind="attr: {href: $parent.siteServerRelativeUrl }">
+                        <i class="ms-Icon ms-Icon--home"></i>
+                    </a>  
+                </li> 
+                <li>
+                    <a href="#" class="chevron">
+                        <i class="ms-Icon ms-Icon--chevronRight"></i>
+                    </a>
+                </li>
+                <!-- /ko -->
+                <li data-bind="css : { 'is-selected' : isCurrentNode }">  
+                    <a data-bind="text: title, attr: { href: url }"></a>
+                </li>
+            <!-- /ko -->
+        </ul>
+    <!-- /ko -->
+</div>

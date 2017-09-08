@@ -1,0 +1,53 @@
+@import 'variables';
+
+#searchbox {
+
+    padding-left: 20px;
+    
+    .search {
+        padding:8px 15px;
+    }
+
+    #search-input, #search-categories {
+        float: left;
+
+
+        input {
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+        }
+
+        input.error {
+            border-color: $error-color;
+            outline-color: transparent;
+        }
+    }
+
+    #search-categories {
+
+        button {
+
+            padding: 8px 0px;
+            min-width: 3em;
+            background-color: $primary-color;
+            border: 1px $primary-color solid;
+
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+
+            i {
+                color: white;
+            }
+        }
+
+        button.error {
+            border-color: $error-color;
+            background-color: $error-color;
+        }
+
+        ul {
+            font-size: $navbar-font-size;
+            cursor: pointer;
+        }
+    }
+}
