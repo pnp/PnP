@@ -1,0 +1,166 @@
+@import '../../styles/css/variables';
+
+#carousel {
+
+    font-family: $font-primary;
+    font-size: 14px;
+
+    /* Small devices */
+    @media (max-width: 768px) { 
+
+        height: 100%;
+
+        .carousel-nav  {
+            display: none;
+        }
+
+        .carousel {
+            margin-left: 0; 
+        }
+    }
+
+    /* Medium and large devices (Desktop) */
+    @media (min-width: 768px) {
+
+        height: 300px;
+
+        .carousel-nav {
+            
+            float: left;
+            width: 30%;
+            height: 100%;
+            display: table;
+            table-layout: fixed;
+
+            .carousel-nav-row {
+                width: 100%;
+                padding: 5px;
+                cursor: pointer;           
+                display: table-row;
+
+                .carousel-nav-cell {
+                    padding-left: 15px;
+                    padding-right: 15px;
+                    display: table-cell;
+                    position:relative; // Needed for arrow
+                    width: 100%;
+                    vertical-align: middle;
+
+                    a {
+                        color: $primary-color;
+                    }
+                }
+            }
+
+            .carousel-nav-row.is-nav-selected {
+                background-color: $primary-color;
+
+                .arrow-wrap {
+
+                    a {
+                        color: #fff;
+                    }
+      
+                    &:before,
+                    &:after {
+                        width: 10px;
+                        height: 50%;
+                        position: absolute;
+                        left: 100%;
+                        content: "";
+                        z-index: 1;
+                    }
+
+                    &:before {
+                        top: 0px;
+                        background: linear-gradient(to right top, $primary-color 50%, transparent 50%)
+                    }
+
+                    &:after {
+                        top: 50%;
+                        background: linear-gradient(to right bottom, $primary-color 50%, transparent 50%)
+                    }
+                }
+            }
+        }
+
+        div.carousel-nav > div.carousel-nav-row~div.carousel-nav-row {
+
+            .carousel-nav-cell {
+                border-top: 1px solid #F2EFEF;
+            }
+        }
+
+        .carousel {
+            margin-left: 30%;
+            height: 100%;
+            width: 70%;
+
+            .carousel-cell {
+                height: 100%;
+
+                img {
+                    height: 100%;
+                }
+            }
+        }
+    }
+
+    .carousel {
+        
+        .carousel-cell {
+
+            width: 100%;   
+            
+            .slide-panel {
+                width: 33%;
+                background-color: rgba(255,255,255,0.65);
+                height: 100%;
+                position: absolute;
+                top: 0;
+                right: 0;
+                padding: 10px;
+            }
+                        
+            img {
+                width: 100%;
+            }
+            
+            img.no-image {
+                opacity: 0.2;
+            }
+
+            div#slide-title {
+
+                text-align: center;
+
+                a {
+                    color: $navbar-l1-link-color;
+                }
+            }      
+
+            div#slide-read-more {
+                position: absolute;
+                left: 0;
+                bottom: 10%;
+                text-align: center;
+                width: 100%;
+
+                a, i {
+                    color: $primary-color;
+                }
+                
+                i {
+                    font-size: 11px;
+                }
+            } 
+
+            hr {
+                border: 0;
+                height: 0;
+                border-top: 1px solid rgba(0, 0, 0, 0.1);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            }     
+        }
+    }
+}

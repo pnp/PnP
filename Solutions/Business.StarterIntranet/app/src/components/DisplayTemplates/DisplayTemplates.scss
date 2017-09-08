@@ -1,0 +1,479 @@
+@import '../../styles/css/variables';
+
+.control-display-template {
+
+    margin-bottom: 15px;
+
+    .wepart-header {
+        display: inline-block;
+        width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+        font-size: 18px;
+        font-family: $font-primary;
+
+        #webpart-title {
+            float: left;
+            color: $text-color;
+        }
+
+        #webpart-link {
+            float: right;
+
+            a {
+                text-decoration: underline;
+                color: #0066B3;
+            }
+        }
+    }
+
+    /* Start: Content Search Web Part Styles */
+    ul.cbs-List {
+        
+        width: 100%;
+        margin: 0px;
+
+        // Paging control
+        .ms-promlink-headerNav {
+
+            padding-right: 15px;
+            margin: 0px;
+
+            a {
+                text-decoration: none;
+
+                .ms-promlink-button-disabled {
+                    color: #e1e1e1;
+                }
+
+                .ms-promlink-button-enabled {
+                    color: inherit;
+                }
+
+                .ms-promlink-button-enabled:hover, .ms-promlink-button-enabled.ms-promlink-button-disabled:hover {
+                    background-color: transparent;
+                    border-color: transparent;
+                }
+            }
+        }
+
+        li~li {
+            .event-item, .news-item {
+                border-top: 1px solid #F2EFEF;
+            }
+        }
+    }
+    /* End: Content Search Web Part Styles */
+
+    /* Start: Search Results Styles */ 
+    #Result {
+
+        margin-top: 0px;
+        font-family: $font-primary;
+
+        #ResultCount {
+          font-size: 30px;
+          
+          color: #000;
+        }
+        
+        .search-item {
+            margin-left: -15px;
+            margin-right: -15px;
+            padding: 15px;
+
+            strong.ms-srch-item-highlightedText {
+                color: $navbar-l2-link-color-hover;
+            }
+        }
+
+        .search-item:hover {
+            background-color: rgba( 205,230,247,0.5 );
+        }
+
+        #Paging {
+
+            text-align: right;
+
+            a {
+                padding: 1px 7px 4px 8px;
+            }
+        }
+    }
+
+    .search-no-result {
+        text-align: center;
+        font-size: 14px;
+    }
+
+    /* End: Search Results Styles */ 
+
+    #Refinement {
+        font-family: $font-primary;
+    }
+
+    /* Start: Notification list styles */
+    .notification-list {
+    
+        padding: 15px;
+        background-color: $navbar-l1-link-color-hover;
+        font-family: $font-primary;
+
+        #notification-list-title {
+            font-weight: bold;
+            font-size: 24px;
+            color: #fff;
+        }
+    }
+    /* End: Notification list styles */ 
+}
+
+.item-display-template {
+
+    font-family: $font-primary;
+    font-size: 14px;
+
+    /* Start: Common styles (both CSWP & Search Results) */
+    .item-title {
+        font-size: 16px;
+        font-weight: bold;
+        color: #0066B3;
+    }
+
+    .item-title, .item-link {  
+
+        a, i {
+            color: #0066B3;           
+        }
+
+        i {
+            font-size: 11px;
+        }
+    }
+
+    .item-image, .item-icon {
+        float:left;
+        margin-right: 10px;        
+    }
+
+    .item-image {
+        width: 100px;
+    }
+
+    .item-excerpt {
+        text-transform: initial;
+        min-height: 50px;
+        font-size: 14px;
+    }
+
+    .item-title, .item-excerpt {
+        line-height: 1.5;
+    }
+
+    .document-item, .news-item, .page-item, {
+        clear: both;
+    }
+
+    .alt {
+        border-bottom: 1px solid $text-color;
+    }   
+    /* End Common styles (both CSWP & Search Results) */
+
+    /* Start Refinement Item Filter Styles */
+    #RefinementName { // Used to display the spinner
+        min-width: 30px;
+        min-height: 20px;
+        display: inline-block;
+    }
+
+    .filter-horizontal {
+
+        #SelectedSection, #UnselectedSection {
+            vertical-align: middle;
+            display: inline-block;
+        }
+
+        .refiner-category {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .refiner-value {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .filter-col {
+            display: inline-block;
+            vertical-align: middle;
+
+            .refiner-category {
+                min-width: 150px;
+                max-width: 300px;
+            }
+        }
+    }
+
+    .filter-vertical {
+
+        .refiner-value {
+            display: block;
+        }
+
+        .refiner-category {
+            padding-right: 10px;
+            padding-left: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            margin: 5px;
+        }
+    }
+
+    .filter-horizontal, .filter-vertical {
+
+        .refiner-value {
+            padding-right: 10px;
+            padding-left: 10px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            margin: 5px;
+            min-height: 30px;
+
+            input {
+                height: 25px;
+                width: 100px;
+                margin: 5px;
+                text-align: center;
+            }
+        }
+
+        .refiner-count,  {
+            float: right;
+            margin-left: 5px;
+        }
+
+        .refiner-remove {
+            border-radius: 10px;
+            background-color: $primary-color;
+
+            span, i {
+                color: #fff;
+            }
+
+            i {
+                margin-left: 5px;
+                margin-right: 2px;
+                margin-top: 2px;
+                float: right;
+            }
+        }
+
+        .refiner-remove-reverse {
+            color: $primary-color;
+        }
+    }
+    
+    #RefinementCount {
+        color: $primary-color;
+    }
+
+    .ms-ref-refinername, .ms-ref-refinername:hover, .ms-ref-refinername:link {
+        font-size: inherit
+    }
+
+    .ms-ref-uparrow, .ms-ref-downarrow {
+        margin-top: auto;
+    }
+
+    /* Slide bar graph refinement colors */
+    .ajax__multi_slider_default .inner_rail_horizontal {
+        background-color:$primary-color;
+        border-top: 1px solid $primary-color;
+        border-bottom: 1px solid $primary-color;
+    }
+
+    .slider_tick_active {
+        background-color: $primary-color;
+        border: 1px solid $primary-color;
+    }
+
+    .histogram_bar_active {
+        border-top: 2px solid $primary-color;
+    }
+
+    .ms-ref-ctrl .ms-ref-selSec .ms-ref-filterSel, .ms-ref-ctrl .ms-ref-allSec .ms-ref-filterSel {
+        color: $primary-color;
+    }
+
+    #FilterLink.ms-ref-filterSel .ms-ref-name {
+        color: $navbar-l2-link-color-hover;
+    }       
+    /* End Refinement Filter Styles */
+    
+    /* Start: News Item styles (CSWP & Search Results) */
+    .news-item {
+
+        min-height: 130px;
+        padding: 15px;
+
+        img {
+            border-radius: 5px;
+        }
+
+        img.no-image {
+            background-image: url(./images/default_image.png);
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 100%;
+            height: 100px;
+        }
+
+        .tile {
+            min-height: 230px;
+            padding: 24px;
+            border-radius: 2px;
+            background-color: #ffffff;
+            box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
+
+            .item-date {
+                color: #878787;
+                font-size: 12px;
+                padding-bottom: 13px;
+            }
+
+            .item-link {
+                font-size: 14px;
+                position: absolute;
+                bottom: 24px;
+            } 
+        }
+    }
+    /* End: News Item styles */
+
+    /* Start: Document Item styles */
+    .document-item {
+        
+        .item-download, .item-library {
+            float: left;
+            margin-left: 10px;
+        }
+
+        .item-title {
+            float: left;
+        }
+
+        .item-excerpt {
+            clear: both;
+            min-height: 10px;
+        }
+    }
+    /* End: Document Item styles */
+
+    /* Start: Event Item styles (CSWP & Search Results) */
+    .event-item {
+
+        clear: both;
+        width: 100%;
+        display: inline-block;
+        padding: 15px;
+
+        p {
+            margin: 0;
+        }
+
+        .event-dates {
+
+            float: left;
+            display: block;
+            width: 63px;
+            min-height: 50px;
+            font-size: 28px;
+            font-weight: lighter;
+            line-height: 1.14;
+                
+            i.arrow {
+                text-align: center;
+                font-size: 10px;
+                display: block;
+                margin-top: 5px;
+                margin-bottom: 5px;
+            }
+        }
+        
+        .event-infos {
+            display: block;
+            margin-left: 80px;
+            font-size: 14px;
+
+            i {
+                float: left;
+                margin-right: 5px;
+            }
+
+            .event-time, .event-summary, .event-location, .event-ical {
+                padding-bottom: 3px;
+            }
+        }
+
+        .date-box {
+            
+            .month, .day {
+                display: block;
+                text-align: center;
+                font-style: normal;
+            }
+        }
+    }
+    /* End: Event Item styles */  
+
+    /* Start: Notification Item styles */
+    .notification-item  {
+
+        color: #000;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    
+        .item-date {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .item-title {
+            font-weight: normal;
+            font-size: 14px;
+            
+            a {
+                color: #000;
+            }
+        }
+    }
+    /* End: Notification Item styles */
+
+    /* Start: People Item styles */
+    .people-item {
+
+        .tile {
+            min-height: 300px;
+            margin: 10px;
+            
+            padding: 24px;
+            border-radius: 2px;
+            background-color: #ffffff;
+            box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
+
+            #UserPersona {
+                text-align: center;
+                min-height: 150px;
+
+                .user-persona {
+                    display: inline-block;
+                }
+            }
+
+            .user-property-title {
+                font-weight: lighter;  
+            }
+        }
+    }
+    /* End: People Item styles */ 
+}

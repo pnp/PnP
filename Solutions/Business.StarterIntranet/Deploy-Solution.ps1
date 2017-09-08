@@ -11,39 +11,37 @@ Param(
 	
 	[Parameter(Mandatory=$False)]
 	[switch]$Prod=$false,
+
+	[Parameter(Mandatory=$False)]
+	[switch]$JsOnly=$false,
 	
 	[Parameter(Mandatory=$False)]
 	[switch]$IncludeData=$false
 )
 
-# -----------------
-# Global parameters
-# -----------------
-
-# Include utility functions
- . "./utility/Utility.ps1"
-
 $0 = $myInvocation.MyCommand.Definition
 $CommandDirectory = [System.IO.Path]::GetDirectoryName($0)
 
+Push-Location $CommandDirectory
+
+# Include utility scripts
+ . "./utility/Utility.ps1"
+ . "./Configuration.ps1"
+
 # Configuration file paths
-$ProvisioningRootSiteTemplateFile = ($CommandDirectory  + ".\provisioning\RootSiteTemplate.xml")
-$SearchConfigurationFilePath = ($CommandDirectory  + ".\provisioning\SearchConfiguration.xml")
-$ImageRenditionsConfigurationFilePath = ($CommandDirectory + ".\provisioning\PublishingImageRenditions.xml")
+$ProvisioningRootSiteTemplateFile = Join-Path -Path $CommandDirectory -ChildPath "provisioning\RootSiteTemplate.xml"
+$SearchConfigurationFilePath = Join-Path -Path $CommandDirectory -ChildPath "provisioning\SearchConfiguration.xml"
+$ImageRenditionsConfigurationFilePath = Join-Path -Path $CommandDirectory -ChildPath "provisioning\PublishingImageRenditions.xml"
 
-$CustomProviderDllPath = ($CommandDirectory + ".\provisioning\Intranet.Providers\Intranet.Providers\bin\Debug\Intranet.Providers.dll")
-
-# This name will be used to create a separated folder in the style library and the master page catalog.
-# If you change this name, don't forget to update :
-# - Links in the master page (CSS and JS files)
-# - Web Parts XML contents on the provisioning template (display templates paths)
-# - Display templates files (relative paths to hover panel display template)
-$AppFolderName = "PnP"
+# The version on the PnP Starter Intranet (from package.json file)
+$PkgFile = Get-Content -Raw -Path (Join-Path -Path $CommandDirectory -ChildPath "app/package.json") | ConvertFrom-Json
+$PnPStarterIntranetCurrentVersion = $PkgFile.version
 
 # Connect to the site
 $PasswordAsSecure = ConvertTo-SecureString $Password -AsPlainText -Force
 $Credentials = New-Object System.Management.Automation.PSCredential ($UserName , $PasswordAsSecure)
 Connect-PnPOnline -Url $SiteUrl -Credentials $Credentials
+$RootSiteContext = Get-PnPContext
 
 # Determine the SharePoint version
 $ServerVersion = (Get-PnPContext).ServerLibraryVersion.Major
@@ -52,26 +50,54 @@ switch ($ServerVersion)
 { 
 	15 {$AssemblyVersion = "15.0.0.0"} 
 	16 {$AssemblyVersion = "16.0.0.0"} 
+    default {$AssemblyVersion = "16.0.0.0"}
+}
+
+Write-Header -AppVersion $PnPStarterIntranetCurrentVersion
+
+# Set the current version of the solution in the property bag for future use (upgrades for instance)
+Set-PnPPropertyBagValue -Key "PnPStarterIntranetVersion" -Value $PnPStarterIntranetCurrentVersion
+
+$Date = Get-Date
+Write-Section -Message "Installation started on $Date"
+Write-Message -Message "Target site: '$SiteUrl'`n" -ForegroundColor Green
+
+$ExecutionTime = [System.Diagnostics.Stopwatch]::StartNew()
+
+# -------------------------------------------------------------------------------------
+# Set the correct SharePoint assembly version in .aspx and .master files regarding the server version
+# -------------------------------------------------------------------------------------
+Get-ChildItem -Path ".\provisioning\artefacts" -Include "*.aspx","*.master" -Recurse | ForEach-Object {
+
+    (Get-Content -Path $_.FullName) -replace "1[5|6]\.0\.0\.0",$AssemblyVersion | Out-File -FilePath $_.FullName
 }
 
 # -------------------------------------------------------------------------------------
 # Upload files in the style library (folders are created automatically by the PnP cmdlet)
 # -------------------------------------------------------------------------------------
+if ($JsOnly.IsPresent) {
+    Write-Message -Message "Selected mode: JS files only" -ForegroundColor Cyan
+}
+
 Push-Location ".\app"
 
 if ($Prod.IsPresent) {
-		
-	Write-Host "1# Bundling the application (production mode)..." -ForegroundColor Magenta
-	
+
+    Write-Message -Message "Bundling the application (production mode)..." -NoNewline
+
 	# Bundle the project in production mode (the '2>$null' is to avoid PowerShell ISE errors)
-	webpack -p 2>$null
+	webpack -p 2>$null | Out-Null
+
+    Write-Message -Message "`tDone!" -ForegroundColor Green
 		
 } else {
 
-	Write-Host "1# Bundling the application (development mode)..." -ForegroundColor Magenta
+    Write-Message -Message "Bundling the application (development mode)..." -NoNewline
 	
 	# Bundle the project in dev mode
-	webpack 2>$null
+	webpack 2>$null | Out-Null
+
+    Write-Message -Message "`tDone!" -ForegroundColor Green
 }
 
 Pop-Location
@@ -79,7 +105,7 @@ Pop-Location
 # Get Webpack output folder and upload all files in the style library (eventually will be replaced by CDN in the future)
 $DistFolder = $CommandDirectory + "\app\dist"
 
-Write-Host "2# Uploading all files (non optimized)..." -ForegroundColor Magenta
+Write-Message -Message "Uploading all files in the style library..." -NoNewline
 
 Push-Location $DistFolder 
 
@@ -87,253 +113,118 @@ Get-ChildItem -Recurse $DistFolder -File | ForEach-Object {
 
     $TargetFolder = "Style Library\$AppFolderName\" + (Resolve-Path -relative $_.FullName) | Split-Path -Parent
 
-	Add-PnPFile -Path $_.FullName -Folder ($TargetFolder.Replace("\","/")).Replace("./","").Replace(".","") -Checkout
+	Add-PnPFile -Path $_.FullName -Folder ($TargetFolder.Replace("\","/")).Replace("./","").Replace(".","") -Checkout | Out-Null
 }
 
 Pop-Location
 
+Write-Message -Message "`tDone!" -ForegroundColor Green
+
+if ($JsOnly.IsPresent) {
+
+    $ExecutionTime.Stop()
+    $ElapsedMinutes = [System.Math]::Round($ExecutionTime.Elapsed.Minutes)
+    $ElapsedSeconds = [System.Math]::Round($ExecutionTime.Elapsed.Seconds)
+
+    Write-Section -Message "Deployment of JS files completed in $ElapsedMinutes minute(s) and $ElapsedSeconds second(s)"
+
+    # Close the connection to the server
+    Disconnect-PnPOnline
+
+    exit
+}
+
 # -------------------------------------------------------------------------------------
 # Apply root site template
 # -------------------------------------------------------------------------------------
-Write-Host "3# Apply the provisioning template to the root site..." -ForegroundColor Magenta
+Write-Message -Message "Configuring the root site..." -NoNewline
 
-# Create news folder in the "Pages" library
-Ensure-PnPFolder -SiteRelativePath "Pages/News" | Out-Null
+$PagesLibraryName = (Get-PnPList -Identity (Get-PnPPropertyBag -Key __PagesListId)).Title
 
-# Load the custom extensibility provider type in the current PS session
-Add-Type -Path $CustomProviderDllPath 
+if (!$PagesLibraryName) {
+    
+    Write-Error "Pages library not found, make sure the target is a publishing site"    
+    exit
+}
 
-# Apply the root site provisioning template and set column default values (without files)
-Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -ExcludeHandlers Files,WebSettings -Parameters @{ "CompanyName" = $AppFolderName; "AssemblyVersion" = $AssemblyVersion }
-
-# Enable Item Scheduling feature on the "Pages" library
-Enable-CustomItemScheduling -Web (Get-PnPWeb) -PagesLibraryName "Pages"
-
-# Apply the global template for the root site (to get the right pages auto tagging)
-Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -Handlers Files,WebSettings -Parameters @{ "CompanyName" = $AppFolderName; "AssemblyVersion" = $AssemblyVersion }
- 
-# Content Types order
-$ContentTypesOrderRoot = @(
-
-	[PSCustomObject]@{FolderName="Pages";ContentTypes=@("Home Page","Static Page","Search Page")},
-	[PSCustomObject]@{FolderName="Pages/News";ContentTypes=@("News Page")}
-)
-
-$ContentTypesOrderRoot | Foreach-Object { Set-FolderContentTypesOrder -FolderRelativePath $_.FolderName -ContentTypes $_.ContentTypes }
+# Apply the root site provisioning template
+Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -Parameters @{ "CompanyName" = $AppFolderName; "AssemblyVersion" = $AssemblyVersion; "PagesLibraryName" = $PagesLibraryName }
 
 # Set up the search configuration
-# Be careful, in SharePoint Online, we can't update an automatically created managed property to be sortable. We have to use Refinable<Type>XX predefined property.
-# For example, for the news list on the front page, we use the RefinableDate00 property for the publishing date. Use an alias instead of using the default name.
 Set-PnPSearchConfiguration -Path $SearchConfigurationFilePath -Scope Site
 
-Write-Host "4# Publishing artefacts..." -ForegroundColor Magenta
-
-# Publishing artefacts
-$Site = Get-PnPSite
-$SiteServerRelativeUrl = Get-PnPProperty -ClientObject $Site -Property ServerRelativeUrl
-
-$FilesToPublish = @(
-
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/portal.master"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/HomePageLayout.aspx"},
-    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/NewsPageLayout.aspx"},
-    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/SearchPageLayout.aspx"},
-    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/$AppFolderName/StaticPageLayout.aspx"}
-    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Content Web Parts/$AppFolderName/Item_Intranet-News.html"},
-    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Content Web Parts/$AppFolderName/Item_Intranet-Document.html"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Content Web Parts/$AppFolderName/Item_Intranet-Contact.html"},
-    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Content Web Parts/$AppFolderName/Control_Intranet-List.html"},	
-    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet-News_Search.html"},
-    [PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet-Page_Search.html"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Control_Intranet-SearchResults.html"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Filters/$AppFolderName/Filter_Intranet-Item.html"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Filters$AppFolderName/Filter_Intranet-SliderBarGraph.html"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Filters/$AppFolderName/Control_Intranet-Refinement.html"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet-Document_HoverPanel.html"},  
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet-Document_Search.html"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet_CommonHoverPanel_Actions.html"},  
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet_CommonHoverPanel_Body.html"},  
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet_CommonHoverPanel_Header.html"},  		
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/_catalogs/masterpage/display templates/Search/$AppFolderName/Item_Intranet_WebPage_HoverPanel.html"},  	
-    [PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/Home.aspx"},  
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/Search.aspx"},  
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/SearchDocuments.aspx"},
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/Accueil.aspx"},  
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/Recherche.aspx"},  
-	[PSCustomObject]@{Url="$SiteServerRelativeUrl/Pages/RechercheDocuments.aspx"}    	
-)
-
-$FilesToPublish | ForEach-Object {
-
-    Set-PnPFileCheckedOut -Url $_.Url
-    Set-PnPFileCheckedIn -Url $_.Url -CheckinType MajorCheckIn
-}
-
-# Approve all items 
-Get-PnPListItem -List Pages | ForEach-Object { 
-    $_["_ModerationStatus"] = 0
-    $_.Update()
-}
-
-Execute-PnPQuery
-
-# Reset the theme
-Set-PnPTheme
-
-# Set the theme
-$Web = Get-PnPWeb
-$bgImageUrl = Out-Null
-$fontScheme = Out-Null
-$Web.ApplyTheme("$SiteServerRelativeUrl/_catalogs/theme/15/intranet.spcolor", $fontScheme, $bgImageUrl, $true)
-
-Execute-PnPQuery
+Write-Message -Message "`tDone!" -ForegroundColor Green
 
 # -------------------------------------------------------------------------------------
-# 3) Taxonomy setup
+# Configure sub webs according languages
 # -------------------------------------------------------------------------------------
-Write-Host "5# Set up taxonomy..." -ForegroundColor Magenta
+$Script = ".\Setup-Web.ps1" 
+& $Script -RootSiteUrl $SiteUrl -UserName $UserName -Password $Password
 
-# Get the site collection term group name
-$CurrentSite = Get-PnPSite
-$Session = Get-PnPTaxonomySession
-$TermStore = $Session.GetDefaultSiteCollectionTermStore();
-$SiteCollectionTermGroup = $TermStore.GetSiteCollectionGroup($CurrentSite, $false)
-$IntranetTermGroupName = Get-PnPProperty -ClientObject $SiteCollectionTermGroup -Property Name 
-
-$SiteMapTermSetName_EN = "Site Map EN"
-$SiteMapTermSetName_FR = "Site Map FR"
-
-$HeaderLinksTermSetName_EN = "Header Links EN"
-$HeaderLinksTermSetName_FR = "Header Links FR"
-
-# Get navigation term sets for each language (FR & EN)
-$SiteMapTermSet_EN = Get-PnPTaxonomyItem -Term "$IntranetTermGroupName|$SiteMapTermSetName_EN"
-$SiteMapTermSetId_EN = $SiteMapTermSet_EN.Id
-
-$SiteMapTermSet_FR = Get-PnPTaxonomyItem -Term "$IntranetTermGroupName|$SiteMapTermSetName_FR"
-$SiteMapTermSetId_FR = $SiteMapTermSet_FR.Id
-
-# Duplicate the Site Map EN into Site Map FR to have a mirror structure (i.e pin terms with children)
-$SiteMapTermSetTerms_EN = Get-PnPProperty -ClientObject $SiteMapTermSet_EN -Property Terms
-
-$SiteMapTermSetTerms_EN | ForEach-Object {
-
-	$NavTerm = Get-PnPTaxonomyItem -Term ("$IntranetTermGroupName|$SiteMapTermSetName_FR|" + $_.Name)
-
-    if ($NavTerm -eq $null) {
-
-		$Reuse = $SiteMapTermSet_FR.ReuseTermWithPinning($_)
-
-		Execute-PnPQuery
-	}
-}
-
-# Do the same thing for header links term set
-$HeaderLinksTermSet_EN = Get-PnPTaxonomyItem -Term "$IntranetTermGroupName|$HeaderLinksTermSetName_EN"
-$HeaderLinksTermSetId_EN = $HeaderLinksTermSet_EN.Id
-
-$HeaderLinksTermSet_FR = Get-PnPTaxonomyItem -Term "$IntranetTermGroupName|$HeaderLinksTermSetName_FR"
-$HeaderLinksTermSetId_FR = $HeaderLinksTermSet_FR.Id
-
-$HeaderLinksTermSetTerms_EN = Get-PnPProperty -ClientObject $HeaderLinksTermSet_EN -Property Terms
-
-$HeaderLinksTermSetTerms_EN | ForEach-Object {
-
-	$NavTerm = Get-PnPTaxonomyItem -Term ("$IntranetTermGroupName|$HeaderLinksTermSetName_FR|" + $_.Name)
-
-    if ($NavTerm -eq $null) {
-
-		$Reuse = $HeaderLinksTermSet_FR.ReuseTermWithPinning($_)
-
-		Execute-PnPQuery
-	}
-}
-
-# -------------------------------------------------------------------------------------
-# Setup the configuration list
-# -------------------------------------------------------------------------------------
-Write-Host "6# Setup the configuration list..." -ForegroundColor Magenta
-
-$ConfigurationList = Get-PnPList -Identity "Configuration"
-
-$ConfigurationItems = @(
-
-	@{ "Title"="Default EN";"ForceCacheRefresh"=1;"SiteMapTermSetId"=$SiteMapTermSetId_EN;"HeaderLinksTermSetId"=$HeaderLinksTermSetId_EN;"IntranetContentLanguage"="EN" },
-	@{ "Title"="Default FR";"ForceCacheRefresh"=1;"SiteMapTermSetId"=$SiteMapTermSetId_FR;"HeaderLinksTermSetId"=$HeaderLinksTermSetId_FR;"IntranetContentLanguage"="FR" }
-)
-
-# Create the configuration item for each language
-$ConfigurationItems | ForEach-Object {
-
-    $Item = Add-PnPListItem -List $ConfigurationList -ContentType Item  -Values $_
-}
+# Switch back to the root site context
+Set-PnPContext -Context $RootSiteContext
 
 # -------------------------------------------------------------------------------------
 # Add image renditions
 # -------------------------------------------------------------------------------------
-Write-Host "7# Configure image renditions..." -ForegroundColor Magenta
+Write-Message -Message "Configuring image renditions..." -NoNewline
 
 # Thanks to http://www.eliostruyf.com/provision-image-renditions-to-your-sharepoint-2013-site/
-Add-PnPFile -Path $ImageRenditionsConfigurationFilePath -Folder "_catalogs\masterpage\" -Checkout
+$File = Add-PnPFile -Path $ImageRenditionsConfigurationFilePath -Folder "_catalogs\masterpage\" -Checkout
+
+Write-Message -Message "`tDone!" -ForegroundColor Green
 
 # -------------------------------------------------------------------------------------
 # Add sample data
 # -------------------------------------------------------------------------------------
 if ($IncludeData.IsPresent) {
 
+    Write-Message -Message "Adding sample data for the carousel..." -NoNewline
+
     $CarouselItemsList = Get-PnPList -Identity "Carousel Items"
 
-    $ConfigurationItemsEN = @(
+    $CarouselItemsEN = @(
 
-	    @{ "Title"="Part 1: Functional overview (How to use the solution?)";"CarouselItemURL"="http://thecollaborationcorner.com/2016/08/22/part-1-functional-overview-how-to-use-the-solution";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/08/part1.png";"IntranetContentLanguage"="EN" },
-	    @{ "Title"="Part 2: Frameworks and libraries used (How it is implemented?)";"CarouselItemURL"="http://thecollaborationcorner.com/2016/08/25/part-2-frameworks-and-libraries-used-how-it-is-implemented";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/08/part2.png";"IntranetContentLanguage"="EN" },
-        @{ "Title"="Part 3: Design and mobile implementation";"CarouselItemURL"="http://thecollaborationcorner.com/2016/08/29/part-3-design-and-mobile-implementation";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/08/part3.png";"IntranetContentLanguage"="EN" },
-        @{ "Title"="Part 4: The navigation implementation";"CarouselItemURL"="http://thecollaborationcorner.com/2016/08/31/part-4-the-navigation-implementation";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/08/part4.png";"IntranetContentLanguage"="EN" },    
-        @{ "Title"="Part 5: Localization";"CarouselItemURL"="http://thecollaborationcorner.com/2016/09/02/part-5-localization";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/09/part5.png";"IntranetContentLanguage"="EN" },  
-        @{ "Title"="Part 6: The search implementation";"CarouselItemURL"="http://thecollaborationcorner.com/2016/09/08/part-6-the-search-implementation";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/09/part6.png";"IntranetContentLanguage"="EN" }  
+	    @{ "Title"="PnP Starter Intranet official documentation";"CarouselItemURL"="https://transactions.sendowl.com/packages/48364/D024B326/view";"CarouselItemImage"="https://static.wixstatic.com/media/9b7fa1_d42f3bd96f5e40ed885a12eaca09513e~mv2_d_1920_1416_s_2.jpeg";"IntranetContentLanguage"="EN" },
+	    @{ "Title"="Sample element";"CarouselItemURL"="https://dev.office.com/";"CarouselItemImage"="http://via.placeholder.com/640x360";"IntranetContentLanguage"="EN" },
+        @{ "Title"="Sample element";"CarouselItemURL"="https://dev.office.com/";"CarouselItemImage"="http://via.placeholder.com/640x360";"IntranetContentLanguage"="EN" },
+	    @{ "Title"="Sample element";"CarouselItemURL"="https://dev.office.com/";"CarouselItemImage"="http://via.placeholder.com/640x360";"IntranetContentLanguage"="EN" }
     )
 
-    $ConfigurationItemsFR = @(
+    $CarouselItemsFR = @(
 
-	    @{ "Title"="Partie 1: Aperçu fonctionel (Comment utiliser cette solution?)";"CarouselItemURL"="http://thecollaborationcorner.com/2016/08/22/part-1-functional-overview-how-to-use-the-solution";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/08/part1.png";"IntranetContentLanguage"="FR" },
-	    @{ "Title"="Partie 2: Frameworks et librairies utilisées";"CarouselItemURL"="http://thecollaborationcorner.com/2016/08/25/part-2-frameworks-and-libraries-used-how-it-is-implemented";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/08/part2.png";"IntranetContentLanguage"="FR" },
-        @{ "Title"="Partie 3: Identité visuelle et implémentation mobile";"CarouselItemURL"="http://thecollaborationcorner.com/2016/08/29/part-3-design-and-mobile-implementation";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/08/part3.png";"IntranetContentLanguage"="FR" },
-        @{ "Title"="Partie 4: Implémentation de la navigation";"CarouselItemURL"="http://thecollaborationcorner.com/2016/08/31/part-4-the-navigation-implementation";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/08/part4.png";"IntranetContentLanguage"="FR" },    
-        @{ "Title"="Partie 5: Multilinguisme";"CarouselItemURL"="http://thecollaborationcorner.com/2016/09/02/part-5-localization";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/09/part5.png";"IntranetContentLanguage"="FR" },  
-        @{ "Title"="Partie 6: Implémentation de la recherche";"CarouselItemURL"="http://thecollaborationcorner.com/2016/09/08/part-6-the-search-implementation";"CarouselItemImage"="http://thecollaborationcorner.com/wp-content/uploads/2016/09/part6.png";"IntranetContentLanguage"="FR" }  
+	    @{ "Title"="Documentation officielle de la solution PnP Starter Intranet";"CarouselItemURL"="https://transactions.sendowl.com/packages/48367/D92CFE56/view";"CarouselItemImage"="https://static.wixstatic.com/media/9b7fa1_d42f3bd96f5e40ed885a12eaca09513e~mv2_d_1920_1416_s_2.jpeg";"IntranetContentLanguage"="FR" },
+	    @{ "Title"="Élement de démo";"CarouselItemURL"="https://dev.office.com/";"CarouselItemImage"="http://via.placeholder.com/640x360";"IntranetContentLanguage"="FR" },
+    	@{ "Title"="Élement de démo";"CarouselItemURL"="https://dev.office.com/";"CarouselItemImage"="http://via.placeholder.com/640x360";"IntranetContentLanguage"="FR" },
+	    @{ "Title"="Élement de démo";"CarouselItemURL"="https://dev.office.com/";"CarouselItemImage"="http://via.placeholder.com/640x360";"IntranetContentLanguage"="FR" }
     )
 
-    Write-Host "8# Add carousel data..." -ForegroundColor Magenta
+    $CarouselItemsEN | ForEach-Object {
 
-    # Create the configuration item for each language
-    $ConfigurationItemsEN | ForEach-Object {
-
-        $Item = Add-PnPListItem -List $CarouselItemsList -ContentType "Carousel Item" -Values $_
+		$Item = Add-PnPListItem -List $CarouselItemsList
+    	$Item = Set-PnPListItem -Identity  $Item.Id -List $CarouselItemsList -Values $_ -ContentType "Carousel Item"
     }
 
-    $ConfigurationItemsFR | ForEach-Object {
+    $CarouselItemsFR | ForEach-Object {
 
-        $Item = Add-PnPListItem -List $CarouselItemsList -ContentType "Carousel Item"  -Values $_
+		$Item = Add-PnPListItem -List $CarouselItemsList
+    	$Item = Set-PnPListItem -Identity  $Item.Id -List $CarouselItemsList -Values $_ -ContentType "Carousel Item"
     }
 
-    # Add promoted links
-    $PromotedLinksList = Get-PnPList -Identity "Links"
-    $PromotedLinks = @(
-
-	    @{ "Title"="Link 1";"LinkLocation"="http://dev.office.com/patterns-and-practices"},
-	    @{ "Title"="Link 2";"LinkLocation"="http://dev.office.com/patterns-and-practices"},
-	    @{ "Title"="Link 3";"LinkLocation"="http://dev.office.com/patterns-and-practices"}
-    )
-
-    $PromotedLinks | ForEach-Object {
-
-        $Item = Add-PnPListItem -List $PromotedLinksList -Values $_
-    }
+    Write-Message -Message "`tDone!" -ForegroundColor Green
 }
 
-Write-Host "Done!" -ForegroundColor Green
+$ExecutionTime.Stop()
+$ElapsedMinutes = [System.Math]::Round($ExecutionTime.Elapsed.Minutes)
+$ElapsedSeconds = [System.Math]::Round($ExecutionTime.Elapsed.Seconds)
+
+Write-Section -Message "Installation completed in $ElapsedMinutes minute(s) and $ElapsedSeconds second(s)"
+
+Pop-Location
 
 # Close the connection to the server
 Disconnect-PnPOnline
+
+
 
 

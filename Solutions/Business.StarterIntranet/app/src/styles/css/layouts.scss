@@ -3,57 +3,53 @@
 /* Important: these styles are only applied in display mode ! */
 .page-layout {
 
-    div.content {
-        margin-top: 10px;
+    .line {
+        display: inline-block;
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    #title {
+        font-size: 56px;
+        color: #000;
+        margin-bottom: 20px;
+        font-family: $font-primary;
+        font-weight: lighter;
+    }
+
+    /* Small devices */
+    @media (max-width: 767px) { 
 
         #title {
-            font-size: 20px;
+            font-size: 48px;
+            margin-bottom: 0;
             font-weight: bold;
-            margin-bottom: 20px;
         }
-
-        #page-content {
-            clear: both;
-
-            .ms-formfieldvaluecontainer{
-
-                border: 1px solid #ababab;
-            }
-        }      
     }
 
-    #DeltaSiteLogo {
-        text-align: center;
+    #news-categories {
+        height: 64px;
+        line-height: 64px;
     }
 
-    /* Start Home Page Layout styles */
-    #homepage-layout {
-        display: block;
-    }      
-    /* End Home Page Layout styles */
-
-    /* Start News Page Layout styles */
-    #news-layout {
-                
-        #page-image {
-            clear: both;
-            margin-top: 30px;
-            margin-bottom: 20px;
-        }     
+    #related-news {
+        border-top: 1px solid #D8D8D8;
     }
-    /* End News Page Layout styles */
 
-    /* Start Search Page Layout styles */
-    #search-layout {
+    /* Start: News Page Layout styles */
+    #page-image {
+        clear: both;
 
-        #Refinement {
-            padding-left: 15px;
+        img {
+            padding-top: 30px;
+            padding-bottom: 20px;
         }
+    }     
+    /* End: News Page Layout styles */
 
-        #Result {
-            min-height: 700px;
-        }    
-    }
-    /* End Search Page Layout styles */
-}     
-         
+    /* Start: Search Page Layout styles */
+    #Result {
+        min-height: 700px;
+    } 
+    /* End: Search Page Layout styles */   
+}

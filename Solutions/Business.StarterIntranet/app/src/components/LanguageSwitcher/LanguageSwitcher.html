@@ -1,0 +1,28 @@
+<!-- ko if: shouldRender -->
+<div id="language-switcher">
+
+    <!-- ko if: availableLanguages().length > 0 -->
+        <ul>
+        <!-- ko foreach: availableLanguages -->
+            <li>
+                <!-- ko if: isCurrentLanguage -->
+                    <i class="flag" data-bind="css: flagCssClass"></i>
+                    <span data-bind="text: displayName" class="is-selected"></span>
+                 <!-- /ko -->
+                 <!-- ko ifnot: isCurrentLanguage -->
+                    <i class="flag" data-bind="css: flagCssClass"></i>
+                    <!-- ko if: isValidTranslation -->
+                        <a data-bind="attr: { href:url }, text: displayName, click: $parent.setPreferredLanguage"></a>
+                    <!-- /ko -->
+                    <!-- ko ifnot: isValidTranslation -->
+                        <span data-bind="text: displayName, attr: { title: $parent.noTranslationMessage }"></span>    
+                        <i class="fa fa-exclamation-circle" aria-hidden="true" data-bind=", attr: { title: $parent.noTranslationMessage }"></i>   
+                    <!-- /ko -->
+                 <!-- /ko -->                 
+            </li>
+        <!-- /ko -->
+        </ul>
+    <!-- /ko -->
+
+</div>
+<!-- /ko -->

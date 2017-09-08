@@ -1,0 +1,21 @@
+<div id="ics-generator">
+
+    <!-- ko if: wait -->
+    <div class="spinner"></div>
+    <!-- /ko -->
+
+    <!-- ko ifnot: wait -->
+    
+        <!-- ko if: displayMode() === 1 -->
+            <button type="button" class="btn btn-primary btn-xs"  data-bind="click: generatorIcs, text: icsButtonLabel"></button>
+        <!-- /ko -->
+
+        <!-- ko if: displayMode() === 2 -->
+            <i class="fa fa-calendar-plus-o" aria-hidden="false"></i>  
+            <a class="download" data-bind="click: generatorIcs">                 
+                <p data-bind="text: icsButtonLabel"></p> 
+            </a>
+        <!-- /ko -->
+
+    <!-- /ko -->
+</div>
