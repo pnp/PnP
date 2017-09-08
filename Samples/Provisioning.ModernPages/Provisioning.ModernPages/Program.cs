@@ -73,8 +73,8 @@ namespace Provisioning.ModernPages
                 
                 //Demo 6: create a page with a flexible page layout
                 var page2 = cc.Web.AddClientSidePage("PageWithSections.aspx", true);
-                page2.AddZone(CanvasZoneTemplate.ThreeColumn, 5);
-                page2.AddZone(CanvasZoneTemplate.TwoColumn, 10);
+                page2.AddSection(CanvasSectionTemplate.ThreeColumn, 5);
+                page2.AddSection(CanvasSectionTemplate.TwoColumn, 10);
 
                 var componentsToAdd = page2.AvailableClientSideComponents();
                 var myHellowWorldWebPart = componentsToAdd.Where(s => s.Name == "HelloWorld").FirstOrDefault();
@@ -84,43 +84,43 @@ namespace Provisioning.ModernPages
                     {
                         Text = "Text control in first zone, left column"
                     };
-                    page2.AddControl(text, page2.Zones[0]);
+                    page2.AddControl(text, page2.Sections[0]);
 
                     ClientSideWebPart helloWp = new ClientSideWebPart(myHellowWorldWebPart) { Order = 10 };
                     helloWp.Properties["description"] = "Hello world from control 1!!";
                     helloWp.Properties["test3"] = false;
                     helloWp.Properties["test2"] = "1";
                     //description":"HelloWorld","test":"Multi-line text field","test1":true,"test2":"2","test3":true
-                    page2.AddControl(helloWp, page2.Zones[0].Sections[2]);
+                    page2.AddControl(helloWp, page2.Sections[0].Columns[2]);
 
                     ClientSideWebPart helloWp2 = new ClientSideWebPart(myHellowWorldWebPart) { Order = 10 };
                     helloWp2.Properties["description"] = "Hello world from control 2!!";
                     helloWp2.Properties["test3"] = true;
                     helloWp2.Properties["test2"] = "3";
                     //description":"HelloWorld","test":"Multi-line text field","test1":true,"test2":"2","test3":true
-                    page2.AddControl(helloWp2, page2.Zones[1]);
+                    page2.AddControl(helloWp2, page2.Sections[1]);
                 }
                 page2.Save();
 
                 // Demo 7: read created page and flip the order of the sections, move web parts around and turn off commenting
                 var page3 = cc.Web.LoadClientSidePage("PageWithSections.aspx");
                 // Move web part
-                page3.Zones[0].Sections[0].Controls[0].Move(page3.Zones[0].Sections[2], 20);
+                page3.Sections[0].Columns[0].Controls[0].Move(page3.Sections[0].Columns[2], 20);
                 // Move zones
-                page3.Zones[0].Order = 10;
-                page3.Zones[1].Order = 5;
+                page3.Sections[0].Order = 10;
+                page3.Sections[1].Order = 5;
                 ClientSideText text2 = new ClientSideText()
                 {
                     Text = "Text control in first zone, middle column"
                 };
-                page3.AddControl(text2, page3.Zones[0].Sections[1]);
+                page3.AddControl(text2, page3.Sections[0].Columns[1]);
                 page3.Save();
                 // Disable comments for this page
                 page3.DisableComments();
 
                 // Demo 8: create a news page
                 ClientSidePage page4 = new ClientSidePage(cc);
-                page4.AddZone(CanvasZoneTemplate.TwoColumn, 10);
+                page4.AddSection(CanvasSectionTemplate.TwoColumn, 10);
                 ClientSideText text4 = new ClientSideText()
                 {
                     Text = "Hello all, this is our first news page."
@@ -136,7 +136,7 @@ namespace Provisioning.ModernPages
                 imageWebPart4.Properties["imgWidth"] = 500;
                 imageWebPart4.Properties["imgHeight"] = 235;
                 //imageWebPart.PropertiesJson = "{\"imageSourceType\":2,\"altText\":\"\",\"fileName\":\"\",\"siteId\":\"c827cb03-d059-4956-83d0-cd60e02e3b41\",\"webId\":\"9fafd7c0-e8c3-4a3c-9e87-4232c481ca26\",\"listId\":\"78d1b1ac-7590-49e7-b812-55f37c018c4b\",\"uniqueId\":\"{3C27A419-66D0-4C36-BF24-BD6147719052}\",\"imgWidth\":1002,\"imgHeight\":469}";
-                page4.AddControl(imageWebPart4, page4.DefaultZone.Sections[1]);
+                page4.AddControl(imageWebPart4, page4.DefaultSection.Columns[1]);
                 page4.Save("newspage.aspx");
                 // promote as news
                 page4.PromoteAsNewsArticle();
@@ -144,10 +144,10 @@ namespace Provisioning.ModernPages
                 // Demo 9: give the site a new home page
                 var newHomePage = cc.Web.AddClientSidePage();
                 newHomePage.LayoutType = ClientSidePageLayoutType.Home;
-                newHomePage.AddZone(CanvasZoneTemplate.ThreeColumn, 10);
-                newHomePage.AddControl(new ClientSideText() { Text = "Having a custom home page" }, newHomePage.DefaultZone);
-                newHomePage.AddControl(new ClientSideText() { Text = "with multiple columns" }, newHomePage.DefaultZone.Sections[1]);
-                newHomePage.AddControl(new ClientSideText() { Text = "is possible :-)" }, newHomePage.DefaultZone.Sections[2]);
+                newHomePage.AddSection(CanvasSectionTemplate.ThreeColumn, 10);
+                newHomePage.AddControl(new ClientSideText() { Text = "Having a custom home page" }, newHomePage.DefaultSection);
+                newHomePage.AddControl(new ClientSideText() { Text = "with multiple columns" }, newHomePage.DefaultSection.Columns[1]);
+                newHomePage.AddControl(new ClientSideText() { Text = "is possible :-)" }, newHomePage.DefaultSection.Columns[2]);
                 newHomePage.Save("Home_2.aspx");
                 newHomePage.PromoteAsHomePage();
 
