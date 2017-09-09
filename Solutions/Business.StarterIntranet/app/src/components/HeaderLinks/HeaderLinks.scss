@@ -1,0 +1,58 @@
+@import '../../styles/css/variables';
+
+/* Header links */
+#header-links {
+    
+
+    min-height: 40px;
+    min-width: 150px;
+    text-decoration: none;
+    padding-right: 15px;
+    font-family: $headerlinks-fontfamily;
+    font-size: $headerlinks-font-size;
+    
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+    
+    ul li {
+        display: inline;
+        list-style-type: none;
+        color: $headerlinks-color;
+        margin-right: 5px;
+        margin-left: 5px;
+
+        i, a {
+            color: $headerlinks-color;
+        }
+    }
+    
+
+    /* Small devices */
+    @media (max-width: 767px) { 
+
+        ul li {
+            list-style-type: none;
+            color: $headerlinks-color;
+            margin: 0;
+            display: block;
+            line-height: initial;
+            padding-top: 5px;
+            padding-bottom: 5px;
+
+            i, a {
+                color: $headerlinks-color;
+            }
+
+            a {
+                padding-top: 10px;
+                padding-bottom: 10px;
+                line-height: 18px;
+                position: relative;
+                display: inline-block;
+            }
+        }
+    
+    }
+}

@@ -1,15 +1,33 @@
-$font-primary: 'Open Sans', sans-serif;
-$primary-color: #EA4300; // Main color for the intranet
-$text-color: #333333; // Used for links and text
+$font-primary: "myriad-pro";
+$primary-color: #0066B3; // Main color for the intranet
+$text-color: #4A4A4A; // Used for links and text
 $error-color: #a80000;
 
-/* Nav bar colors */
+/* Nav bar  */
 $navbar-l1-link-color: #ffffff; // Navbar links - Level 1
-$navbar-l1-link-color-hover: #ffffff;
-$navbar-l2-link-color: $text-color; // / Navbar links - Level 2 (Only applied in desktop mode)
-$navbar-l2-link-color-hover: #EA4300;
-$navbar-font-size: 13px;
-$navbar-hover-color: #ffffff;
+$navbar-l1-link-color-hover: #FCAF17;
+$navbar-l1-background-color: #000000;
 
-$page-icon-color: #EA4300; // Used in page info component for metadata display
-$contextual-selected-color: $primary-color;
+$navbar-l2-link-color: #ffffff; // / Navbar links - Level 2 (Only applied in desktop mode)
+$navbar-l2-link-color-hover: #FCAF17;
+$nabar-l2-background-color: #878787; 
+$navbar-font-size: 16px;
+
+/* Header links */
+$headerlinks-color: #ffffff;
+$headerlinks-font-size: 16px;
+$headerlinks-fontfamily: $font-primary;
+
+/* Footer */
+$footer-bgcolor: #4a4a4a;
+
+$footerlinks-color: $headerlinks-color;
+$footerlinks-font-size: 16px;
+$footerlinks-fontfamily: $font-primary;
+
+/* Search Box */
+$searchbox-background-color: #878787;
+$searchbox-categories-bgcolor: $navbar-l1-background-color;
+
+$page-icon-color: #0066B3; // Used in page info component for metadata display
+$contextual-selected-color: #0066B3;

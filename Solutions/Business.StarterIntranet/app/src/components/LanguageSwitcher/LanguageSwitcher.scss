@@ -1,0 +1,53 @@
+@import '../../styles/css/variables';
+
+#language-switcher {
+
+    font-size: $navbar-font-size;
+
+    ul {
+
+        padding: 0;
+        margin: 0;
+
+        li:not(:first-child):before {
+            content: "|";
+            margin-left: 2px;
+            margin-right: 2px;
+            color: $headerlinks-color;
+        }
+
+        li {
+            display: inline;
+            list-style: none;
+            list-style-type: none;
+            
+            .is-selected {
+                font-weight: bold;
+            }
+
+            a {
+                text-decoration: underline;
+                color: $headerlinks-color;
+            }
+
+            a:visited {
+                color: $headerlinks-color;
+            }
+        }
+    }
+
+    /* Small devices */
+    @media (max-width: 767px) { 
+    
+        padding-right: 15px;
+        line-height: initial;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        
+        .is-selected {
+            color: $navbar-l1-link-color-hover;
+        }
+    }
+}
+
+
