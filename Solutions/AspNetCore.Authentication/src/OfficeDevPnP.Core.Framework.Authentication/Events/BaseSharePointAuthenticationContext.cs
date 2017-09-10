@@ -4,19 +4,14 @@
     using Microsoft.AspNetCore.Http;
     using System;
 
-    public class BaseSharePointAuthenticationContext : BaseControlContext
+    public class BaseSharePointAuthenticationContext : RemoteAuthenticationContext<SharePointAuthenticationOptions>
     {
-        public BaseSharePointAuthenticationContext(HttpContext context, SharePointAuthenticationOptions options)
-            : base(context)
-        {
-            if (options == null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
-
-            Options = options;
-        }
-
-        public SharePointAuthenticationOptions Options { get; }
+        public BaseSharePointAuthenticationContext(HttpContext context, AuthenticationScheme scheme, SharePointAuthenticationOptions options, AuthenticationProperties properties)
+            : base(context, scheme, options, properties) { }
+        
+        /// <summary>
+        /// Gets or set the <see cref="Ticket"/> to return if this event signals it handled the event.
+        /// </summary>
+        public AuthenticationTicket Ticket { get; set; }
     }
 }

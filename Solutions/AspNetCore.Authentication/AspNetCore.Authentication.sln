@@ -5,8 +5,6 @@ VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A58128DC-FDCB-49E1-BF44-1D4AAEB147C2}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ECAF03F4-9B36-49F8-99FD-77137987B919}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OfficeDevPnP.Core.Framework.Authentication", "src\OfficeDevPnP.Core.Framework.Authentication\OfficeDevPnP.Core.Framework.Authentication.csproj", "{57A3EE4D-ED11-42A4-808F-DD30C097146A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCore.Mvc.StarterWeb", "src\AspNetCore.Mvc.StarterWeb\AspNetCore.Mvc.StarterWeb.csproj", "{81D023B2-DCD8-4887-9D48-FD47A87E00E4}"

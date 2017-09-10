@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -9,23 +6,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using OfficeDevPnP.Core.Framework.Authentication;
 using OfficeDevPnP.Core.Framework.Authentication.Events;
-using System.Text;
 
 namespace AspNetCore.Mvc.StarterWeb
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env)
+        public Startup(IConfiguration configuration)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
-                .AddEnvironmentVariables();
-            Configuration = builder.Build();
+            Configuration = configuration;
         }
 
-        public IConfigurationRoot Configuration { get; }
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -36,17 +27,37 @@ namespace AspNetCore.Mvc.StarterWeb
             //Add Session to the service collection
             services.AddSession();
 
-            services.AddAuthentication(sharedOptions =>
-                  sharedOptions.SignInScheme = SharePointAuthenticationDefaults.AuthenticationScheme);
+            services.AddAuthentication(options =>
+            {
+                options.DefaultChallengeScheme = SharePointAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultAuthenticateScheme = SharePointAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultSignOutScheme = SharePointAuthenticationDefaults.AuthenticationScheme;             
+            })
+            //OPTIONAL
+            ////.AddCookie(options =>
+            ////{
+            ////    options.Cookie.HttpOnly = false; //set to false so we can read it from JavaScript
+            ////    options.Cookie.Expiration = TimeSpan.FromDays(14);
+            ////})
+            .AddSharePoint(options =>
+            {
+                options.ClientId = Configuration["SharePointAuthentication:ClientId"];
+                options.ClientSecret = Configuration["SharePointAuthentication:ClientSecret"];
+                //OPTIONAL
+                ////options.CookieAuthenticationScheme = CookieAuthenticationDefaults.AuthenticationScheme;
 
+                //Handle events raised by the auth handler
+                options.Events = new SharePointAuthenticationEvents()
+                {
+                    OnAuthenticationSucceeded = succeededContext => Task.FromResult<object>(null),
+                    OnAuthenticationFailed = failedContext => Task.FromResult<object>(null)                    
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
-        {
-            //Added to enable SharePoint authentication
-            ConfigureSharePointAuthentication(app);
-
+        {            
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
@@ -59,6 +70,12 @@ namespace AspNetCore.Mvc.StarterWeb
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            // Required to store SP Cache Key session data
+            app.UseSession();
+
+            // Added to configure authentication. SharePoint authentication is enabled in ConfigureServices for .net core 2
+            app.UseAuthentication();
 
             app.UseStaticFiles();
 
@@ -76,41 +93,6 @@ namespace AspNetCore.Mvc.StarterWeb
             //required to store SP Cache Key session data
             //must also call AddSession in the IServiceCollection
             app.UseSession();
-
-            //OPTIONAL
-            //app.UseCookieAuthentication(
-            //    new CookieAuthenticationOptions()
-            //    {
-            //        AutomaticAuthenticate = false,
-            //        CookieHttpOnly = false, //set to false so we can read it from JavaScript
-            //        AutomaticChallenge = false,
-            //        AuthenticationScheme = "AspNet.ApplicationCookie",
-            //        ExpireTimeSpan = System.TimeSpan.FromDays(14),
-            //        LoginPath = "/account/login"
-            //    }
-            //);
-
-            //Add SharePoint authentication capabilities
-            app.UseSharePointAuthentication(
-                new SharePointAuthenticationOptions()
-                {
-                    ClientId = Configuration["SharePointAuthentication:ClientId"],
-                    ClientSecret = Configuration["SharePointAuthentication:ClientSecret"],
-
-                    AutomaticAuthenticate = true, //set to false if you prefer to manually call Authenticate on the handler.
-
-                    //OPTIONAL: CookieAuthenticationScheme = "AspNet.ApplicationCookie",
-
-                    //Handle events thrown by the auth handler
-                    SharePointAuthenticationEvents = new SharePointAuthenticationEvents()
-                    {
-                        OnAuthenticationSucceeded = succeededContext => {
-                            return Task.FromResult<object>(null); },
-                        OnAuthenticationFailed = failedContext => {
-                            return Task.FromResult<object>(null); }
-                    }
-                }
-            );
         }
     }
 }

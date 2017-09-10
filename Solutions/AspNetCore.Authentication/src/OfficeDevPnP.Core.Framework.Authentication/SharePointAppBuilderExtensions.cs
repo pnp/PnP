@@ -13,14 +13,10 @@
         /// </summary>
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
+        [Obsolete("UseSharePointAuthentication is obsolete. Configure SharePoint authentication with AddAuthentication().AddSharePoint in ConfigureServices. See https://go.microsoft.com/fwlink/?linkid=845470 for more details.", error: true)]
         public static IApplicationBuilder UseSharePointAuthentication(this IApplicationBuilder app)
         {
-            if (app == null)
-            {
-                throw new ArgumentNullException(nameof(app));
-            }
-
-            return app.UseMiddleware<SharePointAuthenticationMiddleware>();
+            throw new NotSupportedException("This method is no longer supported, see https://go.microsoft.com/fwlink/?linkid=845470");
         }
 
         /// <summary>
@@ -32,12 +28,10 @@
         /// <param name="app">The <see cref="IApplicationBuilder"/> to add the middleware to.</param>
         /// <param name="options">A  <see cref="SharePointAuthenticationOptions"/> that specifies options for the middleware.</param>
         /// <returns>A reference to this instance after the operation has completed.</returns>
+        [Obsolete("UseSharePointAuthentication is obsolete. Configure SharePoint authentication with AddAuthentication().AddSharePoint in ConfigureServices. See https://go.microsoft.com/fwlink/?linkid=845470 for more details.", error: true)]
         public static IApplicationBuilder UseSharePointAuthentication(this IApplicationBuilder app, SharePointAuthenticationOptions options)
         {
-            if (app == null) { throw new ArgumentNullException(nameof(app)); }
-            if (options == null) { throw new ArgumentNullException(nameof(options)); }
-
-            return app.UseMiddleware<SharePointAuthenticationMiddleware>(options);
+            throw new NotSupportedException("This method is no longer supported, see https://go.microsoft.com/fwlink/?linkid=845470");
         }
     }
 }
