@@ -1,0 +1,201 @@
+@import '../../styles/css/variables';
+
+#navbar {
+
+  font-size: $navbar-font-size;
+  min-height: 60px; // To display the spinner
+  font-family: $font-primary;
+  font-weight: normal;
+  width: 100%;
+
+  .yamm-content {
+    font-size: $navbar-font-size;
+  }
+
+  /* To avoid double padding application due to the BT bootstrap CSS */
+  .yamm .container { 
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  /* Small devices */
+  @media (max-width: 767px) { 
+
+    .navbar {
+
+      border: 0;
+    
+      ul.nav {
+        margin-left: 0;
+      }
+
+      .navbar-collapse {
+        padding-left: 0;
+        padding-right: 0;
+        width: 300px;
+        min-height: 700px;
+        margin-right: -15px;
+        float: right;
+        background-color: $navbar-l1-background-color;
+        text-align: right;
+        border: 0;
+
+        ul.dropdown-menu {
+          text-align: right;
+          padding-top: 0px;
+        }
+      }
+
+      .yamm-content {
+
+        a {
+            color: $navbar-l1-link-color;
+        }
+      }
+
+      button.navbar-toggle {
+        border: 0;
+        font-size: inherit;
+        line-height: inherit;
+        padding: 0;
+        margin: 0;
+        background-color: inherit;
+        min-width: 2em;
+
+        i {
+          color: $navbar-l1-link-color;
+        }
+
+        :active:hover {
+          background-color: inherit;
+        } 
+      }
+
+      .searchbar {
+        float: right;
+      }
+
+      .mobile-intranetlogo {
+        width: 100px;
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      #utility-navigation {
+          background-color: $nabar-l2-background-color;
+          
+          #utility-collapse {
+            padding-right: 15px;
+            color: $navbar-l1-link-color;
+            list-style: none;
+            border-bottom: 1px solid #979797;
+          }
+      }
+    }
+
+  }
+
+
+  /* Medium and large devices (Desktop) */
+  @media (min-width: 768px) {
+
+    .navbar {
+
+      margin-bottom: 0;
+      border: 0;
+
+      .navbar-collapse {
+        padding: 0;
+      }
+
+      ul.nav {
+
+        width: 100%;
+
+        a {
+            color: $navbar-l1-link-color;
+        }
+
+        a:hover {
+            color: $navbar-l1-link-color-hover;
+        }
+        
+        ul.dropdown-menu {
+            left: 0px;
+            width: 100%;
+            border: 0;
+            background-color: $nabar-l2-background-color;
+            margin-left: -15px;
+        }
+
+        .yamm-content {
+
+            a {
+                color: $navbar-l2-link-color;
+            }
+
+            a:hover {
+                color: $navbar-l2-link-color-hover;
+                text-decoration: none;
+            }
+        }
+
+        li.right {
+          float:right;
+        }
+      }
+    }
+  }
+
+  /* Applied all the time */
+
+  .nav {
+
+    min-width: 285px; // 300px (width of the menu) -15px (margin-right). We set this value to have a nice transition effect
+    padding-right: 15px;
+
+    li.level1, li.level2, li.level3 {
+        line-height: initial;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .yamm-content {
+
+      .level2 {
+        font-weight: 600;
+        font-size: 16px;
+      }
+
+      .level3 {
+        font-size: 14px;
+      }
+    }
+
+    li > {
+
+      a {
+        color: $navbar-l1-link-color;
+      }
+      
+      a:hover {
+        color: $navbar-l1-link-color-hover;
+        background-color: inherit;
+        background-color: transparent;
+      }
+
+      a:focus {
+        background-color: transparent;
+      }
+    }
+  }
+  
+  .nav .open > {
+
+    a, a:hover,a:focus {
+      background-color: inherit;
+      color: $navbar-l1-link-color-hover;
+    }
+
+  }
+}

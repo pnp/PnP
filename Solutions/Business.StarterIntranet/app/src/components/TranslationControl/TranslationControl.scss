@@ -1,0 +1,47 @@
+@import '../../styles/css/variables';
+
+#translation-control {
+
+    border: 1px solid #ababab;
+    padding: 10px;
+
+    label {       
+        margin-bottom: 0 ;
+    }
+
+    #action-area {
+
+        margin-top: 15px;
+
+        #content {
+            padding: 10px;
+
+            i {
+                margin-right: 5px;
+            }
+        }
+
+        span {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .label-translate {
+            font-style: italic;
+        }
+
+        button.btn-translate {   
+            margin-top: 15px;
+        }
+    }
+
+    #pagename {
+        margin-right: 10px;
+    }
+
+    #translation-list {
+        list-style: none;
+        padding: 0;
+        margin-top: 10px;
+    }
+}

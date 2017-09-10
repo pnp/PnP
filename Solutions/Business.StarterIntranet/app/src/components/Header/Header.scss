@@ -1,0 +1,14 @@
+@import '../../styles/css/variables';
+
+#header  {
+
+    font-family: $font-primary;
+    text-decoration: none;
+    color: $headerlinks-color;
+
+    #language-switcher, #header-links {
+
+        display: inline-block;
+        vertical-align: middle;
+    }
+}

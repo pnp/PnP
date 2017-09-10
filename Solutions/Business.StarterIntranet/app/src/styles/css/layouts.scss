@@ -6,28 +6,50 @@
     .line {
         display: inline-block;
         width: 100%;
+        margin-bottom: 15px;
     }
 
     #title {
-        font-size: 20px;
+        font-size: 56px;
+        color: #000;
         margin-bottom: 20px;
         font-family: $font-primary;
+        font-weight: lighter;
     }
 
-    /* Start News Page Layout styles */
+    /* Small devices */
+    @media (max-width: 767px) { 
+
+        #title {
+            font-size: 48px;
+            margin-bottom: 0;
+            font-weight: bold;
+        }
+    }
+
+    #news-categories {
+        height: 64px;
+        line-height: 64px;
+    }
+
+    #related-news {
+        border-top: 1px solid #D8D8D8;
+    }
+
+    /* Start: News Page Layout styles */
     #page-image {
         clear: both;
-        margin-top: 30px;
-        margin-bottom: 20px;
+
+        img {
+            padding-top: 30px;
+            padding-bottom: 20px;
+        }
     }     
-    /* End News Page Layout styles */
+    /* End: News Page Layout styles */
 
-    /* Start Search Page Layout styles */
-    #Refinement {
-        padding-left: 15px;
-    }
-
+    /* Start: Search Page Layout styles */
     #Result {
         min-height: 700px;
-    }    
+    } 
+    /* End: Search Page Layout styles */   
 }

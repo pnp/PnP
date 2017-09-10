@@ -1,0 +1,649 @@
+#suiteBar,
+#suiteBar *,
+#suiteBar *:before,
+#suiteBar *:after,
+#s4-ribbonrow,
+#s4-ribbonrow *,
+#s4-ribbonrow *:before,
+#s4-ribbonrow *:after,
+.ms-dlgContent,
+.ms-dlgContent *,
+.ms-dlgContent *:before,
+.ms-dlgContent *:after,
+.js-callout-mainElement,
+.js-callout-mainElement *,
+.js-callout-mainElement *:before,
+.js-callout-mainElement *:after,
+#AsynchronousViewDefault_CalendarView,
+#AsynchronousViewDefault_CalendarView *,
+#AsynchronousViewDefault_CalendarView *:before,
+#AsynchronousViewDefault_CalendarView *:after,
+.ms-srch-siteSearchResults,
+.ms-srch-siteSearchResults *,
+.ms-srch-siteSearchResults *:before,
+.ms-srch-siteSearchResults *:after,
+.js-callout-closeButton,
+*[class*='ms-'],
+*[id*='ms-'],
+*[class*='jsgrid-'],
+*[id*='jsgrid-'] {
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box
+}
+
+.ms-input {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.ms-fullWidth {
+  box-sizing: border-box !important;
+  -moz-box-sizing: border-box !important;
+  -webkit-box-sizing: border-box !important;
+}
+
+.ms-WPBody .img-responsive, .ms-wpContentDivSpace .img-responsive, .ms-WPBorderBorderOnly .img-responsive, img[id^="MSOImageWebPart_"] {
+  width: 100%;
+}
+
+div[id*='ListViewWebPartJSGrid'] * {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='ListViewWebPartJSGrid'] *:before, div[id*='ListViewWebPartJSGrid'] *:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='ListViewWebPartJSGrid_rightpane'] * {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='ListViewWebPartJSGrid_rightpane'] *:before, div[id*='ListViewWebPartJSGrid_rightpane'] *:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='ProjectCenterJSGridControl'] * {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='ProjectCenterJSGridControl'] *:before, div[id*='ProjectCenterJSGridControl'] *:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='ProjectDrillDownJSGridControl'] * {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='ProjectDrillDownJSGridControl'] *:before, div[id*='ProjectDrillDownJSGridControl'] *:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='idWorkflowStatusGrid'] * {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='idWorkflowStatusGrid'] *:before, div[id*='idWorkflowStatusGrid'] *:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='idStageGrid_leftpane'] * {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='idStageGrid_leftpane'] *:before, div[id*='idStageGrid_leftpane'] *:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='ProjectCenterJSGridControl_leftpane'] * {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='ProjectCenterJSGridControl_leftpane'] *:before, div[id*='ProjectCenterJSGridControl_leftpane'] *:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='ProjectCenterJSGridControl_rightpane'] * {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='ProjectCenterJSGridControl_rightpane'] *:before, div[id*='ProjectCenterJSGridControl_rightpane'] *:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='MyTasksJSGridControl_leftpane'] * {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='MyTasksJSGridControl_leftpane'] *:before, div[id*='MyTasksJSGridControl_leftpane'] *:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='MyTasksJSGridControl_rightpane'] * {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='MyTasksJSGridControl_rightpane'] *:before, div[id*='MyTasksJSGridControl_rightpane'] *:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='MyTasksJSGridControl'] * {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='MyTasksJSGridControl'] *:before, div[id*='MyTasksJSGridControl'] *:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='TeamTasksJSGridControl_leftpane'] * {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='TeamTasksJSGridControl_leftpane'] *:before, div[id*='TeamTasksJSGridControl_leftpane'] *:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='TimesheetPartJSGridControl_leftpane'] * {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='TimesheetPartJSGridControl_leftpane'] *:before, div[id*='TimesheetPartJSGridControl_leftpane'] *:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='TimesheetPartJSGridControl_rightpane'] * {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='TimesheetPartJSGridControl_rightpane'] *:before, div[id*='TimesheetPartJSGridControl_rightpane'] *:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='TimesheetPartJSGridControl'] * {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+div[id*='TimesheetPartJSGridControl'] *:before, div[id*='TimesheetPartJSGridControl'] *:after {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+.navbar-collapse {
+  max-height: 100% !important;
+  overflow: visible !important;
+}
+
+.navbar-brand {
+  font-size: inherit;
+  height: auto;
+  line-height: inherit;
+  padding: 0;
+}
+
+.carousel-inner > .item {
+  padding: 0;
+}
+
+.row [class*="col-"] {
+  min-height: 0;
+}
+.row [class*="col-"]:empty {
+  display: none !important;
+  height: 0;
+  line-height: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 0;
+}
+
+body #aspnetForm {
+  margin: 0;
+}
+
+#s4-workspace {
+  overflow: auto;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+}
+
+#s4-bodyContainer > .ms-table {
+  display: block;
+  height: 100%;
+}
+
+#DeltaPlaceHolderMain:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+#DeltaSiteLogo {
+  display: inline-block;
+}
+
+h1.ms-core-pageTitle {
+  display: inline-block;
+  font-size: 30px;
+  vertical-align: top;
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+input[type=radio], input[type=checkbox] {
+  margin: 0 10px 0 0;
+}
+
+img[src*="blank.gif"] {
+  height: 7px !important;
+  width: 1px !important;
+}
+
+.ms-core-listMenu-horizontalBox > .ms-core-listMenu-root > li.static > .ms-core-listMenuEdit .ms-navedit-deletelinkContainer {
+  margin-top: -20px;
+  position: absolute;
+}
+
+.ms-dlgFrame {
+  min-height: 150px;
+}
+
+.ms-dialog .s4-notdlg {
+  background: #fff none !important;
+  border: none !important;
+  box-shadow: none !important;
+  display: block !important;
+  float: none !important;
+  font-size: 0 !important;
+  height: 0 !important;
+  list-style-type: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  position: static !important;
+  text-shadow: none !important;
+  width: 0 !important;
+}
+.ms-dialog #s4-workspace {
+  font-size: 12px;
+}
+.ms-dialog #s4-bodyContainer {
+  position: relative;
+}
+.ms-dialog .s4-notdlg {
+  height: auto !important;
+  width: auto !important;
+}
+.ms-dialog .span1, .ms-dialog .span2, .ms-dialog .span3, .ms-dialog .span4, .ms-dialog .span5, .ms-dialog .span6, .ms-dialog .span7, .ms-dialog .span8, .ms-dialog .span9, .ms-dialog .span10, .ms-dialog .span11 {
+  display: block;
+  float: none;
+  margin: 0;
+  padding: 0;
+}
+.ms-dialog body #s4-bodyContainer {
+  width: auto !important;
+}
+.ms-dialog .container {
+  margin: 0;
+  padding: 0;
+}
+
+.ms-formtable input[type=text], .ms-formtable input[type=password], .ms-formtable input[type=datetime], .ms-formtable input[type=datetime-local], .ms-formtable input[type=date], .ms-formtable input[type=month], .ms-formtable input[type=time], .ms-formtable input[type=week], .ms-formtable input[type=number], .ms-formtable input[type=email], .ms-formtable input[type=url], .ms-formtable input[type=search], .ms-formtable input[type=tel], .ms-formtable input[type=color] {
+  padding: 2px;
+}
+.ms-formtable select, .ms-formtable textarea, .ms-formtable .form-control {
+  padding: 2px;
+}
+.ms-formtable h3.ms-standardheader {
+  color: inherit !important;
+  font-family: inherit !important;
+  font-size: 1em !important;
+  font-weight: normal !important;
+}
+
+@media (max-width: 767px) {
+  .ms-formtable .ms-formlabel {
+    width: 25%;
+  }
+  .ms-formtable .ms-formbody {
+    width: 75%;
+  }
+  .ms-formtable .ms-formbody .ms-long {
+    padding: 6px 0 !important;
+    text-indent: 12px;
+    width: 100%;
+  }
+  .ms-formtable .ms-formbody .ms-rtefield {
+    min-width: 0;
+  }
+}
+.ms-ToolPaneOuter input[type=text], .ms-ToolPaneOuter input[type=password], .ms-ToolPaneOuter input[type=datetime], .ms-ToolPaneOuter input[type=datetime-local], .ms-ToolPaneOuter input[type=date], .ms-ToolPaneOuter input[type=month], .ms-ToolPaneOuter input[type=time], .ms-ToolPaneOuter input[type=week], .ms-ToolPaneOuter input[type=number], .ms-ToolPaneOuter input[type=email], .ms-ToolPaneOuter input[type=url], .ms-ToolPaneOuter input[type=search], .ms-ToolPaneOuter input[type=tel], .ms-ToolPaneOuter input[type=color] {
+  padding: 2px;
+}
+.ms-ToolPaneOuter select, .ms-ToolPaneOuter textarea, .ms-ToolPaneOuter .form-control {
+  padding: 2px;
+}
+
+@media (max-width: 767px) {
+  .ms-srch-ellipsis {
+    white-space: normal;
+  }
+
+  .ms-srch-siteSearchResults {
+    width: 100% !important;
+  }
+  .ms-srch-siteSearchResults #SearchBox {
+    width: 100% !important;
+  }
+  .ms-srch-siteSearchResults .ms-srch-sbLarge {
+    width: 100% !important;
+  }
+  .ms-srch-siteSearchResults .ms-srch-sbLarge > input {
+    width: 100% !important;
+  }
+  .ms-srch-siteSearchResults .ms-srch-sb-navLink {
+    position: absolute !important;
+    right: 50px;
+  }
+  .ms-srch-siteSearchResults .ms-srch-sbLarge > .ms-srch-sb-searchLink {
+    position: absolute !important;
+    right: 20px;
+  }
+  .ms-srch-siteSearchResults .ms-srch-sbLarge-navWidth {
+    width: 200px;
+  }
+  .ms-srch-siteSearchResults .ms-srch-siteSearchResults {
+    float: none;
+  }
+  .ms-srch-siteSearchResults .ms-srch-upscope-top, .ms-srch-siteSearchResults .ms-srch-upscope-bottom {
+    display: block !important;
+    width: 100% !important;
+  }
+  .ms-srch-siteSearchResults .ms-srch-item, .ms-srch-siteSearchResults .ms-srch-item-path {
+    width: 100%;
+  }
+  .ms-srch-siteSearchResults .ms-srch-item-summaryPreview {
+    width: 75%;
+  }
+  .ms-srch-siteSearchResults .ms-srch-item-previewContainer {
+    width: 25%;
+  }
+  .ms-srch-siteSearchResults .ms-srch-item-preview-path {
+    width: 100%;
+  }
+}
+@media (max-width: 767px) {
+  #s4-workspace {
+    width: 100% !important;
+  }
+
+  .ContentPadding {
+    overflow: hidden;
+  }
+
+  .ms-searchCenter-result-main {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .ms-srch-people-outerContainer {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+
+  .ms-srch-people-item #UserPersonaContainer {
+    width: 15%;
+    min-width: 92px;
+  }
+  .ms-srch-people-item #UserInfoContainer {
+    float: left;
+    width: 85%;
+    margin-left: 0;
+  }
+
+  .ms-srch-upscope-top {
+    width: 100% !important;
+  }
+
+  .ms-srch-people-item {
+    width: 100%;
+    padding: 10px 0 0 0;
+  }
+
+  .ms-srch-sbLarge > input {
+    margin: 0 !important;
+    padding: 0 5px !important;
+  }
+
+  .ms-srch-hover-outerContainer {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+  }
+
+  .ms-srch-hover-arrowBorder, .ms-srch-hover-arrow {
+    display: none;
+  }
+}
+@media (max-width: 680px) {
+  .ms-srch-people-item #UserPersonaContainer {
+    width: 20%;
+    min-width: 92px;
+  }
+  .ms-srch-people-item #UserInfoContainer {
+    float: left;
+    width: 80%;
+    margin-left: 0;
+  }
+
+  .ms-searchCenter-result-main ul li h2 {
+    font-size: 14px;
+  }
+
+  .ms-srch-hover-outerContainer {
+    width: 100% !important;
+  }
+}
+@media (max-width: 520px) {
+  .ms-srch-people-item #UserPersonaContainer {
+    width: 28%;
+    min-width: 92px;
+  }
+  .ms-srch-people-item #UserInfoContainer {
+    float: left;
+    width: 72%;
+    margin-left: 0;
+  }
+
+  .ms-srch-item-summaryPreview, .ms-srch-item, .ms-srch-item-preview-path {
+    width: 100%;
+  }
+
+  .ms-searchCenter-result-main .ms-webpart-zone.ms-fullWidth, .ms-searchCenter-result-main .s4-wpcell-plain, .ms-searchCenter-result-main .ms-webpart-chrome {
+    display: block !important;
+  }
+
+  .ms-srch-item-previewContainer {
+    float: none;
+    width: 100%;
+    background: rgba(239, 239, 239, 0.78);
+    border: 1px solid #fff;
+    text-align: center;
+    margin-top: 5px;
+  }
+
+  .ms-srch-hover-outerContainer {
+    display: none !important;
+  }
+}
+@media (max-width: 320px) {
+  .ms-srch-people-item #UserPersonaContainer {
+    width: 35%;
+    min-width: 92px;
+  }
+  .ms-srch-people-item #UserInfoContainer {
+    float: left;
+    width: 65%;
+    margin-left: 0;
+  }
+}
+body > form[action*="searchresults"] #Search, body > form[action*="/_layouts/15/settings.aspx"] #Search, body > form[action*="/_layouts/15/mngsiteadmin.aspx"] #Search, body > form[action*="/_layouts/15/appprincipals.aspx"] #Search, body > form[action*="/_layouts/15/prjsetng.aspx"] #Search, body > form[action*="/_layouts/15/designgallery.aspx"] #Search, body > form[action*="/_layouts/15/regionalsetng.aspx"] #Search, body > form[action*="/_layouts/15/muisetng.aspx"] #Search, body > form[action*="/_layouts/15/sitesubs.aspx"] #Search, body > form[action*="/_layouts/15/siterss.aspx"] #Search, body > form[action*="/_layouts/15/srchvis.aspx"] #Search, body > form[action*="/search/Pages/"] #Search {
+  display: none;
+}
+body > form[action*="results.aspx?k="] h1#pageTitle {
+  display: none !important;
+}
+
+.ms-webpart-titleText > a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.ms-comm-adminLinks .ms-webpart-titleText, .ms-comm-activity .ms-webpart-titleText, .ms-comm-membersContainer .ms-webpart-titleText, .ms-contentFollowing-table .ms-webpart-titleText.ms-webpart-titleText, .ms-contentFollowing-sitesRightZone .ms-webpart-titleText.ms-webpart-titleText, .ms-microfeed-title.ms-webpart-titleText, .ms-microfeed-feedTitleLabel.ms-webpart-titleText, .ms-blog-adminLinks .ms-webpart-titleText, .ms-profile-followedCountDiv .ms-webpart-titleText {
+  background: transparent !important;
+  color: inherit !important;
+  border: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-decoration: none !important;
+  text-shadow: none !important;
+}
+
+.fullPageLayout {
+  max-width: 100% !important;
+  min-width: 100% !important;
+}
+
+.ms-contentFollowing-searchBox input[type=text] {
+  border-style: solid;
+}
+
+.ms-contentFollowing-itemFullUrl.ms-contentFollowing-itemFullUrl {
+  box-shadow: none;
+  font-size: 12px;
+  height: auto;
+}
+
+.cbs-List .ms-noWrap {
+  white-space: normal;
+}
+
+@media print {
+  a[href]:after {
+    content: none !important;
+  }
+}
+.nf-outer input {
+  box-sizing: content-box !important;
+  font-size: inherit !important;
+  height: 16px;
+  min-height: 16px !important;
+  padding: 6px 3px !important;
+}
+.nf-outer textarea {
+  font-size: inherit !important;
+  min-height: 28px !important;
+  padding: 6px 3px !important;
+}
+.nf-outer select {
+  box-sizing: content-box !important;
+  font-size: inherit !important;
+  min-height: 28px !important;
+  padding: 0 !important;
+}
+.nf-outer .ip-container textarea {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+.nf-outer .nf-filler-control input[type=submit] {
+  padding: 0 !important;
+}
+
+@media (max-width: 767px) {
+  .ms-core-suiteLinkList {
+    display: none;
+  }
+
+  .ms-welcome-root > a.ms-core-menu-root {
+    font-size: 0;
+  }
+  .ms-welcome-root > a.ms-core-menu-root:before {
+    content: "\f007";
+    font-family: FontAwesome;
+    font-size: 14px;
+  }
+}
+.s4-signInLink {
+  color: #fff !important;
+}
+
+.ms-ToolPaneOuter {
+   /* position:fixed;
+    top:165px;
+    right:50px;
+    z-index:9999;
+    */
+}
+
+.ms-ToolPaneBody {
+   /* overflow:scroll!important;
+    max-height:100%
+    */
+}
+
+#MSOTlPn_ToolPaneCaption {
+    cursor:move
+}
+
+.ms-webpart-titleText {
+    line-height: 1.5em;
+    margin: 0!important;
+    padding: 5px 6px 5px 12px!important;
+}
+
+.ms-wpContentDivSpace,
+.ms-WPBorderBorderOnly {
+    padding: 10px 0!important
+}
+
+.ms-WPBorder,
+.ms-WPBorderOnly,
+.ms-WPBorderBorderOnly {
+    padding: 10px!important
+}

@@ -19,11 +19,13 @@ const config = {
         // More info here https://github.com/OfficeDev/PnP-JS-Core/wiki/Install-and-Use
         vendor: [
             "jquery",
+            "jquery-ui",
             "knockout",
             "knockout-mapping",
             "bootstrap/dist/js/bootstrap.min.js",
             "whatwg-fetch",
             "es6-promise",
+            "lodash",
             "react",
             "react-dom",
             "sp-pnp-js",
@@ -56,7 +58,12 @@ const config = {
     devtool: "cheap-module-source-map",
     
     resolve: {                   
-        extensions: [".webpack.js", ".web.js", ".js",".ts",".tsx"]        
+        extensions: [".webpack.js", ".web.js", ".js",".ts",".tsx"],
+
+        alias: {
+            // Resolve the jQueryUi plugin manually
+            'jquery-ui': 'jquery-ui-dist/jquery-ui.min.js',
+        },            
     },
 
     module: {
@@ -65,7 +72,10 @@ const config = {
                 // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
                 test: /\.js$/,
                 enforce: "pre",
-                loader: "source-map-loader" 
+                loader: "source-map-loader",
+                exclude: [
+                    /node_modules/,
+                ] 
             },
             {
                 // We use the text loader to get the raw HTML markup for a Knockout component template file
@@ -216,7 +226,7 @@ const config = {
             $: 'jquery',
             jQuery: 'jquery',
             "window.jQuery" : 'jquery',
-            ko : 'knockout'
+            ko : 'knockout',
         }),
 
         portalCssExtractTextPlugin,
@@ -231,7 +241,10 @@ const config = {
         }),
 
         // Load only the needed locales to reduce the size of the bundle
-        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|fr/)
+        new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|fr/),
+
+        // To resolve the dynamic require in the builder.js from in the ical-toolkit module
+        new webpack.ContextReplacementPlugin(/ical-toolkit/, /..\/timezones\/database\/america-montreal\.json/)
     ]
 };
 
