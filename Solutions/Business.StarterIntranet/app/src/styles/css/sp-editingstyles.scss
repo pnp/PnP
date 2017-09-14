@@ -1,3 +1,5 @@
+@import 'variables';
+
 /* SharePoint custom editing styles */
 /* They are applied using the <PublishingWebControls:RichHtmlField FieldName="PublishingPageContent"...PrefixStyleSheet="intranet"/> line in page layouts */
 /* More information here: https://dev.office.com/sharepoint/docs/general-development/how-to-apply-styles-to-page-fields-in-sharepoint and here https://helpx.adobe.com/fr/typekit/using/css-selectors.html */
@@ -5,58 +7,54 @@ H1.intranetElement-H1
 {
     -ms-name:"Heading 1";
     font-size: 56px;
-    font-family:"myriad-pro";
+    font-family:$font-primary;
     font-weight: 100;
 }
 H2.intranetElement-H2
 {
     -ms-name:"Heading 2";
     font-size: 28px;
-    font-family:"myriad-pro";
+    font-family:$font-primary;
     font-weight: 100;
 }
 H3.intranetElement-H3
 {
     -ms-name:"Heading 3";
     font-size: 22px;
-    font-family:"myriad-pro";
+    font-family:$font-primary;
     font-weight: 700;
 }
 H4.intranetElement-H4
 {
     -ms-name:"Heading 4";
     font-size: 20px;
-    font-family:"myriad-pro";
+    font-family:$font-primary;
     font-weight: 400;
 }
 P.intranetElement-P{
     -ms-name:"Paragraph";
     font-size: 14px;
-    font-family:"myriad-pro";
+    font-family:$font-primary;
     font-weight: 400;
 }
 .intranetFontFace-1
 {
-    -ms-name:"Myriad Pro Light";
-    font-family:"myriad-pro";
+    font-family:$font-primary;
     font-weight: 100;
 }
 .intranetFontFace-2
 {
-    -ms-name:"Myriad Pro Regular";
-    font-family:"myriad-pro";
+    font-family:$font-primary;
     font-weight: 400;  
 }
 .intranetFontFace-3
 {
-    -ms-name:"Myriad Pro Bold";
-    font-family:"myriad-pro";
+    font-family:$font-primary;
     font-weight: 700;  
 }
 .intranetFontFace-4
 {
-    -ms-name:"Myriad Pro SemiBold";
-    font-family:"myriad-pro";
+    font-family:$font-primary;
     font-weight: 600;  
 }
 .intranetFontSize-1
