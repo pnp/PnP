@@ -117,7 +117,7 @@ const config = {
                 ]
             },
             {
-                // Custom fonts (Myriad Pro)
+                // Custom fonts
                 test: /\.woff?$|\.woff2?$|\.ttf$|\.eot$|\.svg$/,
                 use: [
                     {
