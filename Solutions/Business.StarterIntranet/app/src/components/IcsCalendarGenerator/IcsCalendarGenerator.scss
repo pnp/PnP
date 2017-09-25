@@ -1,0 +1,14 @@
+@import '../../styles/css/variables';
+
+#ics-generator {
+    a.download {
+        cursor: pointer;
+        color: #a82d28;
+    }
+
+    div.spinner {
+        min-height: 25px;
+        max-width: 60px;
+    }
+}
+    

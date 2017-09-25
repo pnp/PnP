@@ -40,10 +40,10 @@
             if ($isEmptyString(displayTitle)) { displayTitle = encodedTitle }
 
             AddPostRenderCallback(ctx, function() {			
-                Intranet.Main.initDefaultDisplayTemplateItemViewModel(currentItem, document.getElementById(containerId));
+                Intranet.Main.initDisplayTemplateViewModel(document.getElementById(containerId), currentItem);
             });
 _#-->
-            <div id="_#= $htmlEncode(itemId) =#_" name="Item" data-displaytemplate="DocumentItem" class="search-item" onmouseover="_#= ctx.currentItem_ShowHoverPanelCallback =#_" onmouseout="_#= ctx.currentItem_HideHoverPanelCallback =#_">
+            <div id="_#= $htmlEncode(itemId) =#_" name="Item" data-displaytemplate="DocumentItem" class="search-item">
 				
                 <div class="item-display-template">			
 					<div data-bind="stopBinding: true">
@@ -57,10 +57,10 @@ _#-->
                                 
                                 <div class="item-title">
                                     <!-- ko if: $data.Title -->
-                                    <a data-bind="attr: { href: ServerRedirectedEmbedURL }">_#= displayTitle =#_</a>
+                                    <a data-bind="attr: { href: ServerRedirectedEmbedURL? ServerRedirectedEmbedURL: Path }, summarize: { html: Title }, linesCount:1"></a>
                                     <!-- /ko -->
                                 </div>
-                                
+  
                                 <div class="item-download">
                                     <a data-bind="attr: { href: Path, title: Intranet.Main.getResource('hp_Tooltip_Download')}" data-toggle="tooltip" data-placement="top" download="">
                                     	<i class="fa fa-download" aria-hidden="true"></i>
@@ -74,17 +74,15 @@ _#-->
                                 </div>
                                                        
                                 <div class="item-excerpt">
-                                    <!-- ko if: $data.HitHighlightedSummary-->
-                                    <div data-bind='summarize: { hitHighlightedSummary: HitHighlightedSummary }'></div>
-                                    <!-- /ko -->
+									<!-- ko if: $data.HitHighlightedSummary -->
+									<div data-bind='summarize: { hitHighlightedSummary: HitHighlightedSummary }, linesCount: 2'></div>
+									<!-- /ko -->
                                 </div>            
             
                             <!-- /ko -->
 						</div>
 					</div>
 				</div>
-
-                <div id="_#= $htmlEncode(hoverId) =#_" class="ms-srch-hover-outerContainer hidden-sm hidden-xs"></div>
             </div>
 <!--#_ 
         } 

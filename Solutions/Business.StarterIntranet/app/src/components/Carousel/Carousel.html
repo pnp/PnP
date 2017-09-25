@@ -1,0 +1,48 @@
+<div id="carousel">
+    
+    <!-- Flickity HTML init -->
+
+    <div class="carousel-nav">
+        <!-- ko foreach: items -->
+        
+        <div class="carousel-nav-row" data-bind="click: $parent.selectSlide">
+            <div class="carousel-nav-cell">
+                <div class="arrow-wrap">
+                    <span class="nav-label">
+                        <a data-bind="text: Title, attr: {href: CarouselItemURL ? CarouselItemURL.Url : '#' }"></a>
+                    </span>        
+                </div>        
+            </div>
+        </div>
+        
+        <!-- /ko -->
+    </div>
+
+    <div class="carousel">
+        <!-- ko foreach: items -->
+        
+        <div class="carousel-cell">
+
+            <img data-bind="attr : {'data-flickity-lazyload': CarouselItemImage ? (CarouselItemImage.Url + '?height=300') : $component.siteLogoUrl }, css : {'no-image' : !CarouselItemImage }" />
+
+            <div class="slide-panel">
+                <div id="slide-title">
+                    <span data-bind="text: Title">
+                    </span>
+                </div>
+
+                <hr>
+
+                <div id="slide-read-more">
+
+                    <a data-bind="attr: {href: CarouselItemURL ? CarouselItemURL.Url : '#' }, text: $parent.readMoreLabel"> </a>
+                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </div>
+
+            </div>
+            
+        </div>
+        <!-- /ko -->
+    </div>
+
+</div>

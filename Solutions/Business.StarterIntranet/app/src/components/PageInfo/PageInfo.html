@@ -1,0 +1,53 @@
+<!-- Page Info component -->
+<div id="page-info">
+    
+     <!-- ko with: pageItem -->
+
+        <!-- ko if: $data.IntranetContentPublishingDate -->
+        <div id="date" data-bind="visible: IntranetContentPublishingDate" class="tag">
+            <span data-bind="getResource: 'publishedOn'"> </span>
+            <span data-bind="formatDateField: IntranetContentPublishingDate, dateFormat : 'LL'"></span>
+        </div>    
+        <!-- /ko -->
+
+        <!-- ko if: $data.IntranetContentAuthor -->
+            <div id="author" class="tag" data-bind="visible: IntranetContentAuthor.Title">
+                <span data-bind="getResource: 'postedBy'"> </span>
+                <span data-bind="text: IntranetContentAuthor.Title"></span>
+            </div>
+        <!-- /ko -->
+
+        <!-- ko if: $data.IntranetContentCategory -->   
+        
+        <div id="category" data-bind="visible: IntranetContentCategory().length > 0" class="tag">
+            <span data-bind="getResource: 'categories'"> </span>
+            <!-- ko foreach: $data.IntranetContentCategory --> 
+                <span class="category" data-bind="text: $data"></span>
+            <!-- /ko -->
+        </div>      
+        <!-- /ko -->
+
+        <!-- ko if: $data.StartDate -->
+        <div id="start-date" data-bind="visible: StartDate" class="tag icon">
+            <i class="fa fa-calendar-o" aria-hidden="true"></i>
+            <span data-bind="formatDateField: StartDate, dateFormat : 'LLL'"></span>
+        </div>   
+        <!-- /ko -->
+
+        <!-- ko if: $data.OData__EndDate -->
+        <div id="end-date" data-bind="visible: OData__EndDate" class="tag icon">
+            <span>-</span>
+            <span data-bind="formatDateField: OData__EndDate, dateFormat : 'LLL'"></span>
+        </div>  
+        <!-- /ko -->      
+
+        <!-- ko if: $data.Location -->
+        <div id="location" data-bind="visible: Location" class="icon">
+            <i class="fa fa-map-marker " aria-hidden="true"></i>
+            <span data-bind="text: Location"></span>
+        </div>  
+        <!-- /ko --> 
+
+     <!-- /ko -->
+    
+</div>

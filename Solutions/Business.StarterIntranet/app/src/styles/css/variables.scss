@@ -1,20 +1,33 @@
-$font-primary: "Segoe UI",Tahoma,Verdana,sans-serif;
-$primary-color: #0072c6; // Main color for the intranet
-$text-color: #6c6e70; // Used for links and text
+$font-primary: "Segoe UI Web (West European)","Segoe UI";
+$primary-color: #0066B3; // Main color for the intranet
+$text-color: #4A4A4A; // Used for links and text
 $error-color: #a80000;
 
-/* Nav bar colors */
-$navbar-l1-link-color: #6c6e70; // Navbar links - Level 1
-$navbar-l1-link-color-hover: #ffffff;
-$navbar-l2-link-color: $text-color; // / Navbar links - Level 2 (Only applied in desktop mode)
-$navbar-l2-link-color-hover: #0072c6;
-$navbar-font-size: 13px;
-$navbar-background-color: #ffffff;
-$navbar-hover-color: #0072c6;
+/* Nav bar  */
+$navbar-l1-link-color: #ffffff; // Navbar links - Level 1
+$navbar-l1-link-color-hover: #FCAF17;
+$navbar-l1-background-color: #000000;
 
-/*Header and footer links colors */
+$navbar-l2-link-color: #ffffff; // / Navbar links - Level 2 (Only applied in desktop mode)
+$navbar-l2-link-color-hover: #FCAF17;
+$nabar-l2-background-color: #878787; 
+$navbar-font-size: 16px;
+
+/* Header links */
 $headerlinks-color: #ffffff;
-$footerlinks-color: #ddd;
+$headerlinks-font-size: 16px;
+$headerlinks-fontfamily: $font-primary;
 
-$page-icon-color: #0072c6; // Used in page info component for metadata displa
-$contextual-selected-color: #0072c6;
+/* Footer */
+$footer-bgcolor: #4a4a4a;
+
+$footerlinks-color: $headerlinks-color;
+$footerlinks-font-size: 16px;
+$footerlinks-fontfamily: $font-primary;
+
+/* Search Box */
+$searchbox-background-color: #878787;
+$searchbox-categories-bgcolor: $navbar-l1-background-color;
+
+$page-icon-color: #0066B3; // Used in page info component for metadata display
+$contextual-selected-color: #0066B3;
