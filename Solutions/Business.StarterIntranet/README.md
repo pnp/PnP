@@ -86,10 +86,10 @@ The entire solution is "site collection self-contained" so it does not conflict 
     </td>
   </tr>
 </table>
-
+ 
 
 ## Applies to ##
-- SharePoint 2013/2016 on-premises
+- SharePoint 2013/2016 on-premises 
 - SharePoint Online (*Office 365 E3* plan minimum to get the Content Search WebPart)
 
 ## Solution ##
