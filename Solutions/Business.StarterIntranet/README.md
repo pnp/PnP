@@ -87,31 +87,6 @@ The entire solution is "site collection self-contained" so it does not conflict 
   </tr>
 </table>
 
-## Solution documentation (optional) ##
-
-A complete and optional documentation is available along this solution with an additional fee. It includes:
-- A French or English version with free updates following the latest version of the solution
-- A complete development guide (about 100 pages) on how to maintain and customize this solution (add a new language, create a new component, etc.)
-- A complete user guide (about 40 pages) on how to use this solution from a contributor point of view (create content, manage navigation, etc.)
-
-<p align="center">
-  <span>
-      <a href="https://transactions.sendowl.com/packages/48364/D024B326/view"><img src="https://static.wixstatic.com/media/9b7fa1_a0c40971a90c49349633971900079d59~mv2.png/v1/fit/w_375,h_375/9b7fa1_a0c40971a90c49349633971900079d59~mv2.png" /></a>
-  </span>
-  &nbsp;&nbsp;
-  <span>
-    <a href="https://transactions.sendowl.com/packages/48367/D92CFE56/view"><img src="https://static.wixstatic.com/media/9b7fa1_298a136859854926833330111db378b3~mv2.png/v1/fit/w_375,h_375/9b7fa1_298a136859854926833330111db378b3~mv2.png" /></a>
-    <p align="center">By<p>
-  </span>
-</p>
-
-
-<p align="center">
-
-<a href="https://www.aequos.ca/" target="_blank">
-	<img src="./images/aequos-logo.png" width="80px"/></a></p>
-  
-  <span>Thank you for supporting us!</span>
 
 ## Applies to ##
 - SharePoint 2013/2016 on-premises
