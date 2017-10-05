@@ -1,7 +1,7 @@
 # Create a Communication Site using SharePoint REST APIs #
 
 ### Summary ###
-Simplistic Windows Console application showing how to create Community Site with SharePoint REST APIs. Console will ask all needed details for the site creation.
+Simple Windows Console application showing how to create Community Site with SharePoint REST APIs. Console will ask all needed details for the site creation.
 
 More details on the used APIs can be found from following article.
 
