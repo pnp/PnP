@@ -106,6 +106,15 @@ Version  | Date | Comments
 1.3 | May 4th 2017 | <ul style="list-style: none"><li>New design</li><li>Added the support of event pages</li><li>New display templates for news + new carousel design</li><li>Added a QnA bot integration with authentication</li><li>Bug fixes + migration to webpack 2.0 and sp-pnp-js 2.0</li></ul>
 2.0 | August 30th 2017 | <ul style="list-style: none"><li>Completely new design reused from a real project and made by a firm of professional graphic designers</li><li>Added the option to deploy with only one language + ability to add new languages on the fly</li><li>Several performance improvements</li><li>Added a complete documentation (user and development guides) available separately</li><li>Bug fixes and code structure improvements</li></ul>
 
+## Solution documentation ##
+ 
+A complete and optional documentation is available along this solution. It includes:
+- A French or English version following the latest version of the solution
+- A complete development guide (about 100 pages) on how to maintain and customize this solution (add a new language, create a new component, etc.)
+- A complete user guide (about 40 pages) on how to use this solution from a contributor point of view (create content, manage navigation, etc.)
+ 
+More information here: [http://thecollaborationcorner.com/2017/09/11/a-new-version-available-for-the-pnp-starter-intranet](http://thecollaborationcorner.com/2017/09/11/a-new-version-available-for-the-pnp-starter-intranet)
+
 ## Set up your environment ##
 
 Before starting, you'll need to setup tour environment:
