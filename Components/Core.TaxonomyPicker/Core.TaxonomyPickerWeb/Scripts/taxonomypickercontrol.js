@@ -91,7 +91,7 @@
 
             //get flat list of terms
             this.FlatTerms = new Array();
-                        
+
             var sortOrder = null;
 
             var topLevel = 0;
@@ -100,6 +100,16 @@
                 var currentTerm = termEnumerator.get_current();
                 if (!currentTerm.get_isDeprecated()) {
                     var term = new Term(currentTerm);
+
+                    // add labels to the current term
+                    var labels = currentTerm.get_labels().getEnumerator();
+                    var AllLabels = [];
+                    while (labels.moveNext()) {
+                        var label = labels.get_current();
+                        AllLabels.push(label.get_value());
+                    }
+
+                    term.AllLabels = "|" + AllLabels.join('|');
                     this.FlatTerms.push(term);
                 }
             }
@@ -150,10 +160,10 @@
                         if (term.Level == currentLevel) {
                             var path = term.PathOfTerm.split(';');
                             if (
-							    typeof (filterTerm) == 'undefined' ||
+                                typeof (filterTerm) == 'undefined' ||
                                 ((path.length == this.LevelToShowTerms && this.FilterTermId != null && this.FilterTermId == term.Id) ||
-                                (this.FilterTermId != null && term.PathOfTerm.indexOf(filterTerm.Name) > -1 && this.LevelToShowTerms - 1 == term.Level))
-								) {
+                                    (this.FilterTermId != null && term.PathOfTerm.indexOf(filterTerm.Name) > -1 && this.LevelToShowTerms - 1 == term.Level))
+                            ) {
 
                                 if (currentLevel == 0) {
                                     this.Terms.push(term.clone());
@@ -209,7 +219,8 @@
         getSuggestions: function (text) {
             var matches = new Array();
             jQuery(this.FlatTermsForSuggestions).each(function (i, e) {
-                if (e.Name.toLowerCase().indexOf(text.toLowerCase()) == 0) {
+                // only return matches where the label begins with the value 
+                if (e.AllLabels.toLowerCase().indexOf("|" + text.toLowerCase()) > -1) {
                     matches.push(e);
                 }
             });
@@ -218,7 +229,8 @@
         getContainsSuggestions: function (text, useContainsSuggestions) {
             var matches = new Array();
             jQuery(this.FlatTermsForSuggestions).each(function (i, e) {
-                if (e.Name.toLowerCase().indexOf(text.toLowerCase()) >= 0) {
+                // only return matches where the label begins with the value 
+                if (e.AllLabels.toLowerCase().indexOf("|" + text.toLowerCase()) > -1) {
                     matches.push(e);
                 }
             });
@@ -380,7 +392,7 @@
             parent.append(this._control);
             this._suggestionContainer = jQuery('<div class="cam-taxpicker-suggestion-container"></div>');
             if (!this._enterFillIn){
-            	this._dlgButton = jQuery('<div class="cam-taxpicker-button"></div>');
+                this._dlgButton = jQuery('<div class="cam-taxpicker-button"></div>');
             }
             if (!this._isReadOnly) {
                 this._editor = jQuery('<div class="cam-taxpicker-editor" contenteditable="true"></div>');
@@ -419,7 +431,7 @@
 
             //wire up control events
             if (!this._enterFillIn){
-            	this._dlgButton.click(Function.createDelegate(this, this.showPickerDialog)); //dialog button is clicked
+                this._dlgButton.click(Function.createDelegate(this, this.showPickerDialog)); //dialog button is clicked
             }
             this._editor.keydown(Function.createDelegate(this, this.keydown)); //key is pressed in the editor control
             jQuery(document).mousedown(Function.createDelegate(this, this.checkExternalClick)); //mousedown somewhere in the document
@@ -470,7 +482,7 @@
                     newText = rawText.substring(0, caret - selection.length) + this.MarkerMarkup + rawText.substring(caret, rawText.length);
                     var textValidation = this.validateText(newText);
                     this._editor.html(textValidation.html);
-                    
+
                     if (newText === '<span id="caretmarker"></span>') {
                         //empty the selected term from hidden field
                         this._hiddenValidated.val("");
@@ -491,7 +503,7 @@
                     newText = firstPart + this.MarkerMarkup + rawText.substring(caret, rawText.length);
                     var textValidation = this.validateText(newText);
                     this._editor.html(textValidation.html);
-                    
+
                     if (newText === '<span id="caretmarker"></span>') {
                         //empty the selected term from hidden field
                         this._hiddenValidated.val("");
@@ -595,7 +607,7 @@
                         sel.addClass('selected');
                     }
                 }
-            }           
+            }
         },
         //get the cursor position in a content editable div
         getCaret: function (target) {
@@ -675,22 +687,22 @@
         },
         //place the cursor at the end of the contentEditable div
         placeCaretAtEnd: function (el) {
-		    el.focus();
-		    if (typeof window.getSelection != "undefined"
-		            && typeof document.createRange != "undefined") {
-		        var range = document.createRange();
-		        range.selectNodeContents(el);
-		        range.collapse(false);
-		        var sel = window.getSelection();
-		        sel.removeAllRanges();
-		        sel.addRange(range);
-		    } else if (typeof document.body.createTextRange != "undefined") {
-		        var textRange = document.body.createTextRange();
-		        textRange.moveToElementText(el);
-		        textRange.collapse(false);
-		        textRange.select();
-		    }
-		},
+            el.focus();
+            if (typeof window.getSelection != "undefined"
+                && typeof document.createRange != "undefined") {
+                var range = document.createRange();
+                range.selectNodeContents(el);
+                range.collapse(false);
+                var sel = window.getSelection();
+                sel.removeAllRanges();
+                sel.addRange(range);
+            } else if (typeof document.body.createTextRange != "undefined") {
+                var textRange = document.body.createTextRange();
+                textRange.moveToElementText(el);
+                textRange.collapse(false);
+                textRange.select();
+            }
+        },
         //validates the text input into ranges and html output
         validateText: function (txt) {
             var textValidation = { html: '', ranges: [] };
@@ -750,26 +762,26 @@
                         html += '<span class="cam-taxpicker-term-selected">' + textValidation.ranges[i].text + '</span>';
                     }
                     else {
-                    	//
-                    	if (this._enterFillIn){
-                    		//new term
-                    		var termNew = new Term(null);
-                    		var id = newGuid();
-                    		termNew.Id = id;
-                    		termNew.Name =  textValidation.ranges[i].text;
-                       		
-                       		this._selectedTerms.push(termNew);
-                			this._hiddenValidated.val(JSON.stringify(this._selectedTerms));
-                			this._hiddenValidated.trigger('change');
-                			
-                			this.pushSelectedTerm(termNew);
+                        //
+                        if (this._enterFillIn){
+                            //new term
+                            var termNew = new Term(null);
+                            var id = newGuid();
+                            termNew.Id = id;
+                            termNew.Name =  textValidation.ranges[i].text;
 
-                    		html += '<span class="cam-taxpicker-term-selected">' + textValidation.ranges[i].text + '</span>';
+                            this._selectedTerms.push(termNew);
+                            this._hiddenValidated.val(JSON.stringify(this._selectedTerms));
+                            this._hiddenValidated.trigger('change');
+
+                            this.pushSelectedTerm(termNew);
+
+                            html += '<span class="cam-taxpicker-term-selected">' + textValidation.ranges[i].text + '</span>';
                         }
                         else{
-                        	html += '<span class="cam-taxpicker-term-invalid">' + textValidation.ranges[i].text + '</span>';                  
+                            html += '<span class="cam-taxpicker-term-invalid">' + textValidation.ranges[i].text + '</span>';
                         }
-					}
+                    }
 
 
                     //check for ambiguous matches
@@ -812,18 +824,20 @@
                     if (suggestions.length > 0) {
                         jQuery(suggestions).each(Function.createDelegate(this, function (i, e) {
                             if (i < this._maxSuggestions) {
-                                var startOfMatchIndex = e.Name.toLowerCase().indexOf(txt.toLowerCase());
-                                var match = e.Name.substring(startOfMatchIndex, startOfMatchIndex + txt.length); //get the matched text so we can highlight it
-                                var labels = e.RawTerm.get_labels().getEnumerator();
-                                var labelStr = "";
-                                while (labels.moveNext()) {
-                                    var label = labels.get_current();
-                                    if (!label.get_isDefaultForLanguage()) {
-                                        labelStr += "," + label.get_value();
-                                    }
-                                }
-                                var hightlightedText = this._useContainsSuggestions ? getContainsWithHighlightedText(e.Name, match) : getStartingWithHighlightedText(e.Name, match);
-                                var itemHtml = jQuery('<div class="cam-taxpicker-suggestion-item" data-item="' + e.Id + '">' + hightlightedText + ' [' + this.TermSet.Name + ':' + e.PathOfTerm.replace(/;/g, ':') + labelStr + ']</div>');
+                                // replace first occurence of the '|' char and label default value
+                                var labelStr = e.AllLabels.replace("|" + e.Name, "");
+
+                                // replace additional occurences of the '|' char
+                                var otherLabelsArray = labelStr.split('|');
+                                var transformedOtherLabelsArray = [];
+                                $(otherLabelsArray).each(function (index, element) {
+                                    transformedOtherLabelsArray.push(getStartingWithHighlightedText(element, getMatchIndex(element, txt)));
+                                });
+
+                                var additionalText = ' [' + this.TermSet.Name + ':' + e.PathOfTerm.replace(/;/g, ':') + transformedOtherLabelsArray.join(', ') + ']';
+
+                                var highlightedTermName = getStartingWithHighlightedText(e.Name, getMatchIndex(e.Name, txt));
+                                var itemHtml = jQuery('<div class="cam-taxpicker-suggestion-item" data-item="' + e.Id + '">' + highlightedTermName + additionalText + '</div>');
                                 this._suggestionContainer.append(itemHtml);
                                 itemHtml.click(Function.createDelegate(this, this.suggestionClicked));
                             }
@@ -1126,18 +1140,18 @@
 
                 var outHtml = buildTermSetTreeLevel(termImageUrl, this.TermSet.Terms, true, "", function (html) {
                     document.getElementById('rootNode').innerHTML =
-                                       '<li class="cam-taxpicker-treenode-li">' +
-                                           '<div class="cam-taxpicker-treenode">' +
-                                               '<div class="cam-taxpicker-expander expanded">' + '</div>' +
-                                               '<img src="' + termImageUrl + '/EMMTermSet.png" alt=""/>' +
-                                               '<span id="currNode" class="cam-taxpicker-treenode-title root selected">' + termName + '</span>' +
-                                            '</div>' +
-                                            '<ul class="cam-taxpicker-treenode-ul" style="display: block;">' +
-                                               html +
-                                            '</ul>' +
-                                       '</li>' +
-                                    '</ul>' +
-                                '</div>';
+                        '<li class="cam-taxpicker-treenode-li">' +
+                        '<div class="cam-taxpicker-treenode">' +
+                        '<div class="cam-taxpicker-expander expanded">' + '</div>' +
+                        '<img src="' + termImageUrl + '/EMMTermSet.png" alt=""/>' +
+                        '<span id="currNode" class="cam-taxpicker-treenode-title root selected">' + termName + '</span>' +
+                        '</div>' +
+                        '<ul class="cam-taxpicker-treenode-ul" style="display: block;">' +
+                        html +
+                        '</ul>' +
+                        '</li>' +
+                        '</ul>' +
+                        '</div>';
 
                     that._dlgCurrTermNode = jQuery("#currNode");
                 });
@@ -1265,12 +1279,12 @@
             var addlClass = (term.Children.length > 0) ? 'collapsed' : '';
             var tHtml = "";
             tHtml += '<li class="cam-taxpicker-treenode-li">' +
-                         '<div class="cam-taxpicker-treenode">' +
-                             '<div class="cam-taxpicker-expander ' + addlClass + '">' +
-                             '</div>' +
-                             '<img src="' + termImageUrl + '/EMMTerm.png" alt=""/>' +
-                             '<span class="cam-taxpicker-treenode-title"  data-item="' + term.Name + '|' + term.Id + '">' + term.Name + '</span>' +
-                         '</div>';
+                '<div class="cam-taxpicker-treenode">' +
+                '<div class="cam-taxpicker-expander ' + addlClass + '">' +
+                '</div>' +
+                '<img src="' + termImageUrl + '/EMMTerm.png" alt=""/>' +
+                '<span class="cam-taxpicker-treenode-title"  data-item="' + term.Name + '|' + term.Id + '">' + term.Name + '</span>' +
+                '</div>';
 
             //add children if they exist
             if (term.Children.length > 0) {
@@ -1329,12 +1343,29 @@
         return result
     }
     //Highlights matches with yellow
-    function getStartingWithHighlightedText(termLabel, match, useContainsSuggestions) {
-        return termLabel.replace(match, '<span style="background-color: yellow;">' + match + '</span>');
+    function getStartingWithHighlightedText(termLabel, match) {
+        if (match != undefined) {
+            return termLabel.replace(match, '<span style="background-color: yellow;">' + match + '</span>');
+        }
+        return termLabel;
     }
-    function getContainsWithHighlightedText(termLabel, match, useContainsSuggestions) {
-        var globalCaseInsensitiveRegExp = new RegExp(match, "ig");
-        return termLabel.replace(globalCaseInsensitiveRegExp, '<span style="background-color: yellow;">' + match + '</span>');
+    function getContainsWithHighlightedText(termLabel, match) {
+        if (match != undefined) {
+            var globalCaseInsensitiveRegExp = new RegExp(match, "ig");
+            return termLabel.replace(globalCaseInsensitiveRegExp, '<span style="background-color: yellow;">' + match + '</span>');
+        }
+        return termLabel;
+    }
+    //get the matched text so we can highlight it
+    function getMatchIndex(text, searchValue) {
+        // only return a match if the searchValue is the start of the text
+        var startOfMatchIndex = text.toLowerCase().indexOf(searchValue.toLowerCase());
+        var match = undefined;
+        if (startOfMatchIndex == 0) {
+            match = text.substring(startOfMatchIndex, startOfMatchIndex + searchValue.length);
+        }
+
+        return match;
     }
 
     //extends jquery to support taxpicker function
