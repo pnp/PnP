@@ -41,6 +41,11 @@ namespace GeoSiteEnumeration
             this.appPassword = appPassword;
             this.appId = appId;
             this.aadDomain = aadDomain;
+            
+            // Telemetry, we would like to understand how popular this sample is so we can target future investment. Obviously you're free to drop this section from the code 
+            clientContextForDefaultGeo.ClientTag = "SPDev:MultiGeo";
+            clientContextForDefaultGeo.Load(clientContextForDefaultGeo.Web, p => p.Description, p => p.Id);
+            clientContextForDefaultGeo.ExecuteQuery();
         }
 
         /// <summary>
