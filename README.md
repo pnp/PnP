@@ -18,7 +18,7 @@ PnP initiative has numerous GitHub repositories, so that you can more easily fin
 - [PnP Office-Addins](http://aka.ms/officedevpnpofficeaddins) - GitHub repository
 - [PnP Tools](https://github.com/OfficeDev/PnP-Tools) - GitHub repository
 - [PnP Transformation](https://github.com/OfficeDev/PnP-Transformation) - GitHub repository
-- [PnP Provisioning Schema](https://github.com/OfficeDev/PnP-provisioning-schema) - GitHub repository
+- [PnP Provisioning Schema](https://github.com/OfficeDev/PnP-provisioning-schema) - GitHub repository 
 
 You could be also interested on seeing all PnP resources in [one PowerPoint slide](https://docs.com/OfficeDevPnP/9085/office-dev-pnp-resources).
 
