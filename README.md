@@ -3,7 +3,7 @@ This is the main repository for the community driven [SharePoint / Office Dev Pa
 
 ![SharePoint Patterns and Practices logo](https://dev.office.com/Media/Default/PnP/sppnp.png)
 
-PnP initiative has numerous GitHub repositories, so that you can more easily find what's relevant for you depending on your interest. Easiest way to follow up on latest changes is our landing page at http://aka.ms/OfficeDevPnP. We also recommend you to use the [PnP sample and solution search tool](http://dev.office.com/patterns-and-practices-resources) at dev.office.com for finding relevant content for you.
+PnP initiative has numerous GitHub repositories, so that you can more easily find what's relevant for you depending on your interest. Easiest way to follow up on latest changes is our landing page at http://aka.ms/OfficeDevPnP. We also recommend you to use the [PnP sample and solution search tool](http://dev.office.com/patterns-and-practices-resources) at dev.office.com for finding relevant content for you. 
 
 - [PnP at dev.office.com](http://aka.ms/OfficeDevPnP) - Welcome page with sample and guidance search
 - [SharePoint Dev Group](http://aka.ms/sppnp-community) - Questions and feedback
