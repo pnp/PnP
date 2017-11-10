@@ -5,7 +5,10 @@
 « PnP Starter Intranet » is a generic, enterprise intranet publishing solution, compatible with SharePoint 2013, 2016 and SharePoint Online and developed by aequos (www.aequos.ca). It is the direct result of hundreds of hours of work and analysis corroborated through the use of the solution in actual projects. 
 Version 2.0.0’s design was created by a firm of professional graphic designers (www.wearedetour.com) in order to meet the SharePoint intranet requirements of the IDRC (International Development Research Center, www.idrc.ca).
 
-We would therefore like to thank Denis Turgeon (Project manager at the CRDI) and Ryan Short (Founder and President of Detour UX) for having graciously agreed to share this solution with the SharePoint community.
+We would therefore like to thank Denis Turgeon (Project manager at the CRDI) and Ryan Short (Founder and President of Detour UX) for having graciously agreed to share this solution with the SharePoint community. You can find the complete story behind this solution in this PnP Webcast:
+
+[![Pnp Starter Intranet - Customer Story](http://img.youtube.com/vi/2LQfJe8nOws/maxresdefault.jpg)](https://youtu.be/2LQfJe8nOws)
+
 PnP Starter Intranet is a free, open source solution that can be fully customized to meet your requirements. Inasmuch, this solution is not a product per se (and does not come with a warranty or dedicated support team), but a solid base you can use or  build on and easily customize.
 Even if this solution does not meet all your requirements and development practices, it does provide, free of charge, features and capabilities that consulting firms usually charge several hundred thousands of dollars to develop.
 
