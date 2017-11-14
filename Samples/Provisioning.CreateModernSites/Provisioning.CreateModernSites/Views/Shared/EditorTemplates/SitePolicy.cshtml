@@ -1,0 +1,17 @@
+﻿@model System.String
+
+@{
+    var fieldId = Html.IdFor(m => m);
+    var isRequired = ViewData.ModelMetadata.IsRequired;
+
+    var policies =
+        new SelectListItem[]
+        {
+                    new SelectListItem { Text = "Low Business Impact", Value = "LBI" },
+                    new SelectListItem { Text = "Medium Business Impact", Value = "MBI" },
+                    new SelectListItem { Text = "High Business Impact", Value = "HBI" },
+        };
+}
+<label class="ms-Label @(isRequired ? "is-required" : "")" id="@($"{fieldId}Label")">@(!String.IsNullOrEmpty(ViewData.ModelMetadata.DisplayName) ? ViewData.ModelMetadata.DisplayName : ViewData.ModelMetadata.PropertyName)</label>
+@Html.DropDownListFor(model => model, policies, new { @class = "form-control" })
+@Html.ValidationMessageFor(model => model)

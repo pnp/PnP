@@ -13,8 +13,8 @@ namespace Provisioning.ModernPages
         {
 
             // Update the below variables to use your tenant and account information
-            string siteUrl = "https://contoso.sharepoint.com/sites/modernpagedemo";
-            string userName = "pnp@contoso.onmicrosoft.com";
+            string siteUrl = "https://officedevpnp.sharepoint.com/sites/spfx-paolopia/";
+            string userName = "paolo@officedevpnp.onmicrosoft.com";
             SecureString password = GetSecureString("Password");
 
             AuthenticationManager am = new AuthenticationManager();
@@ -32,7 +32,7 @@ namespace Provisioning.ModernPages
                 // Find custom component and add as last control
                 // Important: this assumes you've a custom client side web part with name "HelloWorld" deployed to the test site collection. 
                 var components = p.AvailableClientSideComponents();
-                var myWebPart = components.Where(s => s.Name == "HelloWorld").FirstOrDefault();
+                var myWebPart = components.Where(s => s.Name == "AzureCDNSample").FirstOrDefault();
                 if (myWebPart != null)
                 {
                     ClientSideWebPart helloWp = new ClientSideWebPart(myWebPart) { Order = 10 };
