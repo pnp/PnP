@@ -46,6 +46,10 @@ namespace Provisioning.CreateModernSites.Models
         [JsonIgnore]
         public AsynchronousTechnique AsyncTech { get; set; }
 
+        [DisplayName("PnP Provisioning Template")]
+        [UIHint("PnPTemplate")]
+        public String PnPTemplate { get; set; }
+
         public String UserAccessToken { get; set; }
 
         public String SPORootSiteUrl { get; set; }

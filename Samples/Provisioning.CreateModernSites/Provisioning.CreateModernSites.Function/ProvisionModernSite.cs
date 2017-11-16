@@ -5,6 +5,8 @@ using Newtonsoft.Json;
 using OfficeDevPnP.Core;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Sites;
+using OfficeDevPnP.Core.Framework.Provisioning.Connectors;
+using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 
 namespace Provisioning.CreateModernSites.Function
 {
@@ -54,6 +56,25 @@ namespace Provisioning.CreateModernSites.Function
                     }
 
                     log.Info($"Created \"modern\" site with URL: {siteUrl}");
+
+                    log.Info($"Applying provisioning template {modernSite.PnPTemplate} to site");
+
+                    using (var siteContext = authManager.GetAzureADAccessTokenAuthenticatedContext(
+                        siteUrl, modernSite.UserAccessToken))
+                    {
+                        var web = siteContext.Web;
+                        siteContext.Load(web);
+                        siteContext.ExecuteQueryRetry();
+
+                        XMLTemplateProvider provider =
+                               new XMLFileSystemTemplateProvider(Environment.GetEnvironmentVariable("WEBJOBS_PATH"), "");
+                        var template = provider.GetTemplate(modernSite.PnPTemplate);
+                        template.Connector = provider.Connector;
+
+                        web.ApplyProvisioningTemplate(template);
+                    }
+
+                    log.Info($"Applyed provisioning template {modernSite.PnPTemplate} to site");
                 }
             }
             else
@@ -78,6 +99,8 @@ namespace Provisioning.CreateModernSites.Function
         public String SiteClassification { get; set; }
 
         public Boolean IsPublic { get; set; }
+
+        public String PnPTemplate { get; set; }
 
         public String UserAccessToken { get; set; }
 

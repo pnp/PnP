@@ -2,6 +2,10 @@
   <PropertyGroup>
     <TargetFramework>net461</TargetFramework>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Templates\SampleTemplate01.xml" />
+    <Content Include="Templates\SampleTemplate02.xml" />
+  </ItemGroup>
   <ItemGroup>    
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.2" />    
     <PackageReference Include="SharePointPnPCoreOnline" Version="2.20.1711" />

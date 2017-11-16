@@ -23,6 +23,8 @@ namespace Provisioning.CreateModernSites.WebJob
 
         public Boolean IsPublic { get; set; }
 
+        public String PnPTemplate { get; set; }
+
         public String UserAccessToken { get; set; }
 
         public String SPORootSiteUrl { get; set; }

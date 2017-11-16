@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using OfficeDevPnP.Core;
 using Microsoft.SharePoint.Client;
 using OfficeDevPnP.Core.Sites;
+using OfficeDevPnP.Core.Framework.Provisioning.Providers.Xml;
 
 namespace Provisioning.CreateModernSites.WebJob
 {
@@ -58,6 +59,25 @@ namespace Provisioning.CreateModernSites.WebJob
                     }
 
                     log.WriteLine($"Created \"modern\" site with URL: {siteUrl}");
+
+                    log.WriteLine($"Applying provisioning template {modernSite.PnPTemplate} to site");
+
+                    using (var siteContext = authManager.GetAzureADAccessTokenAuthenticatedContext(
+                        siteUrl, modernSite.UserAccessToken))
+                    {
+                        var web = siteContext.Web;
+                        siteContext.Load(web);
+                        siteContext.ExecuteQueryRetry();
+
+                        XMLTemplateProvider provider =
+                               new XMLFileSystemTemplateProvider(Environment.GetEnvironmentVariable("WEBJOBS_PATH"), "");
+                        var template = provider.GetTemplate(modernSite.PnPTemplate);
+                        template.Connector = provider.Connector;
+
+                        web.ApplyProvisioningTemplate(template);
+                    }
+
+                    log.WriteLine($"Applyed provisioning template {modernSite.PnPTemplate} to site");
                 }
             }
             else
