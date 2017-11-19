@@ -25,4 +25,7 @@
   <ItemGroup>
     <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Provisioning.CreateModernSites.Infrastructure\Provisioning.CreateModernSites.Infrastructure.csproj" />
+  </ItemGroup>
 </Project>

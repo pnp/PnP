@@ -1,11 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Provisioning.CreateModernSites.WebJob
+namespace Provisioning.CreateModernSites.Infrastructure
 {
     public class ModernSiteCreation
     {
