@@ -67,13 +67,24 @@ namespace Provisioning.CreateModernSites.Infrastructure
                         siteContext.ExecuteQueryRetry();
 
                         var currentPath = Environment.GetEnvironmentVariable("WEBJOBS_PATH");
+                        logInfo?.Invoke($"Getting templates from path: {currentPath}");
+#if DEBUG
                         if (String.IsNullOrEmpty(currentPath))
                         {
                             currentPath = AppDomain.CurrentDomain.BaseDirectory;
+                            if (currentPath.ToLower().Contains("\\bin\\debug\\"))
+                            {
+                                currentPath = currentPath.Substring(0, currentPath.Length - 11);
+                            }
+                            else if (currentPath.ToLower().Contains("\\bin\\release\\"))
+                            {
+                                currentPath = currentPath.Substring(0, currentPath.Length - 13);
+                            }
                         }
+#endif
 
                         XMLTemplateProvider provider =
-                               new XMLFileSystemTemplateProvider(Environment.GetEnvironmentVariable("WEBJOBS_PATH"), "");
+                               new XMLFileSystemTemplateProvider(currentPath, "Templates");
                         var template = provider.GetTemplate(modernSite.PnPTemplate);
                         template.Connector = provider.Connector;
 
