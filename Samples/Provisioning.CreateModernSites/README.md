@@ -29,7 +29,7 @@ Version  | Date | Comments
 
 ----------
 # SCENARIO: Create a modern site using a custom asynchronous application #
-This sample demonstrates how to create "modern" SharePoint Online site collections ("modern" Team sites and "modern" Communication sites) using an Office 365 application registered in Azure Active Directory.
+This sample demonstrates how to create "modern" SharePoint Online site collections ("modern" Team sites and "modern" Communication sites) using an Office 365 application registered in Azure Active Directory. Moreover, right after the creation of the "modern" site, the solution applies a PnP Provisioning template to the site.
 
 ## Solution Architecture ##
 The solution has a fully decoupled architecture, which uses a front-end ASP.NET MVC web site for the UI and a couple of background services to create the modern sites. In the following figure you can see an architectural schema of the solution.
