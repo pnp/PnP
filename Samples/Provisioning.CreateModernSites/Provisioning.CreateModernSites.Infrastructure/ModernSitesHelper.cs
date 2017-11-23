@@ -66,6 +66,12 @@ namespace Provisioning.CreateModernSites.Infrastructure
                         siteContext.Load(web);
                         siteContext.ExecuteQueryRetry();
 
+                        var currentPath = Environment.GetEnvironmentVariable("WEBJOBS_PATH");
+                        if (String.IsNullOrEmpty(currentPath))
+                        {
+                            currentPath = AppDomain.CurrentDomain.BaseDirectory;
+                        }
+
                         XMLTemplateProvider provider =
                                new XMLFileSystemTemplateProvider(Environment.GetEnvironmentVariable("WEBJOBS_PATH"), "");
                         var template = provider.GetTemplate(modernSite.PnPTemplate);
