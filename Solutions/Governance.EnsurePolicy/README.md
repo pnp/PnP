@@ -2,7 +2,7 @@
 
 ### Summary ###
 
-This sample application is a console application that can either be run as a scheduled task or as a web job in Microsoft Azure and which has as goal to grant a user or group permissions to one or more site collections in SharePoint Online. This application can be used an alternative for the “grant” feature of SharePoint Web Application policies.
+This sample application is a console application that can either be run as a scheduled task or as a web job in Microsoft Azure and which has as goal to grant a user or group permissions to one or more site collections in SharePoint Online. This application can be used an alternative for the “grant” feature of SharePoint Web Application policies. Checkout the [Alternative model for web app policies in SharePoint Online](https://docs.microsoft.com/en-us/sharepoint/dev/solution-guidance/security-webapppolicies) article to learn more.
 
 ### Pre-Requisites ###
 Before you can run this application, you need to take in account the following pre-requisites:
@@ -132,6 +132,9 @@ TenantAdmin | The url to your tenant admin center e.g. https://bertonline-admin.
 ExcludeOD4BSites | Do you want to also grant the permissions to your OneDrive for Business sites? Default is false and OD4B sites are included.
 NumberOfThreads | How many parallel threads do you want to spin up. Default value is 5 but you might bump this up to higher values to help improve performance.
 SiteFilters | Which filter do you want to apply to identify the sites to operate on. This is an important parameter which is described in more detail in the next chapter.
+
+> Note:
+> See the [Granting access via Azure AD App-Only](https://docs.microsoft.com/en-us/sharepoint/dev/solution-guidance/security-apponly-azuread) article to learn how to configure an Azure AD application that you can use to run this solution.
 
 #### Configuring the SiteFilters application setting
 Using wildcard URL’s, you can control which site collections are processed by this application. This model allows you to define a very granular list by specifying the individual site collections but typically you would want to include a lot of site collections. If you want to tool to run for all site collections, you need to provide 2 filters: one for the OD4B site collections and one for the “other” site collections. 
