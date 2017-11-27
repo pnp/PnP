@@ -76,10 +76,6 @@ namespace Provisioning.CreateModernSites.Infrastructure
                             {
                                 currentPath = currentPath.Substring(0, currentPath.Length - 11);
                             }
-                            else if (currentPath.ToLower().Contains("\\bin\\release\\"))
-                            {
-                                currentPath = currentPath.Substring(0, currentPath.Length - 13);
-                            }
                         }
 #endif
 

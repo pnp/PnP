@@ -37,10 +37,13 @@ The solution has a fully decoupled architecture, which uses a front-end ASP.NET 
 ![The Web UI of the Provisioning sample application](./images/Provisioning.CreateModernSites.Architecture.png)
 
 For the sake of making a full example, the solution supports both an Azure Function and an Azure WebJob. They are fully interchangeable, and you can use this sample solution to see the differences and make your choice based on your functional requirements. Both the Azure Function and the Azure WebJob use an Azure Blob Storage Queue to store information about the "modern" sites to create. Through this approach the front-end application is fully decoupled from the back-end services, and you can benefit from a fully asynchronous and scalable architecture.
+Notice that, for the sake of sharing an architectural pattern, the front-end application embeds and OAuth 2.0 Access Token into the blob storage queue message, to provide to the back-end service (whether it is an Azure Function or an Azure WebJob) the security context of the interactive user creating the site through the web-based UI.
 
 ## Solution Deployment ##
 In order to deploy the solution you need to:
-* Register an application in Azure AD and update the web.config file of the web application (Provisioning.CreateModernSites) in order to target the ClientId, ClientSecret, Domain, TenantId and SPORootSiteUrl of your environment. If you like, you can use Visual Studio to register the application.
+* Register an application in Azure AD and update the web.config file of the web application (Provisioning.CreateModernSites) in order to target the ClientId, ClientSecret, Domain, TenantId and SPORootSiteUrl of your environment. If you like, you can use Visual Studio to register the application. The application registered in Azure AD has to have the following delegated permissions for SharePoint Online API:
+    * Read managed metadata
+    * Have full control  of all site collections
 * Create an Azure Blob Storage Account (classic) and two Blob Storage Queues in there. One queue will be called "modernsitesazurefunction" and will be used by the Azure Function. Another queue will be called "modernsitesazurewebjob" and will be used by the Azure WebJob. 
 * Configure the Azure Blob Storage Account connection string in both the Azure Function settings (Provisioning.CreateModernSites.Function) and  in the Azure WebJob settings (Provisioning.CreateModernSites.WebJob).
 * Publish the ASP.NET MVC application (Provisioning.CreateModernSites) onto an Azure App Service, and configure proper settings in the "Application Settings" section of the App Service configuration.
