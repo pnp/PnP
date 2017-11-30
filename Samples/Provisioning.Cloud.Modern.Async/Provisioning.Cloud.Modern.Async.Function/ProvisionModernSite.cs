@@ -17,7 +17,7 @@ namespace Provisioning.Cloud.Modern.Async.Function
         [FunctionName("ProvisionModernSite")]
         public static void Run([QueueTrigger("modernsitesazurefunction", Connection = "AzureWebJobsStorage")]string message, TraceWriter log)
         {
-            var currentPath = ConfigurationManager.AppSettings["AzureWebJobsScriptRoot"];
+            var currentPath = Environment.GetEnvironmentVariable("HOME");
 #if DEBUG
             if (String.IsNullOrEmpty(currentPath))
             {

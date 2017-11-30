@@ -117,8 +117,7 @@
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="OfficeDevPnP.Core, Version=2.20.1711.0, Culture=neutral, PublicKeyToken=3751622786b357c2, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\PnP-Sites-Core\Core\OfficeDevPnP.Core\bin\Debug\OfficeDevPnP.Core.dll</HintPath>
+      <HintPath>..\packages\SharePointPnPCoreOnline.2.20.1711.0\lib\net45\OfficeDevPnP.Core.dll</HintPath>
     </Reference>
     <Reference Include="SharePointPnP.IdentityModel.Extensions, Version=1.2.2.0, Culture=neutral, PublicKeyToken=3751622786b357c2, processorArchitecture=MSIL">
       <HintPath>..\packages\SharePointPnP.IdentityModel.Extensions.1.2.2\lib\net45\SharePointPnP.IdentityModel.Extensions.dll</HintPath>
