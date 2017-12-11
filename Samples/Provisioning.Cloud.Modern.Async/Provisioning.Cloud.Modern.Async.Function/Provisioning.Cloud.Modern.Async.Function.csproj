@@ -9,7 +9,7 @@
   <ItemGroup>    
     <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.2" />    
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />    
-    <PackageReference Include="SharePointPnPCoreOnline" Version="2.20.1711" />
+    <PackageReference Include="SharePointPnPCoreOnline" Version="2.21.1712.2" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
