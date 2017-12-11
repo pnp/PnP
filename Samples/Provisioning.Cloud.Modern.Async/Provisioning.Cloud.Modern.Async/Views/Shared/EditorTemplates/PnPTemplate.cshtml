@@ -1,0 +1,20 @@
+﻿@model System.String
+
+@{
+    var fieldId = Html.IdFor(m => m);
+    var isRequired = ViewData.ModelMetadata.IsRequired;
+
+    var templates = from t in System.IO.Directory.GetFiles(HttpContext.Current.Server.MapPath("/Templates"))
+                    let fileName = t.Substring(t.LastIndexOf('\\') + 1)
+                          select new SelectListItem
+                          {
+                              Text = fileName,
+                              Value = fileName,
+                          };
+
+}
+<div class="ms-f" id="@($"{fieldId}Div")">
+    <label class="ms-Label @(isRequired ? "is-required" : "")" id="@($"{fieldId}Label")">@(!String.IsNullOrEmpty(ViewData.ModelMetadata.DisplayName) ? ViewData.ModelMetadata.DisplayName : ViewData.ModelMetadata.PropertyName)</label>
+    @Html.DropDownListFor(model => model, templates, new { @class = "form-control" })
+    @Html.ValidationMessageFor(model => model)
+</div>

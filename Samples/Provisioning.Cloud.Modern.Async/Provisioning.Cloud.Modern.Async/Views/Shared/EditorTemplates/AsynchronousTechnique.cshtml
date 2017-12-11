@@ -1,0 +1,9 @@
+﻿@model Provisioning.Cloud.Modern.Async.Models.AsynchronousTechnique
+
+@{
+    var fieldId = Html.IdFor(m => m);
+    var isRequired = ViewData.ModelMetadata.IsRequired;
+}
+<label class="ms-Label @(isRequired ? "is-required" : "")" id="@($"{fieldId}Label")">@(!String.IsNullOrEmpty(ViewData.ModelMetadata.DisplayName) ? ViewData.ModelMetadata.DisplayName : ViewData.ModelMetadata.PropertyName)</label>
+@Html.EnumDropDownListFor(model => model, new { @class = "form-control" })
+@Html.ValidationMessageFor(model => model)

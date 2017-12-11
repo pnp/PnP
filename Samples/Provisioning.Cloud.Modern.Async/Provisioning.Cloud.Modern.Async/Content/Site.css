@@ -1,0 +1,193 @@
+﻿body {
+    /*padding-top: 50px;*/
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#mainContent {
+    margin-top: 20px;
+}
+
+.container {
+    margin-left: 145px;
+}
+
+h1 {
+    display: inline;
+    vertical-align: middle;
+}
+
+img.siteIcon {
+    display: inline;
+    margin-left: 40px;
+    margin-right: 20px;
+    width: 100px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.form-control {
+    border-radius: 0px !important;
+}
+
+.inputForm {
+    margin-bottom: 20px;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+a:hover {
+    color: #333 !important;
+}
+
+.scrollableContent {
+    /* overflow: auto; */
+}
+
+.waitWorking {
+    width: 350px; 
+    margin-top: 50px; 
+    margin-left: 50px; 
+    margin-bottom: 50px;
+    vertical-align: middle;
+}
+
+.settingsValue {
+    margin-top: 6px;
+}
+
+.informationText {
+    margin-bottom: 50px;
+}
+
+.noOverflow {
+    overflow: hidden;
+}
+
+.gridHeader {
+    font-weight: bold;
+}
+
+/******* Template Selection Styles *******/
+
+.stepcontainer {
+    margin: 20px;
+}
+/*.stepcontainer input[type=button] {
+    margin: 15px 15px 0 0;
+}*/
+
+.provtemplate {
+    display: inline-block;
+    padding: 10px;
+    margin: 0 15px 15px 0;
+    width: 330px;
+    height: 300px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    vertical-align: top;
+    overflow: hidden;
+}
+.provtemplate:hover {
+    background-color: #efefef;
+    cursor: pointer;
+}
+.provtemplate.active {
+    background-color: #0A5BC4;
+    color: #fff;
+}
+.provtemplate .roundmask {
+    width: 180px;
+    height: 180px;
+    background: #ddd;
+    margin: 0 auto 7px;
+    border: solid 1px #fff;
+    overflow: hidden;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+}
+.provtemplate img {
+    width: 320px;
+    height: 180px;
+}
+.provtemplate h1 {
+    display: block;
+    font-size: 1.1em;
+    font-weight: bold;
+    padding: 5px;
+    margin: 0;
+    text-align: center;
+    color: #666;
+}
+.provtemplate span {
+    display: block;
+    font-size: 0.9em;
+    padding: 5px;
+    margin: 0;
+    text-align: center;
+    color: #999;
+}
+.provtemplate:hover .roundmask {
+    border: solid 1px #888;
+}
+.provtemplate:active .roundmask {
+    border: solid 1px #094AB2;
+}
+.provtemplate:hover h1, .provtemplate:active h1, .provtemplate:hover span, .provtemplate:active span {
+    color: #000;
+}
+
+.provtemplate.active h1, .provtemplate.active span {
+    color: #fff;
+}
+input[type=checkbox], input[type=radio] {
+    margin: 10px 0 0;
+}
+
+img.templatepreview {
+    line-height: 170px;
+    text-align: left;       
+}
+
+.templatesTable {
+    width: 80%;
+    margin-bottom: 20px;
+}
+
+.gridSettings {
+    margin-bottom: 20px;
+}
+
+.stepcontainer .ms-Dropdown .ms-Label {
+    margin-bottom: 0px !important;
+}
+
+.ms-SearchBox-label {
+    font-weight: normal !important;
+}
+
+.WarningMessage
+{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    color: red;
+}

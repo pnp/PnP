@@ -1,0 +1,21 @@
+﻿@model System.Boolean
+
+@{
+    var fieldId = Html.IdFor(m => m);
+    var fieldName = Html.NameFor(m => m);
+    var isRequired = ViewData.ModelMetadata.IsRequired;
+    var isReadOnly = ViewData.Keys.Contains("readonly");
+}
+
+<div class="ms-Toggle" id="@($"{fieldId}Div")">
+    <span class="ms-Toggle-description @(isRequired ? "required" : "")" id="@($"{fieldId}Description")">@(!String.IsNullOrEmpty(ViewData.ModelMetadata.Description) ? ViewData.ModelMetadata.Description : !String.IsNullOrEmpty(ViewData.ModelMetadata.DisplayName) ? ViewData.ModelMetadata.DisplayName : ViewData.ModelMetadata.PropertyName)</span>
+    <input class="ms-Toggle-input" type="checkbox" id="@fieldId" value="true" name="@fieldName" @((isReadOnly) ? "readonly" : "") @((Model) ? "checked" : "")>
+    <label class="ms-Toggle-field @(isRequired ? "is-required" : "")" for="@fieldName" id="@($"{fieldId}Label")">
+        <span class="ms-Label ms-Label--off">Private</span>
+        <span class="ms-Label ms-Label--on">Public</span>
+    </label>
+    <input type="hidden" name="@fieldName" value="false">
+    <div>
+        @Html.ValidationMessageFor(m => m)
+    </div>
+</div>

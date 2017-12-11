@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Oops! Exception occurred!";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="ms-Grid">
+    <div class="ms-Grid-row">
+        <div class="ms-Grid-col ms-u-sm12 ms-u-md12 ms-u-lg12">
+
+            <div class="ms-font-xxl">
+                @Model.Exception.Message</>
+
+            <div class="showErrorLink ms-font-l"><a href="#">Click here to see more details</a></div>
+            <div class="error ms-font-m">
+                <hr />
+                <div>@Model.Exception.StackTrace</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script language="javascript">
+
+    $(document).ready(function() {
+
+        $(".error").hide();
+
+        $(document).on("click", ".showErrorLink a", function (e) {
+                    e.preventDefault();
+                    $(".error").show();
+                    $(".showErrorLink a").hide();
+                }
+            );
+    })
+
+</script>
+
