@@ -1,0 +1,72 @@
+﻿<?xml version="1.0"?>
+<pnp:ProvisioningTemplate ID="security_add" Version="1" xmlns:pnp="http://schemas.dev.office.com/PnP/2017/05/ProvisioningSchema">
+  <pnp:Security>
+    <!-- Sample of how a user and group needs to be defined -->
+    <!-- UPN of an account (= user) sample kevinc@bertonline.onmicrosoft.com -->
+    <!-- Role claim (= group) sample c:0-.f|rolemanager|s-1-5-21-992416943-3518085199-3295385949-83050576 
+         You need to first add this role to a site and then copy the claim value
+         -->
+
+    <!-- Shows how to add users and groups to the site collection administrators -->
+    <pnp:AdditionalAdministrators>
+      <pnp:User Name="kevinc@bertonline.onmicrosoft.com"/>
+      <pnp:User Name="c:0-.f|rolemanager|s-1-5-21-992416943-3518085199-3295385949-83050576"/>
+    </pnp:AdditionalAdministrators>
+    
+    <!-- Shows how to add users and groups to the existing site visitors group -->
+    <!--<pnp:AdditionalVisitors>
+      <pnp:User Name="kevinc@bertonline.onmicrosoft.com"/>
+      <pnp:User Name="c:0-.f|rolemanager|s-1-5-21-992416943-3518085199-3295385949-83050576"/>
+    </pnp:AdditionalVisitors>-->
+
+    <!-- Shows how to add a custom SharePoint group, add user and group and grant the OOB read role -->
+    <!--<pnp:SiteGroups>
+      <pnp:SiteGroup Title="ContosoMandatoryPermissions" 
+                     AllowRequestToJoinLeave="false"  
+                     AutoAcceptRequestToJoinLeave="false"
+                     OnlyAllowMembersViewMembership="true"
+                     Owner="{associatedownergroup}" >
+        <pnp:Members>
+          <pnp:User Name="kevinc@bertonline.onmicrosoft.com"/>
+          <pnp:User Name="c:0-.f|rolemanager|s-1-5-21-992416943-3518085199-3295385949-83050576"/>
+        </pnp:Members>        
+      </pnp:SiteGroup>
+    </pnp:SiteGroups>
+
+    <pnp:Permissions>  
+      <pnp:RoleAssignments>
+        <pnp:RoleAssignment Principal="ContosoMandatoryPermissions" RoleDefinition="Read"/>
+      </pnp:RoleAssignments>
+    </pnp:Permissions>-->
+
+    <!-- Shows how to directly grant users and groups permissions to the site -->
+    <!--<pnp:Permissions>
+      <pnp:RoleAssignments>
+        <pnp:RoleAssignment Principal="kevinc@bertonline.onmicrosoft.com" RoleDefinition="Full Control" />
+        <pnp:RoleAssignment Principal="c:0-.f|rolemanager|s-1-5-21-992416943-3518085199-3295385949-83050576" RoleDefinition="Read" />
+      </pnp:RoleAssignments>
+    </pnp:Permissions>-->
+
+    <!-- Shows how to remove directly granted users/groups or SharePoint groups from the site -->
+    <!--<pnp:Permissions>
+      <pnp:RoleAssignments>
+        <pnp:RoleAssignment Principal="kevinc@bertonline.onmicrosoft.com" RoleDefinition="Full Control" Remove="true"/>
+        <pnp:RoleAssignment Principal="c:0-.f|rolemanager|s-1-5-21-992416943-3518085199-3295385949-83050576" RoleDefinition="Read" Remove="true"/>
+        <pnp:RoleAssignment Principal="ContosoMandatoryPermissions" Remove="true" RoleDefinition="Read"/>
+      </pnp:RoleAssignments>
+    </pnp:Permissions>-->
+
+    <!-- Shows how to define your own role definition which you then can use for granting granular permissions -->
+    <!--<pnp:RoleDefinitions>
+        <pnp:RoleDefinition Name="Manage List Items" Description="Allows a user to manage list items">
+          <pnp:Permissions>
+            <pnp:Permission>ViewListItems</pnp:Permission>
+            <pnp:Permission>AddListItems</pnp:Permission>
+            <pnp:Permission>EditListItems</pnp:Permission>
+            <pnp:Permission>DeleteListItems</pnp:Permission>
+          </pnp:Permissions>
+        </pnp:RoleDefinition>
+      </pnp:RoleDefinitions>-->
+
+  </pnp:Security>   
+</pnp:ProvisioningTemplate>

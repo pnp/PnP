@@ -1,0 +1,205 @@
+@import 'variables';
+
+/* SharePoint custom editing styles */
+/* They are applied using the <PublishingWebControls:RichHtmlField FieldName="PublishingPageContent"...PrefixStyleSheet="intranet"/> line in page layouts */
+/* More information here: https://dev.office.com/sharepoint/docs/general-development/how-to-apply-styles-to-page-fields-in-sharepoint and here https://helpx.adobe.com/fr/typekit/using/css-selectors.html */
+H1.intranetElement-H1
+{
+    -ms-name:"Heading 1";
+    font-size: 56px;
+    font-family:$font-primary;
+    font-weight: 100;
+}
+H2.intranetElement-H2
+{
+    -ms-name:"Heading 2";
+    font-size: 28px;
+    font-family:$font-primary;
+    font-weight: 100;
+}
+H3.intranetElement-H3
+{
+    -ms-name:"Heading 3";
+    font-size: 22px;
+    font-family:$font-primary;
+    font-weight: 700;
+}
+H4.intranetElement-H4
+{
+    -ms-name:"Heading 4";
+    font-size: 20px;
+    font-family:$font-primary;
+    font-weight: 400;
+}
+P.intranetElement-P{
+    -ms-name:"Paragraph";
+    font-size: 14px;
+    font-family:$font-primary;
+    font-weight: 400;
+}
+.intranetFontFace-1
+{
+    font-family:$font-primary;
+    font-weight: 100;
+}
+.intranetFontFace-2
+{
+    font-family:$font-primary;
+    font-weight: 400;  
+}
+.intranetFontFace-3
+{
+    font-family:$font-primary;
+    font-weight: 700;  
+}
+.intranetFontFace-4
+{
+    font-family:$font-primary;
+    font-weight: 600;  
+}
+.intranetFontSize-1
+{
+    font-size:9pt;
+}
+.intranetFontSize-2
+{
+    font-size:11pt;
+}
+.intranetFontSize-3
+{
+    font-size:13pt;
+}
+.intranetFontSize-4
+{
+    font-size:18pt;
+}
+.intranetFontSize-5
+{
+    font-size:24pt;
+}
+.intranetFontSize-6
+{
+    font-size:36pt;
+}
+.intranetFontSize-7
+{
+    font-size:48pt;
+}
+.intranetFontSize-8
+{
+    font-size:72pt;
+}
+.intranetThemeForeColor-1
+{
+    color: #4A4A4A;
+    -ms-name:"";
+    -ms-color:"Default";
+}
+.intranetThemeForeColor-2
+{
+    color: #0066B3;
+    -ms-name:"";
+    -ms-color:"Primary Blue";
+}
+.intranetThemeForeColor-3
+{
+    color: #D8D8D8;
+    -ms-name:"";
+    -ms-color:"Light Gray";
+}
+.intranetThemeForeColor-4
+{
+    color: #000000;
+    -ms-name:"";
+    -ms-color:"Black";
+}
+.intranetThemeForeColor-5
+{
+    color: #896149;
+    -ms-name:"";
+    -ms-color:"Light Brown";
+}
+.intranetThemeForeColor-6
+{
+    color: #999999;
+    -ms-name:"";
+    -ms-color:"Darker Gray";
+}
+.intranetThemeForeColor-7
+{
+    color: #024078;
+    -ms-name:"";
+    -ms-color:"Darker Blue";
+}
+.intranetThemeForeColor-8
+{
+    color: #878787;
+    -ms-name:"";
+    -ms-color:"Dark Gray";
+}
+.intranetThemeForeColor-9
+{
+    color: #FCAF17;
+    -ms-name:"";
+    -ms-color:"Notification";
+}
+.intranetForeColor-1
+{
+    color:darkred;
+    -ms-name:"";
+    -ms-color:"Dark Red";
+}
+.intranetForeColor-2
+{
+    color:red;
+    -ms-name:"";
+    -ms-color:"Red";
+}
+.intranetForeColor-3
+{
+    color:orange;
+    -ms-name:"";
+    -ms-color:"Gold";
+}
+.intranetForeColor-4
+{
+    color:yellow;
+    -ms-name:"";
+    -ms-color:"Yellow";
+}
+.intranetForeColor-5
+{
+    color:lightgreen;
+    -ms-name:"";
+    -ms-color:"Light Green";
+}
+.intranetForeColor-6
+{
+    color:green;
+    -ms-name:"";
+    -ms-color:"Dark Green";
+}
+.intranetForeColor-7
+{
+    color:lightblue;
+    -ms-name:"";
+    -ms-color:"Sky Blue";
+}
+.intranetForeColor-8
+{
+    color:blue;
+    -ms-name:"";
+    -ms-color:"Blue";
+}
+.intranetForeColor-9
+{
+    color:darkblue;
+    -ms-name:"";
+    -ms-color:"Dark Blue";
+}
+.intranetForeColor-10
+{
+    color:purple;
+    -ms-name:"";
+    -ms-color:"Dark Purple";
+}

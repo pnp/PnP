@@ -1,0 +1,32 @@
+<div id="searchbox-mobile">
+
+    <button id="search-btn" class="toggle-btn" type="button" data-bind="click: toggleSearchBox">
+        <i class="fa" aria-hidden="true" data-bind="css: { 'fa-times': displaySearchBox,'fa-search': !displaySearchBox() }"></i>
+    </button>
+
+    <div id="bot-wechat-btn">
+        <component-botwebchat></component-botwebchat>
+    </div>
+    <!-- ko if: displaySearchBox -->
+
+        <!-- ko if: isError -->
+            <button id="error-btn" type="button" class="toggle-btn error" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-exclamation" aria-hidden="true"></i>
+            </button>
+        <!-- /ko -->
+
+        <!-- ko ifnot: isError -->
+            <button id="categories-btn" class="toggle-btn" type="button" data-bind="click: toggleCategory">
+                <i class="fa" aria-hidden="true" data-bind="css: selectedCategory() ? selectedCategory().Icon : ''"></i>
+            </button>
+        <!-- /ko -->
+
+        <form data-bind="submit: doSearch">
+            <input  type="text" placeholder="Search" data-bind="textInput: inputQuery, 
+                                attr: { placeholder: selectedCategory() ? (searchPlaceHolderLabel() + ' ' + selectedCategory().Title ) : searchPlaceHolderLabel }, 
+                                css : { 'error': isError() },
+                                event: { focusout: function(){isError(false)} },
+                                inputFocus: displaySearchBox">
+        </form>
+    <!-- /ko -->
+</div>

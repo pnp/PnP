@@ -1,8 +1,19 @@
+
+
 .bootstrap-iso {
   
-    /* We use a precompiled version of the Bootstrap CSS with only required elements (responsive grid and navbar) */ 
     @import (less) 'bootstrap.css';
-    
+
+    @import (less) 'bootstrap-sp.css';
+
+    /* Start: Bootstrap custom breakpoint */
+    @media (min-width:1440px) {
+        .container {
+            width: 1440px;
+        }
+    }
+    /* End: Bootstrap custom breakpoint */
+
     //-----------------------------
     //  Yamm Styles
     //-----------------------------
@@ -10,9 +21,17 @@
     .yamm {
 
       // reset positions 
-      .nav, .collapse, .dropup, .dropdown {
-        position: static;
-      }  
+      @media (max-width: 767px) {
+        .nav, .collapse, .dropup, .dropdown {
+          position: relative;
+          z-index: 1;
+        }  
+      }
+      @media (min-width: 768px) {
+        .nav, .collapse, .dropup, .dropdown {
+          position: static;
+        }
+      }
 
       // propagate menu position under container for fw navbars
       .container {
@@ -20,15 +39,14 @@
       }
 
       // by default aligns menu to left
-      .dropdown-menu {
+      // Content with padding 
+      ul.dropdown-menu {
         left: auto;
+        padding-bottom: 20px;
+        padding-top: 20px;
+        padding-left: 15px;
       }
       
-      // Content with padding 
-      .yamm-content {
-        padding: 20px 30px;
-      }
-
       // Fullwidth menu
       .dropdown.yamm-fw .dropdown-menu {
         left: 0; 
@@ -39,7 +57,5 @@
           min-width: 120px;
           list-style: none;
       }
-     
     }
 }
-

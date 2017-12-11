@@ -1,0 +1,32 @@
+@import '../../styles/css/variables';
+
+#page-info {
+
+    font-family: $font-primary;
+    font-size: 14px;
+    line-height: 30px;
+
+    i {
+        color: $page-icon-color;
+    }
+
+    .tag {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .category {
+        color: $page-icon-color;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    /* Small devices */
+    @media (max-width: 767px) { 
+
+        .category {
+            padding-left: 2px;
+            padding-right: 2px;
+        }
+    }
+}

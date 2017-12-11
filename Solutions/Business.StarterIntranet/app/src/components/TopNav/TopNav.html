@@ -1,0 +1,81 @@
+<div id="navbar" data-bind="css: {'spinner': wait }">
+  <div class="navbar yamm clear">
+      <div class="navbar-header">
+          <button type="button" data-toggle="slide-collapse" class="navbar-toggle" data-bind="attr: { 'data-target': mainMenuCollapseElementIdSelector }">
+              <i class="fa fa-bars" aria-hidden="true"></i>
+          </button>
+          <div class="searchbar hidden-lg hidden-md">
+              <component-searchboxmobile></component-searchboxmobile>
+          </div>
+          <a data-bind="attr: { href: _spPageContextInfo.webAbsoluteUrl }">
+            <img class="mobile-intranetlogo hidden-md hidden-lg hidden-sm" data-bind="attr: { src: _spPageContextInfo.webLogoUrl  }">
+            </img>
+          </a>
+      </div>
+      <div class="menu-content">
+        <div class="navbar-collapse collapse" data-bind="attr: { id: mainMenuCollapseElementId }">
+          <div id="utility-navigation" class="hidden-md hidden-sm hidden-lg">
+            <li id="utility-collapse" data-toggle="collapse" data-bind="attr: { 'data-target': utilityMenuCollapseElementIdSelector }">
+              <span data-bind="text: utilityNavigationLabel"></span>
+              <i class="fa fa-angle-down"></i>
+            </li>
+          
+            <div class="collapse" data-bind="attr: { id: utilityMenuCollapseElementId }">
+              <component-headerlinks></component-headerlinks>
+              <component-languageswitcher params='languageFieldName:"IntranetContentLanguage", associationKeyFieldName:"IntranetContentAssociationKey"'></component-languageswitcher>
+            </div>            
+          </div>
+          <ul class="nav navbar-nav">
+              <!-- ko if: errorMessage  -->   
+                <li>
+                  <a>
+                    <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                    <span data-bind="text: errorMessage"></span>
+                  </a>
+                </li>
+              <!-- /ko -->
+
+              <!-- ko foreach: nodes -->
+                <!-- ko ifnot: excludeFromGlobalNavigation() -->
+                  <li data-bind="css: { dropdown: hasChildren(), right: $data.properties()['align'] === 'right' }" class="level1">
+                    <a aria-expanded="true" data-bind="attr: { href: url, 'data-toggle': dataToggle }, css: { 'dropdown-toggle': hasChildren }">                          
+                          <span data-bind="text: title"></span>
+                          <i class="fa fa-caret-down" data-bind="visible: hasChildren"></i>
+                    </a>
+                    <!-- ko if: hasChildren -->
+                    <ul class="dropdown-menu">
+                      <li>
+                        <!-- Content container to add padding -->
+                        <div class="yamm-content">
+                          <div class="row-fluid">
+                            <!-- ko foreach: children -->
+                              <!-- ko ifnot: excludeFromGlobalNavigation() -->
+                              <ul class="col-sm-3 list-unstyled">
+                                <li class="level2">
+                                  <a data-bind="text: title, attr: { href: url }"></a>
+                                </li>
+                                <!-- ko if: hasChildren -->
+                                  <!-- ko foreach: children -->
+                                    <!-- ko ifnot: excludeFromGlobalNavigation() -->
+                                        <li class="level3">
+                                          <a data-bind="text: title, attr: { href: url }"></a>
+                                        </li>
+                                    <!-- /ko -->
+                                  <!-- /ko -->
+                                <!-- /ko -->
+                              </ul>
+                              <!-- /ko -->
+                            <!-- /ko -->
+                          </div>
+                        </div>
+                      </li>
+                    </ul>
+                    <!-- /ko -->
+                  </li>
+                <!-- /ko -->
+            <!-- /ko -->
+          </ul>
+        </div>
+      </div>
+  </div>
+</div>

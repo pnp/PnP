@@ -143,13 +143,14 @@ function Set-FolderContentTypesOrder() {
 
 	$Folder = Ensure-PnPFolder -SiteRelativePath $FolderRelativePath
 	$ContentTypeOrder = New-Object System.Collections.Generic.List[Microsoft.SharePoint.Client.ContentTypeId]
+    $PagesLibraryName = (Get-PnPList -Identity (Get-PnPPropertyBag -Key __PagesListId)).Title
 
 	if ($ContentTypes.Count -gt 0) {
 
 		$ContentTypes | Foreach-Object {
 
 			$ContentTypeName = $_
-			$Ct = Get-PnPContentType  -List Pages | Where-Object { $_.Name -eq $ContentTypeName }
+			$Ct = Get-PnPContentType -List $PagesLibraryName | Where-Object { $_.Name -eq $ContentTypeName }
 
 			if ($Ct) {
 
@@ -164,4 +165,52 @@ function Set-FolderContentTypesOrder() {
 
 		Execute-PnPQuery	
 	}
+}
+
+function Write-Section(){
+  Param
+  (
+    $Message
+  )
+
+    Write-Host "`n$("-" * 50)" -ForegroundColor Green
+    Write-Host $Message -ForegroundColor Yellow  
+    Write-Host "$("-" * 50)`n" -ForegroundColor Green
+}
+
+function Write-Header() {
+
+Param
+  (
+    $AppVersion
+  )
+
+$header = @"
+  _____       _____     _____ _             _              _____       _                        _   
+ |  __ \     |  __ \   / ____| |           | |            |_   _|     | |                      | |  
+ | |__) | __ | |__) | | (___ | |_ __ _ _ __| |_ ___ _ __    | |  _ __ | |_ _ __ __ _ _ __   ___| |_ 
+ |  ___/ '_ \|  ___/   \___ \| __/ _` | '__| __/ _ \ '__|   | | | '_ \| __| '__/ _` | '_ \ / _ \ __|
+ | |   | | | | |       ____) | || (_| | |  | ||  __/ |     _| |_| | | | |_| | | (_| | | | |  __/ |_ 
+ |_|   |_| |_|_|      |_____/ \__\__,_|_|   \__\___|_|    |_____|_| |_|\__|_|  \__,_|_| |_|\___|\__|
+
+ Version: $AppVersion
+ Author: Franck Cornu (MVP Office Development at aequos)
+ Email: franck.cornu@aequos.ca
+ Twitter: @FranckCornu                                                                                                                                                                             
+
+"@
+
+Write-Host $header -ForegroundColor Cyan
+
+}
+
+function Write-Message() {
+  Param
+  (
+    $Message,
+    $ForegroundColor="Magenta",
+    [switch]$NoNewline=$false
+  )
+
+    Write-Host "`t$Message" -ForegroundColor $ForegroundColor -NoNewline:$NoNewline
 }

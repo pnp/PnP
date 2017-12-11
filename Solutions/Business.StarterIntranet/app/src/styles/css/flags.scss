@@ -32,13 +32,14 @@ i.flag {
       height: 11px;
     }
   }
+}
 
-  /* */
-  &.fr:before, &.france:before {
-    background-position: 0px -1976px;
-  }
-  &.gb:before, &.united.kingdom:before {
-    background-position: -36px -26px;
-  }
-  /**/
+/* Flags positions in sprite*/
+
+i.flag.fr:before {
+  background-position: 0px -1976px;
+}
+
+i.flag.en:before {
+  background-position: -36px -26px;
 }

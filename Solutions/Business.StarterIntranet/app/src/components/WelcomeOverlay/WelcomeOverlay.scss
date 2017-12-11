@@ -1,0 +1,59 @@
+@import '../../styles/css/variables';
+
+#welcome {
+    height: 519px; // Header size (664px) - Line height for header (145px);
+    border-radius: 2px;
+    background-color: rgba(0, 0, 0, 0.3);
+    margin-left: -15px;
+    margin-right: -15px;
+
+    #welcome-nav {
+        position: absolute;
+        bottom: 88px;
+        background-color: black;
+        width: 100%;
+    }
+
+    #welcome-message {
+        padding-top: 50px;
+        padding-bottom: 50px;
+        font-family: $font-primary;
+        font-size: 56px;
+        font-weight: lighter;
+        line-height: 1.14;
+        text-align: left;
+        color: #ffffff;
+    }
+
+    #welcome-searchbox {
+        padding-bottom: 10px;
+        padding-top: 10px;
+
+        #search-input, input {
+            background-color: #fff;
+            min-width: 50%;
+
+            i.fa-search, input {
+                color: #000;
+            }
+        }
+    }
+
+    #welcome-message, #welcome-searchbox {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+
+    #welcome-nav {
+        ul.navbar-nav {
+
+            > li:first-child {
+                padding-left: 50px;
+            }
+
+            > li:last-child {
+                padding-right: 50px;
+            }
+        }
+    }
+}

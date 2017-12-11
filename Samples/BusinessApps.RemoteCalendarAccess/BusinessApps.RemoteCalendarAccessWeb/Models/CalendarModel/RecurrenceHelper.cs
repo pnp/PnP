@@ -53,7 +53,7 @@ namespace BusinessApps.RemoteCalendarAccess.Models.CalendarModel
 
         private void AppendWeekly(StringBuilder builder, dynamic weekly, dynamic json)
         {
-            builder.Append("WEEKLY;INTERVAL=" + weekly.weekFrequency + ";WKST=" + json.recurrence.rule.firstDayOfWeek);
+            builder.Append("WEEKLY;INTERVAL=" + weekly.weekFrequency + ";WKST=" + ((string)json.recurrence.rule.firstDayOfWeek).ToUpperInvariant());
 
             if (weekly.su == "TRUE" || weekly.mo == "TRUE" || weekly.tu == "TRUE" || weekly.we == "TRUE" ||
                 weekly.th == "TRUE" || weekly.fr == "TRUE" || weekly.sa == "TRUE")
