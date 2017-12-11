@@ -41,13 +41,49 @@ Notice that, for the sake of sharing an architectural pattern, the front-end app
 
 ## Solution Deployment ##
 In order to deploy the solution you need to:
-* Register an application in Azure AD and update the web.config file of the web application (Provisioning.CreateModernSites) in order to target the ClientId, ClientSecret, Domain, TenantId and SPORootSiteUrl of your environment. If you like, you can use Visual Studio to register the application. The application registered in Azure AD has to have the following delegated permissions for SharePoint Online API:
-    * Read managed metadata
-    * Have full control  of all site collections
+* Create an Azure App Service to host the web application
+    * Save the name of the app service, because you will use it in the following steps
+* Register the application in Azure AD:
+    * Browse to: https://portal.azure.com/
+    * Select "Azure Active Directory" -> "App Registrations" and click on "New application registration" in the upper command bar
+    * Follow the wizard steps:
+        * Provide a name for the application (for example Provisioning.Cloud.Modern.Async)
+        * Choose "Web app/API" in the "Application type" field
+        * Provide the URL of the Azure App Service for the "Sign-on URL" field
+
+![The Web UI of the Azure Portal while registering the Azure AD App](./images/Create-Azure-AD-App.png)
+
+* Select the just created App
+    * Save the "Application ID" (i.e. Client ID) of the just created app
+    * Select "Keys" in the "Settings" panel
+        * Create a new password, give it a name (for example "SharedSecret") and an expire date
+        * Hit the "Save" button to read the generated password, and save the password value together with the Client ID
+
+![The Web UI of the Azure Portal while configured a Shared Secret for an App](./images/Create-Azure-AD-App-SharedSecret.png)
+
+* Now, still in the "Settings" panel select "Required Permissions" and configure the following permissions:
+    * Office 365 SharePoint Online (Microsoft.SharePoint)
+        * Delegated Permissions
+            * Read managed metadata
+            * Have full control  of all site collections
+    * Microsoft Graph
+        * Delegated Permissions
+            * Read and write directory data
+    * Windows Azure Active Directory (Microsoft.Azure.ActiveDirectory)
+        * Delegated Permissions
+            * Sign in and read user profile
+
+* Close the App and select the "Properties" section of the current Azure AD tenant
+    * Copy the value of the "Directory ID" field, and store it as the TenantId value
+
+![The Web UI of the Azure Portal to read the Tenant ID of the current Azure AD tenant](./images/Azure-AD-Tenant-ID.png)
+
+* Select your target SharePoint Online environment and save the URL of the root site collection (the one like https://[your-tenant-name].sharepoint.com/), call it SPORootSiteUrl
+* Update the web.config file of the web application (Provisioning.Cloud.Modern.Async) in order to target the ClientId, ClientSecret, Domain, TenantId and SPORootSiteUrl of your environment.
 * Create an Azure Blob Storage Account (classic) and two Blob Storage Queues in there. One queue will be called "modernsitesazurefunction" and will be used by the Azure Function. Another queue will be called "modernsitesazurewebjob" and will be used by the Azure WebJob. 
-* Configure the Azure Blob Storage Account connection string in both the Azure Function settings (Provisioning.CreateModernSites.Function) and  in the Azure WebJob settings (Provisioning.CreateModernSites.WebJob).
-* Publish the ASP.NET MVC application (Provisioning.CreateModernSites) onto an Azure App Service, and configure proper settings in the "Application Settings" section of the App Service configuration.
-* Publish the Azure Web Job (Provisioning.CreateModernSites.WebJob) within the same Azure App Service used in the  previous step.
-* Publish the Azure Function (Provisioning.CreateModernSites.Function) targeting a new Azure Function, which you can create directly from Visual Studio.
+* Configure the Azure Blob Storage Account connection string in both the Azure Function settings (Provisioning.Cloud.Modern.Async.Function) and  in the Azure WebJob settings (Provisioning.Cloud.Modern.Async.WebJob).
+* Publish the ASP.NET MVC application (Provisioning.Cloud.Modern.Async) onto an Azure App Service, and configure proper settings in the "Application Settings" section of the App Service configuration.
+* Publish the Azure Web Job (Provisioning.Cloud.Modern.Async.WebJob) within the same Azure App Service used in the  previous step.
+* Publish the Azure Function (Provisioning.Cloud.Modern.Async.Function) targeting a new Azure Function, which you can create directly from Visual Studio.
 
 <img src="https://telemetry.sharepointpnp.com/pnp/samples/Provisioning.Cloud.Modern.Async" />
