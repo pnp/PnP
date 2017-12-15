@@ -5,7 +5,10 @@
 « PnP Starter Intranet » is a generic, enterprise intranet publishing solution, compatible with SharePoint 2013, 2016 and SharePoint Online and developed by aequos (www.aequos.ca). It is the direct result of hundreds of hours of work and analysis corroborated through the use of the solution in actual projects. 
 Version 2.0.0’s design was created by a firm of professional graphic designers (www.wearedetour.com) in order to meet the SharePoint intranet requirements of the IDRC (International Development Research Center, www.idrc.ca).
 
-We would therefore like to thank Denis Turgeon (Project manager at the CRDI) and Ryan Short (Founder and President of Detour UX) for having graciously agreed to share this solution with the SharePoint community.
+We would therefore like to thank Denis Turgeon (Project manager at the CRDI) and Ryan Short (Founder and President of Detour UX) for having graciously agreed to share this solution with the SharePoint community. You can find the complete story behind this solution in this PnP Webcast:
+
+[![Pnp Starter Intranet - Customer Story](http://img.youtube.com/vi/2LQfJe8nOws/maxresdefault.jpg)](https://youtu.be/2LQfJe8nOws)
+
 PnP Starter Intranet is a free, open source solution that can be fully customized to meet your requirements. Inasmuch, this solution is not a product per se (and does not come with a warranty or dedicated support team), but a solid base you can use or  build on and easily customize.
 Even if this solution does not meet all your requirements and development practices, it does provide, free of charge, features and capabilities that consulting firms usually charge several hundred thousands of dollars to develop.
 
@@ -86,35 +89,10 @@ The entire solution is "site collection self-contained" so it does not conflict 
     </td>
   </tr>
 </table>
-
-## Solution documentation (optional) ##
-
-A complete and optional documentation is available along this solution with an additional fee. It includes:
-- A French or English version with free updates following the latest version of the solution
-- A complete development guide (about 100 pages) on how to maintain and customize this solution (add a new language, create a new component, etc.)
-- A complete user guide (about 40 pages) on how to use this solution from a contributor point of view (create content, manage navigation, etc.)
-
-<p align="center">
-  <span>
-      <a href="https://transactions.sendowl.com/packages/48364/D024B326/view"><img src="https://static.wixstatic.com/media/9b7fa1_a0c40971a90c49349633971900079d59~mv2.png/v1/fit/w_375,h_375/9b7fa1_a0c40971a90c49349633971900079d59~mv2.png" /></a>
-  </span>
-  &nbsp;&nbsp;
-  <span>
-    <a href="https://transactions.sendowl.com/packages/48367/D92CFE56/view"><img src="https://static.wixstatic.com/media/9b7fa1_298a136859854926833330111db378b3~mv2.png/v1/fit/w_375,h_375/9b7fa1_298a136859854926833330111db378b3~mv2.png" /></a>
-    <p align="center">By<p>
-  </span>
-</p>
-
-
-<p align="center">
-
-<a href="https://www.aequos.ca/" target="_blank">
-	<img src="./images/aequos-logo.png" width="80px"/></a></p>
-  
-  <span>Thank you for supporting us!</span>
+ 
 
 ## Applies to ##
-- SharePoint 2013/2016 on-premises
+- SharePoint 2013/2016 on-premises 
 - SharePoint Online (*Office 365 E3* plan minimum to get the Content Search WebPart)
 
 ## Solution ##
@@ -130,6 +108,15 @@ Version  | Date | Comments
 1.2 | January 31st 2016 |  <ul style="list-style: none"><li>Added the support of SharePoint 2013 and 2016 on-premises</li><li>Updated to TypeScript 2.1.5 and PnP Js Core 1.0.6</li></ul>
 1.3 | May 4th 2017 | <ul style="list-style: none"><li>New design</li><li>Added the support of event pages</li><li>New display templates for news + new carousel design</li><li>Added a QnA bot integration with authentication</li><li>Bug fixes + migration to webpack 2.0 and sp-pnp-js 2.0</li></ul>
 2.0 | August 30th 2017 | <ul style="list-style: none"><li>Completely new design reused from a real project and made by a firm of professional graphic designers</li><li>Added the option to deploy with only one language + ability to add new languages on the fly</li><li>Several performance improvements</li><li>Added a complete documentation (user and development guides) available separately</li><li>Bug fixes and code structure improvements</li></ul>
+
+## Solution documentation ##
+ 
+A complete and optional documentation is available along this solution. It includes:
+- A French or English version following the latest version of the solution
+- A complete development guide (about 100 pages) on how to maintain and customize this solution (add a new language, create a new component, etc.)
+- A complete user guide (about 40 pages) on how to use this solution from a contributor point of view (create content, manage navigation, etc.)
+ 
+More information here: [http://thecollaborationcorner.com/2017/09/11/a-new-version-available-for-the-pnp-starter-intranet](http://thecollaborationcorner.com/2017/09/11/a-new-version-available-for-the-pnp-starter-intranet)
 
 ## Set up your environment ##
 

@@ -1,17 +1,6 @@
 @import 'variables';
 @import 'sp-editingstyles';
 
-//-----------------------------
-//  Fonts
-//-----------------------------
-@font-face {
-    font-family: 'myriad-pro';
-    src: url(./fonts/MyriadPro-Regular.eot);
-    src: url(./fonts/MyriadPro-Regular.woff) format('woff'), 
-         url(./fonts/MyriadPro-Regular.ttf) format('truetype'), 
-         url(./fonts/MyriadPro-Regular.svg) format('svg')
-}
-
 #s4-bodyContainer {
 
   height: 100%;
