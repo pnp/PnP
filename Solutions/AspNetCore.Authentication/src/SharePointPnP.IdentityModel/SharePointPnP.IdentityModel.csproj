@@ -4,7 +4,7 @@
     <AssemblyTitle>SharePointPnP.IdentityModel</AssemblyTitle>
     <VersionPrefix>2.0.0</VersionPrefix>
     <Authors>Radi Atanassov</Authors>
-    <TargetFramework>net47</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
     <AssemblyName>SharePointPnP.IdentityModel</AssemblyName>
     <PackageId>SharePointPnP.IdentityModel</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>

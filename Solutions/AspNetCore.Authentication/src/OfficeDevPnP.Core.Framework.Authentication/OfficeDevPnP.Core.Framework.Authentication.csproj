@@ -4,12 +4,13 @@
     <AssemblyTitle>OfficeDevPnP.Core.Framwork.Authentication</AssemblyTitle>
     <VersionPrefix>2.0.0</VersionPrefix>
     <Authors>Radi Atanassov</Authors>
-    <TargetFramework>net47</TargetFramework>
+    <TargetFramework>net461</TargetFramework>
     <AssemblyName>OfficeDevPnP.Core.Framework.Authentication</AssemblyName>
     <PackageId>OfficeDevPnP.Core.Framework.Authentication</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
