@@ -65,9 +65,11 @@
 							<!-- ko with: item -->
 												
 								<div class="item-image hidden-sm hidden-xs" style="display:none">
+									<!-- ko if: $data.PublishingImage -->
 									<a data-bind="attr: { href: Path }">                            
 										<img src="_#= imageUrlWithRendition =#_" data-bind="css: {'no-image': !PublishingImage }"/>
 									</a>
+									<!-- /ko -->
 								</div>
 			
 								<div class="item-title">
