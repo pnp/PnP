@@ -12,12 +12,14 @@
         // GET: /<controller>/
         public IActionResult Index()
         {
-            if (SharePointContextProvider.Current == null) return View(); //null if middleware not intercepted
+            if (SharePointContextProvider.Current == null)
+                return View(); //null if middleware not intercepted
 
             var spContext = SharePointContextProvider.Current.GetSharePointContext(HttpContext);
             var spLists = new List<SharePointListViewModel>();
 
-            if (spContext == null) return View(); //issues with configuration
+            if (spContext == null)
+                return View(); //issues with configuration
 
             //build a client context to work with data
             using (var clientContext = spContext.CreateUserClientContextForSPHost())

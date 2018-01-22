@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Server.Kestrel.Filter;
-using AspNetCore.Mvc.StarterWeb.Extensions;
+using System.Net;
+using System;
+using System.Threading.Tasks;
 
 namespace AspNetCore.Mvc.StarterWeb
 {
@@ -13,32 +10,24 @@ namespace AspNetCore.Mvc.StarterWeb
     {
         public static void Main(string[] args)
         {
-            try
-            {
-                var host = new WebHostBuilder()
-                    .UseKestrel(options =>
-                        {
-                            options.UseHttps(@"..\..\certificates\localhost_ssl.pfx", "pass@word1");
-                            options.NoDelay = true;
+            BuildWebHost(args).Run();
+        }
 
-                            //I use this to get rid of SSL errors, feel free to remove it.
-                            options.ConnectionFilter = new IgnoreSslErrorsConnectionFilter(options.ConnectionFilter ?? new NoOpConnectionFilter());
-                        }
-                    )
-                    .UseUrls("https://localhost:5000")
-                    .UseContentRoot(Directory.GetCurrentDirectory());
+        public static IWebHost BuildWebHost(string[] args)
+        {
+            IWebHostBuilder webHostBuilder = WebHost.CreateDefaultBuilder(args)
+                .UseKestrel(options =>
+                {
+                    options.Listen(IPAddress.Any, 5000, listenOptions =>
+                    {
+                        listenOptions.UseHttps(@"..\..\certificates\localhost_ssl.pfx", "pass@word1");
+                        listenOptions.NoDelay = true;
+                    });
 
-                host.UseStartup<Startup>();
+                })
+                .UseStartup<Startup>();
 
-                var webHost = host.Build();
-
-                webHost.Run();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-                Console.ReadKey();
-            }
+            return webHostBuilder.Build();
         }
     }
 }

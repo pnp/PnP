@@ -4,47 +4,51 @@
     using System;
     using System.Security.Claims;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Http.Authentication;
-    using Microsoft.AspNetCore.Http.Features.Authentication;
     using System.Linq;
     using System.Net.Http;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.Logging;
+    using System.Text.Encodings.Web;
+    using Microsoft.Extensions.Options;
+    using OfficeDevPnP.Core.Framework.Authentication.Events;
 
     /// <summary>
     /// Handles the authentication mechanism for SP Provider Hosted Apps
     /// </summary>
-    public class SharePointAuthenticationHandler : RemoteAuthenticationHandler<SharePointAuthenticationOptions>
-    {
-        private const string SPCacheKeyKey = "SPCacheKey";
+    public class SharePointAuthenticationHandler : RemoteAuthenticationHandler<SharePointAuthenticationOptions>, IAuthenticationSignOutHandler 
+    {        
+        protected HttpClient Backchannel => Options.Backchannel;
 
-        public SharePointAuthenticationHandler(HttpClient backchannel)
+        /// <summary>
+        /// The handler calls methods on the events which give the application control at certain points where processing is occurring. 
+        /// If it is not provided a default instance is supplied which does nothing when the methods are called.
+        /// </summary>
+        protected new SharePointAuthenticationEvents Events
         {
-            Backchannel = backchannel;
+            get { return (SharePointAuthenticationEvents)base.Events; }
+            set { base.Events = value; }
         }
 
-        protected HttpClient Backchannel { get; private set; }
+        public SharePointAuthenticationHandler(IOptionsMonitor<SharePointAuthenticationOptions> options, ILoggerFactory logger, UrlEncoder urlEncoder, ISystemClock clock)
+            : base(options, logger, urlEncoder, clock)
+        { }
 
-        protected override async Task<AuthenticateResult> HandleRemoteAuthenticateAsync()
-        {
-            Uri redirectUrl;
+        /// <summary>
+        /// Creates a new instance of the events instance.
+        /// </summary>
+        /// <returns>A new instance of the events instance.</returns>
+        protected override Task<object> CreateEventsAsync() => Task.FromResult<object>(new SharePointAuthenticationEvents());
 
-            if (string.IsNullOrEmpty(Options.ClientId)) return AuthenticateResult.Fail("ClientId is not configured in the appsettings.json file.");
-
+        protected override async Task<HandleRequestResult> HandleRemoteAuthenticateAsync()
+        {            
             //Set the default error message when no SP Auth is attempted
-            AuthenticateResult result = AuthenticateResult.Fail("Could not handle SharePoint authentication.");
-
-            var authenticationProperties = new AuthenticationProperties()
-            {
-                ExpiresUtc = DateTimeOffset.UtcNow.AddDays(10),
-                IsPersistent = false,
-                AllowRefresh = false
-            };
-
+            HandleRequestResult result = HandleRequestResult.Fail("Could not handle SharePoint authentication.");
+            
             // Sets up the SharePoint configuration based on the middleware options.
             var spContextProvider = SharePointContextProvider.GetInstance(
                 SharePointConfiguration.GetFromSharePointAuthenticationOptions(Options));
 
-            switch (SharePointContextProvider.CheckRedirectionStatus(Context, out redirectUrl))
+            switch (SharePointContextProvider.CheckRedirectionStatus(Context, out Uri redirectUrl))
             {
                 case RedirectionStatus.Ok:
                     // Gets the current SharePoint context
@@ -58,72 +62,63 @@
                     // Checks if we already have an authenticated principal
                     ClaimsPrincipal principal;
                     if (Context.User.Identities.Any(identity =>
-                        identity.IsAuthenticated && identity.HasClaim(x => x.Issuer == GetType().Assembly.GetName().Name)))
+                        identity.IsAuthenticated && identity.HasClaim(x => x.Issuer == ClaimsIssuer)))
                     {
                         principal = Context.User;
                     }
                     else
                     {
                         //build a claims identity and principal
-                        var identity = new ClaimsIdentity(this.Options.AuthenticationScheme);
+                        var identity = new ClaimsIdentity(Scheme.Name);
 
                         // Adds claims with the SharePoint context CacheKey as issuer to the Identity object.
                         var claims = new[]
                         {
-                            new Claim(ClaimTypes.Authentication, userCacheKey, "SPCacheKey",  GetType().Assembly.GetName().Name),
+                            new Claim(ClaimTypes.Authentication, userCacheKey, "SPCacheKey", ClaimsIssuer)
                         };
 
                         identity.AddClaims(claims);
 
                         principal = new ClaimsPrincipal(identity);
-
-                        // Handles the sign in method of the SP auth middleware
-                        await Context.Authentication.SignInAsync
-                            (this.Options.AuthenticationScheme, principal, authenticationProperties);
-
-                        //sign in the cookie middleware so it issues a cookie
-                        if (!string.IsNullOrWhiteSpace(this.Options.CookieAuthenticationScheme))
-                        {
-                            SignInAccepted = true;
-                            await Context.Authentication.SignInAsync
-                                  (this.Options.CookieAuthenticationScheme, principal, authenticationProperties);
-                        }
+                        
+                        //Call sign in middleware, defaults to the cookie middleware (if set up) so it issues a cookie, can be overriden
+                        await HandleSignInAsync(principal);
                     }
 
                     // Creates the authentication ticket.
-                    var ticket = new AuthenticationTicket(principal, authenticationProperties, this.Options.AuthenticationScheme);
-                    result = AuthenticateResult.Success(ticket);
+                    var ticket = new AuthenticationTicket(principal, Options.AuthenticationProperties, Options.SignInScheme);
+                    result = HandleRequestResult.Success(ticket);
 
                     //Throw auth ticket success event
-                    await Options.SharePointAuthenticationEvents.AuthenticationSucceeded(
-                        new Events.AuthenticationSucceededContext(Context, Options)
+                    await Events.AuthenticationSucceeded(
+                        new AuthenticationSucceededContext(Context, Scheme, Options, Options.AuthenticationProperties)
                         {
                             Ticket = ticket, //pass the ticket 
                             SharePointContext = spContext //append the sp context
                         });
 
                     //Log success
-                    LoggingExtensions.TokenValidationSucceeded(this.Logger);
+                    LoggingExtensions.TokenValidationSucceeded(Logger);
 
                     break;
                 case RedirectionStatus.ShouldRedirect:
                     Response.StatusCode = 301;
-                    result = AuthenticateResult.Fail("ShouldRedirect");
+                    result = HandleRequestResult.Fail("ShouldRedirect");
 
                     // Signs out so new signin to be performed on redirect back from SharePoint
-                    await Context.Authentication.SignOutAsync(this.Options.AuthenticationScheme);
+                    await Context.SignOutAsync(Scheme.Name);
 
                     // Redirect to get new context token
                     Context.Response.Redirect(redirectUrl.AbsoluteUri);
                     break;
                 case RedirectionStatus.CanNotRedirect:
-                    result = AuthenticateResult.Fail("No SPHostUrl to build a SharePoint Context, but Authenticate was called on the SharePoint middleware.");
+                    result = HandleRequestResult.Fail("No SPHostUrl to build a SharePoint Context, but Authenticate was called on the SharePoint middleware.");
 
                     //Log that we cannot redirect
-                    LoggingExtensions.CannotRedirect(this.Logger);
+                    LoggingExtensions.CannotRedirect(Logger);
 
                     //Throw failed event
-                    await Options.SharePointAuthenticationEvents.AuthenticationFailed(new Events.AuthenticationFailedContext(Context, Options));
+                    await Events.AuthenticationFailed(new AuthenticationFailedContext(Context, Scheme, Options, Options.AuthenticationProperties));
 
                     break;
             }
@@ -133,20 +128,16 @@
 
         protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            //var baseResult = await base.HandleAuthenticateAsync();
-            var baseRemoteResult = await HandleRemoteAuthenticateAsync();
-            return baseRemoteResult;
+            return await HandleRemoteAuthenticateAsync();
         }
 
-        protected override Task<bool> HandleRemoteCallbackAsync()
+        protected virtual async Task HandleSignInAsync(ClaimsPrincipal principal)
         {
-            return base.HandleRemoteCallbackAsync();
-        }
-
-        protected override Task HandleSignInAsync(SignInContext context)
-        {
-            SignInAccepted = true;
-            return Task.FromResult<object>(null);
+            //sign in the cookie middleware so it issues a cookie
+            if (!string.IsNullOrWhiteSpace(Options.CookieAuthenticationScheme))
+            {
+                await Context.SignInAsync(Options.CookieAuthenticationScheme, principal, Options.AuthenticationProperties);
+            }
         }
 
         /// <summary>
@@ -161,14 +152,12 @@
                 !user.Identities.Any(i => i.IsAuthenticated);
 
             var userIsAuthenticatedWithSharePoint =
-                user.Identities.Any(i => i.AuthenticationType == GetType().Assembly.GetName().Name);
+                user.Identities.Any(i => i.AuthenticationType == Scheme.Name);
+                
 
             if (!userIsAnonymous && userIsAuthenticatedWithSharePoint) return false; //do not re-authenticate if authenticated
-
-            bool requestFromSharePoint = RequestFromSharePoint(Context);
-            bool spCacheCookieExists = CookieExists(Context, SPCacheKeyKey);
-
-            if (!spCacheCookieExists && !requestFromSharePoint)
+            
+            if (!await ShouldHandleRequestAsync())
             {
                 //return Handled, but not authenticated...
                 return false; // continue the middleware pipeline
@@ -181,54 +170,31 @@
 
             return false;
         }
-
-        /// <summary>
-        /// Overrides Sign Out logic
-        /// </summary>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        protected override async Task HandleSignOutAsync(SignOutContext context)
-        {
-            if (!string.IsNullOrWhiteSpace(this.Options.CookieAuthenticationScheme))
-            {
-                await Context.Authentication.SignOutAsync(this.Options.CookieAuthenticationScheme);
-            }
-
-            SignOutAccepted = true;
-        }
-
-        public new bool ShouldHandleScheme(string authenticationScheme, bool handleAutomatic)
-        {
-            return string.Equals(Options.AuthenticationScheme, authenticationScheme, StringComparison.Ordinal) ||
-                (handleAutomatic && string.Equals(authenticationScheme, AuthenticationManager.AutomaticScheme, StringComparison.Ordinal));
-        }
+        
+        public override Task<bool> ShouldHandleRequestAsync()
+            => Task.FromResult(RequestFromSharePoint(Request) || SPCacheKeyCookieExists(Request));
 
         /// <summary>
         /// Checks if the incoming request is coming from SharePoint for the purpose of Add-in authentication
         /// </summary>
-        /// <param name="context">The HttpContext object with information about the request</param>
+        /// <param name="request">The HttpRequest object for this request</param>
         /// <returns>True if coming from SharePoint</returns>
-        private bool RequestFromSharePoint(HttpContext context)
-        {
-            var hasSPHostUrl = (context.Request.QueryString.HasValue && context.Request.QueryString.Value.ToLowerInvariant().Contains("sphosturl"));
-            return hasSPHostUrl;
-        }
+        private bool RequestFromSharePoint(HttpRequest request) => request.QueryString.HasValue && request.QueryString.Value.ToLowerInvariant().Contains("sphosturl");
+
 
         /// <summary>
-        /// Checks if the current request contains an Cookie by key
+        /// Checks if the current request contains the SPCacheKey Cookie
         /// </summary>
-        /// <param name="context">The HttpContext object with information about the request</param>
+        /// <param name="request">The HttpRequest object for this request</param>
         /// <returns>True if Cookie with the provided key is found.</returns>
-        private bool CookieExists(HttpContext context, string key)
+        private bool SPCacheKeyCookieExists(HttpRequest request) => request.Cookies.ContainsKey(Options.SPCacheKeyKey);
+
+        public async Task SignOutAsync(AuthenticationProperties properties)
         {
-            var requestCookies = context.Request.Cookies;
-            var cookieExists = requestCookies.ContainsKey(key);
-            if (cookieExists)
+            if (!string.IsNullOrWhiteSpace(Options.CookieAuthenticationScheme))
             {
-                return true;
+                await Context.SignOutAsync(Options.CookieAuthenticationScheme, properties);
             }
-            return false;
         }
-       
     }
 }

@@ -1,6 +1,8 @@
 ﻿namespace OfficeDevPnP.Core.Framework.Authentication
 {
-    using Microsoft.AspNetCore.Builder;
+    using System;
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authentication.OAuth;
     using Microsoft.Extensions.Options;
     using OfficeDevPnP.Core.Framework.Authentication.Events;
 
@@ -15,12 +17,12 @@
         /// Sets default options.
         /// </summary>
         public SharePointAuthenticationOptions()
-        {
-            // Sets automatic challenge to default.
-            AutomaticAuthenticate = SharePointAuthenticationDefaults.AutomaticAuthenticate;
-            AutomaticChallenge = SharePointAuthenticationDefaults.AutomaticChallenge;
-            AuthenticationScheme = SharePointAuthenticationDefaults.AuthenticationScheme;
+        {            
+            Events = new SharePointAuthenticationEvents();
+            ClaimsIssuer = GetType().Assembly.GetName().Name;            
         }
+
+        public readonly string SPCacheKeyKey = "SPCacheKey";
 
         /// <summary>
         /// Gets or sets if HTTPS is required for the metadata address or authority.
@@ -84,13 +86,32 @@
         /// The application may implement the interface fully, or it may create an instance of AuthenticationEvents  
         /// and assign delegates only to the events it wants to process.  
         /// </summary>  
-        public ISharePointAuthenticationEvents SharePointAuthenticationEvents { get; set; } = new SharePointAuthenticationEvents();
+        public new SharePointAuthenticationEvents Events
+        {
+            get => (SharePointAuthenticationEvents)base.Events;
+            set => base.Events = value;
+        }
+        
+        public AuthenticationProperties AuthenticationProperties { get; set; }
 
         public SharePointAuthenticationOptions Value
         {
             get
             {
                 return this;
+            }
+        }
+
+        public override void Validate()
+        {
+            if (string.IsNullOrEmpty(ClientId))
+            {
+                throw new ArgumentException ("SharePoint ClientId is not set.", nameof(ClientId));
+            }
+
+            if (string.IsNullOrEmpty(ClientSecret))
+            {
+                throw new ArgumentException("SharePoint ClientSecret is not set.", nameof(ClientSecret));
             }
         }
     }
