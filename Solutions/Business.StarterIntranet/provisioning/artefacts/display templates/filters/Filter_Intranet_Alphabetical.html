@@ -1,0 +1,177 @@
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"> 
+<head>
+<title>Intranet Alphabetical Refinement</title>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:CompatibleManagedProperties msdt:dt="string"></mso:CompatibleManagedProperties>
+<mso:TemplateHidden msdt:dt="string">0</mso:TemplateHidden>
+<mso:CompatibleSearchDataTypes msdt:dt="string"></mso:CompatibleSearchDataTypes>
+<mso:MasterPageDescription msdt:dt="string"></mso:MasterPageDescription>
+<mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106604</mso:ContentTypeId>
+<mso:TargetControlType msdt:dt="string">;#Refinement;#</mso:TargetControlType>
+<mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+</mso:CustomDocumentProperties></xml><![endif]-->
+</head>
+<body>
+    <div id="IntranetVerticalRefiner">
+<!--#_
+
+	var encodedId = $htmlEncode(ctx.ClientControl.get_nextUniqueId());
+	var containerId = "RefinementFilter_" + encodedId;
+	var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	var alphabetArr = new Object();
+	alphabet.split("").map( function (letter) {
+		alphabetArr[letter] = null;        
+	});
+
+	var listData = ctx.ListData;
+
+	AddPostRenderCallback(ctx, function() {
+
+		// Check if refinement has values before applying bindings
+		if(!$isNull(listData) || !$isEmptyArray(listData)) {
+			Intranet.Main.initDisplayTemplateViewModel(document.getElementById(containerId));    
+		}
+	});
+
+    // Needed objects
+    var listData = ctx.ListData;
+    var hasControl = true;
+
+    // Check if the current Refinement Control can be exists
+    if ($isNull(ctx.RefinementControl) || $isNull(ctx.ClientControl)) hasControl = false;
+
+    if (hasControl) {
+
+        if(!$isNull(listData) && !$isEmptyArray(listData)) {
+        // Show the refinement title
+        var isExpanded = Srch.Refinement.getExpanded(ctx.RefinementControl.propertyName);
+        var iconClass = (isExpanded == "true"? "ms-ref-uparrow" : "ms-ref-downarrow");
+        var refinerCatTitle = Srch.Refinement.getRefinementTitle(ctx.RefinementControl);
+        // Display style > needed to hide the refinement list when collapsed
+        var displayStyle = (isExpanded == "true"? "" : "none");
+_#-->
+        <div data-bind="stopBinding: true">
+            <div id="_#= containerId =#_">
+                <div class="item-display-template">
+
+                    <div class="filter-vertical">
+                        
+                        <div class="refiner-category">
+                            <span data-bind="getResource: 'filterBy'"></span>
+                            <span class="category-name" data-bind="getResource: '_#= refinerCatTitle =#_'"></span>
+                        </div>
+
+<!--#_
+                        // (un)selected filter arrays
+                        var unselectedFilters = new Array();
+                        var selectedFilters = new Array();
+
+                        // Fill the arrays with refinement values
+                        for (var i = 0; i < listData.length; i++) {
+                        var filter = listData[i];
+                            if(!$isNull(filter)) {
+                                filter.RefinementTokens = [listData[i].RefinementToken];
+                                filter.RefinementTokenWrappedValues = [Srch.RefinementUtil.stringValueToEqualsToken(listData[i].RefinementValue)];
+
+                                if (ctx.ClientControl.hasAllRefinementFilters(filter.RefinerName, filter.RefinementTokens) ||
+                                ctx.ClientControl.hasAllRefinementFilters(filter.RefinerName, filter.RefinementTokenWrappedValues)) {
+                                selectedFilters.push(filter);
+                                } else {
+                                unselectedFilters.push(filter);
+                                }
+                            }
+                        }
+_#-->
+                        <div id='UnselectedSection' class='ms-ref-unselSec' style='display:_#= $htmlEncode(displayStyle) =#_'>
+                        <!--#_
+                        for (var i = 0; i < unselectedFilters.length; i++) {
+                            var filter = unselectedFilters[i];
+                            if(!$isNull(filter)) {
+                            var refiners = new Object();
+                            refiners[filter.RefinerName] = filter.RefinementTokens;
+
+                                var firstChar = filter.RefinementName.charAt(0);
+                                if(alphabetArr.hasOwnProperty(firstChar)) {
+                                    alphabetArr[filter.RefinementName.charAt(0)] = [filter];
+                                }                                
+                            }
+                        }
+
+_#--> 
+                            <div class="alphabetical-grid">  
+<!--#_                      
+                                // Build the alphabetical grid with highlighted values
+                                buildAlphabeticalSort();
+_#--> 
+                            </div>
+                        </div>
+<!--#_
+                        var currentRefinementCategory = ctx.ClientControl.getCurrentRefinementCategory(ctx.RefinementControl.propertyName);
+                        // Check if the object is null or undefined && Count the tokens currently in place
+                        var hasAnyFiltertokens = (!Srch.U.n(currentRefinementCategory) && currentRefinementCategory.get_tokenCount() > 0);
+
+                        if (selectedFilters.length > 0 || hasAnyFiltertokens) {
+_#-->
+                        <div id='SelectedSection' class='ms-ref-selSec'>
+<!--#_
+                        for (var i = 0; i < selectedFilters.length; i++) {
+                            var filter = selectedFilters[i];
+                            if(!$isNull(filter)) {
+                                var refiners = new Object();
+                                refiners[filter.RefinerName] = filter.RefinementTokens;
+                                ShowRemoveLink(refiners, 'removeRefinementFiltersJSON');
+                            }
+                        }
+
+                        var refinerRemoval = new Object();
+                        refinerRemoval[ctx.RefinementControl.propertyName] = null;
+                        ShowRemoveLink(refinerRemoval, 'updateRefinersJSON');
+_#-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--#_
+        }
+    }
+  }
+  
+    function ShowRemoveLink(refiners, method) {
+        // Create the onClick event
+        var onClickEvent = "$getClientControl(this)." + method + "('" + $scriptEncode(Sys.Serialization.JavaScriptSerializer.serialize(refiners)) + "');";
+_#-->
+
+    <div class="refiner-removeBtn">
+        <i class="fa fa-times" aria-hidden="true"></i>
+        <a onclick='_#= onClickEvent =#_' href='javascript:{}' data-bind="getResource: 'clearFilter'"></a>   
+    </div>
+     
+<!--#_
+    }
+
+    function buildAlphabeticalSort(letter) {
+
+        Object.keys(alphabetArr).map(function (key) { 
+            if (alphabetArr[key] !== null) {
+                var onChangeOrClick = 
+                "$getClientControl(document.getElementById('"+ ctx.RefinementControl.containerId + "')).updateRefiners({'" + ctx.RefinementControl.propertyName + "': ['" + key +"*'] }, 'and', true, null);";
+_#-->           
+                <a class="letter refinable" onclick="_#= onChangeOrClick =#_">
+                    _#= key =#_
+                </a>
+<!--#_
+
+            } else {
+_#-->      
+                <div class="letter">_#= key =#_</div>
+<!--#_
+            }
+        });
+    }
+_#-->                         
+    </div>
+</body>
+</html>

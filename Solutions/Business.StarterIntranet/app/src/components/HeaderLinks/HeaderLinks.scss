@@ -2,9 +2,7 @@
 
 /* Header links */
 #header-links {
-    
 
-    min-height: 40px;
     min-width: 150px;
     text-decoration: none;
     padding-right: 15px;
@@ -20,8 +18,8 @@
         display: inline;
         list-style-type: none;
         color: $headerlinks-color;
-        margin-right: 5px;
-        margin-left: 5px;
+        margin-right: 25px;
+        margin-left: 25px;
 
         i, a {
             color: $headerlinks-color;
@@ -32,14 +30,32 @@
     /* Small devices */
     @media (max-width: 767px) { 
 
+        border-bottom: 1px solid $navbar-l3-link-color;
+
+        ul {
+            display: flex;
+            display: -ms-flexbox;
+            flex-wrap: wrap;
+            -ms-flex-wrap: wrap;
+            align-items: center;
+            -ms-flex-align: center;
+            justify-content: space-around;
+            -ms-flex-pack: center;
+        }
+
         ul li {
             list-style-type: none;
             color: $headerlinks-color;
             margin: 0;
             display: block;
             line-height: initial;
-            padding-top: 5px;
-            padding-bottom: 5px;
+            padding: 5px;
+
+            i {
+                font-size: 1.5em;
+                display: block;
+                text-align: center;
+            }
 
             i, a {
                 color: $headerlinks-color;
@@ -51,6 +67,7 @@
                 line-height: 18px;
                 position: relative;
                 display: inline-block;
+                font-size: 15px;
             }
         }
     

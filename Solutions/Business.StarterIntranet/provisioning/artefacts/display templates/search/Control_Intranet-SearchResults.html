@@ -47,8 +47,15 @@ _#-->
             var submittedKeywords = ctx.DataProvider.get_currentQueryState().k;
 
 _#-->
-            <div id="ResultCount" class="ms-srch-resultscount">
-                <div data-bind="getFormattedResultCount: true, start: '_#= start =#_', resultsPerPage : '_#= resultsPerPage =#_', totalRows : '_#= totalRows =#_', submittedKeywords: '_#= escape(submittedKeywords)  =#_'"></div>
+            <div id="SearchResultHeader">
+                <div id="ResultCount" class="ms-srch-resultscount">
+                    <div data-bind="getFormattedResultCount: true, start: '_#= start =#_', resultsPerPage : '_#= resultsPerPage =#_', totalRows : '_#= totalRows =#_', submittedKeywords: '_#= escape(submittedKeywords)  =#_'"></div>
+                </div>
+<!--#_ 
+                if(ctx.ClientControl.get_showPaging()){
+                    showPaging();
+                } 
+_#-->
             </div>
 <!--#_ 
         }
@@ -82,6 +89,56 @@ _#-->
                         && ctx.DataProvider.get_effectiveLanguageDisplayName && typeof ctx.DataProvider.get_effectiveLanguageDisplayName === "function"
                         && typeof(Srch.Res.rs_PreferredSearchLanguage) === "string"
                         && typeof(Srch.Res.rs_SearchScope) === "string";
+            }
+
+            function showPaging() {
+
+                var pagingInfo = ctx.ClientControl.get_pagingInfo();
+                if(!$isEmptyArray(pagingInfo)){ 
+_#-->
+                    <ul id="Paging" class="ms-srch-Paging">
+<!--#_ 
+                    for (var i = 0; i < pagingInfo.length; i++) {
+                        var pl = pagingInfo[i];
+                        if(!$isNull(pl)) {
+                            var imagesUrl = GetThemedImageUrl('searchresultui.png');
+                            if(pl.startItem == -1) { 
+                                var selfLinkId = "SelfLink_" + pl.pageNumber;
+_#-->
+                                <li id="PagingSelf"><a id="_#= $htmlEncode(selfLinkId) =#_">_#= $htmlEncode(pl.pageNumber) =#_</a></li>
+<!--#_ 
+                            } else if(pl.pageNumber == -1) { 
+                                var iconClass = Srch.U.isRTL() ? "ms-srch-pagingNext" : "ms-srch-pagingPrev";                                    
+_#-->
+                                <li id="PagingImageLink">
+                                
+                                        <a id="PageLinkPrev" href="#" class="ms-commandLink ms-promlink-button-enabled" title="_#= $htmlEncode(pl.title) =#_" onclick="$getClientControl(this).page(_#= $htmlEncode(pl.startItem) =#_);return Srch.U.cancelEvent(event);">
+                                            <i class="fa fa-angle-left"></i>
+                                        </a>                                    
+                                </li>
+<!--#_ 
+                            } else if(pl.pageNumber == -2) { 
+                                var iconClass = Srch.U.isRTL() ? "ms-srch-pagingPrev" : "ms-srch-pagingNext";
+_#-->
+                                <li id="PagingImageLink">
+                                
+                                        <a id="PageLinkNext" href="#" class="ms-commandLink ms-promlink-button-enabled" title="_#= $htmlEncode(pl.title) =#_" onclick="$getClientControl(this).page(_#= $htmlEncode(pl.startItem) =#_);return Srch.U.cancelEvent(event);">
+                                            <i class="fa fa-angle-right"></i>
+                                        </a> 
+                                </li>
+<!--#_ 
+                            } else { 
+                                var pageLinkId = "PageLink_" + pl.pageNumber;
+_#-->
+                                <li id="PagingLink"><a id="_#= $htmlEncode(pageLinkId) =#_" href="#" title="_#= $htmlEncode(pl.title) =#_" onclick="$getClientControl(this).page(_#= $htmlEncode(pl.startItem) =#_);return Srch.U.cancelEvent(event);">_#= $htmlEncode(pl.pageNumber) =#_</a></li>
+<!--#_ 
+                            }
+                        }
+                    } 
+_#-->
+                    </ul>
+<!--#_ 
+                }
             }
 
             if(!$isNull(ctx.ScriptApplicationManager) && !$isNull(ctx.DataProvider) && !$isNull(ctx.ClientControl)){
@@ -407,55 +464,19 @@ _#-->
                     </div>
 <!--#_ 
                 } 
-
-                if(ctx.ClientControl.get_showPaging()){
-                    var pagingInfo = ctx.ClientControl.get_pagingInfo();
-                    if(!$isEmptyArray(pagingInfo)){ 
+                
+                if (ctx.DataProvider.get_totalRows() > 0) {
 _#-->
-                        <ul id="Paging" class="ms-srch-Paging">
+                <div id="SearchResultFooter">
 <!--#_ 
-                        for (var i = 0; i < pagingInfo.length; i++) {
-                            var pl = pagingInfo[i];
-                            if(!$isNull(pl)) {
-                                var imagesUrl = GetThemedImageUrl('searchresultui.png');
-                                if(pl.startItem == -1) { 
-                                    var selfLinkId = "SelfLink_" + pl.pageNumber;
+                    if(ctx.ClientControl.get_showPaging()){
+                        showPaging();
+                    } 
 _#-->
-                                    <li id="PagingSelf"><a id="_#= $htmlEncode(selfLinkId) =#_">_#= $htmlEncode(pl.pageNumber) =#_</a></li>
+                </div>
 <!--#_ 
-                                } else if(pl.pageNumber == -1) { 
-                                    var iconClass = Srch.U.isRTL() ? "ms-srch-pagingNext" : "ms-srch-pagingPrev";                                    
-_#-->
-                                    <li id="PagingImageLink">
-                                    
-                                            <a id="PageLinkPrev" href="#" class="ms-commandLink ms-promlink-button-enabled" title="_#= $htmlEncode(pl.title) =#_" onclick="$getClientControl(this).page(_#= $htmlEncode(pl.startItem) =#_);return Srch.U.cancelEvent(event);">
-                                                <i class="fa fa-angle-left"></i>
-                                            </a>                                    
-                                    </li>
-<!--#_ 
-                                } else if(pl.pageNumber == -2) { 
-                                    var iconClass = Srch.U.isRTL() ? "ms-srch-pagingPrev" : "ms-srch-pagingNext";
-_#-->
-                                    <li id="PagingImageLink">
-                                    
-                                            <a id="PageLinkNext" href="#" class="ms-commandLink ms-promlink-button-enabled" title="_#= $htmlEncode(pl.title) =#_" onclick="$getClientControl(this).page(_#= $htmlEncode(pl.startItem) =#_);return Srch.U.cancelEvent(event);">
-                                                <i class="fa fa-angle-right"></i>
-                                            </a> 
-                                    </li>
-<!--#_ 
-                                } else { 
-                                    var pageLinkId = "PageLink_" + pl.pageNumber;
-_#-->
-                                    <li id="PagingLink"><a id="_#= $htmlEncode(pageLinkId) =#_" href="#" title="_#= $htmlEncode(pl.title) =#_" onclick="$getClientControl(this).page(_#= $htmlEncode(pl.startItem) =#_);return Srch.U.cancelEvent(event);">_#= $htmlEncode(pl.pageNumber) =#_</a></li>
-<!--#_ 
-                                }
-                            }
-                        } 
-_#-->
-                        </ul>
-<!--#_ 
-                    }
                 } 
+                
 _#-->
 
                 <div class="ms-srch-resultFooter">

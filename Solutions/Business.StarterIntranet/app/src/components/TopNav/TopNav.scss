@@ -5,7 +5,7 @@
   font-size: $navbar-font-size;
   min-height: 60px; // To display the spinner
   font-family: $font-primary;
-  font-weight: normal;
+  font-weight: 100;
   width: 100%;
 
   .yamm-content {
@@ -27,6 +27,7 @@
     
       ul.nav {
         margin-left: 0;
+        border-bottom: 1px solid $navbar-l3-link-color;
       }
 
       .navbar-collapse {
@@ -64,6 +65,7 @@
 
         i {
           color: $navbar-l1-link-color;
+          font-size: 1.4em;
         }
 
         :active:hover {
@@ -94,7 +96,6 @@
     }
 
   }
-
 
   /* Medium and large devices (Desktop) */
   @media (min-width: 768px) {
@@ -130,14 +131,30 @@
 
         .yamm-content {
 
-            a {
-                color: $navbar-l2-link-color;
-            }
-
             a:hover {
                 color: $navbar-l2-link-color-hover;
                 text-decoration: none;
             }
+
+            .level2 {
+              padding-left: 15px;
+            }
+      
+            .level3 {
+              padding-left: 30px;
+            }
+        }
+
+        li {
+          i.fa-caret-up {
+              display: block;
+              text-align: center;
+              margin-left: auto;
+              margin-right: auto;
+              left: 0;
+              right: 0;
+              position: absolute;
+          }
         }
 
         li.right {
@@ -155,7 +172,7 @@
     padding-right: 15px;
 
     li.level1, li.level2, li.level3 {
-        line-height: initial;
+        line-height: normal;
         padding-top: 5px;
         padding-bottom: 5px;
     }
@@ -163,12 +180,21 @@
     .yamm-content {
 
       .level2 {
-        font-weight: 600;
+        font-weight: 100;
         font-size: 16px;
+
+        a {
+            color: $navbar-l2-link-color;
+        }
       }
 
       .level3 {
         font-size: 14px;
+        font-weight: 100;
+
+        a {
+          color: $navbar-l3-link-color;
+        }
       }
     }
 

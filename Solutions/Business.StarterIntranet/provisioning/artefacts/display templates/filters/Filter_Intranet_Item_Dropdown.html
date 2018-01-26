@@ -1,0 +1,441 @@
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"> 
+<head>
+<title>Intranet Refinement Dropdown Filter</title>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:CompatibleManagedProperties msdt:dt="string"></mso:CompatibleManagedProperties>
+<mso:TemplateHidden msdt:dt="string">0</mso:TemplateHidden>
+<mso:CompatibleSearchDataTypes msdt:dt="string"></mso:CompatibleSearchDataTypes>
+<mso:MasterPageDescription msdt:dt="string">Intranet Refinement Filter (Dropdown)</mso:MasterPageDescription>
+<mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106604</mso:ContentTypeId>
+<mso:TargetControlType msdt:dt="string">;#Refinement;#</mso:TargetControlType>
+<mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+<mso:HtmlDesignStatusAndPreview msdt:dt="string"></mso:HtmlDesignStatusAndPreview>collapsibleRefinerTitle
+<mso:HtmlDesignConversionSucceeded msdt:dt="string">True</mso:HtmlDesignConversionSucceeded>
+</mso:CustomDocumentProperties></xml><![endif]-->
+</head>
+<body>
+    <div id="IntranetDropdownRefiner">
+<!--#_
+
+    var encodedId = $htmlEncode(ctx.ClientControl.get_nextUniqueId());
+    var containerId = "RefinementFilter_" + encodedId;
+
+    var listData = ctx.ListData;
+
+    AddPostRenderCallback(ctx, function() {
+
+        // Check if refinement has values before applying bindings
+        if(!$isNull(listData) || !$isEmptyArray(listData))
+        {
+            Intranet.Main.initDisplayTemplateViewModel(document.getElementById(containerId));
+        }
+    });
+
+    var hasControl = true;
+    // Create a new hidden block outside the current refinement control
+    var refElm = document.getElementById('Refinement');
+    var hiddenBlockID = ctx.RefinementControl.containerId + "_" + ctx.RefinementControl.propertyName;
+    var hiddenBlock = document.getElementById(hiddenBlockID);
+    // Check if the hidden block exists, otherwise we create one
+    if (hiddenBlock === null || hiddenBlock.lenght <= 0) {
+        hiddenBlock = document.createElement('div');
+        refElm.appendChild(hiddenBlock);
+        hiddenBlock.setAttribute('id', hiddenBlockID);
+        hiddenBlock.setAttribute('style', 'display:none;');
+    }
+    // Dropdown Group IDs
+    var unselDD = ctx.RefinementControl.containerId + "_Unsel";
+    var selDD = ctx.RefinementControl.containerId + "_Sel";
+    var currentRefinementCategory = ctx.ClientControl.getCurrentRefinementCategory(ctx.RefinementControl.propertyName);
+    // Check if the object is null or undefined && Count the tokens currently in place
+    var hasAnyFiltertokens = (!Srch.U.n(currentRefinementCategory) && currentRefinementCategory.get_tokenCount() > 0);
+    
+    // Check if the current Refinement Control can be exists
+    if ($isNull(ctx.RefinementControl) || $isNull(ctx.ClientControl)) hasControl = false;
+    if (hasControl) {
+        if(!$isNull(listData) && !$isEmptyArray(listData)) {
+            // Show the refinement title
+            var isExpanded = Srch.Refinement.getExpanded(ctx.RefinementControl.propertyName);
+            var iconClass = (isExpanded == "true"? "ms-ref-uparrow" : "ms-ref-downarrow");
+            var refinerCatTitle = Srch.Refinement.getRefinementTitle(ctx.RefinementControl);
+            // Display style > needed to hide the refinement list when collapsed
+            var displayStyle = (isExpanded == "true"? "" : "none");
+_#-->
+        <div data-bind="stopBinding: true">
+            <div id="_#= containerId =#_">
+                <div class="item-display-template">
+                    <div class="filter-dropdown">
+                        <div class="refiner-category">
+                            <span data-bind="getResource: 'filterBy'"></span>
+                            <span class="category-name" data-bind="getResource: '_#= refinerCatTitle =#_'"></span>
+                        </div>
+                        <div class="refiner-dropdown">
+
+<!--#_
+        // (un)selected filter arrays
+        var unselectedFilters = new Array();
+        var selectedFilters = new Array();
+
+        if (ctx.RefinementControl.propertyName === "FileType") {
+            if (!$isNull(ctx.DataProvider.get_refinementInfo())) {
+                if (!$isNull(ctx.DataProvider.get_refinementInfo()["contentclass"]))
+                {
+                    listData = listData.concat(ctx.DataProvider.get_refinementInfo()["contentclass"]);
+                }
+                if (!$isNull(ctx.DataProvider.get_refinementInfo()["ContentTypeId"]))
+                {
+                    listData = listData.concat(ctx.DataProvider.get_refinementInfo()["ContentTypeId"]);
+                }
+                if (!$isNull(ctx.DataProvider.get_refinementInfo()["WebTemplate"]))
+                {
+                    listData = listData.concat(ctx.DataProvider.get_refinementInfo()["WebTemplate"]);
+                }
+            }
+            if (hasControl)
+                listData = mapResultType(listData);
+        }
+
+        // Fill the arrays with refinement values
+        for (var i = 0; i < listData.length; i++){
+            var filter = listData[i];
+            if(!$isNull(filter)) {
+
+                // Token mapping is already done for the FileType data
+                if (ctx.RefinementControl.propertyName !== "FileType") {
+                    filter.RefinementTokens = [listData[i].RefinementToken];
+                    filter.RefinementTokenWrappedValues = [Srch.RefinementUtil.stringValueToEqualsToken(listData[i].RefinementValue)];
+                }
+                if (ctx.ClientControl.hasAllRefinementFilters(filter.RefinerName, filter.RefinementTokens) ||
+                    ctx.ClientControl.hasAllRefinementFilters(filter.RefinerName, filter.RefinementTokenWrappedValues)) {
+                    selectedFilters.push(filter);
+                } else {
+                    unselectedFilters.push(filter);
+                }                
+            }
+        }
+_#-->
+                            <select class='ms-ref-unselSec select-filter' style='display:_#= $htmlEncode(displayStyle) =#_' onchange="javascript:new Function(this.value)();">
+                                <option></option>
+<!--#_
+                                if (selectedFilters.length > 0 || hasAnyFiltertokens) {
+_#-->
+                                <optgroup data-bind="getResource: 'selectedFilter'" id="_#= selDD =#_">
+<!--#_
+                                    for (var i = 0; i < selectedFilters.length; i++) {
+                                        var filter = selectedFilters[i];
+                                        if(!$isNull(filter)) {
+                                            var refiners = new Object();
+                                            refiners[filter.RefinerName] = filter.RefinementTokens;
+                                            ShowRefiner(filter.RefinementName, filter.RefinementCount, refiners, 'removeRefinementFiltersJSON', true);
+                                        }
+                                    }
+                                    var refinerRemoval = new Object();
+                                    refinerRemoval[ctx.RefinementControl.propertyName] = null;
+                                    if (ctx.RefinementControl.propertyName === "FileType")
+                                    {
+                                        refinerRemoval["contentclass"] = null;
+                                        refinerRemoval["ContentTypeId"] = null;
+                                        refinerRemoval["WebTemplate"] = null;
+                                    }
+                                    ShowRefiner('', null, true, refinerRemoval, 'updateRefinersJSON');
+_#-->
+                                </optgroup>
+<!--#_
+        }
+_#-->
+<!--#_ 
+                                var hasAvailableFilters = unselectedFilters.length > 0;                         
+_#-->                            
+                                <optgroup data-bind="visible: _#= hasAvailableFilters =#_, getResource: 'availableFilters'" id="_#= unselDD =#_">
+<!--#_
+                                    if (unselectedFilters.length > 0) {
+                                        // Clear the hidden list
+                                        ClearHiddenList();
+                                        for (var i = 0; i < unselectedFilters.length; i++) {
+                                            var filter = unselectedFilters[i];
+                                            if(!$isNull(filter)) {
+                                                var refiners = new Object();
+                                                refiners[filter.RefinerName] = filter.RefinementTokens;
+                                                var addOrUpdateMethod = ctx.RefinementControl.propertyName === "FileType" ? "addRefinementFiltersJSONWithOr" : "updateRefinersJSON";
+                                                ShowRefiner(filter.RefinementName, filter.RefinementCount, refiners, addOrUpdateMethod, false);
+                                            }
+                                        }
+                                    }
+_#--> 
+                                </optgroup>
+                            </select>
+                            <div id="RemoveRefinement">
+<!--#_
+                                if (selectedFilters.length > 0 || hasAnyFiltertokens) {
+                                    var refinerRemoval = new Object();
+                                    refinerRemoval[ctx.RefinementControl.propertyName] = null;
+
+                                    if (ctx.RefinementControl.propertyName == "FileType")
+                                    {
+                                        refinerRemoval["contentclass"] = null;
+                                        refinerRemoval["ContentTypeId"] = null;
+                                        refinerRemoval["WebTemplate"] = null;
+                                    }
+
+                                    ShowRefiner('', null, refinerRemoval, 'updateRefinersJSON', false);
+                                }
+_#-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+<!--#_
+    }
+  }
+  
+    function ValueChanged(value) {}
+    function ShowRefiner(refinementName, refinementCount, refiners, method, selected) {
+        // Create the onClick or onChange event
+        var onChangeOrClick = "$getClientControl(document.getElementById('"+ctx.RefinementControl.containerId+"'))." + method + "('" + $scriptEncode(Sys.Serialization.JavaScriptSerializer.serialize(refiners)) + "');";
+        var count = $htmlEncode(Srch.U.toFormattedNumber(refinementCount));
+        var encodedRefinementName = String.format('{0} ({1})', $htmlEncode(refinementName), count);
+        
+        // Check if there aren't filter tokens in place
+        if (!hasAnyFiltertokens) {
+            var elm = document.getElementById(hiddenBlockID);
+            var option = document.createElement('option');
+            var text = document.createTextNode(refinementName);
+            option.appendChild(text);
+            option.setAttribute('value', onChangeOrClick);
+            elm.appendChild(option);
+        }
+                    
+        // Check if the refinement contains results && if the current item is selected
+        if (refinementCount != null && selected !== true) {
+_#-->
+            <option value='_#= onChangeOrClick =#_'>_#= encodedRefinementName =#_</option>
+<!--#_
+        } else if (refinementCount != null && selected === true) {
+  
+_#-->
+            <option value='_#= onChangeOrClick =#_' selected='selected'>_#= encodedRefinementName =#_</option>
+<!--#_
+        } else {
+_#-->
+            <div>
+                <a href='javascript:{}' onclick='_#= onChangeOrClick =#_'>
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </a>
+            </div>
+<!--#_
+        }
+    }
+
+    function mapResultType(listData)
+    {
+        var map = { };
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_MSAccess")] = {
+            "RefinerName": "FileType",
+            "RefinementValues": ["accdb", "accdc", "accde", "accdr", "accdt"]
+        };
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_AdobePDF")] = {
+            "RefinerName": "FileType",
+            "RefinementValues": ["pdf"]
+        }; 
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_Assignment")] = {
+            "RefinerName": "ContentTypeId",
+            "RefinementValues": ["0x010063C2F478ACC511DFB869B5BFDFD720851252*"]
+        };
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_Blog")] = {
+            "RefinerName": "WebTemplate",
+            "RefinementValues": ["BLOG"]
+        }; 
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_Book")] = {
+            "RefinerName": "ContentTypeId",
+            "RefinementValues": ["0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF3900ABD371128A994A0B98E7E888866B392F*"]
+        }; 
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_Community")] = {
+            "RefinerName": "WebTemplate",
+            "RefinementValues": ["COMMUNITY"]
+        }; 
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_Course")] = {
+            "RefinerName": "ContentTypeId",
+            "RefinementValues": ["0x010063C2F478ACC511DFB869B5BFDFD720851101*"]
+        };
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_Discussion")] = {
+            "RefinerName": "ContentTypeId",
+            "RefinementValues": ["0x012002*", "0x0107*"]
+        };
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_Email")] = {
+            "RefinerName": "FileType",
+            "RefinementValues": ["eml", "msg", "exch"]
+        }; 
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_MSExcel")] = {
+            "RefinerName": "FileType",
+            "RefinementValues": ["odc", "ods", "xls", "xlsb", "xlsm", "xlsx", "xltm", "xltx", "xlam"]
+        }; 
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_Image")] = {
+            "RefinerName": "FileType",
+            "RefinementValues": ["bmp", "jpeg", "png", "tiff", "gif", "rle", "wmf", "dib", "ico", "wpd", "odg"]
+        }; 
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_Lesson")] = {
+            "RefinerName": "ContentTypeId",
+            "RefinementValues": ["0x010063C2F478ACC511DFB869B5BFDFD720851251*"]
+        };
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_NewsfeedPost")] = {
+            "RefinerName": "ContentTypeId",
+            "RefinementValues": ["0x01FD4FB0210AB50249908EAA47E6BD3CFE8B*", "0x01FD59a0df25f1e14ab882d2c87d4874cf84*"]
+        }; 
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_MSOneNote")] = {
+            "RefinerName": "FileType",
+            "RefinementValues": ["one"]
+        }; 
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_MSPowerPoint")] = {
+            "RefinerName": "FileType",
+            "RefinementValues": ["odp", "ppt", "pptm", "pptx", "potm", "potx", "ppam", "ppsm", "ppsx"]
+        }; 
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_MSProject")] = {
+            "RefinerName": "FileType",
+            "RefinementValues": ["mpp"]
+        }; 
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_MSPublisher")] = {
+            "RefinerName": "FileType",
+            "RefinementValues": ["pub"]
+        };
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_SharePointSite")] = {
+            "RefinerName": "contentclass",
+            "RefinementValues": ["STS_Web", "STS_Site"]
+        };
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_Task")] = {
+            "RefinerName": "contentclass",
+            "RefinementValues": ["STS_ListItem_GanttTasks", "STS_ListItem_Tasks", "STS_ListItem_HierarchyTasks", "STS_List_GanttTasks", "STS_List_Tasks", "STS_List_HierarchyTasks"]
+        };
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_TeamSite")] = {
+            "RefinerName": "WebTemplate",
+            "RefinementValues": ["STS"]
+        }; 
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_Video")] = {
+            "RefinerName": "ContentTypeId",
+            "RefinementValues": ["0x0120D520A8*"]
+        };
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_Visio")] = {
+            "RefinerName": "FileType",
+            "RefinementValues": ["vsd", "vsx"]
+        };
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_MSWord")] = {
+            "RefinerName": "FileType",
+            "RefinementValues": ["docx", "doc", "docm", "dot", "nws", "dotx"]
+        };
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_Webpage")] = {
+            "RefinerName": "FileType",
+            "RefinementValues": ["HTML", "MHTML"]
+        };
+        map[Srch.U.loadResource("rf_ResultTypeRefinerValue_Archive")] = {
+            "RefinerName": "FileType",
+            "RefinementValues": ["zip"]
+        };
+        map["XML File"] = {
+            "RefinerName": "FileType",
+            "RefinementValues": ["xml"]
+        };
+        map["TXT File"] = {
+            "RefinerName": "FileType",
+            "RefinementValues": ["txt"]
+        };
+        var retListData = new Array();
+        var assocListData = new Array();
+        for (var i = 0; i < listData.length; i++)
+        {
+            var filter = listData[i];
+            var mappedRefinementName = null;
+            for(var key in map)
+            {
+                if (map[key].RefinerName == filter.RefinerName)
+                {
+                    for (var j = 0; j < map[key].RefinementValues.length; j++)
+                    {
+                        var actualValue = filter.RefinementValue.toLowerCase(), candidateValue = map[key].RefinementValues[j].toLowerCase();
+                        if (actualValue == candidateValue ||
+                            (filter.RefinerName.toLowerCase() == "contenttypeid" && actualValue.startsWith(candidateValue.substring(0, candidateValue.length - 1)))) 
+                        {
+                            mappedRefinementName = key;
+                            break;
+                        }
+                    }
+                    if (!$isNull(mappedRefinementName))
+                    {
+                        break;
+                    }
+                }
+            }
+            var mappedFilter = new Object();
+            if (!$isNull(mappedRefinementName))
+            {
+                mappedFilter.RefinerName = map[mappedRefinementName].RefinerName;
+                mappedFilter.RefinementCount = filter.RefinementCount;
+                mappedFilter.RefinementName = mappedRefinementName;
+                mappedFilter.RefinementTokens = [];
+                var resultTypeTokenWrapper = (mappedFilter.RefinerName.toLowerCase() == "contenttypeid") ? function (x) {return x;} : 
+                                                                                                           Srch.RefinementUtil.stringValueToEqualsToken;
+                for (var j in map[mappedRefinementName].RefinementValues) {
+                    mappedFilter.RefinementTokens.push(resultTypeTokenWrapper(map[mappedRefinementName].RefinementValues[j]));
+                }
+                if ($isNull(assocListData[mappedFilter.RefinementName]))
+                {
+                    assocListData[mappedFilter.RefinementName] = mappedFilter;
+                }
+                else
+                {
+                    assocListData[mappedFilter.RefinementName].RefinementCount += mappedFilter.RefinementCount;
+                }
+            }                
+        }
+        for (var key in assocListData)
+        {
+            retListData[retListData.length] = assocListData[key];
+        }
+        return retListData;
+    }
+
+    function ClearHiddenList() {
+        var elm = document.getElementById(hiddenBlockID);
+        while (elm.hasChildNodes()) {
+            elm.removeChild(elm.lastChild);
+        }
+    }
+
+    function GetAllElementsWithAttribute(element, attribute, value) {
+        var matchingElements = [];
+        var allElements = element.getElementsByTagName('*');
+        for (var i = 0; i < allElements.length; i++) {
+            if (allElements[i].getAttribute(attribute)) {
+                if (value === allElements[i].getAttribute(attribute)) {
+                    matchingElements.push(allElements[i]);
+                }
+            }
+        }
+        return matchingElements;
+    }
+    // Run this after the control is rendered - this will populate the unselected option group
+    AddPostRenderCallback(ctx, function() {
+        if (hasAnyFiltertokens) {
+            // Get the hidden block
+            var hiddenOptions = document.getElementById(hiddenBlockID).children;
+            var unSelGroup = document.getElementById(unselDD);
+            var selGroup = document.getElementById(selDD);
+            
+            if (unSelGroup && selGroup) {
+                // Clone all the elements from the hidden list to the unselected option group
+                for (var i = 0; i < hiddenOptions.length; i++) {
+                    var selectedElm = GetAllElementsWithAttribute(selGroup, 'value', hiddenOptions[i].getAttribute('value').replace('updateRefinersJSON', 'removeRefinementFiltersJSON'));
+                    if (selectedElm === null || selectedElm.length <= 0) {
+                        var cloneElm = hiddenOptions[i].cloneNode(true);
+                        unSelGroup.appendChild(cloneElm);
+                    }
+                }
+            }
+        }
+    });
+_#-->
+    </div>
+</body>
+</html>

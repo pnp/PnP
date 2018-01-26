@@ -1,0 +1,22 @@
+<div id="search-help" class="modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+    <!-- Modal -->
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <h1 data-bind="getResource: 'searchTipsDlgTitle'"></h1>
+                </div>
+                <div class="modal-close">
+                    <i class="fa fa-times" data-dismiss="modal" data-target="#search-help" aria-label="Close"></i>
+                </div>
+            </div>
+                
+            <!-- The HTML resource value (i.e 'searchDlgHtmlBody') must be minified (https://www.willpeavy.com/minifier/) and escaped (https://www.freeformatter.com/json-escape.html) in the JSON resource file. -->
+            <div class="modal-body" data-bind="html: Intranet.Main.getResource('searchDlgHtmlBody')">
+            </div>
+            <div class="modal-footer">
+                <a href="http://icansharepoint.com/wp-content/uploads/2016/10/How-to-Search-in-SharePoint-icansharepoint.png">Original source</a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -7,7 +7,16 @@ Param(
 	[string]$UserName,
 
 	[Parameter(Mandatory=$True)]
-	[string]$Password
+    [string]$Password,
+
+    [Parameter(Mandatory=$False)]
+	[switch]$IncludeData=$false,
+    
+    [Parameter(Mandatory=$False)]
+    $ExcludeHandlers,
+    
+    [Parameter(Mandatory=$False)]
+	[switch]$UpgradeSubSites=$false
 )
 
 # Include utility scripts and supported languages configuration
@@ -83,6 +92,32 @@ function Configure-Web {
     $NewsFolder = Ensure-PnPFolder -SiteRelativePath "$PagesLibraryName/News"
     $EventsFolder = Ensure-PnPFolder -SiteRelativePath "$PagesLibraryName/Events"
 
+    # Add the Hidden Side Bar column to the pages library.
+    # There is a bug due to the delimiter character when provisioned by the root site XML template
+    $Formula =  "=IF([Hide Side Bar],1,0)"
+    
+    $FieldXml = 
+    "<Field Type=""Calculated"" 
+            DisplayName=""HideSideBarHidden"" 
+            EnforceUniqueValues=""FALSE"" 
+            Indexed=""FALSE"" 
+            Format=""DateOnly""
+            Decimals=""0""
+            ResultType=""Number"" 
+            ReadOnly=""TRUE"" 
+            ID=""{2a26fbed-fc44-47b8-8d65-48f27f78a687}"" 
+            SourceID=""{3b9f38ef-4cd3-4932-a203-b1cdcd8b5e51}"" 
+            StaticName=""HideSideBarHidden"" 
+            Name=""HideSideBarHidden"">
+        <Formula>$Formula</Formula>
+    </Field>"
+
+    $CalcField = Get-PnPField -Identity HideSideBarHidden -List "$PagesLibraryName" -ErrorAction SilentlyContinue
+
+    if (-not($CalcField)) {
+        $CalcField = Add-PnPFieldFromXml -FieldXml $FieldXml -List "$PagesLibraryName"
+    }
+    
     # Content Types order
     $ContentTypesOrderRoot = @(
 
@@ -135,19 +170,24 @@ function Configure-Web {
     $FooterLinksTermSet = Get-PnPTaxonomyItem -Term "$IntranetTermGroupName|$FooterLinksTermSetName"
     $FooterLinksTermSetId = $FooterLinksTermSet.Id
 
-    # Link the Site Map Position Field to the according site map term set
-    $Field = Add-PnPTaxonomyField -List $PagesLibraryName -InternalName IntranetSiteMapPosition -TermSetPath "$IntranetTermGroupName|$SiteMapTermSetName" -DisplayName "Site Map Position" -Group Intranet -FieldOptions AddToDefaultContentType  
+    $SiteMapPositionField = Get-PnPField -Identity IntranetSiteMapPosition -List $PagesLibraryName -ErrorAction SilentlyContinue
 
-    "News Page","Event Page" | ForEach-Object {
+    if (-not($SiteMapPositionField)) {
+
+        # Link the Site Map Position Field to the according site map term set
+        $SiteMapPositionField = Add-PnPTaxonomyField -List $PagesLibraryName -InternalName IntranetSiteMapPosition -TermSetPath "$IntranetTermGroupName|$SiteMapTermSetName" -DisplayName "Site Map Position" -Group Intranet -FieldOptions AddToDefaultContentType  
     
-        $FieldReferenceLink = New-Object Microsoft.SharePoint.Client.FieldLinkCreationInformation
-        $FieldReferenceLink.Field = $Field;
-        $ContentType = Get-PnPContentType -List $PagesLibraryName -Identity $_
-        $ContentType.FieldLinks.Add($FieldReferenceLink) | Out-Null
-        $ContentType.Update($false) | Out-Null
-    } 
+        "News Page","Event Page" | ForEach-Object {
+        
+            $FieldReferenceLink = New-Object Microsoft.SharePoint.Client.FieldLinkCreationInformation
+            $FieldReferenceLink.Field = $SiteMapPositionField;
+            $ContentType = Get-PnPContentType -List $PagesLibraryName -Identity $_
+            $ContentType.FieldLinks.Add($FieldReferenceLink) | Out-Null
+            $ContentType.Update($false) | Out-Null
+        } 
 
-    Execute-PnPQuery
+        Execute-PnPQuery
+    }
    
     Write-Message -Message "Done!" -ForegroundColor Green
 
@@ -156,35 +196,61 @@ function Configure-Web {
     # -------------------------------------------------------------------------------------
     Write-Message -Message "`tConfiguring search navigation..." -NoNewline -ForegroundColor Gray
 
-    $LanguageInfo.SearchNavigation | ForEach-Object {
+    $ExistingSrchNodes = Get-SearchNavigationNodes
 
-        $Url = $Web.Url + "/" + $PagesLibraryName + "/" + $_.Url
+    if ($ExistingSrchNodes.Count -eq 0) {
 
-        Add-PnPNavigationNode -Location SearchNav -Title $_.Title -Url $Url -External
+        $LanguageInfo.SearchNavigation | ForEach-Object {
+
+            $Url = $Web.Url + "/" + $PagesLibraryName + "/" + $_.Url
+
+            Add-PnPNavigationNode -Location SearchNav -Title $_.Title -Url $Url -External
+        }
     }
 
     Write-Message -Message "Done!" -ForegroundColor Green
 
+    if ($IncludeData.IsPresent) {
+        # -------------------------------------------------------------------------------------
+        # Add sample data
+        # -------------------------------------------------------------------------------------
+        Write-Message -Message "Adding sample data for the notifications banner..." -NoNewline
+
+        $NotificationsList = Get-PnPList -Identity "Notifications"
+
+        $Notification = @{ "Title"="PnP Starter Intranet official documentation";"IntranetNotificationDescription"='<div>Thanks for using the PnP Starter Intranet solution! You could also check the <a href="https&#58;//transactions.sendowl.com/packages/48364/D024B326/view">official documentation</a> if you want to know more ;) (FR &amp; EN available)</div>'}
+
+        $Item = Add-PnPListItem -List $NotificationsList
+        $Item = Set-PnPListItem -Identity  $Item.Id -List $NotificationsList -Values $Notification -ContentType "Notification"
+
+        Write-Message -Message "`tDone!" -ForegroundColor Green
+    }
+    
     # -------------------------------------------------------------------------------------
     # Setup the configuration list
     # -------------------------------------------------------------------------------------
-    Write-Message -Message "`tAdding configuration item..." -NoNewline -ForegroundColor Gray
-
     Connect-PnPOnline -Url $CurrentSite.Url -Credentials $Credentials
 
     $ConfigurationList = Get-PnPList -Identity "Configuration"
 
+    Write-Message -Message "`tAdding configuration item..." -NoNewline -ForegroundColor Gray
+
     $ConfigurationItemValues = @{ "Title"="Default $LanguageLabelUpper";"ForceCacheRefresh"=1;"SiteMapTermSetId"=$SiteMapTermSetId;"HeaderLinksTermSetId"=$HeaderLinksTermSetId;"FooterLinksTermSetId"=$FooterLinksTermSetId;"IntranetContentLanguage"="$LanguageLabelUpper";"AppInsightsInstrumentationKey"=$AppInsightsInstrumentationKey }
 
-    # We create items in two steps because of a bug with the Add-PnPListItem since the February release https://github.com/SharePoint/PnP-PowerShell/issues/778
-    $Item = Add-PnPListItem -List $ConfigurationList
-    $Item = Set-PnPListItem -Identity  $Item.Id -List $ConfigurationList -Values $ConfigurationItemValues -ContentType "Item" 
+    # Check if the configuration item is already present for the current language
+    $CamlQuery = "<View><Query><Where><Eq><FieldRef Name='IntranetContentLanguage'></FieldRef><Value Type='Text'>$LanguageLabelUpper</Value></Eq></Where></Query></View>"
+    $ConfigItem = Get-PnPListItem -List "Configuration" -Query $CamlQuery
+
+    if (-not($ConfigItem)) {
+        # We create items in two steps because of a bug with the Add-PnPListItem since the February release https://github.com/SharePoint/PnP-PowerShell/issues/778
+        $Item = Add-PnPListItem -List $ConfigurationList
+        $Item = Set-PnPListItem -Identity  $Item.Id -List $ConfigurationList -Values $ConfigurationItemValues -ContentType "Item" 
+    }
     
     Write-Message -Message "Done!" -ForegroundColor Green  
 }
 
 if ($Languages.Count -gt 1) {
-
 
     # If multiple languages are set, we create a sub web for each one (like SharePoint variations do). We do this to benefit of the SharePoint MUI.
     $Languages | ForEach-Object {
@@ -203,16 +269,20 @@ if ($Languages.Count -gt 1) {
             }
         }
         
-        if ($IsWebExists) {
+        if ($IsWebExists -and -not($UpgradeSubSites.IsPresent)) {
         
-            Write-Message -Message "Warning: sub web with label $LanguageLabel already exists.Skipping..." -ForegroundColor White
+            Write-Message -Message "Warning: sub web with label $LanguageLabel already exists. Use '-UpgradeSubSites' switch parameter to update it. Skipping..." -ForegroundColor White
 
         } else {
 
             Write-Message -Message "Creating and configuring the sub web for the language '$LanguageLabel'..."
 
-            # Create subsites for languages with the corresponding template
-            $SubWeb = New-PnPWeb -Title $CurrentLanguage.Title -Url $CurrentLanguage.Label -InheritNavigation -Locale $CurrentLanguage.LCID -Template CMSPUBLISHING#0
+            if (-not($IsWebExists)) {
+                # Create subsites for languages with the corresponding template
+                $SubWeb = New-PnPWeb -Title $CurrentLanguage.Title -Url $CurrentLanguage.Label -InheritNavigation -Locale $CurrentLanguage.LCID -Template CMSPUBLISHING#0
+            } else {
+                $SubWeb = Get-PnPWeb -Identity $CurrentLanguage.Label
+            }
 
             Connect-PnPOnline -Url $SubWeb.Url -Credentials $Credentials
 
@@ -227,8 +297,13 @@ if ($Languages.Count -gt 1) {
             }
             
             $TemplateFilePath = Join-Path -Path $CommandDirectory  -ChildPath ("provisioning\" + $CurrentLanguage.TemplateFileName)
-            Apply-PnPProvisioningTemplate -Path $TemplateFilePath -Parameters $Parameters
-
+            
+            if ($ExcludeHandlers) {
+                Apply-PnPProvisioningTemplate -Path $TemplateFilePath -Parameters $Parameters -ExcludeHandlers $ExcludeHandlers
+            } else {
+                Apply-PnPProvisioningTemplate -Path $TemplateFilePath -Parameters $Parameters
+            }
+            
             Configure-Web -LanguageInfo $CurrentLanguage
 
             # Switch back to the root site context
@@ -257,7 +332,12 @@ if ($Languages.Count -gt 1) {
 
         # By default, apply the first template to the root site directly
         $TemplateFilePath = Join-Path -Path $CommandDirectory  -ChildPath ("provisioning\" + $CurrentLanguage.TemplateFileName)
-        Apply-PnPProvisioningTemplate -Path $TemplateFilePath -Parameters $Parameters
+        
+        if ($ExcludeHandlers) {
+            Apply-PnPProvisioningTemplate -Path $TemplateFilePath -Parameters $Parameters -ExcludeHandlers $ExcludeHandlers
+        } else {
+            Apply-PnPProvisioningTemplate -Path $TemplateFilePath -Parameters $Parameters
+        }
 
         Configure-Web -LanguageInfo $CurrentLanguage
 

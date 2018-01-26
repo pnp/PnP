@@ -1,110 +1,117 @@
 @import '../../styles/css/variables';
 
 #searchbox {
-    
-    font-family: $font-primary;
 
-    .search {
-        padding:8px 15px;
-    }
+    #search-container {
+        display: flex;
+        display: -ms-flexbox;
+        align-items: stretch;
+        -ms-flex-align: stretch;
+        justify-content: flex-end;
+        -ms-flex-pack: end;
 
-    #search-input {
-        
-        i.fa-search {
-            padding-right: 15px;
-            padding-left: 15px;
-            color: $headerlinks-color;
-        }  
-    }
+        font-family: $font-primary;
 
-    #search-input, #search-categories {
-        box-shadow: none;             
-        background-color: $searchbox-background-color;
-        font-size: 16px;
+        #search-input {
 
-        input {
-            border-radius: 0px;
+            display: flex;
+            display: -ms-flex;
+            align-content: center;
+            -ms-flex-align: center;
+            min-height: 40px;
+            
+            i.fa-search {
+                padding-right: 15px;
+                padding-left: 15px;
+                color: $headerlinks-color;
+                align-self: center;
+                -ms-flex-item-align: center;
+            }  
+        }
+
+        #search-input, #search-categories {
+            box-shadow: none;             
             background-color: $searchbox-background-color;
-            font-size: inherit;
-            font-family: $font-primary;
-            border: none;
-            overflow: auto;
-            outline: none;
-            -webkit-box-shadow: none;
-            -moz-box-shadow: none;
-            box-shadow: none;
-        }
+            font-size: 16px;
 
-        input, textarea {
-
-            color : $headerlinks-color; 
-
-        }
-
-        input.error {
-            border-color: $error-color;
-            outline-color: transparent;
-        }
-    }
-
-    #search-categories, #bot-wechat-btn {
-        float:right;
-        position: relative; 
-        line-height: initial;
-
-        button {
-
-            border-radius: 0;
-            padding: 8px 0px;
-            min-width: 4em;
-            background-color: $searchbox-categories-bgcolor;
-            font-size: $navbar-font-size;
-
-            i {
-                color: white;
+            input {
+                border-radius: 0px;
+                line-height: 40px;
+                background-color: $searchbox-background-color;
+                font-size: inherit;
+                font-family: $font-primary;
+                border: none;
+                overflow: auto;
+                outline: none;
+                -webkit-box-shadow: none;
+                -moz-box-shadow: none;
+                box-shadow: none;
             }
 
-            i.fa-caret-down {
-                margin-left: 5px;
+            input, textarea {
+                color : $headerlinks-color; 
+            }
+
+            input.error {
+                border-color: $error-color;
+                outline-color: transparent;
+            }
+        }
+        
+        #search-categories, #bot-wechat-btn {
+            position: relative; 
+            line-height: initial;
+
+            button {
+
+                border-radius: 0;
+                padding: 8px 0px;
+                min-width: 4em;
+                min-height: 40px;
+                background-color: $searchbox-categories-bgcolor;
+                font-size: $navbar-font-size;
+
+                i {
+                    color: white;
+                }
+
+                i.fa-caret-down {
+                    margin-left: 5px;
+                }
+            }
+
+            button.error {
+                border-color: $error-color;
+                background-color: $error-color;
+            }
+
+            ul.dropdown-menu {
+
+                left: -100px;
+                margin: 0;
+                border: 0;
+                border-radius: 0;
+                font-size: $navbar-font-size;
+                font-family: $font-primary;
+                cursor: pointer;
+                width: 164px;
+                text-align: right;
+                background-color: $nabar-l2-background-color;
+
+                a {
+                    color: $navbar-l2-link-color;
+                }
+
+                a:hover {
+                    color: $navbar-l2-link-color-hover;
+                    text-decoration: none;
+                }
             }
         }
 
-        button.error {
-            border-color: $error-color;
-            background-color: $error-color;
+        input, button {
+            height: 100%;
+            border: 0;  
         }
-
-        ul.dropdown-menu {
-
-            left: -100px;
-            margin: 0;
-            border: 0;
-            border-radius: 0;
-            font-size: $navbar-font-size;
-            font-family: $font-primary;
-            cursor: pointer;
-            width: 164px;
-            text-align: right;
-            background-color: $nabar-l2-background-color;
-
-            a {
-                color: $navbar-l2-link-color;
-            }
-
-            a:hover {
-                color: $navbar-l2-link-color-hover;
-                text-decoration: none;
-            }
-        }
-    }
-
-    #search-input {
-        line-height: 64px;
-    }
-
-    input, button {
-        vertical-align: top; // Inline element
-        height: 64px; // Same height as topnav bar
-        border: 0;  
     }
 }

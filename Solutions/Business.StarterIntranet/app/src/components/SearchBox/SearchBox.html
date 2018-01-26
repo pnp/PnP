@@ -1,41 +1,44 @@
 <div id="searchbox">
     <form data-bind="submit: doSearch">
-            <div id="bot-wechat-btn" class="btn-group">
-                <component-botwebchat></component-botwebchat>
-            </div>
-            <div id="search-categories" class="btn-group">
 
-                <!-- ko if: isError -->
-                    <button type="button" class="error" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-exclamation" aria-hidden="true"></i>
-                    </button>
-                <!-- /ko -->
+            <div id="search-container">
+                <div id="search-input">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                    <input  type="text" 
+                            class="search" 
+                            data-bind="textInput: inputQuery, 
+                            attr: { placeholder: selectedCategory() ? (searchPlaceHolderLabel() + ' ' + selectedCategory().Title ) : searchPlaceHolderLabel }, 
+                            css : { 'error': isError() },
+                            event: { focusout: function(){ isError(false) } }">
+                </div>
+                <div id="search-categories" class="btn-group">
 
-                <!-- ko ifnot: isError -->
-                    <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="category">
-                        <i class="fa" aria-hidden="true" data-bind="css: selectedCategory() ? selectedCategory().Icon : ''"></i>
-                        <i class="fa fa-caret-down"></i>
-                    </button>
-                    
-                    <ul class="dropdown-menu">
-                    <!-- ko foreach: searchNavigationNodes -->
-                        <li>
-                            <a data-bind="text: Title, click: $parent.selectCategory"></a>
-                        </li>
+                    <!-- ko if: isError -->
+                        <button type="button" class="error" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-exclamation" aria-hidden="true"></i>
+                        </button>
                     <!-- /ko -->
-                    </ul>
-                    
-                <!-- /ko -->
 
-            </div><!-- /btn-group -->
-            <div id="search-input">
-                <i class="fa fa-search" aria-hidden="true"></i>
-                <input  type="text" 
-                        class="search" 
-                        data-bind="textInput: inputQuery, 
-                        attr: { placeholder: selectedCategory() ? (searchPlaceHolderLabel() + ' ' + selectedCategory().Title ) : searchPlaceHolderLabel }, 
-                        css : { 'error': isError() },
-                        event: { focusout: function(){ isError(false) } }">
+                    <!-- ko ifnot: isError -->
+                        <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="category">
+                            <i class="fa" aria-hidden="true" data-bind="css: selectedCategory() ? selectedCategory().Icon : ''"></i>
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                        
+                        <ul class="dropdown-menu">
+                        <!-- ko foreach: searchNavigationNodes -->
+                            <li>
+                                <a data-bind="text: Title, click: $parent.selectCategory"></a>
+                            </li>
+                        <!-- /ko -->
+                        </ul>
+                        
+                    <!-- /ko -->
+
+                </div>
+                <div id="bot-wechat-btn" class="btn-group">
+                    <component-botwebchat></component-botwebchat>
+                </div>
             </div>
     </form>
 </div>

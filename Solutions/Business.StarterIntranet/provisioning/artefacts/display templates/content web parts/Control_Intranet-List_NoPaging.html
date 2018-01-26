@@ -58,9 +58,11 @@ var ListRenderRenderWrapper = function(itemRenderResult, inCtx, tpl)
 ctx['ItemRenderWrapper'] = ListRenderRenderWrapper;
 _#-->
     <div class="control-display-template">
-        <ul class="cbs-List">
-            _#= ctx.RenderGroups(ctx) =#_
-        </ul>
+        <div id="ContentSearch">
+            <ul class="cbs-List">
+                _#= ctx.RenderGroups(ctx) =#_
+            </ul>
+        </div>
     </div>
 <!--#_
 if (ctx.ClientControl.get_shouldShowNoResultMessage())

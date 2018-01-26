@@ -41,8 +41,9 @@ var ListRenderRenderWrapper = function(itemRenderResult, inCtx, tpl)
 ctx['ItemRenderWrapper'] = ListRenderRenderWrapper;
 _#-->
     <div class="control-display-template">
+        <div id="ContentSearch">
         <ul class="cbs-List">
-                _#= ctx.RenderGroups(ctx) =#_
+            _#= ctx.RenderGroups(ctx) =#_
 
 <!--#_
 var showPaging = ctx.ClientControl.get_showPaging();
@@ -110,6 +111,7 @@ _#-->
 }
 _#-->
             </ul>
+            </div>
         </div>
 <!--#_
 if (ctx.ClientControl.get_shouldShowNoResultMessage())

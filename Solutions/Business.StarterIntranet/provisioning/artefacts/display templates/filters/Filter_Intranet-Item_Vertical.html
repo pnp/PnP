@@ -21,7 +21,7 @@
     // Thanks to Elio ! https://www.eliostruyf.com/creating-custom-refiner-control-display-templates-for-sharepoint-2013/
 
     var encodedId = $htmlEncode(ctx.ClientControl.get_nextUniqueId());
-    var containerId = "TaxonomyFilter_" + encodedId;
+    var containerId = "RefinementFilter_" + encodedId;
     
 	var listData = ctx.ListData;
 
@@ -52,13 +52,13 @@
 _#-->
 		<div data-bind="stopBinding: true">
 			<div id="_#= containerId =#_">
-				<div class="item-display-template row">
+				<div class="item-display-template">
 
 					<div class="filter-vertical">
 				
 						<div class="refiner-category">
 			      			<span data-bind="getResource: 'filterBy'"></span>
-			      			<span data-bind="getResource: '_#= refinerCatTitle =#_'"></span>
+			      			<span class="category-name" data-bind="getResource: '_#= refinerCatTitle =#_'"></span>
 		      			</div>
 
 <!--#_
@@ -157,21 +157,17 @@ _#-->
     
         // Create the onClick event
         var onClickEvent = "$getClientControl(this)." + method + "('" + $scriptEncode(Sys.Serialization.JavaScriptSerializer.serialize(refiners)) + "');";       
-    	var encodedRefinementName = $htmlEncode(refinementName);
-    
-        // Keep only terms (L0). The crawl property ows_taxid_xxx return term sets too.
-        if (!/(GTSet|GPP|GP0)/i.test(encodedRefinementName))  {
-        
+    	var encodedRefinementName = $htmlEncode(refinementName);     
 	        
     _#-->
-           <div class='refiner-value' data-bind="css: {'refiner-remove': _#= isRemove=#_}">
+           <div class='refiner-value' data-bind="css: {'refiner-removeLink': _#= isRemove=#_}">
            
     <!--#_   	
            	// Check if the refinement contains results
 	        if (!isRemove) {
     _#-->        
            
-           		<a href='javascript:{}' onclick='_#= onClickEvent =#_' data-bind="localizedTermLabel: '_#= escape(encodedRefinementName) =#_'"></a>
+           		<a href='javascript:{}' onclick='_#= onClickEvent =#_'>_#= encodedRefinementName =#_</a>
     <!--#_   	
 	           	// Check if the refinement contains results
 		        if (refinementCount != null) {
@@ -189,13 +185,13 @@ _#-->
     			
     			} else {
     _#-->    			
-    				<span data-bind="localizedTermLabel: '_#= escape(encodedRefinementName) =#_'"></span>
+    				<span>_#= encodedRefinementName =#_</span>
      <!--#_   
     			
     			}
     _#-->    				
          		<a href='javascript:{}' onclick='_#= onClickEvent =#_' data-bind="visible: _#= isRemove =#_">
-           			<i class="fa fa-times-circle" aria-hidden="true"></i>
+           			<i class="fa fa-times" aria-hidden="true"></i>
            		</a>   
     <!--#_    	
         	}
@@ -203,8 +199,6 @@ _#-->
 			</div>
            	
     <!--#_
-        	
-        }
     }
   
     function mapResultType(listData)

@@ -1,6 +1,6 @@
 <html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"> 
 <head>
-<title>Intranet Search People Item (3 Columns)</title>
+<title>Intranet Search People Item</title>
 
 <!--[if gte mso 9]><xml>
 <mso:CustomDocumentProperties>
@@ -52,16 +52,16 @@
                         });
 
 _#-->
-                        <div class="col-md-4">
                             <div data-bind="stopBinding: true">
                                 <div class="item-display-template">
-                                    <div id="_#= container_id =#_" class="people-item" >
+                                    <div id="_#= container_id =#_" class="search-item people-item" >
 
                                         <!-- ko with: item -->
-                                        <div class="tile">
-                                            <div id="UserPersonaContainer">
-                                                <div id="UserPersona">
-                                                    <div id="_#= userPersonaId =#_" class="user-persona"></div>
+                                        
+                                                    <div id="NameAndJobAndPhoto" class="column">
+                                                        
+                                                        <div id="_#= userPersonaId =#_" class="user-persona"></div>
+                                                        <div id="NameAndJob">
                                                         <div id="NameField">
 <!--#_ 
                                                             var encodedName = (has_pn == true) ? $htmlEncode(ctx.CurrentItem.PreferredName) : $htmlEncode(ctx.CurrentItem.YomiDisplayName);
@@ -106,109 +106,115 @@ _#-->
 <!--#_ 
                                                         }
 _#-->
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div id="UserInfoContainer">
-                                                <div id="ContactInfo">
+                                                
+                                            
+                                            
+
+                                                    <div id="DepartmentAndOffice" class="column">
 <!--#_ 
-                                                var has_dp_en = !$isEmptyString(ctx.CurrentItem.Department);
-                                                if(has_dp_en == true) {
+                                                        var has_dp_en = !$isEmptyString(ctx.CurrentItem.Department);
+                                                        if(has_dp_en == true) {
 _#-->
-                                                    <!-- ko if: $parent.currentLanguage() === 'EN' -->
-                                                    <div id="DepartmentField">
+                                                    
+                                                        <!-- ko if: $parent.currentLanguage() === 'EN' -->
+                                                        <div id="DepartmentField">
 <!--#_ 
-                                                        var encodedDept = $htmlEncode(ctx.CurrentItem.Department);
-                                                        var displayDept = Srch.U.getSingleHHXMLNodeValue(hhProps, "department");
-                                                        if ($isEmptyString(displayDept)) { displayDept = encodedDept }
+                                                            var encodedDept = $htmlEncode(ctx.CurrentItem.Department);
+                                                            var displayDept = Srch.U.getSingleHHXMLNodeValue(hhProps, "department");
+                                                            if ($isEmptyString(displayDept)) { displayDept = encodedDept }
+    _#--> 
+                                                            <span class="user-property-title" data-bind="getResource: 'up_departmentProperty'"></span>
+                                                            <span class="user-property-title" data-bind="text: ': '"></span>
+                                                            <span id="DepartmentValue" title="_#= encodedDept =#_"> _#= displayDept =#_ </span>
+                                                            
+                                                        </div>
+                                                        <!-- /ko -->
+<!--#_ 
+                                                        }
+_#-->
+<!--#_ 
+                                                        var has_dp_fr = !$isEmptyString(ctx.CurrentItem.DepartmentFR);
+                                                        if(has_dp_fr == true) {
+_#-->
+                                                            <!-- ko if: $parent.currentLanguage() === 'FR' -->
+                                                            <div id="DepartmentField">
+<!--#_ 
+                                                                var encodedDept = $htmlEncode(ctx.CurrentItem.DepartmentFR);
+                                                                var displayDept = Srch.U.getSingleHHXMLNodeValue(hhProps, "departmentFr");
+                                                                if ($isEmptyString(displayDept)) { displayDept = encodedDept }
 _#--> 
-                                                        <span class="user-property-title" data-bind="getResource: 'up_departmentProperty'"></span>
-                                                        <span class="user-property-title" data-bind="text: ': '"></span>
-                                                        <span id="DepartmentValue" title="_#= encodedDept =#_"> _#= displayDept =#_ </span>
-                                                        
-                                                    </div>
-                                                    <!-- /ko -->
+                                                                <span class="user-property-title" data-bind="getResource: 'up_departmentProperty'"></span>
+                                                                <span class="user-property-title" data-bind="text: ': '"></span>
+                                                                <span id="DepartmentValue" title="_#= encodedDept =#_"> _#= displayDept =#_ </span>
+                                                                
+                                                            </div>
+                                                            <!-- /ko -->
 <!--#_ 
-                                                }
-_#-->
-<!--#_ 
-                                                var has_dp_fr = !$isEmptyString(ctx.CurrentItem.DepartmentFR);
-                                                if(has_dp_fr == true) {
-_#-->
-                                                    <!-- ko if: $parent.currentLanguage() === 'FR' -->
-                                                    <div id="DepartmentField">
-<!--#_ 
-                                                        var encodedDept = $htmlEncode(ctx.CurrentItem.DepartmentFR);
-                                                        var displayDept = Srch.U.getSingleHHXMLNodeValue(hhProps, "departmentFr");
-                                                        if ($isEmptyString(displayDept)) { displayDept = encodedDept }
-_#--> 
-                                                        <span class="user-property-title" data-bind="getResource: 'up_departmentProperty'"></span>
-                                                        <span class="user-property-title" data-bind="text: ': '"></span>
-                                                        <span id="DepartmentValue" title="_#= encodedDept =#_"> _#= displayDept =#_ </span>
-                                                        
-                                                    </div>
-                                                    <!-- /ko -->
-<!--#_ 
-                                                }
+                                                        }
 _#-->
 <!--#_
-                                                var hasOffice = !$isEmptyString(ctx.CurrentItem.OfficeNumber);
-                                                if(hasOffice == true) {
+                                                        var hasOffice = !$isEmptyString(ctx.CurrentItem.OfficeNumber);
+                                                        if(hasOffice == true) {
 _#-->
-                                                    <div id="OfficeField">
+                                                            <div id="OfficeField">
 <!--#_ 
-                                                        var encodedOffice = $htmlEncode(ctx.CurrentItem.OfficeNumber);
-                                                        var displayOffice = Srch.U.getSingleHHXMLNodeValue(hhProps, "officeNumber");
-                                                        if ($isEmptyString(displayOffice)) { displayOffice = encodedOffice }
+                                                                var encodedOffice = $htmlEncode(ctx.CurrentItem.OfficeNumber);
+                                                                var displayOffice = Srch.U.getSingleHHXMLNodeValue(hhProps, "officeNumber");
+                                                                if ($isEmptyString(displayOffice)) { displayOffice = encodedOffice }
 _#--> 
-                                                        <span class="user-property-title" data-bind="getResource: 'up_officeNumberProperty'"></span>
-                                                        <span class="user-property-title" data-bind="text: ': '"></span>
-                                                        <span id="OfficeValue" title="_#= encodedOffice =#_"> _#= displayOffice =#_ </span>
-                                                    </div>
+                                                                <!-- <span class="user-property-title" data-bind="getResource: 'up_officeNumberProperty'"></span>
+                                                                <span class="user-property-title" data-bind="text: ': '"></span> -->
+                                                                <span id="OfficeValue" title="_#= encodedOffice =#_"> _#= displayOffice =#_ </span>
+                                                            </div>
 <!--#_ 
-                                                }
+                                                        }
 _#-->
+                                                    </div> <!-- End: DepartmentAndOffice -->
+                                                    <div id="PhoneAndMail" class="column">
 <!--#_ 
-                                                var hasWorkPhone = !$isEmptyString(ctx.CurrentItem.WorkPhone);
-                                                if(hasWorkPhone == true) {
+                                                        var hasWorkPhone = !$isEmptyString(ctx.CurrentItem.WorkPhone);
+                                                        if(hasWorkPhone == true) {
 _#-->
-                                                    <div id="WorkPhoneField">
+                                                        <div id="WorkPhoneField">
 <!--#_ 
-                                                        var encodedWorkPhone = $htmlEncode(ctx.CurrentItem.WorkPhone);
-                                                        var displayWorkPhone = Srch.U.getSingleHHXMLNodeValue(hhProps, "workphone");
-                                                        if ($isEmptyString(displayWorkPhone)) { displayWorkPhone = encodedWorkPhone }
+                                                                var encodedWorkPhone = $htmlEncode(ctx.CurrentItem.WorkPhone);
+                                                                var displayWorkPhone = Srch.U.getSingleHHXMLNodeValue(hhProps, "workphone");
+                                                                if ($isEmptyString(displayWorkPhone)) { displayWorkPhone = encodedWorkPhone }
 _#--> 
-                                                        <span class="user-property-title" data-bind="getResource: 'up_workPhoneProperty'"></span>
-                                                        <span class="user-property-title" data-bind="text: ': '"></span>
-                                                        <span id="WorkPhoneValue" title="_#= encodedWorkPhone =#_"> _#= displayWorkPhone =#_ </span>
-                                                    </div>
+                                                                <!-- <span class="user-property-title" data-bind="getResource: 'up_workPhoneProperty'"></span>
+                                                                <span class="user-property-title" data-bind="text: ': '"></span> -->
+                                                                <span id="WorkPhoneValue" title="_#= encodedWorkPhone =#_"> _#= displayWorkPhone =#_ </span>
+                                                            </div>
 <!--#_ 
-                                                }
+                                                        }
 _#-->
 <!--#_ 
-                                                var hasWorkEmail = !$isEmptyString(ctx.CurrentItem.WorkEmail);
-                                                if(hasWorkEmail == true) {
+                                                        var hasWorkEmail = !$isEmptyString(ctx.CurrentItem.WorkEmail);
+                                                        if(hasWorkEmail == true) {
 _#-->
-                                                    <div id="WorkEmailField">
+                                                            <div id="WorkEmailField">
 <!--#_ 
-                                                        var encodedWorkEmail = $htmlEncode(ctx.CurrentItem.WorkEmail);
-                                                        var displayWorkEmail = Srch.U.getSingleHHXMLNodeValue(hhProps, "workemaile");
-                                                        if ($isEmptyString(displayWorkEmail)) { displayWorkEmail = encodedWorkEmail }
+                                                                var encodedWorkEmail = $htmlEncode(ctx.CurrentItem.WorkEmail);
+                                                                var displayWorkEmail = Srch.U.getSingleHHXMLNodeValue(hhProps, "workemaile");
+                                                                if ($isEmptyString(displayWorkEmail)) { displayWorkEmail = encodedWorkEmail }
 _#--> 
-                                                        <span class="user-property-title" data-bind="getResource: 'up_emailProperty'"></span>
-                                                        <span class="user-property-title" data-bind="text: ': '"></span>
-                                                        <span id="WorkEmailValue" title="_#= encodedWorkEmail =#_"><a href="mailto:_#= encodedWorkEmail =#_"> _#= displayWorkEmail =#_ </a></span>
-                                                    </div>
+                                                                <!-- <span class="user-property-title" data-bind="getResource: 'up_emailProperty'"></span>
+                                                                <span class="user-property-title" data-bind="text: ': '"></span> -->
+                                                                <span id="WorkEmailValue" title="_#= encodedWorkEmail =#_"><a href="mailto:_#= encodedWorkEmail =#_"> _#= displayWorkEmail =#_ </a></span>
+                                                            </div>
 <!--#_ 
-                                                }
+                                                        }
 _#-->
-                                                </div>
-                                            </div>
-                                        </div> <!-- End: <div class="tile"> -->
+                                                    </div> <!-- End: PhoneAndMail -->
+                                                
+                                            
+                                        
                                         <!-- /ko -->
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </div>                       
 <!--#_
                     AddPostRenderCallback(ctx, function(){
                         EnsureScriptFunc("clienttemplates.js", "RenderUserFieldWorker", function() {

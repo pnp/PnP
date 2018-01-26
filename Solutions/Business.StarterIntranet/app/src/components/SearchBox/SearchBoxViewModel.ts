@@ -87,7 +87,7 @@ class SearchBoxViewModel {
         } else {
             let queryUrl: string = "";
 
-            queryUrl = this.selectedCategory().Url + "?k=" + this.inputQuery();
+            queryUrl = this.selectedCategory().Url + "?#k=" + this.inputQuery();
 
             // Redirect to the correct page according to selected category
             window.location.href = queryUrl;

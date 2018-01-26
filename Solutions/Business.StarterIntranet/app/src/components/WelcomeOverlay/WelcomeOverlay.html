@@ -1,12 +1,15 @@
 <div id="welcome">
 
-    <div id="welcome-message">
-        <span data-bind="text: welcomeMessage"></span>
+    <div id="welcome-header"> 
+        <div id="welcome-message">
+            <span data-bind="html: welcomeMessage"></span>
+        </div>
+        <div id="welcome-searchbox">
+            <component-searchbox></component-searchbox>
+        </div>
     </div>
-    <div id="welcome-searchbox">
-        <component-searchbox></component-searchbox>
-    </div>
-    <div id="welcome-nav" >
+
+    <div id="welcome-nav" class="hidden-xs" >
         <component-topnav></component-topnav>
     </div>
    

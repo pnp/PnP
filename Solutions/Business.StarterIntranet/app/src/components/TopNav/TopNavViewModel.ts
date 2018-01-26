@@ -153,6 +153,35 @@ class TopNavViewModel extends NavigationViewModel {
         });
     }
 
+    public selectNode = (data, event) => {
+
+        const nodes = this.nodes().map((node) => {
+           if (node.id === data.id) {
+                // Select current node
+                node.isSelected(!node.isSelected());
+                return node;
+           } else {
+                // Unselect all other nodes
+                node.isSelected(false);
+                return node;
+           }
+        });
+
+        this.nodes(nodes);
+    }
+
+    public unselectNode = (elt) => {
+        if ($(elt).parent("li").hasClass("open")) {
+            const nodes = this.nodes().map((node) => {
+                     // Unselect all other nodes
+                     node.isSelected(false);
+                     return node;
+            });
+
+            this.nodes(nodes);
+        }
+    }
+
     private getNavigationNodes(termSetId: string): void {
 
         if (!termSetId) {
@@ -189,6 +218,10 @@ class TopNavViewModel extends NavigationViewModel {
                 }).catch((errorMesssage) => {
 
                     this.errorMessage(errorMesssage + ". Empty the localStorage values in the browser for the configuration list and try again.");
+
+                    // Clear the local storage value
+                    storage.local.delete(this.localStorageKey);
+
                     this.wait(false);
                     this.initialize([]);
                     Logger.write("[TopNav.getNavigationNodes]: " + errorMesssage, LogLevel.Error);
@@ -197,6 +230,10 @@ class TopNavViewModel extends NavigationViewModel {
             }).catch((errorMesssage) => {
 
                 this.errorMessage(errorMesssage + ". Empty the localStorage values in the browser for the configuration list and try again.");
+
+                // Clear the local storage value
+                storage.local.delete(this.localStorageKey);
+
                 this.wait(false);
                 this.initialize([]);
                 Logger.write("[TopNav.getNavigationNodes]: " + errorMesssage, LogLevel.Error);

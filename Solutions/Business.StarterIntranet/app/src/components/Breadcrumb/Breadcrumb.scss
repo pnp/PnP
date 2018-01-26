@@ -4,25 +4,31 @@
     
     font-family: $font-primary;
     width: 100%;
-    min-height: 50px; //to display the spinner
-    display: inline-block;
-    vertical-align: middle;
-
+    padding-top: 15px;
+    padding-bottom: 15px;
+    
     #message {
         
-        display: inline-block;
-        vertical-align: middle;
-        color: $error-color;
-        line-height: initial;
+        color: $warning-color;
+        padding-bottom: 10px;
+        flex: 1 1 0%;
+        -ms-flex: 1 1 0%;
 
         i {
             float: left;
-            color: $error-color;
+            color: $warning-color;
             margin-right: 5px;
         }
     }
     
     ul {
+
+        display: flex;
+        display: -ms-flexbox;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        -ms-flex-pack: start;
 
         padding: 0;
         margin: 0;
@@ -59,6 +65,11 @@
         @media (max-width: 767px) { 
 
             color: #000000;
+
+            li {
+                margin-top: 2px;
+                margin-bottom: 2px;
+            }
 
             li.is-selected, li{
                 a, i, a:visited {

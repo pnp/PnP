@@ -1,6 +1,6 @@
 <html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"> 
 <head>
-<title>Intranet Tiles List (2 Columns)</title>
+<title>Intranet Tiles List (2 Columns No Paging)</title>
 
 <!--[if gte mso 9]><xml>
 <mso:CustomDocumentProperties>
@@ -60,8 +60,10 @@ var ListRenderRenderWrapper = function(itemRenderResult, inCtx, tpl)
 ctx['ItemRenderWrapper'] = ListRenderRenderWrapper;
 _#-->
     <div class="control-display-template">
-        <div id="tiles-control" class="row">
-            _#= ctx.RenderGroups(ctx) =#_
+        <div class="row">
+            <div id="ContentSearch">
+                _#= ctx.RenderGroups(ctx) =#_
+            </div>
         </div>
     </div>
 <!--#_

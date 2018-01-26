@@ -7,6 +7,7 @@
     min-width: 150px;
     font-family: $footerlinks-fontfamily;
     font-size: $footerlinks-font-size;
+    font-weight: 100;
 
     ul {
         margin: 0;
@@ -14,11 +15,13 @@
     }
     
     ul li {
-        display: inline;
-        list-style-type: none;
         color: $footerlinks-color;
-        margin-right: 5px;
-        margin-left: 5px;
+        display: inline-block;
+        list-style-type: none;
+        margin-right: 25px;
+        margin-left: 25px;
+        padding-top: 5px;
+        padding-bottom: 5px;
 
         i {
             color: $navbar-l1-link-color;        

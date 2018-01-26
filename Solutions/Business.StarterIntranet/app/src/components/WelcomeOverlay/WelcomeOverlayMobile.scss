@@ -1,0 +1,48 @@
+@import '../../styles/css/variables';
+
+#welcome-mobile {
+
+    height: 200px;
+    background-image: url(../../styles/css/images/intranet-background.jpg);
+    background-repeat: no-repeat;
+    position: relative;
+    margin-left: -15px;
+    margin-right: -15px;
+
+    #welcome-header {
+
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        height: 100%;
+
+        #welcome-message {
+
+            font-family: $font-primary;
+            font-size: 22px;
+            font-weight: lighter;
+            line-height: 1.14;
+            color: #ffffff;
+        }
+
+        #welcome-searchbox {
+
+            #search-input, input {
+                background-color: #fff;
+                border-top-left-radius: 5px;
+                border-bottom-left-radius: 5px;
+
+                i.fa-search, input {
+                    color: #000;
+                }
+            }
+
+            #search-categories, #search-categories button {
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+            }
+        }
+    }
+}

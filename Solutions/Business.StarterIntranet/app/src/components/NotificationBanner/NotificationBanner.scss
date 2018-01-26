@@ -1,0 +1,31 @@
+@import '../../styles/css/variables';
+
+#intranet-notification-banner {
+
+    background-color: $warning-color;
+    display: flex;
+    display: -ms-flexbox;
+    font-weight: 500;
+    color: $text-color;
+    font-family: $font-primary;
+    font-size: 16px;
+
+    flex-direction: column;
+    -ms-flex-direction: column;
+
+    .message {
+        display: flex;
+        display: -ms-flexbox;
+        justify-content: center;
+        -ms-flex-pack: center;
+        padding-left: 25px;
+        padding-right: 25px;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        text-align: center;
+    }
+
+    div.message~div.message {
+        border-top: 1px solid $navbar-l3-link-color;
+    }
+}
