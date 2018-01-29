@@ -70,6 +70,12 @@ The entire solution is "site collection self-contained" so it does not conflict 
         <img width="400" src="./images/homepage.png"/>
         <p align="center">Home page</p>
       </div>
+          <td>
+      <p align="center">
+        <img width="400" src="./images/people-search-desktop.png"/>
+        <p align="center">Search Experience</p>
+      </div>
+    </td>
     </td>
   </tr>
   <tr>
