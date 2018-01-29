@@ -75,18 +75,18 @@ The entire solution is "site collection self-contained" so it does not conflict 
         <p align="center">Home page</p>
       </div>
     </td>
-    <td>
-      <p align="center">
-        <img width="200" src="./images/mobile.png"/>
-        <p align="center">Mobile menu<p>
-      </p>
-    </td>
   </tr>
   <tr>
-    <td colspan="2">
+    <td>
       <p align="center">
-        <img width="600" src="./images/bot_integration.png"/>
-        <p align="center">Bot Framework integration</p>
+        <img width="200px" src="./images/mobile.png"/>
+        <p align="center">Mobile home page<p>
+      </p>
+    </td>
+    <td>
+      <p align="center">
+        <img width="200px" src="./images/people-search.png"/>
+        <p align="center">People search with alphabetical refiner<p>
       </p>
     </td>
   </tr>
@@ -97,7 +97,9 @@ The entire solution is "site collection self-contained" so it does not conflict 
 - SharePoint 2013/2016 on-premises 
 - SharePoint Online (*Office 365 E3* plan minimum to get the Content Search WebPart)
 
-## Compatible browsers ##
+## Tested browsers ##
+
+This solution is functional with the following browsers:
 
 - Internet Explorer 10, 11
 - Firefox
@@ -117,7 +119,7 @@ Version  | Date | Comments
 1.2 | January 31st 2016 |  <ul style="list-style: none"><li>Added the support of SharePoint 2013 and 2016 on-premises</li><li>Updated to TypeScript 2.1.5 and PnP Js Core 1.0.6</li></ul>
 1.3 | May 4th 2017 | <ul style="list-style: none"><li>New design</li><li>Added the support of event pages</li><li>New display templates for news + new carousel design</li><li>Added a QnA bot integration with authentication</li><li>Bug fixes + migration to webpack 2.0 and sp-pnp-js 2.0</li></ul>
 2.0 | August 30th 2017 | <ul style="list-style: none"><li>Completely new design reused from a real project and made by a firm of professional graphic designers</li><li>Added the option to deploy with only one language + ability to add new languages on the fly</li><li>Several performance improvements</li><li>Added a complete documentation (user and development guides) available separately</li><li>Bug fixes and code structure improvements</li></ul>
-2.1 | January 30th 2018 | <ul style="list-style: none"><li>Updated the global UI experience.</li><ul style="list-style: none"><li>Improved design implementation using CSS flexboxes.</li><li>Improved mobile design.</li></ul><li>Improved search experience.<ul style="list-style: none"><li>Added an alphabetical display template refiner for people search.</li><li>Added a dropdown display template refiner.</li><li>Added a light search box.</li><li>Added a popup with search tips to help users.</li></ul></li><li>Improved the overall performance.</li><li>Updated the root logic redirection. Now we use a SharePoint redirect page to instantly redirect for visitors.</li><li>Ensured compatibility with IE10, 11, Edge, Firefox and Chrome.</li><li>Added more options for deployments in the PowerShell scripts. Now we can exclude handlers form the deploymens (i.e TermGroups or Files).</li><li>Updated the "View all" link in content search display template. Now, you can set your own in the Web Part properties.</li><li>Updated the PnP provisioming template schema to 201705.</li><li>Minor bug fixes.</li></ul>
+2.1 | January 30th 2018 | <ul style="list-style: none"><li>Updated the global UI experience.</li><ul style="list-style: none"><li>Improved design implementation using CSS flexboxes.</li><li>Improved mobile design.</li></ul><li>Improved search experience.<ul style="list-style: none"><li>Added an alphabetical display template refiner for people search.</li><li>Added a dropdown display template refiner.</li><li>Added a light search box.</li><li>Added a popup with search tips to help users.</li></ul></li><li>Improved the overall performance.</li><li>Updated the root logic redirection. Now we use a SharePoint redirect page to instantly redirect visitors.</li><li>Ensured compatibility with IE10, 11, Edge, Firefox and Chrome.</li><li>Added more options for deployments in the PowerShell scripts. Now we can exclude handlers form the deploymens (i.e TermGroups or Files).</li><li>Updated the "View all" link in content search display template. Now, you can set your own in the Web Part properties.</li><li>Updated the PnP provisioming template schema to 201705.</li><li>Minor bug fixes.</li></ul>
 
 ## Solution documentation ##
  
@@ -133,7 +135,7 @@ More information here: [http://thecollaborationcorner.com/2017/09/11/a-new-versi
 Before starting, you'll need to setup tour environment:
 
 - Install at latest release of [PnP PowerShell cmdlets SharePointPnPPowerShellXXX](https://github.com/OfficeDev/PnP-PowerShell/releases) according to your SharePoint version.
-- Install Node.js on your machine https://nodejs.org/en/ *(v6.10.1)*
+- Install Node.js on your machine https://nodejs.org/en/ *(v8.9.4)*
 - Install the 'webpack' Node JS client (`npm i webpack@2.4.1 -g`). This solution uses webpack v2.
 - Go to the ".\app" folder and install all dependencies listed in the package.json file by running the `npm i` cmd 
 - Check if everything is OK by running the "`webpack`" cmd from the ".\app" folder. You shouldn't see any errors here.
@@ -240,7 +242,7 @@ $Languages = @(
 
 ### Configure column default values in the Pages library ###
 
-After the deployment, you have to complete some manual steps in order to set up default column values for folders in the "Pages" library for each language. These information are used for the news and event webparts on the home page to filter archive page (the "View all" links on display templates).
+After the deployment, you have to complete some manual steps in order to set up default column values for folders in the "Pages" library for each language.
 
 Library/Folder | Column | Value
 ---------| -----| --------
@@ -258,7 +260,7 @@ This permission is usually given by the built-in "Designers" SharePoint group.
 
 ### Configure search schema at global level for people last name refinement ###
 
-If you plan to use the alphabetical display termplate for the people search, you will need to configure an existing  **RefinableStringXX** managed property targeting the *People:LastName* crawled property direclty in your global farm/tenant search schema. For no reason, this configuration doesn't work if made at the site collection level.
+If you plan to use the alphabetical display termplate for the people search, you will need to configure an existing  **RefinableStringXX** managed property targeting the *People:LastName* crawled property direclty at the  **global farm/tenant search schema level**. This configuration doesn't work if it is made at the site collection level.
 
 <p align="center">
   <img width="200px" src="./images/alphabetical_displayTemplate.png"/>
