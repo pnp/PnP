@@ -21,9 +21,9 @@
             return new Term(this.RawTerm);
         },
         //converts a term to an html tree node
-        toHtmlLabel: function () {
+        toHtmlLabel: function (termSet) {
             var addlClass = (this.Children.length > 0) ? 'collapsed' : '';
-            return jQuery('<li class="cam-taxpicker-treenode-li"><div class="cam-taxpicker-treenode"><div class="cam-taxpicker-expander ' + addlClass + '"></div><img src="' + this.TermSet.TermSetImageUrl + '/EMMTerm.png" alt=""/><span class="cam-taxpicker-treenode-title"  data-item="' + this.Name + '|' + this.Id + '">' + this.Name + '</span></div></li>');
+            return jQuery('<li class="cam-taxpicker-treenode-li"><div class="cam-taxpicker-treenode"><div class="cam-taxpicker-expander ' + addlClass + '"></div><img src="' + termSet.TermSetImageUrl + '/EMMTerm.png" alt=""/><span class="cam-taxpicker-treenode-title"  data-item="' + this.Name + '|' + this.Id + '">' + this.Name + '</span></div></li>');
         }
     });
     //********************** END Term Class **********************
@@ -994,7 +994,7 @@
             //get the container and replace the new node with a non-editable node
             var ul = this._dlgNewNode.parent();
             this._dlgNewNode.remove();
-            var newNode = newTerm.toHtmlLabel();
+            var newNode = newTerm.toHtmlLabel(this.TermSet);
             ul.prepend(newNode);
 
             //change the style to selected and wire events
