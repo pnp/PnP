@@ -18,6 +18,7 @@ class NodeViewModel {
     public excludeFromGlobalNavigation: KnockoutObservable<boolean>;
     public excludeFromCurrentNavigation: KnockoutObservable<boolean>;
     public properties: KnockoutObservable<any>;
+    public isSelected: KnockoutObservable<boolean>;
 
     constructor(node: TaxonomyNavigationNode) {
 
@@ -50,6 +51,7 @@ class NodeViewModel {
         this.excludeFromGlobalNavigation = ko.observable(node.ExcludeFromGlobalNavigation);
         this.excludeFromCurrentNavigation = ko.observable(node.ExcludeFromCurrentNavigation);
         this.properties = ko.observable(node.Properties);
+        this.isSelected = ko.observable(false);
 
         // Populate children recursively
         NavigationViewModel.populateObservableNodeArray(node.ChildNodes, this.children);

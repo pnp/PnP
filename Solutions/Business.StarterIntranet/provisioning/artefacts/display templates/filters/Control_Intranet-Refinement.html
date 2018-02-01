@@ -23,8 +23,42 @@
 
         ctx.ClientControl.alternateRenderer = function(container, cntxt) {};
         
-        AddPostRenderCallback(ctx, function() {			
-           Intranet.Main.initDisplayTemplateViewModel(document.getElementById(containerId));
+        AddPostRenderCallback(ctx, function() {	
+            
+            Intranet.Main.initDisplayTemplateViewModel(document.getElementById(containerId));
+           
+            // Add a toggle button for filters in mobile view.
+            var $ = Intranet.Main.jQuery();
+
+            // Check if we are in mobile view to display filters as collapsible
+            var isBtnVisible = $("#add-filters-btn").is(":visible");
+            if (isBtnVisible) {
+                $("#refinementPanel").addClass("collapse");
+            }
+
+            // Collapse events
+            $("#refinementPanel").on("hide.bs.collapse", function(event) {
+
+                var iconElt = $("[data-target='#" + event.target.id + "']").find("i");
+                if (iconElt) {
+                    iconElt.removeClass("fa-angle-up");
+                    iconElt.addClass("fa-angle-down");
+                    $("#add-filters-btn span").text(Intranet.Main.getResource("addFilters"));
+                }
+            });
+
+            $("#refinementPanel").on("show.bs.collapse", function(event) {
+
+                event.stopPropagation();
+
+                // Get the parent with the data-target attribute equals to my id.
+                var iconElt = $("[data-target='#" + event.target.id + "']").find("i");
+                if (iconElt) {
+                    iconElt.removeClass("fa-angle-down");
+                    iconElt.addClass("fa-angle-up");
+                    $("#add-filters-btn span").text(Intranet.Main.getResource("hideFilters"));
+                }
+            });
         });
 _#-->
         <div class="control-display-template">
@@ -32,10 +66,15 @@ _#-->
 				<div id="_#=containerId=#_">
 
             <div class="ms-ref-ctrl" id="Refinement" name="Control">
+                <button type="button" id="add-filters-btn" data-toggle="collapse" data-target="#refinementPanel" class="hidden-md hidden-sm hidden-lg" >
+                    <span data-bind="getResource: 'addFilters'"></span>
+                    <i class="fa fa-angle-down"></i>
+                </button>
 <!--#_ 
-            if(!$isNull(ctx.ClientControl)){
-            
-
+            if(!$isNull(ctx.ClientControl)) {
+_#-->
+            <div id="refinementPanel">
+<!--#_ 
                 var rcs = ctx.ClientControl.get_selectedRefinementControls();
                 if(!$isEmptyArray(rcs)){
                     for(var i = 0; i < rcs.length; i++){
@@ -67,6 +106,7 @@ _#-->
                     }
 _#-->
                 </div>
+            </div>
 <!--#_
             }
 _#-->

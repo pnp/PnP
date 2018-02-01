@@ -1,0 +1,17 @@
+<div id="searchbox-light">
+    <form data-bind="submit: doSearch">
+            <div id="search-input">
+                <i class="fa fa-search" aria-hidden="true"></i>
+                <input  type="text" 
+                        class="search" 
+                        data-bind="textInput: inputQuery, 
+                        attr: { placeholder: selectedCategory() ? (searchPlaceHolderLabel() + ' ' + selectedCategory().Title ) : searchPlaceHolderLabel }, 
+                        css : { 'error': isError() },
+                        event: { focusout: function(){ isError(false) } }">
+                <div id="search-help-icon" data-bind="visible: showSearchHelp, attr: { title: Intranet.Main.getResource('searchTipsDlgTitle') }" data-toggle="modal" data-target="#search-help">
+                    <i class="fa fa-question" aria-hidden="true"></i>
+                </div>
+            </div>            
+    </form>
+</div>
+<component-searchhelp></component-searchhelp>

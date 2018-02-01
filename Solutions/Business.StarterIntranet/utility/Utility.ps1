@@ -166,6 +166,23 @@ function Set-FolderContentTypesOrder() {
 		Execute-PnPQuery	
 	}
 }
+function Get-SearchNavigationNodes() {
+
+    $Ctx = Get-PnPContext
+    $Web = Get-PnPWeb
+    $Navigation = $Web.Navigation
+    $Ctx.Load($Navigation)
+
+    Execute-PnPQuery
+
+    $SrchNav = $Navigation.GetNodeById(1040);
+    [Microsoft.SharePoint.Client.NavigationNodeCollection] $SrchNodes = $SrchNav.Children
+    $Ctx.Load($SrchNav)
+    $Ctx.Load($SrchNodes)
+    Execute-PnPQuery
+
+    return $SrchNodes
+}
 
 function Write-Section(){
   Param
@@ -203,7 +220,6 @@ $header = @"
 Write-Host $header -ForegroundColor Cyan
 
 }
-
 function Write-Message() {
   Param
   (

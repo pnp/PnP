@@ -4,17 +4,21 @@
 
     min-height: 200px; // We set a min height to display the spinner
     font-family: $font-primary;
-    font-size: 14px;
+    font-size: 15px;
     text-decoration: none;
+
+    /* Small devices */
+    @media (max-width: 768px) { 
+        min-height: 100%;
+        margin-bottom: 15px;
+    }
 
     ul.nav {
         margin-top: 0px;
     }
 
     .nav > li {
-
-        padding-bottom: 15px;
-        padding-top: 15px;
+        padding: 10px;
         padding-right: 10px;
         display: inline-block;
         width: 100%;
@@ -24,7 +28,6 @@
             width:90%;
             padding: 0px;
             color: $primary-color;
-            font-weight: 600;
         }
 
         a:hover {
@@ -46,26 +49,25 @@
     .nav > li.is-selected {
 
         a, i {
-            color: $text-color;
+            color: $primary-color;
         }
     }
 
     .nav > li.parent-section {
     
-        i {
-            float: none;
-        }
+        background-color: $primary-color;
 
         a {
-            color: $text-color;
+            color: $navbar-l1-link-color;
         }
+    }
+
+    .nav > li+li {
+        margin-top: 0px;
     }
     
     .nav > li.is-child {
-        padding-left:30px;
         border-bottom: transparent;
-        padding-bottom: 5px;
-        padding-top: 5px;
 
         a {
             color: $primary-color;
@@ -73,7 +75,11 @@
         }
     }
 
-    .nav-pills > li~li {
-        border-top: 1px solid #F2EFEF;
+    .nav-pills > li~li {   
+        border-bottom: 1px solid $menu-items-border-color;
+    }
+
+    .nav > li.is-child~li.is-child {
+        border-top: 1px solid $menu-items-border-color;
     }
 }

@@ -16,11 +16,18 @@ Param(
 	[switch]$JsOnly=$false,
 	
 	[Parameter(Mandatory=$False)]
-	[switch]$IncludeData=$false
+	[switch]$IncludeData=$false,
+
+	[Parameter(Mandatory=$False)]
+	$ExcludeHandlers,
+
+	[Parameter(Mandatory=$False)]
+	[switch]$UpgradeSubSites=$false
 )
 
 $0 = $myInvocation.MyCommand.Definition
 $CommandDirectory = [System.IO.Path]::GetDirectoryName($0)
+$ErrorActionPreference = "Stop"
 
 Push-Location $CommandDirectory
 
@@ -30,10 +37,9 @@ Push-Location $CommandDirectory
 
 # Configuration file paths
 $ProvisioningRootSiteTemplateFile = Join-Path -Path $CommandDirectory -ChildPath "provisioning\RootSiteTemplate.xml"
-$SearchConfigurationFilePath = Join-Path -Path $CommandDirectory -ChildPath "provisioning\SearchConfiguration.xml"
 $ImageRenditionsConfigurationFilePath = Join-Path -Path $CommandDirectory -ChildPath "provisioning\PublishingImageRenditions.xml"
 
-# The version on the PnP Starter Intranet (from package.json file)
+# Get the version of the PnP Starter Intranet (from package.json file)
 $PkgFile = Get-Content -Raw -Path (Join-Path -Path $CommandDirectory -ChildPath "app/package.json") | ConvertFrom-Json
 $PnPStarterIntranetCurrentVersion = $PkgFile.version
 
@@ -147,11 +153,19 @@ if (!$PagesLibraryName) {
     exit
 }
 
-# Apply the root site provisioning template
-Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -Parameters @{ "CompanyName" = $AppFolderName; "AssemblyVersion" = $AssemblyVersion; "PagesLibraryName" = $PagesLibraryName }
+$TemplateParameters = @{ 
+	"CompanyName" = $AppFolderName; 
+	"AssemblyVersion" = $AssemblyVersion; 
+	"PagesLibraryName" = $PagesLibraryName;
+	"DefaultLanguageLabel" = $SiteUrl + "/" + $Languages[0].Label
+}
 
-# Set up the search configuration
-Set-PnPSearchConfiguration -Path $SearchConfigurationFilePath -Scope Site
+# Apply the root site provisioning template
+if ($ExcludeHandlers) {
+	Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -Parameters $TemplateParameters -ExcludeHandlers $ExcludeHandlers
+} else {
+	Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -Parameters $TemplateParameters
+}
 
 Write-Message -Message "`tDone!" -ForegroundColor Green
 
@@ -159,7 +173,7 @@ Write-Message -Message "`tDone!" -ForegroundColor Green
 # Configure sub webs according languages
 # -------------------------------------------------------------------------------------
 $Script = ".\Setup-Web.ps1" 
-& $Script -RootSiteUrl $SiteUrl -UserName $UserName -Password $Password
+& $Script -RootSiteUrl $SiteUrl -UserName $UserName -Password $Password -ExcludeHandlers $ExcludeHandlers -UpgradeSubSites:$UpgradeSubSites -IncludeData:$IncludeData
 
 # Switch back to the root site context
 Set-PnPContext -Context $RootSiteContext
@@ -211,7 +225,7 @@ if ($IncludeData.IsPresent) {
     	$Item = Set-PnPListItem -Identity  $Item.Id -List $CarouselItemsList -Values $_ -ContentType "Carousel Item"
     }
 
-    Write-Message -Message "`tDone!" -ForegroundColor Green
+	Write-Message -Message "`tDone!" -ForegroundColor Green
 }
 
 $ExecutionTime.Stop()

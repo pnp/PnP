@@ -2,12 +2,16 @@
 
 ## About the solution ##
 
+<p align="center">
+  <img src="./images/starter.gif"/>
+</p>
+
 « PnP Starter Intranet » is a generic, enterprise intranet publishing solution, compatible with SharePoint 2013, 2016 and SharePoint Online and developed by aequos (www.aequos.ca). It is the direct result of hundreds of hours of work and analysis corroborated through the use of the solution in actual projects. 
 Version 2.0.0’s design was created by a firm of professional graphic designers (www.wearedetour.com) in order to meet the SharePoint intranet requirements of the IDRC (International Development Research Center, www.idrc.ca).
 
 We would therefore like to thank Denis Turgeon (Project manager at the CRDI) and Ryan Short (Founder and President of Detour UX) for having graciously agreed to share this solution with the SharePoint community. You can find the complete story behind this solution in this PnP Webcast:
 
-[![Pnp Starter Intranet - Customer Story](http://img.youtube.com/vi/2LQfJe8nOws/maxresdefault.jpg)](https://youtu.be/2LQfJe8nOws)
+[![Pnp Starter Intranet - Customer Story](https://img.youtube.com/vi/2LQfJe8nOws/hqdefault.jpg)](https://youtu.be/2LQfJe8nOws)
 
 PnP Starter Intranet is a free, open source solution that can be fully customized to meet your requirements. Inasmuch, this solution is not a product per se (and does not come with a warranty or dedicated support team), but a solid base you can use or  build on and easily customize.
 Even if this solution does not meet all your requirements and development practices, it does provide, free of charge, features and capabilities that consulting firms usually charge several hundred thousands of dollars to develop.
@@ -32,6 +36,8 @@ The following features are included by default in the solution:
 - Prebuilt components:
   - Carousel
   - Display templates for news (tiles/list) and events (CSWP)
+  - Notification banner for alerts
+  - Job postings
 
 ### Non-functional ###
 
@@ -59,32 +65,30 @@ The entire solution is "site collection self-contained" so it does not conflict 
 
 <table border="0">
   <tr>
-    <td colspan="2">
-      <p align="center">
-        <img src="./images/starter.gif"/>
-        <p align="center">Demo<p>
-      </p>
-    </td>
-  </tr>
-  <tr>
     <td>
       <p align="center">
         <img width="400" src="./images/homepage.png"/>
         <p align="center">Home page</p>
       </div>
-    </td>
-    <td>
+          <td>
       <p align="center">
-        <img width="200" src="./images/mobile.png"/>
-        <p align="center">Mobile menu<p>
-      </p>
+        <img width="400" src="./images/people-search-desktop.png"/>
+        <p align="center">Search Experience</p>
+      </div>
+    </td>
     </td>
   </tr>
   <tr>
-    <td colspan="2">
+    <td>
       <p align="center">
-        <img width="600" src="./images/bot_integration.png"/>
-        <p align="center">Bot Framework integration</p>
+        <img width="200px" src="./images/mobile.png"/>
+        <p align="center">Mobile home page<p>
+      </p>
+    </td>
+    <td>
+      <p align="center">
+        <img width="200px" src="./images/people-search.png"/>
+        <p align="center">People search with alphabetical refiner<p>
       </p>
     </td>
   </tr>
@@ -94,6 +98,15 @@ The entire solution is "site collection self-contained" so it does not conflict 
 ## Applies to ##
 - SharePoint 2013/2016 on-premises 
 - SharePoint Online (*Office 365 E3* plan minimum to get the Content Search WebPart)
+
+## Tested browsers ##
+
+This solution is functional with the following browsers:
+
+- Internet Explorer 10, 11
+- Firefox
+- Chrome
+- Edge
 
 ## Solution ##
 Solution                | Author(s)
@@ -108,6 +121,7 @@ Version  | Date | Comments
 1.2 | January 31st 2016 |  <ul style="list-style: none"><li>Added the support of SharePoint 2013 and 2016 on-premises</li><li>Updated to TypeScript 2.1.5 and PnP Js Core 1.0.6</li></ul>
 1.3 | May 4th 2017 | <ul style="list-style: none"><li>New design</li><li>Added the support of event pages</li><li>New display templates for news + new carousel design</li><li>Added a QnA bot integration with authentication</li><li>Bug fixes + migration to webpack 2.0 and sp-pnp-js 2.0</li></ul>
 2.0 | August 30th 2017 | <ul style="list-style: none"><li>Completely new design reused from a real project and made by a firm of professional graphic designers</li><li>Added the option to deploy with only one language + ability to add new languages on the fly</li><li>Several performance improvements</li><li>Added a complete documentation (user and development guides) available separately</li><li>Bug fixes and code structure improvements</li></ul>
+2.1 | January 30th 2018 | <ul style="list-style: none"><li>Updated the global UI experience.</li><ul style="list-style: none"><li>Improved design implementation using CSS flexboxes.</li><li>Improved mobile design.</li></ul><li>Improved search experience.<ul style="list-style: none"><li>Added an alphabetical display template refiner for people search.</li><li>Added a dropdown display template refiner.</li><li>Added a light search box.</li><li>Added a popup with search tips to help users.</li></ul></li><li>Improved the overall performance.</li><li>Updated the root logic redirection. Now we use a SharePoint redirect page to instantly redirect visitors.</li><li>Ensured compatibility with IE10, 11, Edge, Firefox and Chrome.</li><li>Added more options for deployments in the PowerShell scripts. Now we can exclude handlers form the deploymens (i.e TermGroups or Files).</li><li>Updated the "View all" link in content search display template. Now, you can set your own in the Web Part properties.</li><li>Updated the PnP provisioming template schema to 201705.</li><li>Minor bug fixes.</li></ul>
 
 ## Solution documentation ##
  
@@ -120,11 +134,11 @@ More information here: [http://thecollaborationcorner.com/2017/09/11/a-new-versi
 
 ## Set up your environment ##
 
-Before starting, you'll need to setup tour environment:
+Before starting, you'll need to setup your environment:
 
-- Install at latest release of [PnP PowerShell cmdlets SharePointPnPPowerShellXXX](https://github.com/OfficeDev/PnP-PowerShell/releases) according to your SharePoint version.
-- Install Node.js on your machine https://nodejs.org/en/ *(v6.10.1)*
-- Install the 'webpack' Node JS client (`npm i webpack -g`). This solution uses webpack v2.
+- Install the latest release of [PnP PowerShell cmdlets SharePointPnPPowerShellXXX](https://github.com/OfficeDev/PnP-PowerShell/releases) according to your SharePoint version.
+- Install Node.js on your machine https://nodejs.org/en/ *(v8.9.4)*
+- Install the 'webpack' node.js client (`npm i webpack@2.4.1 -g`). This solution uses webpack v2.
 - Go to the ".\app" folder and install all dependencies listed in the package.json file by running the `npm i` cmd 
 - Check if everything is OK by running the "`webpack`" cmd from the ".\app" folder. You shouldn't see any errors here.
 - Create a site collection with the **publishing template**.
@@ -163,6 +177,8 @@ $Script = "<your_installation_folder>\Deploy-Solution.ps1"
 - Use the "`-Prod`" switch parameter for the `Deploy-Solution.ps1` script to use a production bundled version for the JavaScript code.
 - Use the "`-IncludeData`" switch parameter to provision sample data (carousel items).
 - Use the "`-JsOnly`" parameter to only upload JavaScript and CSS files in the Style Library. The PnP template will not be applied.
+- Use the "`-ExcludeHandlers`" parameter to exlude certain PnP handlers from the root and sub sites provisioning templates (like TermGroups, Fields, etc.).
+- Use the "`-UpgradeSubSites`" parameter to force a re-application of the XML provisioning template to sub sites. 
 
 - Estimated deployment time: **About 20 minutes** (depending your bandwidth)
 
@@ -170,6 +186,30 @@ $Script = "<your_installation_folder>\Deploy-Solution.ps1"
   <img width="400" src="./images/deploy.png"/>
 </p>
 
+### Migrate from 2.0.0 to 2.1.0 ###
+
+If you've already install the initial version, all you need to do is to run the *Upgrade-Solution.ps1* script, like this:
+
+```csharp
+$UserName = "<your_username>"
+$Password = "<your_password>"
+$SiteUrl = "https://<your_site_collection>"
+
+$Script = "<your_installation_folder>\Upgrade-Solution.ps1" 
+& $Script -SiteUrl $SiteUrl -UserName $UserName -Password $Password
+
+```
+
+**Warning**: After the update, some Web Parts in the default pages (Home.aspx, etc.) may be duplicated. You will have to remove them manually after the upgrade. Also, the version number is persisted under the *"PnPStarterIntranetVersion"* site collection property bag key and can be reverted to 2.0.0 manually to do the upgrade again if something goes wrong.
+
+#### Notes about the upgrade process ####
+
+Updates are always processed for all versions as follows:
+- The XML root search configuration is applied cumulatively by checking the applicable versions (greater than the current one, identified by file name convention)
+- PnP provisioning templates (root and sub sites) are applied excluding the taxonomy and search settings to avoid conflicts
+- Miscellaneous updates in sub site itself are done directly in the **Setup-Web.ps1** script by ensuring if a resource already exists before creating or recreating (field, list ,etc.).
+
+By this way we are able to manage incremental updates without being too specific in scripts. 
 
 ### Multiple Languages support ###
 
@@ -203,7 +243,7 @@ $Languages = @(
 
 ### Configure column default values in the Pages library ###
 
-After the deployment, you have to complete some manual steps in order to set up default column values for folders in the "Pages" library for each language. These information are used for the news and event webparts on the home page to filter archive page (the "View all" links on display templates).
+After the deployment, you have to complete some manual steps in order to set up default column values for folders in the "Pages" library for each language. This step is not mandatory but will help you to classify your content more easily using the pet location auto-tagging feature.
 
 Library/Folder | Column | Value
 ---------| -----| --------
@@ -213,6 +253,19 @@ Pages/News | Site Map Position | News
 Pages/Events | Content Type | Event 
 Pages/Events | Site Map Position | Events 
 Documents/ | Content Type | Document 
+
+### Set permissions for contributors ###
+
+To be able to translate pages, users must have at least the *"Add and Customize Pages"* permission (a 401 error will appear otherwise).
+This permission is usually given by the built-in "Designers" SharePoint group.
+
+### Configure search schema at global level for people last name refinement ###
+
+If you plan to use the alphabetical display termplate for the people search, you will need to configure an existing  **RefinableStringXX** managed property targeting the *People:LastName* crawled property direclty at the  **global farm/tenant search schema level**. This configuration doesn't work if it is made at the site collection level.
+
+<p align="center">
+  <img width="200px" src="./images/alphabetical_displayTemplate.png"/>
+</p>
 
 ### Configure the QnA bot ###
 

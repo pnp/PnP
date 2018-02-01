@@ -43,43 +43,46 @@
                 Intranet.Main.initDisplayTemplateViewModel(document.getElementById(containerId), currentItem);
             });
 _#-->
-            <div id="_#= $htmlEncode(itemId) =#_" name="Item" data-displaytemplate="DocumentItem" class="search-item">
+            <div id="_#= $htmlEncode(itemId) =#_" name="Item" data-displaytemplate="DocumentItem">
 				
                 <div class="item-display-template">			
 					<div data-bind="stopBinding: true">
-						<div id="_#=containerId=#_" class="document-item">
-											
+						<div id="_#=containerId=#_" class="search-item">
+                            
                             <!-- ko with: item -->
 
                                 <div class="item-icon">
                                     <img src="_#= ctx.CurrentItem.csr_Icon  =#_"/>
                                 </div>
-                                
-                                <div class="item-title">
-                                    <!-- ko if: $data.Title -->
-                                    <a data-bind="attr: { href: ServerRedirectedEmbedURL? ServerRedirectedEmbedURL: Path }, summarize: { html: Title }, linesCount:1"></a>
-                                    <!-- /ko -->
-                                </div>
-  
-                                <div class="item-download">
-                                    <a data-bind="attr: { href: Path, title: Intranet.Main.getResource('hp_Tooltip_Download')}" data-toggle="tooltip" data-placement="top" download="">
-                                    	<i class="fa fa-download" aria-hidden="true"></i>
-                                    </a>                                  
-                                </div>
 
-                                <div class="item-library">
-                                    <a data-bind="attr: { href: ParentLink, title: Intranet.Main.getResource('hp_Tooltip_ViewLibrary') }" data-toggle="tooltip" data-placement="top">
-                                    	<i class="fa fa-folder-open-o" aria-hidden="true"></i>
-                                    </a>                                  
-                                </div>
-                                                       
-                                <div class="item-excerpt">
-									<!-- ko if: $data.HitHighlightedSummary -->
-									<div data-bind='summarize: { hitHighlightedSummary: HitHighlightedSummary }, linesCount: 2'></div>
-									<!-- /ko -->
-                                </div>            
+                                <div class="item-body">                                
+                                    <div class="item-title">
+                                        <!-- ko if: $data.Title -->
+                                        <a data-bind="attr: { href: ServerRedirectedEmbedURL? ServerRedirectedEmbedURL: Path }, summarize: { html: Title }, linesCount:1"></a>
+                                        <!-- /ko -->
+                                    
+                                        <div class="item-download">
+                                            <a data-bind="attr: { href: Path, title: Intranet.Main.getResource('hp_Tooltip_Download')}" data-toggle="tooltip" data-placement="top" download="">
+                                                <i class="fa fa-download" aria-hidden="true"></i>
+                                            </a>                                  
+                                        </div>
+
+                                        <div class="item-library">
+                                            <a data-bind="attr: { href: ParentLink, title: Intranet.Main.getResource('hp_Tooltip_ViewLibrary') }" data-toggle="tooltip" data-placement="top">
+                                                <i class="fa fa-folder-open-o" aria-hidden="true"></i>
+                                            </a>                                  
+                                        </div>
+                                    </div>
+                                                        
+                                    <div class="item-excerpt">
+                                        <!-- ko if: $data.HitHighlightedSummary -->
+                                        <div data-bind='summarize: { hitHighlightedSummary: HitHighlightedSummary }, linesCount: 2'></div>
+                                        <!-- /ko -->
+                                    </div> 
+                                </div>           
             
                             <!-- /ko -->
+
 						</div>
 					</div>
 				</div>

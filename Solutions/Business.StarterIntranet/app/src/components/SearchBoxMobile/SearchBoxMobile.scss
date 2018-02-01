@@ -2,6 +2,8 @@
 
 #searchbox-mobile {
 
+    line-height: 62px;
+
     form {
         display: inline-block;
         min-width: 65%;
@@ -56,5 +58,9 @@
 
     input, i {
         color: $navbar-l1-link-color;
+    }
+
+    i {
+        font-size: 1.4em;
     }
 }

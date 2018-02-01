@@ -24,7 +24,7 @@ class DisplayTemplateViewModel {
     public searchPageUrl: KnockoutObservable<string>;
     public currentLanguage: KnockoutObservable<string>;
 
-    constructor(currentItem?: any, filterProperty?: string , filterValue?: string, searchPage?: string) {
+    constructor(currentItem?: any) {
 
         // If an item has been specified, we create an observable so we can access item properties directly in the display template HTML
         if (currentItem) {
@@ -102,7 +102,12 @@ class DisplayTemplateViewModel {
 
                 this.localization.ensureResourcesLoaded(() => {
                     const value = ko.unwrap(valueAccessor());
-                    $(element).text(i18n.t(value));
+
+                    if ($(element).is("optGroup")) {
+                        $(element).attr("label", i18n.t(value));
+                    } else {
+                        $(element).text(i18n.t(value));
+                    }
                 });
             },
         };
@@ -149,76 +154,6 @@ class DisplayTemplateViewModel {
                         }
 
                         $(element).html(resultCountString);
-                    }
-                });
-            },
-        };
-
-        ko.bindingHandlers.localizedTermLabel = {
-
-            init: (element, valueAccessor) => {
-
-                const value: string = unescape(ko.unwrap(valueAccessor()));
-
-                // Check if the value seems to be a taxonomy term
-                const isTerm = /L0\|#/i.test(value);
-
-                if (isTerm) {
-
-                    // Extract the id
-                    const termId: string[] = value.match(/[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}/);
-
-                    if (termId.length > 0) {
-
-                        $(element).closest("div").addClass("spinner");
-
-                        this.taxonomyModule.init().then(() => {
-
-                            this.taxonomyModule.getTermById(new SP.Guid(termId[0].toString())).then((term) => {
-
-                                $(element).text(term.get_name());
-
-                                $(element).closest("div").removeClass("spinner");
-                            });
-
-                        }).catch((errorMesssage) => {
-                            Logger.write(errorMesssage, LogLevel.Error);
-                        });
-                    }
-
-                } else {
-
-                    // Return the original value
-                    $(element).text(value);
-                }
-            },
-        };
-
-        ko.bindingHandlers.getSearchUrl = {
-
-            init: () => {
-
-                this.localization.ensureResourcesLoaded(() => {
-
-                    const utilityModule = new UtilityModule();
-
-                    if (filterValue && filterProperty && searchPage) {
-
-                        // Get only the L0 refiner value from the taxonomy field
-                        const itemContentType = filterValue.match(/L0\|#0[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}\|.*?;/);
-
-                        if (itemContentType) {
-
-                            // Encode diacritics
-                            const ctValue = unescape(encodeURIComponent(itemContentType[0]));
-                            const refinerValue = "\\\"ǂǂ" + utilityModule.stringToHex(ctValue.slice(0, -1)) + "\\\"";
-
-                            // We can't filter by ContentTypeId because the refinement does an "equal"" instead of a "contain" (so 0x0..* does not work). We use the taxonomy field ContentType instead (RefinableString02)
-                            const refinementString = '{"k":"*","r":[{"n":"' + filterProperty + '","t":["' + refinerValue + '"],"o":"and","k":true,"m":null}]}';
-                            this.searchPageUrl(_spPageContextInfo.webAbsoluteUrl + "/" + i18n.t("pagesLibraryName") + "/" + i18n.t(searchPage) + "#Default=" + encodeURIComponent(refinementString));
-                        } else {
-                            Logger.write("The specified refiner property name is not a taxonomy value. No filter URL has been generated for this component", LogLevel.Warning);
-                        }
                     }
                 });
             },

@@ -21,8 +21,10 @@ import FooterLinksViewModel from "./components/FooterLinks/FooterLinksViewModel"
 import HeaderLinksViewModel from "./components/HeaderLinks/HeaderLinksViewModel";
 import ICSCalendarGeneratorViewModel from "./components/IcsCalendarGenerator/IcsCalendarGeneratorViewModel";
 import LanguageSwitcherViewModel from "./components/LanguageSwitcher/LanguageSwitcherViewModel";
+import NotificationBannerViewModel from "./components/NotificationBanner/NotificationBannerViewModel";
 import PageInfoViewModel from "./components/PageInfo/PageInfoViewModel";
 import SearchBoxViewModel from "./components/SearchBox/SearchBoxViewModel";
+import SearchBoxLightViewModel from "./components/SearchBoxLight/SearchBoxLightViewModel";
 import SearchBoxMobileViewModel from "./components/SearchBoxMobile/SearchBoxMobileViewModel";
 import TopNavViewModel from "./components/TopNav/TopNavViewModel";
 import TranslationControlViewModel from "./components/TranslationControl/TranslationControlViewModel";
@@ -63,9 +65,9 @@ export class Main {
     // Static methods are mainly used for SharePoint display templates (it is just a public wrapper)
     // We can't use Knockout components here because bindings are not triggered when the display template logic adds the component programmatically
     // We have to apply bindings manually after rendering
-    public static initDisplayTemplateViewModel = (domElement: string, currentItem?: any, filterProperty?: string , filterValue?: string, searchPage?: string) => {
+    public static initDisplayTemplateViewModel = (domElement: string, currentItem?: any) => {
 
-        const viewModel = new DisplayTemplateViewModel(currentItem, filterProperty, filterValue, searchPage);
+        const viewModel = new DisplayTemplateViewModel(currentItem);
         ko.applyBindings(viewModel, domElement);
     }
 
@@ -128,9 +130,6 @@ export class Main {
                 Logger.write(errorMessage, LogLevel.Error);
             });
 
-            // Remove the breadcrumb
-            $("#intranet-breadcrumb").remove();
-
             // Detect if the welcome overlay control has to be displayed (the visibility is controlled by Bootstrap CSS classes 'hidden-xx')
             const welcomeOverlay = $("#welcome-overlay");
             if (welcomeOverlay.is(":visible")) {
@@ -141,32 +140,13 @@ export class Main {
 
                 // Use of the welcome overlay component containing the top nav
                 welcomeOverlay.append("<component-welcome></component-welcome>");
-            }
-        });
-    }
-
-    // Redirect automatically the browser to the correct site according to the language
-    public static redirect = () => {
-
-        SP.SOD.executeFunc("sp.js", "SP.ClientContext", () => {
-
-            const utility = new UtilityModule();
-            const preferredLanguage =  utility.isCacheValueValid("preferredLanguage");
-
-            if (preferredLanguage) {
-
-                const redirectUrl = _spPageContextInfo.siteAbsoluteUrl + "/" + preferredLanguage;
-                window.location.href = redirectUrl;
 
             } else {
-
-                // By default, redirect to the first available language of the intranet (the choice field)
-                const localization = new LocalizationModule();
-                localization.getAvailableLanguages().then((languages: string[]) => {
-
-                    const redirectUrl = _spPageContextInfo.siteAbsoluteUrl + "/" + languages[0].toLowerCase();
-                    window.location.href = redirectUrl;
-                });
+                // Load the mobile view
+                const welcomeOverlayMobile = $("#welcome-overlay-mobile");
+                if (welcomeOverlayMobile.is(":visible")) {
+                    welcomeOverlayMobile.append("<component-welcomemobile></component-welcomemobile>");
+                }
             }
         });
     }
@@ -268,6 +248,26 @@ export class Main {
         const welcomeTemplate = require("./components/WelcomeOverlay/WelcomeOverlay.html");
         require("./components/WelcomeOverlay/WelcomeOverlay.scss");
         const welcomeComponent = new BaseKnockoutComponent("component-welcome", WelcomeOverlayViewModel, welcomeTemplate);
+
+        // Component: "Welcome (mobile)"
+        const welcomeTemplateMobile = require("./components/WelcomeOverlay/WelcomeOverlayMobile.html");
+        require("./components/WelcomeOverlay/WelcomeOverlay.scss");
+        require("./components/WelcomeOverlay/WelcomeOverlayMobile.scss");
+        const welcomeMobileComponent = new BaseKnockoutComponent("component-welcomemobile", WelcomeOverlayViewModel, welcomeTemplateMobile);
+
+        // Component: "Search Box Light"
+        const searchboxLightTemplate = require("./components/SearchBoxLight/SearchBoxLight.html");
+        require("./components/SearchBoxLight/SearchBoxLight.scss");
+        const searchboxLightComponent = new BaseKnockoutComponent("component-searchboxlight", SearchBoxLightViewModel, searchboxLightTemplate);
+
+        // Component: "Search Help Dialog" (template only)
+        const searchHelpDialogTemplate = require("./components/SearchBoxLight/SearchHelpDialog.html");
+        const searchHelpDialog = new BaseKnockoutComponent("component-searchhelp", null, searchHelpDialogTemplate);
+
+        // Component: "Notification Banner"
+        const notificationBannerTemplate = require("./components/NotificationBanner/NotificationBanner.html");
+        require("./components/NotificationBanner/NotificationBanner.scss");
+        const notificationBannerComponent = new BaseKnockoutComponent("component-notification", NotificationBannerViewModel, notificationBannerTemplate);
     }
 
     public registerBindingHandlers() {
@@ -318,11 +318,26 @@ export class Main {
                 const currentLanguage = i18n.t("languageLabel");
                 const web = new Web(_spPageContextInfo.webAbsoluteUrl);
                 const site = new Site(_spPageContextInfo.siteAbsoluteUrl);
-                const batch = sp.createBatch();
 
                 // Apply the Knockout JS magic!
                 // Bindings are applied globally, so it means we can use static methods in master pages and page layouts as well (i.e for example for resources)
                 ko.applyBindings();
+
+                /* This value is used to determines whether or not the side bar should be hidden or not
+                We use this system instead of making a REST query to the curent item to improve perfomrances. Even if this is not very elegant,
+                a jQuery DOM manipulation is faster than a network query in this specific case*/
+                const hiddenElt = $("#hide-side-bar-hidden");
+
+                if (hiddenElt) {
+                    const hideSideBar = hiddenElt.text().trim();
+                    if (parseInt(hideSideBar, 10) === 1) {
+
+                        // Hide the sidebar and breadcrumb
+                        $("#intranet-sidebar").hide();
+                        $("#intranet-content").removeClass("col-md-9 col-lg-9");
+                        $("#intranet-content").addClass("col-md-12 col-lg-12");
+                    }
+                }
 
                 // Add Bootstrap responsive behavior for news images
                 $("#page-image img").addClass("img-responsive");
@@ -340,19 +355,6 @@ export class Main {
                     });
                 }, "sp.ribbon.js");
 
-                // Check the "HideSideBar" settings for the current page
-                web.lists.inBatch(batch).getById(_spPageContextInfo.pageListId.replace(/{|}/g, "")).items.getById(_spPageContextInfo.pageItemId).select("HideSideBar").get().then((item) => {
-
-                    if (item.HideSideBar) {
-
-                        // The current page is the welcome page
-                        // Hide the sidebar and breadcrumb
-                        $("#intranet-sidebar").hide();
-                        $("#intranet-content").removeClass("col-md-push-3 col-md-9");
-                        $("#intranet-content").addClass("col-md-12");
-                    }
-                });
-
                 // Check if an Azure Instrumentation key has been set in the configuration list
                 utilityModule.getConfigurationListValuesForLanguage(currentLanguage).then((item) => {
 
@@ -368,8 +370,6 @@ export class Main {
 
                     }
                 });
-
-                batch.execute();
             });
         });
     }

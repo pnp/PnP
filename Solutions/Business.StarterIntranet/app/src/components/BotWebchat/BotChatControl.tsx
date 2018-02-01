@@ -65,7 +65,7 @@ export class BotChatControl extends React.Component<any, any> {
 
       <div>
         <div className={ this.state.isBotDisabled ? "is-botdisabled" : ""}>
-          <button onClick= { this.handleClick } type="button">
+          <button onClick={ this.handleClick } type="button">
               <i className="fa fa-android" aria-hidden="true"></i>
           </button>
         </div>

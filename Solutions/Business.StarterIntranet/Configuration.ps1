@@ -30,7 +30,7 @@ $Languages = @(
                 Url="SearchDocuments.aspx?icon=fa-book"
             };
             @{
-                Title= "People";
+                Title= "Directory";
                 Url="SearchPeople.aspx?icon=fa-users"
             };
         )
@@ -50,7 +50,7 @@ $Languages = @(
                 Url="RechercheDocuments.aspx?icon=fa-book"
             };
             @{
-                Title= "Personnes";
+                Title= "Bottin";
                 Url="RecherchePersonnes.aspx?icon=fa-users"
             };
         )

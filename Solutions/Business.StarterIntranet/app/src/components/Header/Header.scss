@@ -5,10 +5,11 @@
     font-family: $font-primary;
     text-decoration: none;
     color: $headerlinks-color;
+    display: flex;
+    display: -ms-flexbox;
 
-    #language-switcher, #header-links {
-
-        display: inline-block;
-        vertical-align: middle;
+    > * {
+        display: flex;
+        display: -ms-flexbox;
     }
 }

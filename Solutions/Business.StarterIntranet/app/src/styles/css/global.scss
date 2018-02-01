@@ -21,19 +21,32 @@ header {
   #intranet-header {
     background-image: url(./images/intranet-background.jpg);
     background-repeat: no-repeat;
-    height: 145px;
     position: relative;
+
+    #top-row {
+      height: 110px;
+      display: flex;
+      display: -ms-flexbox;
+      -ms-flex-align: center;
+      align-items: center;
+    }
+
+    #welcome-row, #top-row {
+      position: relative;
+    }
+
+    // Header links + welcome box
+    #top-header-container {
+      display: flex;
+      display: -ms-flexbox;
+      -ms-flex-align: center;
+      -ms-flex-pack: end;
+      align-items: center;
+      justify-content: flex-end;
+    }
 
     .intranet-logo {
         width: 100%;
-    }
-
-    #welcomeMenuBox, #DeltaSiteLogo, #header {
-        line-height: 145px; // For the vertical align. Only works with one line
-    }
-
-    #header, #welcomeMenuBox {
-      float: right;
     }
 
     #header {
@@ -96,6 +109,15 @@ header {
 #intranet-topnav {
   line-height: 64px;
   height: 64px;
+  background-color: $navbar-l1-background-color;
+
+  #search-container {
+    height: 64px;
+
+    #search-categories, #search-input {
+      line-height: normal;
+    }
+  }
 }
 
 #topnav-border {
@@ -104,10 +126,9 @@ header {
 }
 
 /* Medium and large devices (Desktop) */
-@media (min-width: 768px) {
+@media (min-width: 769px) {
 
   #intranet-topnav {
-    background-color: $navbar-l1-background-color;
 
     #navbar {
       display: inline-block;
@@ -140,16 +161,26 @@ header {
   background-color: $footer-bgcolor;
   padding: 15px;
 
-  #intranet-footerbar {
-    line-height: 74px /*(104px - 30px) */;
-  }
-
   #intranet-sociallinks {
     float: right;
   }
+
+  #intranet-footer-logo {
+    clear: both;
+    float: right;
+    line-height: normal;
+    margin-bottom: 15px;
+  }
 }
 
-#intranet-footer, .push {
+#intranet-footerbar {
+  display: flex;
+  display: -ms-flexbox;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+#intranet-footerbar, .push {
 
   /* .push must be the same height as #intranet-footer */
   height: 104px;
@@ -192,10 +223,12 @@ header {
 
 /* Start: Breadcrumb */
 #intranet-breadcrumb {
-  font-size: 14px;
+  font-size: 15px;
   font-family: $font-primary;
-  line-height: 64px;
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  display: -ms-flexbox;
+  -ms-flex-align: center;
   width: 100%;
 }
 
@@ -203,7 +236,7 @@ header {
 @media (min-width: 768px) {
 
   #intranet-breadcrumb {
-      border-bottom: 1px solid #D8D8D8;
+      border-bottom: 1px solid $menu-items-border-color;
       margin-bottom: 25px;
   }
 }

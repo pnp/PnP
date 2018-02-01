@@ -51,7 +51,8 @@ class ContextualMenuViewModel extends NavigationViewModel {
         // Subscribe to the main menu nodes
         PubSub.subscribe("navigationNodes", (msg, data) => {
 
-            let navigationTree: TaxonomyNavigationNode[] = data.nodes;
+            const navigationTree: TaxonomyNavigationNode[] = data.nodes;
+            const contextualMenuNodes: TaxonomyNavigationNode[] = [];
             const web = new Web(_spPageContextInfo.webAbsoluteUrl);
 
             web.lists.getById(_spPageContextInfo.pageListId.replace(/{|}/g, "")).items.getById(_spPageContextInfo.pageItemId).select(this.siteMapFieldName).get().then((item) => {
@@ -73,6 +74,9 @@ class ContextualMenuViewModel extends NavigationViewModel {
 
                     if (currentNode !== undefined) {
 
+                        // Set the current node in the contextual nodes
+                        contextualMenuNodes.push(currentNode);
+
                         // If there is no 'ParentId', this is a root term
                         if (currentNode.ParentId !== null) {
 
@@ -81,7 +85,7 @@ class ContextualMenuViewModel extends NavigationViewModel {
                             // Set the parent section
                             this.parentSection(parentNode);
 
-                            if (parentNode.ChildNodes.length > 0) {
+                            /*if (parentNode.ChildNodes.length > 0) {
 
                                 // Display all siblings and child nodes from the current node (just like the CSOM results)
                                 // Siblings = children of my own parent ;)
@@ -89,15 +93,14 @@ class ContextualMenuViewModel extends NavigationViewModel {
 
                                 // Set the current node as first item
                                 navigationTree = this.utilityModule.moveItem(navigationTree, navigationTree.indexOf(currentNode), 0);
-                            }
+                            }*/
                         }
 
                     } else {
-
                         Logger.write("[ContextualMenu.subscribe]: Unable to determine the current position in the site map", LogLevel.Warning);
                     }
 
-                    this.initialize(navigationTree);
+                    this.initialize(contextualMenuNodes);
                     this.wait(false);
 
                     if (currentNode !== undefined) {
@@ -111,8 +114,13 @@ class ContextualMenuViewModel extends NavigationViewModel {
                         tooltip: true,
                     });
 
-            }).catch((errorMesssage) => {
+                    // Collapse the contextual menu on mobile view
+                    const isVisibleAnchor = $("#isVisibleAnchor");
+                    if (isVisibleAnchor.is(":visible")) {
+                        $("[id^='collapse']").collapse();
+                    }
 
+            }).catch((errorMesssage) => {
                 Logger.write("[ContextualMenu.subscribe]: " + errorMesssage, LogLevel.Error);
             });
         });

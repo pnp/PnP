@@ -1,7 +1,8 @@
 $font-primary: "Segoe UI Web (West European)","Segoe UI";
 $primary-color: #0066B3; // Main color for the intranet
-$text-color: #4A4A4A; // Used for links and text
+$text-color: #555; // Used for links and text
 $error-color: #a80000;
+$warning-color: #FCAF17;
 
 /* Nav bar  */
 $navbar-l1-link-color: #ffffff; // Navbar links - Level 1
@@ -10,8 +11,13 @@ $navbar-l1-background-color: #000000;
 
 $navbar-l2-link-color: #ffffff; // / Navbar links - Level 2 (Only applied in desktop mode)
 $navbar-l2-link-color-hover: #FCAF17;
-$nabar-l2-background-color: #878787; 
+$nabar-l2-background-color: #555;
 $navbar-font-size: 16px;
+
+$navbar-l3-link-color: #878787; // / Navbar links - Level 3 
+
+/* Contextual Menu + Breadcrumb */
+$menu-items-border-color: #D8D8D8;
 
 /* Header links */
 $headerlinks-color: #ffffff;
@@ -19,7 +25,7 @@ $headerlinks-font-size: 16px;
 $headerlinks-fontfamily: $font-primary;
 
 /* Footer */
-$footer-bgcolor: #4a4a4a;
+$footer-bgcolor: #555;
 
 $footerlinks-color: $headerlinks-color;
 $footerlinks-font-size: 16px;

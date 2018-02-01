@@ -1,0 +1,121 @@
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"> 
+<head>
+<title>Intranet Tiles List (2 Columns Paging)</title>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:TemplateHidden msdt:dt="string">0</mso:TemplateHidden>
+<mso:MasterPageDescription msdt:dt="string">This is a Control Display Template with Paging. It is used by default in Rollup Pages. It allows the user to page through items using the arrows that appear when there are more items to show.</mso:MasterPageDescription>
+<mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106601</mso:ContentTypeId>
+<mso:TargetControlType msdt:dt="string">;#Content Web Parts;#</mso:TargetControlType>
+<mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+</head>
+
+<body>
+
+    <div id="Control_ListWithPaging">
+
+<!--#_ 
+        if (!$isNull(ctx.ClientControl) &&
+            !$isNull(ctx.ClientControl.shouldRenderControl) &&
+            !ctx.ClientControl.shouldRenderControl()) {
+            return "";
+        }
+        ctx.ListDataJSONGroupsKey = "ResultTables";
+        var $noResults = Srch.ContentBySearch.getControlTemplateEncodedNoResultsMessage(ctx.ClientControl);
+
+        var isRollupPageInDisplayMode = Srch.ContentBySearch.isRollupPage(ctx.ClientControl) && !Srch.U.isPageInEditMode();
+        var noResultsClassName = isRollupPageInDisplayMode ? "ms-attractMode ms-uppercase ms-alignCenter" : "ms-srch-result-noResults";
+
+        var ListRenderRenderWrapper = function(itemRenderResult, inCtx, tpl)
+        {
+            var iStr = [];
+            iStr.push('<div class="col-md-6 col-sm-6 col-xs-12">');
+            iStr.push(itemRenderResult);
+            iStr.push('</div>');
+            return iStr.join('');
+        }
+        ctx['ItemRenderWrapper'] = ListRenderRenderWrapper;
+        
+_#-->
+        <div class="control-display-template">
+            <div class="control-display-template">
+                <div class="row">
+                    <div id="ContentSearch">
+                        <!--#_
+                            ShowPaging("SearchResultHeader");
+                        _#-->   
+                        <ul class="cbs-List">   
+                                _#= ctx.RenderGroups(ctx) =#_
+                        </ul>
+                        <!--#_
+                            ShowPaging("SearchResultFooter") 
+                        _#-->
+                    </div>
+            </div>
+        </div>
+    </div>
+<!--#_
+    if (ctx.ClientControl.get_shouldShowNoResultMessage()) {
+_#-->
+        <div class="_#= noResultsClassName =#_">_#= $noResults =#_</div>
+<!--#_
+    }
+
+    function ShowPaging(pagingContainerId) {
+
+        var pagingInfo = ctx.ClientControl.get_pagingInfo();
+        if(!$isEmptyArray(pagingInfo)){ 
+_#-->
+        <div id="_#= pagingContainerId =#_" class="col-lg-12 col-md-12 col-sm-12 col-xs-12"> 
+                <ul id="Paging">
+<!--#_ 
+                for (var i = 0; i < pagingInfo.length; i++) {
+                    var pl = pagingInfo[i];
+                    if(!$isNull(pl)) {
+                        var imagesUrl = GetThemedImageUrl('searchresultui.png');
+                        if(pl.startItem == -1) { 
+                            var selfLinkId = "SelfLink_" + pl.pageNumber;
+_#-->
+                            <li id="PagingSelf"><a id="_#= $htmlEncode(selfLinkId) =#_">_#= $htmlEncode(pl.pageNumber) =#_</a></li>
+<!--#_ 
+                        } else if(pl.pageNumber == -1) { 
+                            var iconClass = Srch.U.isRTL() ? "ms-srch-pagingNext" : "ms-srch-pagingPrev";                                    
+_#-->
+                            <li id="PagingImageLink">
+                            
+                                    <a id="PageLinkPrev" href="#" class="ms-commandLink ms-promlink-button-enabled" title="_#= $htmlEncode(pl.title) =#_" onclick="$getClientControl(this).page(_#= $htmlEncode(pl.startItem) =#_);return Srch.U.cancelEvent(event);">
+                                        <i class="fa fa-angle-left"></i>
+                                    </a>                                    
+                            </li>
+<!--#_ 
+                        } else if(pl.pageNumber == -2) { 
+                            var iconClass = Srch.U.isRTL() ? "ms-srch-pagingPrev" : "ms-srch-pagingNext";
+_#-->
+                            <li id="PagingImageLink">
+                            
+                                    <a id="PageLinkNext" href="#" class="ms-commandLink ms-promlink-button-enabled" title="_#= $htmlEncode(pl.title) =#_" onclick="$getClientControl(this).page(_#= $htmlEncode(pl.startItem) =#_);return Srch.U.cancelEvent(event);">
+                                        <i class="fa fa-angle-right"></i>
+                                    </a> 
+                            </li>
+<!--#_ 
+                        } else { 
+                            var pageLinkId = "PageLink_" + pl.pageNumber;
+_#-->
+                            <li id="PagingLink"><a id="_#= $htmlEncode(pageLinkId) =#_" href="#" title="_#= $htmlEncode(pl.title) =#_" onclick="$getClientControl(this).page(_#= $htmlEncode(pl.startItem) =#_);return Srch.U.cancelEvent(event);">_#= $htmlEncode(pl.pageNumber) =#_</a></li>
+<!--#_ 
+                        }
+                    }
+                } 
+_#-->
+            </ul>
+        </div>
+<!--#_ 
+        }
+    }
+_#-->
+    </div>
+</body>
+</html>

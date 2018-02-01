@@ -107,7 +107,7 @@ class UtilityModule {
      */
     public getQueryStringParam(field: string , url: string ) {
         const href = url ? url : window.location.href;
-        const reg = new RegExp( "[?&]" + field + "=([^&#]*)", "i" );
+        const reg = new RegExp( "[?&#]" + field + "=([^&#]*)", "i" );
         const qs = reg.exec(href);
         return qs ? qs[1] : null;
     }
@@ -137,6 +137,31 @@ class UtilityModule {
             }
         }
         return rtn;
+    }
+
+    /**
+     * Replace a query string parameter
+     * @param url The current URL
+     * @param param The query string parameter to replace
+     * @param value The new value
+     */
+    public replaceQueryStringParam(url: string, param: string, value: string) {
+        const re = new RegExp("[\\?&]" + param + "=([^&#]*)");
+        const match = re.exec(url);
+        let delimiter;
+        let newString;
+
+        if (match === null) {
+            // Append new param
+            const hasQuestionMark = /\?/.test(url);
+            delimiter = hasQuestionMark ? "&" : "?";
+            newString = url + delimiter + param + "=" + value;
+        } else {
+            delimiter = match[0].charAt(0);
+            newString = url.replace(re, delimiter + param + "=" + value);
+        }
+
+        return newString;
     }
 
     /**
@@ -304,6 +329,21 @@ class UtilityModule {
 
         return p;
     }
+
+    /**
+     * Clean JS string
+     * @param s String to clean out
+     */
+    public stripScripts(s) {
+        var div = document.createElement('div');
+        div.innerHTML = s;
+        var scripts = div.getElementsByTagName('script');
+        var i = scripts.length;
+        while (i--) {
+          scripts[i].parentNode.removeChild(scripts[i]);
+        }
+        return div.innerHTML;
+      }
 }
 
 export default UtilityModule;

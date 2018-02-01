@@ -74,14 +74,15 @@ if (ctx.ListData.ResultTables[0].RowCount > 0) {
 
 _#-->
 		    <div class="control-display-template">
-		        
 					<div id="_#=containerId=#_">
-				        <ul class="cbs-List notification-list">
-				        <li id="notification-list-title" data-bind="getResource: 'newNotifications'"></li>
-				            _#= ctx.RenderGroups(ctx) =#_
-				        </ul>
+                        <div id="ContentSearch">
+                            <ul class="cbs-List notification-list">
+                            <li id="notification-list-title" data-bind="getResource: 'newNotifications'"></li>
+                                _#= ctx.RenderGroups(ctx) =#_
+                            </ul>
+                        </div>
 				    </div>
-					    
+    
 		    </div>
 <!--#_
 } else {

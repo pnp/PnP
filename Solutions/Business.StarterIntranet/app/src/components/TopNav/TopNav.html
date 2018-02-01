@@ -4,7 +4,7 @@
           <button type="button" data-toggle="slide-collapse" class="navbar-toggle" data-bind="attr: { 'data-target': mainMenuCollapseElementIdSelector }">
               <i class="fa fa-bars" aria-hidden="true"></i>
           </button>
-          <div class="searchbar hidden-lg hidden-md">
+          <div class="searchbar hidden-lg hidden-sm hidden-md">
               <component-searchboxmobile></component-searchboxmobile>
           </div>
           <a data-bind="attr: { href: _spPageContextInfo.webAbsoluteUrl }">
@@ -15,15 +15,7 @@
       <div class="menu-content">
         <div class="navbar-collapse collapse" data-bind="attr: { id: mainMenuCollapseElementId }">
           <div id="utility-navigation" class="hidden-md hidden-sm hidden-lg">
-            <li id="utility-collapse" data-toggle="collapse" data-bind="attr: { 'data-target': utilityMenuCollapseElementIdSelector }">
-              <span data-bind="text: utilityNavigationLabel"></span>
-              <i class="fa fa-angle-down"></i>
-            </li>
-          
-            <div class="collapse" data-bind="attr: { id: utilityMenuCollapseElementId }">
-              <component-headerlinks></component-headerlinks>
-              <component-languageswitcher params='languageFieldName:"IntranetContentLanguage", associationKeyFieldName:"IntranetContentAssociationKey"'></component-languageswitcher>
-            </div>            
+            <component-headerlinks></component-headerlinks>        
           </div>
           <ul class="nav navbar-nav">
               <!-- ko if: errorMessage  -->   
@@ -38,9 +30,9 @@
               <!-- ko foreach: nodes -->
                 <!-- ko ifnot: excludeFromGlobalNavigation() -->
                   <li data-bind="css: { dropdown: hasChildren(), right: $data.properties()['align'] === 'right' }" class="level1">
-                    <a aria-expanded="true" data-bind="attr: { href: url, 'data-toggle': dataToggle }, css: { 'dropdown-toggle': hasChildren }">                          
+                    <a aria-expanded="true" data-bind="attr: { href: url, 'data-toggle': dataToggle }, css: { 'dropdown-toggle': hasChildren }, click: $parent.selectNode, event: {blur: $parent.unselectNode($element)}">                          
                           <span data-bind="text: title"></span>
-                          <i class="fa fa-caret-down" data-bind="visible: hasChildren"></i>
+                          <i class="fa" data-bind="visible: hasChildren, css: {'fa-caret-up': isSelected(), 'fa-caret-down': !isSelected()}"></i>
                     </a>
                     <!-- ko if: hasChildren -->
                     <ul class="dropdown-menu">

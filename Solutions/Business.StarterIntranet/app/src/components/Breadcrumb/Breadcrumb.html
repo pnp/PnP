@@ -10,8 +10,7 @@
             <!-- ko foreach: nodes -->
                 <!-- ko ifnot: hasParent -->       
                 <li data-bind="css : { 'is-selected' : isCurrentNode }">
-                    <a style="text-decoration: none;padding-left: 0px" data-bind="attr: {href: $parent.siteServerRelativeUrl }">
-                        <i class="fa fa-home" aria-hidden="true"></i>
+                    <a style="text-decoration: none;padding-left: 0px" data-bind="attr: {href: $parent.siteServerRelativeUrl },getResource: 'breadcrumbHomeLabel'">
                     </a>  
                 </li> 
                 <!-- /ko -->

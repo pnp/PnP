@@ -3,6 +3,13 @@
 /* Important: these styles are only applied in display mode ! */
 .page-layout {
 
+    /* This value is used to determines whether or not the side bar should be hidden or not 
+    We use this system instead of making a REST query to the curent item to improve perfomrances. Even if this is not very elegant,
+    a jQuery DOM manipulation is faster than a network query */
+    #hide-side-bar-hidden {
+        display: none;
+    }
+
     .line {
         display: inline-block;
         width: 100%;
@@ -10,9 +17,11 @@
     }
 
     #title {
-        font-size: 56px;
+        font-size: 40px;
         color: #000;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
+        line-height: 1.0;
+        margin-bottom: 10px;
         font-family: $font-primary;
         font-weight: lighter;
     }
@@ -21,12 +30,11 @@
     @media (max-width: 767px) { 
 
         #title {
-            font-size: 48px;
+            font-size: 30px;
             margin-bottom: 0;
-            font-weight: bold;
         }
     }
-
+    
     #news-categories {
         height: 64px;
         line-height: 64px;

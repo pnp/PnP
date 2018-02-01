@@ -1,0 +1,95 @@
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882"> 
+<head>
+<title>Intranet Job Position (List Item)</title>
+
+<!--[if gte mso 9]><xml>
+<mso:CustomDocumentProperties>
+<mso:TemplateHidden msdt:dt="string">0</mso:TemplateHidden>
+<mso:ManagedPropertyMapping msdt:dt="string">'Link URL'{Link URL}:'Path','Title'{Title}:'Title','Posted Date'{Posted Date}:'IntranetPositionPostedDateOWSDATE','Closing Date'{Closing Date}:'IntranetPositionClosingDateOWSDATE','Job Description'{Job Description'}:'IntranetPositionDescriptionOWSMTXT','Job Description Link'{Job Description Link}:'IntranetPositionLinkOWSURLH','ContentTypeId'</mso:ManagedPropertyMapping>
+<mso:MasterPageDescription msdt:dt="string">Displays notifications in a list format.</mso:MasterPageDescription>
+<mso:ContentTypeId msdt:dt="string">0x0101002039C03B61C64EC4A04F5361F385106603</mso:ContentTypeId>
+<mso:TargetControlType msdt:dt="string">;#Content Web Parts;#</mso:TargetControlType>
+<mso:HtmlDesignAssociated msdt:dt="string">1</mso:HtmlDesignAssociated>
+<mso:HtmlDesignConversionSucceeded msdt:dt="string">True</mso:HtmlDesignConversionSucceeded>
+<mso:CrawlerXSLFile msdt:dt="string"></mso:CrawlerXSLFile>
+<mso:HtmlDesignPreviewUrl msdt:dt="string"></mso:HtmlDesignPreviewUrl>
+<mso:DisplayTemplateLevel msdt:dt="string">Item</mso:DisplayTemplateLevel>
+</mso:CustomDocumentProperties>
+</xml><![endif]-->
+
+</head>
+
+<body>
+
+    <div id="Item_JobPositionItem">
+
+    <!--#_
+        // Thanks to this post http://sharepointificate.blogspot.ca/2016/06/search-display-templates-made-easy-w.html
+
+        var encodedId = $htmlEncode(ctx.ClientControl.get_nextUniqueId());
+        var containerId = "JobPositionItem_" + encodedId;
+        var currentItem = ctx.CurrentItem;       
+
+        // Fill the current item properties to be able to use them is the Knockout viewmodel
+        currentItem.Title = $getItemValue(ctx, "Title").inputValue;
+        currentItem.IntranetPositionLink = $getItemValue(ctx, "Job Description Link").inputValue ? $getItemValue(ctx, "Job Description Link").value[0].value : null;
+        currentItem.IntranetPositionPostedDate = $getItemValue(ctx, "Posted Date").inputValue;
+        currentItem.IntranetPositionClosingDate = $getItemValue(ctx, "Closing Date").inputValue;
+        currentItem.IntranetPositionDescription = $getItemValue(ctx, "Job Description").inputValue;
+        
+        AddPostRenderCallback(ctx, function() {
+            Intranet.Main.initDisplayTemplateViewModel(document.getElementById(containerId), currentItem);
+        });
+        
+    _#-->
+
+    <div data-bind="stopBinding: true">
+        <div class="item-display-template">
+            <div id="_#=containerId=#_" class="position-item">
+                        
+                <!-- ko with: item -->
+                                                        
+                    <div class="item-title">
+                        <!-- ko if: $data.Title -->
+                        <a class="truncatable" data-bind="summarize: { html: Title }, linesCount: 1"> </a>
+                        <!-- /ko -->
+                    </div>      
+
+                    <div class="item-excerpt">
+                        <!-- ko if: $data.IntranetPositionDescription -->
+                        <div class="truncatable" data-bind="summarize: { html: IntranetPositionDescription }, linesCount: 4"></div>
+                        <!-- /ko -->
+                    </div>  
+                    
+                    <div class="item-date">
+                        <!-- ko if: $data.IntranetPositionPostedDate -->
+                        <span data-bind="getResource: 'postedDate'"></span>:
+                        <span data-bind="formatDateField: IntranetPositionPostedDate, dateFormat : 'LL'"></span>
+                        <!-- /ko -->
+                    </div>
+
+                    <div class="item-date">
+                        <!-- ko if: $data.IntranetPositionClosingDate -->
+                        <span data-bind="getResource: 'closingDate'"></span>:
+                        <span data-bind="formatDateField: IntranetPositionClosingDate, dateFormat : 'LL'"></span>
+                        <!-- /ko -->
+                    </div>
+
+                    <div class="item-link">
+                        <!-- ko if: $data.IntranetPositionLink -->
+                        <a class="truncatable" data-bind="attr: { href: IntranetPositionLink }">
+                            <span data-bind="getResource: 'seeJobDescription'"></span> 
+                        </a> >
+                        <!-- /ko -->
+                    </div>  
+
+                <!-- /ko -->
+             
+            </div>
+        </div>
+    </div>
+
+    </div>
+
+</body>
+</html>

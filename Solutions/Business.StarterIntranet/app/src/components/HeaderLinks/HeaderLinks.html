@@ -2,11 +2,10 @@
     <ul>
         <!-- ko foreach: nodes -->
         <li>
-            <i class="fa" aria-hidden="true" data-bind="visible: $data.properties()['iconClass'], css: $data.properties()['iconClass']"></i>
-            <a data-bind="attr: { href: url }, text: title">
+            <i class="fa hidden-sm hidden-md hidden-lg" aria-hidden="true" data-bind="visible: $data.properties()['iconClass'], css: $data.properties()['iconClass']"></i>
+                <a data-bind="attr: { href: url }, text: title">
             </a>
         </li>
         <!-- /ko -->  
-
     </ul>
 </div>

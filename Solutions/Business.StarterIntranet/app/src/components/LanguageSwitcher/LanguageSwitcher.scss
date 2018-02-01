@@ -11,8 +11,8 @@
 
         li:not(:first-child):before {
             content: "|";
-            margin-left: 2px;
-            margin-right: 2px;
+            margin-left: 5px;
+            margin-right: 5px;
             color: $headerlinks-color;
         }
 
@@ -22,11 +22,11 @@
             list-style-type: none;
             
             .is-selected {
-                font-weight: bold;
+                text-decoration: underline;
+                color: $headerlinks-color;
             }
 
             a {
-                text-decoration: underline;
                 color: $headerlinks-color;
             }
 
@@ -38,14 +38,15 @@
 
     /* Small devices */
     @media (max-width: 767px) { 
-    
         padding-right: 15px;
         line-height: initial;
         padding-top: 15px;
         padding-bottom: 15px;
-        
-        .is-selected {
-            color: $navbar-l1-link-color-hover;
+
+        li {
+            span, i {
+                color: $headerlinks-color;
+            }
         }
     }
 }

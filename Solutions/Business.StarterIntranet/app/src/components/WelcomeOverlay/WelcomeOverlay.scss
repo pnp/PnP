@@ -1,59 +1,80 @@
 @import '../../styles/css/variables';
 
 #welcome {
-    height: 519px; // Header size (664px) - Line height for header (145px);
+    height: 200px; // Header size (310px) - Line height for header "top-row class" (110px);
     border-radius: 2px;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color:rgba(74, 74, 74, 0.8);
     margin-left: -15px;
     margin-right: -15px;
 
     #welcome-nav {
         position: absolute;
-        bottom: 88px;
+        bottom: 0px;
         background-color: black;
         width: 100%;
-    }
+        z-index: 2; // To be displayed over the overlay
 
-    #welcome-message {
-        padding-top: 50px;
-        padding-bottom: 50px;
-        font-family: $font-primary;
-        font-size: 56px;
-        font-weight: lighter;
-        line-height: 1.14;
-        text-align: left;
-        color: #ffffff;
-    }
+        ul.navbar-nav {
 
-    #welcome-searchbox {
-        padding-bottom: 10px;
-        padding-top: 10px;
+            > li:first-child {
+                padding-left: 15px;
+            }
 
-        #search-input, input {
-            background-color: #fff;
-            min-width: 50%;
-
-            i.fa-search, input {
-                color: #000;
+            > li:last-child {
+                padding-right: 15px;
             }
         }
     }
 
-    #welcome-message, #welcome-searchbox {
-        padding-left: 50px;
-        padding-right: 50px;
-    }
+    #welcome-header {
 
-    #welcome-nav {
-        ul.navbar-nav {
+        padding: 50px;
+        display: flex;
+        display: -ms-flexbox;
+        align-items: center;
+        -ms-flex-align: center;
+        justify-content: center;
+        -ms-flex-pack: center;
 
-            > li:first-child {
-                padding-left: 50px;
+        #welcome-message {
+
+            display: flex;
+            display: -ms-flexbox;
+            justify-content: flex-start;
+            -ms-flex-pack: start;
+            font-family: $font-primary;
+            font-size: 26px;
+            font-weight: lighter;
+            line-height: 1.14;
+            color: #ffffff;
+        }
+
+        /* Medium and large devices (Desktop) */
+        @media (max-width: 1024px) {
+            #welcome-message {
+                font-size: 16px; // Specific to IE 11
             }
+        }
 
-            > li:last-child {
-                padding-right: 50px;
+        #welcome-searchbox {
+
+            display: flex;
+            display: -ms-flexbox;
+            justify-content: flex-end;
+            -ms-flex-pack: end;
+
+            #search-input, input {
+                background-color: #fff;
+
+                i.fa-search, input {
+                    color: #000;
+                }
             }
+        }
+
+        #welcome-message, #welcome-searchbox {
+            flex-grow: 1;
+            -ms-flex: 1 1 0%;
         }
     }
 }
