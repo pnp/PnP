@@ -134,11 +134,11 @@ More information here: [http://thecollaborationcorner.com/2017/09/11/a-new-versi
 
 ## Set up your environment ##
 
-Before starting, you'll need to setup tour environment:
+Before starting, you'll need to setup your environment:
 
-- Install at latest release of [PnP PowerShell cmdlets SharePointPnPPowerShellXXX](https://github.com/OfficeDev/PnP-PowerShell/releases) according to your SharePoint version.
+- Install the latest release of [PnP PowerShell cmdlets SharePointPnPPowerShellXXX](https://github.com/OfficeDev/PnP-PowerShell/releases) according to your SharePoint version.
 - Install Node.js on your machine https://nodejs.org/en/ *(v8.9.4)*
-- Install the 'webpack' Node JS client (`npm i webpack@2.4.1 -g`). This solution uses webpack v2.
+- Install the 'webpack' node.js client (`npm i webpack@2.4.1 -g`). This solution uses webpack v2.
 - Go to the ".\app" folder and install all dependencies listed in the package.json file by running the `npm i` cmd 
 - Check if everything is OK by running the "`webpack`" cmd from the ".\app" folder. You shouldn't see any errors here.
 - Create a site collection with the **publishing template**.
@@ -178,7 +178,7 @@ $Script = "<your_installation_folder>\Deploy-Solution.ps1"
 - Use the "`-IncludeData`" switch parameter to provision sample data (carousel items).
 - Use the "`-JsOnly`" parameter to only upload JavaScript and CSS files in the Style Library. The PnP template will not be applied.
 - Use the "`-ExcludeHandlers`" parameter to exlude certain PnP handlers from the root and sub sites provisioning templates (like TermGroups, Fields, etc.).
-- Use the "`-UpgradeSubSites`" parameter to force a re-application of the provisioning template to sub sites. 
+- Use the "`-UpgradeSubSites`" parameter to force a re-application of the XML provisioning template to sub sites. 
 
 - Estimated deployment time: **About 20 minutes** (depending your bandwidth)
 
@@ -200,7 +200,7 @@ $Script = "<your_installation_folder>\Upgrade-Solution.ps1"
 
 ```
 
-**Warning**: Some Web Parts in the default pages (Home.aspx, etc.) may be duplicated. You will have to remove them manually after the upgrade. Also, the version number is persisted under the *"PnPStarterIntranetVersion"* site collection property bag key and can be reverted to 2.0.0 manually to do the upgrade again if something goes wrong.
+**Warning**: After the update, some Web Parts in the default pages (Home.aspx, etc.) may be duplicated. You will have to remove them manually after the upgrade. Also, the version number is persisted under the *"PnPStarterIntranetVersion"* site collection property bag key and can be reverted to 2.0.0 manually to do the upgrade again if something goes wrong.
 
 #### Notes about the upgrade process ####
 
@@ -210,7 +210,6 @@ Updates are always processed for all versions as follows:
 - Miscellaneous updates in sub site itself are done directly in the **Setup-Web.ps1** script by ensuring if a resource already exists before creating or recreating (field, list ,etc.).
 
 By this way we are able to manage incremental updates without being too specific in scripts. 
-
 
 ### Multiple Languages support ###
 
@@ -244,7 +243,7 @@ $Languages = @(
 
 ### Configure column default values in the Pages library ###
 
-After the deployment, you have to complete some manual steps in order to set up default column values for folders in the "Pages" library for each language.
+After the deployment, you have to complete some manual steps in order to set up default column values for folders in the "Pages" library for each language. This step is not mandatory but will help you to classify your content more easily using the pet location auto-tagging feature.
 
 Library/Folder | Column | Value
 ---------| -----| --------
@@ -257,7 +256,7 @@ Documents/ | Content Type | Document
 
 ### Set permissions for contributors ###
 
-To be able to translate pages, users must have at least the *"Add and Customize Pages"* (a 401 error will appear otherwise).
+To be able to translate pages, users must have at least the *"Add and Customize Pages"* permission (a 401 error will appear otherwise).
 This permission is usually given by the built-in "Designers" SharePoint group.
 
 ### Configure search schema at global level for people last name refinement ###
