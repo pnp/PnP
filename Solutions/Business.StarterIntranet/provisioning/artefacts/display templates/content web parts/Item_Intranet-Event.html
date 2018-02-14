@@ -101,13 +101,14 @@
 							
 							<!-- ko if: $data.EndDate -->
 							
-								<!-- ko if: EndDate !== StartDate -->
+								<!-- ko if: new Date($data.EndDate).getTime() !== new Date($data.StartDate).getTime() -->
 								
 								<i class="fa fa-minus minus" aria-hidden="true"></i>
 								<div class="event-date date-box">
 									<i class="month" data-bind="formatDateField: EndDate, dateFormat : 'MMM'"></i> 
 									<i class="day" data-bind="formatDateField: EndDate, dateFormat : 'DD'"></i>
 								</div>
+								
 								<!-- /ko -->
 							<!-- /ko -->
 							

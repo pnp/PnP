@@ -24,7 +24,7 @@ class FooterLinksViewModel extends NavigationViewModel {
 
         this.wait = ko.observable(true);
         const currentLanguage = i18n.t("languageLabel");
-        this.localStorageKey = i18n.t("footerLinksLocalStorageKey");
+        this.localStorageKey = String.format("{0}_{1}", _spPageContextInfo.siteServerRelativeUrl, i18n.t("footerLinksLocalStorageKey"));
 
         this.utilityModule.getConfigurationListValuesForLanguage(currentLanguage).then((item) => {
 

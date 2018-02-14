@@ -324,7 +324,7 @@ export class Main {
                 ko.applyBindings();
 
                 /* This value is used to determines whether or not the side bar should be hidden or not
-                We use this system instead of making a REST query to the curent item to improve perfomrances. Even if this is not very elegant,
+                We use this mechanism instead of making a REST query to the curent item to improve performances. Even if this is not very elegant,
                 a jQuery DOM manipulation is faster than a network query in this specific case*/
                 const hiddenElt = $("#hide-side-bar-hidden");
 

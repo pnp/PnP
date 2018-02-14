@@ -305,7 +305,7 @@ class UtilityModule {
 
             site.rootWeb.lists.getByTitle(configListName).items.usingCaching({
                     expiration: moment().add(1, "h").toDate(),
-                    key: "configurationListValues",
+                    key: String.format("{0}_{1}", _spPageContextInfo.siteServerRelativeUrl, "configurationListValues"),
                     storeName: "local",
                 }).select(ConfigurationItem.SelectFields.toString()).getAs(ODataEntityArray(ConfigurationItem)).then((items: ConfigurationItem[]) => {
 
@@ -340,10 +340,10 @@ class UtilityModule {
         var scripts = div.getElementsByTagName('script');
         var i = scripts.length;
         while (i--) {
-          scripts[i].parentNode.removeChild(scripts[i]);
+            scripts[i].parentNode.removeChild(scripts[i]);
         }
         return div.innerHTML;
-      }
+    }
 }
 
 export default UtilityModule;
