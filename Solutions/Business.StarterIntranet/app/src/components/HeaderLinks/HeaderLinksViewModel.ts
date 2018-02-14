@@ -25,7 +25,7 @@ class HeaderLinksViewModel extends NavigationViewModel {
         this.wait = ko.observable(true);
 
         const currentLanguage = i18n.t("languageLabel");
-        this.localStorageKey = i18n.t("headerLinksLocalStorageKey");
+        this.localStorageKey = String.format("{0}_{1}", _spPageContextInfo.siteServerRelativeUrl, i18n.t("headerLinksLocalStorageKey"));
 
         // Read the configuration value from a configuration list instead from a term set property to improve performances
         // Get only the first item
