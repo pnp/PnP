@@ -10,7 +10,7 @@
     #welcome-nav {
         position: absolute;
         bottom: 0px;
-        background-color: black;
+        background-color: $navbar-l1-background-color;
         width: 100%;
         z-index: 2; // To be displayed over the overlay
 

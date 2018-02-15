@@ -309,8 +309,8 @@
                         <property name="UseSimplifiedQueryBuilder" type="bool">False</property>
                         <property name="QueryGroupName" type="string">Default</property>
                         <property name="LogAnalyticsViewEvent" type="bool">False</property>
-                        <property name="SelectedPropertiesJson" type="string">["PublishingImage","Path","Title","PublishingPageContentOWSHTML","RefinableDate00","https%3A%2F%2Fwww.google.com","SecondaryFileExtension","IntranetIsNewsOnTopOWSBOOL","ContentTypeId"]</property>
-                        <property name="PropertyMappings" type="string">Picture URL{Picture URL}:PublishingImage,Link URL{Link URL}:Path,Title{Title}:Title,News Summary{News Summary}:PublishingPageContentOWSHTML,News Publishing Date{News Publishing Date}:RefinableDate00,ViewAllLink{View all link}:https%3A%2F%2Fwww.google.com,SecondaryFileExtension,IntranetIsNewsOnTopOWSBOOL,ContentTypeId</property>
+                        <property name="SelectedPropertiesJson" type="string">["PublishingImage","Path","Title","PublishingPageContentOWSHTML","RefinableDate00","RefinableInt00","https%3A%2F%2Fwww.google.ca%2F","SecondaryFileExtension","ContentTypeId"]</property>
+                        <property name="PropertyMappings" type="string">Picture URL{Picture URL}:PublishingImage,Link URL{Link URL}:Path,Title{Title}:Title,News Summary{News Summary}:PublishingPageContentOWSHTML,News Publishing Date{News Publishing Date}:RefinableDate00,Is Featured News{Is Featured News}:RefinableInt00,ViewAllLink{View all link}:https%3A%2F%2Fwww.google.ca%2F,SecondaryFileExtension,ContentTypeId</property>
                         <property name="ShowAdvancedLink" type="bool">True</property>
                         <property name="NumberOfItems" type="int">3</property>
                         <property name="EmitStyleReference" type="bool">True</property>

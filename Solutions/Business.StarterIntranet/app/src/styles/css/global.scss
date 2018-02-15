@@ -22,6 +22,7 @@ header {
     background-image: url(./images/intranet-background.jpg);
     background-repeat: no-repeat;
     position: relative;
+    background-size: cover;
 
     #top-row {
       height: 110px;
@@ -203,7 +204,7 @@ header {
     li {
 
       width: 50%;
-      background-color: #0271bb;
+      background-color: $navbar-l2-link-color-hover;
       
       a, a:hover {
         background-color: inherit;
@@ -215,7 +216,7 @@ header {
     }
 
     li.active {
-      background-color: #024078;
+      background-color: $primary-color;
     }
   }
 }
