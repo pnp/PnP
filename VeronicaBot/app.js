@@ -1,5 +1,7 @@
 /*-----------------------------------------------------------------------------------------
 Veronica Bot - makes use of Microsoft Graph in order to store the users's request in a list 
+Author: Giuliano De Luca (MVP Office Development) - Twitter @giuleon
+Date: February 20, 2018
 -----------------------------------------------------------------------------------------*/
 
 var restify = require('restify');
@@ -112,7 +114,7 @@ bot.dialog('/', function (session) {
               session.send("Request submitted successfully");
               step = "";
           }, function (error) {
-              console.error('>>> Error getting users: ' + error);
+              console.error('>>> Error creating a list item: ' + error);
           });
         }, function (error) {
             console.error('>>> Error getting access token: ' + error);
