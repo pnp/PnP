@@ -18,22 +18,23 @@ server.use(restify.plugins.bodyParser({
 })); // To be able to get the authorization code (req.params.code)
 
 server.listen(process.env.port || process.env.PORT || 3978, function () {
-   console.log('%s listening to %s', server.name, server.url); 
+  console.log('%s listening to %s', server.name, server.url);
 });
-  
+
 // Create chat connector for communicating with the Bot Framework Service
 var connector = new builder.ChatConnector({
-    appId: process.env.MicrosoftAppId,
-    appPassword: process.env.MicrosoftAppPassword,
+  appId: process.env.MicrosoftAppId,
+  appPassword: process.env.MicrosoftAppPassword,
 });
 
 // Config
 var config = {
-    'clientId': process.env.AAD_CLIENT_ID, // The client Id retrieved from the Azure AD App
-    'clientSecret': process.env.AAD_CLIENT_SECRET, // The client secret retrieved from the Azure AD App
-    'tenant' : process.env.TENANT, // The tenant Id or domain name (e.g mydomain.onmicrosoft.com)
-    'tokenEndpoint' : process.env.tokenEndpoint, // This URL will be used for the Azure AD Application to send the authorization code.
-    'resource' : process.env.RESOURCE, // The resource endpoint we want to give access to (in this case, SharePoint Online)
+  'clientId': process.env.AAD_CLIENT_ID, // The client Id retrieved from the Azure AD App
+  'clientSecret': process.env.AAD_CLIENT_SECRET, // The client secret retrieved from the Azure AD App
+  'tenant': process.env.TENANT, // The tenant Id or domain name (e.g mydomain.onmicrosoft.com)
+  'tokenEndpoint': process.env.tokenEndpoint, // This URL will be used for the Azure AD Application to send the authorization code.
+  'resource': process.env.RESOURCE, // The resource endpoint we want to give access to (in this case, SharePoint Online)
+  'listId': process.env.List_Id, // The list Id where the Bot will save the user's submission
 }
 
 // Graph
@@ -58,78 +59,78 @@ bot.set('storage', tableStorage);
 var step = '';
 
 bot.dialog('/', function (session) {
-    var usertypes = session.message.text.toLowerCase();
+  var usertypes = session.message.text.toLowerCase();
 
-    if (step == '') {
-      session.send("Hi I'm your SharePoint Bot to assist you to request a new SharePoint site or Teams, what do you want to request?");
-      session.beginDialog('makeYourChoice');
-      step = '1';
-    } 
-    else if(step == '1') {
-      session.privateConversationData["SiteType"] = usertypes;
-      step = '2';
-      session.send('What is the title of your ' + usertypes + '?');
+  if (step == '') {
+    session.send("Hi I'm your SharePoint Bot to assist you to request a new SharePoint site or Teams, what do you want to request?");
+    session.beginDialog('makeYourChoice');
+    step = '1';
+  }
+  else if (step == '1') {
+    session.privateConversationData["SiteType"] = usertypes;
+    step = '2';
+    session.send('What is the title of your ' + usertypes + '?');
+  }
+  else if (step == '2') {
+    session.privateConversationData["Title"] = usertypes;
+    step = '3';
+    session.send('Describe the reason of your request.');
+  }
+  else if (step == '3') {
+    session.privateConversationData["Description"] = usertypes;
+    step = '4';
+    session.send('Please insert the email of the owner.');
+  }
+  else if (step == '4') {
+    session.privateConversationData["Owner"] = usertypes;
+    step = '5';
+    session.send('Please insert an alias for your ' + session.privateConversationData["SiteType"] + ' without blank spaces or special characters.');
+  }
+  else if (step == '5') {
+    if (session.message.text !== 'canceled' && session.message.text !== 'confirmation') {
+      session.privateConversationData["Alias"] = usertypes;
     }
-    else if(step == '2') {
-      session.privateConversationData["Title"] = usertypes;
-      step = '3';
-      session.send('Describe the reason of your request.');
-    }
-    else if(step == '3') {
-      session.privateConversationData["Description"] = usertypes;
-      step = '4';
-      session.send('Please insert the email of the owner.');
-    }
-    else if(step == '4') {
-      session.privateConversationData["Owner"] = usertypes;
-      step = '5';
-      session.send('Please insert an alias for your ' + session.privateConversationData["SiteType"] + ' without blank spaces or special characters.');
-    }
-    else if(step == '5') {
-      if (session.message.text !== 'canceled' && session.message.text !== 'confirmation') {
-        session.privateConversationData["Alias"] = usertypes;
-      }
-      session.beginDialog('confirmation');
-      step = "6";
-    }
-    else if(step == '6') {
-      if (session.message.text == "confirmed") {
-        // Get an access token for the app.
-        auth.getAccessToken().then(function (token) {
-          // create a new list item
-          var params = {
-            "fields": {
-              "Title": session.privateConversationData['Title'],
-              "Status": "Requested",
-              "Owner": session.privateConversationData['Owner'],
-              "Description": session.privateConversationData['Description'],
-              "SiteType": session.privateConversationData['SiteType'],
-              "Alias": session.privateConversationData['Alias']
-            }
-          };
-      
-          graph.postListItem(token, params)
-              .then(function (result) {
-              console.log(result);
-              session.send("Request submitted successfully");
-              step = "";
+    session.beginDialog('confirmation');
+    step = "6";
+  }
+  else if (step == '6') {
+    if (session.message.text == "confirmed") {
+      // Get an access token for the app.
+      auth.getAccessToken().then(function (token) {
+        // create a new list item
+        var params = {
+          "fields": {
+            "Title": session.privateConversationData['Title'],
+            "Status": "Requested",
+            "Owner": session.privateConversationData['Owner'],
+            "Description": session.privateConversationData['Description'],
+            "SiteType": session.privateConversationData['SiteType'],
+            "Alias": session.privateConversationData['Alias']
+          }
+        };
+
+        graph.postListItem(token, params)
+          .then(function (result) {
+            console.log(result);
+            session.send("Request submitted successfully");
+            step = "";
           }, function (error) {
-              console.error('>>> Error creating a list item: ' + error);
+            console.error('>>> Error creating a list item: ' + error);
           });
-        }, function (error) {
-            console.error('>>> Error getting access token: ' + error);
-        });
-        
-      } else {
-        // reset the dialog
-        step = "";
-        // restart the dialog
-        session.beginDialog('/');
-      }
+      }, function (error) {
+        console.error('>>> Error getting access token: ' + error);
+      });
+
+    } else {
+      // reset the dialog
+      step = "";
+      // restart the dialog
+      session.beginDialog('/');
     }
-    else {
-      
-    }
+  }
+  else {
+
+  }
 
 });
 
@@ -138,30 +139,30 @@ bot.dialog('makeYourChoice', function (session) {
   var msg = new builder.Message(session);
   msg.attachmentLayout(builder.AttachmentLayout.carousel)
   msg.attachments([
-      new builder.HeroCard(session)
-          .title("SharePoint Site")
-          .subtitle("Team Site")
-          .text("Keep informed your team with news.")
-          // .images([builder.CardImage.create(session, '/images/sp.png')])
-          .buttons([
-              builder.CardAction.imBack(session, "TeamSite", "Confirm")
-          ]),
-      new builder.HeroCard(session)
-          .title("SharePoint Site")
-          .subtitle("Communication Site")
-          .text("Inform your users with corporate communications and events")
-          // .images([builder.CardImage.create(session, '/images/sp.png')])
-          .buttons([
-              builder.CardAction.imBack(session, "CommunicationSite", "Confirm")
-          ]),
-      new builder.HeroCard(session)
-          .title("Microsoft Teams")
-          .subtitle("Teams")
-          .text("Work closer with your team by using chat, meeting, conference call, documents...")
-          // .images([builder.CardImage.create(session, '/images/Teams.png')])
-          .buttons([
-              builder.CardAction.imBack(session, "Teams", "Confirm")
-          ])
+    new builder.HeroCard(session)
+      .title("SharePoint Site")
+      .subtitle("Team Site")
+      .text("Keep informed your team with news.")
+      // .images([builder.CardImage.create(session, '/images/sp.png')])
+      .buttons([
+        builder.CardAction.imBack(session, "TeamSite", "Confirm")
+      ]),
+    new builder.HeroCard(session)
+      .title("SharePoint Site")
+      .subtitle("Communication Site")
+      .text("Inform your users with corporate communications and events")
+      // .images([builder.CardImage.create(session, '/images/sp.png')])
+      .buttons([
+        builder.CardAction.imBack(session, "CommunicationSite", "Confirm")
+      ]),
+    new builder.HeroCard(session)
+      .title("Microsoft Teams")
+      .subtitle("Teams")
+      .text("Work closer with your team by using chat, meeting, conference call, documents...")
+      // .images([builder.CardImage.create(session, '/images/Teams.png')])
+      .buttons([
+        builder.CardAction.imBack(session, "Teams", "Confirm")
+      ])
   ]);
   session.send(msg).endDialog();
 }).triggerAction({ matches: /^(show|list)/i });
@@ -182,8 +183,8 @@ bot.dialog('confirmation', function (session) {
         "Alias: " + session.privateConversationData['Alias'])
       // .images([builder.CardImage.create(session, '/images/sp.png')])
       .buttons([
-          builder.CardAction.imBack(session, "canceled", "Cancel"),
-          builder.CardAction.imBack(session, "confirmed", "Confirm"),         
+        builder.CardAction.imBack(session, "canceled", "Cancel"),
+        builder.CardAction.imBack(session, "confirmed", "Confirm"),
       ])
   ]);
   session.send(msg).endDialog();
@@ -198,28 +199,28 @@ bot.dialog('confirmation', function (session) {
  * @param {*} token to append in the header in order to make the request
  */
 graph.getUsers = function (token) {
-    var deferred = Q.defer();
-  
-    // Make a request to get all users in the tenant. Use $select to only get
-    // necessary values to make the app more performant.
-    request.get('https://graph.microsoft.com/v1.0/users?$select=id,displayName', {
-      auth: {
-        bearer: token
-      }
-    }, function (err, response, body) {
-      var parsedBody = JSON.parse(body);
-  
-      if (err) {
-        deferred.reject(err);
-      } else if (parsedBody.error) {
-        deferred.reject(parsedBody.error.message);
-      } else {
-        // The value of the body will be an array of all users.
-        deferred.resolve(parsedBody.value);
-      }
-    });
-  
-    return deferred.promise;
+  var deferred = Q.defer();
+
+  // Make a request to get all users in the tenant. Use $select to only get
+  // necessary values to make the app more performant.
+  request.get('https://graph.microsoft.com/v1.0/users?$select=id,displayName', {
+    auth: {
+      bearer: token
+    }
+  }, function (err, response, body) {
+    var parsedBody = JSON.parse(body);
+
+    if (err) {
+      deferred.reject(err);
+    } else if (parsedBody.error) {
+      deferred.reject(parsedBody.error.message);
+    } else {
+      // The value of the body will be an array of all users.
+      deferred.resolve(parsedBody.value);
+    }
+  });
+
+  return deferred.promise;
 };
 
 /**
@@ -230,8 +231,8 @@ graph.getUsers = function (token) {
 graph.createGroup = (token, params) => {
   var deferred = Q.defer();
   var endpointUrl = "https://graph.microsoft.com/v1.0/groups";
-  
-  request.post({ 
+
+  request.post({
     url: endpointUrl,
     headers: {
       "Authorization": "Bearer " + token,
@@ -261,10 +262,10 @@ graph.createGroup = (token, params) => {
  */
 graph.postListItem = (token, params) => {
   var deferred = Q.defer();
-  var listId = process.env.List_Id;
+  var listId = config.listId;
   var endpointUrl = "https://graph.microsoft.com/v1.0/sites/root/lists/" + listId + "/items";
-  
-  request.post({ 
+
+  request.post({
     url: endpointUrl,
     headers: {
       "Authorization": "Bearer " + token,
