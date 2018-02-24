@@ -63,18 +63,18 @@ Version|Date|Comments
 
 The Bot makes use of Microsoft Graph API (App Only), you need to register a new app in the Azure Active Directory behind your Office 365 tenant using the Azure portal:
 <p align="center">
-  <img width="70%" src="./images/AAD_App_Registration.PNG"/>
+  <img width="90%" src="./images/AAD_App_Registration.PNG"/>
 </p>
 
 - Go to https://portal.azure.com. Log in and register a new application assigning a key secret:
 <p align="center">
-  <img width="70%" src="./images/AAD_Key_Secret.PNG"/>
+  <img width="90%" src="./images/AAD_Key_Secret.PNG"/>
 </p>
 
 - Add the **Application Permission** for Microsoft Graph **Read and Write All Groups** and **Read and write items in all site collections**.
 <p align="center">
-  <img width="70%" src="./images/AAD_Read_Write_Group.PNG"/>
-  <img width="70%" src="./images/AAD_Read_Write_Items.PNG"/>
+  <img width="90%" src="./images/AAD_Read_Write_Group.PNG"/>
+  <img width="90%" src="./images/AAD_Read_Write_Items.PNG"/>
 </p>
 
 - Keep in mind that if you have to work with the user's context you will need to change the permission in **Delegated Permission** and of course you will need to change the Bot in order to handle the sign-in and redirect with the token.
@@ -83,29 +83,47 @@ The Bot makes use of Microsoft Graph API (App Only), you need to register a new 
 
 The prerequisite is an Azure subscription in order to go forward, therefore create the Azure Node.js Bot:
 <p align="center">
-  <img width="70%" src="./images/Azure_Bot.png"/>
+  <img width="90%" src="./images/Azure_Bot.png"/>
 </p>
 
 - Click on build in your Azure Bot page and after "Open online code editor"
 <p align="center">
-  <img width="70%" src="./images/Azure_Bot_Build.PNG"/>
+  <img width="90%" src="./images/Azure_Bot_Build.PNG"/>
 </p>
 
 - Click on build in your Azure Bot page and after "Open online code editor"
 <p align="center">
-  <img width="70%" src="./images/Azure_Bot_Files.PNG"/>
+  <img width="90%" src="./images/Azure_Bot_Files.PNG"/>
 </p>
 
 - Replace the content of the files **app.js** and **package.json** with the sample contained in **VeronicaBot** folder (app.js, package.json)
 
 - The last step regards the configuration, remember to set up properly the variables in the Application Settings:
 <p align="center">
-  <img width="70%" src="./images/Azure_Bot_Config.PNG"/>
-  <img width="70%" src="./images/Azure_Bot_AppSettings.PNG"/>
+  <img width="90%" src="./images/Azure_Bot_Config.PNG"/>
+  <img width="90%" src="./images/Azure_Bot_AppSettings.PNG"/>
 </p>
 
-### 3- Create the SharePoint list ###
+### 3- Create the SharePoint list, tenant properties and the SPFx Application Customizer ###
 
-The SharePoint list is required in order to store the users's requests, therefore run the Powershell script **create-sharepoint-list.ps1**, if you have not installed on your machine the PnP cmdlet please [install it](https://github.com/SharePoint/PnP-PowerShell).
+The Bot will cover multiple scenarios Teams, Direct Line, Skype, Cortana, Email, Slack....
+However, if you plan to make use of Direct Line you can install the SPFx application customizer **react-provisioning-bot** as scope your tenant or specific site collection.
+
+<p align="center">
+  <img width="90%" src="./images/Azure_Bot_DirectLine.PNG"/>
+</p>
+
+The SPFx reads the following tenant properties bag:
+
+```typescript
+  private readonly ENTITYKEY_BOTID = "PnPGraphBot_BotId";
+  private readonly ENTITYKEY_DIRECTLINESECRET = "PnPGraphBot_BotDirectLineSecret";
+  private readonly CONVERSATION_ID_KEY = "PnPGraphBot_ConversationId";
+``` 
+
+Therefore, you have to run the script **set-tenant-properties.ps1** in the folder **ProvisioningArtifacts** to save these properties.
+
+There is a SharePoint list which is required in order to store the users's requests, therefore run the Powershell script **create-sharepoint-list.ps1**, if you have not installed on your machine the PnP cmdlets please [install it](https://github.com/SharePoint/PnP-PowerShell).
 I suggest you install the list in the root site collection of the tenant, conceptually it make sense dedicates this site to the admins, but of course you are free to install it where you prefer.
-Now run the second script **set-tenant-properties.ps1** to save in the tenant properties the BotId and the BotDirectLineSecret these will be useful later with the SPFx Aplication Customizer.
+
+### 4- Azure Function ###
