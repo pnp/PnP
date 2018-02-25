@@ -129,4 +129,29 @@ I suggest you install the list in the root site collection of the tenant, concep
 
 ### 4- Azure Function ###
 
+The engine of this solution is a c# Azure Function **Modern.Provisioning.Async.Function** which makes use of PnP to create a new SharePoint site (Team or Communication) or a new Microsoft Teams according to the user's request.
+Just to clarify, the Azure Function uses the admin credentials, the password is encrypted into a [Azure Key Vault](https://azure.microsoft.com/en-us/services/key-vault/).
+In order to consume properly the Azure Function please don't forget to configure the application settings:
+
+Key | Description
+------------ | -------------
+spAdminUser | tenant admin email
+KeyVaultSecret | The key secret value after having created the key vault
+TokenEndpoint | The token endpoint that you can retrieve from your Office 365 tenant Azure portal
+listName | for this sample is **SitesRequest**
+ClientId | Client Id App Only registered in order to consume Microsoft Graph and already used by the Bot
+ClientSecret | Client Secret App Only registered in order to consume Microsoft Graph and already used by the Bot
+
+- The SharePoint sites are created across PnP
+- The Microsoft Teams are created with Graph
+
 ### 5- Microsoft Flow ###
+Last but not least, there is a Microsoft Flow to install which basically performs the following steps:
+
+- send an email to the admin when a user's request has been saved in the list **SitesRequest**
+- When the admin approves the request the Azure Function is called to start the provisioning
+- When the process is concluded an email notify the user that the request has been solved
+
+<p align="center">
+  <img width="90%" src="./images/Flow.PNG"/>
+</p>
