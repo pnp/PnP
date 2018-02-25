@@ -3,7 +3,10 @@ import { PermissionKind } from "sp-pnp-js/lib/pnp";
 export interface IDiscussionReply {
     Id: number;
     ParentItemID?: number;
-    AuthorId?: number;
+    Author?: {
+        DisplayName: string;
+        PictureUrl: string; 
+    };
     Posted?: Date;
     UserPermissions?: DiscussionPermissionLevel[];
     Body: string;

@@ -6,17 +6,17 @@ import { IDiscussionReply, DiscussionPermissionLevel } from "../../../models/IDi
 
 class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussionReplyState> {
 
-    private _replyBodyInputRef: any;
-
     public constructor() {
         super();
 
         this.state = {
             showInput: false,
             editMode: EditMode.NewComment,
+            inputValue: "",
         };
 
         this.toggleInput = this.toggleInput.bind(this);
+        this.onValueChange = this.onValueChange.bind(this);
     }
 
     public render() {
@@ -25,7 +25,7 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
         if (this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.EditAsAuthor ) !== -1 || 
             this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.ManageLists ) !== -1) {
             renderEdit = <a onClick={ () => {
-                this.toggleInput(EditMode.UpdateComment);
+                this.toggleInput(true, EditMode.UpdateComment);
             }}>Edit</a>;
         }
 
@@ -38,37 +38,41 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
         let renderReply = null;
         if (this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.Add) !== -1) {
             renderReply = <a onClick={ () => {
-                this.toggleInput(EditMode.NewComment);
+                this.toggleInput(true, EditMode.NewComment);
             }}>Reply</a>;
         }
             
         return  <div>
-                    <div dangerouslySetInnerHTML= {{__html: this.props.reply.Body } }></div>
+                    <img src={ this.props.reply.Author.PictureUrl}/>
+                    <div>{ this.props.reply.Author.DisplayName }</div>
+                    <div dangerouslySetInnerHTML= {{__html: $(this.props.reply.Body).text() }}></div>
                     { renderEdit }                   
                     { renderDelete }
                     { renderReply }
                     { this.state.showInput ? 
                         <div>
-                            <textarea ref={ (input) => { this._replyBodyInputRef = input; }} value={ this.state.editMode === EditMode.UpdateComment ? this.props.reply.Body: "" }></textarea>
+                            <textarea   defaultValue={ this.state.editMode === EditMode.UpdateComment ? $(this.props.reply.Body).text() : "" }
+                                        placeholder="Add your comment..."
+                                        onChange={ this.onValueChange }></textarea>
                             <button type="button" onClick={ () => {
 
                                 switch (this.state.editMode) {
                                     case EditMode.NewComment:
-                                        this.props.addNewReply(this.props.reply.Id, this._replyBodyInputRef.value);
+                                        this.props.addNewReply(this.props.reply.Id, this.state.inputValue);
                                         break;
 
                                     case EditMode.UpdateComment:
                                         const reply: IDiscussionReply = {
                                             Id: this.props.reply.Id,
-                                            Body: this._replyBodyInputRef.value,
+                                            Body: `<div>${this.state.inputValue}</div>`, // Set as HTML
                                         };
 
                                         this.props.updateReply(reply);
                                         break;
                                 }
 
-                                this.toggleInput(null);
-                            }}>Reply</button>
+                                this.toggleInput(false, null);
+                            }}>{ this.state.editMode === EditMode.UpdateComment ? "Update" : "Post" }</button>
                         </div>
                         : 
                             null
@@ -76,11 +80,16 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
                 </div>
     }
 
-    public toggleInput(editMode: EditMode) {
+    public toggleInput(isVisible: boolean, editMode: EditMode) {
+
         this.setState({
-            showInput: !this.state.showInput,
+            showInput: isVisible,
             editMode: editMode,
         });
+    }
+
+    public onValueChange(e: any) {
+        this.setState({ inputValue: e.target.value });
     }
 }
 

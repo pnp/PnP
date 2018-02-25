@@ -4,7 +4,8 @@ import { DiscussionPermissionLevel } from "../../../models/IDiscussionReply";
 
 interface IDiscussionBoardState {
     discussion: IDiscussion;
-    userPermissions: DiscussionPermissionLevel[]
+    userPermissions: DiscussionPermissionLevel[];
+    inputValue: string;
 }
 
 export default IDiscussionBoardState;

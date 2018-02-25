@@ -5,6 +5,8 @@ interface IDiscussion {
     AssociatedPageId: number;
     Title: string;
     Body: string;
+    Created?: Date;
+    Author?: string;
     Replies?: IDiscussionReply[];
 }
 

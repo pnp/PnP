@@ -16,7 +16,7 @@ class SocialModule {
 
     /**
      * Ensure all script dependencies are loaded before using the taxonomy SharePoint CSOM functions
-     * @return {Promise<void>}       A promise allowing you to execute your code logic.
+     * @return {Promise<void>} A promise allowing you to execute your code logic.
      */
     public init(): Promise<void>  {
 
@@ -38,26 +38,32 @@ class SocialModule {
     /**
      * Create a new discussion in a disucssion board list
      * @param discussion the discussion properties
-
      */
-    public async createNewDiscussion(discussion: IDiscussion): Promise<number> {
+    public async createNewDiscussion(associatedPageId: number, discussionTitle: string, discussionBody: string): Promise<IDiscussion> {
 
-        const p = new Promise<number>((resolve, reject) => {
+        const p = new Promise<IDiscussion>((resolve, reject) => {
 
             const context = SP.ClientContext.get_current();
             const list = context.get_web().getList(this._discussionListServerRelativeUrl);
 
-            const reply = SP.Utilities.Utility.createNewDiscussion(context, list, discussion.Title); 
-            reply.set_item("Body", discussion.Body);
-            reply.set_item("AssociatedPageId", discussion.AssociatedPageId);
+            const reply = SP.Utilities.Utility.createNewDiscussion(context, list, discussionTitle); 
+            reply.set_item("Body", discussionBody);
+            reply.set_item("AssociatedPageId", associatedPageId);
 
             // Need to explicitly update the item to actually create it (doesn't work otherwise)
             reply.update();
-            context.load(reply);
+            context.load(reply, "Id","Author","Created","AssociatedPageId","Body","Title");
 
             context.executeQueryAsync(async () => {
-
-                resolve(reply.get_id());
+                resolve({
+                    AssociatedPageId: reply.get_item("AssociatedPageId"),
+                    Body: reply.get_item("Body"),
+                    Id: reply.get_id(),
+                    Title: reply.get_item("Title"),
+                    Created: reply.get_item("Created"),
+                    Author: reply.get_item("Author"),
+                    Replies: [],
+                } as IDiscussion);
             }, (sender, args) => {
                 reject(args.get_message());
             });
@@ -71,22 +77,42 @@ class SocialModule {
      * @param parentItemId the parent item id for this reply
      * @param replyBody the content of the reply
      */
-    public async createNewDiscussionReply(parentItemId: number, replyBody: string): Promise<void>{
+    public async createNewDiscussionReply(parentItemId: number, replyBody: string): Promise<IDiscussionReply>{
 
-        const p = new Promise<void>((resolve, reject) => {
+        const p = new Promise<IDiscussionReply>((resolve, reject) => {
 
             const context = SP.ClientContext.get_current();
             const list = context.get_web().getList(this._discussionListServerRelativeUrl);
             const parentItem = list.getItemById(parentItemId);
+
+            const web = context.get_web();
+            const currentUser = web.get_currentUser();
             
             const reply = SP.Utilities.Utility.createNewDiscussionReply(context, parentItem);
             reply.set_item("Body", replyBody);
 
             // Need to explicitly update the item to actually create it (doesn't work otherwise)
             reply.update();
-            context.load(reply);
-            context.executeQueryAsync(() => {
-                resolve();
+            context.load(currentUser);
+            context.load(reply, "Id","Author","ParentItemID","Created");
+            context.executeQueryAsync(async () => {
+
+                // Get user detail
+                const user = await pnp.sp.profiles.select("PictureUrl","DisplayName","Email").getPropertiesFor(currentUser.get_loginName());
+                const PictureUrl = user["PictureUrl"] ? user["PictureUrl"] : "/_layouts/15/images/person.gif?rev=23";
+
+                resolve({
+                    Body: replyBody,
+                    Id: reply.get_id(),
+                    AuthorId: reply.get_item("Author"),
+                    ParentItemID: reply.get_item("ParentItemID"),
+                    Posted: reply.get_item("Created"),
+                    Author: {
+                        DisplayName: user["DisplayName"],
+                        PictureUrl: PictureUrl,
+                    },
+                    UserPermissions: await this.getCurrentUserPermissionsOnItem(reply.get_id())
+                } as IDiscussionReply);
             }, (sender, args) => {
                 reject(args.get_message());
             });
@@ -105,7 +131,12 @@ class SocialModule {
 
         try {
 
-            const discussion = await web.getList(this._discussionListServerRelativeUrl).items.filter(`AssociatedPageId eq ${ associatedPageId }`).select("Id","Folder","AssociatedPageId").expand("Folder").top(1).get();
+            const discussion = await web.getList(this._discussionListServerRelativeUrl).items
+                .filter(`AssociatedPageId eq ${ associatedPageId }`)
+                .select("Id","Folder","AssociatedPageId")
+                .expand("Folder")
+                .top(1)
+                .get();
             if (discussion.length > 0) {
         
                 // Get replies from this discussion (i.e. folder)
@@ -117,18 +148,7 @@ class SocialModule {
                 const replies = await web.getList(this._discussionListServerRelativeUrl).getItemsByCAMLQuery(query);
 
                 const discussionReplies: Promise<IDiscussionReply>[] = replies.map(async (reply) => {
-
-                    
-
-                    const userItemPermissions = await this.getCurrentUserPermissionsOnItem(reply.Id);
-                
-                    return {
-                        Id: reply.Id,
-                        ParentItemID: reply.ParentItemID,
-                        AuthorId: reply.AuthorId,
-                        Body: reply.Body,
-                        UserPermissions: userItemPermissions
-                    } as IDiscussionReply;
+                    return await this.getReplyById(reply.Id);
                 });
        
                 return {
@@ -154,7 +174,7 @@ class SocialModule {
 
         try {
             const web = new Web(_spPageContextInfo.webAbsoluteUrl);
-            const discussion = await web.getList(this._discussionListServerRelativeUrl).items.getById(replyId).delete();
+            await web.getList(this._discussionListServerRelativeUrl).items.getById(replyId).delete();
             return;
 
         } catch (error) {
@@ -162,12 +182,12 @@ class SocialModule {
         }
     }
 
-    public async updateReply(reply: IDiscussionReply): Promise<void>{
+    public async updateReply(replyId: number, replyBody: string): Promise<void>{
 
         try {
             const web = new Web(_spPageContextInfo.webAbsoluteUrl);
-            const discussion = await web.getList(this._discussionListServerRelativeUrl).items.getById(reply.Id).update({
-                "Body": reply.Body
+            await web.getList(this._discussionListServerRelativeUrl).items.getById(replyId).update({
+                "Body": replyBody
             });
             
             return;
@@ -175,6 +195,27 @@ class SocialModule {
         } catch (error) {
             throw error;
         }
+    }
+
+    private async getReplyById(id: number): Promise<IDiscussionReply> {
+
+        const web = new Web(_spPageContextInfo.webAbsoluteUrl);
+        const reply = await web.getList(this._discussionListServerRelativeUrl).items.getById(id).select("Id","ParentItemID","Body","Author/Name").expand("Author/Name").get();
+
+        // Get user detail
+        const user = await pnp.sp.profiles.select("PictureUrl","DisplayName","Email").getPropertiesFor(reply.Author.Name);
+        const PictureUrl = user["PictureUrl"] ? user["PictureUrl"] : "/_layouts/15/images/person.gif?rev=23";
+
+        return {
+            Id: reply.Id,
+            ParentItemID: reply.ParentItemID,
+            Author: {
+                DisplayName: user["DisplayName"],
+                PictureUrl: PictureUrl,
+            },
+            Body: reply.Body,
+            UserPermissions: await this.getCurrentUserPermissionsOnItem(reply.Id)
+        } as IDiscussionReply;
     }
 
     private async getCurrentUserPermissionsOnItem(itemId: number): Promise<DiscussionPermissionLevel[]> {
@@ -198,7 +239,7 @@ class SocialModule {
 
             // The "WriteSecurity" property isn't availabe through REST with SharePoint 2013. In this case, we need to get the whole list XML schema to extract this info
             // Not very efficient but we do not have any other option here
-            // Not List Item Level Security is different than item permissions so we can rely on native REST methods
+            // Not List Item Level Security is different than item permissions so we can't rely on native REST methods (i.e. getCurrentUserEffectivePermissions())
             // TODO: Implement specific behavior for SharePoint Online
             const list = await web.getList(this._discussionListServerRelativeUrl).select("SchemaXml").usingCaching({
                 key: String.format("{0}_{1}", _spPageContextInfo.webServerRelativeUrl, "discussionBoardListSettings"),
@@ -206,7 +247,11 @@ class SocialModule {
                 storeName: "local"})
                 .get();
             const writeSecurity = /WriteSecurity="(\d)"/.exec(list.SchemaXml)[1];
-            const currentUser =  await web.currentUser.select("LoginName").get();
+            const currentUser =  await web.currentUser.select("LoginName").usingCaching({
+                key: "currentUserLoginName",
+                storeName: "session"
+            }).get();
+
             const item = await web.getList(this._discussionListServerRelativeUrl).items.getById(itemId).select("Author/Name").expand("Author/Name").get();
 
             if (writeSecurity.localeCompare("2") === 0) {
