@@ -15,7 +15,8 @@ Furthermore, there is also a SharePoint Framework Application Customizer which a
 This sample is suitable when you want to implement a typical enterprise scenario in order to request and approving the creation of a new SharePoint site or Microsoft team. 
 
 <p align="center">
-  <img src="./images/o365-modern-provisioning.gif"/>
+  <img src="./images/Preview_Teams.PNG"/>
+  <img src="./images/Preview_SharePoint.PNG"/>
 </p>
 
 ## Used SharePoint Framework Version 
@@ -127,3 +128,5 @@ There is a SharePoint list which is required in order to store the users's reque
 I suggest you install the list in the root site collection of the tenant, conceptually it make sense dedicates this site to the admins, but of course you are free to install it where you prefer.
 
 ### 4- Azure Function ###
+
+### 5- Microsoft Flow ###
