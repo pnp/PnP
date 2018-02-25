@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/">
+    <CustomAction
+        Title="VeronicaBot"
+        Location="ClientSideExtension.ApplicationCustomizer"
+        ClientSideComponentId="34fc95d6-9beb-4099-b50b-4b498edd898c"
+        ClientSideComponentProperties="{&quot;testMessage&quot;:&quot;Test message&quot;}">
+    </CustomAction>
+</Elements>
