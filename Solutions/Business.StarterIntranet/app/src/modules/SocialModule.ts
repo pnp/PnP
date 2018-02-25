@@ -15,6 +15,27 @@ class SocialModule {
     }
 
     /**
+     * Ensure all script dependencies are loaded before using the taxonomy SharePoint CSOM functions
+     * @return {Promise<void>}       A promise allowing you to execute your code logic.
+     */
+    public init(): Promise<void>  {
+
+        // Initialize SharePoint script dependencies
+        SP.SOD.registerSod("sp.runtime.js", "/_layouts/15/sp.runtime.js");
+        SP.SOD.registerSod("sp.js", "/_layouts/15/sp.js");
+        SP.SOD.registerSodDep("sp.js", "sp.runtime.js");
+
+        const p = new Promise<void>((resolve) => {
+
+            SP.SOD.loadMultiple(["sp.runtime.js", "sp.js"], () => {
+                resolve();
+            });
+        });
+
+        return p;
+    }
+
+    /**
      * Create a new discussion in a disucssion board list
      * @param discussion the discussion properties
 

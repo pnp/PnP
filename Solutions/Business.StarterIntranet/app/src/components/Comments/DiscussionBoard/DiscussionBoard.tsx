@@ -73,6 +73,9 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
 
         this._associatedPageId = _spPageContextInfo.pageItemId;
 
+        // Load JSOM dependencies
+        await this._socialModule.init();
+
         // Retrieve the discussion for this page
         await this.getPageDiscussion(this._associatedPageId);
         
