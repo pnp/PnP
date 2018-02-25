@@ -16,7 +16,7 @@ import BotWebChatViewModel from "./components/BotWebchat/BotWebChatViewModel";
 import BreadcrumbViewModel from "./components/Breadcrumb/BreadcrumbViewModel";
 import CarouselViewModel from "./components/Carousel/CarouselViewModel";
 import ContextualMenuViewModel from "./components/ContextualMenu/ContextualMenuViewModel";
-import DiscussionBoardViewModel from "./components/DiscussionBoard/DiscussionBoardViewModel";
+import CommentsViewModel from "./components/Comments/CommentsViewModel";
 import DisplayTemplateViewModel from "./components/DisplayTemplates/DisplayTemplateViewModel";
 import FooterLinksViewModel from "./components/FooterLinks/FooterLinksViewModel";
 import HeaderLinksViewModel from "./components/HeaderLinks/HeaderLinksViewModel";
@@ -271,8 +271,8 @@ export class Main {
         const notificationBannerComponent = new BaseKnockoutComponent("component-notification", NotificationBannerViewModel, notificationBannerTemplate);
 
         // Component: "Discussion Board"
-        const discussionBoardTemplate = require("./components/DiscussionBoard/DiscussionBoard.html");
-        const discussionBoardComponent = new BaseKnockoutComponent("component-comments", DiscussionBoardViewModel, discussionBoardTemplate);
+        const commentsTemplate = require("./components/Comments/Comments.html");
+        const commentsComponent = new BaseKnockoutComponent("component-comments", CommentsViewModel, commentsTemplate);
     }
 
     public registerBindingHandlers() {

@@ -4,9 +4,9 @@
 // ========================================
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import DiscussionBoard  from "./DiscussionBoard";
+import DiscussionBoard  from "./DiscussionBoard/DiscussionBoard";
 
-class BotWebChatViewModel {
+class CommentsViewModel {
 
     constructor() {
 
@@ -16,4 +16,4 @@ class BotWebChatViewModel {
     }
 }
 
-export default BotWebChatViewModel;
+export default CommentsViewModel;

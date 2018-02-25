@@ -1,10 +1,11 @@
-import IDiscussionReply from "./IDiscussionReply";
+import { IDiscussionReply } from "./IDiscussionReply";
 
 interface IDiscussion {
-    Id: number;
+    Id?: number;
+    AssociatedPageId: number;
     Title: string;
     Body: string;
-    Replies: IDiscussionReply[];
+    Replies?: IDiscussionReply[];
 }
 
 export default IDiscussion;
