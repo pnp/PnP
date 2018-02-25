@@ -1,4 +1,4 @@
-# Office 365 Modern Provisioning #
+# Office 365 Modern Provisioning with Bot, Flow, Azure Function #
 
 ## Summary ##
 
@@ -46,17 +46,7 @@ Version|Date|Comments
 
 ## Minimal Path to Awesome
 
-- Clone this repository
-- Setup the environment as described below
-- In the command line run:
-  - `npm install`
-  - `gulp bundle`
-  - `gulp package-solution`
-- Upload the generated package to the SharePoint app catalog
-- Install the *PnP - Graph Bot* app in your site
-- In the command line run:
-  - `gulp serve --nobrowser`
-- Play with the bot!
+- Clone this repository and follow the instructions below
 
 ## Prerequisites ##
  
