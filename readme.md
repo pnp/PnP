@@ -146,7 +146,7 @@ ClientSecret | Client Secret App Only registered in order to consume Microsoft G
 - The Microsoft Teams are created with Graph
 
 ### 5- Microsoft Flow ###
-Last but not least, there is a Microsoft Flow to install which basically performs the following steps:
+Last but not least, there is a Microsoft Flow to implement, which basically performs the following steps:
 
 - send an email to the admin when a user's request has been saved in the list **SitesRequest**
 - When the admin approves the request the Azure Function is called to start the provisioning
