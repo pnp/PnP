@@ -43,8 +43,14 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
 
         let renderPageComments = null;
 
-        if (this.state.discussion) {
-            renderPageComments = this.state.discussion.Replies.map((reply, index) => {
+        let discussion = this.state.discussion;
+
+        // Render comments as tree
+        if (discussion) {
+            const discussionTree = this.treeify(discussion.Replies, discussion.Id);
+            discussion = update(discussion, { Replies: {$set: discussionTree }});
+
+            renderPageComments = discussion.Replies.map((reply, index) => {
                 return <DiscussionReply key={ index } addNewReply= { this.addNewComment } deleteReply={ this.deleteReply } updateReply={ this.updateReply } reply={ reply }/>    
             });
         }
@@ -54,7 +60,7 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
         // If the current user can add list item to the list, it means he can comment
         if (this.state.userPermissions.indexOf(DiscussionPermissionLevel.Add) !== -1) {
             renderNewReply = <div>
-                <textarea value={ this.state.inputValue } onChange={ this.onValueChange } placeholder="Add your comment..."></textarea>
+                <textarea onChange={ this.onValueChange } placeholder="Add your comment..."></textarea>
                 <button type="button" onClick={ () => { 
        
                     let parentId = null;
@@ -81,24 +87,25 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
     public async componentDidMount() {
 
         this._associatedPageId = _spPageContextInfo.pageItemId;
-
-        // Load JSOM dependencies
+        
+        // Load JSOM dependencies before playing with the discussion board
         await this._socialModule.init();
 
         // Retrieve the discussion for this page
-        await this.getPageDiscussion(this._associatedPageId);
-        
+        let discussion = await this.getPageDiscussion(this._associatedPageId);
+                
         // Get current user permissions
         const userListPermissions = await this._socialModule.getCurrentUserPermissionsOnList(this._dicussionBoardListRelativeUrl);
 
         this.setState({
             userPermissions: userListPermissions,
+            discussion: discussion,
         });
     }
 
     public async addNewComment(parentId: number, replyBody: string) {
 
-        if (!this.state.inputValue) {
+        if (!replyBody) {
             alert("You can't post an empty comment");
         } else {
             let currentDiscussion = this.state.discussion;
@@ -160,22 +167,40 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
         });
     }
 
-    private async createNewDiscussion(title: string, body: string): Promise<IDiscussion>{
+    private async createNewDiscussion(title: string, body: string): Promise<IDiscussion> {
         return await this._socialModule.createNewDiscussion(this._associatedPageId, title, body);
     }
 
-    private async getPageDiscussion(associatedPageId: number) {
+    private async getPageDiscussion(associatedPageId: number): Promise<IDiscussion> {
         // Check if there is arleady a discussion for this page
-        const discussion = await this._socialModule.getDiscussionById(associatedPageId);
-
-        this.setState({
-            discussion: discussion,
-        });
+        return await this._socialModule.getDiscussionById(associatedPageId);
     }
 
     private async createNewDiscussionReply(parentId: number, replyBody: string): Promise<IDiscussionReply> {
         return await this._socialModule.createNewDiscussionReply(parentId, replyBody);
     }
+
+    private treeify(list: any[], rootParentID: number, idAttr?, parentAttr?, childrenAttr?): any[] {
+        if (!idAttr) idAttr = 'Id';
+        if (!parentAttr) parentAttr = 'ParentItemID';
+        if (!childrenAttr) childrenAttr = 'Children';
+        var treeList = [];
+        var lookup = {};
+        list.forEach(function(obj) {
+            lookup[obj[idAttr]] = obj;
+            obj[childrenAttr] = [];
+        });
+        list.forEach(function(obj) {
+            if (obj[parentAttr] != rootParentID) {
+                if (lookup[obj[parentAttr]]) {
+                    lookup[obj[parentAttr]][childrenAttr].push(obj);
+                }                
+            } else {
+                treeList.push(obj);
+            }
+        });
+        return treeList;
+    };
 
 }
 

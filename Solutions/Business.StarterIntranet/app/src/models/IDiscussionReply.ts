@@ -10,6 +10,7 @@ export interface IDiscussionReply {
     Posted?: Date;
     UserPermissions?: DiscussionPermissionLevel[];
     Body: string;
+    Children?: IDiscussionReply[];
 }
 
 export enum DiscussionPermissionLevel {

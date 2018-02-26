@@ -41,7 +41,21 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
                 this.toggleInput(true, EditMode.NewComment);
             }}>Reply</a>;
         }
-            
+
+        let renderChildren: JSX.Element[] = [];
+        if (this.props.reply.Children) {
+            this.props.reply.Children.map((childReply, index) => {
+                renderChildren.push(
+                    <DiscussionReply 
+                        key={ index }
+                        reply={ childReply }
+                        addNewReply={this.props.addNewReply}
+                        deleteReply={ this.props.deleteReply }
+                        updateReply={ this.props.updateReply }/>
+                )
+            });
+        }
+        
         return  <div>
                     <img src={ this.props.reply.Author.PictureUrl}/>
                     <div>{ this.props.reply.Author.DisplayName }</div>
@@ -53,7 +67,8 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
                         <div>
                             <textarea   defaultValue={ this.state.editMode === EditMode.UpdateComment ? $(this.props.reply.Body).text() : "" }
                                         placeholder="Add your comment..."
-                                        onChange={ this.onValueChange }></textarea>
+                                        onChange={ this.onValueChange }
+                                        ></textarea>
                             <button type="button" onClick={ () => {
 
                                 switch (this.state.editMode) {
@@ -77,6 +92,9 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
                         : 
                             null
                     }
+                    <div className="children-replies">
+                        { renderChildren }
+                    </div>
                 </div>
     }
 

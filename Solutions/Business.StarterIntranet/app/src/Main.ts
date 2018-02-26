@@ -272,6 +272,7 @@ export class Main {
 
         // Component: "Discussion Board"
         const commentsTemplate = require("./components/Comments/Comments.html");
+        require("./components/Comments/Comments.scss"); 
         const commentsComponent = new BaseKnockoutComponent("component-comments", CommentsViewModel, commentsTemplate);
     }
 
