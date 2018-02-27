@@ -30,9 +30,8 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
         }
 
         let renderDelete = null;
-        if (this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.EditAsAuthor) !== -1 || 
-            this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.ManageLists ) !== -1) {
-            renderDelete = <a onClick={ () => { this.props.deleteReply(this.props.reply.Id) }}>Delete</a>;
+        if (this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.Delete) !== -1) {
+            renderDelete = <a onClick={ () => { this.props.deleteReply(this.props.reply) }}>Delete</a>;
         }
 
         let renderReply = null;

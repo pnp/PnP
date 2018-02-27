@@ -132,20 +132,48 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
         }
     }
 
-    public async deleteReply(replyId: number) {
+    public async deleteReply(reply: IDiscussionReply) {
 
-        if (confirm('Are you sure you want to delete this comment?')) {
-            await this._socialModule.deleteReply(replyId);
+        let hasBeenDeleted: boolean = false;
+        let deletedIds: number[] = [];
 
-            const updatedReplies = this.state.discussion.Replies.filter((reply) => {
-                return reply.Id !== replyId;
+        if (reply.Children.length > 0) {
+            if (confirm('This comment has some sub comments. They will be also deleted. Are you sure?')) {
+
+                // Delete the root reply
+                await this._socialModule.deleteReply(reply.Id);
+
+                // Delete children replies
+                deletedIds = await this._socialModule.deleteRepliesHierachy(reply, deletedIds);
+                hasBeenDeleted = true;              
+            }
+        } else {
+            if (confirm('Are you sure you want to delete this comment?')) {
+                await this._socialModule.deleteReply(reply.Id);
+                hasBeenDeleted = true;
+            } 
+        }
+
+        if (hasBeenDeleted) {
+
+            // Update the state
+            const updatedReplies = this.state.discussion.Replies.filter((currentReply) => {
+                let shouldReturn = true;
+                if (currentReply.Id === reply.Id) {
+                    shouldReturn = false;
+                } else {
+                    if (deletedIds.indexOf(currentReply.Id) !== -1) {
+                        shouldReturn = false;
+                    }
+                }
+                return shouldReturn;
             });
 
             // Update state
             this.setState({
                 discussion: update(this.state.discussion, { Replies: { $set: updatedReplies }}),
             });
-        } 
+        }
     }
 
     public async updateReply(replyToUpdate: IDiscussionReply) {

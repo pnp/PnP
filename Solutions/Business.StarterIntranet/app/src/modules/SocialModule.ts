@@ -111,7 +111,8 @@ class SocialModule {
                         DisplayName: user["DisplayName"],
                         PictureUrl: PictureUrl,
                     },
-                    UserPermissions: await this.getCurrentUserPermissionsOnItem(reply.get_id())
+                    UserPermissions: await this.getCurrentUserPermissionsOnItem(reply.get_id()),
+                    Children: []
                 } as IDiscussionReply);
             }, (sender, args) => {
                 reject(args.get_message());
@@ -170,16 +171,29 @@ class SocialModule {
      * Delete a reply in an existing discussion
      * @param replyId the item id to delete
      */
-    public async deleteReply(replyId: number): Promise<void>{
+    public async deleteReply(replyId: number): Promise<number>{
 
         try {
             const web = new Web(_spPageContextInfo.webAbsoluteUrl);
             await web.getList(this._discussionListServerRelativeUrl).items.getById(replyId).delete();
-            return;
+            return replyId;
 
         } catch (error) {
             throw error;
         }
+    }
+
+    public async deleteRepliesHierachy(rootReply: IDiscussionReply, deletedIds: number[]): Promise<number[]> {
+        
+        if (rootReply.Children.length > 0) {
+            // Delete children
+            await Promise.all(rootReply.Children.map(async (currentReply) => {
+                deletedIds.push(await this.deleteReply(currentReply.Id));
+                await this.deleteRepliesHierachy(currentReply, deletedIds);
+            }));
+        }
+        
+        return deletedIds;
     }
 
     public async updateReply(replyId: number, replyBody: string): Promise<void>{
@@ -214,7 +228,8 @@ class SocialModule {
                 PictureUrl: PictureUrl,
             },
             Body: reply.Body,
-            UserPermissions: await this.getCurrentUserPermissionsOnItem(reply.Id)
+            UserPermissions: await this.getCurrentUserPermissionsOnItem(reply.Id),
+            Children: [],
         } as IDiscussionReply;
     }
 
