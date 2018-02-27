@@ -60,7 +60,7 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
         // If the current user can add list item to the list, it means he can comment
         if (this.state.userPermissions.indexOf(DiscussionPermissionLevel.Add) !== -1) {
             renderNewReply = <div>
-                <textarea onChange={ this.onValueChange } placeholder="Add your comment..."></textarea>
+                <textarea value={ this.state.inputValue } onChange={ this.onValueChange } placeholder="Add your comment..."></textarea>
                 <button type="button" onClick={ () => { 
        
                     let parentId = null;
@@ -180,19 +180,20 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
 
         await this._socialModule.updateReply(replyToUpdate.Id, replyToUpdate.Body);
 
-        const updatedReplies = this.state.discussion.Replies.map((currentReply) => {
+            const updatedReplies = this.state.discussion.Replies.map((currentReply) => {
 
-            let updatedReply = currentReply;
-            if (currentReply.Id === replyToUpdate.Id) {
-                updatedReply.Body = replyToUpdate.Body;
-            }
-            return updatedReply;
-        });
+                let updatedReply = currentReply;
+                if (currentReply.Id === replyToUpdate.Id) {
+                    updatedReply.Body = replyToUpdate.Body;
+                    updatedReply.Edited = new Date();
+                }
+                return updatedReply;
+            });
 
-        // Update state
-        this.setState({
-            discussion: update(this.state.discussion, { Replies: { $set: updatedReplies }}),
-        });
+            // Update state
+            this.setState({
+                discussion: update(this.state.discussion, { Replies: { $set: updatedReplies }}),
+            });
     }
 
     private async createNewDiscussion(title: string, body: string): Promise<IDiscussion> {

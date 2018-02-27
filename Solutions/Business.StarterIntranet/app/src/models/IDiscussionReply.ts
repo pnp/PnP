@@ -8,9 +8,11 @@ export interface IDiscussionReply {
         PictureUrl: string; 
     };
     Posted?: Date;
+    Edited?: Date;
     UserPermissions?: DiscussionPermissionLevel[];
     Body: string;
     Children?: IDiscussionReply[];
+    IsLiked?: boolean;
 }
 
 export enum DiscussionPermissionLevel {

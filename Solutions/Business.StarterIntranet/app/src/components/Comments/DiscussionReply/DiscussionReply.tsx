@@ -3,6 +3,7 @@ import IDiscussionReplyProps from "./IDiscussionReplyProps";
 import { IDiscussionReplyState, EditMode } from "./IDiscussionReplyState";
 import { PermissionKind } from "sp-pnp-js";
 import { IDiscussionReply, DiscussionPermissionLevel } from "../../../models/IDiscussionReply";
+import * as moment from "moment";
 
 class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussionReplyState> {
 
@@ -54,10 +55,16 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
                 )
             });
         }
+
+        const posted = moment(this.props.reply.Posted);
+        const modified = moment(this.props.reply.Edited);
+        let isPosthasBeenEdited: JSX.Element = modified.diff(posted) > 0 ? <div><strong>{`Edited (Last update on ${moment(modified).format("LLL")})`}</strong></div> : null;
         
         return  <div>
                     <img src={ this.props.reply.Author.PictureUrl}/>
                     <div>{ this.props.reply.Author.DisplayName }</div>
+                    <div>{ `Posted on ${moment(this.props.reply.Posted).format('LLL')}`}</div>
+                    { isPosthasBeenEdited }
                     <div dangerouslySetInnerHTML= {{__html: $(this.props.reply.Body).text() }}></div>
                     { renderEdit }                   
                     { renderDelete }
@@ -68,20 +75,25 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
                                         placeholder="Add your comment..."
                                         onChange={ this.onValueChange }
                                         ></textarea>
-                            <button type="button" onClick={ () => {
+                            <button type="button" onClick={ async () => {
 
                                 switch (this.state.editMode) {
                                     case EditMode.NewComment:
-                                        this.props.addNewReply(this.props.reply.Id, this.state.inputValue);
+                                        await this.props.addNewReply(this.props.reply.Id, this.state.inputValue);
                                         break;
 
                                     case EditMode.UpdateComment:
-                                        const reply: IDiscussionReply = {
-                                            Id: this.props.reply.Id,
-                                            Body: `<div>${this.state.inputValue}</div>`, // Set as HTML
-                                        };
 
-                                        this.props.updateReply(reply);
+                                        if (this.state.inputValue.localeCompare(this.props.reply.Body) !== 0) {
+                                            const reply: IDiscussionReply = {
+                                                Id: this.props.reply.Id,
+                                                Body: `<div>${this.state.inputValue}</div>`, // Set as HTML to be able to parse it easily afterward
+                                            };
+
+                                            await this.props.updateReply(reply);
+                                        } else {
+                                            alert("Please enter an other value for the comment");
+                                        }
                                         break;
                                 }
 

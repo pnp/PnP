@@ -94,7 +94,7 @@ class SocialModule {
             // Need to explicitly update the item to actually create it (doesn't work otherwise)
             reply.update();
             context.load(currentUser);
-            context.load(reply, "Id","Author","ParentItemID","Created");
+            context.load(reply, "Id","Author","ParentItemID","Modified","Created");
             context.executeQueryAsync(async () => {
 
                 // Get user detail
@@ -107,6 +107,7 @@ class SocialModule {
                     AuthorId: reply.get_item("Author"),
                     ParentItemID: reply.get_item("ParentItemID"),
                     Posted: reply.get_item("Created"),
+                    Edited: reply.get_item("Modified"),
                     Author: {
                         DisplayName: user["DisplayName"],
                         PictureUrl: PictureUrl,
@@ -200,7 +201,7 @@ class SocialModule {
 
         try {
             const web = new Web(_spPageContextInfo.webAbsoluteUrl);
-            await web.getList(this._discussionListServerRelativeUrl).items.getById(replyId).update({
+            const result = await web.getList(this._discussionListServerRelativeUrl).items.getById(replyId).select("Modified").update({
                 "Body": replyBody
             });
             
@@ -214,7 +215,7 @@ class SocialModule {
     private async getReplyById(id: number): Promise<IDiscussionReply> {
 
         const web = new Web(_spPageContextInfo.webAbsoluteUrl);
-        const reply = await web.getList(this._discussionListServerRelativeUrl).items.getById(id).select("Id","ParentItemID","Body","Author/Name").expand("Author/Name").get();
+        const reply = await web.getList(this._discussionListServerRelativeUrl).items.getById(id).select("Id","Modified","Created","ParentItemID","Body","Author/Name").expand("Author/Name").get();
 
         // Get user detail
         const user = await pnp.sp.profiles.select("PictureUrl","DisplayName","Email").getPropertiesFor(reply.Author.Name);
@@ -228,6 +229,8 @@ class SocialModule {
                 PictureUrl: PictureUrl,
             },
             Body: reply.Body,
+            Posted: reply.Created,
+            Edited: reply.Modified,
             UserPermissions: await this.getCurrentUserPermissionsOnItem(reply.Id),
             Children: [],
         } as IDiscussionReply;
@@ -303,6 +306,21 @@ class SocialModule {
         
         return permissionsList;
     }
+
+    public toggleLike(itemId: number, parentListId: string, isLiked: boolean): Promise<void> {
+
+        const p = new Promise<void>((resolve, reject) => {
+            const context = SP.ClientContext.get_current();
+            Microsoft.Office.Server.ReputationModel.Reputation.setLike(context, parentListId, itemId, isLiked);
+            context.executeQueryAsync(()=> {
+                resolve();
+            },()=>{
+                reject();
+            });
+        });
+
+        return p;
+    };
 }
 
 export default SocialModule;
