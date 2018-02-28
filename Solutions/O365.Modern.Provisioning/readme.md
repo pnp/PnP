@@ -19,6 +19,11 @@ This sample is suitable when you want to implement a typical enterprise scenario
   <img src="./images/Preview_SharePoint.PNG"/>
 </p>
 
+### When to use this pattern? ###
+<p align="center">
+  <img src="./images/Modern-Provisioning-Architecture.png"/>
+</p>
+
 ## Used SharePoint Framework Version 
 ![drop](https://img.shields.io/badge/drop-1.4.1-green.svg)
 
