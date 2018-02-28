@@ -1,4 +1,4 @@
-import pnp, { Web, ODataEntityArray, CamlQuery, PermissionKind } from "sp-pnp-js";
+import pnp, { Web, ODataEntityArray, CamlQuery, PermissionKind, setup, ICachingOptions } from "sp-pnp-js";
 import IDiscussion from "../models/IDiscussion";
 import { IDiscussionReply, DiscussionPermissionLevel } from "../models/IDiscussionReply";
 
@@ -98,13 +98,12 @@ class SocialModule {
             context.executeQueryAsync(async () => {
 
                 // Get user detail
-                const user = await pnp.sp.profiles.select("PictureUrl","DisplayName","Email").getPropertiesFor(currentUser.get_loginName());
+                const user = await pnp.sp.profiles.select("AccountName", "PictureUrl","DisplayName","Email").getPropertiesFor(currentUser.get_loginName());
                 const PictureUrl = user["PictureUrl"] ? user["PictureUrl"] : "/_layouts/15/images/person.gif?rev=23";
 
                 resolve({
                     Body: replyBody,
                     Id: reply.get_id(),
-                    AuthorId: reply.get_item("Author"),
                     ParentItemID: reply.get_item("ParentItemID"),
                     Posted: reply.get_item("Created"),
                     Edited: reply.get_item("Modified"),
@@ -112,7 +111,7 @@ class SocialModule {
                         DisplayName: user["DisplayName"],
                         PictureUrl: PictureUrl,
                     },
-                    UserPermissions: await this.getCurrentUserPermissionsOnItem(reply.get_id()),
+                    UserPermissions: await this.getCurrentUserPermissionsOnItem(reply.get_id(), user["AccountName"]),
                     Children: []
                 } as IDiscussionReply);
             }, (sender, args) => {
@@ -143,15 +142,58 @@ class SocialModule {
         
                 // Get replies from this discussion (i.e. folder)
                 const query: CamlQuery = {
-                    'ViewXml': '<View><Query/></View>',
+                    'ViewXml': `<View>
+                                    <ViewFields>
+                                        <FieldRef Name="Id"></FieldRef>
+                                        <FieldRef Name="ParentItemID"></FieldRef>
+                                        <FieldRef Name="Created"></FieldRef>
+                                        <FieldRef Name="Modified"></FieldRef>
+                                        <FieldRef Name="Body"></FieldRef>
+                                    </ViewFields>
+                                    <Query/>
+                                </View>`,
                     'FolderServerRelativeUrl': `${this._discussionListServerRelativeUrl}/${discussion[0].Folder.Name}`
                 };
             
                 const replies = await web.getList(this._discussionListServerRelativeUrl).getItemsByCAMLQuery(query);
 
+                // Batch are not supported on Sharepoint 2013
+                // https://github.com/SharePoint/PnP-JS-Core/issues/492
+                let batch = pnp.sp.createBatch();
+                const isSPO = _spPageContextInfo["isSPO"];
+
                 const discussionReplies: Promise<IDiscussionReply>[] = replies.map(async (reply) => {
-                    return await this.getReplyById(reply.Id);
+
+                    const web = new Web(_spPageContextInfo.webAbsoluteUrl);
+                    let item;
+                    if (isSPO) {
+                        item = await web.getList(this._discussionListServerRelativeUrl).items.getById(reply.Id).select("Author/Name").expand("Author/Name").inBatch(batch).get();
+                    } else {
+                        item = await web.getList(this._discussionListServerRelativeUrl).items.getById(reply.Id).select("Author/Name").expand("Author/Name").get();
+                    }
+
+                    // Get user detail
+                    const user = await pnp.sp.profiles.select("PictureUrl","DisplayName","Email").getPropertiesFor(item.Author.Name);
+                    const PictureUrl = user["PictureUrl"] ? user["PictureUrl"] : "/_layouts/15/images/person.gif?rev=23";
+
+                    return {
+                        Id: reply.Id,
+                        ParentItemID: reply.ParentItemID,
+                        Author: {
+                            DisplayName: user["DisplayName"],
+                            PictureUrl: PictureUrl,
+                        },
+                        Body: reply.Body,
+                        Posted: reply.Created,
+                        Edited: reply.Modified,
+                        UserPermissions: await this.getCurrentUserPermissionsOnItem(reply.Id, item.Author.Name),
+                        Children: [],
+                    } as IDiscussionReply;
                 });
+
+                if (isSPO) {
+                    await batch.execute();
+                }
        
                 return {
                     AssociatedPageId: discussion[0].AssociatedPageId,
@@ -212,38 +254,13 @@ class SocialModule {
         }
     }
 
-    private async getReplyById(id: number): Promise<IDiscussionReply> {
-
-        const web = new Web(_spPageContextInfo.webAbsoluteUrl);
-        const reply = await web.getList(this._discussionListServerRelativeUrl).items.getById(id).select("Id","Modified","Created","ParentItemID","Body","Author/Name").expand("Author/Name").get();
-
-        // Get user detail
-        const user = await pnp.sp.profiles.select("PictureUrl","DisplayName","Email").getPropertiesFor(reply.Author.Name);
-        const PictureUrl = user["PictureUrl"] ? user["PictureUrl"] : "/_layouts/15/images/person.gif?rev=23";
-
-        return {
-            Id: reply.Id,
-            ParentItemID: reply.ParentItemID,
-            Author: {
-                DisplayName: user["DisplayName"],
-                PictureUrl: PictureUrl,
-            },
-            Body: reply.Body,
-            Posted: reply.Created,
-            Edited: reply.Modified,
-            UserPermissions: await this.getCurrentUserPermissionsOnItem(reply.Id),
-            Children: [],
-        } as IDiscussionReply;
-    }
-
-    private async getCurrentUserPermissionsOnItem(itemId: number): Promise<DiscussionPermissionLevel[]> {
+    private async getCurrentUserPermissionsOnItem(itemId: number, replyAuthorLoginName: string): Promise<DiscussionPermissionLevel[]> {
 
         let permissionsList = [];
 
         const web = new Web(_spPageContextInfo.webAbsoluteUrl);
-
         const permissions = await web.getList(this._discussionListServerRelativeUrl).items.getById(itemId).getCurrentUserEffectivePermissions();
-
+        
         const canAddListItems = web.hasPermissions(permissions, PermissionKind.AddListItems);
         const canEditListItems = web.hasPermissions(permissions, PermissionKind.EditListItems);
         const canDeleteListItems = web.hasPermissions(permissions, PermissionKind.DeleteListItems);
@@ -255,26 +272,29 @@ class SocialModule {
         if (canEditListItems && !canManageLists) {
             permissionsList.push(DiscussionPermissionLevel.Edit);
 
+            /* Caching options */
+            const listSchemaCachingOptions: ICachingOptions = {
+                key: String.format("{0}_{1}", _spPageContextInfo.webServerRelativeUrl, "discussionBoardListSettings"),
+                expiration: pnp.util.dateAdd(new Date(), "minute", 60),
+                storeName: "local"
+            };
+
+            const userLoginNameCachingOptions: ICachingOptions = {
+                key: "currentUserLoginName",
+                expiration: pnp.util.dateAdd(new Date(), "minute", 20),
+                storeName: "local"
+            };
+
             // The "WriteSecurity" property isn't availabe through REST with SharePoint 2013. In this case, we need to get the whole list XML schema to extract this info
             // Not very efficient but we do not have any other option here
             // Not List Item Level Security is different than item permissions so we can't rely on native REST methods (i.e. getCurrentUserEffectivePermissions())
-            // TODO: Implement specific behavior for SharePoint Online
-            const list = await web.getList(this._discussionListServerRelativeUrl).select("SchemaXml").usingCaching({
-                key: String.format("{0}_{1}", _spPageContextInfo.webServerRelativeUrl, "discussionBoardListSettings"),
-                expiration: pnp.util.dateAdd(new Date(), "minute", 60),
-                storeName: "local"})
-                .get();
+            const  list = await web.getList(this._discussionListServerRelativeUrl).select("SchemaXml").usingCaching(listSchemaCachingOptions).get();
             const writeSecurity = /WriteSecurity="(\d)"/.exec(list.SchemaXml)[1];
-            const currentUser =  await web.currentUser.select("LoginName").usingCaching({
-                key: "currentUserLoginName",
-                storeName: "session"
-            }).get();
-
-            const item = await web.getList(this._discussionListServerRelativeUrl).items.getById(itemId).select("Author/Name").expand("Author/Name").get();
+            const currentUser = await web.currentUser.select("LoginName").usingCaching(userLoginNameCachingOptions).get();
 
             if (writeSecurity.localeCompare("2") === 0) {
                 // If the current user is the author of the comment
-                if (item.Author.Name === currentUser.LoginName) {
+                if (replyAuthorLoginName === currentUser.LoginName) {
                     permissionsList.push(DiscussionPermissionLevel.EditAsAuthor);
                 }
             }

@@ -84,7 +84,7 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
 
                                     case EditMode.UpdateComment:
 
-                                        if (this.state.inputValue.localeCompare(this.props.reply.Body) !== 0) {
+                                        if (this.state.inputValue.localeCompare($(this.props.reply.Body).text()) !== 0) {
                                             const reply: IDiscussionReply = {
                                                 Id: this.props.reply.Id,
                                                 Body: `<div>${this.state.inputValue}</div>`, // Set as HTML to be able to parse it easily afterward
