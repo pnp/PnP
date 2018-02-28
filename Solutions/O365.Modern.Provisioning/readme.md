@@ -86,12 +86,12 @@ The prerequisite is an Azure subscription in order to go forward, therefore crea
 
 - Click on build in your Azure Bot page and after "Open online code editor"
 <p align="center">
-  <img width="90%" src="./images/Azure_Bot_Build.PNG"/>
+  <img src="./images/Azure_Bot_Build.PNG"/>
 </p>
 
 - Click on build in your Azure Bot page and after "Open online code editor"
 <p align="center">
-  <img width="90%" src="./images/Azure_Bot_Files.PNG"/>
+  <img src="./images/Azure_Bot_Files.PNG"/>
 </p>
 
 - Replace the content of the files **app.js** and **package.json** with the sample contained in **VeronicaBot** folder (app.js, package.json)
