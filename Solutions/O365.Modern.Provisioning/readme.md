@@ -11,6 +11,8 @@ creates a SharePoint team site, communication site or a Microsoft Team.
 Microsoft Flow receives a response from the Azure function with HTTP status 200, at the end the user receives an email that notifies the end of the process.
 Furthermore, there is also a SharePoint Framework Application Customizer which allows the user to interact with the Bot by leveraging the capabilities of the direct line from a SharePoint site.
 
+[Blog post here http://www.delucagiuliano.com/office-365-modern-provisioning-with-bot-flow-azure-function-and-sharepoint-framework](http://www.delucagiuliano.com/office-365-modern-provisioning-with-bot-flow-azure-function-and-sharepoint-framework)
+
 ### When to use this pattern? ###
 This sample is suitable when you want to implement a typical enterprise scenario in order to request and approving the creation of a new SharePoint site or Microsoft team. 
 
@@ -19,7 +21,7 @@ This sample is suitable when you want to implement a typical enterprise scenario
   <img src="./images/Preview_SharePoint.PNG"/>
 </p>
 
-### When to use this pattern? ###
+### Solution Architecture ###
 <p align="center">
   <img src="./images/Modern-Provisioning-Architecture.png"/>
 </p>
@@ -150,3 +152,5 @@ Last but not least, there is a Microsoft Flow to implement, which basically perf
 <p align="center">
   <img width="90%" src="./images/Flow.PNG"/>
 </p>
+
+<img src="https://telemetry.sharepointpnp.com/pnp/solutions/O365.Modern.Provisioning" />
