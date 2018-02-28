@@ -3,8 +3,6 @@
 ### Summary ###
 This sample shows how you can use the CSOM API to obtain information about the geo locations in a Multi-Geo tenant.
 
-> **Note:**
-> This sample requires a version later than the 16.1.7414.1200 SharePoint Online CSOM version to work.
 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
