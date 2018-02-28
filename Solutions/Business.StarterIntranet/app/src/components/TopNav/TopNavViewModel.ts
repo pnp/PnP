@@ -45,7 +45,9 @@ class TopNavViewModel extends NavigationViewModel {
             return ("#" + this.utilityMenuCollapseElementId());
         });
 
-        this.localStorageKey = i18n.t("siteMapLocalStorageKey");
+        // We set the current site collection URL as unique identifier prefix for local storage key
+        // By this way, we are able to browse multiple versions of the PnP Starter Intranet solution within the same browser and without navigation conficts.
+        this.localStorageKey = String.format("{0}_{1}", _spPageContextInfo.siteServerRelativeUrl, i18n.t("siteMapLocalStorageKey"));
 
         // The current language is determined at the entry point of the application
         // Instead of making a second call to get the current langauge, we get the corresponding resource value according to the current context (like we already do for LCID)
