@@ -1,0 +1,29 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/core-build/serve.schema.json",
+  "port": 4321,
+  "https": true,
+  "serveConfigurations": {
+    "default": {
+      "pageUrl": "https://gdeluca.sharepoint.com/Lists/SitesRequest/AllItems.aspx",
+      "customActions": {
+        "34fc95d6-9beb-4099-b50b-4b498edd898c": {
+          "location": "ClientSideExtension.ApplicationCustomizer",
+          "properties": {
+            "testMessage": "Test message"
+          }
+        }
+      }
+    },
+    "veronicaBot": {
+      "pageUrl": "https://gdeluca.sharepoint.com/Lists/SitesRequest/AllItems.aspx",
+      "customActions": {
+        "34fc95d6-9beb-4099-b50b-4b498edd898c": {
+          "location": "ClientSideExtension.ApplicationCustomizer",
+          "properties": {
+            "testMessage": "Test message"
+          }
+        }
+      }
+    }
+  }
+}

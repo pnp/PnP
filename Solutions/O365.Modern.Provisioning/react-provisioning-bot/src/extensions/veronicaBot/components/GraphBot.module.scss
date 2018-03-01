@@ -1,0 +1,19 @@
+.overlayList {
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.banner {
+  background-color: "[theme: themePrimary]";
+  text-align: left;
+
+  &__chatButton, &__chatButton:hover {
+      color: white;
+  }
+
+  &__chatButtonIcon, &__chatButtonIcon:hover {
+      color: white
+  }
+}

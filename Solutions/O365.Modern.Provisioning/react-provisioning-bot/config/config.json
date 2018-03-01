@@ -1,0 +1,18 @@
+{
+  "$schema": "https://dev.office.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "veronica-bot-application-customizer": {
+      "components": [
+        {
+          "entrypoint": "./lib/extensions/veronicaBot/VeronicaBotApplicationCustomizer.js",
+          "manifest": "./src/extensions/veronicaBot/VeronicaBotApplicationCustomizer.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "VeronicaBotApplicationCustomizerStrings": "lib/extensions/veronicaBot/loc/{locale}.js"
+  }
+}
