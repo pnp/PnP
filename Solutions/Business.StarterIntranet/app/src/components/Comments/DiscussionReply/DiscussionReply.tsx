@@ -59,7 +59,7 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
             this.props.reply.Children.map((childReply, index) => {
                 renderChildren.push(
                     <DiscussionReply 
-                        key={ index }
+                        key={ childReply.Id }
                         reply={ childReply }
                         isLikeEnabled={ this.props.isLikeEnabled }
                         addNewReply={this.props.addNewReply}
@@ -85,7 +85,7 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
         const modified = moment(this.props.reply.Edited);
         let isPosthasBeenEdited: JSX.Element = modified.diff(posted) > 0 ? <div><strong>{`Edited (Last update on ${moment(modified).format("LLL")})`}</strong></div> : null;
         
-        return  <div>
+        return  <div key= { this.props.reply.Id }>
                     <img src={ this.props.reply.Author.PictureUrl}/>
                     <div>{ this.props.reply.Author.DisplayName }</div>
                     <div>{ `Posted on ${moment(this.props.reply.Posted).format('LLL')}`}</div>
@@ -130,29 +130,31 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
 
     public async addNewReply(parentReplyId: number, replyBody: string) {
 
-        this.setState({
-            isLoading: true,
-        }); 
-
         try {
+
+            this.setState({
+                isLoading: true,
+            }); 
+
             await this.props.addNewReply(this.props.reply.Id, this.state.inputValue);
+
+            this.setState({
+                isLoading: false,
+            }); 
+
         } catch (error) {
             throw error;
         }
-
-        this.setState({
-            isLoading: false,
-        }); 
     }
 
     public async updateReply(replyToUpdate: IDiscussionReply): Promise<void> {
 
-        this.setState({
-            isLoading: true,
-        }); 
-
         try {
             
+            this.setState({
+                isLoading: true,
+            }); 
+
             const reply: IDiscussionReply = {
                 Id: replyToUpdate.Id,
                 Body: `<div>${this.state.inputValue}</div>`, // Set as HTML to be able to parse it easily afterward
@@ -160,29 +162,45 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
 
             await this.props.updateReply(reply);
 
+            this.setState({
+                isLoading: false,
+            });
+
         } catch (error) {
             throw error;
         }
-
-        this.setState({
-            isLoading: false,
-        }); 
     }
 
     public async deleteReply(replyToDelete: IDiscussionReply): Promise<void> {
-        this.setState({
-            isLoading: true,
-        }); 
 
         try {
-            await this.props.deleteReply(replyToDelete) 
+            // We make this verification in the reply component itself to avoid an issue when the user says 'No'. 
+            // In this case, the state wouldn't be updated to false (isLoading).
+            if (replyToDelete.Children.length > 0) {
+                if (confirm('This comment has some sub comments. They will be also deleted. Are you sure?')) {
+
+                    this.setState({
+                        isLoading: true,
+                    }); 
+
+                    await this.props.deleteReply(replyToDelete);
+                }
+            } else {
+                if (confirm('Are you sure you want to delete this comment?')) {
+
+                    this.setState({
+                        isLoading: true,
+                    }); 
+                    
+                    await this.props.deleteReply(replyToDelete);
+                }
+            }
+
+            // After that the element is deleted in the DOM so we can't update the state anymore...
+
         } catch (error) {
             throw error;
         }
-
-        this.setState({
-            isLoading: false,
-        }); 
     }
 
     public toggleInput(isVisible: boolean, editMode: EditMode) {

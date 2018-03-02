@@ -25,7 +25,8 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
         this.state = {
             discussion: null,
             userPermissions: [],
-            inputValue: ""
+            inputValue: "",
+            isLoading: false,
         };
 
         this._dicussionBoardListRelativeUrl = `${_spPageContextInfo.webServerRelativeUrl}/Lists/Comments`;
@@ -44,6 +45,8 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
 
         let renderPageComments = null;
         let renderNewReply = null;
+        let renderIsLoading = null;
+
         let discussion = this.state.discussion;
 
         // Render comments as tree
@@ -51,18 +54,20 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
             const discussionTree = this.SetDiscussionFeedAsTree(discussion.Replies, discussion.Id);
             discussion = update(discussion, { Replies: {$set: discussionTree }});
 
-            renderPageComments = discussion.Replies.map((reply, index) => {
-                return <DiscussionReply key={ index } 
-                                        addNewReply= { this.addNewComment } 
-                                        deleteReply={ this.deleteReply } 
-                                        updateReply={ this.updateReply } 
-                                        toggleLikeReply={ this.toggleLikeReply }
-                                        reply={ reply }
-                                        isLikeEnabled={ this.state.discussion.AreLikesEnabled }
-                                        />    
-            });
+            if (discussion.Replies.length > 0) {
+                renderPageComments = discussion.Replies.map((reply, index) => {
+                    return <DiscussionReply key={ reply.Id } 
+                                            addNewReply= { this.addNewComment } 
+                                            deleteReply={ this.deleteReply } 
+                                            updateReply={ this.updateReply } 
+                                            toggleLikeReply={ this.toggleLikeReply }
+                                            reply={ reply }
+                                            isLikeEnabled={ this.state.discussion.AreLikesEnabled }
+                                            />    
+                });
+            }
 
-             // If the current user can add list item to the list, it means he can comment
+            // If the current user can add list item to the list, it means he can comment
             if (this.state.userPermissions.indexOf(DiscussionPermissionLevel.Add) !== -1) {
                 renderNewReply = <div>
                     <textarea value={ this.state.inputValue } onChange={ this.onValueChange } placeholder="Add your comment..."></textarea>
@@ -78,6 +83,11 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
                     }}>Add new comment</button>
                 </div>
             }
+
+            if (this.state.isLoading) {
+                renderIsLoading = <div className="spinner" style={{"width": "15px","height": "15px"}}></div>;
+            }
+
         } else {
             renderPageComments =    <div>
                                         <div>We're getting comments for this page...</div>
@@ -87,6 +97,7 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
             
         return <div>
             { renderPageComments }
+            { renderIsLoading }
             { renderNewReply }
         </div>
     }
@@ -130,6 +141,17 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
                 parentId = newDiscussion.Id;
             }
 
+            let isLoading = false;
+            if (currentDiscussion) {
+                if (parentId === currentDiscussion.Id) {
+                    isLoading = true;
+                }
+            }
+
+            this.setState({
+                isLoading: isLoading,
+            });
+
             // Create reply to the discussion and and it to the state
             // Set the content as HTML (default field type)
             const reply = await this.createNewDiscussionReply(parentId, `<div>${replyBody}</div>`);
@@ -138,53 +160,46 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
             // Update the discussion
             this.setState({
                 discussion: currentDiscussion,
-                inputValue: ""
+                inputValue: "",
+                isLoading: false,
             });
         }
     }
 
-    public async deleteReply(reply: IDiscussionReply) {
+    public async deleteReply(reply: IDiscussionReply): Promise<void> {
 
         let hasBeenDeleted: boolean = false;
         let deletedIds: number[] = [];
 
         if (reply.Children.length > 0) {
-            if (confirm('This comment has some sub comments. They will be also deleted. Are you sure?')) {
 
-                // Delete the root reply
-                await this._socialModule.deleteReply(reply.Id);
+            // Delete the root reply
+            await this._socialModule.deleteReply(reply.Id);
 
-                // Delete children replies
-                deletedIds = await this._socialModule.deleteRepliesHierachy(reply, deletedIds);
-                hasBeenDeleted = true;              
-            }
+            // Delete children replies
+            deletedIds = await this._socialModule.deleteRepliesHierachy(reply, deletedIds);
         } else {
-            if (confirm('Are you sure you want to delete this comment?')) {
-                await this._socialModule.deleteReply(reply.Id);
-                hasBeenDeleted = true;
-            } 
+            await this._socialModule.deleteReply(reply.Id);
         }
 
-        if (hasBeenDeleted) {
-
-            // Update the state
-            const updatedReplies = this.state.discussion.Replies.filter((currentReply) => {
-                let shouldReturn = true;
-                if (currentReply.Id === reply.Id) {
+        // Update the state
+        const updatedReplies = this.state.discussion.Replies.filter((currentReply) => {
+            let shouldReturn = true;
+            if (currentReply.Id === reply.Id) {
+                shouldReturn = false;
+            } else {
+                if (deletedIds.indexOf(currentReply.Id) !== -1) {
                     shouldReturn = false;
-                } else {
-                    if (deletedIds.indexOf(currentReply.Id) !== -1) {
-                        shouldReturn = false;
-                    }
                 }
-                return shouldReturn;
-            });
+            }
+            return shouldReturn;
+        });
 
-            // Update state
-            this.setState({
-                discussion: update(this.state.discussion, { Replies: { $set: updatedReplies }}),
-            });
-        }
+        // Update state
+        this.setState({
+            discussion: update(this.state.discussion, { Replies: { $set: updatedReplies }}),
+        });
+        
     }
 
     public async updateReply(replyToUpdate: IDiscussionReply) {
@@ -277,7 +292,6 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
         });
         return treeList;
     };
-
 }
 
 export default DiscussionBoard;
