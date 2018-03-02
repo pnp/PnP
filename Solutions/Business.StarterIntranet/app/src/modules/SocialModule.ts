@@ -114,7 +114,7 @@ class SocialModule {
                         DisplayName: authorProperties["DisplayName"],
                         PictureUrl: PictureUrl,
                     },
-                    UserPermissions: await this.getCurrentUserPermissionsOnItem(reply.get_id(), authorProperties["AccountName"]),
+                    UserPermissions: await this.getCurrentUserPermissionsOnItem(reply.get_id(), currentUser.get_loginName()),
                     Children: [],
                     LikedBy: [],
                     LikesCount: 0,
@@ -130,7 +130,7 @@ class SocialModule {
 
     /**
      * Get a disucssion feed by id
-     * @param id the id of discussion the root folder
+     * @param id the id of the associated page
      */
     public async getDiscussionById(associatedPageId: number): Promise<IDiscussion> {
 
@@ -198,7 +198,7 @@ class SocialModule {
                         UserPermissions: await this.getCurrentUserPermissionsOnItem(reply.Id, item.Author.Name),
                         Children: [],
                         LikedBy: reply.LikedByStringId ? reply.LikedByStringId.results : [],
-                        LikesCount: reply.LikesCount,
+                        LikesCount: reply.LikesCount ? reply.LikesCount : 0,
                         ParentListId: item.ParentList.Id,
                     } as IDiscussionReply;
                 });
@@ -206,9 +206,19 @@ class SocialModule {
                 if (isSPO) {
                     await batch.execute();
                 }
-       
+
+                // Get rating experience settings
+                const folderSettings = await web.getFolderByServerRelativeUrl(this._discussionListServerRelativeUrl).properties.select("Ratings_VotingExperience").get();
+               
+                const ratingExperience: string = folderSettings.Ratings_x005f_VotingExperience;
+                let areLikesEnabled;
+                if (ratingExperience) {
+                    areLikesEnabled = ratingExperience.localeCompare("Likes") === 0 ? true : false;
+                }
+                
                 return {
                     AssociatedPageId: discussion[0].AssociatedPageId,
+                    AreLikesEnabled: areLikesEnabled,
                     Title: discussion[0].Title,
                     Id: discussion[0].Id,
                     Replies: await Promise.all(discussionReplies),
@@ -238,19 +248,33 @@ class SocialModule {
         }
     }
 
+    /**
+     * Deletes a replies hierarchy recursively
+     * @param rootReply the parent reply id in the list
+     * @param deletedIds currently deleted ids
+     */
     public async deleteRepliesHierachy(rootReply: IDiscussionReply, deletedIds: number[]): Promise<number[]> {
         
         if (rootReply.Children.length > 0) {
-            // Delete children
-            await Promise.all(rootReply.Children.map(async (currentReply) => {
-                deletedIds.push(await this.deleteReply(currentReply.Id));
-                await this.deleteRepliesHierachy(currentReply, deletedIds);
-            }));
+            try {
+                // Delete children
+                await Promise.all(rootReply.Children.map(async (currentReply) => {
+                    deletedIds.push(await this.deleteReply(currentReply.Id));
+                    await this.deleteRepliesHierachy(currentReply, deletedIds);
+                }));
+            } catch (error) {
+                throw error;
+            }
         }
         
         return deletedIds;
     }
 
+    /**
+     * Updates a reply
+     * @param replyId The reply id to update
+     * @param replyBody The new reply body
+     */
     public async updateReply(replyId: number, replyBody: string): Promise<void>{
 
         try {
@@ -266,6 +290,11 @@ class SocialModule {
         }
     }
 
+    /**
+     * Gets the current user permnissions on a reply
+     * @param itemId the item id 
+     * @param replyAuthorLoginName the reply auhtor name (to check if the current user is the actual author) 
+     */
     private async getCurrentUserPermissionsOnItem(itemId: number, replyAuthorLoginName: string): Promise<DiscussionPermissionLevel[]> {
 
         let permissionsList = [];
@@ -292,13 +321,14 @@ class SocialModule {
             const writeSecurityStorageKey = String.format("{0}_{1}", _spPageContextInfo.webServerRelativeUrl, "commentsListWriteSecurity");
             let writeSecurity = pnp.storage.local.get(writeSecurityStorageKey);
 
-            if (!writeSecurity) {
+            if (!writeSecurity) {        
                 const  list = await web.getList(this._discussionListServerRelativeUrl).select("SchemaXml").get();
-                const writeSecurity = /WriteSecurity="(\d)"/.exec(list.SchemaXml)[1];
+                const writeSecurity = parseInt(/WriteSecurity="(\d)"/.exec(list.SchemaXml)[1]);
+                    
                 pnp.storage.local.put(writeSecurityStorageKey, writeSecurity, pnp.util.dateAdd(new Date(), "minute", 60));
             }
                         
-            if (writeSecurity.localeCompare("2") === 0) {
+            if (writeSecurity === 2) {
 
                 const userLoginNameStorageKey = String.format("{0}_{1}", _spPageContextInfo.webServerRelativeUrl, "currentUserLoginName");
                 let currentUserLoginName = pnp.storage.local.get(userLoginNameStorageKey);
@@ -359,13 +389,27 @@ class SocialModule {
         return authorProperties;
     }
 
-    public toggleLike(itemId: number, parentListId: string, isLiked: boolean): Promise<void> {
+    public toggleLike(itemId: number, parentListId: string, isLiked: boolean): Promise<number> {
 
-        const p = new Promise<void>((resolve, reject) => {
+        const p = new Promise<number>((resolve, reject) => {
             const context = SP.ClientContext.get_current();
             Microsoft.Office.Server.ReputationModel.Reputation.setLike(context, parentListId, itemId, isLiked);
-            context.executeQueryAsync(()=> {
-                resolve();
+            context.executeQueryAsync((sender, args)=> {
+
+                const result = sender["$15_0"] ? sender["$15_0"] : (sender["$1L_0"] ? sender["$1L_0"] : null) 
+                if (result) {
+
+                    // According the specs, the server method retunrs the updated likes count
+                    const likesCount = 
+                    Object.keys(result).map((key) =>{
+                        return result[key]
+                    })[0].get_value();
+
+                    resolve(likesCount);
+                } else {
+                    resolve(null);
+                }
+                
             },(sender, args) => {
                 reject(args.get_message());
             });

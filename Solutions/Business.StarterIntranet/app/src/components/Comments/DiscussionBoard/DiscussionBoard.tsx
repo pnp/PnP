@@ -43,7 +43,7 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
     public render() {
 
         let renderPageComments = null;
-
+        let renderNewReply = null;
         let discussion = this.state.discussion;
 
         // Render comments as tree
@@ -57,29 +57,34 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
                                         deleteReply={ this.deleteReply } 
                                         updateReply={ this.updateReply } 
                                         toggleLikeReply={ this.toggleLikeReply }
-                                        reply={ reply }/>    
+                                        reply={ reply }
+                                        isLikeEnabled={ this.state.discussion.AreLikesEnabled }
+                                        />    
             });
+
+             // If the current user can add list item to the list, it means he can comment
+            if (this.state.userPermissions.indexOf(DiscussionPermissionLevel.Add) !== -1) {
+                renderNewReply = <div>
+                    <textarea value={ this.state.inputValue } onChange={ this.onValueChange } placeholder="Add your comment..."></textarea>
+                    <button type="button" onClick={ () => { 
+        
+                        let parentId = null;
+                        if (this.state.discussion) {
+                            parentId = this.state.discussion.Id;
+                        }
+
+                        this.addNewComment(parentId, this.state.inputValue);
+                        
+                    }}>Add new comment</button>
+                </div>
+            }
+        } else {
+            renderPageComments =    <div>
+                                        <div>We're getting comments for this page...</div>
+                                        <div className="spinner" style={{"width": "100%","height": "100px"}}></div>
+                                    </div>
         }
             
-        let renderNewReply = null;
-
-        // If the current user can add list item to the list, it means he can comment
-        if (this.state.userPermissions.indexOf(DiscussionPermissionLevel.Add) !== -1) {
-            renderNewReply = <div>
-                <textarea value={ this.state.inputValue } onChange={ this.onValueChange } placeholder="Add your comment..."></textarea>
-                <button type="button" onClick={ () => { 
-       
-                    let parentId = null;
-                    if (this.state.discussion) {
-                        parentId = this.state.discussion.Id;
-                    }
-
-                    this.addNewComment(parentId, this.state.inputValue);
-                    
-                }}>Add new comment</button>
-            </div>
-        }
-
         return <div>
             { renderPageComments }
             { renderNewReply }
@@ -218,31 +223,26 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
 
     private async toggleLikeReply(reply: IDiscussionReply, isLiked: boolean): Promise<void> {
 
-        const updatedReplies = this.state.discussion.Replies.map((currentReply) => {
-
-            let updatedReply = currentReply;
-            const userId = _spPageContextInfo.userId.toString();
-            if (currentReply.Id === reply.Id) {
-                updatedReply.LikesCount = isLiked ? updatedReply.LikesCount + 1 : updatedReply.LikesCount - 1;
-                updatedReply.LikedBy = isLiked ? 
-                    update(updatedReply.LikedBy, {$push: [_spPageContextInfo.userId.toString()]}) : 
-                    update(updatedReply.LikedBy, {$splice: [[updatedReply.LikedBy.indexOf(userId),1]]}) ;
-            }
-            return updatedReply;
-        });
-
-        // Update state
-        this.setState({
-            discussion: update(this.state.discussion, { Replies: { $set: updatedReplies }}),
-        });
-
         try {
-            // Do The actual call to update the item
-            // We do this after refreshing the UI to get a smooth user experience even if the actual call has not been processed yet
-            // If an error occur, we set an error message
-            await this._socialModule.toggleLike(reply.Id, reply.ParentListId,isLiked);
-            return;
+            const updatdeLikesCount = await this._socialModule.toggleLike(reply.Id, reply.ParentListId,isLiked);
 
+            const updatedReplies = this.state.discussion.Replies.map((currentReply) => {
+
+                let updatedReply = currentReply;
+                const userId = _spPageContextInfo.userId.toString();
+                if (currentReply.Id === reply.Id) {
+                    updatedReply.LikesCount = updatdeLikesCount;
+                    updatedReply.LikedBy = isLiked ? 
+                        update(updatedReply.LikedBy, {$push: [_spPageContextInfo.userId.toString()]}) : 
+                        update(updatedReply.LikedBy, {$splice: [[updatedReply.LikedBy.indexOf(userId),1]]}) ;
+                }
+                return updatedReply;
+            });
+
+            // Update state
+            this.setState({
+                discussion: update(this.state.discussion, { Replies: { $set: updatedReplies }}),
+            });
         } catch (error) {
 
         }

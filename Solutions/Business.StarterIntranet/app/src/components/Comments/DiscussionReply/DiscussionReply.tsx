@@ -14,13 +14,23 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
             showInput: false,
             editMode: EditMode.NewComment,
             inputValue: "",
+            isLoading: false,
         };
 
         this.toggleInput = this.toggleInput.bind(this);
         this.onValueChange = this.onValueChange.bind(this);
+        this.updateReply = this.updateReply.bind(this);
+        this.addNewReply = this.addNewReply.bind(this);
+        this.deleteReply = this.deleteReply.bind(this);
     }
 
     public render() {
+
+        let renderIsLoading = null;
+
+        if (this.state.isLoading) {
+            renderIsLoading = <div className="spinner" style={{"width": "15px","height": "15px"}}></div>;
+        }
 
         let renderEdit = null;
         if (this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.EditAsAuthor ) !== -1 || 
@@ -32,7 +42,9 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
 
         let renderDelete = null;
         if (this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.Delete) !== -1) {
-            renderDelete = <a onClick={ () => { this.props.deleteReply(this.props.reply) }}>Delete</a>;
+            renderDelete = <a onClick={ () => { 
+                this.deleteReply(this.props.reply);
+            }}>Delete</a>;
         }
 
         let renderReply = null;
@@ -49,6 +61,7 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
                     <DiscussionReply 
                         key={ index }
                         reply={ childReply }
+                        isLikeEnabled={ this.props.isLikeEnabled }
                         addNewReply={this.props.addNewReply}
                         deleteReply={ this.props.deleteReply }
                         updateReply={ this.props.updateReply }
@@ -59,11 +72,14 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
         }
 
         let renderLike: JSX.Element = null;
-        let likeLabel = this.isReplyLikedByCurrentUser(this.props.reply) ? "Unlike" : "Like";
-        renderLike = <div>
-                        <span>Number of likes  {this.props.reply.LikesCount}</span>
-                        <a onClick={ () => { this.props.toggleLikeReply(this.props.reply, !this.isReplyLikedByCurrentUser(this.props.reply)) }}>{ likeLabel }</a>                        
-                     </div>;
+
+        if (this.props.isLikeEnabled) {
+            let likeLabel = this.isReplyLikedByCurrentUser(this.props.reply) ? "Unlike" : "Like";
+            renderLike = <div>
+                            <span>Number of likes  {this.props.reply.LikesCount}</span>
+                            <a onClick={ () => { this.props.toggleLikeReply(this.props.reply, !this.isReplyLikedByCurrentUser(this.props.reply)) }}>{ likeLabel }</a>                        
+                        </div>;
+        }
 
         const posted = moment(this.props.reply.Posted);
         const modified = moment(this.props.reply.Edited);
@@ -78,6 +94,7 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
                     { renderEdit }                   
                     { renderDelete }
                     { renderReply }
+                    { renderIsLoading }
                     { renderLike }
                     { this.state.showInput ? 
                         <div>
@@ -89,21 +106,11 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
 
                                 switch (this.state.editMode) {
                                     case EditMode.NewComment:
-                                        await this.props.addNewReply(this.props.reply.Id, this.state.inputValue);
+                                        await this.addNewReply(this.props.reply.Id, this.state.inputValue);
                                         break;
 
                                     case EditMode.UpdateComment:
-
-                                        if (this.state.inputValue.localeCompare($(this.props.reply.Body).text()) !== 0) {
-                                            const reply: IDiscussionReply = {
-                                                Id: this.props.reply.Id,
-                                                Body: `<div>${this.state.inputValue}</div>`, // Set as HTML to be able to parse it easily afterward
-                                            };
-
-                                            await this.props.updateReply(reply);
-                                        } else {
-                                            alert("Please enter an other value for the comment");
-                                        }
+                                        await this.updateReply(this.props.reply);
                                         break;
                                 }
 
@@ -119,6 +126,63 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
                         { renderChildren }
                     </div>
                 </div>
+    }
+
+    public async addNewReply(parentReplyId: number, replyBody: string) {
+
+        this.setState({
+            isLoading: true,
+        }); 
+
+        try {
+            await this.props.addNewReply(this.props.reply.Id, this.state.inputValue);
+        } catch (error) {
+            throw error;
+        }
+
+        this.setState({
+            isLoading: false,
+        }); 
+    }
+
+    public async updateReply(replyToUpdate: IDiscussionReply): Promise<void> {
+
+        this.setState({
+            isLoading: true,
+        }); 
+
+        try {
+            
+            const reply: IDiscussionReply = {
+                Id: replyToUpdate.Id,
+                Body: `<div>${this.state.inputValue}</div>`, // Set as HTML to be able to parse it easily afterward
+            };
+
+            await this.props.updateReply(reply);
+
+        } catch (error) {
+            throw error;
+        }
+
+        this.setState({
+            isLoading: false,
+        }); 
+    }
+
+    public async deleteReply(replyToDelete: IDiscussionReply): Promise<void> {
+        this.setState({
+            isLoading: true,
+        }); 
+
+        try {
+            await this.props.deleteReply(replyToDelete) 
+        } catch (error) {
+            throw error;
+        }
+
+        this.setState({
+            isLoading: false,
+        }); 
     }
 
     public toggleInput(isVisible: boolean, editMode: EditMode) {
@@ -152,7 +216,6 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
             inputValue: e.target.value,
          });
     }
-
 
     private isReplyLikedByCurrentUser(reply: IDiscussionReply): boolean {
 
