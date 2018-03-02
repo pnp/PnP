@@ -96,13 +96,14 @@ class SocialModule {
             // Need to explicitly update the item to actually create it (doesn't work otherwise)
             reply.update();
             context.load(currentUser);
-            context.load(reply, "Id","Author","ParentItemID","Modified","Created");
+            context.load(reply, "Id","Author","ParentItemID","Modified","Created","ParentList");
             context.executeQueryAsync(async () => {
 
                 // Get user detail
                 let authorProperties = await this.getUserProperties(currentUser.get_loginName());
                 const PictureUrl = authorProperties["PictureUrl"] ? authorProperties["PictureUrl"] : "/_layouts/15/images/person.gif?rev=23";
 
+                // Create a new dsicussion reply with initial property values
                 resolve({
                     Body: replyBody,
                     Id: reply.get_id(),
@@ -114,7 +115,10 @@ class SocialModule {
                         PictureUrl: PictureUrl,
                     },
                     UserPermissions: await this.getCurrentUserPermissionsOnItem(reply.get_id(), authorProperties["AccountName"]),
-                    Children: []
+                    Children: [],
+                    LikedBy: [],
+                    LikesCount: 0,
+                    ParentListId: reply.get_parentList().get_id().toString()
                 } as IDiscussionReply);
             }, (sender, args) => {
                 reject(args.get_message());
@@ -362,8 +366,8 @@ class SocialModule {
             Microsoft.Office.Server.ReputationModel.Reputation.setLike(context, parentListId, itemId, isLiked);
             context.executeQueryAsync(()=> {
                 resolve();
-            },()=>{
-                reject();
+            },(sender, args) => {
+                reject(args.get_message());
             });
         });
 

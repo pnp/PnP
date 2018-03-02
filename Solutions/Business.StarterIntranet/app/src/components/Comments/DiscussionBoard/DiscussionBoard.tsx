@@ -48,7 +48,7 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
 
         // Render comments as tree
         if (discussion) {
-            const discussionTree = this.treeify(discussion.Replies, discussion.Id);
+            const discussionTree = this.SetDiscussionFeedAsTree(discussion.Replies, discussion.Id);
             discussion = update(discussion, { Replies: {$set: discussionTree }});
 
             renderPageComments = discussion.Replies.map((reply, index) => {
@@ -183,35 +183,72 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
     }
 
     public async updateReply(replyToUpdate: IDiscussionReply) {
+    
+        if (!$(replyToUpdate.Body).text()) {
+            alert("You can't post an empty comment");
+        } else {
 
-        await this._socialModule.updateReply(replyToUpdate.Id, replyToUpdate.Body);
+            try {
+                await this._socialModule.updateReply(replyToUpdate.Id, replyToUpdate.Body);
 
-            const updatedReplies = this.state.discussion.Replies.map((currentReply) => {
+                const updatedReplies = this.state.discussion.Replies.map((currentReply) => {
 
-                let updatedReply = currentReply;
-                if (currentReply.Id === replyToUpdate.Id) {
-                    updatedReply.Body = replyToUpdate.Body;
-                    updatedReply.Edited = new Date();
-                }
-                return updatedReply;
-            });
+                    let updatedReply = currentReply;
+                    if (currentReply.Id === replyToUpdate.Id) {
+                        updatedReply.Body = replyToUpdate.Body;
+                        updatedReply.Edited = new Date();
+                    }
+                    return updatedReply;
+                });
 
-            // Update state
-            this.setState({
-                discussion: update(this.state.discussion, { Replies: { $set: updatedReplies }}),
-            });
+                // Update state
+                this.setState({
+                    discussion: update(this.state.discussion, { Replies: { $set: updatedReplies }}),
+                });
+                
+            } catch (error){
+                // TODO: Set state error
+            }
+        }
     }
 
     private async createNewDiscussion(title: string, body: string): Promise<IDiscussion> {
         return await this._socialModule.createNewDiscussion(this._associatedPageId, title, body);
     }
 
-    private async toggleLikeReply(reply: IDiscussionReply, isLiked: boolean) {
-        return await this._socialModule.toggleLike(reply.Id, reply.ParentListId,isLiked);
+    private async toggleLikeReply(reply: IDiscussionReply, isLiked: boolean): Promise<void> {
+
+        const updatedReplies = this.state.discussion.Replies.map((currentReply) => {
+
+            let updatedReply = currentReply;
+            const userId = _spPageContextInfo.userId.toString();
+            if (currentReply.Id === reply.Id) {
+                updatedReply.LikesCount = isLiked ? updatedReply.LikesCount + 1 : updatedReply.LikesCount - 1;
+                updatedReply.LikedBy = isLiked ? 
+                    update(updatedReply.LikedBy, {$push: [_spPageContextInfo.userId.toString()]}) : 
+                    update(updatedReply.LikedBy, {$splice: [[updatedReply.LikedBy.indexOf(userId),1]]}) ;
+            }
+            return updatedReply;
+        });
+
+        // Update state
+        this.setState({
+            discussion: update(this.state.discussion, { Replies: { $set: updatedReplies }}),
+        });
+
+        try {
+            // Do The actual call to update the item
+            // We do this after refreshing the UI to get a smooth user experience even if the actual call has not been processed yet
+            // If an error occur, we set an error message
+            await this._socialModule.toggleLike(reply.Id, reply.ParentListId,isLiked);
+            return;
+
+        } catch (error) {
+
+        }
     }
 
     private async getPageDiscussion(associatedPageId: number): Promise<IDiscussion> {
-        // Check if there is arleady a discussion for this page
         return await this._socialModule.getDiscussionById(associatedPageId);
     }
 
@@ -219,7 +256,7 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
         return await this._socialModule.createNewDiscussionReply(parentId, replyBody);
     }
 
-    private treeify(list: any[], rootParentID: number, idAttr?, parentAttr?, childrenAttr?): any[] {
+    private SetDiscussionFeedAsTree(list: any[], rootParentID: number, idAttr?, parentAttr?, childrenAttr?): any[] {
         if (!idAttr) idAttr = 'Id';
         if (!parentAttr) parentAttr = 'ParentItemID';
         if (!childrenAttr) childrenAttr = 'Children';

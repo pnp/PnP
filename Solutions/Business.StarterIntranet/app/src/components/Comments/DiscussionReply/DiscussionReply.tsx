@@ -81,10 +81,9 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
                     { renderLike }
                     { this.state.showInput ? 
                         <div>
-                            <textarea   value={ this.state.editMode === EditMode.UpdateComment ? $(this.props.reply.Body).text() : "" }
+                            <textarea   value={ this.state.inputValue }
                                         placeholder="Add your comment..."
                                         onChange={ this.onValueChange }
-                                        onBlur={ () => { this.toggleInput(false, null) }}
                                         ></textarea>
                             <button type="button" onClick={ async () => {
 
@@ -110,6 +109,8 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
 
                                 this.toggleInput(false, null);
                             }}>{ this.state.editMode === EditMode.UpdateComment ? "Update" : "Post" }</button>
+                            <button onClick={ () => { this.toggleInput(false, null); }} >Annuler</button>
+                            
                         </div>
                         : 
                             null
@@ -122,14 +123,34 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
 
     public toggleInput(isVisible: boolean, editMode: EditMode) {
 
+        let inputValue;
+
+        switch (editMode) {
+            case EditMode.UpdateComment:
+                inputValue = $(this.props.reply.Body).text();
+                break;
+
+            case EditMode.NewComment:
+                inputValue = "";
+                break;
+            
+            default:
+                inputValue = "";
+                break;
+        }
+
         this.setState({
             showInput: isVisible,
             editMode: editMode,
+            inputValue: inputValue,
         });
     }
 
     public onValueChange(e: any) {
-        this.setState({ inputValue: e.target.value });
+
+        this.setState({ 
+            inputValue: e.target.value,
+         });
     }
 
 
