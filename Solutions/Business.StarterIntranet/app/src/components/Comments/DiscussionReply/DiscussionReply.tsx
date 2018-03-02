@@ -51,10 +51,19 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
                         reply={ childReply }
                         addNewReply={this.props.addNewReply}
                         deleteReply={ this.props.deleteReply }
-                        updateReply={ this.props.updateReply }/>
+                        updateReply={ this.props.updateReply }
+                        toggleLikeReply={ this.props.toggleLikeReply }
+                        />
                 )
             });
         }
+
+        let renderLike: JSX.Element = null;
+        let likeLabel = this.isReplyLikedByCurrentUser(this.props.reply) ? "Unlike" : "Like";
+        renderLike = <div>
+                        <span>Number of likes  {this.props.reply.LikesCount}</span>
+                        <a onClick={ () => { this.props.toggleLikeReply(this.props.reply, !this.isReplyLikedByCurrentUser(this.props.reply)) }}>{ likeLabel }</a>                        
+                     </div>;
 
         const posted = moment(this.props.reply.Posted);
         const modified = moment(this.props.reply.Edited);
@@ -69,11 +78,13 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
                     { renderEdit }                   
                     { renderDelete }
                     { renderReply }
+                    { renderLike }
                     { this.state.showInput ? 
                         <div>
-                            <textarea   defaultValue={ this.state.editMode === EditMode.UpdateComment ? $(this.props.reply.Body).text() : "" }
+                            <textarea   value={ this.state.editMode === EditMode.UpdateComment ? $(this.props.reply.Body).text() : "" }
                                         placeholder="Add your comment..."
                                         onChange={ this.onValueChange }
+                                        onBlur={ () => { this.toggleInput(false, null) }}
                                         ></textarea>
                             <button type="button" onClick={ async () => {
 
@@ -119,6 +130,18 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
 
     public onValueChange(e: any) {
         this.setState({ inputValue: e.target.value });
+    }
+
+
+    private isReplyLikedByCurrentUser(reply: IDiscussionReply): boolean {
+
+        // If the current user id is in the list ok "liked by" field
+        let isLiked = false;
+        if (reply.LikedBy.indexOf(_spPageContextInfo.userId.toString()) !== -1) {
+            isLiked = true;
+        }
+
+        return isLiked;
     }
 }
 

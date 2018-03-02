@@ -1,4 +1,4 @@
-import pnp, { Web, Logger, LogLevel, ODataEntityArray } from "sp-pnp-js";
+import pnp, { Web, Logger, LogLevel, spODataEntityArray } from "sp-pnp-js";
 import * as React from "react";
 import INotification from "./INotification";
 import Notification from "./Notification";
@@ -61,7 +61,7 @@ class NotificationBanner extends React.Component<NotificationBannerProps, Notifi
         const web = new Web(_spPageContextInfo.webAbsoluteUrl);
         const notifications = await web.getList(_spPageContextInfo.webServerRelativeUrl + "/Lists/Notifications")
             .items.select(Notification.SelectFields.toString())
-            .getAs(ODataEntityArray(Notification));
+            .getAs(spODataEntityArray(Notification));
 
         return notifications; 
     }

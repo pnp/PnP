@@ -1,4 +1,4 @@
-import pnp, { Web, ODataEntityArray, CamlQuery, PermissionKind, setup, ICachingOptions } from "sp-pnp-js";
+import pnp, { Web, CamlQuery, PermissionKind, setup, ICachingOptions } from "sp-pnp-js";
 import IDiscussion from "../models/IDiscussion";
 import { IDiscussionReply, DiscussionPermissionLevel } from "../models/IDiscussionReply";
 
@@ -23,11 +23,13 @@ class SocialModule {
         // Initialize SharePoint script dependencies
         SP.SOD.registerSod("sp.runtime.js", "/_layouts/15/sp.runtime.js");
         SP.SOD.registerSod("sp.js", "/_layouts/15/sp.js");
+        SP.SOD.registerSod("reputation.js", "/_layouts/15/reputation.js");
+        SP.SOD.registerSodDep("reputation.js", "sp.js");
         SP.SOD.registerSodDep("sp.js", "sp.runtime.js");
-
+        
         const p = new Promise<void>((resolve) => {
 
-            SP.SOD.loadMultiple(["sp.runtime.js", "sp.js"], () => {
+            SP.SOD.loadMultiple(["reputation.js","sp.runtime.js", "sp.js"], () => {
                 resolve();
             });
         });
@@ -98,8 +100,8 @@ class SocialModule {
             context.executeQueryAsync(async () => {
 
                 // Get user detail
-                const user = await pnp.sp.profiles.select("AccountName", "PictureUrl","DisplayName","Email").getPropertiesFor(currentUser.get_loginName());
-                const PictureUrl = user["PictureUrl"] ? user["PictureUrl"] : "/_layouts/15/images/person.gif?rev=23";
+                let authorProperties = await this.getUserProperties(currentUser.get_loginName());
+                const PictureUrl = authorProperties["PictureUrl"] ? authorProperties["PictureUrl"] : "/_layouts/15/images/person.gif?rev=23";
 
                 resolve({
                     Body: replyBody,
@@ -108,10 +110,10 @@ class SocialModule {
                     Posted: reply.get_item("Created"),
                     Edited: reply.get_item("Modified"),
                     Author: {
-                        DisplayName: user["DisplayName"],
+                        DisplayName: authorProperties["DisplayName"],
                         PictureUrl: PictureUrl,
                     },
-                    UserPermissions: await this.getCurrentUserPermissionsOnItem(reply.get_id(), user["AccountName"]),
+                    UserPermissions: await this.getCurrentUserPermissionsOnItem(reply.get_id(), authorProperties["AccountName"]),
                     Children: []
                 } as IDiscussionReply);
             }, (sender, args) => {
@@ -149,6 +151,9 @@ class SocialModule {
                                         <FieldRef Name="Created"></FieldRef>
                                         <FieldRef Name="Modified"></FieldRef>
                                         <FieldRef Name="Body"></FieldRef>
+                                        <FieldRef Name="ParenListId"></FieldRef>
+                                        <FieldRef Name="LikedBy"></FieldRef>
+                                        <FieldRef Name="LikesCount"></FieldRef>
                                     </ViewFields>
                                     <Query/>
                                 </View>`,
@@ -167,20 +172,20 @@ class SocialModule {
                     const web = new Web(_spPageContextInfo.webAbsoluteUrl);
                     let item;
                     if (isSPO) {
-                        item = await web.getList(this._discussionListServerRelativeUrl).items.getById(reply.Id).select("Author/Name").expand("Author/Name").inBatch(batch).get();
+                        item = await web.getList(this._discussionListServerRelativeUrl).items.getById(reply.Id).select("Author/Name","ParentList/Id").expand("Author/Name","ParentList/Id").inBatch(batch).get();
                     } else {
-                        item = await web.getList(this._discussionListServerRelativeUrl).items.getById(reply.Id).select("Author/Name").expand("Author/Name").get();
+                        item = await web.getList(this._discussionListServerRelativeUrl).items.getById(reply.Id).select("Author/Name","ParentList/Id").expand("Author/Name","ParentList/Id").get();
                     }
 
-                    // Get user detail
-                    const user = await pnp.sp.profiles.select("PictureUrl","DisplayName","Email").getPropertiesFor(item.Author.Name);
-                    const PictureUrl = user["PictureUrl"] ? user["PictureUrl"] : "/_layouts/15/images/person.gif?rev=23";
+                    let authorProperties = await this.getUserProperties(item.Author.Name);
+                    const PictureUrl = authorProperties["PictureUrl"] ? authorProperties["PictureUrl"] : "/_layouts/15/images/person.gif?rev=23";
 
                     return {
                         Id: reply.Id,
                         ParentItemID: reply.ParentItemID,
                         Author: {
-                            DisplayName: user["DisplayName"],
+                            Id: item.Author.Id,
+                            DisplayName: authorProperties["DisplayName"],
                             PictureUrl: PictureUrl,
                         },
                         Body: reply.Body,
@@ -188,6 +193,9 @@ class SocialModule {
                         Edited: reply.Modified,
                         UserPermissions: await this.getCurrentUserPermissionsOnItem(reply.Id, item.Author.Name),
                         Children: [],
+                        LikedBy: reply.LikedByStringId ? reply.LikedByStringId.results : [],
+                        LikesCount: reply.LikesCount,
+                        ParentListId: item.ParentList.Id,
                     } as IDiscussionReply;
                 });
 
@@ -272,29 +280,32 @@ class SocialModule {
         if (canEditListItems && !canManageLists) {
             permissionsList.push(DiscussionPermissionLevel.Edit);
 
-            /* Caching options */
-            const listSchemaCachingOptions: ICachingOptions = {
-                key: String.format("{0}_{1}", _spPageContextInfo.webServerRelativeUrl, "discussionBoardListSettings"),
-                expiration: pnp.util.dateAdd(new Date(), "minute", 60),
-                storeName: "local"
-            };
-
-            const userLoginNameCachingOptions: ICachingOptions = {
-                key: "currentUserLoginName",
-                expiration: pnp.util.dateAdd(new Date(), "minute", 20),
-                storeName: "local"
-            };
+            pnp.storage.local.deleteExpired();
 
             // The "WriteSecurity" property isn't availabe through REST with SharePoint 2013. In this case, we need to get the whole list XML schema to extract this info
             // Not very efficient but we do not have any other option here
             // Not List Item Level Security is different than item permissions so we can't rely on native REST methods (i.e. getCurrentUserEffectivePermissions())
-            const  list = await web.getList(this._discussionListServerRelativeUrl).select("SchemaXml").usingCaching(listSchemaCachingOptions).get();
-            const writeSecurity = /WriteSecurity="(\d)"/.exec(list.SchemaXml)[1];
-            const currentUser = await web.currentUser.select("LoginName").usingCaching(userLoginNameCachingOptions).get();
+            const writeSecurityStorageKey = String.format("{0}_{1}", _spPageContextInfo.webServerRelativeUrl, "commentsListWriteSecurity");
+            let writeSecurity = pnp.storage.local.get(writeSecurityStorageKey);
 
+            if (!writeSecurity) {
+                const  list = await web.getList(this._discussionListServerRelativeUrl).select("SchemaXml").get();
+                const writeSecurity = /WriteSecurity="(\d)"/.exec(list.SchemaXml)[1];
+                pnp.storage.local.put(writeSecurityStorageKey, writeSecurity, pnp.util.dateAdd(new Date(), "minute", 60));
+            }
+                        
             if (writeSecurity.localeCompare("2") === 0) {
+
+                const userLoginNameStorageKey = String.format("{0}_{1}", _spPageContextInfo.webServerRelativeUrl, "currentUserLoginName");
+                let currentUserLoginName = pnp.storage.local.get(userLoginNameStorageKey);
+                if (!currentUserLoginName) {
+                    const currentUser = await web.currentUser.select("LoginName").get();
+                    currentUserLoginName = currentUser.LoginName;
+                    pnp.storage.local.put(userLoginNameStorageKey, currentUserLoginName, pnp.util.dateAdd(new Date(), "minute", 20));
+                }
+
                 // If the current user is the author of the comment
-                if (replyAuthorLoginName === currentUser.LoginName) {
+                if (replyAuthorLoginName === currentUserLoginName) {
                     permissionsList.push(DiscussionPermissionLevel.EditAsAuthor);
                 }
             }
@@ -325,6 +336,23 @@ class SocialModule {
             permissionsList.push(DiscussionPermissionLevel.ManageLists);
         
         return permissionsList;
+    }
+
+    private async getUserProperties(accountName: string): Promise<any> {
+
+        pnp.storage.local.deleteExpired();
+
+        let authorPropertiesStorageKey = String.format("{0}_{1}", _spPageContextInfo.webServerRelativeUrl, accountName);
+        let authorProperties = pnp.storage.local.get(authorPropertiesStorageKey);
+        
+        if (!authorProperties) {
+            
+            // Get user detail
+            authorProperties = await pnp.sp.profiles.select("AccountName","PictureUrl","DisplayName","Email").getPropertiesFor(accountName);
+            pnp.storage.local.put(authorPropertiesStorageKey, authorProperties, pnp.util.dateAdd(new Date(), "minute", 60));
+        }
+
+        return authorProperties;
     }
 
     public toggleLike(itemId: number, parentListId: string, isLiked: boolean): Promise<void> {

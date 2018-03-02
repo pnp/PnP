@@ -72,7 +72,7 @@
     "react": "15.5.4",
     "react-dom": "15.5.4",
     "sanitize-filename": "1.6.1",
-    "sp-pnp-js": "2.0.7",
+    "sp-pnp-js": "3.0.5",
     "sprintf-js": "1.0.3",
     "trunk8": "0.0.1",
     "whatwg-fetch": "2.0.3"

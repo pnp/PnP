@@ -35,6 +35,7 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
         this.addNewComment = this.addNewComment.bind(this);
         this.deleteReply = this.deleteReply.bind(this);
         this.updateReply = this.updateReply.bind(this);
+        this.toggleLikeReply = this.toggleLikeReply.bind(this);
 
         this.onValueChange = this.onValueChange.bind(this);
     }
@@ -51,7 +52,12 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
             discussion = update(discussion, { Replies: {$set: discussionTree }});
 
             renderPageComments = discussion.Replies.map((reply, index) => {
-                return <DiscussionReply key={ index } addNewReply= { this.addNewComment } deleteReply={ this.deleteReply } updateReply={ this.updateReply } reply={ reply }/>    
+                return <DiscussionReply key={ index } 
+                                        addNewReply= { this.addNewComment } 
+                                        deleteReply={ this.deleteReply } 
+                                        updateReply={ this.updateReply } 
+                                        toggleLikeReply={ this.toggleLikeReply }
+                                        reply={ reply }/>    
             });
         }
             
@@ -198,6 +204,10 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
 
     private async createNewDiscussion(title: string, body: string): Promise<IDiscussion> {
         return await this._socialModule.createNewDiscussion(this._associatedPageId, title, body);
+    }
+
+    private async toggleLikeReply(reply: IDiscussionReply, isLiked: boolean) {
+        return await this._socialModule.toggleLike(reply.Id, reply.ParentListId,isLiked);
     }
 
     private async getPageDiscussion(associatedPageId: number): Promise<IDiscussion> {

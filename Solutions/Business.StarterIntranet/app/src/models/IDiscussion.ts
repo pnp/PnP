@@ -8,6 +8,7 @@ interface IDiscussion {
     Created?: Date;
     Author?: string;
     Replies?: IDiscussionReply[];
+    ListId?: string;
 }
 
 export default IDiscussion;

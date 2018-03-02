@@ -3,7 +3,7 @@
 // ====================
 import * as _ from "lodash";
 import * as moment from "moment";
-import { Logger, LogLevel, ODataEntityArray, Site } from "sp-pnp-js";
+import { Logger, LogLevel, spODataEntityArray, Site } from "sp-pnp-js";
 import ConfigurationItem from "../models/ConfigurationItem";
 import IConfigurationItem from "../models/IConfigurationItem";
 import TaxonomyNavigationNode from "../models/TaxonomyNavigationNode";
@@ -307,7 +307,7 @@ class UtilityModule {
                     expiration: moment().add(1, "h").toDate(),
                     key: String.format("{0}_{1}", _spPageContextInfo.siteServerRelativeUrl, "configurationListValues"),
                     storeName: "local",
-                }).select(ConfigurationItem.SelectFields.toString()).getAs(ODataEntityArray(ConfigurationItem)).then((items: ConfigurationItem[]) => {
+                }).select(ConfigurationItem.SelectFields.toString()).getAs(spODataEntityArray(ConfigurationItem)).then((items: ConfigurationItem[]) => {
 
                 if (items.length > 0) {
 

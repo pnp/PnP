@@ -4,6 +4,7 @@ export interface IDiscussionReply {
     Id: number;
     ParentItemID?: number;
     Author?: {
+        Id: number; // The id in the user info list
         DisplayName: string;
         PictureUrl: string; 
     };
@@ -12,7 +13,9 @@ export interface IDiscussionReply {
     UserPermissions?: DiscussionPermissionLevel[];
     Body: string;
     Children?: IDiscussionReply[];
-    IsLiked?: boolean;
+    LikesCount?: number;
+    LikedBy?: string[]; // Array of user ids
+    ParentListId?: string;
 }
 
 export enum DiscussionPermissionLevel {

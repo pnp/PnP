@@ -309,9 +309,11 @@ export class Main {
         // You can set odata=metadata to reduce the payload. However, you will need to configure you SharePoint server accordingly (2013 only)
         // See https://technet.microsoft.com/en-us/library/dn762092(v=office.15).aspx
         setup({
-            headers: {
-                Accept: "application/json; odata=verbose",
-            },
+            sp: {
+                headers: {
+                    Accept: "application/json; odata=verbose",
+                },
+            }
         });
 
         // Be careful, we need to apply bindings after the document is ready
