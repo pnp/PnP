@@ -7,6 +7,8 @@ import { Web, PermissionKind } from "sp-pnp-js";
 import DiscussionReply from "../DiscussionReply/DiscussionReply";
 import { IDiscussionReply, DiscussionPermissionLevel } from "../../../models/IDiscussionReply";
 import * as immutability from "immutability-helper";
+import ContentEditable = require('react-contenteditable');
+import * as i18n from "i18next";
 
 // Needed to get it work at runtime
 const update = immutability as any;
@@ -26,7 +28,7 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
             discussion: null,
             userPermissions: [],
             inputValue: "",
-            isLoading: false,
+            isLoading: false
         };
 
         this._dicussionBoardListRelativeUrl = `${_spPageContextInfo.webServerRelativeUrl}/Lists/Comments`;
@@ -46,8 +48,11 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
         let renderPageComments = null;
         let renderNewReply = null;
         let renderIsLoading = null;
-
         let discussion = this.state.discussion;
+
+        if (this.state.isLoading) {
+            renderIsLoading = <div className="reply--loading"><i className="fa fa-spinner fa-spin"/></div>;
+        }
 
         // Render comments as tree
         if (discussion) {
@@ -63,43 +68,45 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
                                             toggleLikeReply={ this.toggleLikeReply }
                                             reply={ reply }
                                             isLikeEnabled={ this.state.discussion.AreLikesEnabled }
-                                            />    
+                                            replyLevel={ 0 }
+                                            />;  
                 });
             }
 
             // If the current user can add list item to the list, it means he can comment
             if (this.state.userPermissions.indexOf(DiscussionPermissionLevel.Add) !== -1) {
-                renderNewReply = <div>
-                    <textarea value={ this.state.inputValue } onChange={ this.onValueChange } placeholder="Add your comment..."></textarea>
-                    <button type="button" onClick={ () => { 
-        
-                        let parentId = null;
-                        if (this.state.discussion) {
-                            parentId = this.state.discussion.Id;
-                        }
+                renderNewReply = <div className="reply">
+                                    <ContentEditable
+                                        html={ this.state.inputValue } 
+                                        disabled={ false }      
+                                        onChange={ this.onValueChange }
+                                        className="input"
+                                    />
+                                    { renderIsLoading }
+                                    <button type="button" className="btn" onClick={ () => { 
+                    
+                                        let parentId = null;
+                                        if (this.state.discussion) {
+                                            parentId = this.state.discussion.Id;
+                                        }
 
-                        this.addNewComment(parentId, this.state.inputValue);
-                        
-                    }}>Add new comment</button>
-                </div>
-            }
-
-            if (this.state.isLoading) {
-                renderIsLoading = <div className="spinner" style={{"width": "15px","height": "15px"}}></div>;
+                                        this.addNewComment(parentId, this.state.inputValue);
+                                    
+                                }}>{ i18n.t("comments_post") }</button>
+                                </div>;
             }
 
         } else {
             renderPageComments =    <div>
-                                        <div>We're getting comments for this page...</div>
-                                        <div className="spinner" style={{"width": "100%","height": "100px"}}></div>
-                                    </div>
+                                        { renderIsLoading }
+                                        <div>{ i18n.t("comments_loading")}</div>
+                                    </div>;
         }
             
-        return <div>
-            { renderPageComments }
-            { renderIsLoading }
-            { renderNewReply }
-        </div>
+        return  <div id="page-comments">
+                    { renderNewReply }
+                    { renderPageComments }                                       
+                </div>;
     }
 
     public onValueChange(e: any) {
@@ -122,6 +129,7 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
         this.setState({
             userPermissions: userListPermissions,
             discussion: discussion,
+            inputValue: ""
         });
     }
 
@@ -160,8 +168,7 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
             // Update the discussion
             this.setState({
                 discussion: currentDiscussion,
-                inputValue: "",
-                isLoading: false,
+                isLoading: false
             });
         }
     }

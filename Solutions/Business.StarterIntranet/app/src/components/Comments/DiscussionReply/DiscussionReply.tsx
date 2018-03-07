@@ -4,8 +4,13 @@ import { IDiscussionReplyState, EditMode } from "./IDiscussionReplyState";
 import { PermissionKind } from "sp-pnp-js";
 import { IDiscussionReply, DiscussionPermissionLevel } from "../../../models/IDiscussionReply";
 import * as moment from "moment";
+import * as i18n from "i18next";
+import ContentEditable = require('react-contenteditable');
 
 class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussionReplyState> {
+
+    private readonly REPLY_NESTED_LEVEL_LIMIT = 3;
+    private readonly CHILD_LEFT_PADDING_SIZE = 32;
 
     public constructor() {
         super();
@@ -22,6 +27,7 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
         this.updateReply = this.updateReply.bind(this);
         this.addNewReply = this.addNewReply.bind(this);
         this.deleteReply = this.deleteReply.bind(this);
+        this.toggleLikeReply = this.toggleLikeReply.bind(this);
     }
 
     public render() {
@@ -29,36 +35,36 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
         let renderIsLoading = null;
 
         if (this.state.isLoading) {
-            renderIsLoading = <div className="spinner" style={{"width": "15px","height": "15px"}}></div>;
+            renderIsLoading = <i className="fa fa-spinner fa-spin"/>;
         }
 
         let renderEdit = null;
         if (this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.EditAsAuthor ) !== -1 || 
             this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.ManageLists ) !== -1) {
-            renderEdit = <a onClick={ () => {
+            renderEdit = <div><i className="fa fa-pencil"/><a href="#" onClick={ () => {
                 this.toggleInput(true, EditMode.UpdateComment);
-            }}>Edit</a>;
+            }}>{ i18n.t("comments_edit") }</a></div>;
         }
 
         let renderDelete = null;
         if (this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.Delete) !== -1) {
-            renderDelete = <a onClick={ () => { 
+            renderDelete = <div><i className="fa fa-trash"/><a href="#" onClick={ () => { 
                 this.deleteReply(this.props.reply);
-            }}>Delete</a>;
+            }}>{ i18n.t("comments_delete") }</a></div>;
         }
 
         let renderReply = null;
-        if (this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.Add) !== -1) {
-            renderReply = <a onClick={ () => {
+        if (this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.Add) !== -1 && this.props.replyLevel < this.REPLY_NESTED_LEVEL_LIMIT) {
+            renderReply = <div><i className="fa fa-reply"/><a href="#" onClick={ () => {
                 this.toggleInput(true, EditMode.NewComment);
-            }}>Reply</a>;
+            }}>{ i18n.t("comments_reply") }</a></div>;
         }
 
         let renderChildren: JSX.Element[] = [];
         if (this.props.reply.Children) {
             this.props.reply.Children.map((childReply, index) => {
                 renderChildren.push(
-                    <DiscussionReply 
+                    <DiscussionReply
                         key={ childReply.Id }
                         reply={ childReply }
                         isLikeEnabled={ this.props.isLikeEnabled }
@@ -66,6 +72,8 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
                         deleteReply={ this.props.deleteReply }
                         updateReply={ this.props.updateReply }
                         toggleLikeReply={ this.props.toggleLikeReply }
+                        isChildReply={ true }
+                        replyLevel={ this.props.replyLevel + 1 }
                         />
                 )
             });
@@ -74,58 +82,74 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
         let renderLike: JSX.Element = null;
 
         if (this.props.isLikeEnabled) {
-            let likeLabel = this.isReplyLikedByCurrentUser(this.props.reply) ? "Unlike" : "Like";
+            let likeLabel = this.isReplyLikedByCurrentUser(this.props.reply) ? i18n.t("comments_unlike") : i18n.t("comments_like");
             renderLike = <div>
-                            <span>Number of likes  {this.props.reply.LikesCount}</span>
-                            <a onClick={ () => { this.props.toggleLikeReply(this.props.reply, !this.isReplyLikedByCurrentUser(this.props.reply)) }}>{ likeLabel }</a>                        
+                            <i className="fa fa-heart"/>
+                            <span>{this.props.reply.LikesCount}</span>
+                            <a href="#" onClick={ () => { this.toggleLikeReply(this.props.reply); }}>{ likeLabel }</a>                        
                         </div>;
         }
 
         const posted = moment(this.props.reply.Posted);
         const modified = moment(this.props.reply.Edited);
         let isPosthasBeenEdited: JSX.Element = modified.diff(posted) > 0 ? <div><strong>{`Edited (Last update on ${moment(modified).format("LLL")})`}</strong></div> : null;
+        const rootElementClassName = this.props.isChildReply ? "reply child" : "reply";    
+        const paddingCalc = this.CHILD_LEFT_PADDING_SIZE * this.props.replyLevel;   
         
-        return  <div key= { this.props.reply.Id }>
-                    <img src={ this.props.reply.Author.PictureUrl}/>
-                    <div>{ this.props.reply.Author.DisplayName }</div>
-                    <div>{ `Posted on ${moment(this.props.reply.Posted).format('LLL')}`}</div>
-                    { isPosthasBeenEdited }
-                    <div dangerouslySetInnerHTML= {{__html: $(this.props.reply.Body).text() }}></div>
-                    { renderEdit }                   
-                    { renderDelete }
-                    { renderReply }
-                    { renderIsLoading }
-                    { renderLike }
-                    { this.state.showInput ? 
-                        <div>
-                            <textarea   value={ this.state.inputValue }
-                                        placeholder="Add your comment..."
-                                        onChange={ this.onValueChange }
-                                        ></textarea>
-                            <button type="button" onClick={ async () => {
-
-                                switch (this.state.editMode) {
-                                    case EditMode.NewComment:
-                                        await this.addNewReply(this.props.reply.Id, this.state.inputValue);
-                                        break;
-
-                                    case EditMode.UpdateComment:
-                                        await this.updateReply(this.props.reply);
-                                        break;
-                                }
-
-                                this.toggleInput(false, null);
-                            }}>{ this.state.editMode === EditMode.UpdateComment ? "Update" : "Post" }</button>
-                            <button onClick={ () => { this.toggleInput(false, null); }} >Annuler</button>
-                            
+        return  <div>
+                    <div className="reply" style={{ paddingLeft: `${paddingCalc}px`}} key= { this.props.reply.Id }>
+                        <div>            
+                            <img className="reply--user-avatar" src={ this.props.reply.Author.PictureUrl}/>
                         </div>
-                        : 
-                            null
-                    }
-                    <div className="children-replies">
-                        { renderChildren }
+                        <div className="reply--content">
+                            <div>
+                                <div className="reply--content--user-name">{ this.props.reply.Author.DisplayName }</div>
+                                <div dangerouslySetInnerHTML= {{__html: $(this.props.reply.Body).text() }}></div>
+                                <div>{ `${i18n.t("comments_postedOn")} ${moment(this.props.reply.Posted).format('LLL')}`}</div>
+                                { isPosthasBeenEdited }
+                            </div>                                 
+                            <div className="reply--content--actions">       
+                                { renderLike }
+                                { renderReply }       
+                                { renderEdit }                   
+                                { renderDelete }  
+                                <div>   
+                                    { renderIsLoading }
+                                </div>
+                            </div>                                                      
+                            { this.state.showInput ? 
+                                <div className="reply--input-zone">
+                                    <ContentEditable
+                                        html={this.state.inputValue } 
+                                        disabled={false}      
+                                        onChange={this.onValueChange}
+                                        className="input"
+                                    />
+                                    <button type="button" className="btn" onClick={ async () => {
+
+                                        switch (this.state.editMode) {
+                                            case EditMode.NewComment:
+                                                await this.addNewReply(this.props.reply.Id, this.state.inputValue);
+                                                break;
+
+                                            case EditMode.UpdateComment:
+                                                await this.updateReply(this.props.reply);
+                                                break;
+                                        }
+
+                                        this.toggleInput(false, null);
+                                    }}>{ this.state.editMode === EditMode.UpdateComment ? i18n.t("comments_update") : i18n.t("comments_post") }</button>
+                                    <button className="btn" onClick={ () => { this.toggleInput(false, null); }} >{ i18n.t("comments_cancel") }</button>
+                                    
+                                </div>
+                                : 
+                                    null
+                            }
+                        </div>
+                        
                     </div>
-                </div>
+                    { renderChildren }
+                </div>;
     }
 
     public async addNewReply(parentReplyId: number, replyBody: string) {
@@ -201,6 +225,19 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
         } catch (error) {
             throw error;
         }
+    }
+
+    public async toggleLikeReply(reply: IDiscussionReply) {
+
+        this.setState({
+            isLoading: true,
+        }); 
+
+        await this.props.toggleLikeReply(reply, !this.isReplyLikedByCurrentUser(reply));
+
+        this.setState({
+            isLoading: false,
+        });
     }
 
     public toggleInput(isVisible: boolean, editMode: EditMode) {
