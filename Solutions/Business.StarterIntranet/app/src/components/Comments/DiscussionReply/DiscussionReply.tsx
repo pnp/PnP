@@ -41,7 +41,7 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
         let renderEdit = null;
         if (this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.EditAsAuthor ) !== -1 || 
             this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.ManageLists ) !== -1) {
-            renderEdit = <div><i className="fa fa-pencil"/><a href="#" onClick={ () => {
+            renderEdit = <div><i className="fa fa-pencil-alt"/><a href="#" onClick={ () => {
                 this.toggleInput(true, EditMode.UpdateComment);
             }}>{ i18n.t("comments_edit") }</a></div>;
         }
@@ -74,7 +74,7 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
                         toggleLikeReply={ this.props.toggleLikeReply }
                         isChildReply={ true }
                         replyLevel={ this.props.replyLevel + 1 }
-                        />
+                    />
                 )
             });
         }
@@ -104,7 +104,7 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
                         <div className="reply--content">
                             <div>
                                 <div className="reply--content--user-name">{ this.props.reply.Author.DisplayName }</div>
-                                <div dangerouslySetInnerHTML= {{__html: $(this.props.reply.Body).text() }}></div>
+                                <div dangerouslySetInnerHTML= {{__html: this.props.reply.Body }}></div>
                                 <div>{ `${i18n.t("comments_postedOn")} ${moment(this.props.reply.Posted).format('LLL')}`}</div>
                                 { isPosthasBeenEdited }
                             </div>                                 
@@ -120,10 +120,11 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
                             { this.state.showInput ? 
                                 <div className="reply--input-zone">
                                     <ContentEditable
-                                        html={this.state.inputValue } 
-                                        disabled={false}      
-                                        onChange={this.onValueChange}
+                                        html={ this.state.inputValue } 
+                                        disabled={ false }      
+                                        onChange={ this.onValueChange }
                                         className="input"
+                                        role="textbox"
                                     />
                                     <button type="button" className="btn" onClick={ async () => {
 
@@ -246,7 +247,7 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
 
         switch (editMode) {
             case EditMode.UpdateComment:
-                inputValue = $(this.props.reply.Body).text();
+                inputValue = this.props.reply.Body;
                 break;
 
             case EditMode.NewComment:
@@ -272,6 +273,10 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
          });
     }
 
+    /**
+     * Indicates whether or not a reply is liked by the current user
+     * @param reply the reply to check
+     */
     private isReplyLikedByCurrentUser(reply: IDiscussionReply): boolean {
 
         // If the current user id is in the list ok "liked by" field

@@ -7,6 +7,7 @@ interface IDiscussionBoardState {
     userPermissions: DiscussionPermissionLevel[];
     inputValue: string;
     isLoading: boolean;
+    inputPlaceHolderValue: string;
 }
 
 export default IDiscussionBoardState;

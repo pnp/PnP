@@ -20,6 +20,8 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
     private _parentId: number;
     private _dicussionBoardListRelativeUrl: string;
 
+    private _refInput: any;
+
     public constructor() {
 
         super();
@@ -28,6 +30,7 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
             discussion: null,
             userPermissions: [],
             inputValue: "",
+            inputPlaceHolderValue: i18n.t("comments_new_placeholder"),
             isLoading: false
         };
 
@@ -39,8 +42,9 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
         this.deleteReply = this.deleteReply.bind(this);
         this.updateReply = this.updateReply.bind(this);
         this.toggleLikeReply = this.toggleLikeReply.bind(this);
-
         this.onValueChange = this.onValueChange.bind(this);
+        this.onFocus = this.onFocus.bind(this);
+        this.onBlur = this.onBlur.bind(this);
     }
 
     public render() {
@@ -75,12 +79,16 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
 
             // If the current user can add list item to the list, it means he can comment
             if (this.state.userPermissions.indexOf(DiscussionPermissionLevel.Add) !== -1) {
-                renderNewReply = <div className="reply">
+                renderNewReply = <div className="reply main">
                                     <ContentEditable
                                         html={ this.state.inputValue } 
                                         disabled={ false }      
                                         onChange={ this.onValueChange }
+                                        data-placeholder={ this.state.inputPlaceHolderValue }
                                         className="input"
+                                        role="textbox"
+                                        onFocus={ this.onFocus }
+                                        onBlur={ this.onBlur }
                                     />
                                     { renderIsLoading }
                                     <button type="button" className="btn" onClick={ () => { 
@@ -109,10 +117,34 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
                 </div>;
     }
 
+    /**
+     * Event handlers
+     */
     public onValueChange(e: any) {
         this.setState({ inputValue: e.target.value });
     }
 
+    public onFocus() {
+        if (!this.state.inputValue || this.state.inputValue.localeCompare("</br>") === 0) {
+            this.setState({
+                inputPlaceHolderValue: "",
+                inputValue: "<show-placeholder>" // This is just to re-render the <ContentEditable/> component
+            });
+        }
+    }
+
+    public onBlur() {
+        if (!$(this.state.inputValue).text()) {
+            this.setState({
+                inputPlaceHolderValue: i18n.t("comments_new_placeholder"),
+                inputValue: "",
+            });
+        }
+    }
+
+    /**
+     * React lifecycle
+     */
     public async componentDidMount() {
 
         this._associatedPageId = _spPageContextInfo.pageItemId;
@@ -168,7 +200,9 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
             // Update the discussion
             this.setState({
                 discussion: currentDiscussion,
-                isLoading: false
+                isLoading: false,
+                inputValue: "",
+                inputPlaceHolderValue: i18n.t("comments_new_placeholder"),
             });
         }
     }

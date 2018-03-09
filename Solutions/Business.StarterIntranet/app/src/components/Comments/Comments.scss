@@ -17,6 +17,12 @@
         min-height: 32px;
         overflow-y: auto;
         white-space: pre-wrap;
+
+        &::before {
+            color: #a6a6a6;
+            content: attr(data-placeholder);
+            display: block;
+        }
     }
 
     .btn {
@@ -65,6 +71,10 @@
             justify-content: center;
         }
         
+    }
+
+    .main {
+        padding-left: 0;
     }
 
     .child {
