@@ -1,6 +1,6 @@
 {
   "name": "pnp-starter-intranet",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "description": "PnP Starter Intranet for SharePoint",
   "main": "src/main.js",
   "scripts": {

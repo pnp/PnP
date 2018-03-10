@@ -305,6 +305,8 @@
         </Field>
         <Field Type="Note" DisplayName="Position description" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" NumLines="6" RichText="FALSE" Sortable="FALSE" Group="Intranet" ID="{2f72cd43-ff75-4f86-b25c-fbbe1c09f84f}" SourceID="{eebf35d0-c4b5-4092-b2d1-18bf8c29ba62}" StaticName="IntranetPositionDescription" Name="IntranetPositionDescription" RestrictedMode="TRUE" RichTextMode="Compatible" IsolateStyles="FALSE" AppendOnly="FALSE" UnlimitedLengthInDocumentLibrary="FALSE">
         </Field>
+        <Field Type="Number" DisplayName="AssociatedPageId" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" Decimals="0" Group="Intranet" ID="{942d30e4-d9d1-42e0-b0c0-cc8c161653b4}" SourceID="{65590a17-69ff-4abc-b817-467ee5cf1136}" StaticName="AssociatedPageId" Name="AssociatedPageId">
+        </Field>
       </pnp:SiteFields>
       <pnp:ContentTypes>
         <pnp:ContentType ID="0x010042631ED9023EA641A4E931E92ABC9FCE" Name="Notification" Description="" Group="Intranet" NewFormUrl="" EditFormUrl="" DisplayFormUrl="">

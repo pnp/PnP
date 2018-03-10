@@ -185,7 +185,7 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
     public async addNewComment(parentId: number, replyBody: string) {
 
         if (!replyBody) {
-            alert("You can't post an empty comment");
+            alert(i18n.t("comments_empty"));
         } else {
 
             let currentDiscussion = this.state.discussion;
@@ -272,7 +272,7 @@ class DiscussionBoard extends React.Component<IDiscussionBoardProps, IDiscussion
     public async updateReply(replyToUpdate: IDiscussionReply) {
 
         if (!$(replyToUpdate.Body).text()) {
-            alert("You can't post an empty comment or the same comment.");
+            alert(i18n.t("comments_empty"));
         } else {
 
             await this.socialModule.updateReply(replyToUpdate.Id, replyToUpdate.Body);

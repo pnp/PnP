@@ -120,5 +120,8 @@
     "comments_loading": "We're getting comments for this page...",
     "comments_edited": "Edited",
     "comments_lastUpdate": "Last update on",
-    "comments_commentsLabel": "comment(s)"
+    "comments_commentsLabel": "comment(s)",
+    "comments_empty": "You can't post an empty comment.",
+    "comments_delete_hierarchy": "This comment has some sub comments. They will be also deleted. Are you sure?",
+    "comments_delete_single": "Are you sure to want to delete this comment?"
 }

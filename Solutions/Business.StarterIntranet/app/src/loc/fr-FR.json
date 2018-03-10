@@ -120,5 +120,8 @@
     "comments-loading": "Chargement des commentaires pour cette page...",
     "comments_edited": "Édité",
     "comments_lastUpdate": "Dernière modification le",
-    "comments_commentsLabel": "commentaire(s)"
+    "comments_commentsLabel": "commentaire(s)",
+    "comments_empty": "Vous ne pouvez pas poster un commentaire vide.",
+    "comments_delete_hierarchy": "Ce commentaire possède des réponses qui seront également supprimées. Êtes-vous sûr?",
+    "comments_delete_single": "Êtes-vous sûr de vouloir supprimer ce commentaire?"
 }

@@ -246,7 +246,7 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
             // We make this verification in the reply component itself to avoid an issue when the user says 'No'.
             // In this case, the state wouldn't be updated to false (isLoading).
             if (replyToDelete.Children.length > 0) {
-                if (confirm("This comment has some sub comments. They will be also deleted. Are you sure?")) {
+                if (confirm(i18n.t("comments_delete_hierarchy"))) {
 
                     this.setState({
                         isLoading: true,
@@ -255,7 +255,7 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
                     await this.props.deleteReply(replyToDelete);
                 }
             } else {
-                if (confirm("Are you sure you want to delete this comment?")) {
+                if (confirm(i18n.t("comments_delete_single"))) {
 
                     this.setState({
                         isLoading: true,
