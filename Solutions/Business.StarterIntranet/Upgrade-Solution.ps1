@@ -52,8 +52,12 @@ if ($UpgradableVersions.IndexOf($CurrentVersion) -ne -1) {
         }
     }
 
+    Push-Location (Join-Path -Path $CommandDirectory -ChildPath "app")
+
     # Update npm packages
-    npm i 2>$null | Out-Null
+    npm i --silent *>$null | Out-Null
+
+    Pop-Location
 
     # The upgrade procedure will re-apply the PnP provisioning template on the root site and subsites (via the -UpgradeSubSites parameter)
     # When upgrading, taxonomy and search settings can't be overwritten  so they have to be excluded
