@@ -1,5 +1,19 @@
 ﻿#page-comments {
 
+    .loading {
+        display: flex;
+        align-items: center;
+        margin-top: 5px;
+
+        *~* {
+            margin-left: 10px;
+        }
+    }
+
+    .count {
+        font-weight: 700;
+    }
+
     .input {
         background-color: #ffffff;
         border: 1px solid #c8c8c8;
@@ -49,7 +63,17 @@
                 font-weight: 700;
             }
 
+            &--body {
+                margin-bottom: 5px;
+                margin-top: 5px;
+            }
+
+            &--date {
+                font-style: italic;
+            }
+
             &--actions {
+                margin-top: 5px;
                 display: flex;
                 justify-content: flex-start;
 

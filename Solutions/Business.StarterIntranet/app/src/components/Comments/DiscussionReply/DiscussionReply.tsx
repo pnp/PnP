@@ -1,11 +1,11 @@
-import * as React from "react";
-import IDiscussionReplyProps from "./IDiscussionReplyProps";
-import { IDiscussionReplyState, EditMode } from "./IDiscussionReplyState";
-import { PermissionKind } from "sp-pnp-js";
-import { IDiscussionReply, DiscussionPermissionLevel } from "../../../models/IDiscussionReply";
-import * as moment from "moment";
 import * as i18n from "i18next";
-import ContentEditable = require('react-contenteditable');
+import * as moment from "moment";
+import * as React from "react";
+import ContentEditable = require("react-contenteditable");
+import { PermissionKind } from "sp-pnp-js";
+import { DiscussionPermissionLevel, IDiscussionReply } from "../../../models/IDiscussionReply";
+import IDiscussionReplyProps from "./IDiscussionReplyProps";
+import { EditMode, IDiscussionReplyState } from "./IDiscussionReplyState";
 
 class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussionReplyState> {
 
@@ -16,12 +16,13 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
         super();
 
         this.state = {
-            showInput: false,
             editMode: EditMode.NewComment,
             inputValue: "",
             isLoading: false,
+            showInput: false,
         };
 
+        // Handlers
         this.toggleInput = this.toggleInput.bind(this);
         this.onValueChange = this.onValueChange.bind(this);
         this.updateReply = this.updateReply.bind(this);
@@ -32,40 +33,41 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
 
     public render() {
 
-        let renderIsLoading = null;
+        let renderIsLoading: JSX.Element = null;
 
         if (this.state.isLoading) {
             renderIsLoading = <i className="fa fa-spinner fa-spin"/>;
         }
 
-        let renderEdit = null;
-        if (this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.EditAsAuthor ) !== -1 || 
-            this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.ManageLists ) !== -1) {
+        let renderEdit: JSX.Element = null;
+        if (this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.EditAsAuthor) !== -1 ||
+            this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.ManageLists) !== -1) {
             renderEdit = <div><i className="fa fa-pencil-alt"/><a href="#" onClick={ () => {
                 this.toggleInput(true, EditMode.UpdateComment);
             }}>{ i18n.t("comments_edit") }</a></div>;
         }
 
-        let renderDelete = null;
+        let renderDelete: JSX.Element = null;
         if (this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.Delete) !== -1) {
-            renderDelete = <div><i className="fa fa-trash"/><a href="#" onClick={ () => { 
+            renderDelete = <div><i className="fa fa-trash"/><a href="#" onClick={ () => {
                 this.deleteReply(this.props.reply);
             }}>{ i18n.t("comments_delete") }</a></div>;
         }
 
-        let renderReply = null;
+        let renderReply: JSX.Element = null;
         if (this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.Add) !== -1 && this.props.replyLevel < this.REPLY_NESTED_LEVEL_LIMIT) {
             renderReply = <div><i className="fa fa-reply"/><a href="#" onClick={ () => {
                 this.toggleInput(true, EditMode.NewComment);
             }}>{ i18n.t("comments_reply") }</a></div>;
         }
 
-        let renderChildren: JSX.Element[] = [];
+        const renderChildren: JSX.Element[] = [];
         if (this.props.reply.Children) {
             this.props.reply.Children.map((childReply, index) => {
                 renderChildren.push(
                     <DiscussionReply
                         key={ childReply.Id }
+                        id={ `${this.props.id}${index}`}
                         reply={ childReply }
                         isLikeEnabled={ this.props.isLikeEnabled }
                         addNewReply={this.props.addNewReply}
@@ -74,54 +76,58 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
                         toggleLikeReply={ this.props.toggleLikeReply }
                         isChildReply={ true }
                         replyLevel={ this.props.replyLevel + 1 }
-                    />
-                )
+                    />,
+                );
             });
         }
 
         let renderLike: JSX.Element = null;
 
         if (this.props.isLikeEnabled) {
-            let likeLabel = this.isReplyLikedByCurrentUser(this.props.reply) ? i18n.t("comments_unlike") : i18n.t("comments_like");
+            const likeLabel = this.isReplyLikedByCurrentUser(this.props.reply) ? i18n.t("comments_unlike") : i18n.t("comments_like");
             renderLike = <div>
                             <i className="fa fa-heart"/>
                             <span>{this.props.reply.LikesCount}</span>
-                            <a href="#" onClick={ () => { this.toggleLikeReply(this.props.reply); }}>{ likeLabel }</a>                        
+                            <a href="#" onClick={ () => { this.toggleLikeReply(this.props.reply); }}>{ likeLabel }</a>
                         </div>;
         }
 
         const posted = moment(this.props.reply.Posted);
         const modified = moment(this.props.reply.Edited);
-        let isPosthasBeenEdited: JSX.Element = modified.diff(posted) > 0 ? <div><strong>{`Edited (Last update on ${moment(modified).format("LLL")})`}</strong></div> : null;
-        const rootElementClassName = this.props.isChildReply ? "reply child" : "reply";    
-        const paddingCalc = this.CHILD_LEFT_PADDING_SIZE * this.props.replyLevel;   
-        
+        const isPosthasBeenEdited: JSX.Element = modified.diff(posted) > 0 ? <span>{`(${i18n.t("comments_edited")})`}</span> : null;
+        const lastUpdate: JSX.Element = isPosthasBeenEdited ? <div>{`${i18n.t("comments_lastUpdate")} ${moment(modified).format("LLL")}`}</div> : null;
+        const rootElementClassName = this.props.isChildReply ? "reply child" : "reply";
+        const paddingCalc = this.CHILD_LEFT_PADDING_SIZE * this.props.replyLevel;
+
         return  <div>
                     <div className="reply" style={{ paddingLeft: `${paddingCalc}px`}} key= { this.props.reply.Id }>
-                        <div>            
+                        <div>
                             <img className="reply--user-avatar" src={ this.props.reply.Author.PictureUrl}/>
                         </div>
                         <div className="reply--content">
                             <div>
-                                <div className="reply--content--user-name">{ this.props.reply.Author.DisplayName }</div>
-                                <div dangerouslySetInnerHTML= {{__html: this.props.reply.Body }}></div>
-                                <div>{ `${i18n.t("comments_postedOn")} ${moment(this.props.reply.Posted).format('LLL')}`}</div>
-                                { isPosthasBeenEdited }
-                            </div>                                 
-                            <div className="reply--content--actions">       
+                                <div className="reply--content--user-name">{ this.props.reply.Author.DisplayName } { isPosthasBeenEdited }</div>
+                                <div className="reply--content--body" dangerouslySetInnerHTML= {{__html: this.props.reply.Body }}></div>
+                                <div className="reply--content--date">
+                                    <div>{ `${i18n.t("comments_postedOn")} ${moment(this.props.reply.Posted).format("LLL")}`}</div>
+                                    { lastUpdate }
+                                </div>
+                            </div>
+                            <div className="reply--content--actions">
                                 { renderLike }
-                                { renderReply }       
-                                { renderEdit }                   
-                                { renderDelete }  
-                                <div>   
+                                { renderReply }
+                                { renderEdit }
+                                { renderDelete }
+                                <div>
                                     { renderIsLoading }
                                 </div>
-                            </div>                                                      
-                            { this.state.showInput ? 
+                            </div>
+                            { this.state.showInput ?
                                 <div className="reply--input-zone">
                                     <ContentEditable
-                                        html={ this.state.inputValue } 
-                                        disabled={ false }      
+                                        id={`reply-input-${this.props.id}`}
+                                        html={ this.state.inputValue }
+                                        disabled={ false }
                                         onChange={ this.onValueChange }
                                         className="input"
                                         role="textbox"
@@ -141,48 +147,82 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
                                         this.toggleInput(false, null);
                                     }}>{ this.state.editMode === EditMode.UpdateComment ? i18n.t("comments_update") : i18n.t("comments_post") }</button>
                                     <button className="btn" onClick={ () => { this.toggleInput(false, null); }} >{ i18n.t("comments_cancel") }</button>
-                                    
                                 </div>
-                                : 
+                                :
                                     null
                             }
                         </div>
-                        
                     </div>
                     { renderChildren }
                 </div>;
     }
 
+    public onValueChange(e: any) {
+
+        this.setState({
+            inputValue: e.target.value,
+         });
+    }
+
+    public componentDidUpdate() {
+
+        // Set auto focus to input when replying or updating
+        if (this.state.showInput) {
+            switch (this.state.editMode) {
+                case EditMode.NewComment:
+                    if (!this.state.inputValue) {
+                        this.setFocus(`reply-input-${this.props.id}`);
+                    }
+                    break;
+
+                case EditMode.UpdateComment:
+                    if (this.state.inputValue === this.props.reply.Body) {
+                        this.setFocus(`reply-input-${this.props.id}`);
+                        break;
+                    }
+            }
+        }
+    }
+
+    /**
+     * Adds a new reply
+     * @param parentReplyId the parent reply item id
+     * @param replyBody the reply body text
+     */
     public async addNewReply(parentReplyId: number, replyBody: string) {
 
         try {
 
             this.setState({
                 isLoading: true,
-            }); 
+            });
 
             await this.props.addNewReply(this.props.reply.Id, this.state.inputValue);
 
             this.setState({
                 isLoading: false,
-            }); 
+            });
 
         } catch (error) {
             throw error;
         }
     }
 
+    /**
+     * Updates an existing reply
+     * @param replyToUpdate replu object to update
+     */
     public async updateReply(replyToUpdate: IDiscussionReply): Promise<void> {
 
         try {
-            
+
             this.setState({
                 isLoading: true,
-            }); 
+            });
 
             const reply: IDiscussionReply = {
-                Id: replyToUpdate.Id,
                 Body: `<div>${this.state.inputValue}</div>`, // Set as HTML to be able to parse it easily afterward
+                Id: replyToUpdate.Id,
             };
 
             await this.props.updateReply(reply);
@@ -196,27 +236,31 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
         }
     }
 
+    /**
+     * Deletes a single or multipels replies
+     * @param replyToDelete the reply to delete
+     */
     public async deleteReply(replyToDelete: IDiscussionReply): Promise<void> {
 
         try {
-            // We make this verification in the reply component itself to avoid an issue when the user says 'No'. 
+            // We make this verification in the reply component itself to avoid an issue when the user says 'No'.
             // In this case, the state wouldn't be updated to false (isLoading).
             if (replyToDelete.Children.length > 0) {
-                if (confirm('This comment has some sub comments. They will be also deleted. Are you sure?')) {
+                if (confirm("This comment has some sub comments. They will be also deleted. Are you sure?")) {
 
                     this.setState({
                         isLoading: true,
-                    }); 
+                    });
 
                     await this.props.deleteReply(replyToDelete);
                 }
             } else {
-                if (confirm('Are you sure you want to delete this comment?')) {
+                if (confirm("Are you sure you want to delete this comment?")) {
 
                     this.setState({
                         isLoading: true,
-                    }); 
-                    
+                    });
+
                     await this.props.deleteReply(replyToDelete);
                 }
             }
@@ -228,11 +272,15 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
         }
     }
 
+    /**
+     * Like or unlike a reply
+     * @param reply the reply to like/unlike
+     */
     public async toggleLikeReply(reply: IDiscussionReply) {
 
         this.setState({
             isLoading: true,
-        }); 
+        });
 
         await this.props.toggleLikeReply(reply, !this.isReplyLikedByCurrentUser(reply));
 
@@ -241,6 +289,11 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
         });
     }
 
+    /**
+     * Show or hide the input control
+     * @param isVisible true if visible, false otherwise
+     * @param editMode the current edit mode (UpdateComment or NewComment)
+     */
     public toggleInput(isVisible: boolean, editMode: EditMode) {
 
         let inputValue;
@@ -253,24 +306,17 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
             case EditMode.NewComment:
                 inputValue = "";
                 break;
-            
+
             default:
                 inputValue = "";
                 break;
         }
 
         this.setState({
+            editMode,
+            inputValue,
             showInput: isVisible,
-            editMode: editMode,
-            inputValue: inputValue,
         });
-    }
-
-    public onValueChange(e: any) {
-
-        this.setState({ 
-            inputValue: e.target.value,
-         });
     }
 
     /**
@@ -286,6 +332,20 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
         }
 
         return isLiked;
+    }
+
+    /**
+     * Sets the focus in the content editable div
+     * @param eltId the DOM element id
+     */
+    private setFocus(eltId: string) {
+        const p = document.getElementById(eltId);
+        const s = window.getSelection();
+        const r = document.createRange();
+        r.setStart(p, p.childElementCount);
+        r.setEnd(p, p.childElementCount);
+        s.removeAllRanges();
+        s.addRange(r);
     }
 }
 

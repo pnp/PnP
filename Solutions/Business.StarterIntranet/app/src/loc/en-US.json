@@ -116,6 +116,9 @@
     "comments_post": "Post",
     "comments_update": "Update",
     "comments_cancel": "Cancel",
-    "comments_postedOn": "Posted On",
-    "comments_loading": "We're getting comments for this page..."
+    "comments_postedOn": "Posted on",
+    "comments_loading": "We're getting comments for this page...",
+    "comments_edited": "Edited",
+    "comments_lastUpdate": "Last update on",
+    "comments_commentsLabel": "comment(s)"
 }

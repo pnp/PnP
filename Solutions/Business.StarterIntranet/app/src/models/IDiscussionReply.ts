@@ -1,4 +1,4 @@
-import { PermissionKind } from "sp-pnp-js/lib/pnp";
+import { PermissionKind } from "sp-pnp-js";
 
 export interface IDiscussionReply {
     Id: number;
@@ -6,7 +6,7 @@ export interface IDiscussionReply {
     Author?: {
         Id: number; // The id in the user info list
         DisplayName: string;
-        PictureUrl: string; 
+        PictureUrl: string;
     };
     Posted?: Date;
     Edited?: Date;

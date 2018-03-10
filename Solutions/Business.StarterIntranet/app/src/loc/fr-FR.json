@@ -117,5 +117,8 @@
     "comments_update": "Mettre à jour",
     "comments_cancel": "Annuler",
     "comments_postedOn": "Posté le",
-    "comments-loading": "Chargement des commentaires pour cette page..."
+    "comments-loading": "Chargement des commentaires pour cette page...",
+    "comments_edited": "Édité",
+    "comments_lastUpdate": "Dernière modification le",
+    "comments_commentsLabel": "commentaire(s)"
 }
