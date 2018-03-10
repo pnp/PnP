@@ -272,7 +272,6 @@
                 <FieldRef Name="Popularity" />
                 <FieldRef Name="DescendantLikesCount" />
                 <FieldRef Name="DescendantRatingsCount" />
-                <FieldRef Name="TopicLastRatedOrLikedBy" />
               </ViewFields>
               <RowLimit Paged="TRUE">20</RowLimit>
               <JSLink>sp.ui.discussions.js|sp.ui.communities.js</JSLink>
@@ -302,7 +301,6 @@
                 <FieldRef Name="Popularity" />
                 <FieldRef Name="DescendantLikesCount" />
                 <FieldRef Name="DescendantRatingsCount" />
-                <FieldRef Name="TopicLastRatedOrLikedBy" />
                 <FieldRef Name="AssociatedPageId" />
               </ViewFields>
               <RowLimit Paged="TRUE">20</RowLimit>
@@ -326,7 +324,6 @@
                 <FieldRef Name="Popularity" />
                 <FieldRef Name="DescendantLikesCount" />
                 <FieldRef Name="DescendantRatingsCount" />
-                <FieldRef Name="TopicLastRatedOrLikedBy" />
               </ViewFields>
               <RowLimit Paged="TRUE">20</RowLimit>
               <JSLink>sp.ui.discussions.js|sp.ui.communities.js</JSLink>
@@ -352,7 +349,6 @@
                 <FieldRef Name="Popularity" />
                 <FieldRef Name="DescendantLikesCount" />
                 <FieldRef Name="DescendantRatingsCount" />
-                <FieldRef Name="TopicLastRatedOrLikedBy" />
               </ViewFields>
               <RowLimit Paged="TRUE">20</RowLimit>
               <JSLink>sp.ui.discussions.js|sp.ui.communities.js</JSLink>

@@ -1,17 +1,19 @@
-import pnp, { Web, Logger, LogLevel, spODataEntityArray } from "sp-pnp-js";
 import * as React from "react";
+import pnp, { Logger, LogLevel, spODataEntityArray, Web } from "sp-pnp-js";
+import UtilityModule from "../../modules/UtilityModule";
 import INotification from "./INotification";
 import Notification from "./Notification";
-import UtilityModule from "../../modules/UtilityModule";
 
 export class NotificationBannerState {
-    notifications: INotification[];
+    public notifications: INotification[];
 }
 
+// tslint:disable-next-line:max-classes-per-file
 export class NotificationBannerProps {
     // No props for this component
 }
 
+// tslint:disable-next-line:max-classes-per-file
 class NotificationBanner extends React.Component<NotificationBannerProps, NotificationBannerState> {
 
     public utilityModule: UtilityModule;
@@ -30,7 +32,7 @@ class NotificationBanner extends React.Component<NotificationBannerProps, Notifi
 
         // Content is theorically safe here.
         const renderNotifications = this.state.notifications.map((notification, index) => {
-            return <div className="message" key={ index } dangerouslySetInnerHTML={ {__html: this.utilityModule.stripScripts(notification.IntranetNotificationDescription) }}></div>
+            return <div className="message" key={ index } dangerouslySetInnerHTML={ {__html: this.utilityModule.stripScripts(notification.IntranetNotificationDescription) }}></div>;
         });
 
         return  <div>
@@ -45,12 +47,12 @@ class NotificationBanner extends React.Component<NotificationBannerProps, Notifi
             const notificationsFromList = await this._getNotifications();
 
             this.setState({
-                notifications:notificationsFromList,
+                notifications: notificationsFromList,
             });
 
         } catch (errorMesssage) {
             Logger.write("[NotificationBanner._getNotifications]: " + errorMesssage, LogLevel.Error);
-        }   
+        }
     }
 
     /**
@@ -63,7 +65,7 @@ class NotificationBanner extends React.Component<NotificationBannerProps, Notifi
             .items.select(Notification.SelectFields.toString())
             .getAs(spODataEntityArray(Notification));
 
-        return notifications; 
+        return notifications;
     }
 }
 

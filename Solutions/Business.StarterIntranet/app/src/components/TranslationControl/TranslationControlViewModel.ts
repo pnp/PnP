@@ -320,7 +320,7 @@ class TranslationControlViewModel {
 
                 }).catch((errorMesssage) => {
 
-                    this.showErrorMessage(errorMesssage + ". Make sure the folder structure is identical in the peer web ('" + destinationFilePath + "')." );
+                    this.showErrorMessage(errorMesssage + ". Make sure the folder structure is identical in the peer web ('" + destinationFilePath + "').");
                     Logger.write("[TranslationControl.createPageTranslation]: " + errorMesssage, LogLevel.Error);
                 });
 
@@ -352,7 +352,7 @@ class TranslationControlViewModel {
             }
 
             // Select by default the first item for left languages
-            if ( languages.length > 0) {
+            if (languages.length > 0) {
                 this.selectedLanguage(languages[0]);
             }
 

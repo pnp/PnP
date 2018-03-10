@@ -29,7 +29,7 @@ $PkgFile = Get-Content -Raw -Path (Join-Path -Path $CommandDirectory -ChildPath 
 $PnPStarterIntranetCurrentVersion = $PkgFile.version
 
 $CurrentVersion = Get-PnPPropertyBag -Key "PnPStarterIntranetVersion"
-$UpgradableVersions = @("2.0.0")
+$UpgradableVersions = @("2.0.0","2.1.0")
 
 # Updates are always processed for all versions as follows
 # - The search configuration is applied cumulatively by checking the applicable versions (greater than the current one, identified by file name convention)
@@ -37,7 +37,7 @@ $UpgradableVersions = @("2.0.0")
 # - Miscellaneous updates in sub site itself are done directly in the "Setup-Web" script by ensuring if a resource already exists before creating or recreating.
 #By this way we are able to manage incremental updates without being too specific in scripts. 
 
-if ($UpgradableVersions.IndexOf($CurrentVersion) -eq 0) {
+if ($UpgradableVersions.IndexOf($CurrentVersion) -ne -1) {
     Write-Section -Message "Upgrading solution from '$CurrentVersion' to '$PnPStarterIntranetCurrentVersion'"
 
     # Apply search updates globally 
@@ -51,6 +51,9 @@ if ($UpgradableVersions.IndexOf($CurrentVersion) -eq 0) {
             Set-PnPSearchConfiguration -Path $_.FullName -Scope Site
         }
     }
+
+    # Update npm packages
+    npm i 2>$null | Out-Null
 
     # The upgrade procedure will re-apply the PnP provisioning template on the root site and subsites (via the -UpgradeSubSites parameter)
     # When upgrading, taxonomy and search settings can't be overwritten  so they have to be excluded

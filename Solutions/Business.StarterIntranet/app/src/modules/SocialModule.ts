@@ -1,3 +1,7 @@
+// ====================
+// Social module
+// ====================
+
 // tslint:disable-next-line:ordered-imports
 import pnp, { CamlQuery, ICachingOptions, PermissionKind, setup, Web, Logger, LogLevel } from "sp-pnp-js";
 import IDiscussion from "../models/IDiscussion";
@@ -374,10 +378,11 @@ class SocialModule {
 
         if (canManageLists) {
             permissionsList.push(DiscussionPermissionLevel.ManageLists);
+            permissionsList.push(DiscussionPermissionLevel.Delete);
+            permissionsList.push(DiscussionPermissionLevel.Edit);
         }
 
-        if (canEditListItems && !canManageLists) {
-            permissionsList.push(DiscussionPermissionLevel.Edit);
+        if ((canEditListItems && !canManageLists) || (canDeleteListItems && !canManageLists)) {
 
             pnp.storage.local.deleteExpired();
 
@@ -395,6 +400,7 @@ class SocialModule {
                 pnp.storage.local.put(writeSecurityStorageKey, writeSecurity, pnp.util.dateAdd(new Date(), "minute", 60));
             }
 
+            // 2 = Create items and edit items that were created by the user
             if (writeSecurity === 2) {
 
                 const userLoginNameStorageKey = String.format("{0}_{1}", _spPageContextInfo.webServerRelativeUrl, "currentUserLoginName");
@@ -407,13 +413,24 @@ class SocialModule {
 
                 // If the current user is the author of the comment
                 if (replyAuthorLoginName === currentUserLoginName) {
-                    permissionsList.push(DiscussionPermissionLevel.EditAsAuthor);
+
+                    if (canEditListItems) {
+                        permissionsList.push(DiscussionPermissionLevel.EditAsAuthor);
+                    }
+
+                    if (canDeleteListItems) {
+                        permissionsList.push(DiscussionPermissionLevel.DeleteAsAuthor);
+                    }
+                }
+            } else {
+                if (canDeleteListItems) {
+                    permissionsList.push(DiscussionPermissionLevel.Delete);
+                }
+
+                if (canEditListItems) {
+                    permissionsList.push(DiscussionPermissionLevel.Edit);
                 }
             }
-        }
-
-        if (canDeleteListItems) {
-            permissionsList.push(DiscussionPermissionLevel.Delete);
         }
 
         if (canAddListItems) {

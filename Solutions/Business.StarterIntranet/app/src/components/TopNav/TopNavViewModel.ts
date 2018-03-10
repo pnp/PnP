@@ -134,7 +134,7 @@ class TopNavViewModel extends NavigationViewModel {
                     this.wait(false);
 
                     // Publish the data to all subscribers (contextual menu and breadcrumb)
-                    PubSub.publish("navigationNodes", { nodes: navigationTree } );
+                    PubSub.publish("navigationNodes", { nodes: navigationTree });
 
                     if (noCache) {
 
@@ -207,7 +207,7 @@ class TopNavViewModel extends NavigationViewModel {
                         this.wait(false);
 
                         // Publish the data to all subscribers (contextual menu and breadcrumb)
-                        PubSub.publish("navigationNodes", { nodes: navigationTree } );
+                        PubSub.publish("navigationNodes", { nodes: navigationTree });
 
                         const now: Date = new Date();
 

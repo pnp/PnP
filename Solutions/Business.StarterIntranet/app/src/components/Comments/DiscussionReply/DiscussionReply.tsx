@@ -41,14 +41,15 @@ class DiscussionReply extends React.Component<IDiscussionReplyProps, IDiscussion
 
         let renderEdit: JSX.Element = null;
         if (this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.EditAsAuthor) !== -1 ||
-            this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.ManageLists) !== -1) {
+            this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.Edit) !== -1) {
             renderEdit = <div><i className="fa fa-pencil-alt"/><a href="#" onClick={ () => {
                 this.toggleInput(true, EditMode.UpdateComment);
             }}>{ i18n.t("comments_edit") }</a></div>;
         }
 
         let renderDelete: JSX.Element = null;
-        if (this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.Delete) !== -1) {
+        if (this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.DeleteAsAuthor) !== -1 ||
+            this.props.reply.UserPermissions.indexOf(DiscussionPermissionLevel.Delete) !== -1) {
             renderDelete = <div><i className="fa fa-trash"/><a href="#" onClick={ () => {
                 this.deleteReply(this.props.reply);
             }}>{ i18n.t("comments_delete") }</a></div>;

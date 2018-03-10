@@ -84,7 +84,7 @@ class CarouselViewModel {
                         const selected = carouselNavCells.eq(index).addClass("is-nav-selected");
 
                         // scroll nav
-                        const scrollY = selected.position().top + carouselNav.scrollTop() - ( navHeight + navCellHeight ) / 2;
+                        const scrollY = selected.position().top + carouselNav.scrollTop() - (navHeight + navCellHeight) / 2;
 
                         carouselNav.animate({
                             scrollTop: scrollY,

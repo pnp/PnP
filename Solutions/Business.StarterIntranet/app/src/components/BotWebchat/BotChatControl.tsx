@@ -1,7 +1,7 @@
 import { Chat } from "botframework-webchat";
 import * as i18n from "i18next";
 import * as moment from "moment";
-import { Panel } from "office-ui-fabric-react/lib/Panel";
+import { Panel } from "office-ui-fabric-react";
 import * as React from "react";
 import UtilityModule from "../../modules/UtilityModule";
 

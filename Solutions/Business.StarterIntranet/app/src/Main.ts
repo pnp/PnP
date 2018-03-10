@@ -15,8 +15,8 @@ import BaseKnockoutComponent from "./components/BaseKnockoutComponent";
 import BotWebChatViewModel from "./components/BotWebchat/BotWebChatViewModel";
 import BreadcrumbViewModel from "./components/Breadcrumb/BreadcrumbViewModel";
 import CarouselViewModel from "./components/Carousel/CarouselViewModel";
-import ContextualMenuViewModel from "./components/ContextualMenu/ContextualMenuViewModel";
 import CommentsViewModel from "./components/Comments/CommentsViewModel";
+import ContextualMenuViewModel from "./components/ContextualMenu/ContextualMenuViewModel";
 import DisplayTemplateViewModel from "./components/DisplayTemplates/DisplayTemplateViewModel";
 import FooterLinksViewModel from "./components/FooterLinks/FooterLinksViewModel";
 import HeaderLinksViewModel from "./components/HeaderLinks/HeaderLinksViewModel";
@@ -36,10 +36,12 @@ import UtilityModule from "./modules/UtilityModule";
 // Third party libraries
 import { AppInsights } from "applicationinsights-js";
 import * as i18n from "i18next";
+// tslint:disable-next-line:no-implicit-dependencies
 import "jquery-ui";
 import * as moment from "moment";
 import { ConsoleListener, Logger, LogLevel, setup, Site, sp, storage, Util, Web } from "sp-pnp-js";
 
+// tslint:disable-next-line:no-submodule-imports
 require("es6-promise/auto"); // Fix for IE11 (inject the polyfill in the global context)
 
 // Main style sheet for the application
@@ -59,6 +61,7 @@ require("./styles/css/images/flags.png");
 require("./styles/css/bootstrap/bootstrap-prefix.less");
 
 // jQueryUi css for the datepicker
+// tslint:disable-next-line:no-submodule-imports
 require("jquery-ui-dist/jquery-ui.min.css");
 
 export class Main {
@@ -272,7 +275,7 @@ export class Main {
 
         // Component: "Discussion Board"
         const commentsTemplate = require("./components/Comments/Comments.html");
-        require("./components/Comments/Comments.scss"); 
+        require("./components/Comments/Comments.scss");
         const commentsComponent = new BaseKnockoutComponent("component-comments", CommentsViewModel, commentsTemplate);
     }
 
@@ -313,7 +316,7 @@ export class Main {
                 headers: {
                     Accept: "application/json; odata=verbose",
                 },
-            }
+            },
         });
 
         // Be careful, we need to apply bindings after the document is ready

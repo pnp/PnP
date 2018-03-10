@@ -23,6 +23,7 @@ export enum DiscussionPermissionLevel {
     Delete,
     Edit,
     EditAsAuthor,
+    DeleteAsAuthor,
     ManageWeb,
     ManageLists,
 }
