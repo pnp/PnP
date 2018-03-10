@@ -122,7 +122,7 @@ Version  | Date | Comments
 1.3 | May 4th 2017 | <ul style="list-style: none"><li>New design</li><li>Added the support of event pages</li><li>New display templates for news + new carousel design</li><li>Added a QnA bot integration with authentication</li><li>Bug fixes + migration to webpack 2.0 and sp-pnp-js 2.0</li></ul>
 2.0 | August 30th 2017 | <ul style="list-style: none"><li>Completely new design reused from a real project and made by a firm of professional graphic designers</li><li>Added the option to deploy with only one language + ability to add new languages on the fly</li><li>Several performance improvements</li><li>Added a complete documentation (user and development guides) available separately</li><li>Bug fixes and code structure improvements</li></ul>
 2.1 | January 30th 2018 | <ul style="list-style: none"><li>Updated the global UI experience.</li><ul style="list-style: none"><li>Improved design implementation using CSS flexboxes.</li><li>Improved mobile design.</li></ul><li>Improved search experience.<ul style="list-style: none"><li>Added an alphabetical display template refiner for people search.</li><li>Added a dropdown display template refiner.</li><li>Added a light search box.</li><li>Added a popup with search tips to help users.</li></ul></li><li>Improved the overall performance.</li><li>Updated the root logic redirection. Now we use a SharePoint redirect page to instantly redirect visitors.</li><li>Ensured compatibility with IE10, 11, Edge, Firefox and Chrome.</li><li>Added more options for deployments in the PowerShell scripts. Now we can exclude handlers form the deploymens (i.e TermGroups or Files).</li><li>Updated the "View all" link in content search display template. Now, you can set your own in the Web Part properties.</li><li>Updated the PnP provisioming template schema to 201705.</li><li>Minor bug fixes.</li></ul>
-2.2 | March 11th 2018 | <ul style="list-style: none"><li>Bug fixes (Fixed news tile display template)</li><li>Added a "comments" component for pages based on the OOTB SharePoint discussion board</li></ul>
+2.2 | March 11th 2018 | <ul style="list-style: none"><li>Bug fixes (Fixed news tile display template)</li><li>Added a "comments" component for pages based on the OOTB SharePoint discussion board</li><li>Updated the font awesome css version (from CDN)</li></ul>
 
 ## Solution documentation ##
  
@@ -187,7 +187,7 @@ $Script = "<your_installation_folder>\Deploy-Solution.ps1"
   <img width="400" src="./images/deploy.png"/>
 </p>
 
-### Migrate from 2.0.0 to 2.1.0 ###
+### Migrate from 2.0.0 to 2.x.x ###
 
 If you've already install the initial version, all you need to do is to run the *Upgrade-Solution.ps1* script, like this:
 
