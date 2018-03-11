@@ -25,11 +25,12 @@ The following features are included by default in the solution:
 ### Functional ###
 
 - Complete publishing experience including static pages, news & events with prebuilt layouts and fields
-  - Feature to export an event as an *ics* file.
+  - Feature to export an event as an *ics* file
+  - Ability to turn on/off comments on pages
 - Multiple languages support with translation mechanism between pages
   - Ability to add new languages easily (see the official documentation)
 - Complete search experience with refiners including prebuilt categories:
-  - People search
+  - People search with alphabetical refiners
   - Document search
   - Intranet search (news, events & static pages)
 - Navigation menus driven by taxonomy including a main menu with multi-columns, a left menu, the breadcrumb, a header and a footer menu.
@@ -270,19 +271,13 @@ If you plan to use the alphabetical display termplate for the people search, you
 
 ### Add comments to page ###
 
-By default, the comments component is not added to pages automatically. To enable comments for a specific page, just add a new "Script Editor" Web Part with the following HTML snippet:
-
-```
-<component-comments></component-comments>
-```
+By default, comments are disabled for news, event and static pages. To enable them for a specific page, just turn on the *"Allow page comments"* flag when you edit the page:
 
 <p align="center">
   <img width="500px" src="./images/comments.png"/>
 </p>
 
-Also, by default, "Likes" are not enabled on the "Comments" list. You can enable them by setting the appropriate option in the list settings (only "Likes" work, "Ratings" aren't supported).
-
-By default, the "Write Security" setting for the discussion board list is set to *"Create items and edit items that were created by the user"* so it means user will be able to edit and delete only their own comments even if they have the *"Contribute"* permission level on the list. 
+Also, by default, "Likes" are not enabled on the "Comments" list. You can enable them by setting the appropriate option in the list settings (only "Likes" work, "Ratings" aren't supported). Then, the "Write Security" setting for the discussion board list is set to *"Create items and edit items that were created by the user"* so it means user will be able to edit and delete only their own comments even if they have the *"Contribute"* permission level on the list. 
 
 ### Configure the QnA bot ###
 

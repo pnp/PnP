@@ -1055,7 +1055,7 @@
                 </webParts>
               </pnp:Contents>
             </pnp:WebPart>
-            <pnp:WebPart Title="Search Results" Zone="xdd69f0bc06df4d3c9d3cdd55b43b5d80" Order="1">
+            <pnp:WebPart Title="Search Results" Zone="x0ae7cb517f874186bf4ba26559805dfe" Order="1">
               <pnp:Contents>
                 <webParts>
                   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
