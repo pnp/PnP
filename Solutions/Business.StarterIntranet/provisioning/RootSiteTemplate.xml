@@ -305,6 +305,11 @@
         </Field>
         <Field Type="Note" DisplayName="Position description" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" NumLines="6" RichText="FALSE" Sortable="FALSE" Group="Intranet" ID="{2f72cd43-ff75-4f86-b25c-fbbe1c09f84f}" SourceID="{eebf35d0-c4b5-4092-b2d1-18bf8c29ba62}" StaticName="IntranetPositionDescription" Name="IntranetPositionDescription" RestrictedMode="TRUE" RichTextMode="Compatible" IsolateStyles="FALSE" AppendOnly="FALSE" UnlimitedLengthInDocumentLibrary="FALSE">
         </Field>
+        <Field Type="Number" DisplayName="Associated Page Id" Required="FALSE" EnforceUniqueValues="FALSE" Indexed="FALSE" Decimals="0" Group="Intranet" ID="{942d30e4-d9d1-42e0-b0c0-cc8c161653b4}" SourceID="{65590a17-69ff-4abc-b817-467ee5cf1136}" StaticName="AssociatedPageId" Name="AssociatedPageId">
+        </Field>
+        <Field Type="Boolean" DisplayName="Allow Page Comments" Description="Allow users to comment this page or not." EnforceUniqueValues="FALSE" Indexed="FALSE" Group="Intranet" ID="{dd82c1c9-0c79-48c4-b29f-e948bc5f140f}" SourceID="{bffeeb5b-787b-4391-b8b3-920a4699e5f1}" StaticName="IntranetAllowPageComments" Name="IntranetAllowPageComments" CustomFormatter="" Required="FALSE">
+          <Default>0</Default>
+        </Field>
       </pnp:SiteFields>
       <pnp:ContentTypes>
         <pnp:ContentType ID="0x010042631ED9023EA641A4E931E92ABC9FCE" Name="Notification" Description="" Group="Intranet" NewFormUrl="" EditFormUrl="" DisplayFormUrl="">
@@ -393,6 +398,7 @@
             <pnp:FieldRef ID="f416d825-267b-41bc-97a6-1a250671cf1f" Name="b25b109d5d664dd2ac93123923dd5b99" Hidden="true" />
             <pnp:FieldRef ID="b25b109d-5d66-4dd2-ac93-123923dd5b99" Name="IntranetContentType" />
             <pnp:FieldRef ID="feff03b1-9293-464c-bbbc-ff34ca32fd88" Name="IntranetContact"/>
+            <pnp:FieldRef ID="dd82c1c9-0c79-48c4-b29f-e948bc5f140f" Name="IntranetAllowPageComments"/>
           </pnp:FieldRefs>
         </pnp:ContentType>
         <pnp:ContentType ID="0x010100C568DB52D9D0A14D9B2FDCC96666E9F2007948130EC3DB064584E219954237AF39000650D0E024D0AE42B88AF5AF825F709C01" Name="Static Page" Description="Page is a system content type template created by the Publishing Resources feature. The column templates from Page will be added to all Pages libraries created by the Publishing feature." Group="Intranet" NewFormUrl="" EditFormUrl="" DisplayFormUrl="">

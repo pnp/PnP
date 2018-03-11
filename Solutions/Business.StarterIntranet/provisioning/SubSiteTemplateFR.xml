@@ -240,6 +240,149 @@
             <pnp:FieldRef ID="2f72cd43-ff75-4f86-b25c-fbbe1c09f84f" Name="IntranetPositionDescription" DisplayName="Position description" />
           </pnp:FieldRefs>
         </pnp:ListInstance>
+        <pnp:ListInstance Title="Commentaires" Description="" DocumentTemplate="" TemplateType="108" Url="Lists/Comments" MinorVersionLimit="0" MaxVersionLimit="0" DraftVersionVisibility="0" TemplateFeatureID="00bfea71-6a49-43fa-b535-d15c05500108" ContentTypesEnabled="true" EnableFolderCreation="false" DefaultDisplayFormUrl="{site}/Lists/Comments/DispForm.aspx" DefaultEditFormUrl="{site}/Lists/Comments/EditForm.aspx" DefaultNewFormUrl="{site}/Lists/Comments/NewForm.aspx" ImageUrl="/_layouts/15/images/itdisc.png?rev=44" IsApplicationList="false" ValidationFormula="" ValidationMessage="">
+          <pnp:ContentTypeBindings>
+            <pnp:ContentTypeBinding ContentTypeID="0x012002" Default="true" />
+            <pnp:ContentTypeBinding ContentTypeID="0x0107" />
+          </pnp:ContentTypeBindings>
+          <pnp:Views>
+            <View Name="{B2AEC382-2C08-46B3-818F-10E0E65B9596}" DefaultViewForContentType="TRUE" Type="HTML" TabularView="FALSE" ReadOnly="TRUE" IncludeRootFolder="TRUE" DisplayName="Flat" Url="{site}/Lists/Comments/Flat.aspx" Level="1" BaseViewID="2" ContentTypeID="0x01200200FE51AD93620E5D4280B6E369ECCA08A0" ImageUrl="/_layouts/15/images/vwdisc.png?rev=44" CssStyleSheet="discthread.css">
+              <Query>
+                <OrderBy Override="TRUE">
+                  <FieldRef Name="Created" Ascending="TRUE" />
+                </OrderBy>
+              </Query>
+              <ViewFields>
+                <FieldRef Name="PersonViewMinimal" />
+                <FieldRef Name="BodyAndMore" />
+                <FieldRef Name="StatusBar" Explicit="TRUE" />
+                <FieldRef Name="Author" />
+                <FieldRef Name="MyEditor" />
+                <FieldRef Name="Body" />
+                <FieldRef Name="TrimmedBody" />
+                <FieldRef Name="ParentItemEditor" />
+                <FieldRef Name="ParentItemID" />
+                <FieldRef Name="BestAnswerId" />
+                <FieldRef Name="ItemChildCount" />
+                <FieldRef Name="Created" />
+                <FieldRef Name="Modified" />
+                <FieldRef Name="IsFeatured" />
+                <FieldRef Name="LikesCount" />
+                <FieldRef Name="LikedBy" Explicit="TRUE" />
+                <FieldRef Name="Popularity" />
+                <FieldRef Name="DescendantLikesCount" />
+                <FieldRef Name="DescendantRatingsCount" />
+              </ViewFields>
+              <RowLimit Paged="TRUE">20</RowLimit>
+              <JSLink>sp.ui.discussions.js|sp.ui.communities.js</JSLink>
+            </View>
+            <View Name="{C5534641-D051-4D75-AD5E-26ACAF2709AC}" DefaultView="TRUE" Type="HTML" ReadOnly="TRUE" DisplayName="Subject" Url="{site}/Lists/Comments/AllItems.aspx" Level="1" BaseViewID="3" ContentTypeID="0x012001" ImageUrl="/_layouts/15/images/vwdisc.png?rev=44">
+              <Query>
+                <OrderBy UseIndexForOrderBy="TRUE" Override="TRUE" />
+                <Where>
+                  <Geq>
+                    <FieldRef Name="DiscussionLastUpdated" />
+                    <Value Type="DateTime">1900-01-01T00:00:00Z</Value>
+                  </Geq>
+                </Where>
+              </Query>
+              <ViewFields>
+                <FieldRef Name="LinkDiscussionTitle" />
+                <FieldRef Name="Author" />
+                <FieldRef Name="ItemChildCount" />
+                <FieldRef Name="Created" />
+                <FieldRef Name="Body" />
+                <FieldRef Name="LastReplyBy" />
+                <FieldRef Name="DiscussionLastUpdated" />
+                <FieldRef Name="BestAnswerId" />
+                <FieldRef Name="IsFeatured" />
+                <FieldRef Name="LikesCount" />
+                <FieldRef Name="LikedBy" Explicit="TRUE" />
+                <FieldRef Name="Popularity" />
+                <FieldRef Name="DescendantLikesCount" />
+                <FieldRef Name="DescendantRatingsCount" />
+                <FieldRef Name="AssociatedPageId" />
+              </ViewFields>
+              <RowLimit Paged="TRUE">20</RowLimit>
+              <JSLink>sp.ui.discussions.js|sp.ui.communities.js</JSLink>
+            </View>
+            <View Name="{B8F5F8EB-A849-49E5-84C3-BA62BB317728}" Type="HTML" DisplayName="Management" Url="{site}/Lists/Comments/Management.aspx" Level="1" BaseViewID="5" ContentTypeID="0x">
+              <Query>
+                <OrderBy>
+                  <FieldRef Name="ID" Ascending="FALSE" />
+                </OrderBy>
+              </Query>
+              <ViewFields>
+                <FieldRef Name="LinkTitle" />
+                <FieldRef Name="Body" />
+                <FieldRef Name="Author" />
+                <FieldRef Name="Created" />
+                <FieldRef Name="ItemChildCount" />
+                <FieldRef Name="IsFeatured" />
+                <FieldRef Name="LikesCount" />
+                <FieldRef Name="LikedBy" Explicit="TRUE" />
+                <FieldRef Name="Popularity" />
+                <FieldRef Name="DescendantLikesCount" />
+                <FieldRef Name="DescendantRatingsCount" />
+              </ViewFields>
+              <RowLimit Paged="TRUE">20</RowLimit>
+              <JSLink>sp.ui.discussions.js|sp.ui.communities.js</JSLink>
+            </View>
+            <View Name="{5660A4E4-5A42-4E98-A477-BD7A2B533ADC}" Type="HTML" ReadOnly="TRUE" DisplayName="Featured Discussions" Url="{site}/Lists/Comments/FeaturedItems.aspx" Level="1" BaseViewID="7" ContentTypeID="0x012001" ImageUrl="/_layouts/15/images/vwdisc.png?rev=44">
+              <Query>
+                <Where>
+                  <Eq>
+                    <FieldRef Name="IsFeatured" />
+                    <Value Type="Integer">1</Value>
+                  </Eq>
+                </Where>
+              </Query>
+              <ViewFields>
+                <FieldRef Name="LinkDiscussionTitle" />
+                <FieldRef Name="Author" />
+                <FieldRef Name="ItemChildCount" />
+                <FieldRef Name="Created" />
+                <FieldRef Name="Body" />
+                <FieldRef Name="IsFeatured" />
+                <FieldRef Name="LikesCount" />
+                <FieldRef Name="LikedBy" Explicit="TRUE" />
+                <FieldRef Name="Popularity" />
+                <FieldRef Name="DescendantLikesCount" />
+                <FieldRef Name="DescendantRatingsCount" />
+              </ViewFields>
+              <RowLimit Paged="TRUE">20</RowLimit>
+              <JSLink>sp.ui.discussions.js|sp.ui.communities.js</JSLink>
+            </View>
+          </pnp:Views>
+          <pnp:Fields>
+            <Field ID="{6b8281c0-040d-4516-a216-c695499cd3e3}" FieldRef="Author" ReadOnly="TRUE" Type="User" List="UserInfo" Name="MyAuthor" DisplayName="Created By" StaticName="MyAuthor" FromBaseType="TRUE" Required="FALSE" Group="" ShowField="NameWithPicture" AuthoringInfo="(picture and name)" SourceID="http://schemas.microsoft.com/sharepoint/v3" />
+          </pnp:Fields>
+          <pnp:FieldRefs>
+            <pnp:FieldRef ID="7662cd2c-f069-4dba-9e35-082cf976e170" Name="Body" DisplayName="Body" />
+            <pnp:FieldRef ID="078b9dba-eb8c-4ec5-bfdd-8d220a3fcc5d" Name="MyEditor" DisplayName="Modified By" />
+            <pnp:FieldRef ID="59956c56-30dd-4cb1-bf12-ef693b42679c" Name="DiscussionLastUpdated" DisplayName="Last Updated" />
+            <pnp:FieldRef ID="ff90fecb-7f46-44f5-9698-db44a81b2a8b" Name="ParentItemEditor" DisplayName="Parent Item Editor" />
+            <pnp:FieldRef ID="7d014138-1886-41f0-834f-ba9f4e72f33b" Name="ParentItemID" DisplayName="Parent Item ID" />
+            <pnp:FieldRef ID="7f15088c-1448-41c7-a125-18a3a90ce543" Name="LastReplyBy" DisplayName="Last Reply By" />
+            <pnp:FieldRef ID="7aead996-f9f9-4682-9e0e-f5634ab352c8" Name="IsQuestion" DisplayName="Question" />
+            <pnp:FieldRef ID="a8b93fba-7396-443d-9884-ee332caa4560" Name="BestAnswerId" DisplayName="Best Response Id" />
+            <pnp:FieldRef ID="5a034ff8-d7a4-4d69-ab26-5f5a043b572d" Name="IsFeatured" DisplayName="Is Featured Discussion" />
+            <pnp:FieldRef ID="4ce600fb-a927-4911-bfc1-11076b76b522" Name="EmailSender" DisplayName="E-Mail Sender" />
+            <pnp:FieldRef ID="5a14d1ab-1513-48c7-97b3-657a5ba6c742" Name="AverageRating" DisplayName="Rating (0-5)" />
+            <pnp:FieldRef ID="b1996002-9167-45e5-a4df-b2c41c6723c7" Name="RatingCount" DisplayName="Number of Ratings" />
+            <pnp:FieldRef ID="6e4d832b-f610-41a8-b3e0-239608efda41" Name="LikesCount" DisplayName="Number of Likes" />
+            <pnp:FieldRef ID="2cdcd5eb-846d-4f4d-9aaf-73e8e73c7312" Name="LikedBy" Hidden="true" DisplayName="Liked By" />
+            <pnp:FieldRef ID="898232f1-83c0-41df-9f1a-64b08a03f62d" Name="Popularity" DisplayName="Popularity" />
+            <pnp:FieldRef ID="16582f9f-ba8c-42f7-8a63-9994650bb6c8" Name="DescendantLikesCount" DisplayName="Aggregated Like Count" />
+            <pnp:FieldRef ID="5feb760d-e1c5-42d7-92ac-26ae20a1365a" Name="DescendantRatingsCount" DisplayName="Aggregated Rating Count" />
+            <pnp:FieldRef ID="942d30e4-d9d1-42e0-b0c0-cc8c161653b4" Name="AssociatedPageId" DisplayName="AssociatedPageId" />
+            <pnp:FieldRef ID="c5abfdc7-3435-4183-9207-3d1146895cf8" Name="DiscussionTitle" DisplayName="Discussion Subject" />
+            <pnp:FieldRef ID="87cda0e2-fc57-4eec-a696-b0de2f61f361" Name="ReplyNoGif" DisplayName="Reply" />
+            <pnp:FieldRef ID="c7e9537e-bde4-4923-a100-adbd9e0a0a0d" Name="BodyAndMore" DisplayName="Post" />
+            <pnp:FieldRef ID="58ca6516-51cd-41fb-a908-dd2a4aeea8bc" Name="Threading" DisplayName="Threading" />
+            <pnp:FieldRef ID="b4ab471e-0262-462a-8b3f-c1dfc9e2d5fd" Name="PersonViewMinimal" DisplayName="Posted By" />
+          </pnp:FieldRefs>
+        </pnp:ListInstance>
       </pnp:Lists>
 
       <pnp:Files>
@@ -309,8 +452,8 @@
                         <property name="UseSimplifiedQueryBuilder" type="bool">False</property>
                         <property name="QueryGroupName" type="string">Default</property>
                         <property name="LogAnalyticsViewEvent" type="bool">False</property>
-                        <property name="SelectedPropertiesJson" type="string">["PublishingImage","Path","Title","PublishingPageContentOWSHTML","RefinableDate00","https%3A%2F%2Fwww.google.com","SecondaryFileExtension","IntranetIsNewsOnTopOWSBOOL","ContentTypeId"]</property>
-                        <property name="PropertyMappings" type="string">Picture URL{Picture URL}:PublishingImage,Link URL{Link URL}:Path,Title{Title}:Title,News Summary{News Summary}:PublishingPageContentOWSHTML,News Publishing Date{News Publishing Date}:RefinableDate00,ViewAllLink{View all link}:https%3A%2F%2Fwww.google.com,SecondaryFileExtension,IntranetIsNewsOnTopOWSBOOL,ContentTypeId</property>
+                        <property name="SelectedPropertiesJson" type="string">["PublishingImage","Path","Title","PublishingPageContentOWSHTML","RefinableDate00","RefinableInt00","https%3A%2F%2Fwww.google.ca%2F","SecondaryFileExtension","ContentTypeId"]</property>
+                        <property name="PropertyMappings" type="string">Picture URL{Picture URL}:PublishingImage,Link URL{Link URL}:Path,Title{Title}:Title,News Summary{News Summary}:PublishingPageContentOWSHTML,News Publishing Date{News Publishing Date}:RefinableDate00,Is Featured News{Is Featured News}:RefinableInt00,ViewAllLink{View all link}:https%3A%2F%2Fwww.google.ca%2F,SecondaryFileExtension,ContentTypeId</property>
                         <property name="ShowAdvancedLink" type="bool">True</property>
                         <property name="NumberOfItems" type="int">3</property>
                         <property name="EmitStyleReference" type="bool">True</property>
@@ -912,7 +1055,7 @@
                 </webParts>
               </pnp:Contents>
             </pnp:WebPart>
-            <pnp:WebPart Title="Search Results" Zone="xdd69f0bc06df4d3c9d3cdd55b43b5d80" Order="1">
+            <pnp:WebPart Title="Search Results" Zone="x0ae7cb517f874186bf4ba26559805dfe" Order="1">
               <pnp:Contents>
                 <webParts>
                   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">

@@ -125,7 +125,7 @@ class LocalizationModule {
 
         // 24h format
         moment.updateLocale(lng, {
-            longDateFormat : i18n.t("longDateFormat", { returnObjects: true } ),
+            longDateFormat : i18n.t("longDateFormat", { returnObjects: true }),
         });
     }
 }
