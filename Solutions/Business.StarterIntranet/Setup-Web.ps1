@@ -93,7 +93,7 @@ function Configure-Web {
     $EventsFolder = Ensure-PnPFolder -SiteRelativePath "$PagesLibraryName/Events"
 
     # Add the Hidden Side Bar column to the pages library.
-    # There is a bug due to the delimiter character when provisioned by the root site XML template
+    # There is a bug due to the delimiter character when provisioned by the root site XML template due to the site language
     $Formula =  "=IF([Hide Side Bar],1,0)"
     
     $FieldXml = 
@@ -112,12 +112,37 @@ function Configure-Web {
         <Formula>$Formula</Formula>
     </Field>"
 
-    $CalcField = Get-PnPField -Identity HideSideBarHidden -List "$PagesLibraryName" -ErrorAction SilentlyContinue
+    $HideSideBarHiddenCalcField = Get-PnPField -Identity HideSideBarHidden -List "$PagesLibraryName" -ErrorAction SilentlyContinue
 
-    if (-not($CalcField)) {
-        $CalcField = Add-PnPFieldFromXml -FieldXml $FieldXml -List "$PagesLibraryName"
+    if (-not($HideSideBarHiddenCalcField)) {
+        $HideSideBarHiddenCalcField = Add-PnPFieldFromXml -FieldXml $FieldXml -List "$PagesLibraryName"
     }
+
+    # Same method for the "allow page comments" flag
+    $Formula =  "=IF([Allow Page Comments],1,0)"
     
+    $FieldXml = 
+    "<Field Type=""Calculated"" 
+            DisplayName=""IntranetAllowPageCommentsHidden"" 
+            EnforceUniqueValues=""FALSE"" 
+            Indexed=""FALSE"" 
+            Format=""DateOnly""
+            Decimals=""0""
+            ResultType=""Number"" 
+            ReadOnly=""TRUE"" 
+            ID=""{57e57749-2bae-4cfa-bb39-d03a1b77ea51}"" 
+            SourceID=""{e395aa87-1c71-45c9-be1a-a22ac1a38922}"" 
+            StaticName=""IntranetAllowPageCommentsHidden"" 
+            Name=""IntranetAllowPageCommentsHidden"">
+        <Formula>$Formula</Formula>
+    </Field>"
+
+    $IntranetAllowPageCommentsHiddenCalcField = Get-PnPField -Identity IntranetAllowPageCommentsHidden -List "$PagesLibraryName" -ErrorAction SilentlyContinue
+
+    if (-not($IntranetAllowPageCommentsHiddenCalcField)) {
+        $IntranetAllowPageCommentsHiddenCalcField = Add-PnPFieldFromXml -FieldXml $FieldXml -List "$PagesLibraryName"
+    }
+
     # Content Types order
     $ContentTypesOrderRoot = @(
 
