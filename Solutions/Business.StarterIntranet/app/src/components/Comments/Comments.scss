@@ -1,0 +1,107 @@
+﻿#page-comments {
+
+    .loading {
+        display: flex;
+        align-items: center;
+        margin-top: 5px;
+
+        *~* {
+            margin-left: 10px;
+        }
+    }
+
+    .count {
+        font-weight: 700;
+    }
+
+    .input {
+        background-color: #ffffff;
+        border: 1px solid #c8c8c8;
+        color: #333333;
+        box-sizing: border-box;
+        cursor: text;
+        line-height: normal;
+        outline: 0;
+        padding: 5px 14px;
+        word-break: break-word;
+        word-wrap: break-word;
+        -webkit-font-smoothing: antialiased;
+        flex-grow: 1;
+        max-height: 75px;
+        min-height: 32px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+
+        &::before {
+            color: #a6a6a6;
+            content: attr(data-placeholder);
+            display: block;
+        }
+    }
+
+    .btn {
+        height: 32px;
+        margin-left: 15px;
+    }
+
+    .reply {
+
+        display: flex;
+        padding: 15px;
+        
+        &--user-avatar {
+            width: 32px;
+            border-radius: 50%;
+        }
+
+        &--content {
+            margin: 0 7px 0px;
+            -ms-flex-positive: 1;
+            flex-grow: 1;
+
+            &--user-name {
+                font-weight: 700;
+            }
+
+            &--body {
+                margin-bottom: 5px;
+                margin-top: 5px;
+            }
+
+            &--date {
+                font-style: italic;
+            }
+
+            &--actions {
+                margin-top: 5px;
+                display: flex;
+                justify-content: flex-start;
+
+                *~* {
+                    margin-left: 5px;
+                }
+            }
+        }
+        
+        &--input-zone {
+            margin-top: 15px;
+            display: flex;
+        }
+
+        &--loading {
+            display: flex;
+            align-items: center;
+            width: 32px; 
+            justify-content: center;
+        }
+        
+    }
+
+    .main {
+        padding-left: 0;
+    }
+
+    .child {
+        padding-left: 32px;
+    }
+}

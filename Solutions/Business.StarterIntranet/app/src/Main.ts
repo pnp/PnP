@@ -15,6 +15,7 @@ import BaseKnockoutComponent from "./components/BaseKnockoutComponent";
 import BotWebChatViewModel from "./components/BotWebchat/BotWebChatViewModel";
 import BreadcrumbViewModel from "./components/Breadcrumb/BreadcrumbViewModel";
 import CarouselViewModel from "./components/Carousel/CarouselViewModel";
+import CommentsViewModel from "./components/Comments/CommentsViewModel";
 import ContextualMenuViewModel from "./components/ContextualMenu/ContextualMenuViewModel";
 import DisplayTemplateViewModel from "./components/DisplayTemplates/DisplayTemplateViewModel";
 import FooterLinksViewModel from "./components/FooterLinks/FooterLinksViewModel";
@@ -35,10 +36,12 @@ import UtilityModule from "./modules/UtilityModule";
 // Third party libraries
 import { AppInsights } from "applicationinsights-js";
 import * as i18n from "i18next";
+// tslint:disable-next-line:no-implicit-dependencies
 import "jquery-ui";
 import * as moment from "moment";
 import { ConsoleListener, Logger, LogLevel, setup, Site, sp, storage, Util, Web } from "sp-pnp-js";
 
+// tslint:disable-next-line:no-submodule-imports
 require("es6-promise/auto"); // Fix for IE11 (inject the polyfill in the global context)
 
 // Main style sheet for the application
@@ -58,6 +61,7 @@ require("./styles/css/images/flags.png");
 require("./styles/css/bootstrap/bootstrap-prefix.less");
 
 // jQueryUi css for the datepicker
+// tslint:disable-next-line:no-submodule-imports
 require("jquery-ui-dist/jquery-ui.min.css");
 
 export class Main {
@@ -268,6 +272,11 @@ export class Main {
         const notificationBannerTemplate = require("./components/NotificationBanner/NotificationBanner.html");
         require("./components/NotificationBanner/NotificationBanner.scss");
         const notificationBannerComponent = new BaseKnockoutComponent("component-notification", NotificationBannerViewModel, notificationBannerTemplate);
+
+        // Component: "Discussion Board"
+        const commentsTemplate = require("./components/Comments/Comments.html");
+        require("./components/Comments/Comments.scss");
+        const commentsComponent = new BaseKnockoutComponent("component-comments", CommentsViewModel, commentsTemplate);
     }
 
     public registerBindingHandlers() {
@@ -303,8 +312,10 @@ export class Main {
         // You can set odata=metadata to reduce the payload. However, you will need to configure you SharePoint server accordingly (2013 only)
         // See https://technet.microsoft.com/en-us/library/dn762092(v=office.15).aspx
         setup({
-            headers: {
-                Accept: "application/json; odata=verbose",
+            sp: {
+                headers: {
+                    Accept: "application/json; odata=verbose",
+                },
             },
         });
 

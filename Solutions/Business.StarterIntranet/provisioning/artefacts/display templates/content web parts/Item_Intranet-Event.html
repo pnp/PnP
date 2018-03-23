@@ -48,7 +48,12 @@
         currentItem.Path = $getItemValue(ctx, "Link URL").inputValue;
 		currentItem.PublishingPageContent = $getItemValue(ctx, "News Summary").inputValue;
 		currentItem.StartDate = $getItemValue(ctx, "Start Date").inputValue;	
-		currentItem.EndDate = $getItemValue(ctx, "End Date").inputValue;		
+		currentItem.EndDate = $getItemValue(ctx, "End Date").inputValue;	
+
+		var startDate = new Date(currentItem.StartDate);
+		var endDate = new Date(currentItem.EndDate);
+		
+		var showMultipleDates = startDate.setHours(0,0,0,0) !== endDate.setHours(0,0,0,0);
 		
         // Get the view all link value (must be an encoded value)         
         // More info here: https://www.eliostruyf.com/adding-configurable-settings-display-templates/           
@@ -101,8 +106,8 @@
 							
 							<!-- ko if: $data.EndDate -->
 							
-								<!-- ko if: new Date($data.EndDate).getTime() !== new Date($data.StartDate).getTime() -->
-								
+								<!-- ko if: _#= showMultipleDates =#_ -->
+
 								<i class="fa fa-minus minus" aria-hidden="true"></i>
 								<div class="event-date date-box">
 									<i class="month" data-bind="formatDateField: EndDate, dateFormat : 'MMM'"></i> 
@@ -119,7 +124,7 @@
 						<div class="event-summary item-title">
 							<a data-bind="attr: { href: Path }">
 								<!-- ko if: $data.Title -->
-								<div class="truncatable" data-bind="summarize: { html: Title}, linesCount: 2, tooltip: 1"></div>
+								<div class="truncatable" data-bind="summarize: { html: Title}, linesCount: 4, tooltip: 1"></div>
 								<!-- /ko -->
 							</a> 
 						</div>

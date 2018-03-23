@@ -3,7 +3,7 @@
 // ====================
 import * as _ from "lodash";
 import * as moment from "moment";
-import { Logger, LogLevel, ODataEntityArray, Site } from "sp-pnp-js";
+import { Logger, LogLevel, Site, spODataEntityArray } from "sp-pnp-js";
 import ConfigurationItem from "../models/ConfigurationItem";
 import IConfigurationItem from "../models/IConfigurationItem";
 import TaxonomyNavigationNode from "../models/TaxonomyNavigationNode";
@@ -105,9 +105,9 @@ class UtilityModule {
      * @param  {String} url   The URL to get the value from (optional)
      * @return {String}       The field value
      */
-    public getQueryStringParam(field: string , url: string ) {
+    public getQueryStringParam(field: string , url: string) {
         const href = url ? url : window.location.href;
-        const reg = new RegExp( "[?&#]" + field + "=([^&#]*)", "i" );
+        const reg = new RegExp("[?&#]" + field + "=([^&#]*)", "i");
         const qs = reg.exec(href);
         return qs ? qs[1] : null;
     }
@@ -117,7 +117,7 @@ class UtilityModule {
      * @param {String} sourceURL The source URL
      * @return {String}       The updated URL
      */
-    public removeQueryStringParam(field: string , sourceURL: string ) {
+    public removeQueryStringParam(field: string , sourceURL: string) {
         let rtn = sourceURL.split("?")[0];
         let param = null;
         let paramsArr = [];
@@ -186,7 +186,7 @@ class UtilityModule {
             let localStorageValue = JSON.parse(cachedValue).value;
 
             // If the value is a JSON object
-            if (!_.isError(_.attempt(() => JSON.parse(localStorageValue) ))) {
+            if (!_.isError(_.attempt(() => JSON.parse(localStorageValue)))) {
                 localStorageValue = JSON.parse(localStorageValue);
             }
 
@@ -307,7 +307,7 @@ class UtilityModule {
                     expiration: moment().add(1, "h").toDate(),
                     key: String.format("{0}_{1}", _spPageContextInfo.siteServerRelativeUrl, "configurationListValues"),
                     storeName: "local",
-                }).select(ConfigurationItem.SelectFields.toString()).getAs(ODataEntityArray(ConfigurationItem)).then((items: ConfigurationItem[]) => {
+                }).select(ConfigurationItem.SelectFields.toString()).getAs(spODataEntityArray(ConfigurationItem)).then((items: ConfigurationItem[]) => {
 
                 if (items.length > 0) {
 
@@ -335,10 +335,10 @@ class UtilityModule {
      * @param s String to clean out
      */
     public stripScripts(s) {
-        var div = document.createElement('div');
+        const div = document.createElement("div");
         div.innerHTML = s;
-        var scripts = div.getElementsByTagName('script');
-        var i = scripts.length;
+        const scripts = div.getElementsByTagName("script");
+        let i = scripts.length;
         while (i--) {
             scripts[i].parentNode.removeChild(scripts[i]);
         }

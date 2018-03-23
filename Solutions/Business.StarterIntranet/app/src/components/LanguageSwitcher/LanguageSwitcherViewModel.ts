@@ -144,7 +144,7 @@ class LanguageSwitcherViewModel {
                                     const itemLanguage: string = item[0][this.languageFieldName];
                                     const itemUrl: string = item[0].FileRef;
 
-                                    if (element.localeCompare(itemLanguage) === 0 ) {
+                                    if (element.localeCompare(itemLanguage) === 0) {
 
                                         languageLink.url(itemUrl);
                                         languageLink.isValidTranslation(true);

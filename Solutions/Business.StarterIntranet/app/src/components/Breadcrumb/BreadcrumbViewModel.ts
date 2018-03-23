@@ -14,7 +14,7 @@ class BreadcrumbViewModel extends NavigationViewModel {
     public siteMapFieldName: string;
     public utilityModule: UtilityModule;
     public isEmptyNodes: KnockoutObservable<boolean>;
-    public siteServerRelativeUrl: string;
+    public webServerRelativeUrl: string;
     public errorMessage: KnockoutObservable<string>;
     public wait: KnockoutObservable<boolean>;
 
@@ -31,7 +31,7 @@ class BreadcrumbViewModel extends NavigationViewModel {
         // The internal name for the site map taxonomy field
         this.siteMapFieldName = params.siteMapFieldName;
 
-        this.siteServerRelativeUrl = _spPageContextInfo.siteServerRelativeUrl;
+        this.webServerRelativeUrl = _spPageContextInfo.webServerRelativeUrl;
 
         // Subscribe to the main menu nodes
         PubSub.subscribe("navigationNodes", (msg, data) => {

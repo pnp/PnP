@@ -3,10 +3,14 @@
 /* Important: these styles are only applied in display mode ! */
 .page-layout {
 
-    /* This value is used to determines whether or not the side bar should be hidden or not 
-    We use this system instead of making a REST query to the curent item to improve perfomrances. Even if this is not very elegant,
+    /* This values are used to determines whether or not the side bar should be hidden or not or page comments show be displayed
+    We use this system instead of making a REST query to the curent item to improve performances. Even if this is not very elegant,
     a jQuery DOM manipulation is faster than a network query */
     #hide-side-bar-hidden {
+        display: none;
+    }
+
+    #allow-page-comments-hidden {
         display: none;
     }
 

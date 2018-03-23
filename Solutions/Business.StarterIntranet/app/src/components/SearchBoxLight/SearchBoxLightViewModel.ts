@@ -10,7 +10,7 @@ class SearchBoxLightViewModel extends SearchBoxViewModel {
     public constructor(params: any) {
         super();
 
-        this.showSearchHelp = ko.observable(params.showHelp ? params.showHelp : false);              
+        this.showSearchHelp = ko.observable(params.showHelp ? params.showHelp : false);
     }
 
     public doSearch = () => {
@@ -22,7 +22,7 @@ class SearchBoxLightViewModel extends SearchBoxViewModel {
 
         // Replace the keyword in the refinement string if present
         // http://www.techmikael.com/2013/06/add-clear-filters-link-to-your-search.html
-        if (urlHash.indexOf("Default") === 1 ) {
+        if (urlHash.indexOf("Default") === 1) {
             urlHash = decodeURIComponent(urlHash);
             const kIdx = urlHash.indexOf('"k":');
             const rIdx = urlHash.indexOf('","');
@@ -31,7 +31,7 @@ class SearchBoxLightViewModel extends SearchBoxViewModel {
 
         } else {
             queryUrl = this.utilityModule.replaceQueryStringParam(window.location.href, "#k", queryStringValue);
-        } 
+        }
 
         // Redirect to the correct page according to selected category
         window.location.href = queryUrl;
