@@ -1,5 +1,7 @@
 # PnP Starter Intranet for SharePoint 2013/2016 and SharePoint Online  #
 
+![Version](https://img.shields.io/badge/version-2.2.0-green.svg)
+
 ## About the solution ##
 
 <p align="center">
@@ -20,9 +22,9 @@ Thank you for using the PnP Starter Intranet solution! If you have any questions
 
 ## Included features ##
 
-The following features are included by default in the solution:
+The complete features list can be consulted [here](https://1drv.ms/x/s!AmFJcbKqkTCBiMlgqPm_efnOrwnr1w). Here is an overview of features included by default in the solution:
 
-### Functional ###
+### Functional (overview) ###
 
 - Complete publishing experience including static pages, news & events with prebuilt layouts and fields
   - Feature to export an event as an *ics* file
@@ -40,7 +42,7 @@ The following features are included by default in the solution:
   - Notification banner for alerts
   - Job postings
 
-### Non-functional ###
+### Non-functional (overview) ###
 
 - Mobile devices support via responsive design
 - Specific home page design
