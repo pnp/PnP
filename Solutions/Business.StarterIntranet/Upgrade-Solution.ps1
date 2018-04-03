@@ -29,7 +29,7 @@ $PkgFile = Get-Content -Raw -Path (Join-Path -Path $CommandDirectory -ChildPath 
 $PnPStarterIntranetCurrentVersion = $PkgFile.version
 
 $CurrentVersion = Get-PnPPropertyBag -Key "PnPStarterIntranetVersion"
-$UpgradableVersions = @("2.0.0","2.1.0")
+$UpgradableVersions = @("2.0.0","2.1.0","2.2.0")
 
 # Updates are always processed for all versions as follows
 # - The search configuration is applied cumulatively by checking the applicable versions (greater than the current one, identified by file name convention)

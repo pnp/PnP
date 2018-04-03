@@ -32,7 +32,17 @@ class NotificationBanner extends React.Component<NotificationBannerProps, Notifi
 
         // Content is theorically safe here.
         const renderNotifications = this.state.notifications.map((notification, index) => {
-            return <div className="message" key={ index } dangerouslySetInnerHTML={ {__html: this.utilityModule.stripScripts(notification.IntranetNotificationDescription) }}></div>;
+
+            return <div className="message" 
+                        key={ index } 
+                        style={{
+                            // Color values should be correct here thanks to the SharePoint column validation formula so we can apply them safely
+                            backgroundColor: notification.IntranetNotificationBgColor,
+                            color: notification.IntranetNotificationTextColor
+                        }}
+                        dangerouslySetInnerHTML={ {__html: this.utilityModule.stripScripts(notification.IntranetNotificationDescription) }}>
+                        
+                    </div>;
         });
 
         return  <div>
