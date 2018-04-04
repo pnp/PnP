@@ -19,7 +19,10 @@ Param(
 	[switch]$IncludeData=$false,
 
 	[Parameter(Mandatory=$False)]
-	$ExcludeHandlers,
+	$ExcludeHandlersRootSite,
+
+	[Parameter(Mandatory=$False)]
+	$ExcludeHandlersSubSites,
 
 	[Parameter(Mandatory=$False)]
 	[switch]$UpgradeSubSites=$false
@@ -161,8 +164,8 @@ $TemplateParameters = @{
 }
 
 # Apply the root site provisioning template
-if ($ExcludeHandlers) {
-	Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -Parameters $TemplateParameters -ExcludeHandlers $ExcludeHandlers
+if ($ExcludeHandlersRootSite) {
+	Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -Parameters $TemplateParameters -ExcludeHandlers $ExcludeHandlersRootSite
 } else {
 	Apply-PnPProvisioningTemplate -Path $ProvisioningRootSiteTemplateFile -Parameters $TemplateParameters
 }
@@ -173,7 +176,7 @@ Write-Message -Message "`tDone!" -ForegroundColor Green
 # Configure sub webs according languages
 # -------------------------------------------------------------------------------------
 $Script = ".\Setup-Web.ps1" 
-& $Script -RootSiteUrl $SiteUrl -UserName $UserName -Password $Password -ExcludeHandlers $ExcludeHandlers -UpgradeSubSites:$UpgradeSubSites -IncludeData:$IncludeData
+& $Script -RootSiteUrl $SiteUrl -UserName $UserName -Password $Password -ExcludeHandlers $ExcludeHandlersSubSites -UpgradeSubSites:$UpgradeSubSites -IncludeData:$IncludeData
 
 # Switch back to the root site context
 Set-PnPContext -Context $RootSiteContext

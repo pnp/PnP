@@ -62,7 +62,7 @@ if ($UpgradableVersions.IndexOf($CurrentVersion) -ne -1) {
     # The upgrade procedure will re-apply the PnP provisioning template on the root site and subsites (via the -UpgradeSubSites parameter)
     # When upgrading, taxonomy and search settings can't be overwritten  so they have to be excluded
     $Script = ".\Deploy-Solution.ps1" 
-    & $Script -SiteUrl $SiteUrl -UserName $UserName -Password $Password -ExcludeHandlers TermGroups,SearchSettings -UpgradeSubSites
+    & $Script -SiteUrl $SiteUrl -UserName $UserName -Password $Password -ExcludeHandlersRootSite TermGroups,SearchSettings -ExcludeHandlersSubSites TermGroups,Files -UpgradeSubSites
 } else {
     Write-Message -Message "`tYou already have the latest version '$CurrentVersion' or your version does not support an upgrade." -ForegroundColor Green
 }
