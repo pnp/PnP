@@ -9,7 +9,18 @@
             "request": "launch",
             "name": "Launch Program",
             "program": "${workspaceFolder}\\app.js",
-            "cwd": "${workspaceFolder}"
+            "cwd": "${workspaceFolder}",
+            "env":{
+                "MicrosoftAppId": "<-- MicrosoftAppId here -->",
+                "MicrosoftAppPassword": "<-- MicrosoftAppPassword here -->",
+                "AAD_CLIENT_ID": "<-- AAD_CLIENT_ID here -->",
+                "AAD_CLIENT_SECRET": "<-- AAD_CLIENT_SECRET here -->",
+                "TENANT": "<-- tenant -->.onmicrosoft.com",
+                "tokenEndpoint": "https://login.microsoftonline.com/<-- GUID here -->/oauth2/token",
+                "RESOURCE": "https://graph.microsoft.com",
+                "List_Id": "<-- List_Id here -->",
+                "AzureWebJobsStorage": "<-- AzureWebJobsStorage here -->"
+            }
         }
     ]
 }
