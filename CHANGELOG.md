@@ -5,11 +5,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [April 2018 - Unreleased]
+## [May 2018 - Unreleased]
 
 ### Added
 
 ### Changed
+
+### Deprecated
+
+## [April 2018]
+
+### Added
+
+### Changed
+
+- O365.Modern.Provisioning updates: Waterfall logic completely refactored with dialogs, Added speech skills for Cortana, UI improved and minor bug fixes [giuleon]
+- PnP Starter Intranet version 2.2: Added link to the full features list in the README file (OneDrive Excel File) and added a badge indicating the current version [FrankyC]
 
 ### Deprecated
 
