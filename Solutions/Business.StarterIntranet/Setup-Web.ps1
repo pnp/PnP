@@ -59,10 +59,13 @@ $Languages | ForEach-Object {
 }
 
 # Set the language field according to the language settings in the root site
-$field = Get-PnPField -Identity IntranetContentLanguage
-$field.Choices = $LanguageChoices
-$field.UpdateAndPushChanges($true)
-Execute-PnPQuery
+$field = Get-PnPField -Identity IntranetContentLanguage -ErrorAction SilentlyContinue
+
+if ($field) {
+    $field.Choices = $LanguageChoices
+    $field.UpdateAndPushChanges($true)
+    Execute-PnPQuery
+}
 
 # -------------------------------------------------------------------------------------
 # Apply site template for webs according the languages
@@ -141,6 +144,40 @@ function Configure-Web {
 
     if (-not($IntranetAllowPageCommentsHiddenCalcField)) {
         $IntranetAllowPageCommentsHiddenCalcField = Add-PnPFieldFromXml -FieldXml $FieldXml -List "$PagesLibraryName"
+    }
+
+    # Notification fields for colors
+    $Fields = @{"IntranetNotificationBgColor"=@("#FCAF17","Notification Background Color");"IntranetNotificationTextColor"=@("#555555","Notification Text Color")}
+
+    $Fields.Keys | ForEach-Object {
+
+        $Field = Get-PnPField -Identity $_ -List "/Lists/Notifications" -ErrorAction SilentlyContinue
+
+        if (-not($Field)) {
+                
+                $DisplayName = $Fields.Item($_)[1]
+                $Guid = "{" + [guid]::NewGuid() + "}"
+                $InternalName = $_
+                $ValidationMessage = "The value must be a valid hexadecimal color (ex: #FFFFFF)"
+                $DefaultValue = $Fields.Item($_)[0]
+            
+                $FieldXml = 
+                    "<Field Type=""Text"" 
+                            DisplayName=""$DisplayName"" 
+                            Required=""FALSE"" 
+                            EnforceUniqueValues=""FALSE"" 
+                            Indexed=""FALSE"" 
+                            MaxLength=""255"" 
+                            Group=""Intranet"" 
+                            ID=""$Guid"" 
+                            SourceID=""$Guid"" 
+                            StaticName=""$InternalName"" Name=""$InternalName"">
+                            <Validation Message=""$ValidationMessage"">=NOT(ISERROR(SEARCH(""#??????"",[$DisplayName])=1))</Validation>
+                            <Default>$DefaultValue</Default>
+                    </Field>"
+
+           $Field = Add-PnPFieldFromXml -List "/Lists/Notifications" -FieldXml $FieldXml
+        }
     }
 
     # Content Types order
