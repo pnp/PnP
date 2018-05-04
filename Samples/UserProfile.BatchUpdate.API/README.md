@@ -6,7 +6,7 @@ This sample demonstrates usage of new User Profile Batch Update API. This capabi
 Solution contains code implemented with console application and also a PowerShell script based implementation of API call.
 
 See following resources for additional information
-- API release announcement at dev.office.com - TBD
+- [API release announcement at dev.office.com](https://dev.office.com/blogs/introducing-bulk-upa-custom-profile-properties-update-api)
 - [CSOM Nuget package updated - December 2015](https://dev.office.com/blogs/new-sharepoint-csom-version-released-for-Office-365)
 
 *Notice* This API is released gradually to Office 365 production starting from mid-January 2016. 
