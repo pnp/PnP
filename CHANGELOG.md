@@ -5,11 +5,23 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [May 2018 - Unreleased]
+## [June 2018 - Unreleased]
 
 ### Added
 
 ### Changed
+
+- Enabled taxonomy picker synonym matching for search [colindekker]
+
+### Deprecated
+
+## [May 2018]
+
+### Added
+
+### Changed
+
+- Enabled taxonomy picker synonym matching for search [colindekker]
 
 ### Deprecated
 
