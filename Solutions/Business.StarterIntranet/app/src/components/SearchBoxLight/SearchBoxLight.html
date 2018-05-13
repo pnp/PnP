@@ -3,6 +3,7 @@
             <div id="search-input">
                 <i class="fa fa-search" aria-hidden="true"></i>
                 <input  type="text" 
+                        autocomplete="off"
                         class="search" 
                         data-bind="textInput: inputQuery, 
                         attr: { placeholder: selectedCategory() ? (searchPlaceHolderLabel() + ' ' + selectedCategory().Title ) : searchPlaceHolderLabel }, 
