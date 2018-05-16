@@ -9,9 +9,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-### Changed
+- New sample Modernization.PageTransformation: This code sample demonstrates how to use the preview version of the SharePoint Modernization library to modernize classic wiki and web part pages into modern client side pages.
 
-- Enabled taxonomy picker synonym matching for search [colindekker]
+### Changed
 
 ### Deprecated
 
