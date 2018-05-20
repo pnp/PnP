@@ -122,8 +122,9 @@
     <Reference Include="SharePointPnP.IdentityModel.Extensions, Version=1.2.3.0, Culture=neutral, PublicKeyToken=5e633289e95c321a, processorArchitecture=MSIL">
       <HintPath>..\packages\SharePointPnP.IdentityModel.Extensions.1.2.3\lib\net45\SharePointPnP.IdentityModel.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="SharePointPnP.Modernization.Framework, Version=0.1.1805.0, Culture=neutral, PublicKeyToken=5e633289e95c321a, processorArchitecture=MSIL">
+    <Reference Include="SharePointPnP.Modernization.Framework">
       <HintPath>..\packages\SharePointPnPModernizationOnline.0.1.1805-beta\lib\net45\SharePointPnP.Modernization.Framework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
