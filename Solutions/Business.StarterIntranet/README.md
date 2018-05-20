@@ -1,6 +1,6 @@
 # PnP Starter Intranet for SharePoint 2013/2016 and SharePoint Online  #
 
-![Version](https://img.shields.io/badge/version-2.2.0-green.svg)
+![Version](https://img.shields.io/badge/version-2.2.1-green.svg)
 
 ## About the solution ##
 
@@ -126,6 +126,7 @@ Version  | Date | Comments
 2.0 | August 30th 2017 | <ul style="list-style: none"><li>Completely new design reused from a real project and made by a firm of professional graphic designers</li><li>Added the option to deploy with only one language + ability to add new languages on the fly</li><li>Several performance improvements</li><li>Added a complete documentation (user and development guides) available separately</li><li>Bug fixes and code structure improvements</li></ul>
 2.1 | January 30th 2018 | <ul style="list-style: none"><li>Updated the global UI experience.</li><ul style="list-style: none"><li>Improved design implementation using CSS flexboxes.</li><li>Improved mobile design.</li></ul><li>Improved search experience.<ul style="list-style: none"><li>Added an alphabetical display template refiner for people search.</li><li>Added a dropdown display template refiner.</li><li>Added a light search box.</li><li>Added a popup with search tips to help users.</li></ul></li><li>Improved the overall performance.</li><li>Updated the root logic redirection. Now we use a SharePoint redirect page to instantly redirect visitors.</li><li>Ensured compatibility with IE10, 11, Edge, Firefox and Chrome.</li><li>Added more options for deployments in the PowerShell scripts. Now we can exclude handlers form the deploymens (i.e TermGroups or Files).</li><li>Updated the "View all" link in content search display template. Now, you can set your own in the Web Part properties.</li><li>Updated the PnP provisioming template schema to 201705.</li><li>Minor bug fixes.</li></ul>
 2.2 | March 11th 2018 | <ul style="list-style: none"><li>Bug fixes (Fixed news tile display template)</li><li>Added a "comments" component for pages based on the OOTB SharePoint discussion board</li><li>Updated the font awesome css version (from CDN)</li></ul>
+2.2.1 | May 5th 2018 | <ul style="list-style: none"><li>Added a new option to be able to set notifications color with hexadecimal value</li><li>Fix a search box issue with Edge</li></ul>
 
 ## Solution documentation ##
  

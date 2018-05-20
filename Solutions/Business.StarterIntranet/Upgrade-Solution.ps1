@@ -29,7 +29,7 @@ $PkgFile = Get-Content -Raw -Path (Join-Path -Path $CommandDirectory -ChildPath 
 $PnPStarterIntranetCurrentVersion = $PkgFile.version
 
 $CurrentVersion = Get-PnPPropertyBag -Key "PnPStarterIntranetVersion"
-$UpgradableVersions = @("2.0.0","2.1.0")
+$UpgradableVersions = @("2.0.0","2.1.0","2.2.0")
 
 # Updates are always processed for all versions as follows
 # - The search configuration is applied cumulatively by checking the applicable versions (greater than the current one, identified by file name convention)
@@ -62,7 +62,7 @@ if ($UpgradableVersions.IndexOf($CurrentVersion) -ne -1) {
     # The upgrade procedure will re-apply the PnP provisioning template on the root site and subsites (via the -UpgradeSubSites parameter)
     # When upgrading, taxonomy and search settings can't be overwritten  so they have to be excluded
     $Script = ".\Deploy-Solution.ps1" 
-    & $Script -SiteUrl $SiteUrl -UserName $UserName -Password $Password -ExcludeHandlers TermGroups,SearchSettings -UpgradeSubSites
+    & $Script -SiteUrl $SiteUrl -UserName $UserName -Password $Password -ExcludeHandlersRootSite TermGroups,SearchSettings -ExcludeHandlersSubSites TermGroups,Files -UpgradeSubSites
 } else {
     Write-Message -Message "`tYou already have the latest version '$CurrentVersion' or your version does not support an upgrade." -ForegroundColor Green
 }
