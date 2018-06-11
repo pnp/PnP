@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="container">
+    <h2>Welcome @ViewBag.UserName!</h2>
+    <p class="lead"><b>Site Creation Sample - </b>This sample shows 2 different scenarios for creating sites using MVC 5.  
+    <p class="lead">For a WebForms example see the PnP <a href="https://github.com/SharePoint/PnP/tree/master/Samples/Provisioning.CreateSite">Provisioning.CreateSite</a> sample.</p>
+    <ul>
+        <li>Scenario 1 demonstrates creating a subsite in the host web of the application.</li>
+        <li>Scenario 2 demonstrates creating a new site collection based on the templates in the Web.Config.</li>
+    </ul>
+    <span>
+        @Html.ActionLink("Scenario 1", "Scenario1", null, new { @class = "btn btn-primary btn-large" })
+        @Html.ActionLink("Scenario 2", "Scenario2", null, new { @class = "btn btn-primary btn-large" })
+    </span>
+</div>
