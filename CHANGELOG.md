@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [July 2018]
+
+### Added
+
+- New sample Provisioning.CreateSite.Mvc: This sample shows how to use OfficeDevPnP core component to create sub sites or new site collections using MVC 5 and a Provider Hosted Add-In. [mike-morr]
+
+### Changed
+
+- Flow redesigned in order to have better performance and minor bug fixes #1794 [giuleon]
+
 ## [June 2018]
 
 ### Added
