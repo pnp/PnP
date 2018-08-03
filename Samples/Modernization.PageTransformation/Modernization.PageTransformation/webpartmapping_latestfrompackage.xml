@@ -7,6 +7,14 @@ Page transformation file. Describes:
   - You can use any listed web part property as input for the configuration of the target (e.g. {Text}
   - To not map a web part (so drop it on the target page) use an empty mapping node (e.g. <Mapping Name="default" Default="true" />)
   - If no mapping specified (so no explicit and no empty one) then the default mapping will be taken
+  
+IMPORTANT:
+Mapping to use a third party script editor are commented out in this file (e.g. search for ClientSideWebPart Type="Custom" ControlId="3a328f0a-99c4-4b28-95ab-fe0847f657a3"). 
+If you want to use this third party web part then follow the instructions mentioned here: https://github.com/SharePoint/sp-dev-fx-webparts/tree/master/samples/react-script-editor and 
+uncomment the nodes
+  
+  
+    
 -->
 <PageTransformation xmlns="http://schemas.dev.office.com/PnP/2018/01/PageTransformationSchema">
     <!-- Information that applies to all web parts listed in this file -->
@@ -105,7 +113,7 @@ Page transformation file. Describes:
           <Property Name="InplaceSearchEnabled" Type="bool" />
           <Property Name="GhostedXslLink" Type="string" />
           <Property Name="DisableViewSelectorMenu" Type="bool"/>
-          <Property Name="XmlDefinition" Type="string" Functions="{ListViewId} = ListDetectUsedView({ListId},{XmlDefinition})"/>
+          <Property Name="XmlDefinition" Type="string" Functions="{FullPath} = Concatenate({Host},{SiteCollection}); {EncodedSiteCollectionUrl} = HtmlEncodeForJson({FullPath}); {ListViewId} = ListDetectUsedView({ListId},{XmlDefinition})"/>
           <Property Name="DataSourceMode" Type="string" />
           <Property Name="AutoRefreshInterval" Type="integer" />
           <Property Name="AsyncRefresh" Type="bool" />
@@ -113,22 +121,28 @@ Page transformation file. Describes:
           <Property Name="SelectParameters" Type="string"/>
         </Properties>
         <!-- This selector outputs: Library, List, Issue, DiscussionBoard, Survey or Undefined  -->
-        <Mappings Selector="ListSelectorListLibrary({ListId})">
+        <Mappings Selector="ListSelectorListLibrary({ListId},{XmlDefinition})">
           <Mapping Name="List" Default="true">
-            <ClientSideText Text="You can map a source web part ({Title}) to a combination of client side controls :-)" Order="10" />
+            <!--<ClientSideText Text="You can map a source web part ({Title}) to a combination of client side controls :-)" Order="10" />-->
             <ClientSideWebPart Type="List" Order="20" JsonControlData="&#123;&quot;serverProcessedContent&quot;&#58;&#123;&quot;htmlStrings&quot;&#58;&#123;&#125;,&quot;searchablePlainTexts&quot;&#58;&#123;&#125;,&quot;imageSources&quot;&#58;&#123;&#125;,&quot;links&quot;&#58;&#123;&#125;&#125;,&quot;dataVersion&quot;&#58;&quot;1.0&quot;,&quot;properties&quot;&#58;&#123;&quot;isDocumentLibrary&quot;&#58;false,&quot;selectedListId&quot;&#58;&quot;{ListId}&quot;,&quot;listTitle&quot;&#58;&quot;{Title}&quot;,&quot;selectedListUrl&quot;&#58;&quot;{ListServerRelativeUrl}&quot;,&quot;webRelativeListUrl&quot;&#58;&quot;{ListWebRelativeUrl}&quot;,&quot;webpartHeightKey&quot;&#58;4,&quot;selectedViewId&quot;&#58;&quot;{ListViewId}&quot;&#125;&#125;" />
           </Mapping>
           <Mapping Name="Library" Default="false">
             <ClientSideWebPart Type="List" Order="10" JsonControlData="&#123;&quot;serverProcessedContent&quot;&#58;&#123;&quot;htmlStrings&quot;&#58;&#123;&#125;,&quot;searchablePlainTexts&quot;&#58;&#123;&#125;,&quot;imageSources&quot;&#58;&#123;&#125;,&quot;links&quot;&#58;&#123;&#125;&#125;,&quot;dataVersion&quot;&#58;&quot;1.0&quot;,&quot;properties&quot;&#58;&#123;&quot;isDocumentLibrary&quot;&#58;true,&quot;selectedListId&quot;&#58;&quot;{ListId}&quot;,&quot;listTitle&quot;&#58;&quot;{Title}&quot;,&quot;selectedListUrl&quot;&#58;&quot;{ListServerRelativeUrl}&quot;,&quot;webRelativeListUrl&quot;&#58;&quot;{ListWebRelativeUrl}&quot;,&quot;webpartHeightKey&quot;&#58;4,&quot;selectedViewId&quot;&#58;&quot;{ListViewId}&quot;&#125;&#125;" />
           </Mapping>
-          <Mapping Name="Issue" Default="false">            
-            <ClientSideText Text="Mapping for web part {Title} still to be defined" Order="10"/>
+          <Mapping Name="Calendar" Default="false">
+            <ClientSideWebPart Type="Events" Order="10" JsonControlData="&#123;&quot;serverProcessedContent&quot;&#58;&#123;&quot;htmlStrings&quot;&#58;&#123;&#125;,&quot;searchablePlainTexts&quot;&#58;&#123;&quot;title&quot;&#58;&quot;&quot;&#125;,&quot;imageSources&quot;&#58;&#123;&#125;,&quot;links&quot;&#58;&#123;&quot;baseUrl&quot;&#58;&quot;{EncodedSiteCollectionUrl}&quot;&#125;,&quot;componentDependencies&quot;&#58;&#123;&quot;layoutComponentId&quot;&#58;&quot;8ac0c53c-e8d0-4e3e-87d0-7449eb0d4027&quot;&#125;&#125;,&quot;dataVersion&quot;&#58;&quot;1.0&quot;,&quot;properties&quot;&#58;&#123;&quot;selectedListId&quot;&#58;&quot;{ListId}&quot;,&quot;selectedCategory&quot;&#58;&quot;&quot;,&quot;dateRangeOption&quot;&#58;0,&quot;startDate&quot;&#58;&quot;&quot;,&quot;endDate&quot;&#58;&quot;&quot;,&quot;isOnSeeAllPage&quot;&#58;false,&quot;layoutId&quot;&#58;&quot;FilmStrip&quot;,&quot;dataProviderId&quot;&#58;&quot;Event&quot;,&quot;webId&quot;&#58;&quot;{WebId}&quot;,&quot;siteId&quot;&#58;&quot;{SiteId}&quot;&#125;&#125;"/>
           </Mapping>
-          <Mapping Name="DiscussionBoard" Default="false">            
-            <ClientSideText Text="Mapping for web part {Title} still to be defined" Order="10"/>
+          <Mapping Name="Issue" Default="false">
+            <ClientSideWebPart Type="List" Order="10" JsonControlData="&#123;&quot;serverProcessedContent&quot;&#58;&#123;&quot;htmlStrings&quot;&#58;&#123;&#125;,&quot;searchablePlainTexts&quot;&#58;&#123;&#125;,&quot;imageSources&quot;&#58;&#123;&#125;,&quot;links&quot;&#58;&#123;&#125;&#125;,&quot;dataVersion&quot;&#58;&quot;1.0&quot;,&quot;properties&quot;&#58;&#123;&quot;isDocumentLibrary&quot;&#58;false,&quot;selectedListId&quot;&#58;&quot;{ListId}&quot;,&quot;listTitle&quot;&#58;&quot;{Title}&quot;,&quot;selectedListUrl&quot;&#58;&quot;{ListServerRelativeUrl}&quot;,&quot;webRelativeListUrl&quot;&#58;&quot;{ListWebRelativeUrl}&quot;,&quot;webpartHeightKey&quot;&#58;4,&quot;selectedViewId&quot;&#58;&quot;{ListViewId}&quot;&#125;&#125;" />
           </Mapping>
-          <Mapping Name="Survey" Default="false">            
-            <ClientSideText Text="Mapping for web part {Title} still to be defined" Order="10"/>
+          <Mapping Name="TaskList" Default="false">
+            <ClientSideText Text="There's no OOB replacement for web part {Title}. Custom web parts might be helpfull here" Order="10"/>
+          </Mapping>
+          <Mapping Name="DiscussionBoard" Default="false">
+            <ClientSideText Text="There's no OOB replacement for web part {Title}. Custom web parts might be helpfull here" Order="10"/>
+          </Mapping>
+          <Mapping Name="Survey" Default="false">
+            <ClientSideText Text="There's no OOB replacement for web part {Title}. Custom web parts might be helpfull here" Order="10"/>
           </Mapping>
           <Mapping Name="Undefined" Default="false">
             <ClientSideText Text="No mapping possible for web part {Title}" Order="10"/>
@@ -164,7 +178,9 @@ Page transformation file. Describes:
             <ClientSideWebPart Type="ContentEmbed" Order="10" JsonControlData="&#123;&quot;serverProcessedContent&quot;&#58;&#123;&quot;htmlStrings&quot;&#58;&#123;&#125;,&quot;searchablePlainTexts&quot;&#58;&#123;&quot;captionText&quot;&#58;&quot;&quot;&#125;,&quot;imageSources&quot;&#58;&#123;&#125;,&quot;links&quot;&#58;&#123;&#125;&#125;,&quot;dataVersion&quot;&#58;&quot;1.0&quot;,&quot;properties&quot;&#58;&#123;&quot;embedCode&quot;&#58;&quot;&lt;iframe width=\&quot;100%\&quot; height=\&quot;70%\&quot; src=\&quot;{EncodedContentLink}\&quot; allowfullscreen=\&quot;\&quot;&gt;&lt;/iframe&gt;&quot;,&quot;cachedEmbedCode&quot;&#58;&quot;&lt;iframe width=\&quot;100%\&quot; height=\&quot;70%\&quot; src=\&quot;{EncodedContentLink}\&quot; allowfullscreen=\&quot;\&quot;&gt;&lt;/iframe&gt;&quot;,&quot;shouldScaleWidth&quot;&#58;true,&quot;tempState&quot;&#58;&#123;&#125;&#125;&#125;"/>
           </Mapping>
           <Mapping Name="Content" Default="false">
+            <!--
             <ClientSideWebPart Type="Custom" ControlId="3a328f0a-99c4-4b28-95ab-fe0847f657a3" Order="10" JsonControlData="&#123;&quot;serverProcessedContent&quot;&#58;&#123;&quot;htmlStrings&quot;&#58;&#123;&#125;,&quot;searchablePlainTexts&quot;&#58;&#123;&#125;,&quot;imageSources&quot;&#58;&#123;&#125;,&quot;links&quot;&#58;&#123;&#125;&#125;,&quot;dataVersion&quot;&#58;&quot;1.0&quot;,&quot;properties&quot;&#58;&#123;&quot;script&quot;&#58;&quot;{Script}&quot;,&quot;title&quot;&#58;&quot;{Title}&quot;,&quot;removePadding&quot;&#58;false,&quot;spPageContextInfo&quot;&#58;false&#125;&#125;"/>
+            -->
           </Mapping>
         </Mappings>
       </WebPart>
@@ -173,11 +189,13 @@ Page transformation file. Describes:
         <Properties>
           <Property Name="Content" Type="string" Functions="{Script} = HtmlEncodeForJson({Content})" />
         </Properties>
-        <Mappings>
-          <Mapping Name="PuzzlePartScriptEditor" Default="true">
-            <ClientSideWebPart Type="Custom" ControlId="3a328f0a-99c4-4b28-95ab-fe0847f657a3" Order="10" JsonControlData="&#123;&quot;serverProcessedContent&quot;&#58;&#123;&quot;htmlStrings&quot;&#58;&#123;&#125;,&quot;searchablePlainTexts&quot;&#58;&#123;&#125;,&quot;imageSources&quot;&#58;&#123;&#125;,&quot;links&quot;&#58;&#123;&#125;&#125;,&quot;dataVersion&quot;&#58;&quot;1.0&quot;,&quot;properties&quot;&#58;&#123;&quot;script&quot;&#58;&quot;{Script}&quot;,&quot;title&quot;&#58;&quot;{Title}&quot;,&quot;removePadding&quot;&#58;false,&quot;spPageContextInfo&quot;&#58;false&#125;&#125;"/>
-          </Mapping>
-        </Mappings>
+          <!--
+          <Mappings>
+            <Mapping Name="PuzzlePartScriptEditor" Default="true">
+              <ClientSideWebPart Type="Custom" ControlId="3a328f0a-99c4-4b28-95ab-fe0847f657a3" Order="10" JsonControlData="&#123;&quot;serverProcessedContent&quot;&#58;&#123;&quot;htmlStrings&quot;&#58;&#123;&#125;,&quot;searchablePlainTexts&quot;&#58;&#123;&#125;,&quot;imageSources&quot;&#58;&#123;&#125;,&quot;links&quot;&#58;&#123;&#125;&#125;,&quot;dataVersion&quot;&#58;&quot;1.0&quot;,&quot;properties&quot;&#58;&#123;&quot;script&quot;&#58;&quot;{Script}&quot;,&quot;title&quot;&#58;&quot;{Title}&quot;,&quot;removePadding&quot;&#58;false,&quot;spPageContextInfo&quot;&#58;false&#125;&#125;"/>
+            </Mapping>
+          </Mappings>
+          -->
       </WebPart>
       <!-- Image web part -->
       <WebPart Type="Microsoft.SharePoint.WebPartPages.ImageWebPart, Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
@@ -339,8 +357,8 @@ Page transformation file. Describes:
           <Property Name="ContentTypeName" Type="string" />
           <Property Name="ViewFieldsOverride" Type="string" />
         </Properties>
-        <Mappings>
-          <Mapping Default="true" Name="test">
+        <Mappings Selector="ContentByQuerySelector({ListGuid},{ListName})">
+          <Mapping Default="true" Name="Default">
             <!--
               WebUrl (= scope) = ~sitecollection, ~site, ~sitecollection/sub1 to indicate scope from a given subsite or empty (= current site)
               
@@ -374,6 +392,9 @@ Page transformation file. Describes:
               LinkUrl:{94f89715-e097-4e8b-ba79-ea02aa8b7adb},FileRef,Lookup;|              
               -->
             <ClientSideWebPart Type="ContentRollup" Order="10" JsonControlData="&#123;&quot;serverProcessedContent&quot;&#58;&#123;&quot;htmlStrings&quot;&#58;&#123;&#125;,&quot;searchablePlainTexts&quot;&#58;&#123;&quot;title&quot;&#58;&quot;{Title}&quot;&#125;,&quot;imageSources&quot;&#58;&#123;&#125;,&quot;links&quot;&#58;&#123;&quot;baseUrl&quot;&#58;&quot;{EncodedWeb}&quot;&#125;,&quot;componentDependencies&quot;&#58;&#123;&quot;layoutComponentId&quot;&#58;&quot;cea5863a-b857-46bb-aaf0-ae5f7cb447b6&quot;&#125;&#125;,&quot;dataVersion&quot;&#58;&quot;2.1&quot;,&quot;properties&quot;&#58;{JsonProperties}&#125;"/>
+          </Mapping>
+          <Mapping Name="NoTransformation" Default="false">
+            <ClientSideText Text="There's no OOB replacement for web part {Title}. Custom web parts might be helpfull here" Order="10"/>
           </Mapping>
         </Mappings>
       </WebPart>      
@@ -484,11 +505,13 @@ Page transformation file. Describes:
           <Property Name="IsIncludedFilter" Type="bool"/>
           <Property Name="Content" Type="string" Functions="{Script} = HtmlEncodeForJson({Content})"/>
         </Properties>
-        <Mappings>
-          <Mapping Name="PuzzlePartScriptEditor" Default="true">
-            <ClientSideWebPart Type="Custom" ControlId="3a328f0a-99c4-4b28-95ab-fe0847f657a3" Order="10" JsonControlData="&#123;&quot;serverProcessedContent&quot;&#58;&#123;&quot;htmlStrings&quot;&#58;&#123;&#125;,&quot;searchablePlainTexts&quot;&#58;&#123;&#125;,&quot;imageSources&quot;&#58;&#123;&#125;,&quot;links&quot;&#58;&#123;&#125;&#125;,&quot;dataVersion&quot;&#58;&quot;1.0&quot;,&quot;properties&quot;&#58;&#123;&quot;script&quot;&#58;&quot;{Script}&quot;,&quot;title&quot;&#58;&quot;{Title}&quot;,&quot;removePadding&quot;&#58;false,&quot;spPageContextInfo&quot;&#58;false&#125;&#125;"/>
-          </Mapping>          
-        </Mappings>
+          <!--
+          <Mappings>
+            <Mapping Name="PuzzlePartScriptEditor" Default="true">
+              <ClientSideWebPart Type="Custom" ControlId="3a328f0a-99c4-4b28-95ab-fe0847f657a3" Order="10" JsonControlData="&#123;&quot;serverProcessedContent&quot;&#58;&#123;&quot;htmlStrings&quot;&#58;&#123;&#125;,&quot;searchablePlainTexts&quot;&#58;&#123;&#125;,&quot;imageSources&quot;&#58;&#123;&#125;,&quot;links&quot;&#58;&#123;&#125;&#125;,&quot;dataVersion&quot;&#58;&quot;1.0&quot;,&quot;properties&quot;&#58;&#123;&quot;script&quot;&#58;&quot;{Script}&quot;,&quot;title&quot;&#58;&quot;{Title}&quot;,&quot;removePadding&quot;&#58;false,&quot;spPageContextInfo&quot;&#58;false&#125;&#125;"/>
+            </Mapping>          
+          </Mappings>
+          -->
       </WebPart>
       <!-- InfoPath web part -->
       <WebPart Type="Microsoft.Office.InfoPath.Server.Controls.WebUI.BrowserFormWebPart, Microsoft.Office.InfoPath.Server, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">        
@@ -522,31 +545,36 @@ Page transformation file. Describes:
       <!-- List View Web part: SP 2007/2010 way of displaying list data -->
       <WebPart Type="Microsoft.SharePoint.WebPartPages.ListViewWebPart, Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
         <Properties>
-          <Property Name="WebId" Type="guid"/>
-          <Property Name="ListViewXml" Type="string" Functions="{ListViewId} = ListDetectUsedView({ListId},{ListViewXml})"/>
+          <Property Name="ListViewXml" Type="string" Functions="{FullPath} = Concatenate({Host},{SiteCollection}); {EncodedSiteCollectionUrl} = HtmlEncodeForJson({FullPath}); {ListViewId} = ListDetectUsedView({ListId},{ListViewXml})"/>
           <Property Name="ListName" Type="string"/>
-          <Property Name="ListId" Type="string" Functions="{ListWebRelativeUrl} = ListAddWebRelativeUrl({ListId}); {ListServerRelativeUrl} = ListAddServerRelativeUrl({ListId})"/>
+          <Property Name="ListId" Type="guid" Functions="{ListWebRelativeUrl} = ListAddWebRelativeUrl({ListId}); {ListServerRelativeUrl} = ListAddServerRelativeUrl({ListId})"/>
           <Property Name="ViewFlag" Type="integer"/>
           <Property Name="ViewFlags" Type="string"/>
           <Property Name="ViewContentTypeId" Type="string"/>
           <Property Name="PageType" Type="string"/>
         </Properties>
         <!-- TODO: validate this mapping -->
-        <Mappings Selector="ListSelectorListLibrary({ListId})">
+        <Mappings Selector="ListSelectorListLibrary({ListId},{ListViewXml})">
           <Mapping Name="List" Default="true">
             <ClientSideWebPart Type="List" Order="20" JsonControlData="&#123;&quot;serverProcessedContent&quot;&#58;&#123;&quot;htmlStrings&quot;&#58;&#123;&#125;,&quot;searchablePlainTexts&quot;&#58;&#123;&#125;,&quot;imageSources&quot;&#58;&#123;&#125;,&quot;links&quot;&#58;&#123;&#125;&#125;,&quot;dataVersion&quot;&#58;&quot;1.0&quot;,&quot;properties&quot;&#58;&#123;&quot;isDocumentLibrary&quot;&#58;false,&quot;selectedListId&quot;&#58;&quot;{ListId}&quot;,&quot;listTitle&quot;&#58;&quot;{Title}&quot;,&quot;selectedListUrl&quot;&#58;&quot;{ListServerRelativeUrl}&quot;,&quot;webRelativeListUrl&quot;&#58;&quot;{ListWebRelativeUrl}&quot;,&quot;webpartHeightKey&quot;&#58;4,&quot;selectedViewId&quot;&#58;&quot;{ListViewId}&quot;&#125;&#125;" />
           </Mapping>
           <Mapping Name="Library" Default="false">
             <ClientSideWebPart Type="List" Order="10" JsonControlData="&#123;&quot;serverProcessedContent&quot;&#58;&#123;&quot;htmlStrings&quot;&#58;&#123;&#125;,&quot;searchablePlainTexts&quot;&#58;&#123;&#125;,&quot;imageSources&quot;&#58;&#123;&#125;,&quot;links&quot;&#58;&#123;&#125;&#125;,&quot;dataVersion&quot;&#58;&quot;1.0&quot;,&quot;properties&quot;&#58;&#123;&quot;isDocumentLibrary&quot;&#58;true,&quot;selectedListId&quot;&#58;&quot;{ListId}&quot;,&quot;listTitle&quot;&#58;&quot;{Title}&quot;,&quot;selectedListUrl&quot;&#58;&quot;{ListServerRelativeUrl}&quot;,&quot;webRelativeListUrl&quot;&#58;&quot;{ListWebRelativeUrl}&quot;,&quot;webpartHeightKey&quot;&#58;4,&quot;selectedViewId&quot;&#58;&quot;{ListViewId}&quot;&#125;&#125;" />
           </Mapping>
-          <Mapping Name="Issue" Default="false">            
-            <ClientSideText Text="Mapping for web part {Title} still to be defined" Order="10"/>
+          <Mapping Name="Calendar" Default="false">
+            <ClientSideWebPart Type="Events" Order="10" JsonControlData="&#123;&quot;serverProcessedContent&quot;&#58;&#123;&quot;htmlStrings&quot;&#58;&#123;&#125;,&quot;searchablePlainTexts&quot;&#58;&#123;&quot;title&quot;&#58;&quot;&quot;&#125;,&quot;imageSources&quot;&#58;&#123;&#125;,&quot;links&quot;&#58;&#123;&quot;baseUrl&quot;&#58;&quot;{EncodedSiteCollectionUrl}&quot;&#125;,&quot;componentDependencies&quot;&#58;&#123;&quot;layoutComponentId&quot;&#58;&quot;8ac0c53c-e8d0-4e3e-87d0-7449eb0d4027&quot;&#125;&#125;,&quot;dataVersion&quot;&#58;&quot;1.0&quot;,&quot;properties&quot;&#58;&#123;&quot;selectedListId&quot;&#58;&quot;{ListId}&quot;,&quot;selectedCategory&quot;&#58;&quot;&quot;,&quot;dateRangeOption&quot;&#58;0,&quot;startDate&quot;&#58;&quot;&quot;,&quot;endDate&quot;&#58;&quot;&quot;,&quot;isOnSeeAllPage&quot;&#58;false,&quot;layoutId&quot;&#58;&quot;FilmStrip&quot;,&quot;dataProviderId&quot;&#58;&quot;Event&quot;,&quot;webId&quot;&#58;&quot;{WebId}&quot;,&quot;siteId&quot;&#58;&quot;{SiteId}&quot;&#125;&#125;"/>
           </Mapping>
-          <Mapping Name="DiscussionBoard" Default="false">            
-            <ClientSideText Text="Mapping for web part {Title} still to be defined" Order="10"/>
+          <Mapping Name="Issue" Default="false">
+            <ClientSideWebPart Type="List" Order="10" JsonControlData="&#123;&quot;serverProcessedContent&quot;&#58;&#123;&quot;htmlStrings&quot;&#58;&#123;&#125;,&quot;searchablePlainTexts&quot;&#58;&#123;&#125;,&quot;imageSources&quot;&#58;&#123;&#125;,&quot;links&quot;&#58;&#123;&#125;&#125;,&quot;dataVersion&quot;&#58;&quot;1.0&quot;,&quot;properties&quot;&#58;&#123;&quot;isDocumentLibrary&quot;&#58;false,&quot;selectedListId&quot;&#58;&quot;{ListId}&quot;,&quot;listTitle&quot;&#58;&quot;{Title}&quot;,&quot;selectedListUrl&quot;&#58;&quot;{ListServerRelativeUrl}&quot;,&quot;webRelativeListUrl&quot;&#58;&quot;{ListWebRelativeUrl}&quot;,&quot;webpartHeightKey&quot;&#58;4,&quot;selectedViewId&quot;&#58;&quot;{ListViewId}&quot;&#125;&#125;" />
           </Mapping>
-          <Mapping Name="Survey" Default="false">            
-            <ClientSideText Text="Mapping for web part {Title} still to be defined" Order="10"/>
+          <Mapping Name="TaskList" Default="false">
+            <ClientSideText Text="There's no OOB replacement for web part {Title}. Custom web parts might be helpfull here" Order="10"/>
+          </Mapping>
+          <Mapping Name="DiscussionBoard" Default="false">
+            <ClientSideText Text="There's no OOB replacement for web part {Title}. Custom web parts might be helpfull here" Order="10"/>
+          </Mapping>
+          <Mapping Name="Survey" Default="false">
+            <ClientSideText Text="There's no OOB replacement for web part {Title}. Custom web parts might be helpfull here" Order="10"/>
           </Mapping>
           <Mapping Name="Undefined" Default="false">
             <ClientSideText Text="No mapping possible for web part {Title}" Order="10"/>

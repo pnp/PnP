@@ -31,6 +31,7 @@ Modernization.PageTransformation | Bert Jansen (**Microsoft**)
 
 Version  | Date | Comments
 ---------| -----| --------
+1.1  | August 3rd 2018 | Upgraded to beta release of the PnP Modernization framework
 1.0  | May 15nd 2018 | Initial release
 
 ### Disclaimer ###
