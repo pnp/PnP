@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [August 2018]
+
+### Added
+
+### Changed
+
+- Updated Modernization.PageTransformation sample to use the beta version of the modernization framework
+
 ## [July 2018]
 
 ### Added
