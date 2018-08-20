@@ -1,5 +1,7 @@
 # Branding.ApplyBranding #
 
+> *Notice.* This solution is no longer maintained and it **ONLY** works for "Classic" experience. For modern experiences, you should be looking into using [SharePoint Framework](http://aka.ms/spfx).
+
 ### Summary ###
 This sample demonstrates common tasks related on the publishing features, like how to deploy page layouts and master pages. It also shows how you can use property bag entries in the Web object to control the available page layouts and available web templates settings for the publishing sites. 
 

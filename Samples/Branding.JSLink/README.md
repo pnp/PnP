@@ -1,5 +1,7 @@
 # JSLink Client Side Rendering (CSR) Samples  #
 
+> *Notice.* This solution is no longer maintained and it **ONLY** works for "Classic" experience. For modern experiences, you should be looking into using [SharePoint Framework](http://aka.ms/spfx).
+
 Jump To
 * [Samples (including screenshots)](#jslink-samples)
 * [The Re-Usable Framework](#reusable-framework)

@@ -1,6 +1,6 @@
 # OneDrive for Business customization (async) #
 
-*Notice.* This solution **ONLY** works when you use so called "Classic" option for OneDrive for Business. New experiences do **NOT** support any level of branding in OneDrive for Business sites.
+> *Notice.* This solution **ONLY** works when you use so called "Classic" option for OneDrive for Business. New experiences do **NOT** support any level of branding in OneDrive for Business sites.
 
 ### Summary ###
 This is an enhanced add-in part based customization for applying and managing needed customizations to the OD4B sites. 

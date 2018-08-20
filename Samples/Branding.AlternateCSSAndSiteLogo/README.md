@@ -1,5 +1,7 @@
 # ALTERNATECSSURL & SITELOGOURL PROPERTIES IN WEB OBJECT #
 
+> *Notice.* This solution is no longer maintained and it **ONLY** works for "Classic" experience. For modern experiences, you should be looking into using [SharePoint Framework](http://aka.ms/spfx).
+
 ### Summary ###
 This scenario shows how to upload CSS and site image to the host web and how to set those to be used using CSOM. These are new properties released as part of the 2014 April CU for on-premises and they are also located in the cloud. MS online CSOM will be updated to expose these additional CSOM properties for the Web object during July 2014.
 Notice that you can use 2014 April CU CSOM also with Office365 to set the properties accordingly to the host web.
