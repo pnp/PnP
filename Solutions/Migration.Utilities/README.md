@@ -1,6 +1,6 @@
 ﻿# Utility to migrate Discussion List(s) to/from SharePoint Online #
 
-## Summary ##
+### Summary ###
 This utility helps you migrate Discussion Lists from one SharePoint Online site to another. It connects and downlods the discussion topics, replies, and attachements in the list locally. This downloaded content can then be migrated by running the utility again in target mode.
 
 ## Features ##
@@ -11,3 +11,13 @@ This utility helps you migrate Discussion Lists from one SharePoint Online site 
 * Ability to select a target list
 * Ability to replace missing users with a specified account in *app.config*
 * Logging of migration activities (configurable via *app.config*)
+
+### Solution ###
+Solution | Author(s)
+---------|----------
+Migration.Utilities | Manvir Singh (*Microsoft*)
+
+### Version history ###
+Version  | Date | Comments
+---------| -----| --------
+1.0  | August 28th 2018 | Initial version
