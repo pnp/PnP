@@ -15,7 +15,7 @@ This utility helps you migrate Discussion Lists from one SharePoint Online site 
 ### Solution ###
 Solution | Author(s)
 ---------|----------
-Migration.Utilities | Manvir Singh (*Microsoft*)
+Migration.Utilities.Discussions | Manvir Singh (*Microsoft*)
 
 ### Version history ###
 Version  | Date | Comments
