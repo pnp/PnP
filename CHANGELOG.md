@@ -9,7 +9,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- New solution Migration.Utilities.Discussions: shows how to extract and upload SharePoint discussion list data
+- New solution Migration.Utilities.Discussions: shows how to extract and upload SharePoint discussion list data [manvirb4u]
 
 ### Changed
 
