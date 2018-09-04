@@ -1,5 +1,7 @@
 # Customization via JavaScript #
 
+> *Notice.* This solution is no longer maintained and it **ONLY** works for "Classic" experience. For modern experiences, you should be looking into using [SharePoint Framework](http://aka.ms/spfx).
+
 ### Summary ###
 This sample shows how one can use JavaScript to update SharePoint sites. This technique is a valuable model to do small UI customizations like removing UI elements, translating content or updating complex UI elements.
 

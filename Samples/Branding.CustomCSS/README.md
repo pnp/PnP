@@ -1,5 +1,7 @@
 # CSS INJECTION PATTERN #
 
+> *Notice.* This solution **ONLY** works for "Classic" experience. For modern experiences, you should be looking into using [modern themes](https://docs.microsoft.com/en-us/sharepoint/dev/declarative-customization/site-theming/sharepoint-site-theming-overview).
+
 ### Summary ###
 shows how to inject custom CSS to the host web from add-in.
 

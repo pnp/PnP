@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [September 2018]
+
+### Added
+
+- New solution Migration.Utilities.Discussions: shows how to extract and upload SharePoint discussion list data [manvirb4u]
+
+### Changed
+
 ## [August 2018]
 
 ### Added
