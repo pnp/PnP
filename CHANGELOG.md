@@ -11,6 +11,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+## [October 2018]
+
+### Added
+
+### Changed
+
 - Upgraded Modernization.PageTransformation sample to use the first production release of the PnP Modernization framework
 
 ## [September 2018]
