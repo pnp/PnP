@@ -1,0 +1,41 @@
+﻿@model Provisioning.CreateSite.MvcWeb.Models.NewSiteProperties
+
+@{
+    ViewBag.Title = "Site Status";
+}
+
+<h2>Site created successfully!</h2>
+
+<div>
+    <h4>New Site Information</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Url)
+        </dt>
+
+        <dd>
+            <a href="@Model.Url">@Model.Url</a>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SiteOwnerEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SiteOwnerEmail)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Create Another Site Collection", "Scenario2")
+</p>

@@ -5,11 +5,65 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
-## [May 2018 - Unreleased]
+## [November 2018]
 
 ### Added
 
 ### Changed
+
+- Upgraded Modernization.PageTransformation sample to use the first production release of the PnP Modernization framework
+
+## [October 2018]
+
+### Added
+
+### Changed
+
+- Upgraded Modernization.PageTransformation sample to use the first production release of the PnP Modernization framework
+
+## [September 2018]
+
+### Added
+
+- New solution Migration.Utilities.Discussions: shows how to extract and upload SharePoint discussion list data [manvirb4u]
+
+### Changed
+
+## [August 2018]
+
+### Added
+
+### Changed
+
+- Updated Modernization.PageTransformation sample to use the beta version of the modernization framework
+
+## [July 2018]
+
+### Added
+
+- New sample Provisioning.CreateSite.Mvc: This sample shows how to use OfficeDevPnP core component to create sub sites or new site collections using MVC 5 and a Provider Hosted Add-In. [mike-morr]
+
+### Changed
+
+- Flow redesigned in order to have better performance and minor bug fixes #1794 [giuleon]
+
+## [June 2018]
+
+### Added
+
+- New sample Modernization.PageTransformation: This code sample demonstrates how to use the preview version of the SharePoint Modernization library to modernize classic wiki and web part pages into modern client side pages.
+
+### Changed
+
+### Deprecated
+
+## [May 2018]
+
+### Added
+
+### Changed
+
+- Enabled taxonomy picker synonym matching for search [colindekker]
 
 ### Deprecated
 

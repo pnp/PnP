@@ -1,0 +1,34 @@
+﻿@model Provisioning.CreateSite.MvcWeb.Models.NewWebProperties
+
+@{
+    ViewBag.Title = "CreateWeb";
+}
+
+<h2>CreateWeb</h2>
+
+<div>
+    <h4>NewWebProperties</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Url)
+        </dt>
+
+        <dd>
+            <a href="@Model.Url">@Model.Url</a>
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+    </dl>
+</div>
+
+<p>
+    @Html.ActionLink("Create Another Subsite in the host web", "Scenario1")
+</p>

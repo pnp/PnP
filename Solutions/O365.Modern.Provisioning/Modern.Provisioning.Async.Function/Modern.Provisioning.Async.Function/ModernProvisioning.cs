@@ -31,7 +31,6 @@ namespace Modern.Provisioning.Async.Function
                 var kvClient = new KeyVaultClient(new KeyVaultClient.AuthenticationCallback(azureServiceTokenProvider.KeyVaultTokenCallback));
                 log.Info("KeyVaultSecret: " + Environment.GetEnvironmentVariable("KeyVaultSecret"));
                 adminPassword = (await kvClient.GetSecretAsync(Environment.GetEnvironmentVariable("KeyVaultSecret"))).Value;
-                log.Info("Secret acquired! " + adminPassword);
             }
 
             // parse query parameter
@@ -93,23 +92,38 @@ namespace Modern.Provisioning.Async.Function
                     switch (siteType.ToLower())
                     {
                         case "communicationsite":
-                            siteUrl = context.CreateSiteAsync(new CommunicationSiteCollectionCreationInformation
+                            var ctx = context.CreateSiteAsync(new CommunicationSiteCollectionCreationInformation
                             {
                                 Title = siteInfo["title"].ToString(),
                                 Owner = siteInfo["owner"].ToString(),
                                 Lcid = 1033,
                                 Description = siteInfo["description"].ToString(),
                                 Url = spSite + "/sites/" + siteInfo["alias"].ToString(),
-                            }).GetAwaiter().GetResult().Url;
+                            }).GetAwaiter().GetResult();
+                            // Add OWner
+                            User user = ctx.Web.EnsureUser(siteInfo["owner"].ToString());
+                            ctx.Web.Context.Load(user);
+                            ctx.Web.Context.ExecuteQueryRetry();
+                            ctx.Web.AssociatedOwnerGroup.Users.AddUser(user);
+                            ctx.Web.AssociatedOwnerGroup.Update();
+                            ctx.Web.Context.ExecuteQueryRetry();
                             break;
                         case "teamsite":
-                            siteUrl = context.CreateSiteAsync(new TeamSiteCollectionCreationInformation
+                            var ctxTeamsite = context.CreateSiteAsync(new TeamSiteCollectionCreationInformation
                             {
                                 DisplayName = siteInfo["title"].ToString(),
                                 Description = siteInfo["description"].ToString(),
                                 Alias = siteInfo["alias"].ToString(),
                                 IsPublic = false,
-                            }).GetAwaiter().GetResult().Url;
+                            }).GetAwaiter().GetResult();
+                            siteUrl = ctxTeamsite.Url;
+                            // Add OWner
+                            User userTeamSite = ctxTeamsite.Web.EnsureUser(siteInfo["owner"].ToString());
+                            ctxTeamsite.Web.Context.Load(userTeamSite);
+                            ctxTeamsite.Web.Context.ExecuteQueryRetry();
+                            ctxTeamsite.Web.AssociatedOwnerGroup.Users.AddUser(userTeamSite);
+                            ctxTeamsite.Web.AssociatedOwnerGroup.Update();
+                            ctxTeamsite.Web.Context.ExecuteQueryRetry();
                             break;
                         case "teams":
                             string token = Graph.getToken();
@@ -124,7 +138,7 @@ namespace Modern.Provisioning.Async.Function
                             if (string.IsNullOrEmpty(userId) == false)
                             {
                                 string dataPost = 
-                                    "{ 'displayName': '" + siteInfo["title"].ToString() + "', 'groupTypes': ['Unified'], 'mailEnabled': true, 'mailNickname': '" + siteInfo["alias"].ToString() + "', 'securityEnabled': false, 'owners@odata.bind': ['https://graph.microsoft.com/v1.0/users/" + userId + "'], 'visibility': 'Private' }";
+                                    "{ 'displayName': '" + siteInfo["title"].ToString() + "', 'groupTypes': ['Unified'], 'mailEnabled': true, 'mailNickname': '" + siteInfo["alias"].ToString().Replace("\r\n", "").Replace(" ","") + "', 'securityEnabled': false, 'owners@odata.bind': ['https://graph.microsoft.com/v1.0/users/" + userId + "'], 'visibility': 'Private' }";
                                 groupId = Graph.createUnifiedGroup(token, dataPost);
                                 log.Info("userId: " + groupId);
                                 //Graph.addOwnerToUnifiedGroup(token, groupId, userId);
