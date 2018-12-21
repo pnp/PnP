@@ -1,0 +1,45 @@
+﻿@model SPOGraphConsumer.Models.ListsViewModel
+
+@{
+    ViewBag.Title = "Site Lists";
+}
+
+<h2>Lists</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-title">
+            ID
+        </div>
+        <div class="col-md-3 col-title">
+            Display Name
+        </div>
+        <div class="col-md-2 col-title">
+            Description
+        </div>
+        <div class="col-md-3 col-title">
+            WebUrl
+        </div>
+    </div>
+    @foreach (var list in Model.Lists)
+    {
+        <div class="row">
+            <div class="col-md-4">
+                @list.Id
+            </div>
+            <div class="col-md-3">
+                @list.DisplayName
+            </div>
+            <div class="col-md-2">
+                @list.Description
+            </div>
+            <div class="col-md-3">
+                <a target="_blank" href="@list.WebUrl">@list.WebUrl</a>
+            </div>
+        </div>
+    }
+</div>
+
+<div>
+    @Html.ActionLink("Create new List", "CreateList", "Home", new { SiteId = Model.SiteId }, new { @class = "btn btn-default" })
+</div>

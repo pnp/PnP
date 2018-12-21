@@ -1,0 +1,19 @@
+﻿@model SPOGraphConsumer.Models.SitesViewModel
+
+@{
+    ViewBag.Title = "Manage Sites";
+}
+
+<h2>Manage Sites</h2>
+
+@using (Html.BeginForm("Sites", "Home", "POST"))
+{
+    @Html.AntiForgeryToken()
+
+    <div>
+        @Html.LabelFor(m => m.SiteUrlOrId): @Html.EditorFor(m => m.SiteUrlOrId)
+        <div>Provide a value like <i>/sites/[siteUrl]</i> or <i>[your-tenant].sharepoint.com,[SiteId],[WebId]</i></div>
+    </div>
+
+    <input type="submit" value="Get Site" />
+}

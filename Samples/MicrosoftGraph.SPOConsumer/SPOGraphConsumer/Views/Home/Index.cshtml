@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron">
+    <h1>SPO via Microsoft Graph</h1>
+    <p class="lead">This demo shows how to use the Microsoft Graph to consume SharePoint Online.</p>
+    <p><a href="https://developer.microsoft.com/en-us/graph/docs/api-reference/v1.0/resources/sharepoint" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Manage Sites</h2>
+        <p>
+            Get a site, its lists and sub-sites.
+        </p>
+        <p>@Html.ActionLink("Manage Sites", "Sites", "Home", null, new { @class = "btn btn-default" })</p>
+    </div>
+    <div class="col-md-6">
+        <h2>Manage Lists</h2>
+        <p>
+            Get or create lists.
+        </p>
+        <p>@Html.ActionLink("Manage Lists", "Lists", "Home", null, new { @class = "btn btn-default" })</p>
+    </div>
+</div>

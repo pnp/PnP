@@ -1,0 +1,39 @@
+﻿@model SPOGraphConsumer.Models.SiteInfoViewModel
+
+@{
+    ViewBag.Title = "Site Info";
+}
+
+<h2>Site Info</h2>
+
+<div>
+    @Html.LabelFor(m => m.Id): @Html.DisplayFor(m => m.Id)
+</div>
+
+<div>
+    @Html.LabelFor(m => m.Name): @Html.DisplayFor(m => m.Name)
+</div>
+
+<div>
+    @Html.LabelFor(m => m.DisplayName): @Html.DisplayFor(m => m.DisplayName)
+</div>
+
+<div>
+    @Html.LabelFor(m => m.Description): @Html.DisplayFor(m => m.Description)
+</div>
+
+<div>
+    @Html.LabelFor(m => m.CreatedDateTime): @Html.DisplayFor(m => m.CreatedDateTime)
+</div>
+
+<div>
+    @Html.LabelFor(m => m.LastModifiedDateTime): @Html.DisplayFor(m => m.LastModifiedDateTime)
+</div>
+
+<div>
+    @Html.LabelFor(m => m.WebUrl): @Html.DisplayFor(m => m.WebUrl)
+</div>
+
+<div>
+    @Html.ActionLink("Show Lists", "Lists", "Home", new { SiteId = Model.Id }, new { @class = "btn btn-default" })
+</div>
