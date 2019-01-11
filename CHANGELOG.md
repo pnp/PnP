@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/).
 
+## [January 2019]
+
+### Added
+
+- Added MicrosoftGraph.SPOConsumer sample: This is simplistic ASP.net MVC application to consume SharePoint Online using the Microsoft Graph.
+
+### Changed
+
+## [December 2018]
+
+### Added
+
+### Changed
+
 ## [November 2018]
 
 ### Added
