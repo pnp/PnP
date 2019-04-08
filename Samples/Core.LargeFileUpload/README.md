@@ -147,26 +147,15 @@ try
     using (BinaryReader br = new BinaryReader(fs))
     {
         byte[] buffer = new byte[blockSize];
-        Byte[] lastBuffer = null;
         long fileoffset = 0;
         long totalBytesRead = 0;
         int bytesRead;
         bool first = true;
-        bool last = false;
 
         // Read data from filesystem in blocks 
         while ((bytesRead = br.Read(buffer, 0, buffer.Length)) > 0)
         {
             totalBytesRead = totalBytesRead + bytesRead;
-
-            // We've reached the end of the file
-            if (totalBytesRead == fileSize)
-            {
-                last = true;
-                // Copy to a new buffer that has the correct size
-                lastBuffer = new byte[bytesRead];
-                Array.Copy(buffer, 0, lastBuffer, 0, bytesRead);
-            }
 
             if (first)
             {
@@ -197,11 +186,11 @@ try
             {
                 // Get a reference to our file
                 uploadFile = ctx.Web.GetFileByServerRelativeUrl(docs.RootFolder.ServerRelativeUrl + System.IO.Path.AltDirectorySeparatorChar + uniqueFileName);
-
-                if (last)
+                
+                if (totalBytesRead == fileSize)
                 {
-                    // Is this the last slice of data?
-                    using (MemoryStream s = new MemoryStream(lastBuffer))
+                    // We've reached the end of the file
+                    using (MemoryStream s = new MemoryStream(buffer, 0, bytesRead))
                     {
                         // End sliced upload by calling FinishUpload
                         uploadFile = uploadFile.FinishUpload(uploadId, fileoffset, s);
