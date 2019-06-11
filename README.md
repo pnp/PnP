@@ -24,7 +24,7 @@ You could be also interested on seeing all PnP resources in [one PowerPoint slid
 
 ![A list of links to the various contact points for the Office 365 Developer Patterns and Practices group and content.](http://i.imgur.com/TtNMeTn.png)
 
-**Notice**. There are different kind of techniques shown in the PnP guidance for apps/add-ins targetted to store and also for apps targeted to be deployed or created more as enterprise developmented apps/add-ins. Any app/add-in which requires higher than **Manage** permission to the host web cannot be distributed using SharePoint store.*
+**Notice**. There are different kind of techniques shown in the PnP guidance for apps/add-ins targeted to store and also for apps targeted to be deployed or created more as enterprise developed apps/add-ins. Any app/add-in which requires higher than **Manage** permission to the host web cannot be distributed using SharePoint store.*
 
 ## "Sharing is caring" 
 
