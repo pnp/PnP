@@ -1,7 +1,7 @@
 # Patterns and Practices #
-This is the main repository for the community driven [SharePoint / Office Dev Patterns and Practices](http://aka.ms/OfficeDevPnP) (PnP) initiative. If you are looking for latest news around PnP or related topics, please have a look on our one pager at [http://aka.ms/sppnp](http://aka.ms/sppnp). 
+This is the main repository for the community driven [SharePoint / Office Dev Patterns and Practices](http://aka.ms/OfficeDevPnP) (PnP) initiative. If you are looking for latest news around PnP or related topics, please have a look on our one pager at [http://aka.ms/sppnp](http://aka.ms/sppnp).
 
-![SharePoint Patterns and Practices logo](https://dev.office.com/Media/Default/PnP/sppnp.png)
+![SharePoint Patterns and Practices logo](https://developer.microsoft.com/en-us/sharepoint/blogs/wp-content/uploads/2019/03/SharePoint_PnP_mark_fullcolor.png)
 
 PnP initiative has numerous GitHub repositories, so that you can more easily find what's relevant for you depending on your interest. Easiest way to follow up on latest changes is our landing page at http://aka.ms/OfficeDevPnP. We also recommend you to use the [PnP sample and solution search tool](http://dev.office.com/patterns-and-practices-resources) at dev.office.com for finding relevant content for you. 
 
@@ -24,7 +24,7 @@ You could be also interested on seeing all PnP resources in [one PowerPoint slid
 
 ![A list of links to the various contact points for the Office 365 Developer Patterns and Practices group and content.](http://i.imgur.com/TtNMeTn.png)
 
-**Notice**. There are different kind of techniques shown in the PnP guidance for apps/add-ins targetted to store and also for apps targeted to be deployed or created more as enterprise developmented apps/add-ins. Any app/add-in which requires higher than **Manage** permission to the host web cannot be distributed using SharePoint store.*
+**Notice**. There are different kind of techniques shown in the PnP guidance for apps/add-ins targeted to store and also for apps targeted to be deployed or created more as enterprise developed apps/add-ins. Any app/add-in which requires higher than **Manage** permission to the host web cannot be distributed using SharePoint store.*
 
 ## "Sharing is caring" 
 
