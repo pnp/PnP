@@ -11,7 +11,7 @@ This scenario shows how you can call Web API 2 services from low trust provider 
 -  SharePoint 2013 on-premises (low trust only)
 
 ### Prerequisites ###
-None
+- Low Trust OAuth set up on your environment (default for Office 365, needs manual setup for on-premises)
 
 ### Solution ###
 Solution | Author(s)
