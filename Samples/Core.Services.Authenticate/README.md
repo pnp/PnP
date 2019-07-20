@@ -8,7 +8,7 @@ This scenario shows how you can call Web API 2 services from low trust provider 
 ### Applies to ###
 -  Office 365 Multi Tenant (MT)
 -  Office 365 Dedicated (D)
--  SharePoint 2013 on-premises (low trust only)
+-  SharePoint 2013/2016/2019 on-premises (low trust only)
 
 ### Prerequisites ###
 - Low Trust OAuth set up on your environment (default for Office 365, needs manual setup for on-premises)
