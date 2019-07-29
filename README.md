@@ -1,5 +1,5 @@
 # Patterns and Practices #
-This is the main repository for the community driven [SharePoint / Office Dev Patterns and Practices](http://aka.ms/OfficeDevPnP) (PnP) initiative. If you are looking for latest news around PnP or related topics, please have a look on our one pager at [http://aka.ms/sppnp](http://aka.ms/sppnp). 
+This is the main repository for the community driven [SharePoint / Office Dev Patterns and Practices](http://aka.ms/OfficeDevPnP) (PnP) initiative. If you are looking for latest news around PnP or related topics, please have a look on our one pager at [http://aka.ms/sppnp](http://aka.ms/sppnp).
 
 ![SharePoint Patterns and Practices logo](https://developer.microsoft.com/en-us/sharepoint/blogs/wp-content/uploads/2019/03/SharePoint_PnP_mark_fullcolor.png)
 
