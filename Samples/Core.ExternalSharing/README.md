@@ -1,3 +1,16 @@
+---
+page_type: sample
+products:
+- office-sp
+- office-onedrive
+languages:
+- aspx
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # External Sharing APIs for SharePoint and OneDrive for Business (Core.ExternalSharing) #
 
 ### Summary ###
