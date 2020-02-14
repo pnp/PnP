@@ -1,3 +1,18 @@
+---
+page_type: sample
+products:
+- office-sp
+- office-onedrive
+languages:
+- aspx
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  createdDate: 1/1/2016 12:00:00 AM
+  scenarios:
+  - Embed
+---
 # OD4B Secondary Navigation Bar #
 
 *Notice.* This solution **ONLY** works when you use so called "Classic" option for OneDrive for Business. New experiences do **NOT** support any level of branding in OneDrive for Business sites.
