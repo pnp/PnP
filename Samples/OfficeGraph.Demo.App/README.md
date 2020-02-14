@@ -1,3 +1,18 @@
+---
+page_type: sample
+products:
+- office-sp
+- office-365
+languages:
+- javascript
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  createdDate: 1/1/2016 12:00:00 AM
+  scenarios:
+  - Embed
+---
 # My Colleagues App using the Office Graph #
 
 ### Summary ###
