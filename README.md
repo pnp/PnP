@@ -1,3 +1,13 @@
+---
+page_type: sample
+products:
+- office-sp
+languages:
+- csharp
+extensions:
+  contentType: samples
+  createdDate: 7/26/2014 7:08:15 PM
+---
 # Patterns and Practices #
 This is the main repository for the community driven [SharePoint / Office Dev Patterns and Practices](http://aka.ms/OfficeDevPnP) (PnP) initiative. If you are looking for latest news around PnP or related topics, please have a look on our one pager at [http://aka.ms/sppnp](http://aka.ms/sppnp). 
 
