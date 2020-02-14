@@ -1,3 +1,19 @@
+---
+page_type: sample
+products:
+- office-sp
+languages:
+- javascript
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  platforms:
+  - AngularJS
+  createdDate: 1/1/2016 12:00:00 AM
+  scenarios:
+  - Embed
+---
 # MicroSurvey Web Part and List Forms #
 
 ### Summary ###
