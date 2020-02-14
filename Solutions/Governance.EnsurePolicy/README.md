@@ -1,3 +1,18 @@
+---
+page_type: sample
+products:
+- office-sp
+- office-access
+languages:
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  platforms:
+  - REST API
+  createdDate: 11/1/2017 12:00:00 AM
+---
 # Ensuring access policy for sites (alternative for web app policies) #
 
 ### Summary ###
