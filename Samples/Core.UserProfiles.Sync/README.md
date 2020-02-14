@@ -1,3 +1,17 @@
+---
+page_type: sample
+products:
+- office-sp
+- azure-active-directory
+languages:
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  - Azure AD
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # Azure AD to User Profile Sync Tool #
 
 ### Overview ###
