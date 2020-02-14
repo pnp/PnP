@@ -1,3 +1,15 @@
+---
+page_type: sample
+products:
+- office-sp
+languages:
+- aspx
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # ALTERNATECSSURL & SITELOGOURL PROPERTIES IN WEB OBJECT #
 
 > *Notice.* This solution is no longer maintained and it **ONLY** works for "Classic" experience. For modern experiences, you should be looking into using [SharePoint Framework](http://aka.ms/spfx).
