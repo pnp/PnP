@@ -1,3 +1,18 @@
+---
+page_type: sample
+products:
+- office-sp
+languages:
+- aspx
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  createdDate: 1/1/2016 12:00:00 AM
+  scenarios:
+  - Connect
+---
 # SharePoint Add-In Event Handler with Rollback Logic and Handler Delegation #
 
 ### Summary ###
