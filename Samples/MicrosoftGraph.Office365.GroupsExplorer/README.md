@@ -1,3 +1,25 @@
+---
+page_type: sample
+products:
+- office-365
+- office-sp
+- ms-graph
+languages:
+- aspx
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Microsoft Graph
+  - Azure AD
+  services:
+  - Office 365
+  - Groups
+  - SharePoint
+  createdDate: 1/1/2016 12:00:00 AM
+  scenarios:
+  - Connect
+---
 # Office 365 Api - Groups Explorer#
 
 ### Summary ###
