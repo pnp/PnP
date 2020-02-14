@@ -1,3 +1,20 @@
+---
+page_type: sample
+products:
+- office-sp
+languages:
+- javascript
+- powershell
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  platforms:
+  - REST API
+  createdDate: 1/1/2016 12:00:00 AM
+  scenarios:
+  - Connect
+---
 # Samples about the Microsoft SharePoint REST API
 
 ### Summary ###
