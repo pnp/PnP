@@ -1,3 +1,16 @@
+---
+page_type: sample
+products:
+- office-sp
+- office-visio
+languages:
+- aspx
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # Create fields and content types based on element XML #
 
 ### Summary ###
