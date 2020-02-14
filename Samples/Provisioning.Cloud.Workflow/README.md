@@ -1,3 +1,17 @@
+---
+page_type: sample
+products:
+- office-sp
+- office-visio
+languages:
+- aspx
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # Use workflow to provision a SharePoint site (host web) #
 
 ### Summary ###
