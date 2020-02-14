@@ -1,3 +1,26 @@
+---
+page_type: sample
+products:
+- office-outlook
+- office-365
+- office-sp
+- ms-graph
+languages:
+- javascript
+- nodejs
+extensions:
+  contentType: samples
+  technologies:
+  - Microsoft Graph
+  - Azure AD
+  services:
+  - Outlook
+  - Office 365
+  - SharePoint
+  createdDate: 1/1/2016 12:00:00 AM
+  scenarios:
+  - Mobile
+---
 # Microsoft Graph - Quick Contacts
 
 ### Summary
