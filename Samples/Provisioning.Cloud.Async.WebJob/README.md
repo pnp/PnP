@@ -1,3 +1,17 @@
+---
+page_type: sample
+products:
+- office-sp
+- office-visio
+languages:
+- aspx
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  - Azure AD
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # Asynchronous site collection creation with WebJob #
 
 ### Summary ###
