@@ -1,3 +1,36 @@
+---
+page_type: sample
+products:
+- office-365
+- office-excel
+- office-planner
+- office-teams
+- office-outlook
+- office-onedrive
+- office-sp
+- office-onenote
+- ms-graph
+languages:
+- swift
+extensions:
+  contentType: samples
+  technologies:
+  - Microsoft Graph
+  services:
+  - Office 365
+  - Excel
+  - Planner
+  - Microsoft Teams
+  - Outlook
+  - OneDrive
+  - SharePoint
+  - OneNote
+  platforms:
+  - iOS
+  createdDate: 1/1/2016 12:00:00 AM
+  scenarios:
+  - Mobile
+---
 # Microsoft Graph SDK for iOS using Swift #
 
 ### Summary ###
