@@ -3,12 +3,12 @@ page_type: sample
 products:
 - office-sp
 languages:
-- csharp
+- aspx
 extensions:
   contentType: samples
   technologies:
   - Add-ins
-  createdDate: 11/10/2014 5:31:45 PM
+  createdDate: 1/1/2016 12:00:00 AM
 ---
 # Deploy pre-configured web parts to web part gallery #
 
