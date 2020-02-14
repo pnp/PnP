@@ -1,3 +1,37 @@
+---
+page_type: sample
+products:
+- office-365
+- office-excel
+- office-planner
+- office-teams
+- office-outlook
+- office-onedrive
+- office-sp
+- office-onenote
+- ms-graph
+languages:
+- javascript
+extensions:
+  contentType: samples
+  technologies:
+  - Microsoft Graph
+  - Azure AD
+  services:
+  - Office 365
+  - Excel
+  - Planner
+  - Microsoft Teams
+  - Outlook
+  - OneDrive
+  - SharePoint
+  - OneNote
+  platforms:
+  - REST API
+  createdDate: 1/1/2016 12:00:00 AM
+  scenarios:
+  - Mobile
+---
 # Sample using Microsoft Graph with Apache Cordova and ADAL Cordova Plugin #
 
 ### Overview ###
