@@ -1,3 +1,16 @@
+---
+page_type: sample
+products:
+- office-sp
+languages:
+- aspx
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  - OAuth 2.0
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # Dynamically request permissions for an add-in #
 
 ### Summary ###
