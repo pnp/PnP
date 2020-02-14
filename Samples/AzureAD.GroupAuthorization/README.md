@@ -1,3 +1,20 @@
+---
+page_type: sample
+products:
+- office-sp
+- office-365
+languages:
+- aspx
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  - Azure AD
+  createdDate: 1/1/2016 12:00:00 AM
+  scenarios:
+  - Connect
+---
 # Office 365 Add-In With Groups Authorization #
 
 ### Summary ###
