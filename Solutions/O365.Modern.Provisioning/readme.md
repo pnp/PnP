@@ -1,3 +1,22 @@
+---
+page_type: sample
+products:
+- office-sp
+- office-365
+languages:
+- javascript
+- typescript
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - SharePoint Framework
+  - Azure AD
+  - Microsoft Bot Framework
+  platforms:
+  - react
+  createdDate: 3/1/2018 12:00:00 AM
+---
 # Office 365 Modern Provisioning with Bot, Flow, Azure Function #
 
 ## Summary ##
