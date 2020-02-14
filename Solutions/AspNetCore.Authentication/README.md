@@ -1,3 +1,16 @@
+---
+page_type: sample
+products:
+- office-sp
+languages:
+- aspx
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # OfficeDevPnP.Core.Framework.Authentication
 An ASP.NET Core implementation of the TokenHelper and SharePointContext classes for use in SharePoint Add-ins that run on ASP.NET Core 2.x.
 
