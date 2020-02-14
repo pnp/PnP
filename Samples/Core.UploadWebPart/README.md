@@ -1,3 +1,15 @@
+---
+page_type: sample
+products:
+- office-sp
+languages:
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  createdDate: 11/10/2014 5:31:45 PM
+---
 # Deploy pre-configured web parts to web part gallery #
 
 ### Summary ###
