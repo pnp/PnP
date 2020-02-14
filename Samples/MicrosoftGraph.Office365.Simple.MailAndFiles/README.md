@@ -1,3 +1,27 @@
+---
+page_type: sample
+products:
+- office-outlook
+- office-onedrive
+- office-sp
+- office-365
+- ms-graph
+languages:
+- aspx
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Microsoft Graph
+  - Office UI Fabric
+  - Azure AD
+  services:
+  - Outlook
+  - OneDrive
+  - SharePoint
+  - Office 365
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # Microsoft Graph - Query personal files and emails #
 
 ### Summary ###
