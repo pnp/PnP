@@ -1,3 +1,26 @@
+---
+page_type: sample
+products:
+- office-365
+- office-outlook
+- office-sp
+- ms-graph
+languages:
+- aspx
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Microsoft Graph
+  - Azure AD
+  services:
+  - Office 365
+  - Outlook
+  - SharePoint
+  - Users
+  - Groups
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # Generic sample Microsoft.Graph for Office 365 capabilities #
 
 ### Summary ###
