@@ -1,3 +1,19 @@
+---
+page_type: sample
+products:
+- office-outlook
+- office-sp
+languages:
+- aspx
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Azure AD
+  platforms:
+  - REST API
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # Outlook Notifications REST API with ASP.NET Web API #
 
 ### Summary ###
