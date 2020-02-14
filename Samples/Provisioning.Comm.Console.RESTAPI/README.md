@@ -1,3 +1,15 @@
+---
+page_type: sample
+products:
+- office-sp
+languages:
+- csharp
+extensions:
+  contentType: samples
+  platforms:
+  - REST API
+  createdDate: 10/1/2017 12:00:00 AM
+---
 # Create a Communication Site using SharePoint REST APIs #
 
 ### Summary ###
