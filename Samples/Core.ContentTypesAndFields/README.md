@@ -1,3 +1,13 @@
+---
+page_type: sample
+products:
+- office-sp
+languages:
+- aspx
+extensions:
+  contentType: samples
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # FIELDS AND CONTENT TYPES #
 
 ### Summary ###
