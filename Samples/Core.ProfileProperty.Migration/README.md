@@ -1,3 +1,13 @@
+---
+page_type: sample
+products:
+- office-sp
+languages:
+- csharp
+extensions:
+  contentType: samples
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # PROFILE PROPERTY MIGRATION #
 
 ### Summary ###
