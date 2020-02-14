@@ -1,3 +1,19 @@
+---
+page_type: sample
+products:
+- office-sp
+languages:
+- javascript
+- aspx
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  platforms:
+  - AngularJS
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # Connected Add-in Parts with SignalR and Angular Version 2 #
 
 ### Summary ###
