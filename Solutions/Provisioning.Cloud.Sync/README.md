@@ -1,3 +1,16 @@
+---
+page_type: sample
+products:
+- office-sp
+- office-visio
+languages:
+- aspx
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # Site provisioning with custom UI modules #
 
 **Sample is removed, since it was not up to date on latest guidance and patterns around site collection creation**
