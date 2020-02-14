@@ -1,3 +1,21 @@
+---
+page_type: sample
+products:
+- office-sp
+- office-365
+- ms-graph
+languages:
+- python
+extensions:
+  contentType: samples
+  technologies:
+  - Microsoft Graph
+  - Azure AD
+  services:
+  - SharePoint
+  - Office 365
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # Office 365 Python Flask App Authentication #
 
 ### Summary ###
