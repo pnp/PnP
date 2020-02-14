@@ -1,3 +1,20 @@
+---
+page_type: sample
+products:
+- office-sp
+- office-365
+languages:
+- aspx
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  - Azure AD
+  createdDate: 1/1/2016 12:00:00 AM
+  scenarios:
+  - Connect
+---
 # Use Azure RedisCache to Cache Office 365 User Profile Information in an Office 365 Add-in #
 
 ### Summary ###
