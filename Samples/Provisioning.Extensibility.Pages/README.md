@@ -1,3 +1,15 @@
+---
+page_type: sample
+products:
+- office-sp
+languages:
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  createdDate: 3/1/2018 12:00:00 AM
+---
 # PnP-Site-Core Provisioning Extensibility provider to provision Publishing pages #
 
 ### Summary ###
