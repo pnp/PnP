@@ -1,3 +1,22 @@
+---
+page_type: sample
+products:
+- office-onenote
+- office-outlook
+- office-sp
+- office-onedrive
+- office-365
+languages:
+- javascript
+- aspx
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  - Azure AD
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # Sample Office 365 Application
 
 ### Summary ###
