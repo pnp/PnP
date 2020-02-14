@@ -1,3 +1,20 @@
+---
+page_type: sample
+products:
+- office-sp
+languages:
+- javascript
+- typescript
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  platforms:
+  - React
+  createdDate: 1/1/2016 12:00:00 AM
+  scenarios:
+  - Embed
+---
 # Sample React JS Form Application Using React(with form validation), Webpack, SharePoint and the REST API
 
 This application show you how you can quickly build and package React forms with validation and send form data to a SharePoint list via the REST API
