@@ -1,3 +1,24 @@
+---
+page_type: sample
+products:
+- office-365
+- office-sp
+- ms-graph
+languages:
+- aspx
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Microsoft Graph
+  - Azure AD
+  - Microsoft identity platform
+  services:
+  - Office 365
+  - Microsoft identity platform
+  - SharePoint
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # Samples about the Microsoft Graph API SDK for .NET
 
 ### Summary ###
