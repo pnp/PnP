@@ -1,3 +1,17 @@
+---
+page_type: sample
+products:
+- office-sp
+languages:
+- aspx
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  createdDate: 1/1/2016 12:00:00 AM
+  scenarios:
+  - Connect
+---
 # USING APPINSTALLED EVENTS TO ATTACH EVENTS IN THE HOST WEB #
 
 ### Summary ###
