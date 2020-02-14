@@ -1,3 +1,27 @@
+---
+page_type: sample
+products:
+- office-yammer
+- office-sp
+- office-365
+- ms-graph
+languages:
+- javascript
+- aspx
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  - Azure AD
+  - Microsoft Graph
+  services:
+  - SharePoint
+  - Office 365
+  createdDate: 1/1/2016 12:00:00 AM
+  scenarios:
+  - Connect
+---
 # The Help Desk Demo #
 
 ### Summary ###
