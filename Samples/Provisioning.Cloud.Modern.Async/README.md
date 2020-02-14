@@ -1,3 +1,18 @@
+---
+page_type: sample
+products:
+- office-sp
+- office-visio
+languages:
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  platforms:
+  - REST API
+  createdDate: 12/1/2017 12:00:00 AM
+---
 # Create "modern" site collections #
 
 ### Summary ###
