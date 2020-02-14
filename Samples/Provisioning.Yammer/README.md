@@ -1,3 +1,17 @@
+---
+page_type: sample
+products:
+- office-yammer
+- office-sp
+- office-visio
+languages:
+- aspx
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # Replacement of team site feed with Yammer feed #
 
 ### Summary ###
