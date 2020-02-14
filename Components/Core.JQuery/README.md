@@ -1,3 +1,16 @@
+---
+page_type: sample
+products:
+- office-sp
+languages:
+- aspx
+- csharp
+extensions:
+  contentType: samples
+  technologies:
+  - Add-ins
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # jQuery examples for SharePoint Add-Ins #
 
 ### Summary ###
