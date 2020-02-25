@@ -1,0 +1,14 @@
+page_type: sample
+products:
+  - office-sp
+languages:
+  - csharp
+extensions:
+  contentType: tools
+  technologies:
+    - Add-ins
+  createdDate: '1/1/2016 12:00:00 AM'
+  scenarios:
+    - Embed
+title: Manage CDN references for JavaScript libraries (Core.CDNManager)
+description: The CDN Manager is used to manage Content Delivery Network (CDN) references for JavaScript Libraries and Cascading Style Sheets (CSS) in SharePoint 2013 sites. 
