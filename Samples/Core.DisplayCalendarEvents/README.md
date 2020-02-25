@@ -1,3 +1,15 @@
+---
+page_type: sample
+products:
+- office-sp
+languages:
+- javascript
+extensions:
+  contentType: tools
+  technologies:
+  - Add-ins
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # Display (recurring) calendar events #
 
 ### Summary ###
