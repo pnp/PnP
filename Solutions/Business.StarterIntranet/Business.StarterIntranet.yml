@@ -1,0 +1,18 @@
+page_type: sample
+products:
+  - office-sp
+  - office-365
+languages:
+  - javascript
+  - csharp
+  - nodejs
+  - typescript
+extensions:
+  contentType: tools
+  technologies:
+    - Add-ins
+  createdDate: '1/1/2016 12:00:00 AM'
+  scenarios:
+    - Embed
+title: PnP Starter Intranet for Office 365/SharePoint Online (Business.O365StarterIntranet)
+description: Intranet projects shouldnΓÇÖt have to reinvent the wheel every time for basic features (like navigation or multilingualism). This solution aims to provide the fundamental building blocks of a common intranet solution with SharePoint Online/Office 365 through a lightweight client side solution using the latest web stack development tools and frameworks.
