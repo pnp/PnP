@@ -1,0 +1,14 @@
+page_type: sample
+products:
+  - office-sp
+  - office-onedrive
+languages:
+  - aspx
+  - csharp
+extensions:
+  contentType: tools
+  technologies:
+    - Add-ins
+  createdDate: '1/1/2016 12:00:00 AM'
+title: External Sharing governance enforcement
+description: SharePoint Online makes it extremely easy to share sites and content with external users. For this reason, SharePoint Online has seen rapid adoption for many extranet scenarios and in OneDrive for Business. SharePoint Online provides administrators the tools to manage external sharing, including enabling/disabling sharing and visibility into external users within a site collection. External sharing is simple, secure, and extremely powerful. However, once content is shared externally, it stays shared foreverΓÇªor at least until it is manually revoked by a content owner or administrator. This solution helps implement expiration timers on external sharing in SharePoint Online. The solution will also give content owners easy methods to extend/revoke external user access.
