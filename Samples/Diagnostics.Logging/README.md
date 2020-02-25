@@ -1,3 +1,16 @@
+---
+page_type: sample
+products:
+- office-sp
+- office-365
+languages:
+- aspx
+extensions:
+  contentType: tools
+  technologies:
+  - Add-ins
+  createdDate: 1/1/2016 12:00:00 AM
+---
 # # Logging with OfficeDevPnP.Core #
 
 ### Summary ###
