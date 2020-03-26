@@ -22,7 +22,7 @@ PnP initiative has numerous GitHub repositories, so that you can more easily fin
 - [PnP at Docs.com](https://docs.com/OfficeDevPnP) - Docs.com
 - [PnP Sites Core Component](http://aka.ms/officedevpnpsitescore) - GitHub repository 
 - [PnP JavaScript Reusable Client-side Libraries (PnPjs)](https://github.com/pnp/pnpjs) - GitHub repository
-- [PnP PowerShell](http://aka.ms/officedevpnppowershell) - GitHub repository
+- [PnP PowerShell documentation](http://aka.ms/officedevpnppowershell) - [GitHub repository](https://github.com/SharePoint/PnP-PowerShell)
 - [PnP Partner Pack](https://github.com/OfficeDev/PnP-partner-pack) - Reusable starter kit for typical enterprise requirements
 - [PnP Guidance](http://aka.ms/OfficeDevPnPGuidance) - GitHub repository
 - [PnP Office-Addins](http://aka.ms/officedevpnpofficeaddins) - GitHub repository
