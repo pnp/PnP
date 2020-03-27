@@ -9,30 +9,24 @@ extensions:
   createdDate: 7/26/2014 7:08:15 PM
 ---
 # Patterns and Practices #
-This is the main repository for the community driven [SharePoint / Office Dev Patterns and Practices](http://aka.ms/OfficeDevPnP) (PnP) initiative. If you are looking for latest news around PnP or related topics, please have a look on our one pager at [http://aka.ms/sppnp](http://aka.ms/sppnp). 
 
-![SharePoint Patterns and Practices logo](https://developer.microsoft.com/en-us/sharepoint/blogs/wp-content/uploads/2019/03/SharePoint_PnP_mark_fullcolor.png)
+> Notice that many of the samples in this repository are for legacy add-in model. You should be using [SharePoint Framework](https://aka.ms/spfx) for UX layer extensibility for SharePoint and Microsoft Teams. You can find [SPFx web part](https://aka.ms/spfx-webparts) and [SPFx extension](https://aka.ms/spfx-webparts) samples from different repository.
 
-PnP initiative has numerous GitHub repositories, so that you can more easily find what's relevant for you depending on your interest. Easiest way to follow up on latest changes is our landing page at http://aka.ms/OfficeDevPnP. We also recommend you to use the [PnP sample and solution search tool](http://dev.office.com/patterns-and-practices-resources) at dev.office.com for finding relevant content for you. 
+This is the main repository for the community driven [Microsoft 365 / SharePoint Patterns and Practices](http://aka.ms/sppnp) (PnP) initiative. If you are looking for latest news around PnP or related topics, please have a look on our one pager at [http://aka.ms/sppnp](http://aka.ms/sppnp). 
 
-- [PnP at dev.office.com](http://aka.ms/OfficeDevPnP) - Welcome page with sample and guidance search
-- [SharePoint Dev Group](http://aka.ms/sppnp-community) - Questions and feedback
-- [PnP at MSDN](http://aka.ms/OfficeDevPnPMSDN) 
+![M365 Patterns and Practices logo](https://github.com/pnp/media/blob/master/pnp-logos-squared/png/blue/300w/pnp-m365-blue-300.png?raw=true)
+
+PnP initiative has numerous GitHub repositories, so that you can more easily find what's relevant for you depending on your interest. Easiest way to follow up on latest changes is our landing page at http://aka.ms/sppnp. 
+
 - [PnP videos](http://aka.ms/sppnp-videos) at YouTube
 - [PnP at Docs.com](https://docs.com/OfficeDevPnP) - Docs.com
 - [PnP Sites Core Component](http://aka.ms/officedevpnpsitescore) - GitHub repository 
 - [PnP JavaScript Reusable Client-side Libraries (PnPjs)](https://github.com/pnp/pnpjs) - GitHub repository
 - [PnP PowerShell documentation](http://aka.ms/officedevpnppowershell) - [GitHub repository](https://github.com/SharePoint/PnP-PowerShell)
-- [PnP Partner Pack](https://github.com/OfficeDev/PnP-partner-pack) - Reusable starter kit for typical enterprise requirements
 - [PnP Guidance](http://aka.ms/OfficeDevPnPGuidance) - GitHub repository
 - [PnP Office-Addins](http://aka.ms/officedevpnpofficeaddins) - GitHub repository
-- [PnP Tools](https://github.com/OfficeDev/PnP-Tools) - GitHub repository
-- [PnP Transformation](https://github.com/OfficeDev/PnP-Transformation) - GitHub repository
-- [PnP Provisioning Schema](https://github.com/OfficeDev/PnP-provisioning-schema) - GitHub repository 
-
-You could be also interested on seeing all PnP resources in [one PowerPoint slide](https://docs.com/OfficeDevPnP/9085/office-dev-pnp-resources).
-
-![A list of links to the various contact points for the Office 365 Developer Patterns and Practices group and content.](http://i.imgur.com/TtNMeTn.png)
+- [Modernization tooling](https://github.com/pnp/sp-dev-modernization) - GitHub repository
+- [PnP Provisioning Schema](https://github.com/OfficeDev/PnP-provisioning-schema) - GitHub repository
 
 **Notice**. There are different kind of techniques shown in the PnP guidance for apps/add-ins targeted to store and also for apps targeted to be deployed or created more as enterprise developed apps/add-ins. Any app/add-in which requires higher than **Manage** permission to the host web cannot be distributed using SharePoint store.*
 
