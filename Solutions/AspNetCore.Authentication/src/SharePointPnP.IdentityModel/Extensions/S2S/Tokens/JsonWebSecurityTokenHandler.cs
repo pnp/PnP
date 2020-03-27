@@ -1,4 +1,6 @@
 ﻿using Microsoft.IdentityModel.Claims;
+using System;
+using System.Linq;
 using System.ServiceModel.Security.Tokens;
 using System.Xml;
 
@@ -412,6 +414,7 @@ namespace SharePointPnP.IdentityModel.Extensions.S2S.Tokens
             ClaimsIdentity claimsIdentity = new ClaimsIdentity("Federation");
             if (!isActorToken && jsonWebSecurityToken.ActorToken != null)
             {
+                ValidateActorTokenForAppOnly(jsonWebSecurityToken.ActorToken);
                 ClaimsIdentityCollection claimsIdentityCollection2 = this.ValidateActorToken(jsonWebSecurityToken.ActorToken);
                 if (claimsIdentityCollection2.Count > 1)
                 {
@@ -440,6 +443,24 @@ namespace SharePointPnP.IdentityModel.Extensions.S2S.Tokens
             return claimsIdentityCollection;
         }
 
+        /// <summary>
+        ///Validates that the actor token is an app token by checking for the lack of user claims
+        /// </summary>
+        /// <param name="actorToken"></param>
+        private static void ValidateActorTokenForAppOnly(JsonWebSecurityToken actorToken)
+        {
+            if (actorToken != null)
+            {
+                if (actorToken.Claims.FirstOrDefault<JsonWebTokenClaim>(x => x.ClaimType.Equals("scp")) != null
+                  || actorToken.Claims.FirstOrDefault<JsonWebTokenClaim>(x => x.ClaimType.Equals("upn")) != null
+                  || actorToken.Claims.FirstOrDefault<JsonWebTokenClaim>(x => x.ClaimType.Equals("unique_name")) != null
+                  || actorToken.Claims.FirstOrDefault<JsonWebTokenClaim>(x => x.ClaimType.Equals("altsecid")) != null)
+                {
+                    throw new UnauthorizedAccessException("Invalid actor token.");
+                }
+            }
+        }
+   
         public override ClaimsIdentityCollection ValidateToken(System.IdentityModel.Tokens.SecurityToken token)
         {
             return this.ValidateTokenCore(token, false);
