@@ -40,8 +40,6 @@ No longer will you need to keep track of different endpoints and separate tokens
 
 This sample showcases the Microsoft Graph SDK for iOS (<https://github.com/OfficeDev/Microsoft-Graph-SDK-iOS>) in a simple iOS application using the new Swift language (<https://developer.apple.com/swift/>). In the application we will send ourselves a mail. The objective is to get familiar with the Microsoft Graph and its possibilities.
 
-![App UI in iPhone and email](http://simonjaeger.com/wp-content/uploads/2016/03/app.png)
-
 Be aware, the Microsoft Graph SDK for iOS is still in preview. Read more about the conditions at: https://github.com/OfficeDev/Microsoft-Graph-SDK-iOS
 
 Read more about this sample at: <http://simonjaeger.com/get-going-swiftly-with-the-microsoft-sdk-for-ios/>
