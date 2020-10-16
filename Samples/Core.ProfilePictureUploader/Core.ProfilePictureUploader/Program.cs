@@ -31,8 +31,8 @@ namespace Contoso.Core.ProfilePictureUploader
         static UPSvc.UserProfileService _userProfileService;
         static ClientContext _clientContext;
         const string _sPOProfilePrefix = "i:0#.f|membership|";
-        const string _profileSiteTemplateUrl = "https://{0}-admin.sharepoint.com";
-        const string _mySiteHostTemplateUrl = "https://{0}-my.sharepoint.com";
+        const string _profileSiteTemplateUrl = "https://{0}-admin.sharepoint.{1}";
+        const string _mySiteHostTemplateUrl = "https://{0}-my.sharepoint.{1}";
 
 
         enum LogLevel { Information, Warning, Error };
@@ -201,13 +201,8 @@ namespace Contoso.Core.ProfilePictureUploader
                     return false;
                 }
 
-                //remove onmicrosoft.com from tenant name, all we need is friendly name, which will be used in SPO site collection URLs
-                int pos = _appConfig.TenantName.IndexOf(".onmicrosoft.com", StringComparison.CurrentCultureIgnoreCase);
-                if (pos > 0)
-                    _appConfig.TenantName = _appConfig.TenantName.Remove(pos, 16);
-
-                _profileSiteUrl = string.Format(_profileSiteTemplateUrl, _appConfig.TenantName); //build URL for admin site e.g. https://tenantname-admin.sharepoint.com
-                _mySiteUrl = string.Format(_mySiteHostTemplateUrl, _appConfig.TenantName); //build URL for my site host e.g. https://tenantname-my.sharepoint.com
+                _profileSiteUrl = string.Format(_profileSiteTemplateUrl, _appConfig.TenantName, _appConfig.TenantExtension); //build URL for admin site e.g. https://tenantname-admin.sharepoint.com
+                _mySiteUrl = string.Format(_mySiteHostTemplateUrl, _appConfig.TenantName, _appConfig.TenantExtension); //build URL for my site host e.g. https://tenantname-my.sharepoint.com
                 return true;
             }
             catch (Exception ex)

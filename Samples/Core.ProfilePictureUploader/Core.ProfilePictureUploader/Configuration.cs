@@ -11,6 +11,8 @@ namespace Contoso.Core.ProfilePictureUploader
     {
         [System.Xml.Serialization.XmlElementAttribute("tenantName")]
         public string TenantName;
+        [System.Xml.Serialization.XmlElementAttribute("tenantExtension")]
+        public string TenantExtension;
         [System.Xml.Serialization.XmlElementAttribute("pictureSourceCsv")]
         public string PictureSourceCsv;
         [System.Xml.Serialization.XmlElementAttribute("thumbs")]
