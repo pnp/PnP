@@ -49,7 +49,7 @@ When running the uploader, you will need to specify a minimum of three command l
 
     ProfilePictureUploader.exe –SPOAdmin admin@contoso.onmicrosot.com –SPOAdminPassword pass@word1 –Configuration configuration.xml
 
-There are two optional parameters, which are a username and password, which should be used if your image source location requires authentication, and you don’t want to connect to the source as the user account which is executing the ProfilePictureUploader executable. Note: if the source is an HTTP(s) Uri, then this will only work if the authentication method is NTLM or basic authentication, not forms authentication. 
+There are two optional parameters, which are a username and password, which should be used if your image source location requires authentication, and you don’t want to connect to the source as the user account which is executing the ProfilePictureUploader executable. Note: if the source is an HTTP(s) Uri, then this will only work if the authentication method is NTLM or basic authentication, not forms authentication.
 The screen shot below shows the two examples for running this command.
 
 ![Console output](http://i.imgur.com/5wx33eX.png)
@@ -60,28 +60,29 @@ The configuration.xml file allows you to control the upload process, and is requ
 ![Configuration options](http://imgur.com/6meHVRW.png)
 
 1.	tenantName – required. Office 365 tenant name. Used by the utility to connect to the correct SPO web service endpoints during the upload of images, and editing of user profile properties.
-2.	pictureSourceCSV – required. This is the path to a CSV file which contains a mapping of SPO user to source image location. More information and examples are detailed in the next section.
-3.	thumbs – required. This element determines if source image files should be uploaded as is, or scaled to create 3 sizes of each image file.
-	- upload3Thumbs – required. If set to “false”, the utility will take the source image for a user as is, and upload to SPO. A single image file per user profile will be uploaded. The value of “createSMLThumbs” is irrelevant if “Upload3Thumbs” is set to “false”. If “upload3Thumbs” is set to true, the utility will upload 3 image files for each user profile. The value of “createSMLThumbs” will control the size of each of those 3 images. Most often “upload3Thumbs” will be set to true, but there are cases where you might just want the source image uploaded as is.	
+2.	tenantExtension – required. Support for various Azure Environments ("com", "us")
+3.	pictureSourceCSV – required. This is the path to a CSV file which contains a mapping of SPO user to source image location. More information and examples are detailed in the next section.
+4.	thumbs – required. This element determines if source image files should be uploaded as is, or scaled to create 3 sizes of each image file.
+	- upload3Thumbs – required. If set to “false”, the utility will take the source image for a user as is, and upload to SPO. A single image file per user profile will be uploaded. The value of “createSMLThumbs” is irrelevant if “Upload3Thumbs” is set to “false”. If “upload3Thumbs” is set to true, the utility will upload 3 image files for each user profile. The value of “createSMLThumbs” will control the size of each of those 3 images. Most often “upload3Thumbs” will be set to true, but there are cases where you might just want the source image uploaded as is.
 	- createSMLThumbs – required. If set to true, the utility will use the source image, and create 3 different sized variations of the image, and upload those 3 images for each user profile. The sizes are, small – width of 48px, medium – width of 72px, and large, width of 200px. If set to false, the utility will use the source image, do no resizing of it, and upload it 3 times. Most often this parameter will be set to true, but there are cases where you might want it to be false.
-4. targetLibraryPath - required. This option allows to specify a different name / URL for picture library where profile pictures will be uploaded. Needs to be used to support where MySite is in a language different from English.  
+5. targetLibraryPath - required. This option allows to specify a different name / URL for picture library where profile pictures will be uploaded. Needs to be used to support where MySite is in a language different from English.
    default value, for English, is */User Photos/Profile Pictures* . For instance for Dutch this should be set to */User Photos//Profielafbeeldingen* instead.
-5.	additionalProfileProperties – required. This section allows you to specify additional user profile properties, and their values, to be set when the utility runs. For example, you may want to turn off Exchange Online picture sync to SharePoint Online for all users where you upload an image, or set any other custom or built-in SPO user profile property to a value. Note: the utility will automatically set 2 user profile properties for you i.e. PictureURL, will be set to the path of the uploaded image (if multiple image uploaded, it is always set to the path of the medium sized image), and SPS-PicturePlaceholderState will be set to 0, to indicate to SPO to show the upload picture for a user profile. 
-	- Property – not required. Can have multiple property elements. 
+6.	additionalProfileProperties – required. This section allows you to specify additional user profile properties, and their values, to be set when the utility runs. For example, you may want to turn off Exchange Online picture sync to SharePoint Online for all users where you upload an image, or set any other custom or built-in SPO user profile property to a value. Note: the utility will automatically set 2 user profile properties for you i.e. PictureURL, will be set to the path of the uploaded image (if multiple image uploaded, it is always set to the path of the medium sized image), and SPS-PicturePlaceholderState will be set to 0, to indicate to SPO to show the upload picture for a user profile.
+	- Property – not required. Can have multiple property elements.
 		- Name – required. This is the name of SPO user profile property
 		- Value – required. This is the value you would like to set the profile property to
-6.	logFile – required. This is used to control the output of logging while the utility runs.
+7.	logFile – required. This is used to control the output of logging while the utility runs.
 	- path – required. The full path to where the log file should be created. If the file doesn’t exist, the utility will create one. If it does exist, it will append to the existing file.
 	- enablelogging – required. If set to “false”, the utility will not write any output to the logfile.
 	- loggingLevel – not used. Support for this attribute be added to a future update.
-7.	uploadDelay – required. If set greater than 0, the utility will pause this time (in milliseconds) between user profile uploads to SPO. This is to prevent the SPO service thinking the utility is issuing a denial of service attack. Recommended to leave at 500ms (half a second).
+8.	uploadDelay – required. If set greater than 0, the utility will pause this time (in milliseconds) between user profile uploads to SPO. This is to prevent the SPO service thinking the utility is issuing a denial of service attack. Recommended to leave at 500ms (half a second).
 
 ## SOURCE CSV FILE EXAMPLES ##
 The source CSV file maps SPO user profile to source image path. A sample CSV file is shown below.
 
 ![Source file examples](http://i.imgur.com/gT53PGX.png)
 
-The first column is required, and must be the SPO User Name (in Office 365 this is the user name found in the users and groups section in the Office 365 admin center). The second column is the path to the source picture to upload for the user. From the sample above, you will see that file shares, local files and web locations are supported. 
+The first column is required, and must be the SPO User Name (in Office 365 this is the user name found in the users and groups section in the Office 365 admin center). The second column is the path to the source picture to upload for the user. From the sample above, you will see that file shares, local files and web locations are supported.
 
 **Important:** the utility always ignores the first row in the CSV file. In this example the column header names are the first row.
 
@@ -95,7 +96,7 @@ The article linked here, describes how to the Get-MSOLUser command - http://msdn
 ## My company is running Azure AD Sync. Will it take user profile pictures into SPO from our local AD?
 Answer: Maybe
 
-Azure AD Synchronization (DirSync) will synchronize the value for the AD attribute “thumbnailphoto” from a user object in AD to Azure AD (Office 365). However, this doesn’t mean it ends up in SharePoint Online, and in the scenarios where it does, it doesn’t mean you have a good looking high resolution photo for a user profile. 
+Azure AD Synchronization (DirSync) will synchronize the value for the AD attribute “thumbnailphoto” from a user object in AD to Azure AD (Office 365). However, this doesn’t mean it ends up in SharePoint Online, and in the scenarios where it does, it doesn’t mean you have a good looking high resolution photo for a user profile.
 The way the thumbnailphoto sync works is as follows. AD syncs to Azure AD (as part of DirSync), then Exchange Online gets a copy of the picture from Azure AD, then SharePoint Online gets a copy from Exchange Online. As you can quickly see, there will be a few instances where the sync of the thumbnailphoto will not work all the way into a SPO user profile e.g:
 - 	You don’t have Exchange Online in your Office 365 tenant. You may just have SharePoint Online.
 - 	You have Exchange Online in your tenant, but the user profile in question has their Exchange mailbox  on-premises. For thumbnailphoto sync to work to SPO, the user’s mailbox must be in Exchange Online.
